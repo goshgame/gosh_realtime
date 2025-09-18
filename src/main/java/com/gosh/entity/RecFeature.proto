@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package com.gosh.entity;
+message RecFeature {
+    string key = 1;
+    string resutls = 2;
+}
