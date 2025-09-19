@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gosh.config.RedisConfig;
-import com.gosh.entity.RecFeatureOuterClass;
+import com.gosh.entity.RecFeatureDemoOuterClass;
 import com.gosh.entity.UserLiveEvent;
 import com.gosh.util.FlinkEnvUtil;
 import com.gosh.util.KafkaEnvUtil;
@@ -107,7 +107,7 @@ public class DemoJob {
 
         // 第四步：DataStream<T> aggregatedStream 转换到 protobuf
         // 4.1 定义 MapFunction 将 UserLiveAggregation 转换为 RecFeature Protobuf 对象
-        DataStream<RecFeatureOuterClass.RecFeature> protoStream =
+        DataStream<RecFeatureDemoOuterClass.RecFeature> protoStream =
                 aggregatedStream.map(new AggregationToProtoMapper()).name("Aggregation to Protobuf");
 
         // 4.2 将 Protobuf 对象序列化为字节数组 DataStream<byte[]>
@@ -116,9 +116,9 @@ public class DemoJob {
                 .name("Protobuf to Byte Array");
 
         // 4.3 定义protobuf解析器和key提取逻辑
-        Class<RecFeatureOuterClass.RecFeature> protoClass = RecFeatureOuterClass.RecFeature.class;
+        Class<RecFeatureDemoOuterClass.RecFeature> protoClass = RecFeatureDemoOuterClass.RecFeature.class;
         // 确保keyExtractor是可序列化的（显式类或Flink的Function）
-        Function<RecFeatureOuterClass.RecFeature, String> keyExtractor = new DemoJob.UserKeyExtractor();
+        Function<RecFeatureDemoOuterClass.RecFeature, String> keyExtractor = new DemoJob.UserKeyExtractor();
 
 
         // 第五步：创建sink，Redis环境
@@ -357,9 +357,9 @@ public class DemoJob {
     /**
      * 设置 key值
      */
-    private static class UserKeyExtractor implements Function<RecFeatureOuterClass.RecFeature, String>, Serializable {
+    private static class UserKeyExtractor implements Function<RecFeatureDemoOuterClass.RecFeature, String>, Serializable {
         @Override
-        public String apply(RecFeatureOuterClass.RecFeature feature) {
+        public String apply(RecFeatureDemoOuterClass.RecFeature feature) {
             return PREFIX + feature.getKey();
         }
     }
@@ -367,13 +367,13 @@ public class DemoJob {
     /**
      * 将 UserLiveAggregation 转换为 Protobuf 对象 RecUserFeatureOuterClass.RecUserFeature
      */
-    public static class AggregationToProtoMapper implements MapFunction<UserLiveAggregation, RecFeatureOuterClass.RecFeature> {
+    public static class AggregationToProtoMapper implements MapFunction<UserLiveAggregation, RecFeatureDemoOuterClass.RecFeature> {
         private  final Logger LOG = LoggerFactory.getLogger(AggregationToProtoMapper.class);
         // 复用全局 ObjectMapper 避免重复创建
         private final ObjectMapper objectMapper = new ObjectMapper();
 
         @Override
-        public RecFeatureOuterClass.RecFeature map(DemoJob.UserLiveAggregation aggregation) throws Exception {
+        public RecFeatureDemoOuterClass.RecFeature map(DemoJob.UserLiveAggregation aggregation) throws Exception {
             try {
                 // 1. 构建结果映射（参考 RecUserFeatureSinkJob 中 resutls 的 JSON 格式）
                 Map<String, Object> resultMap = new HashMap<>();
@@ -388,7 +388,7 @@ public class DemoJob {
                 String resultsJson = objectMapper.writeValueAsString(resultMap);
 
                 // 3. 构建 Protobuf 对象并设置字段
-                return RecFeatureOuterClass.RecFeature.newBuilder()
+                return RecFeatureDemoOuterClass.RecFeature.newBuilder()
                         .setKey(aggregation.getUid()) // key 字段设为用户 ID
                         .setResutls(resultsJson)      // resutls 字段设为聚合统计的 JSON
                         .build();
