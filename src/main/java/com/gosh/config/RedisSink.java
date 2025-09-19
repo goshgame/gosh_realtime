@@ -4,11 +4,11 @@ package com.gosh.config;
 import com.google.protobuf.Message;
 import com.google.protobuf.Parser;
 import io.lettuce.core.api.sync.RedisCommands;
+import io.lettuce.core.cluster.api.sync.RedisAdvancedClusterCommands;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.functions.sink.RichSinkFunction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
@@ -34,7 +34,10 @@ public class RedisSink<T, M extends Message> extends RichSinkFunction<T> {
 
     private transient Parser<M> protoParser; // protobuf解析器
     private transient RedisCommands<String, byte[]> redisCommands;
+    private transient RedisAdvancedClusterCommands<String, byte[]> redisClusterCommands;
     private transient AtomicInteger pendingOperations;
+    private transient RedisConnectionManager connectionManager;
+    private transient boolean isClusterMode;
 
 
     // 全参数构造函数（核心）
@@ -67,12 +70,21 @@ public class RedisSink<T, M extends Message> extends RichSinkFunction<T> {
     public void open(Configuration parameters) throws Exception {
         super.open(parameters);
 
-        this.redisCommands = RedisConnectionManager.getRedisCommands(config);
+        // 初始化连接管理器（自动识别单机/集群）
+        this.connectionManager = RedisConnectionManager.getInstance(config);
+        this.isClusterMode = config.isClusterMode();
+        if(this.isClusterMode){
+            this.redisClusterCommands = isClusterMode ? connectionManager.getRedisClusterCommands() : null;
+        }else {
+            this.redisCommands = connectionManager.getRedisCommands();
+        }
         this.pendingOperations = new AtomicInteger(0);
+
         // 2. 反射获取Parser：在TaskManager本地初始化，避免序列化
         Method parserMethod = protoClass.getMethod("parser"); // Protobuf生成类都有static的parser()方法
         this.protoParser = (Parser<M>) parserMethod.invoke(null); // 调用静态方法获取Parser
 
+        System.out.println("config:" + config.toString());
         LOG.info("Redis Sink opened with config: {}, async: {}, batchSize: {}", config, async, batchSize);
     }
 
@@ -99,13 +111,25 @@ public class RedisSink<T, M extends Message> extends RichSinkFunction<T> {
         }
 
         if (async) {
-            CompletableFuture<Void> future = RedisConnectionManager.executeAsync(
-                    config,
-                    commands -> {
-                        executeCommand(commands, value);
-                        return null;
-                    }
-            );
+            CompletableFuture<Void> future;
+            // 根据模式选择对应的异步执行方法
+            if (isClusterMode) {
+                future = connectionManager.executeWithRetry(
+                        () -> connectionManager.executeClusterAsync(commands -> {
+                            executeCommand(commands, value);
+                            return null;
+                        }),
+                        3
+                );
+            } else {
+                future = connectionManager.executeWithRetry(
+                        () -> connectionManager.executeAsync(commands -> {
+                            executeCommand(commands, value);
+                            return null;
+                        }),
+                        3
+                );
+            }
 
             if(future !=null){
                 //设置 ttl
@@ -115,7 +139,14 @@ public class RedisSink<T, M extends Message> extends RichSinkFunction<T> {
                             byte[] data = (byte[]) value;
                             M message = protoParser.parseFrom(data);
                             String key = keyExtractor.apply(message);
-                            redisCommands.expire(key, config.getTtl());
+                            System.out.println("设置TTL, key=" + key + ", TTL=" + config.getTtl());
+                            if(isClusterMode){
+                                redisClusterCommands.expire(key, config.getTtl());
+                                System.out.println("集群模式设置TTL完成");
+                            } else{
+                                redisCommands.expire(key, config.getTtl());
+                                System.out.println("单机模式设置TTL完成");
+                            }
                         }
                     } catch (Exception e) {
                         LOG.error("Error setting TTL in Redis: {}", e.getMessage(), e);
@@ -128,12 +159,13 @@ public class RedisSink<T, M extends Message> extends RichSinkFunction<T> {
                 pendingOperations.set(0);
             }
         } else {
-            executeCommand(redisCommands, value);
+            if(isClusterMode){
+                executeCommand(redisClusterCommands, value);
+            } else{
+                executeCommand(redisCommands, value);
+            }
         }
     }
-
-
-
 
     /**
      * 执行Redis命令（使用传入的protobuf解析器）
@@ -151,7 +183,6 @@ public class RedisSink<T, M extends Message> extends RichSinkFunction<T> {
                 LOG.error("Redis command is not configured");
                 return;
             }
-            int ttl = config.getTtl();
 
             switch (command.toUpperCase()) {
                 case "SET":
@@ -179,9 +210,53 @@ public class RedisSink<T, M extends Message> extends RichSinkFunction<T> {
         }
     }
 
+    /**
+     * 执行Redis集群模式命令
+     */
+    private void executeCommand(RedisAdvancedClusterCommands<String, byte[]> commands, T value) {
+        try {
+            // 假设输入值为字节数组（与原有逻辑保持一致）
+            byte[] data = (byte[]) value;
+            // 使用传入的解析器解析protobuf
+            M message = protoParser.parseFrom(data);
+            LOG.info("传入参数：{}"  , message.toString());
+            String key = keyExtractor.apply(message);
+            String command = config.getCommand();
+            if (command == null || command.trim().isEmpty()) {
+                LOG.error("Redis command is not configured");
+                return;
+            }
+
+            switch (command.toUpperCase()) {
+                case "SET":
+                    commands.set(key, data);
+                    break;
+                case "LPUSH":
+                    commands.lpush(config.getKeyPattern(), data);
+                    break;
+                case "RPUSH":
+                    commands.rpush(config.getKeyPattern(), data);
+                    break;
+                case "SADD":
+                    commands.sadd(config.getKeyPattern(), data);
+                    break;
+                case "HSET":
+                    String field = fieldExtractor.apply(message);
+                    commands.hset(config.getKeyPattern(), field, data);
+                    break;
+                default:
+                    LOG.warn("Unsupported Redis command: {}", config.getCommand());
+                    break;
+            }
+        } catch (Exception e) {
+            LOG.error("Error writing to Redis Cluster: {}", e.getMessage(), e);
+        }
+    }
+
     @Override
     public void close() throws Exception {
         super.close();
+        connectionManager.shutdown();
         LOG.info("Redis Sink closed");
     }
 

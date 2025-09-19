@@ -30,6 +30,15 @@ public class RedisConfig implements Serializable {
     private boolean sslEnabled;
     private String sslTrustStore;
     private String sslTrustStorePassword;
+    private String sslKeyStore;      // 新增：客户端证书密钥库
+    private String sslKeyStorePassword; // 新增：密钥库密码
+    private String sslKeyPassword;   // 新增：密钥密码（可能与密钥库密码不同）
+
+
+    private int connectTimeout = 5000; // 连接超时（毫秒），默认5秒
+    private int readTimeout = 3000;    // 读取超时（毫秒），默认3秒
+    private int clusterTopologyTimeout = 10000; // 集群拓扑发现超时（毫秒），默认10秒
+
 
     // 序列化配置
     private String serializerType; // protobuf, string, json, bytes
@@ -104,6 +113,19 @@ public class RedisConfig implements Serializable {
         config.sslEnabled = Boolean.parseBoolean(props.getProperty("redis.ssl.enabled", "false"));
         config.sslTrustStore = props.getProperty("redis.ssl.trustStore");
         config.sslTrustStorePassword = props.getProperty("redis.ssl.trustStorePassword");
+
+        // SSL配置解析
+        config.sslEnabled = Boolean.parseBoolean(props.getProperty("redis.ssl.enabled", "false"));
+        config.sslTrustStore = props.getProperty("redis.ssl.trustStore");
+        config.sslTrustStorePassword = props.getProperty("redis.ssl.trustStorePassword");
+        config.sslKeyStore = props.getProperty("redis.ssl.keyStore"); // 客户端证书
+        config.sslKeyStorePassword = props.getProperty("redis.ssl.keyStorePassword");
+        config.sslKeyPassword = props.getProperty("redis.ssl.keyPassword");
+
+        config.connectTimeout = Integer.parseInt(props.getProperty("redis.connect.timeout", "5000"));
+        config.readTimeout = Integer.parseInt(props.getProperty("redis.read.timeout", "3000"));
+        config.clusterTopologyTimeout = Integer.parseInt(props.getProperty("redis.cluster.topology.timeout", "10000"));
+
 
         config.ttl = Integer.parseInt(props.getProperty("ttl", "3600"));
         config.async = Boolean.parseBoolean(props.getProperty("async", "true"));
@@ -295,6 +317,54 @@ public class RedisConfig implements Serializable {
         this.async = async;
     }
 
+    public String getSslKeyStore() {
+        return sslKeyStore;
+    }
+
+    public void setSslKeyStore(String sslKeyStore) {
+        this.sslKeyStore = sslKeyStore;
+    }
+
+    public String getSslKeyStorePassword() {
+        return sslKeyStorePassword;
+    }
+
+    public void setSslKeyStorePassword(String sslKeyStorePassword) {
+        this.sslKeyStorePassword = sslKeyStorePassword;
+    }
+
+    public String getSslKeyPassword() {
+        return sslKeyPassword;
+    }
+
+    public void setSslKeyPassword(String sslKeyPassword) {
+        this.sslKeyPassword = sslKeyPassword;
+    }
+
+    public int getConnectTimeout() {
+        return connectTimeout;
+    }
+
+    public void setConnectTimeout(int connectTimeout) {
+        this.connectTimeout = connectTimeout;
+    }
+
+    public int getReadTimeout() {
+        return readTimeout;
+    }
+
+    public void setReadTimeout(int readTimeout) {
+        this.readTimeout = readTimeout;
+    }
+
+    public int getClusterTopologyTimeout() {
+        return clusterTopologyTimeout;
+    }
+
+    public void setClusterTopologyTimeout(int clusterTopologyTimeout) {
+        this.clusterTopologyTimeout = clusterTopologyTimeout;
+    }
+
     @Override
     public String toString() {
         return "RedisConfig{" +
@@ -314,6 +384,12 @@ public class RedisConfig implements Serializable {
                 ", sslEnabled=" + sslEnabled +
                 ", sslTrustStore='" + sslTrustStore + '\'' +
                 ", sslTrustStorePassword='" + sslTrustStorePassword + '\'' +
+                ", sslKeyStore='" + sslKeyStore + '\'' +
+                ", sslKeyStorePassword='" + sslKeyStorePassword + '\'' +
+                ", sslKeyPassword='" + sslKeyPassword + '\'' +
+                ", connectTimeout=" + connectTimeout +
+                ", readTimeout=" + readTimeout +
+                ", clusterTopologyTimeout=" + clusterTopologyTimeout +
                 ", serializerType='" + serializerType + '\'' +
                 ", protobufMessageType='" + protobufMessageType + '\'' +
                 ", threadPoolCoreSize=" + threadPoolCoreSize +
