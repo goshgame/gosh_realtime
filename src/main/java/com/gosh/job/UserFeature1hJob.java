@@ -56,7 +56,7 @@ public class UserFeature1hJob {
             "Kafka Source"
         );
 
-        // 3.0 预过滤 - 使用通用过滤工具，只保留我们需要的事件类型
+        // 3.0 预过滤 - 只保留我们需要的事件类型
         DataStream<String> filteredStream = kafkaSource
             .filter(EventFilterUtil.createFastEventTypeFilter(16, 8))
             .name("Pre-filter Events")
