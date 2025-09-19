@@ -1,7 +1,7 @@
 package com.gosh.job;
 
 import com.gosh.config.RedisConfig;
-import com.gosh.entity.RecFeatureOuterClass;
+import com.gosh.entity.RecFeatureDemoOuterClass;
 import com.gosh.util.RedisUtil;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
@@ -17,7 +17,7 @@ public class RecUserFeatureSinkJob {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
         // 2. 构建测试用的RecUserFeature实体
-        RecFeatureOuterClass.RecFeature testFeature = RecFeatureOuterClass.RecFeature.newBuilder()
+        RecFeatureDemoOuterClass.RecFeature testFeature = RecFeatureDemoOuterClass.RecFeature.newBuilder()
                 .setKey("12345489")
                 .setResutls("{'user_foru_explive_cnt_24h':110,'user_foru_joinlive_cnt_24h':3,'user_quitlive_3latest':'live_678:300|live_910:151'}")
                 .build();
@@ -36,9 +36,9 @@ public class RecUserFeatureSinkJob {
         RedisConfig redisConfig = RedisConfig.fromProperties(RedisUtil.loadProperties());
 
         // 6. 定义protobuf解析器和key提取逻辑
-        Class<RecFeatureOuterClass.RecFeature> protoClass = RecFeatureOuterClass.RecFeature.class;
+        Class<RecFeatureDemoOuterClass.RecFeature> protoClass = RecFeatureDemoOuterClass.RecFeature.class;
         // 确保keyExtractor是可序列化的（显式类或Flink的Function）
-        Function<RecFeatureOuterClass.RecFeature, String> keyExtractor = new UserKeyExtractor();
+        Function<RecFeatureDemoOuterClass.RecFeature, String> keyExtractor = new UserKeyExtractor();
 
 
         // 7. 添加Redis Sink（使用自定义的protobuf参数）
@@ -56,9 +56,9 @@ public class RecUserFeatureSinkJob {
     }
 
     //设置 key值
-    private static class UserKeyExtractor implements Function<RecFeatureOuterClass.RecFeature, String>, Serializable {
+    private static class UserKeyExtractor implements Function<RecFeatureDemoOuterClass.RecFeature, String>, Serializable {
         @Override
-        public String apply(RecFeatureOuterClass.RecFeature feature) {
+        public String apply(RecFeatureDemoOuterClass.RecFeature feature) {
             return PREFIX + feature.getKey();
         }
     }

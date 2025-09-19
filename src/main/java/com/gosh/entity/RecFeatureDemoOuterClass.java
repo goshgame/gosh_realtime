@@ -3,8 +3,8 @@
 
 package com.gosh.entity;
 
-public final class RecFeatureOuterClass {
-  private RecFeatureOuterClass() {}
+public final class RecFeatureDemoOuterClass {
+  private RecFeatureDemoOuterClass() {}
   public static void registerAllExtensions(
       com.google.protobuf.ExtensionRegistryLite registry) {
   }
@@ -124,15 +124,15 @@ public final class RecFeatureOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.gosh.entity.RecFeatureOuterClass.internal_static_com_gosh_entity_RecFeature_descriptor;
+      return RecFeatureDemoOuterClass.internal_static_com_gosh_entity_RecFeature_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.gosh.entity.RecFeatureOuterClass.internal_static_com_gosh_entity_RecFeature_fieldAccessorTable
+      return RecFeatureDemoOuterClass.internal_static_com_gosh_entity_RecFeature_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.gosh.entity.RecFeatureOuterClass.RecFeature.class, com.gosh.entity.RecFeatureOuterClass.RecFeature.Builder.class);
+              RecFeatureDemoOuterClass.RecFeature.class, RecFeatureDemoOuterClass.RecFeature.Builder.class);
     }
 
     public static final int KEY_FIELD_NUMBER = 1;
@@ -256,10 +256,10 @@ public final class RecFeatureOuterClass {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof com.gosh.entity.RecFeatureOuterClass.RecFeature)) {
+      if (!(obj instanceof RecFeatureDemoOuterClass.RecFeature)) {
         return super.equals(obj);
       }
-      com.gosh.entity.RecFeatureOuterClass.RecFeature other = (com.gosh.entity.RecFeatureOuterClass.RecFeature) obj;
+      RecFeatureDemoOuterClass.RecFeature other = (RecFeatureDemoOuterClass.RecFeature) obj;
 
       if (!getKey()
           .equals(other.getKey())) return false;
@@ -285,69 +285,69 @@ public final class RecFeatureOuterClass {
       return hash;
     }
 
-    public static com.gosh.entity.RecFeatureOuterClass.RecFeature parseFrom(
+    public static RecFeatureDemoOuterClass.RecFeature parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.gosh.entity.RecFeatureOuterClass.RecFeature parseFrom(
+    public static RecFeatureDemoOuterClass.RecFeature parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.gosh.entity.RecFeatureOuterClass.RecFeature parseFrom(
+    public static RecFeatureDemoOuterClass.RecFeature parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.gosh.entity.RecFeatureOuterClass.RecFeature parseFrom(
+    public static RecFeatureDemoOuterClass.RecFeature parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.gosh.entity.RecFeatureOuterClass.RecFeature parseFrom(byte[] data)
+    public static RecFeatureDemoOuterClass.RecFeature parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.gosh.entity.RecFeatureOuterClass.RecFeature parseFrom(
+    public static RecFeatureDemoOuterClass.RecFeature parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.gosh.entity.RecFeatureOuterClass.RecFeature parseFrom(java.io.InputStream input)
+    public static RecFeatureDemoOuterClass.RecFeature parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.gosh.entity.RecFeatureOuterClass.RecFeature parseFrom(
+    public static RecFeatureDemoOuterClass.RecFeature parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.gosh.entity.RecFeatureOuterClass.RecFeature parseDelimitedFrom(java.io.InputStream input)
+    public static RecFeatureDemoOuterClass.RecFeature parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static com.gosh.entity.RecFeatureOuterClass.RecFeature parseDelimitedFrom(
+    public static RecFeatureDemoOuterClass.RecFeature parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.gosh.entity.RecFeatureOuterClass.RecFeature parseFrom(
+    public static RecFeatureDemoOuterClass.RecFeature parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.gosh.entity.RecFeatureOuterClass.RecFeature parseFrom(
+    public static RecFeatureDemoOuterClass.RecFeature parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -360,7 +360,7 @@ public final class RecFeatureOuterClass {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(com.gosh.entity.RecFeatureOuterClass.RecFeature prototype) {
+    public static Builder newBuilder(RecFeatureDemoOuterClass.RecFeature prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     @java.lang.Override
@@ -381,18 +381,18 @@ public final class RecFeatureOuterClass {
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
         // @@protoc_insertion_point(builder_implements:com.gosh.entity.RecFeature)
-        com.gosh.entity.RecFeatureOuterClass.RecFeatureOrBuilder {
+        RecFeatureDemoOuterClass.RecFeatureOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.gosh.entity.RecFeatureOuterClass.internal_static_com_gosh_entity_RecFeature_descriptor;
+        return RecFeatureDemoOuterClass.internal_static_com_gosh_entity_RecFeature_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.gosh.entity.RecFeatureOuterClass.internal_static_com_gosh_entity_RecFeature_fieldAccessorTable
+        return RecFeatureDemoOuterClass.internal_static_com_gosh_entity_RecFeature_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.gosh.entity.RecFeatureOuterClass.RecFeature.class, com.gosh.entity.RecFeatureOuterClass.RecFeature.Builder.class);
+                RecFeatureDemoOuterClass.RecFeature.class, RecFeatureDemoOuterClass.RecFeature.Builder.class);
       }
 
       // Construct using com.gosh.entity.RecFeatureOuterClass.RecFeature.newBuilder()
@@ -423,17 +423,17 @@ public final class RecFeatureOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.gosh.entity.RecFeatureOuterClass.internal_static_com_gosh_entity_RecFeature_descriptor;
+        return RecFeatureDemoOuterClass.internal_static_com_gosh_entity_RecFeature_descriptor;
       }
 
       @java.lang.Override
-      public com.gosh.entity.RecFeatureOuterClass.RecFeature getDefaultInstanceForType() {
-        return com.gosh.entity.RecFeatureOuterClass.RecFeature.getDefaultInstance();
+      public RecFeatureDemoOuterClass.RecFeature getDefaultInstanceForType() {
+        return RecFeatureDemoOuterClass.RecFeature.getDefaultInstance();
       }
 
       @java.lang.Override
-      public com.gosh.entity.RecFeatureOuterClass.RecFeature build() {
-        com.gosh.entity.RecFeatureOuterClass.RecFeature result = buildPartial();
+      public RecFeatureDemoOuterClass.RecFeature build() {
+        RecFeatureDemoOuterClass.RecFeature result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
@@ -441,8 +441,8 @@ public final class RecFeatureOuterClass {
       }
 
       @java.lang.Override
-      public com.gosh.entity.RecFeatureOuterClass.RecFeature buildPartial() {
-        com.gosh.entity.RecFeatureOuterClass.RecFeature result = new com.gosh.entity.RecFeatureOuterClass.RecFeature(this);
+      public RecFeatureDemoOuterClass.RecFeature buildPartial() {
+        RecFeatureDemoOuterClass.RecFeature result = new RecFeatureDemoOuterClass.RecFeature(this);
         result.key_ = key_;
         result.resutls_ = resutls_;
         onBuilt();
@@ -483,16 +483,16 @@ public final class RecFeatureOuterClass {
       }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.gosh.entity.RecFeatureOuterClass.RecFeature) {
-          return mergeFrom((com.gosh.entity.RecFeatureOuterClass.RecFeature)other);
+        if (other instanceof RecFeatureDemoOuterClass.RecFeature) {
+          return mergeFrom((RecFeatureDemoOuterClass.RecFeature)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.gosh.entity.RecFeatureOuterClass.RecFeature other) {
-        if (other == com.gosh.entity.RecFeatureOuterClass.RecFeature.getDefaultInstance()) return this;
+      public Builder mergeFrom(RecFeatureDemoOuterClass.RecFeature other) {
+        if (other == RecFeatureDemoOuterClass.RecFeature.getDefaultInstance()) return this;
         if (!other.getKey().isEmpty()) {
           key_ = other.key_;
           onChanged();
@@ -516,11 +516,11 @@ public final class RecFeatureOuterClass {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.gosh.entity.RecFeatureOuterClass.RecFeature parsedMessage = null;
+        RecFeatureDemoOuterClass.RecFeature parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.gosh.entity.RecFeatureOuterClass.RecFeature) e.getUnfinishedMessage();
+          parsedMessage = (RecFeatureDemoOuterClass.RecFeature) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -698,12 +698,12 @@ public final class RecFeatureOuterClass {
     }
 
     // @@protoc_insertion_point(class_scope:com.gosh.entity.RecFeature)
-    private static final com.gosh.entity.RecFeatureOuterClass.RecFeature DEFAULT_INSTANCE;
+    private static final RecFeatureDemoOuterClass.RecFeature DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new com.gosh.entity.RecFeatureOuterClass.RecFeature();
+      DEFAULT_INSTANCE = new RecFeatureDemoOuterClass.RecFeature();
     }
 
-    public static com.gosh.entity.RecFeatureOuterClass.RecFeature getDefaultInstance() {
+    public static RecFeatureDemoOuterClass.RecFeature getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
@@ -728,7 +728,7 @@ public final class RecFeatureOuterClass {
     }
 
     @java.lang.Override
-    public com.gosh.entity.RecFeatureOuterClass.RecFeature getDefaultInstanceForType() {
+    public RecFeatureDemoOuterClass.RecFeature getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
