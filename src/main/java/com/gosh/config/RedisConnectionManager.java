@@ -43,7 +43,7 @@ public class RedisConnectionManager {
     // 修改方法名和返回类型，返回连接对象（实现 AutoCloseable）
     public static RedisCommands<String, byte[]> getRedisCommands(RedisConfig config) {
         String connectionKey = getConnectionKey(config);
-        StringByteArrayCodec codec = new StringByteArrayCodec(); // 使用新编码
+        StringByteArrayCodec codec = new StringByteArrayCodec();
 
         if (config.isClusterMode()) {
             RedisClusterClient clusterClient = (RedisClusterClient) CONNECTIONS.computeIfAbsent(

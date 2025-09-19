@@ -1,7 +1,6 @@
 package com.gosh.util;
 
 import com.google.protobuf.Message;
-import com.google.protobuf.Parser;
 import com.gosh.config.RedisConfig;
 import com.gosh.config.RedisConnectionManager;
 import com.gosh.config.RedisSink;

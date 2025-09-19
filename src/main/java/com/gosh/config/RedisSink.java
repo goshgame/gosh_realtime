@@ -66,9 +66,8 @@ public class RedisSink<T, M extends Message> extends RichSinkFunction<T> {
     @Override
     public void open(Configuration parameters) throws Exception {
         super.open(parameters);
-        if (!async) {
-            this.redisCommands = RedisConnectionManager.getRedisCommands(config);
-        }
+
+        this.redisCommands = RedisConnectionManager.getRedisCommands(config);
         this.pendingOperations = new AtomicInteger(0);
         // 2. 反射获取Parser：在TaskManager本地初始化，避免序列化
         Method parserMethod = protoClass.getMethod("parser"); // Protobuf生成类都有static的parser()方法
@@ -108,6 +107,22 @@ public class RedisSink<T, M extends Message> extends RichSinkFunction<T> {
                     }
             );
 
+            if(future !=null){
+                //设置 ttl
+                future.whenComplete( (r, t) -> {
+                    try {
+                        if (config.getTtl() > 0) {
+                            byte[] data = (byte[]) value;
+                            M message = protoParser.parseFrom(data);
+                            String key = keyExtractor.apply(message);
+                            redisCommands.expire(key, config.getTtl());
+                        }
+                    } catch (Exception e) {
+                        LOG.error("Error setting TTL in Redis: {}", e.getMessage(), e);
+                    }
+                });
+            }
+
             if (pendingOperations.incrementAndGet() >= batchSize) {
                 future.get();
                 pendingOperations.set(0);
@@ -116,6 +131,9 @@ public class RedisSink<T, M extends Message> extends RichSinkFunction<T> {
             executeCommand(redisCommands, value);
         }
     }
+
+
+
 
     /**
      * 执行Redis命令（使用传入的protobuf解析器）
@@ -133,6 +151,7 @@ public class RedisSink<T, M extends Message> extends RichSinkFunction<T> {
                 LOG.error("Redis command is not configured");
                 return;
             }
+            int ttl = config.getTtl();
 
             switch (command.toUpperCase()) {
                 case "SET":

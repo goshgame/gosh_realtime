@@ -18,8 +18,8 @@ public class RecUserFeatureSinkJob {
 
         // 2. 构建测试用的RecUserFeature实体
         RecFeatureDemoOuterClass.RecFeature testFeature = RecFeatureDemoOuterClass.RecFeature.newBuilder()
-                .setKey("12345489")
-                .setResutls("{'user_foru_explive_cnt_24h':110,'user_foru_joinlive_cnt_24h':3,'user_quitlive_3latest':'live_678:300|live_910:151'}")
+                .setKey("12345481")
+                .setResutls("{'user_foru_explive_cnt_24h':114,'user_foru_joinlive_cnt_24h':3,'user_quitlive_3latest':'live_678:300|live_910:151'}")
                 .build();
 
         // 3. 打印测试数据信息（补全用户代码）
@@ -34,6 +34,8 @@ public class RecUserFeatureSinkJob {
 
         // 5. 配置Redis参数
         RedisConfig redisConfig = RedisConfig.fromProperties(RedisUtil.loadProperties());
+        // 增加ttl配置
+        redisConfig.setTtl(1000);
 
         // 6. 定义protobuf解析器和key提取逻辑
         Class<RecFeatureDemoOuterClass.RecFeature> protoClass = RecFeatureDemoOuterClass.RecFeature.class;
@@ -45,7 +47,7 @@ public class RecUserFeatureSinkJob {
         RedisUtil.addRedisSink(
                 dataStream,
                 redisConfig,
-                false, // 异步写入
+                true, // 异步写入
                 100,  // 批量大小
                 protoClass,
                 keyExtractor

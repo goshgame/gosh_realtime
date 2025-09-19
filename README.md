@@ -25,13 +25,14 @@ brew install git
 ## 五、项目导入
 ```
 1、打开IDEA，选择Import Project，选择项目根目录下的pom.xml文件
-2、选择Maven作为项目导入方式，点击Next
+2、选择Maven作[.idea](../gosh_redis_connector/.idea)为项目导入方式，点击Next
 3、选择项目的JDK版本为11，点击Next
 4、点击Finish，等待IDEA导入项目并下载依赖
 ```
 
 
 ## 六、Protobuf 3.20.0 安装
+tips:protobuf编译的话，需要通过appStore安装xcode
 ### 1、Protobuf 使用说明
 1、安装protobuf编译器
 ```

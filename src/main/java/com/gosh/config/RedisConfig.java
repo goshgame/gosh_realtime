@@ -19,6 +19,9 @@ public class RedisConfig implements Serializable {
     private String command;
     private int timeout;
     private boolean ssl;
+    private int ttl;
+    private boolean async;
+
     //private boolean cluster;
 
     //cluster 支持
@@ -60,6 +63,10 @@ public class RedisConfig implements Serializable {
         this.threadPoolMaxSize = 20;
         this.threadPoolKeepAliveTime = 60L;
         this.threadPoolQueueCapacity = 1000;
+
+        // 新增：TTL默认值-1（永不过期）
+        this.ttl = -1;
+        this.async = true;
     }
 
     public static RedisConfig fromProperties(Properties props) {
@@ -97,6 +104,9 @@ public class RedisConfig implements Serializable {
         config.sslEnabled = Boolean.parseBoolean(props.getProperty("redis.ssl.enabled", "false"));
         config.sslTrustStore = props.getProperty("redis.ssl.trustStore");
         config.sslTrustStorePassword = props.getProperty("redis.ssl.trustStorePassword");
+
+        config.ttl = Integer.parseInt(props.getProperty("ttl", "3600"));
+        config.async = Boolean.parseBoolean(props.getProperty("async", "true"));
 
         return config;
     }
@@ -269,6 +279,22 @@ public class RedisConfig implements Serializable {
         this.sslTrustStorePassword = sslTrustStorePassword;
     }
 
+    public int getTtl() {
+        return ttl;
+    }
+
+    public void setTtl(int ttl) {
+        this.ttl = ttl;
+    }
+
+    public boolean isAsync() {
+        return async;
+    }
+
+    public void setAsync(boolean async) {
+        this.async = async;
+    }
+
     @Override
     public String toString() {
         return "RedisConfig{" +
@@ -281,7 +307,8 @@ public class RedisConfig implements Serializable {
                 ", command='" + command + '\'' +
                 ", timeout=" + timeout +
                 ", ssl=" + ssl +
-                //", cluster=" + cluster +
+                ", ttl=" + ttl +
+                ", async=" + async +
                 ", clusterMode=" + clusterMode +
                 ", clusterNodes=" + clusterNodes +
                 ", sslEnabled=" + sslEnabled +
