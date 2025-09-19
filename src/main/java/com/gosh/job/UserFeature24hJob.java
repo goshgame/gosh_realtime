@@ -141,6 +141,7 @@ public class UserFeature24hJob {
 
         // 第六步：创建sink，Redis环境
         RedisConfig redisConfig = RedisConfig.fromProperties(RedisUtil.loadProperties());
+        redisConfig.setTtl(7200);
         RedisUtil.addRedisSink(
             dataStream,
             redisConfig,
