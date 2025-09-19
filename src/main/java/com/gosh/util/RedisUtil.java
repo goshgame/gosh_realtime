@@ -1,10 +1,7 @@
 package com.gosh.util;
 
 import com.google.protobuf.Message;
-import com.gosh.config.RedisConfig;
-import com.gosh.config.RedisConnectionManager;
-import com.gosh.config.RedisSink;
-import com.gosh.config.RedisSource;
+import com.gosh.config.*;
 import com.gosh.cons.CommonConstants;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.streaming.api.datastream.DataStream;
@@ -96,9 +93,5 @@ public class RedisUtil {
     @Deprecated
     public static void addRedisSink(DataStream stream, RedisConfig config, boolean async, int batchSize) {
         throw new UnsupportedOperationException("请使用带protobuf参数的addRedisSink方法");
-    }
-
-    public static void shutdown() {
-        RedisConnectionManager.shutdown();
     }
 }

@@ -2,8 +2,8 @@ package com.gosh.config;
 
 import io.lettuce.core.api.sync.RedisCommands;
 import io.lettuce.core.cluster.api.sync.RedisAdvancedClusterCommands;
+import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.functions.source.RichSourceFunction;
-import org.apache.flink.streaming.api.functions.source.SourceFunction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,7 +22,10 @@ public class RedisSource extends RichSourceFunction<byte[]> {
     private final boolean async;
 
     private transient RedisCommands<String, byte[]> redisCommands;
+    private transient RedisAdvancedClusterCommands<String , byte[]> redisClusterCommands;
     private volatile boolean isRunning = true;
+    private transient RedisConnectionManager connectionManager;
+    private transient boolean isClusterMode;
 
     // 构造函数
     public RedisSource(Properties props) {
@@ -39,50 +42,64 @@ public class RedisSource extends RichSourceFunction<byte[]> {
     }
 
     @Override
-    public void open(org.apache.flink.configuration.Configuration parameters) throws Exception {
+    public void open(Configuration parameters) throws Exception {
         super.open(parameters);
+        this.connectionManager = RedisConnectionManager.getInstance(config);
+        this.isClusterMode = config.isClusterMode();
         if (!async) {
-            this.redisCommands = RedisConnectionManager.getRedisCommands(config);
+            if(this.isClusterMode){
+                this.redisClusterCommands = isClusterMode ? connectionManager.getRedisClusterCommands() : null;
+            }else{
+                this.redisCommands =connectionManager.getRedisCommands();
+            }
         }
         LOG.info("Redis Source opened with config: {}, async: {}", config, async);
     }
 
     @Override
-    public void run(SourceFunction.SourceContext<byte[]> ctx) throws Exception {
+    public void run(SourceContext<byte[]> ctx) throws Exception {
         LOG.info("Starting Redis Source");
 
         while (isRunning) {
             try {
                 List<String> keys;
                 if (async) {
-                    // 异步读取键
-                    CompletableFuture<List<String>> keysFuture = RedisConnectionManager.executeAsync(
-                            config,
-                            //commands -> commands.keys(config.getKeyPattern())
-                            commands ->{
-                                // 集群模式下使用集群命令扫描所有节点
-                                if (config.isClusterMode()) {
-                                    return ((RedisAdvancedClusterCommands<String, byte[]>) commands)
-                                            .keys(config.getKeyPattern());
-                                } else {
-                                    return commands.keys(config.getKeyPattern());
-                                }
-                            }
-                    );
+                    // 使用连接管理器执行异步操作
+//                    CompletableFuture<List<String>> keysFuture = connectionManager.executeAsync(
+//                            commands -> commands.keys(config.getKeyPattern())
+//                    );
+                    CompletableFuture<List<String>> keysFuture;
+                    if (isClusterMode) {
+                        keysFuture = connectionManager.executeWithRetry(
+                                () -> connectionManager.executeClusterAsync(
+                                        commands -> commands.keys(config.getKeyPattern())
+                                )  , 3
+                        );
+//                        keysFuture = connectionManager.executeClusterAsync(
+//                                commands -> commands.keys(config.getKeyPattern())
+//                        );
+                    } else {
+                        keysFuture = connectionManager.executeWithRetry(
+                                () -> connectionManager.executeAsync(
+                                        commands -> commands.keys(config.getKeyPattern())
+                                )  , 3
+                        );
+//                                connectionManager.executeAsync(
+//                                commands -> commands.keys(config.getKeyPattern())
+//                        );
+                    }
                     keys = keysFuture.get();
                 } else {
                     // 同步读取键
                     //keys = redisCommands.keys(config.getKeyPattern());
-                    if (config.isClusterMode()) {
-                        keys = ((RedisAdvancedClusterCommands<String, byte[]>) redisCommands)
-                                .keys(config.getKeyPattern());
+                    if (isClusterMode) {
+                        keys = redisClusterCommands.keys(config.getKeyPattern());
                     } else {
                         keys = redisCommands.keys(config.getKeyPattern());
                     }
                 }
                 processKeys(ctx, keys);
-                // 间隔查询
-                Thread.sleep(5000);
+                Thread.sleep(5000); // 间隔查询
             } catch (Exception e) {
                 LOG.error("Error reading from Redis: {}", e.getMessage(), e);
                 Thread.sleep(10000);
@@ -93,35 +110,34 @@ public class RedisSource extends RichSourceFunction<byte[]> {
     /**
      * 处理键列表（直接返回字节数据）
      */
-    private void processKeys(SourceFunction.SourceContext<byte[]> ctx, List<String> keys) {
+    private void processKeys(SourceContext<byte[]> ctx, List<String> keys) {
         for (String key : keys) {
             byte[] data = null;
             try{
-                // 根据值类型获取原始字节数据
                 switch (config.getValueType().toLowerCase()) {
                     case "string":
                     case "bytes":
                         data = async ?
-                                RedisConnectionManager.executeAsync(config, commands -> commands.get(key)).join() :
-                                redisCommands.get(key);
+                                connectionManager.executeStringAsync(commands -> commands.get(key)).join() :
+                                connectionManager.getStringCommands().get(key);
                         break;
                     case "list":
                         List<byte[]> listValues = async ?
-                                RedisConnectionManager.executeAsync(config, commands -> commands.lrange(key, 0, 0)).join() :
-                                redisCommands.lrange(key, 0, 0);
+                                connectionManager.executeListAsync(commands -> commands.lrange(key, 0, 0)).join() :
+                                connectionManager.getListCommands().lrange(key, 0, 0);
                         if (!listValues.isEmpty()) {
                             data = listValues.get(0);
                         }
                         break;
                     case "set":
                         data = async ?
-                                RedisConnectionManager.executeAsync(config, commands -> commands.srandmember(key)).join() :
-                                redisCommands.srandmember(key);
+                                connectionManager.executeSetAsync(commands -> commands.srandmember(key)).join() :
+                                connectionManager.getSetCommands().srandmember(key);
                         break;
                     case "hash":
                         List<byte[]> hashValues = async ?
-                                RedisConnectionManager.executeAsync(config, commands -> commands.hvals(key)).join() :
-                                redisCommands.hvals(key);
+                                connectionManager.executeHashAsync(commands -> commands.hvals(key)).join() :
+                                connectionManager.getHashCommands().hvals(key);
                         if (!hashValues.isEmpty()) {
                             data = hashValues.get(0);
                         }
@@ -149,6 +165,7 @@ public class RedisSource extends RichSourceFunction<byte[]> {
     @Override
     public void close() throws Exception {
         super.close();
+        connectionManager.shutdown();
         LOG.info("Redis Source closed");
     }
 }
