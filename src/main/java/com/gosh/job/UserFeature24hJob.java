@@ -27,8 +27,8 @@ import java.util.function.Function;
 
 public class UserFeature24hJob {
     private static final Logger LOG = LoggerFactory.getLogger(UserFeature24hJob.class);
-    private static String PREFIX = "rec:user_feature:";
-    private static String SUFFIX = ":post24h";
+    private static String PREFIX = "rec:user_feature:{";
+    private static String SUFFIX = "}:post24h";
 
     public static void main(String[] args) throws Exception {
         // 第一步：创建flink环境
@@ -122,6 +122,7 @@ public class UserFeature24hJob {
                 @Override
                 public byte[] map(UserFeature24hAggregation agg) throws Exception {
                     return RecFeature.RecUserFeature.newBuilder()
+                        .setUserId(agg.uid)
                         // 24小时历史记录特征
                         .setViewer3SviewPostHis24H(agg.viewer3sviewPostHis24h)
                         .setViewer5SstandPostHis24H(agg.viewer5sstandPostHis24h)

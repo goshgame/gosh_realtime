@@ -37,8 +37,8 @@ import java.util.function.Function;
 public class UserFeature1hJob {
     private static final Logger LOG = LoggerFactory.getLogger(UserFeature1hJob.class);
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    private static String PREFIX = "rec:user_feature:";
-    private static String SUFFIX = ":post1h";
+    private static String PREFIX = "rec:user_feature:{";
+    private static String SUFFIX = "}:post1h";
 
     public static void main(String[] args) throws Exception {
         // 第一步：创建flink环境
@@ -131,6 +131,7 @@ public class UserFeature1hJob {
                 @Override
                 public byte[] map(UserFeatureAggregation agg) throws Exception {
                     return RecFeature.RecUserFeature.newBuilder()
+                        .setUserId(agg.uid)
                         // 1小时曝光特征
                         .setViewerExppostCnt1H(agg.viewerExppostCnt1h)
                         .setViewerExp1PostCnt1H(agg.viewerExp1PostCnt1h)
