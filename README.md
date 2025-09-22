@@ -96,3 +96,18 @@ protoc --java_out=./ ./com/gosh/entity/userMessage.proto # 生成java代码
 ![img_4.png](img/img_4.png)
 ![img_5.png](img/img_5.png)
 ![img_6.png](img/img_6.png)
+
+3 、ec2 运行测试
+```
+1、ec2:https://ap-southeast-1.console.aws.amazon.com/ec2-instance-connect/ssh/home?addressFamily=ipv4&connType=standard&instanceId=i-0abb740bbd63c992d&osUser=ubuntu&region=ap-southeast-1&sshPort=22#
+2、跳转到项目目录：
+    cd /data/temp/gosh_realtime
+3、执行git pull 拉取最新代码
+    git pull
+4、切换至test 分支
+    git checkout test
+5、执行maven 编译打包命令
+    mvn clean compile package
+6、执行FlinkLauncher
+    java -cp "target/classes:target/lib/*" com.gosh.FlinkLauncher --className RecUserFeatureSinkJob
+```
