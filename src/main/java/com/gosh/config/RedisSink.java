@@ -15,9 +15,9 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Properties;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
+
 
 /**
  * Flink Redis Sink 增强版（支持通用protobuf解析）
@@ -85,12 +85,32 @@ public class RedisSink<T, M extends Message> extends RichSinkFunction<T> {
         Method parserMethod = protoClass.getMethod("parser"); // Protobuf生成类都有static的parser()方法
         this.protoParser = (Parser<M>) parserMethod.invoke(null); // 调用静态方法获取Parser
 
-        System.out.println("config:" + config.toString());
+        //System.out.println("config:" + config.toString());
         LOG.info("Redis Sink opened with config: {}, async: {}, batchSize: {}", config, async, batchSize);
+    }
+    // 添加连接状态检查方法
+    private boolean isRunning() {
+        try {
+            if (isClusterMode) {
+                return redisClusterCommands != null &&
+                        connectionManager.getRedisClusterCommands() != null;
+            } else {
+                return redisCommands != null &&
+                        connectionManager.getRedisCommands() != null;
+            }
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     @Override
     public void invoke(T value, Context context) throws Exception {
+        // 检查连接是否已关闭
+        if (connectionManager == null || !isRunning()) {
+            LOG.warn("连接已关闭，跳过处理任务");
+            return;
+        }
+
         if (value == null) {
             LOG.warn("invoke: 接收为空值(null)，跳过处理");
             return;
@@ -277,6 +297,19 @@ public class RedisSink<T, M extends Message> extends RichSinkFunction<T> {
 
     @Override
     public void close() throws Exception {
+        // 等待所有未完成的操作
+        if (pendingOperations.get() > 0) {
+            LOG.info("等待 {} 个未完成的操作完成...", pendingOperations.get());
+            // 等待最多30秒
+            long timeout = 30000;
+            long interval = 100;
+            long waited = 0;
+            while (pendingOperations.get() > 0 && waited < timeout) {
+                Thread.sleep(interval);
+                waited += interval;
+            }
+        }
+
         super.close();
         connectionManager.shutdown();
         LOG.info("Redis Sink closed");
