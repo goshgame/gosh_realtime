@@ -15,6 +15,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Properties;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 
@@ -140,13 +141,34 @@ public class RedisSink<T, M extends Message> extends RichSinkFunction<T> {
                             M message = protoParser.parseFrom(data);
                             String key = keyExtractor.apply(message);
                             System.out.println("设置TTL, key=" + key + ", TTL=" + config.getTtl());
-                            if(isClusterMode){
-                                redisClusterCommands.expire(key, config.getTtl());
-                                System.out.println("集群模式设置TTL完成");
-                            } else{
-                                redisCommands.expire(key, config.getTtl());
-                                System.out.println("单机模式设置TTL完成");
-                            }
+//                            if(isClusterMode){
+//                                connectionManager.executeClusterAsync(commands ->{
+//                                    commands.expire(key, config.getTtl());
+//                                    return  null;
+//                                }).get(5, TimeUnit.SECONDS);
+//                                System.out.println("集群模式设置TTL完成");
+//                            } else{
+//                                connectionManager.executeAsync(commands ->{
+//                                    commands.expire(key, config.getTtl());
+//                                    return  null;
+//                                }).get(5, TimeUnit.SECONDS);
+//                                System.out.println("单机模式设置TTL完成");
+//                            }
+                            CompletableFuture<Void> ttlFuture = isClusterMode ?
+                                    connectionManager.executeClusterAsync(commands -> {
+                                        commands.expire(key, config.getTtl());
+                                        return null;
+                                    }) :
+                                    connectionManager.executeAsync(commands -> {
+                                        commands.expire(key, config.getTtl());
+                                        return null;
+                                    });
+
+                            // 异步处理TTL设置的结果（可选）
+                            ttlFuture.exceptionally(ex -> {
+                                LOG.error("设置TTL失败, key=" + key, ex);
+                                return null;
+                            });
                         }
                     } catch (Exception e) {
                         LOG.error("Error setting TTL in Redis: {}", e.getMessage(), e);

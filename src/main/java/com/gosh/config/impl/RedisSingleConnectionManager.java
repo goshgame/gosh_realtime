@@ -3,8 +3,10 @@ package com.gosh.config.impl;
 import com.gosh.config.RedisConfig;
 import com.gosh.config.RedisConnectionManager;
 import com.gosh.serial.StringByteArrayCodec;
+import io.lettuce.core.ClientOptions;
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisURI;
+import io.lettuce.core.SocketOptions;
 import io.lettuce.core.api.StatefulConnection;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.*;
@@ -33,11 +35,14 @@ public class RedisSingleConnectionManager implements RedisConnectionManager {
 
     @Override
     public RedisStringCommands<String, byte[]> getStringCommands() {
-        try (StatefulRedisConnection<String, byte[]> connection = redisClient.connect(new StringByteArrayCodec())) {
+        StatefulRedisConnection<String, byte[]> connection = redisClient.connect(new StringByteArrayCodec());
+        try{
             return connection.sync(); // 直接返回String命令接口
         } catch (Exception e) {
             LOG.error("Failed to get RedisStringCommands (single mode)", e);
             throw new RuntimeException("Get String commands failed", e);
+        }finally {
+            connection.close();
         }
     }
 
@@ -49,33 +54,42 @@ public class RedisSingleConnectionManager implements RedisConnectionManager {
 
     @Override
     public RedisSetCommands<String, byte[]> getSetCommands() {
-        try (StatefulRedisConnection<String, byte[]> connection = redisClient.connect(new StringByteArrayCodec())) {
+        StatefulRedisConnection<String, byte[]> connection = redisClient.connect(new StringByteArrayCodec());
+        try {
             return connection.sync(); // 直接返回String命令接口
         } catch (Exception e) {
             LOG.error("Failed to get RedisStringCommands (single mode)", e);
             throw new RuntimeException("Get String commands failed", e);
+        }finally {
+            connection.close();
         }
     }
 
     @Override
     public RedisHashCommands<String, byte[]> getHashCommands() {
-        try (StatefulRedisConnection<String, byte[]> connection = redisClient.connect(new StringByteArrayCodec())) {
+        StatefulRedisConnection<String, byte[]> connection = redisClient.connect(new StringByteArrayCodec());
+        try {
             return connection.sync(); // 直接返回String命令接口
         } catch (Exception e) {
             LOG.error("Failed to get RedisStringCommands (single mode)", e);
             throw new RuntimeException("Get String commands failed", e);
+        }finally {
+            connection.close();
         }
     }
 
     @Override
     public <T> CompletableFuture<T> executeListAsync(Function<RedisListCommands<String, byte[]>, T> operation) {
         return CompletableFuture.supplyAsync(() -> {
-            try (StatefulRedisConnection<String, byte[]> connection = redisClient.connect(new StringByteArrayCodec())) {
+            StatefulRedisConnection<String, byte[]> connection = redisClient.connect(new StringByteArrayCodec());
+            try {
                 RedisListCommands<String, byte[]> commands = connection.sync();
                 return operation.apply(commands);
             } catch (Exception e) {
                 LOG.error("Async list operation failed", e);
                 throw new CompletionException(e);
+            }finally {
+                connection.close();
             }
         }, threadPool);
     }
@@ -83,12 +97,15 @@ public class RedisSingleConnectionManager implements RedisConnectionManager {
     @Override
     public <T> CompletableFuture<T> executeStringAsync(Function<RedisStringCommands<String, byte[]>, T> operation) {
         return CompletableFuture.supplyAsync(() -> {
-            try (StatefulRedisConnection<String, byte[]> connection = redisClient.connect(new StringByteArrayCodec())) {
+            StatefulRedisConnection<String, byte[]> connection = redisClient.connect(new StringByteArrayCodec());
+            try{
                 RedisStringCommands<String, byte[]> stringCommands = connection.sync();
                 return operation.apply(stringCommands); // 执行String相关操作（如get/set）
             } catch (Exception e) {
                 LOG.error("Async String operation failed (single mode)", e);
                 throw new CompletionException("Async String operation error", e);
+            }finally {
+                connection.close();
             }
         }, threadPool);
     }
@@ -96,12 +113,15 @@ public class RedisSingleConnectionManager implements RedisConnectionManager {
     @Override
     public <T> CompletableFuture<T> executeSetAsync(Function<RedisSetCommands<String, byte[]>, T> operation) {
         return CompletableFuture.supplyAsync(() -> {
-            try (StatefulRedisConnection<String, byte[]> connection = redisClient.connect(new StringByteArrayCodec())) {
+            StatefulRedisConnection<String, byte[]> connection = redisClient.connect(new StringByteArrayCodec());
+            try{
                 RedisSetCommands<String, byte[]> commands = connection.sync();
                 return operation.apply(commands);
             } catch (Exception e) {
                 LOG.error("Async list operation failed", e);
                 throw new CompletionException(e);
+            }finally {
+                connection.close();
             }
         }, threadPool);
     }
@@ -109,12 +129,15 @@ public class RedisSingleConnectionManager implements RedisConnectionManager {
     @Override
     public <T> CompletableFuture<T> executeHashAsync(Function<RedisHashCommands<String, byte[]>, T> operation) {
         return CompletableFuture.supplyAsync(() -> {
-            try (StatefulRedisConnection<String, byte[]> connection = redisClient.connect(new StringByteArrayCodec())) {
+            StatefulRedisConnection<String, byte[]> connection = redisClient.connect(new StringByteArrayCodec());
+            try {
                 RedisHashCommands<String, byte[]> commands = connection.sync();
                 return operation.apply(commands);
             } catch (Exception e) {
                 LOG.error("Async list operation failed", e);
                 throw new CompletionException(e);
+            }finally {
+                connection.close();
             }
         }, threadPool);
     }
@@ -144,12 +167,15 @@ public class RedisSingleConnectionManager implements RedisConnectionManager {
     public <T> CompletableFuture<T> executeAsync(Function<RedisCommands<String, byte[]>, T> operation, String threadPoolName) {
         String poolName = threadPoolName != null ? threadPoolName : connectionKey;
         return CompletableFuture.supplyAsync(() -> {
-            try (StatefulRedisConnection<String, byte[]> connection = redisClient.connect(new StringByteArrayCodec())) {
+            StatefulRedisConnection<String, byte[]> connection = redisClient.connect(new StringByteArrayCodec());
+            try {
                 RedisCommands<String, byte[]> commands = connection.sync();
                 return operation.apply(commands);
             } catch (Exception e) {
                 LOG.error("Async Redis operation failed: {}", e.getMessage(), e);
                 throw new CompletionException(e);
+            }finally {
+                connection.close();
             }
         }, threadPool);
     }
@@ -184,7 +210,9 @@ public class RedisSingleConnectionManager implements RedisConnectionManager {
                 .withHost(config.getHostname())
                 .withPort(config.getPort())
                 .withDatabase(config.getDatabase())
-                .withTimeout(Duration.ofMillis(config.getTimeout()));
+
+                .withTimeout(Duration.ofMillis(config.getTimeout()))
+                ;
 
         if (config.getPassword() != null && !config.getPassword().isEmpty()) {
             uriBuilder.withPassword(config.getPassword().toCharArray());
@@ -195,7 +223,20 @@ public class RedisSingleConnectionManager implements RedisConnectionManager {
             configureSsl(config);
         }
 
-        return RedisClient.create(uriBuilder.build());
+        //return RedisClient.create(uriBuilder.build());
+        // 2. 生成 RedisURI 后，通过 setter 设置命令超时（对应原 withTimeout）
+        RedisURI uri = uriBuilder.build();
+        uri.setTimeout(Duration.ofMillis(config.getTimeout())); // 命令超时
+
+        // 3. 创建 RedisClient 并配置连接/读取超时（通过 ClientOptions）
+        RedisClient client = RedisClient.create(uri);
+        ClientOptions clientOptions = ClientOptions.builder()
+                .socketOptions(SocketOptions.builder()
+                        .connectTimeout(Duration.ofMillis(config.getConnectTimeout())) // 连接超时
+                        .build())
+                .build();
+        client.setOptions(clientOptions);
+        return client;
     }
 
     private ExecutorService createThreadPool(RedisConfig config) {
