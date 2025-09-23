@@ -3,11 +3,13 @@ package com.gosh.config.impl;
 import com.gosh.config.RedisConfig;
 import com.gosh.config.RedisConnectionManager;
 import com.gosh.serial.StringTupleCodec;
+import com.gosh.util.TimerUtil;
 import io.lettuce.core.*;
 import io.lettuce.core.api.StatefulConnection;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.*;
 import io.lettuce.core.cluster.api.sync.RedisAdvancedClusterCommands;
+import io.netty.util.Timer;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +25,7 @@ public class RedisSingleConnectionManager implements RedisConnectionManager {
     private final RedisConfig config;
     private final RedisClient redisClient;
     private final ExecutorService threadPool;
-    private final ScheduledExecutorService retryScheduler;
+    private final Timer sharedTimer;
     private final String connectionKey;
     private StatefulRedisConnection<String, Tuple2<String, byte[]>> connection;
 
@@ -32,11 +34,7 @@ public class RedisSingleConnectionManager implements RedisConnectionManager {
         this.connectionKey = getConnectionKey(config);
         this.redisClient = createClient(config);
         this.threadPool = createThreadPool(config);
-        this.retryScheduler = Executors.newSingleThreadScheduledExecutor(r -> {
-            Thread t = new Thread(r, "redis-retry-scheduler");
-            t.setDaemon(true);
-            return t;
-        });
+        this.sharedTimer = TimerUtil.getSharedTimer();
         // 初始化连接（只创建一次）
         this.connection = redisClient.connect(new StringTupleCodec());
     }
@@ -194,12 +192,6 @@ public class RedisSingleConnectionManager implements RedisConnectionManager {
                 LOG.warn("尚有 {} 个未完成的任务被强制终止", remaining.size());
             }
 
-            // 关闭重试调度器
-            retryScheduler.shutdown();
-            if (!retryScheduler.awaitTermination(5, TimeUnit.SECONDS)) {
-                retryScheduler.shutdownNow();
-            }
-
             // 关闭redis 连接
             if (connection != null) {
                 connection.close();
@@ -297,7 +289,7 @@ public class RedisSingleConnectionManager implements RedisConnectionManager {
                         long backoff = (long) (Math.pow(2, currentAttempt) * 100); // 指数退避
                         LOG.warn("Operation failed, retrying in {}ms (attempt {}/{})", backoff, currentAttempt + 1, maxRetries, ex);
 
-                        retryScheduler.schedule(() -> {
+                        sharedTimer.newTimeout(timeout -> {
                             retryOperation(operation, maxRetries, currentAttempt + 1, resultFuture);
                         }, backoff, TimeUnit.MILLISECONDS);
                     } else {
