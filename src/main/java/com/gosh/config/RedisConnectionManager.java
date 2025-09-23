@@ -5,18 +5,13 @@ import com.gosh.config.impl.RedisSingleConnectionManager;
 import io.lettuce.core.api.StatefulConnection;
 import io.lettuce.core.api.sync.*;
 import io.lettuce.core.cluster.api.sync.RedisAdvancedClusterCommands;
-import io.netty.util.HashedWheelTimer;
-import io.netty.util.Timer;
 import org.apache.flink.api.java.tuple.Tuple2;
 
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
 public interface RedisConnectionManager {
-    Timer SHARED_TIMER = new HashedWheelTimer(100, TimeUnit.MILLISECONDS, 512);
-
     // 明确返回支持所有命令的接口（包含list/hash等操作）
     RedisStringCommands<String, Tuple2<String, byte[]>> getStringCommands();
     RedisListCommands<String, Tuple2<String, byte[]>> getListCommands();
@@ -47,12 +42,5 @@ public interface RedisConnectionManager {
         } else {
             return new RedisSingleConnectionManager(config);
         }
-    }
-
-    // 在JVM关闭时清理共享资源
-    static {
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            SHARED_TIMER.stop();
-        }));
     }
 }
