@@ -88,7 +88,6 @@ public class KafkaEnvUtil {
         KafkaSource<String> kafkaSource = createKafkaSource(kafkaProps,"flink-input-topic");
         env.fromSource(kafkaSource, WatermarkStrategy.forMonotonousTimestamps(), "Kafka Source")
                 .print();
-        //KafkaSink<String> kafkaSink = createKafkaSink(kafkaProps,"flink-output-topic");
         env.execute("kafka job");
 
 

@@ -17,14 +17,14 @@ import java.util.concurrent.CompletableFuture;
  * Flink Redis Source 增强版（移除序列化支持）
  * 支持异步操作
  */
-public class RedisSource extends RichSourceFunction<Tuple2<String, String>> {
+public class RedisSource extends RichSourceFunction<Tuple2<String, byte[]>> {
     private static final Logger LOG = LoggerFactory.getLogger(RedisSource.class);
 
     private final RedisConfig config;
     private final boolean async;
 
-    private transient RedisCommands<String, Tuple2<String, String>> redisCommands;
-    private transient RedisAdvancedClusterCommands<String , Tuple2<String, String>> redisClusterCommands;
+    private transient RedisCommands<String, Tuple2<String, byte[]>> redisCommands;
+    private transient RedisAdvancedClusterCommands<String , Tuple2<String, byte[]>> redisClusterCommands;
     private volatile boolean isRunning = true;
     private transient RedisConnectionManager connectionManager;
     private transient boolean isClusterMode;
@@ -64,17 +64,13 @@ public class RedisSource extends RichSourceFunction<Tuple2<String, String>> {
     }
 
     @Override
-    public void run(SourceContext<Tuple2<String, String>> ctx) throws Exception {
+    public void run(SourceContext<Tuple2<String, byte[]>> ctx) throws Exception {
         LOG.info("Starting Redis Source");
 
         while (isRunning) {
             try {
                 List<String> keys;
                 if (async) {
-                    // 使用连接管理器执行异步操作
-//                    CompletableFuture<List<String>> keysFuture = connectionManager.executeAsync(
-//                            commands -> commands.keys(config.getKeyPattern())
-//                    );
                     CompletableFuture<List<String>> keysFuture;
                     if (isClusterMode) {
                         keysFuture = connectionManager.executeWithRetry(
@@ -82,23 +78,16 @@ public class RedisSource extends RichSourceFunction<Tuple2<String, String>> {
                                         commands -> commands.keys(config.getKeyPattern())
                                 )  , 3
                         );
-//                        keysFuture = connectionManager.executeClusterAsync(
-//                                commands -> commands.keys(config.getKeyPattern())
-//                        );
                     } else {
                         keysFuture = connectionManager.executeWithRetry(
                                 () -> connectionManager.executeAsync(
                                         commands -> commands.keys(config.getKeyPattern())
                                 )  , 3
                         );
-//                                connectionManager.executeAsync(
-//                                commands -> commands.keys(config.getKeyPattern())
-//                        );
                     }
                     keys = keysFuture.get();
                 } else {
                     // 同步读取键
-                    //keys = redisCommands.keys(config.getKeyPattern());
                     if (isClusterMode) {
                         keys = redisClusterCommands.keys(config.getKeyPattern());
                     } else {
@@ -117,9 +106,9 @@ public class RedisSource extends RichSourceFunction<Tuple2<String, String>> {
     /**
      * 处理键列表（直接返回字节数据）
      */
-    private void processKeys(SourceContext<Tuple2<String, String>> ctx, List<String> keys) {
+    private void processKeys(SourceContext<Tuple2<String, byte[]>> ctx, List<String> keys) {
         for (String key : keys) {
-            Tuple2<String, String> data = null;
+            Tuple2<String, byte[]> data = null;
             try{
                 switch (config.getValueType().toLowerCase()) {
                     case "string":
@@ -129,7 +118,7 @@ public class RedisSource extends RichSourceFunction<Tuple2<String, String>> {
                                 connectionManager.getStringCommands().get(key);
                         break;
                     case "list":
-                        List<Tuple2<String, String>> listValues = async ?
+                        List<Tuple2<String, byte[]>> listValues = async ?
                                 connectionManager.executeListAsync(commands -> commands.lrange(key, 0, 0)).join() :
                                 connectionManager.getListCommands().lrange(key, 0, 0);
                         if (!listValues.isEmpty()) {
@@ -142,7 +131,7 @@ public class RedisSource extends RichSourceFunction<Tuple2<String, String>> {
                                 connectionManager.getSetCommands().srandmember(key);
                         break;
                     case "hash":
-                        List<Tuple2<String, String>> hashValues = async ?
+                        List<Tuple2<String, byte[]>> hashValues = async ?
                                 connectionManager.executeHashAsync(commands -> commands.hvals(key)).join() :
                                 connectionManager.getHashCommands().hvals(key);
                         if (!hashValues.isEmpty()) {

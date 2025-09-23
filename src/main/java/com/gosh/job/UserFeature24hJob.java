@@ -143,14 +143,16 @@ public class UserFeature24hJob {
         // 第六步：创建sink，Redis环境
         RedisConfig redisConfig = RedisConfig.fromProperties(RedisUtil.loadProperties());
         redisConfig.setTtl(7200);
-        RedisUtil.addRedisSink(
-            dataStream,
-            redisConfig,
-            false, // 异步写入
-            100,  // 批量大小
-            RecFeature.RecUserFeature.class,
-            feature -> PREFIX + feature.getUserId() + SUFFIX
-        );
+//        RedisUtil.addRedisSink(
+//            dataStream,
+//            redisConfig,
+//            false, // 异步写入
+//            100,  // 批量大小
+//            RecFeature.RecUserFeature.class,
+//            feature -> PREFIX + feature.getUserId() + SUFFIX
+//        );
+
+        kafkaSource.print();
 
         // 执行任务
         env.execute("User Feature 24h Job");

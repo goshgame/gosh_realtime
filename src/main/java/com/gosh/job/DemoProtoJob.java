@@ -87,8 +87,8 @@ public class DemoProtoJob {
 
         // 打印输出结果
         userFeatureStream.print().name("Feature Output");
-        SingleOutputStreamOperator<Tuple2<String, String>> mapStream = userFeatureStream.map(recUserFeature -> {
-            return new Tuple2<String, String>(recUserFeature.getKey(), recUserFeature.getResutls());
+        SingleOutputStreamOperator<Tuple2<String, byte[]>> mapStream = userFeatureStream.map(recUserFeature -> {
+            return new Tuple2<String, byte[]>(recUserFeature.getKey(), recUserFeature.getResutls().toString().getBytes());
         });
 
         //第六步：写入Sink

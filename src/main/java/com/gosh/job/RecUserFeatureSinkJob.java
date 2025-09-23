@@ -27,14 +27,16 @@ public class RecUserFeatureSinkJob {
         System.out.println("测试数据: " + testFeature.toString());
         // 提取Key和Results用于打印
         String key = new UserKeyExtractor().apply(testFeature);
-        String results = testFeature.getResutls();
+        byte[] results = testFeature.getResutlsBytes().toByteArray();
         System.out.println("提取的Redis Key: " + key);
         System.out.println("提取的Redis Value: " + results);
 
         // 4. 将RecFeature转换为Tuple2<String, String>，并创建DataStream<Tuple2<String, String>>
-        DataStream<Tuple2<String, String>> dataStream = env.fromElements(
+        DataStream<Tuple2<String, byte[]>> dataStream = env.fromElements(
                 new Tuple2<>(key, results)  // Key为第一个元素，results为第二个元素
         );
+
+
 
 
         // 5. 配置Redis参数

@@ -117,9 +117,9 @@ public class DemoJob {
 //                .name("Protobuf to Byte Array");
 
         // 4.3 将字节数组反序列化为RecFeature，再转换为Tuple2<String, String>
-        DataStream<Tuple2<String, String>> dataStream = protoStream
+        DataStream<Tuple2<String, byte[]>> dataStream = protoStream
                 .map(byteArray -> {
-                    return new Tuple2<>(byteArray.getKey(), byteArray.getResutls());
+                    return new Tuple2<>(byteArray.getKey(), byteArray.getResutls().toString().getBytes());
                 })
                 .name("Byte Array to Tuple2");
 
