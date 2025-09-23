@@ -2,12 +2,13 @@ package com.gosh.config.impl;
 
 import com.gosh.config.RedisConfig;
 import com.gosh.config.RedisConnectionManager;
-import com.gosh.serial.StringByteArrayCodec;
+import com.gosh.serial.StringTupleCodec;
 import io.lettuce.core.*;
 import io.lettuce.core.api.StatefulConnection;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.*;
 import io.lettuce.core.cluster.api.sync.RedisAdvancedClusterCommands;
+import org.apache.flink.api.java.tuple.Tuple2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.time.Duration;
@@ -23,7 +24,7 @@ public class RedisSingleConnectionManager implements RedisConnectionManager {
     private final RedisClient redisClient;
     private final ExecutorService threadPool;
     private final String connectionKey;
-    private StatefulRedisConnection<String, byte[]> connection;
+    private StatefulRedisConnection<String, Tuple2<String, String>> connection;
 
     public RedisSingleConnectionManager(RedisConfig config) {
         this.config = config;
@@ -31,12 +32,12 @@ public class RedisSingleConnectionManager implements RedisConnectionManager {
         this.redisClient = createClient(config);
         this.threadPool = createThreadPool(config);
         // 初始化连接（只创建一次）
-        this.connection = redisClient.connect(new StringByteArrayCodec());
+        this.connection = redisClient.connect(new StringTupleCodec());
     }
 
     @Override
-    public RedisStringCommands<String, byte[]> getStringCommands() {
-        //StatefulRedisConnection<String, byte[]> connection = redisClient.connect(new StringByteArrayCodec());
+    public RedisStringCommands<String, Tuple2<String, String>> getStringCommands() {
+        //StatefulRedisConnection<String, String> connection = redisClient.connect(new StringByteArrayCodec());
         try{
             return connection.sync(); // 直接返回String命令接口
         } catch (Exception e) {
@@ -46,14 +47,14 @@ public class RedisSingleConnectionManager implements RedisConnectionManager {
     }
 
     @Override
-    public RedisListCommands<String, byte[]> getListCommands() {
-        //StatefulRedisConnection<String, byte[]> connection = redisClient.connect(new StringByteArrayCodec());
+    public RedisListCommands<String, Tuple2<String, String>> getListCommands() {
+        //StatefulRedisConnection<String, String> connection = redisClient.connect(new StringByteArrayCodec());
         return connection.sync();
     }
 
     @Override
-    public RedisSetCommands<String, byte[]> getSetCommands() {
-        //StatefulRedisConnection<String, byte[]> connection = redisClient.connect(new StringByteArrayCodec());
+    public RedisSetCommands<String, Tuple2<String, String>> getSetCommands() {
+        //StatefulRedisConnection<String, String> connection = redisClient.connect(new StringByteArrayCodec());
         try {
             return connection.sync(); // 直接返回String命令接口
         } catch (Exception e) {
@@ -63,8 +64,8 @@ public class RedisSingleConnectionManager implements RedisConnectionManager {
     }
 
     @Override
-    public RedisHashCommands<String, byte[]> getHashCommands() {
-        //StatefulRedisConnection<String, byte[]> connection = redisClient.connect(new StringByteArrayCodec());
+    public RedisHashCommands<String, Tuple2<String, String>> getHashCommands() {
+        //StatefulRedisConnection<String, String> connection = redisClient.connect(new StringByteArrayCodec());
         try {
             return connection.sync(); // 直接返回String命令接口
         } catch (Exception e) {
@@ -74,11 +75,11 @@ public class RedisSingleConnectionManager implements RedisConnectionManager {
     }
 
     @Override
-    public <T> CompletableFuture<T> executeListAsync(Function<RedisListCommands<String, byte[]>, T> operation) {
+    public <T> CompletableFuture<T> executeListAsync(Function<RedisListCommands<String, Tuple2<String, String>>, T> operation) {
         return CompletableFuture.supplyAsync(() -> {
-            //StatefulRedisConnection<String, byte[]> connection = redisClient.connect(new StringByteArrayCodec());
+            //StatefulRedisConnection<String, String> connection = redisClient.connect(new StringByteArrayCodec());
             try {
-                RedisListCommands<String, byte[]> commands = connection.sync();
+                RedisListCommands<String, Tuple2<String, String>> commands = connection.sync();
                 return operation.apply(commands);
             } catch (Exception e) {
                 LOG.error("Async list operation failed", e);
@@ -88,11 +89,11 @@ public class RedisSingleConnectionManager implements RedisConnectionManager {
     }
 
     @Override
-    public <T> CompletableFuture<T> executeStringAsync(Function<RedisStringCommands<String, byte[]>, T> operation) {
+    public <T> CompletableFuture<T> executeStringAsync(Function<RedisStringCommands<String, Tuple2<String, String>>, T> operation) {
         return CompletableFuture.supplyAsync(() -> {
-            //StatefulRedisConnection<String, byte[]> connection = redisClient.connect(new StringByteArrayCodec());
+            //StatefulRedisConnection<String, String> connection = redisClient.connect(new StringByteArrayCodec());
             try{
-                RedisStringCommands<String, byte[]> stringCommands = connection.sync();
+                RedisStringCommands<String, Tuple2<String, String>> stringCommands = connection.sync();
                 return operation.apply(stringCommands); // 执行String相关操作（如get/set）
             } catch (Exception e) {
                 LOG.error("Async String operation failed (single mode)", e);
@@ -102,11 +103,11 @@ public class RedisSingleConnectionManager implements RedisConnectionManager {
     }
 
     @Override
-    public <T> CompletableFuture<T> executeSetAsync(Function<RedisSetCommands<String, byte[]>, T> operation) {
+    public <T> CompletableFuture<T> executeSetAsync(Function<RedisSetCommands<String, Tuple2<String, String>>, T> operation) {
         return CompletableFuture.supplyAsync(() -> {
-            //StatefulRedisConnection<String, byte[]> connection = redisClient.connect(new StringByteArrayCodec());
+            //StatefulRedisConnection<String, String> connection = redisClient.connect(new StringByteArrayCodec());
             try{
-                RedisSetCommands<String, byte[]> commands = connection.sync();
+                RedisSetCommands<String, Tuple2<String, String>> commands = connection.sync();
                 return operation.apply(commands);
             } catch (Exception e) {
                 LOG.error("Async list operation failed", e);
@@ -116,11 +117,11 @@ public class RedisSingleConnectionManager implements RedisConnectionManager {
     }
 
     @Override
-    public <T> CompletableFuture<T> executeHashAsync(Function<RedisHashCommands<String, byte[]>, T> operation) {
+    public <T> CompletableFuture<T> executeHashAsync(Function<RedisHashCommands<String, Tuple2<String, String>>, T> operation) {
         return CompletableFuture.supplyAsync(() -> {
-            //StatefulRedisConnection<String, byte[]> connection = redisClient.connect(new StringByteArrayCodec());
+            //StatefulRedisConnection<String, String> connection = redisClient.connect(new StringByteArrayCodec());
             try {
-                RedisHashCommands<String, byte[]> commands = connection.sync();
+                RedisHashCommands<String, Tuple2<String, String>> commands = connection.sync();
                 return operation.apply(commands);
             } catch (Exception e) {
                 LOG.error("Async list operation failed", e);
@@ -130,33 +131,33 @@ public class RedisSingleConnectionManager implements RedisConnectionManager {
     }
 
     @Override
-    public RedisCommands<String, byte[]> getRedisCommands() {
-        //StatefulRedisConnection<String, byte[]> connection = redisClient.connect(new StringByteArrayCodec());
+    public RedisCommands<String, Tuple2<String, String>> getRedisCommands() {
+        //StatefulRedisConnection<String, String> connection = redisClient.connect(new StringByteArrayCodec());
         return connection.sync();
     }
 
     @Override
-    public RedisAdvancedClusterCommands<String, byte[]> getRedisClusterCommands() {
+    public RedisAdvancedClusterCommands<String, Tuple2<String, String>> getRedisClusterCommands() {
         return null;
     }
 
     @Override
-    public StatefulConnection<String, byte[]> getRedisConnection() {
-        return redisClient.connect(new StringByteArrayCodec());
+    public StatefulConnection<String, Tuple2<String, String>> getRedisConnection() {
+        return redisClient.connect(new StringTupleCodec());
     }
 
     @Override
-    public <T> CompletableFuture<T> executeAsync(Function<RedisCommands<String, byte[]>, T> operation) {
+    public <T> CompletableFuture<T> executeAsync(Function<RedisCommands<String, Tuple2<String, String>>, T> operation) {
         return executeAsync(operation, null);
     }
 
     @Override
-    public <T> CompletableFuture<T> executeAsync(Function<RedisCommands<String, byte[]>, T> operation, String threadPoolName) {
+    public <T> CompletableFuture<T> executeAsync(Function<RedisCommands<String, Tuple2<String, String>>, T> operation, String threadPoolName) {
         String poolName = threadPoolName != null ? threadPoolName : connectionKey;
         return CompletableFuture.supplyAsync(() -> {
-            //StatefulRedisConnection<String, byte[]> connection = redisClient.connect(new StringByteArrayCodec());
+            //StatefulRedisConnection<String, String> connection = redisClient.connect(new StringByteArrayCodec());
             try {
-                RedisCommands<String, byte[]> commands = connection.sync();
+                RedisCommands<String, Tuple2<String, String>> commands = connection.sync();
                 return operation.apply(commands);
             } catch (Exception e) {
                 LOG.error("Async Redis operation failed: {}", e.getMessage(), e);
@@ -167,13 +168,13 @@ public class RedisSingleConnectionManager implements RedisConnectionManager {
 
 
     @Override
-    public <T> CompletableFuture<T> executeClusterAsync(Function<RedisAdvancedClusterCommands<String, byte[]>, T> operation) {
+    public <T> CompletableFuture<T> executeClusterAsync(Function<RedisAdvancedClusterCommands<String, Tuple2<String, String>>, T> operation) {
         throw new UnsupportedOperationException("Cluster operations not supported in single node mode");
 
     }
 
     @Override
-    public <T> CompletableFuture<T> executeClusterAsync(Function<RedisAdvancedClusterCommands<String, byte[]>, T> operation, String threadPoolName) {
+    public <T> CompletableFuture<T> executeClusterAsync(Function<RedisAdvancedClusterCommands<String, Tuple2<String, String>>, T> operation, String threadPoolName) {
         throw new UnsupportedOperationException("Cluster operations not supported in single node mode");
     }
 
