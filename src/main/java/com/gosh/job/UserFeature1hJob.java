@@ -121,32 +121,36 @@ public class UserFeature1hJob {
         aggregatedStream
             .map(new MapFunction<UserFeatureAggregation, UserFeatureAggregation>() {
                 private long totalCount = 0;
-                private int printedCount = 0;
-                private long lastLogTime = 0;
-                private static final int MAX_PRINT = 3;
-                private static final long LOG_INTERVAL = 60000; // 每分钟打印一次统计
+                private long lastWindowTime = 0;
+                private int printedInWindow = 0;
+                private static final int MAX_PRINT_PER_WINDOW = 3;
                 
                 @Override
                 public UserFeatureAggregation map(UserFeatureAggregation value) throws Exception {
                     totalCount++;
-                    long now = System.currentTimeMillis();
                     
-                    // 每分钟打印一次统计信息
-                    if (now - lastLogTime > LOG_INTERVAL) {
-                        System.out.println(String.format("\n=== Stats at %s ===", 
-                            new SimpleDateFormat("HH:mm:ss").format(new Date(now))));
-                        System.out.println("Total records processed: " + totalCount);
-                        lastLogTime = now;
-                        // 重置打印计数
-                        printedCount = 0;
+                    // 获取当前时间所在的2分钟窗口
+                    long currentWindowTime = value.updateTime / 120000 * 120000;  // 向下取整到2分钟
+                    
+                    // 如果是新窗口，重置计数并打印统计
+                    if (currentWindowTime > lastWindowTime) {
+                        if (lastWindowTime > 0) {  // 不是第一个窗口
+                            System.out.println(String.format("\n=== Window %s - %s ===", 
+                                new SimpleDateFormat("HH:mm:ss").format(new Date(lastWindowTime)),
+                                new SimpleDateFormat("HH:mm:ss").format(new Date(lastWindowTime + 120000))));
+                            System.out.println("Records in window: " + totalCount);
+                        }
+                        lastWindowTime = currentWindowTime;
+                        printedInWindow = 0;
+                        totalCount = 1;  // 重置计数
                     }
 
-                    // 只打印前3条
-                    if (printedCount < MAX_PRINT) {
-                        printedCount++;
+                    // 在每个窗口中只打印前3条
+                    if (printedInWindow < MAX_PRINT_PER_WINDOW) {
+                        printedInWindow++;
                         StringBuilder sb = new StringBuilder();
                         sb.append(String.format("[%d/%d] User %d Stats:\n", 
-                            printedCount, MAX_PRINT,
+                            printedInWindow, MAX_PRINT_PER_WINDOW,
                             value.uid));
 
                         // 只有当有数据时才打印相应的统计
