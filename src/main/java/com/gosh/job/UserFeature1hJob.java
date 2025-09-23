@@ -124,8 +124,8 @@ public class UserFeature1hJob {
                 
                 @Override
                 public UserFeatureAggregation map(UserFeatureAggregation value) throws Exception {
-                    // 1%的概率打印
-                    if (random.nextInt(100) == 0) {
+                    // 万分之一概率打印
+                    if (random.nextInt(10000) == 0) {
                         StringBuilder sb = new StringBuilder();
                         sb.append(String.format("\n[%s] User %d Stats:\n", 
                             new SimpleDateFormat("HH:mm:ss").format(new Date(value.updateTime)),
