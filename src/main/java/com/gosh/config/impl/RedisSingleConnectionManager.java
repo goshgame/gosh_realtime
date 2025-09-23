@@ -9,6 +9,8 @@ import io.lettuce.core.api.StatefulConnection;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.*;
 import io.lettuce.core.cluster.api.sync.RedisAdvancedClusterCommands;
+import io.lettuce.core.resource.ClientResources;
+import io.lettuce.core.resource.DefaultClientResources;
 import io.netty.util.Timer;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.slf4j.Logger;
@@ -22,6 +24,16 @@ import java.util.function.Supplier;
 
 public class RedisSingleConnectionManager implements RedisConnectionManager {
     private static final Logger LOG = LoggerFactory.getLogger(RedisSingleConnectionManager.class);
+    private static final ClientResources CLIENT_RESOURCES;
+    
+    static {
+        CLIENT_RESOURCES = DefaultClientResources.builder()
+            .ioThreadPoolSize(4)  // 减少IO线程数
+            .computationThreadPoolSize(4)  // 减少计算线程数
+            .timer(TimerUtil.getSharedTimer())  // 使用共享的Timer
+            .build();
+    }
+
     private final RedisConfig config;
     private final RedisClient redisClient;
     private final ExecutorService threadPool;
@@ -207,8 +219,7 @@ public class RedisSingleConnectionManager implements RedisConnectionManager {
                 .withHost(config.getHostname())
                 .withPort(config.getPort())
                 .withDatabase(config.getDatabase())
-                .withTimeout(Duration.ofMillis(config.getTimeout()))
-                ;
+                .withTimeout(Duration.ofMillis(config.getTimeout()));
 
         if (config.getPassword() != null && !config.getPassword().isEmpty()) {
             uriBuilder.withPassword(config.getPassword().toCharArray());
@@ -219,22 +230,23 @@ public class RedisSingleConnectionManager implements RedisConnectionManager {
             configureSsl(config);
         }
 
-        //return RedisClient.create(uriBuilder.build());
-        // 2. 生成 RedisURI 后，通过 setter 设置命令超时（对应原 withTimeout）
         RedisURI uri = uriBuilder.build();
         uri.setTimeout(Duration.ofMillis(config.getTimeout())); // 命令超时
 
-        // 3. 创建 RedisClient 并配置连接/读取超时（通过 ClientOptions）
-        RedisClient client = RedisClient.create(uri);
+        // 使用共享的 ClientResources 创建 RedisClient
+        RedisClient client = RedisClient.create(CLIENT_RESOURCES, uri);
+        
+        // 配置客户端选项
         ClientOptions clientOptions = ClientOptions.builder()
+                .publishOnScheduler(true)  // 使用调度器发布事件
+                .timeoutOptions(TimeoutOptions.enabled(Duration.ofMillis(config.getTimeout())))
                 .socketOptions(SocketOptions.builder()
-                        .connectTimeout(Duration.ofMillis(config.getConnectTimeout())) // 连接超时
+                        .connectTimeout(Duration.ofMillis(config.getConnectTimeout()))
+                        .keepAlive(true)
+                        .tcpNoDelay(true)
                         .build())
-                .timeoutOptions(TimeoutOptions.builder()
-                        .fixedTimeout(Duration.ofMillis(config.getReadTimeout()))
-                        .build()
-                )
                 .build();
+        
         client.setOptions(clientOptions);
         return client;
     }
