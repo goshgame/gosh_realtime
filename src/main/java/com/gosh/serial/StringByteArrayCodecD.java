@@ -7,7 +7,7 @@ import java.nio.ByteBuffer;
 /**
  * 键为String类型，值为byte[]类型的编码解码器
  */
-public class StringByteArrayCodec implements RedisCodec<String, byte[]> {
+public class StringByteArrayCodecD implements RedisCodec<String, byte[]> {
     private final StringCodec stringCodec = new StringCodec();
 
     @Override

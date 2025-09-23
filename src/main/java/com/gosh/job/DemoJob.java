@@ -3,6 +3,7 @@ package com.gosh.job;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.protobuf.InvalidProtocolBufferException;
 import com.gosh.config.RedisConfig;
 import com.gosh.entity.RecFeatureDemoOuterClass;
 import com.gosh.entity.UserLiveEvent;
@@ -15,6 +16,7 @@ import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.common.time.Time;
 import org.apache.flink.api.java.functions.KeySelector;
+import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.connector.kafka.source.KafkaSource;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
@@ -109,16 +111,22 @@ public class DemoJob {
         // 4.1 定义 MapFunction 将 UserLiveAggregation 转换为 RecFeature Protobuf 对象
         DataStream<RecFeatureDemoOuterClass.RecFeature> protoStream =
                 aggregatedStream.map(new AggregationToProtoMapper()).name("Aggregation to Protobuf");
-
         // 4.2 将 Protobuf 对象序列化为字节数组 DataStream<byte[]>
-        DataStream<byte[]> dataStream = protoStream
-                .map(protoFeature -> protoFeature.toByteArray())
-                .name("Protobuf to Byte Array");
+//        DataStream<Tuple2<String, String>> dataStream = tupleStream
+//                .map(protoFeature -> protoFeature.toByteArray())
+//                .name("Protobuf to Byte Array");
 
-        // 4.3 定义protobuf解析器和key提取逻辑
-        Class<RecFeatureDemoOuterClass.RecFeature> protoClass = RecFeatureDemoOuterClass.RecFeature.class;
-        // 确保keyExtractor是可序列化的（显式类或Flink的Function）
-        Function<RecFeatureDemoOuterClass.RecFeature, String> keyExtractor = new DemoJob.UserKeyExtractor();
+        // 4.3 将字节数组反序列化为RecFeature，再转换为Tuple2<String, String>
+        DataStream<Tuple2<String, String>> dataStream = protoStream
+                .map(byteArray -> {
+                    return new Tuple2<>(byteArray.getKey(), byteArray.getResutls());
+                })
+                .name("Byte Array to Tuple2");
+
+//        // 4.3 定义protobuf解析器和key提取逻辑
+//        Class<RecFeatureDemoOuterClass.RecFeature> protoClass = RecFeatureDemoOuterClass.RecFeature.class;
+//        // 确保keyExtractor是可序列化的（显式类或Flink的Function）
+//        Function<RecFeatureDemoOuterClass.RecFeature, String> keyExtractor = new UserKeyExtractor();
 
 
         // 第五步：创建sink，Redis环境
@@ -130,9 +138,7 @@ public class DemoJob {
                 dataStream,
                 redisConfig,
                 false, // 异步写入
-                100,  // 批量大小
-                protoClass,
-                keyExtractor
+                100
         );
         //执行任务
         env.execute("Flink Demo Job");

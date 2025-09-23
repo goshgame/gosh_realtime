@@ -44,54 +44,62 @@ public class RedisUtil {
     }
 
 
+//    /**
+//     * 添加Redis Sink并指定protobuf解析器
+//     * @param stream 输入数据流（元素类型为byte[]）
+//     * @param config Redis配置
+//     * @param async 是否异步写入
+//     * @param batchSize 批量写入大小
+//     * @param protoClass protobuf解析器（如RecUserFeatureOuterClass.RecUserFeature.PARSER）
+//     * @param keyExtractor 从protobuf消息提取Redis key的函数
+//     * @param <M> protobuf消息类型
+//     */
+//    public static <M extends Message> void addRedisSink(
+//            DataStream<Tuple2<String, String>> stream,
+//            RedisConfig config,
+//            boolean async,
+//            int batchSize,
+//            Class<M> protoClass, // 改为传入Class<M>
+//            Function<M, String> keyExtractor) {
+//        stream.addSink(new RedisSink<>(config, async, batchSize, protoClass, keyExtractor))
+//                .name("Redis Sink");
+//    }
+
+//    /**
+//     * 简化版：使用默认配置和批量参数
+//     */
+//    public static <M extends Message> void addRedisSink(
+//            DataStream<byte[]> stream,
+//            Class<M> protoClass, // 传入Class<M>
+//            Function<M, String> keyExtractor) {
+//        Properties props = loadProperties();
+//        stream.addSink(new RedisSink<>(props, protoClass, keyExtractor))
+//                .name("Redis Sink");
+//    }
     /**
-     * 添加Redis Sink并指定protobuf解析器
-     * @param stream 输入数据流（元素类型为byte[]）
+     * 调整后：添加Redis Sink，接收key-value对的Tuple数据流
+     * @param stream 输入数据流（元素类型为Tuple2<String, String>，key-value对）
      * @param config Redis配置
      * @param async 是否异步写入
      * @param batchSize 批量写入大小
-     * @param protoClass protobuf解析器（如RecUserFeatureOuterClass.RecUserFeature.PARSER）
-     * @param keyExtractor 从protobuf消息提取Redis key的函数
-     * @param <M> protobuf消息类型
      */
-    public static <M extends Message> void addRedisSink(
-            DataStream<byte[]> stream,
+    public static void addRedisSink(
+            DataStream<Tuple2<String, String>> stream,
             RedisConfig config,
             boolean async,
-            int batchSize,
-            Class<M> protoClass, // 改为传入Class<M>
-            Function<M, String> keyExtractor) {
-        stream.addSink(new RedisSink<>(config, async, batchSize, protoClass, keyExtractor))
-                .name("Redis Sink");
+            int batchSize) {
+        // RedisSink需调整为处理Tuple2<String, String>类型，直接使用key和value
+        stream.addSink(new RedisSink<>(config, async, batchSize))
+                .name("Redis Sink (Tuple2)");
     }
 
     /**
      * 简化版：使用默认配置和批量参数
      */
-    public static <M extends Message> void addRedisSink(
-            DataStream<byte[]> stream,
-            Class<M> protoClass, // 传入Class<M>
-            Function<M, String> keyExtractor) {
+    public static void addRedisSink(
+            DataStream<Tuple2<String, String>> stream) {
         Properties props = loadProperties();
-        stream.addSink(new RedisSink<>(props, protoClass, keyExtractor))
-                .name("Redis Sink");
-    }
-
-    // 原有方法保持兼容（如需保留）
-    @Deprecated
-    public static void addRedisSink(DataStream stream) {
-        Properties props = loadProperties();
-        // 注意：原有方法未指定protobuf参数，此处需根据实际情况处理（如抛出异常或使用默认类型）
-        throw new UnsupportedOperationException("请使用带protobuf参数的addRedisSink方法");
-    }
-
-    @Deprecated
-    public static void addRedisSink(DataStream stream, RedisConfig config) {
-        throw new UnsupportedOperationException("请使用带protobuf参数的addRedisSink方法");
-    }
-
-    @Deprecated
-    public static void addRedisSink(DataStream stream, RedisConfig config, boolean async, int batchSize) {
-        throw new UnsupportedOperationException("请使用带protobuf参数的addRedisSink方法");
+        stream.addSink(new RedisSink<>(props))
+                .name("Redis Sink (Tuple2)");
     }
 }

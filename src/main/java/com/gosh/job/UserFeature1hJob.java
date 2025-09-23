@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gosh.config.RedisConfig;
 import com.gosh.entity.RecFeature;
+import com.gosh.entity.RecFeatureDemoOuterClass;
 import com.gosh.job.UserFeatureCommon.*;
 import com.gosh.util.EventFilterUtil;
 import com.gosh.util.FlinkEnvUtil;
@@ -37,13 +38,13 @@ import java.util.function.Function;
 public class UserFeature1hJob {
     private static final Logger LOG = LoggerFactory.getLogger(UserFeature1hJob.class);
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    private static String PREFIX = "rec:user_feature:";
-    private static String SUFFIX = ":post1h";
+    private static String PREFIX = "rec:user_feature:{";
+    private static String SUFFIX = "}:post1h";
 
     public static void main(String[] args) throws Exception {
         // 第一步：创建flink环境
         StreamExecutionEnvironment env = FlinkEnvUtil.createStreamExecutionEnvironment();
-        
+
         // 第二步：创建Source，Kafka环境
         KafkaSource<String> inputTopic = KafkaEnvUtil.createKafkaSource(
             KafkaEnvUtil.loadProperties(), "post"
@@ -56,7 +57,7 @@ public class UserFeature1hJob {
             "Kafka Source"
         );
 
-        // 3.0 预过滤 - 使用通用过滤工具，只保留我们需要的事件类型
+        // 3.0 预过滤 - 只保留我们需要的事件类型
         DataStream<String> filteredStream = kafkaSource
             .filter(EventFilterUtil.createFastEventTypeFilter(16, 8))
             .name("Pre-filter Events")
@@ -115,8 +116,8 @@ public class UserFeature1hJob {
                 public UserFeatureAggregation map(UserFeatureAggregation value) throws Exception {
                     if (counter < 3) {
                         counter++;
-                        LOG.info("Sample aggregation result {}: uid={}, 1h features: exp={}/{}/{}, 3sview={}/{}/{}", 
-                            counter, value.uid, 
+                        LOG.info("Sample aggregation result {}: uid={}, 1h features: exp={}/{}/{}, 3sview={}/{}/{}",
+                            counter, value.uid,
                             value.viewerExppostCnt1h, value.viewerExp1PostCnt1h, value.viewerExp2PostCnt1h,
                             value.viewer3sviewPostCnt1h, value.viewer3sview1PostCnt1h, value.viewer3sview2PostCnt1h);
                     }
@@ -131,6 +132,7 @@ public class UserFeature1hJob {
                 @Override
                 public byte[] map(UserFeatureAggregation agg) throws Exception {
                     return RecFeature.RecUserFeature.newBuilder()
+                        .setUserId(agg.uid)
                         // 1小时曝光特征
                         .setViewerExppostCnt1H(agg.viewerExppostCnt1h)
                         .setViewerExp1PostCnt1H(agg.viewerExp1PostCnt1h)
@@ -152,17 +154,21 @@ public class UserFeature1hJob {
             })
             .name("Aggregation to Protobuf Bytes");
 
+        // 确保keyExtractor是可序列化的（显式类或Flink的Function）
+        // 6. 定义protobuf解析器和key提取逻辑
+        Function<RecFeature.RecUserFeature, String> keyExtractor = new UserFeature1hJob.UserKeyExtractor();
+
         // 第六步：创建sink，Redis环境
         RedisConfig redisConfig = RedisConfig.fromProperties(RedisUtil.loadProperties());
-        RedisUtil.addRedisSink(
-            dataStream,
-            redisConfig,
-            false, // 异步写入
-            100,  // 批量大小
-            RecFeature.RecUserFeature.class,
-            feature -> PREFIX + feature.getUserId() + SUFFIX
-        );
-
+        redisConfig.setTtl(600);
+//        RedisUtil.addRedisSink(
+//            dataStream,
+//            redisConfig,
+//            false, // 异步写入
+//            100
+//        );
+        //打印看看
+        kafkaSource.print();
         // 执行任务
         env.execute("User Feature 1h Job");
     }
@@ -187,18 +193,18 @@ public class UserFeature1hJob {
         public UserFeatureAggregation getResult(UserFeatureCommon.UserFeatureAccumulator accumulator) {
             UserFeatureAggregation result = new UserFeatureAggregation();
             result.uid = accumulator.uid;
-            
+
             // 曝光特征
             result.viewerExppostCnt1h = accumulator.exposePostIds.size();
             // 注意：由于曝光事件中没有post_type信息，暂时无法统计图片和视频的单独曝光数
             result.viewerExp1PostCnt1h = 0; // 图片曝光数 - 需要额外数据源
             result.viewerExp2PostCnt1h = 0; // 视频曝光数 - 需要额外数据源
-            
+
             // 观看特征
             result.viewer3sviewPostCnt1h = accumulator.view3sPostIds.size();
             result.viewer3sview1PostCnt1h = accumulator.view3s1PostIds.size();
             result.viewer3sview2PostCnt1h = accumulator.view3s2PostIds.size();
-            
+
             // 历史记录特征 - 构建字符串格式
             result.viewer3sviewPostHis1h = UserFeatureCommon.buildPostHistoryString(accumulator.view3sPostDetails, 20);
             result.viewer5sstandPostHis1h = UserFeatureCommon.buildPostHistoryString(accumulator.stand5sPostDetails, 20);
@@ -206,9 +212,9 @@ public class UserFeature1hJob {
             result.viewerFollowPostHis1h = UserFeatureCommon.buildPostListString(accumulator.followPostIds, 20);
             result.viewerProfilePostHis1h = UserFeatureCommon.buildPostListString(accumulator.profilePostIds, 20);
             result.viewerPosinterPostHis1h = UserFeatureCommon.buildPostListString(accumulator.posinterPostIds, 20);
-            
+
             result.updateTime = System.currentTimeMillis();
-            
+
             LOG.info("Generated user feature aggregation for uid {}: {}", result.uid, result);
             return result;
         }
@@ -222,7 +228,7 @@ public class UserFeature1hJob {
 
     public static class UserFeatureAggregation {
         public long uid;
-        
+
         // 1小时特征
         public int viewerExppostCnt1h;
         public int viewerExp1PostCnt1h;  // 图片曝光数
@@ -230,7 +236,7 @@ public class UserFeature1hJob {
         public int viewer3sviewPostCnt1h;
         public int viewer3sview1PostCnt1h;
         public int viewer3sview2PostCnt1h;
-        
+
         // 历史记录
         public String viewer3sviewPostHis1h;
         public String viewer5sstandPostHis1h;
@@ -238,11 +244,18 @@ public class UserFeature1hJob {
         public String viewerFollowPostHis1h;
         public String viewerProfilePostHis1h;
         public String viewerPosinterPostHis1h;
-        
+
         public long updateTime;
 
 
     }
 
 
-} 
+    //设置 key值
+    private static class UserKeyExtractor implements Function<RecFeature.RecUserFeature, String>, Serializable {
+        @Override
+        public String apply(RecFeature.RecUserFeature feature) {
+            return PREFIX + feature.getUserId() + SUFFIX;
+        }
+    }
+}
