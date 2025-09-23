@@ -74,11 +74,9 @@ public class RedisSink<T> extends RichSinkFunction<T> {
     private boolean isRunning() {
         try {
             if (isClusterMode) {
-                return redisClusterCommands != null &&
-                        connectionManager.getRedisClusterCommands() != null;
+                return redisClusterCommands != null;
             } else {
-                return redisCommands != null &&
-                        connectionManager.getRedisCommands() != null;
+                return redisCommands != null;
             }
         } catch (Exception e) {
             return false;

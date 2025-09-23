@@ -147,7 +147,7 @@ public class RedisSingleConnectionManager implements RedisConnectionManager {
 
     @Override
     public StatefulConnection<String, Tuple2<String, byte[]>> getRedisConnection() {
-        return redisClient.connect(new StringTupleCodec());
+        return connection;  // 返回已有的连接实例
     }
 
     @Override
