@@ -43,13 +43,17 @@ public class UserFeature1hJob {
     private static String SUFFIX = "}:post1h";
 
     public static void main(String[] args) throws Exception {
+        System.out.println("Starting UserFeature1hJob...");
+        
         // 第一步：创建flink环境
         StreamExecutionEnvironment env = FlinkEnvUtil.createStreamExecutionEnvironment();
+        System.out.println("Flink environment created");
         
         // 第二步：创建Source，Kafka环境
         KafkaSource<String> inputTopic = KafkaEnvUtil.createKafkaSource(
             KafkaEnvUtil.loadProperties(), "post"
         );
+        System.out.println("Kafka source created for topic: post");
 
         // 第三步：使用KafkaSource创建DataStream
         DataStreamSource<String> kafkaSource = env.fromSource(
@@ -57,12 +61,14 @@ public class UserFeature1hJob {
             WatermarkStrategy.forBoundedOutOfOrderness(Duration.ofSeconds(5)),
             "Kafka Source"
         );
+        System.out.println("Kafka source stream created");
 
         // 3.0 预过滤 - 只保留我们需要的事件类型
         DataStream<String> filteredStream = kafkaSource
             .filter(EventFilterUtil.createFastEventTypeFilter(16, 8))
             .name("Pre-filter Events")
-            .setParallelism(8); // 过滤操作轻量，可以设置更高并行度
+            .setParallelism(8);
+        System.out.println("Event filter applied for types 16 and 8");
 
         // 3.1 解析曝光事件 (event_type=16)
         SingleOutputStreamOperator<UserFeatureCommon.PostExposeEvent> exposeStream = filteredStream
@@ -117,10 +123,30 @@ public class UserFeature1hJob {
                 public UserFeatureAggregation map(UserFeatureAggregation value) throws Exception {
                     if (counter < 3) {
                         counter++;
-                        LOG.info("Sample aggregation result {}: uid={}, 1h features: exp={}/{}/{}, 3sview={}/{}/{}", 
+                        System.out.println(String.format(
+                            "Sample aggregation result %d: uid=%d, 1h features: exp=%d/%d/%d, 3sview=%d/%d/%d", 
                             counter, value.uid, 
                             value.viewerExppostCnt1h, value.viewerExp1PostCnt1h, value.viewerExp2PostCnt1h,
-                            value.viewer3sviewPostCnt1h, value.viewer3sview1PostCnt1h, value.viewer3sview2PostCnt1h);
+                            value.viewer3sviewPostCnt1h, value.viewer3sview1PostCnt1h, value.viewer3sview2PostCnt1h
+                        ));
+                        
+                        // 打印历史记录特征
+                        System.out.println(String.format(
+                            "History features for uid %d:\n" +
+                            "- 3s view history: %s\n" +
+                            "- 5s stand history: %s\n" +
+                            "- Like history: %s\n" +
+                            "- Follow history: %s\n" +
+                            "- Profile history: %s\n" +
+                            "- Positive interaction history: %s",
+                            value.uid,
+                            value.viewer3sviewPostHis1h,
+                            value.viewer5sstandPostHis1h,
+                            value.viewerLikePostHis1h,
+                            value.viewerFollowPostHis1h,
+                            value.viewerProfilePostHis1h,
+                            value.viewerPosinterPostHis1h
+                        ));
                     }
                     return value;
                 }
@@ -136,7 +162,7 @@ public class UserFeature1hJob {
                     String redisKey = PREFIX + agg.uid + SUFFIX;
                     
                     // 构建Protobuf
-                    byte[] value = RecFeature.RecUserFeature.newBuilder()
+                    RecFeature.RecUserFeature feature = RecFeature.RecUserFeature.newBuilder()
                         .setUserId(agg.uid)
                         // 1小时曝光特征
                         .setViewerExppostCnt1H(agg.viewerExppostCnt1h)
@@ -153,8 +179,12 @@ public class UserFeature1hJob {
                         .setViewerFollowPostHis1H(agg.viewerFollowPostHis1h)
                         .setViewerProfilePostHis1H(agg.viewerProfilePostHis1h)
                         .setViewerPosinterPostHis1H(agg.viewerPosinterPostHis1h)
-                        .build()
-                        .toByteArray();
+                        .build();
+
+                    byte[] value = feature.toByteArray();
+                    
+                    System.out.println("Preparing to write to Redis - Key: " + redisKey);
+                    System.out.println("Feature data: " + feature.toString());
                     
                     return new Tuple2<>(redisKey, value);
                 }
@@ -164,14 +194,18 @@ public class UserFeature1hJob {
         // 第六步：创建sink，Redis环境
         RedisConfig redisConfig = RedisConfig.fromProperties(RedisUtil.loadProperties());
         redisConfig.setTtl(600);
+        System.out.println("Redis config created with TTL: " + redisConfig.getTtl());
+        
         RedisUtil.addRedisSink(
             dataStream,
             redisConfig,
             false, // 异步写入
             100   // 批量大小
         );
+        System.out.println("Redis sink added to the pipeline");
 
         // 执行任务
+        System.out.println("Starting Flink job execution...");
         env.execute("User Feature 1h Job");
     }
 
