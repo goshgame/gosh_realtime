@@ -47,7 +47,9 @@ public class UserFeature1hJob {
         
         // 第一步：创建flink环境
         StreamExecutionEnvironment env = FlinkEnvUtil.createStreamExecutionEnvironment();
-        System.out.println("Flink environment created");
+        // 设置全局并行度为1
+        env.setParallelism(1);
+        System.out.println("Flink environment created with parallelism: " + env.getParallelism());
         
         // 第二步：创建Source，Kafka环境
         KafkaSource<String> inputTopic = KafkaEnvUtil.createKafkaSource(
@@ -67,20 +69,46 @@ public class UserFeature1hJob {
         DataStream<String> filteredStream = kafkaSource
             .filter(EventFilterUtil.createFastEventTypeFilter(16, 8))
             .name("Pre-filter Events")
-            .setParallelism(8);
-        System.out.println("Event filter applied for types 16 and 8");
+            .setParallelism(1);
+        
+        // 添加调试打印
+        filteredStream.map(new MapFunction<String, String>() {
+            @Override
+            public String map(String value) throws Exception {
+                System.out.println("Filtered event: " + value);
+                return value;
+            }
+        });
 
         // 3.1 解析曝光事件 (event_type=16)
         SingleOutputStreamOperator<UserFeatureCommon.PostExposeEvent> exposeStream = filteredStream
             .flatMap(new UserFeatureCommon.ExposeEventParser())
             .name("Parse Expose Events")
-            .setParallelism(4);
+            .setParallelism(1);
+
+        // 添加曝光事件调试打印
+        exposeStream.map(new MapFunction<UserFeatureCommon.PostExposeEvent, UserFeatureCommon.PostExposeEvent>() {
+            @Override
+            public UserFeatureCommon.PostExposeEvent map(UserFeatureCommon.PostExposeEvent value) throws Exception {
+                System.out.println("Parsed expose event - uid: " + value.uid + ", items: " + value.infoList.size());
+                return value;
+            }
+        });
 
         // 3.2 解析观看事件 (event_type=8)
         SingleOutputStreamOperator<UserFeatureCommon.PostViewEvent> viewStream = filteredStream
             .flatMap(new UserFeatureCommon.ViewEventParser())
             .name("Parse View Events")
-            .setParallelism(4);
+            .setParallelism(1);
+
+        // 添加观看事件调试打印
+        viewStream.map(new MapFunction<UserFeatureCommon.PostViewEvent, UserFeatureCommon.PostViewEvent>() {
+            @Override
+            public UserFeatureCommon.PostViewEvent map(UserFeatureCommon.PostViewEvent value) throws Exception {
+                System.out.println("Parsed view event - uid: " + value.uid + ", items: " + value.infoList.size());
+                return value;
+            }
+        });
 
         // 3.3 将曝光事件转换为统一的用户特征事件
         DataStream<UserFeatureCommon.UserFeatureEvent> exposeFeatureStream = exposeStream
@@ -100,7 +128,16 @@ public class UserFeature1hJob {
                     .withTimestampAssigner((event, recordTimestamp) -> event.getTimestamp())
             );
 
-        // 第四步：按用户ID分组并进行1小时滑动窗口聚合
+        // 添加统一事件调试打印
+        unifiedStream.map(new MapFunction<UserFeatureCommon.UserFeatureEvent, UserFeatureCommon.UserFeatureEvent>() {
+            @Override
+            public UserFeatureCommon.UserFeatureEvent map(UserFeatureCommon.UserFeatureEvent value) throws Exception {
+                System.out.println("Unified event - uid: " + value.uid + ", type: " + value.eventType);
+                return value;
+            }
+        });
+
+        // 第四步：按用户ID分组并进行滑动窗口聚合
         DataStream<UserFeatureAggregation> aggregatedStream = unifiedStream
             .keyBy(new KeySelector<UserFeatureCommon.UserFeatureEvent, Long>() {
                 @Override
@@ -109,49 +146,54 @@ public class UserFeature1hJob {
                 }
             })
             .window(SlidingProcessingTimeWindows.of(
-                Time.minutes(20), // 窗口大小1小时
-                Time.minutes(1) // 滑动间隔3分钟
+                Time.minutes(5),  // 窗口大小5分钟，便于测试
+                Time.minutes(1)   // 滑动间隔1分钟
             ))
             .aggregate(new UserFeatureAggregator())
             .name("User Feature Aggregation");
 
-        // 打印前3次聚合结果用于调试
+        // 打印聚合结果用于调试
         aggregatedStream
             .map(new MapFunction<UserFeatureAggregation, UserFeatureAggregation>() {
-                private int counter = 0;
                 @Override
                 public UserFeatureAggregation map(UserFeatureAggregation value) throws Exception {
-                    if (counter < 3) {
-                        counter++;
-                        System.out.println(String.format(
-                            "Sample aggregation result %d: uid=%d, 1h features: exp=%d/%d/%d, 3sview=%d/%d/%d", 
-                            counter, value.uid, 
-                            value.viewerExppostCnt1h, value.viewerExp1PostCnt1h, value.viewerExp2PostCnt1h,
-                            value.viewer3sviewPostCnt1h, value.viewer3sview1PostCnt1h, value.viewer3sview2PostCnt1h
-                        ));
-                        
-                        // 打印历史记录特征
-                        System.out.println(String.format(
-                            "History features for uid %d:\n" +
-                            "- 3s view history: %s\n" +
-                            "- 5s stand history: %s\n" +
-                            "- Like history: %s\n" +
-                            "- Follow history: %s\n" +
-                            "- Profile history: %s\n" +
-                            "- Positive interaction history: %s",
-                            value.uid,
-                            value.viewer3sviewPostHis1h,
-                            value.viewer5sstandPostHis1h,
-                            value.viewerLikePostHis1h,
-                            value.viewerFollowPostHis1h,
-                            value.viewerProfilePostHis1h,
-                            value.viewerPosinterPostHis1h
-                        ));
+                    System.out.println(String.format(
+                        "\n=== Aggregation Result ===\n" +
+                        "Time: %s\n" +
+                        "User ID: %d\n" +
+                        "Expose counts: %d/%d/%d\n" +
+                        "View counts: %d/%d/%d\n" +
+                        "======================\n",
+                        new Date(value.updateTime),
+                        value.uid,
+                        value.viewerExppostCnt1h, value.viewerExp1PostCnt1h, value.viewerExp2PostCnt1h,
+                        value.viewer3sviewPostCnt1h, value.viewer3sview1PostCnt1h, value.viewer3sview2PostCnt1h
+                    ));
+                    
+                    // 打印历史记录特征
+                    if (!value.viewer3sviewPostHis1h.isEmpty()) {
+                        System.out.println("3s view history: " + value.viewer3sviewPostHis1h);
                     }
+                    if (!value.viewer5sstandPostHis1h.isEmpty()) {
+                        System.out.println("5s stand history: " + value.viewer5sstandPostHis1h);
+                    }
+                    if (!value.viewerLikePostHis1h.isEmpty()) {
+                        System.out.println("Like history: " + value.viewerLikePostHis1h);
+                    }
+                    if (!value.viewerFollowPostHis1h.isEmpty()) {
+                        System.out.println("Follow history: " + value.viewerFollowPostHis1h);
+                    }
+                    if (!value.viewerProfilePostHis1h.isEmpty()) {
+                        System.out.println("Profile history: " + value.viewerProfilePostHis1h);
+                    }
+                    if (!value.viewerPosinterPostHis1h.isEmpty()) {
+                        System.out.println("Positive interaction history: " + value.viewerPosinterPostHis1h);
+                    }
+                    
                     return value;
                 }
             })
-            .name("Sample Debug Output");
+            .name("Debug Output");
 
         // 第五步：转换为Protobuf并写入Redis
         DataStream<Tuple2<String, byte[]>> dataStream = aggregatedStream
