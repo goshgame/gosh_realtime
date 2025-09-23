@@ -29,6 +29,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -70,15 +71,6 @@ public class UserFeature1hJob {
             .filter(EventFilterUtil.createFastEventTypeFilter(16, 8))
             .name("Pre-filter Events")
             .setParallelism(1);
-        
-        // 添加调试打印
-        filteredStream.map(new MapFunction<String, String>() {
-            @Override
-            public String map(String value) throws Exception {
-                System.out.println("Filtered event: " + value);
-                return value;
-            }
-        });
 
         // 3.1 解析曝光事件 (event_type=16)
         SingleOutputStreamOperator<UserFeatureCommon.PostExposeEvent> exposeStream = filteredStream
@@ -86,29 +78,11 @@ public class UserFeature1hJob {
             .name("Parse Expose Events")
             .setParallelism(1);
 
-        // 添加曝光事件调试打印
-        exposeStream.map(new MapFunction<UserFeatureCommon.PostExposeEvent, UserFeatureCommon.PostExposeEvent>() {
-            @Override
-            public UserFeatureCommon.PostExposeEvent map(UserFeatureCommon.PostExposeEvent value) throws Exception {
-                System.out.println("Parsed expose event - uid: " + value.uid + ", items: " + value.infoList.size());
-                return value;
-            }
-        });
-
         // 3.2 解析观看事件 (event_type=8)
         SingleOutputStreamOperator<UserFeatureCommon.PostViewEvent> viewStream = filteredStream
             .flatMap(new UserFeatureCommon.ViewEventParser())
             .name("Parse View Events")
             .setParallelism(1);
-
-        // 添加观看事件调试打印
-        viewStream.map(new MapFunction<UserFeatureCommon.PostViewEvent, UserFeatureCommon.PostViewEvent>() {
-            @Override
-            public UserFeatureCommon.PostViewEvent map(UserFeatureCommon.PostViewEvent value) throws Exception {
-                System.out.println("Parsed view event - uid: " + value.uid + ", items: " + value.infoList.size());
-                return value;
-            }
-        });
 
         // 3.3 将曝光事件转换为统一的用户特征事件
         DataStream<UserFeatureCommon.UserFeatureEvent> exposeFeatureStream = exposeStream
@@ -127,15 +101,6 @@ public class UserFeature1hJob {
                 WatermarkStrategy.<UserFeatureCommon.UserFeatureEvent>forBoundedOutOfOrderness(Duration.ofSeconds(10))
                     .withTimestampAssigner((event, recordTimestamp) -> event.getTimestamp())
             );
-
-        // 添加统一事件调试打印
-        unifiedStream.map(new MapFunction<UserFeatureCommon.UserFeatureEvent, UserFeatureCommon.UserFeatureEvent>() {
-            @Override
-            public UserFeatureCommon.UserFeatureEvent map(UserFeatureCommon.UserFeatureEvent value) throws Exception {
-                System.out.println("Unified event - uid: " + value.uid + ", type: " + value.eventType);
-                return value;
-            }
-        });
 
         // 第四步：按用户ID分组并进行滑动窗口聚合
         DataStream<UserFeatureAggregation> aggregatedStream = unifiedStream
@@ -157,39 +122,26 @@ public class UserFeature1hJob {
             .map(new MapFunction<UserFeatureAggregation, UserFeatureAggregation>() {
                 @Override
                 public UserFeatureAggregation map(UserFeatureAggregation value) throws Exception {
-                    System.out.println(String.format(
-                        "\n=== Aggregation Result ===\n" +
-                        "Time: %s\n" +
-                        "User ID: %d\n" +
-                        "Expose counts: %d/%d/%d\n" +
-                        "View counts: %d/%d/%d\n" +
-                        "======================\n",
-                        new Date(value.updateTime),
-                        value.uid,
-                        value.viewerExppostCnt1h, value.viewerExp1PostCnt1h, value.viewerExp2PostCnt1h,
-                        value.viewer3sviewPostCnt1h, value.viewer3sview1PostCnt1h, value.viewer3sview2PostCnt1h
-                    ));
-                    
-                    // 打印历史记录特征
-                    if (!value.viewer3sviewPostHis1h.isEmpty()) {
-                        System.out.println("3s view history: " + value.viewer3sviewPostHis1h);
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(String.format("\n[%s] User %d Stats:\n", 
+                        new SimpleDateFormat("HH:mm:ss").format(new Date(value.updateTime)),
+                        value.uid));
+
+                    // 只有当有数据时才打印相应的统计
+                    if (value.viewerExppostCnt1h > 0) {
+                        sb.append(String.format("- Expose: %d posts\n", value.viewerExppostCnt1h));
                     }
-                    if (!value.viewer5sstandPostHis1h.isEmpty()) {
-                        System.out.println("5s stand history: " + value.viewer5sstandPostHis1h);
+                    if (value.viewer3sviewPostCnt1h > 0) {
+                        sb.append(String.format("- 3s Views: %d posts\n", value.viewer3sviewPostCnt1h));
                     }
                     if (!value.viewerLikePostHis1h.isEmpty()) {
-                        System.out.println("Like history: " + value.viewerLikePostHis1h);
+                        sb.append("- Like history: ").append(value.viewerLikePostHis1h).append("\n");
                     }
                     if (!value.viewerFollowPostHis1h.isEmpty()) {
-                        System.out.println("Follow history: " + value.viewerFollowPostHis1h);
+                        sb.append("- Follow history: ").append(value.viewerFollowPostHis1h).append("\n");
                     }
-                    if (!value.viewerProfilePostHis1h.isEmpty()) {
-                        System.out.println("Profile history: " + value.viewerProfilePostHis1h);
-                    }
-                    if (!value.viewerPosinterPostHis1h.isEmpty()) {
-                        System.out.println("Positive interaction history: " + value.viewerPosinterPostHis1h);
-                    }
-                    
+
+                    System.out.println(sb.toString());
                     return value;
                 }
             })
