@@ -123,6 +123,9 @@ public class UserFeatureCommon {
      * 曝光事件解析器
      */
     public static class ExposeEventParser implements FlatMapFunction<String, PostExposeEvent> {
+        private static final int MAX_LIST_SIZE = 1000; // Prevent OOM from extremely large lists
+        private static final int MAX_BATCH_SIZE = 100; // Process in batches
+        
         @Override
         public void flatMap(String value, Collector<PostExposeEvent> out) throws Exception {
             if (value == null || value.isEmpty()) {
@@ -178,56 +181,88 @@ public class UserFeatureCommon {
                     return;
                 }
 
-                List<PostExposeInfo> infoList = new ArrayList<>();
-                for (JsonNode itemNode : listNode) {
-                    try {
-                        PostExposeInfo info = new PostExposeInfo();
-                        
-                        // 解析post_id
-                        JsonNode postIdNode = itemNode.path("post_id");
-                        if (!postIdNode.isMissingNode()) {
-                            String postIdStr = postIdNode.asText();
-                            try {
-                                info.postId = Long.parseLong(postIdStr);
-                            } catch (NumberFormatException e) {
-                                LOG.warn("Invalid post_id format: {}", postIdStr);
-                                continue;
-                            }
-                        }
-
-                        if (info.postId <= 0) {
-                            LOG.warn("Invalid post_id: {}", info.postId);
-                            continue;
-                        }
-
-                        // 解析其他字段
-                        info.exposedPos = itemNode.path("exposed_pos").asInt(0);
-                        info.expoTime = itemNode.path("expo_time").asLong(0);
-                        info.recToken = itemNode.path("rec_token").asText("");
-
-                        infoList.add(info);
-                        LOG.debug("Parsed expose info: postId={}, recToken={}", info.postId, info.recToken);
-                    } catch (Exception e) {
-                        LOG.warn("Failed to parse list item: {}", itemNode, e);
-                    }
-                }
-
-                if (infoList.isEmpty()) {
-                    LOG.warn("No valid items found in list");
+                // Check list size to prevent OOM
+                if (listNode.size() > MAX_LIST_SIZE) {
+                    LOG.warn("List size {} exceeds maximum allowed size {}", listNode.size(), MAX_LIST_SIZE);
                     return;
                 }
 
-                // 创建并输出事件
-                PostExposeEvent event = new PostExposeEvent();
-                event.uid = uid;
-                event.infoList = infoList;
-                event.createdAt = createdAt;
-                LOG.debug("Emitting expose event: uid={}, items={}", uid, infoList.size());
-                out.collect(event);
+                List<PostExposeInfo> infoList = new ArrayList<>();
+                int currentBatchSize = 0;
+
+                for (JsonNode itemNode : listNode) {
+                    try {
+                        PostExposeInfo info = parseExposeInfo(itemNode);
+                        if (info != null) {
+                            infoList.add(info);
+                            currentBatchSize++;
+
+                            // Process in batches to prevent memory issues
+                            if (currentBatchSize >= MAX_BATCH_SIZE) {
+                                emitBatch(uid, createdAt, new ArrayList<>(infoList), out);
+                                infoList.clear();
+                                currentBatchSize = 0;
+                            }
+                        }
+                    } catch (Exception e) {
+                        LOG.warn("Failed to parse list item: {}", itemNode, e);
+                        // Continue processing other items
+                    }
+                }
+
+                // Emit remaining items
+                if (!infoList.isEmpty()) {
+                    emitBatch(uid, createdAt, infoList, out);
+                }
 
             } catch (Exception e) {
                 LOG.error("Failed to parse expose event: {}", value, e);
                 LOG.error("Exception details:", e);
+            }
+        }
+
+        private PostExposeInfo parseExposeInfo(JsonNode itemNode) {
+            try {
+                PostExposeInfo info = new PostExposeInfo();
+                
+                // 解析post_id
+                JsonNode postIdNode = itemNode.path("post_id");
+                if (!postIdNode.isMissingNode()) {
+                    String postIdStr = postIdNode.asText();
+                    try {
+                        info.postId = Long.parseLong(postIdStr);
+                    } catch (NumberFormatException e) {
+                        LOG.warn("Invalid post_id format: {}", postIdStr);
+                        return null;
+                    }
+                }
+
+                if (info.postId <= 0) {
+                    LOG.warn("Invalid post_id: {}", info.postId);
+                    return null;
+                }
+
+                // 解析其他字段
+                info.exposedPos = itemNode.path("exposed_pos").asInt(0);
+                info.expoTime = itemNode.path("expo_time").asLong(0);
+                info.recToken = itemNode.path("rec_token").asText("");
+
+                LOG.debug("Parsed expose info: postId={}, recToken={}", info.postId, info.recToken);
+                return info;
+            } catch (Exception e) {
+                LOG.warn("Failed to parse expose info", e);
+                return null;
+            }
+        }
+
+        private void emitBatch(long uid, long createdAt, List<PostExposeInfo> infoList, Collector<PostExposeEvent> out) {
+            if (!infoList.isEmpty()) {
+                PostExposeEvent event = new PostExposeEvent();
+                event.uid = uid;
+                event.infoList = infoList;
+                event.createdAt = createdAt;
+                LOG.debug("Emitting expose event batch: uid={}, items={}", uid, infoList.size());
+                out.collect(event);
             }
         }
     }
