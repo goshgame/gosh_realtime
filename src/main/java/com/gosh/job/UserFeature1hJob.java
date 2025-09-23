@@ -111,49 +111,8 @@ public class UserFeature1hJob {
             .aggregate(new UserFeatureAggregator())
             .name("User Feature Aggregation");
 
-        // 打印聚合结果用于调试（采样）
-        SingleOutputStreamOperator<UserFeatureAggregation> processedStream = aggregatedStream
-            .process(new ProcessFunction<UserFeatureAggregation, UserFeatureAggregation>() {
-                private static final long SAMPLE_INTERVAL = 60000; // 采样间隔1分钟
-                private static final int SAMPLE_COUNT = 3; // 每次采样3条
-                private transient long lastSampleTime;
-                private transient int sampleCount;
-                
-                @Override
-                public void open(Configuration parameters) throws Exception {
-                    lastSampleTime = 0;
-                    sampleCount = 0;
-                }
-                
-                @Override
-                public void processElement(UserFeatureAggregation value, Context ctx, Collector<UserFeatureAggregation> out) throws Exception {
-                    // 先输出原始数据
-                    out.collect(value);
-                    
-                    // 采样日志
-                    long now = System.currentTimeMillis();
-                    if (now - lastSampleTime > SAMPLE_INTERVAL) {
-                        lastSampleTime = now - (now % SAMPLE_INTERVAL); // 对齐到分钟
-                        sampleCount = 0;
-                    }
-                    
-                    // 只采样前3条
-                    if (sampleCount < SAMPLE_COUNT) {
-                        sampleCount++;
-                        LOG.info("[Sample {}/{}] User {} at {}: expose={}, 3s_views={}", 
-                            sampleCount, 
-                            SAMPLE_COUNT,
-                            value.uid,
-                            new SimpleDateFormat("HH:mm:ss").format(new Date(value.updateTime)),
-                            value.viewerExppostCnt1h,
-                            value.viewer3sviewPostCnt1h);
-                    }
-                }
-            })
-            .name("Debug Sampling");
-
         // 第五步：转换为Protobuf并写入Redis
-        DataStream<Tuple2<String, byte[]>> dataStream = processedStream
+        DataStream<Tuple2<String, byte[]>> dataStream = aggregatedStream
             .map(new MapFunction<UserFeatureAggregation, Tuple2<String, byte[]>>() {
                 @Override
                 public Tuple2<String, byte[]> map(UserFeatureAggregation agg) throws Exception {
@@ -181,14 +140,48 @@ public class UserFeature1hJob {
                         .build();
 
                     byte[] value = feature.toByteArray();
-                    
-                    System.out.println("Preparing to write to Redis - Key: " + redisKey);
-                    System.out.println("Feature data: " + feature.toString());
-                    
                     return new Tuple2<>(redisKey, value);
                 }
             })
             .name("Aggregation to Protobuf Bytes");
+
+        // 打印聚合结果用于调试（采样）
+        aggregatedStream
+            .process(new ProcessFunction<UserFeatureAggregation, UserFeatureAggregation>() {
+                private static final long SAMPLE_INTERVAL = 60000; // 采样间隔1分钟
+                private static final int SAMPLE_COUNT = 3; // 每次采样3条
+                private transient long lastSampleTime;
+                private transient int sampleCount;
+                
+                @Override
+                public void open(Configuration parameters) throws Exception {
+                    lastSampleTime = 0;
+                    sampleCount = 0;
+                }
+                
+                @Override
+                public void processElement(UserFeatureAggregation value, Context ctx, Collector<UserFeatureAggregation> out) throws Exception {
+                    // 采样日志
+                    long now = System.currentTimeMillis();
+                    if (now - lastSampleTime > SAMPLE_INTERVAL) {
+                        lastSampleTime = now - (now % SAMPLE_INTERVAL); // 对齐到分钟
+                        sampleCount = 0;
+                    }
+                    
+                    // 只采样前3条
+                    if (sampleCount < SAMPLE_COUNT) {
+                        sampleCount++;
+                        LOG.info("[Sample {}/{}] User {} at {}: expose={}, 3s_views={}", 
+                            sampleCount, 
+                            SAMPLE_COUNT,
+                            value.uid,
+                            new SimpleDateFormat("HH:mm:ss").format(new Date(value.updateTime)),
+                            value.viewerExppostCnt1h,
+                            value.viewer3sviewPostCnt1h);
+                    }
+                }
+            })
+            .name("Debug Sampling");
 
         // 第六步：创建sink，Redis环境
         RedisConfig redisConfig = RedisConfig.fromProperties(RedisUtil.loadProperties());
