@@ -24,21 +24,37 @@ public class ParsedPostEvent {
     @JsonProperty("created_at")
     private Long createdAt;
 
+    @JsonProperty("UID")
     private Long UID;
+    @JsonProperty("DID")
     private String DID;
+    @JsonProperty("APP")
     private String APP;
+    @JsonProperty("SMID")
     private String SMID;
+    @JsonProperty("Version")
     private String Version;
+    @JsonProperty("Channel")
     private String Channel;
+    @JsonProperty("Platform")
     private String Platform;
+    @JsonProperty("Brand")
     private String Brand;
+    @JsonProperty("OS")
     private String OS;
+    @JsonProperty("Model")
     private String Model;
+    @JsonProperty("Lang")
     private String Lang;
+    @JsonProperty("Country")
     private String Country;
+    @JsonProperty("US")
     private Integer US;
+    @JsonProperty("Seq")
     private String Seq;
+    @JsonProperty("Network")
     private String Network;
+    @JsonProperty("FeSystem")
     private Integer FeSystem;
 
     @JsonProperty("SubPartnerChannel")
@@ -47,8 +63,11 @@ public class ParsedPostEvent {
     @JsonProperty("ClientIP")
     private String clientIP;
 
+    @JsonProperty("ADID")
     private String ADID;
+    @JsonProperty("GAID")
     private String GAID;
+    @JsonProperty("IDFA")
     private String IDFA;
 
     // Getter和Setter方法
@@ -266,5 +285,38 @@ public class ParsedPostEvent {
 
     public void setIDFA(String IDFA) {
         this.IDFA = IDFA;
+    }
+
+    @Override
+    public String toString() {
+        return "ParsedPostEvent{" +
+                "eventType=" + eventType +
+                ", postId='" + postId + '\'' +
+                ", exposedPos=" + exposedPos +
+                ", expoTime=" + expoTime +
+                ", recToken='" + recToken + '\'' +
+                ", createdAt=" + createdAt +
+                ", UID=" + UID +
+                ", DID='" + DID + '\'' +
+                ", APP='" + APP + '\'' +
+                ", SMID='" + SMID + '\'' +
+                ", Version='" + Version + '\'' +
+                ", Channel='" + Channel + '\'' +
+                ", Platform='" + Platform + '\'' +
+                ", Brand='" + Brand + '\'' +
+                ", OS='" + OS + '\'' +
+                ", Model='" + Model + '\'' +
+                ", Lang='" + Lang + '\'' +
+                ", Country='" + Country + '\'' +
+                ", US=" + US +
+                ", Seq='" + Seq + '\'' +
+                ", Network='" + Network + '\'' +
+                ", FeSystem=" + FeSystem +
+                ", subPartnerChannel='" + subPartnerChannel + '\'' +
+                ", clientIP='" + clientIP + '\'' +
+                ", ADID='" + ADID + '\'' +
+                ", GAID='" + GAID + '\'' +
+                ", IDFA='" + IDFA + '\'' +
+                '}';
     }
 }

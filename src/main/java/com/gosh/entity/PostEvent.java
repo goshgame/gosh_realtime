@@ -5,6 +5,42 @@ import java.util.List;
 
 /**
  * 顶层事件实体类，对应完整的JSON数据结构
+ * {
+ *     "event_type": 16,
+ *     "post_expose": {
+ *         "uid": 114704,
+ *         "list": [
+ *             {
+ *                 "post_id": "270312310000018891",
+ *                 "exposed_pos": 2,
+ *                 "expo_time": 1757987353,
+ *                 "rec_token": "b6e4df34-1e87-41af-84ec-37938b52b636"
+ *             }
+ *         ],
+ *         "created_at": 1757987352,
+ *         "UID": 114704,
+ *         "DID": "e3f5d522db887f7f",
+ *         "APP": "vizz",
+ *         "SMID": "20250523151706cfb5fc4eb912169d914139fe0f6ee2be01e6f5692c27698b",
+ *         "Version": "3.4.0",
+ *         "Channel": "fbsn",
+ *         "Platform": "android",
+ *         "Brand": "vivo",
+ *         "OS": "Android 13",
+ *         "Model": "V2188A",
+ *         "Lang": "en",
+ *         "Country": "zh",
+ *         "US": 0,
+ *         "Seq": "",
+ *         "Network": "wifi",
+ *         "FeSystem": 0,
+ *         "SubPartnerChannel": "",
+ *         "ClientIP": "98.98.232.216",
+ *         "ADID": "6f6b93dafc54da2c8c7e54232cd6257d",
+ *         "GAID": "66e647f1-da29-479b-8d41-d4d527e7f853",
+ *         "IDFA": ""
+ *     }
+ * }
  */
 public class PostEvent {
     @JsonProperty("event_type")
@@ -34,27 +70,50 @@ public class PostEvent {
      * post_expose字段对应的实体类
      */
     public static class PostExpose {
+        @JsonProperty("uid")
         private Long uid;
+
+        @JsonProperty("UID")
+        private Long UUID;
+
+        @JsonProperty("list")
         private List<PostItem> list;
 
         @JsonProperty("created_at")
         private Long createdAt;
 
-        private Long UID;
+        @JsonProperty("DID")
         private String DID;
+
+        @JsonProperty("APP")
         private String APP;
+
+        @JsonProperty("SMID")
         private String SMID;
+
+        @JsonProperty("Version")
         private String Version;
+        @JsonProperty("Channel")
         private String Channel;
+        @JsonProperty("Platform")
         private String Platform;
+        @JsonProperty("Brand")
         private String Brand;
+        @JsonProperty("OS")
         private String OS;
+        @JsonProperty("Model")
         private String Model;
+        @JsonProperty("Lang")
         private String Lang;
+        @JsonProperty("Country")
         private String Country;
+        @JsonProperty("US")
         private Integer US;
+        @JsonProperty("Seq")
         private String Seq;
+        @JsonProperty("Network")
         private String Network;
+        @JsonProperty("FeSystem")
         private Integer FeSystem;
 
         @JsonProperty("SubPartnerChannel")
@@ -62,9 +121,11 @@ public class PostEvent {
 
         @JsonProperty("ClientIP")
         private String clientIP;
-
+        @JsonProperty("ADID")
         private String ADID;
+        @JsonProperty("GAID")
         private String GAID;
+        @JsonProperty("IDFA")
         private String IDFA;
 
         // Getter和Setter方法
@@ -74,6 +135,14 @@ public class PostEvent {
 
         public void setUid(Long uid) {
             this.uid = uid;
+        }
+
+        public Long getUUID() {
+            return UUID;
+        }
+
+        public void setUUID(Long UUID) {
+            this.UUID = UUID;
         }
 
         public List<PostItem> getList() {
@@ -90,14 +159,6 @@ public class PostEvent {
 
         public void setCreatedAt(Long createdAt) {
             this.createdAt = createdAt;
-        }
-
-        public Long getUID() {
-            return UID;
-        }
-
-        public void setUID(Long UID) {
-            this.UID = UID;
         }
 
         public String getDID() {
@@ -259,6 +320,36 @@ public class PostEvent {
         public void setIDFA(String IDFA) {
             this.IDFA = IDFA;
         }
+
+        @Override
+        public String toString() {
+            return "PostExpose{" +
+                    "uid=" + uid +
+                    ", UUID=" + UUID +
+                    ", list=" + list +
+                    ", createdAt=" + createdAt +
+                    ", DID='" + DID + '\'' +
+                    ", APP='" + APP + '\'' +
+                    ", SMID='" + SMID + '\'' +
+                    ", Version='" + Version + '\'' +
+                    ", Channel='" + Channel + '\'' +
+                    ", Platform='" + Platform + '\'' +
+                    ", Brand='" + Brand + '\'' +
+                    ", OS='" + OS + '\'' +
+                    ", Model='" + Model + '\'' +
+                    ", Lang='" + Lang + '\'' +
+                    ", Country='" + Country + '\'' +
+                    ", US=" + US +
+                    ", Seq='" + Seq + '\'' +
+                    ", Network='" + Network + '\'' +
+                    ", FeSystem=" + FeSystem +
+                    ", subPartnerChannel='" + subPartnerChannel + '\'' +
+                    ", clientIP='" + clientIP + '\'' +
+                    ", ADID='" + ADID + '\'' +
+                    ", GAID='" + GAID + '\'' +
+                    ", IDFA='" + IDFA + '\'' +
+                    '}';
+        }
     }
 
     /**
@@ -309,5 +400,23 @@ public class PostEvent {
         public void setRecToken(String recToken) {
             this.recToken = recToken;
         }
+
+        @Override
+        public String toString() {
+            return "PostItem{" +
+                    "postId='" + postId + '\'' +
+                    ", exposedPos=" + exposedPos +
+                    ", expoTime=" + expoTime +
+                    ", recToken='" + recToken + '\'' +
+                    '}';
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "PostEvent{" +
+                "eventType=" + eventType +
+                ", postExpose=" + postExpose +
+                '}';
     }
 }

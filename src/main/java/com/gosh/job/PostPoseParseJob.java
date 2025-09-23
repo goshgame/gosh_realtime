@@ -15,6 +15,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.util.Collector;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.jline.utils.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,7 +46,6 @@ public class PostPoseParseJob {
         DataStream<PostEvent> filteredEvents = kafkaSource
                 .map(jsonString -> {
                     try {
-                        // 解析JSON字符串为PostEvent实体
                         return objectMapper.readValue(jsonString, PostEvent.class);
                     } catch (Exception e) {
                         LOG.info("异常解析数据：{}",jsonString);
@@ -87,7 +87,7 @@ public class PostPoseParseJob {
                             // 设置post_expose中的其他字段
                             PostEvent.PostExpose expose = event.getPostExpose();
                             parsed.setCreatedAt(expose.getCreatedAt());
-                            parsed.setUID(expose.getUID());
+                            parsed.setUID(expose.getUid());
                             parsed.setDID(expose.getDID());
                             parsed.setAPP(expose.getAPP());
                             parsed.setSMID(expose.getSMID());
@@ -108,7 +108,6 @@ public class PostPoseParseJob {
                             parsed.setADID(expose.getADID());
                             parsed.setGAID(expose.getGAID());
                             parsed.setIDFA(expose.getIDFA());
-                            // 收集处理后的记录
                             collector.collect(parsed);
                         }
                     }
@@ -118,7 +117,9 @@ public class PostPoseParseJob {
         DataStream<String> outputJson = parsedEvents
                 .map(parsedEvent -> {
                     try {
-                        return objectMapper.writeValueAsString(parsedEvent);
+                        String jsonString = objectMapper.writeValueAsString(parsedEvent);
+                        System.out.println("最终输出结果：" + jsonString);
+                        return jsonString;
                     } catch (Exception e) {
                         System.err.println("对象转JSON失败: " + e.getMessage());
                         return null;
