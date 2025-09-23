@@ -12,6 +12,7 @@ import org.apache.flink.api.common.functions.AggregateFunction;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.time.Time;
 import org.apache.flink.api.java.functions.KeySelector;
+import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.connector.kafka.source.KafkaSource;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
@@ -31,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DemoProtoJob {
-    private static final Logger LOG = LoggerFactory.getLogger(DemoJob.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DemoProtoJob.class);
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     public static void main(String[] args) throws Exception {
@@ -86,10 +87,13 @@ public class DemoProtoJob {
 
         // 打印输出结果
         userFeatureStream.print().name("Feature Output");
+        SingleOutputStreamOperator<Tuple2<String, byte[]>> mapStream = userFeatureStream.map(recUserFeature -> {
+            return new Tuple2<String, byte[]>(recUserFeature.getKey(), recUserFeature.getResutls().toString().getBytes());
+        });
 
         //第六步：写入Sink
         // 这里可以添加将userFeatureStream写入Readis
-        RedisUtil.addRedisSink(userFeatureStream.map(RecUserFeature::toByteArray).name("Proto to ByteArray"));
+        RedisUtil.addRedisSink(mapStream);
 
         // 执行任务
         env.execute("User Feature Calculation Job");

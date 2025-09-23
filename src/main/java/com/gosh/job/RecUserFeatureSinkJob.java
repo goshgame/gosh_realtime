@@ -3,6 +3,7 @@ package com.gosh.job;
 import com.gosh.config.RedisConfig;
 import com.gosh.entity.RecFeatureDemoOuterClass;
 import com.gosh.util.RedisUtil;
+import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
@@ -18,18 +19,24 @@ public class RecUserFeatureSinkJob {
 
         // 2. 构建测试用的RecUserFeature实体
         RecFeatureDemoOuterClass.RecFeature testFeature = RecFeatureDemoOuterClass.RecFeature.newBuilder()
-                .setKey("12345481")
+                .setKey("12345482")
                 .setResutls("{'user_foru_explive_cnt_24h':114,'user_foru_joinlive_cnt_24h':3,'user_quitlive_3latest':'live_678:300|live_910:151'}")
                 .build();
 
         // 3. 打印测试数据信息（补全用户代码）
         System.out.println("测试数据: " + testFeature.toString());
-        System.out.println("测试数据字节长度: " + testFeature.toByteArray().length);
+        // 提取Key和Results用于打印
+        String key = new UserKeyExtractor().apply(testFeature);
+        byte[] results = testFeature.getResutlsBytes().toByteArray();
+        System.out.println("提取的Redis Key: " + key);
+        System.out.println("提取的Redis Value: " + results);
 
-        // 4. 将RecUserFeature转换为字节数组（protobuf序列化），并创建DataStream<byte[]>
-        DataStream<byte[]> dataStream = env.fromElements(
-                testFeature.toByteArray() // 序列化测试对象为字节数组
+        // 4. 将RecFeature转换为Tuple2<String, String>，并创建DataStream<Tuple2<String, String>>
+        DataStream<Tuple2<String, byte[]>> dataStream = env.fromElements(
+                new Tuple2<>(key, results)  // Key为第一个元素，results为第二个元素
         );
+
+
 
 
         // 5. 配置Redis参数
@@ -48,9 +55,9 @@ public class RecUserFeatureSinkJob {
                 dataStream,
                 redisConfig,
                 true, // 异步写入
-                100,  // 批量大小
-                protoClass,
-                keyExtractor
+                100  // 批量大小
+                //protoClass,
+                //keyExtractor
         );
 
         // 8. 执行任务

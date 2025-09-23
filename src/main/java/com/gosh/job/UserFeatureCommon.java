@@ -17,7 +17,7 @@ public class UserFeatureCommon {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     // ==================== 数据结构定义 ====================
-    
+
     /**
      * Post曝光事件
      */
@@ -74,7 +74,7 @@ public class UserFeatureCommon {
         public float progressTime;
         public List<Integer> interaction;
         public String recToken;
-        
+
         public long getTimestamp() { return timestamp; }
         public long getUid() { return uid; }
     }
@@ -84,33 +84,33 @@ public class UserFeatureCommon {
      */
     public static class UserFeatureAccumulator {
         public long uid;
-        
+
         // 曝光相关
         public Set<Long> exposePostIds = new HashSet<>();
         public Set<String> exposeRecTokens = new HashSet<>();
-        
+
         // 观看相关
         public Set<Long> viewPostIds = new HashSet<>();
         public Set<String> viewRecTokens = new HashSet<>();
         public Set<Long> view1PostIds = new HashSet<>(); // 图片post
         public Set<Long> view2PostIds = new HashSet<>(); // 视频post
-        
+
         // 3秒观看
         public Set<Long> view3sPostIds = new HashSet<>();
         public Set<Long> view3s1PostIds = new HashSet<>(); // 3秒图片
         public Set<Long> view3s2PostIds = new HashSet<>(); // 3秒视频
         public Map<Long, Float> view3sPostDetails = new HashMap<>(); // postId -> progressTime
-        
+
         // 5秒停留
         public Set<Long> stand5sPostIds = new HashSet<>();
         public Map<Long, Float> stand5sPostDetails = new HashMap<>(); // postId -> standingTime
-        
+
         // 交互行为
         public Set<Long> likePostIds = new HashSet<>();
         public Set<Long> followPostIds = new HashSet<>();
         public Set<Long> profilePostIds = new HashSet<>();
         public Set<Long> posinterPostIds = new HashSet<>();
-        
+
         // 作者相关
         public Set<Long> likeAuthors = new HashSet<>();
         public Set<Long> followAuthors = new HashSet<>();
@@ -118,7 +118,7 @@ public class UserFeatureCommon {
     }
 
     // ==================== 解析器 ====================
-    
+
     /**
      * 曝光事件解析器
      */
@@ -127,7 +127,7 @@ public class UserFeatureCommon {
         public void flatMap(String value, Collector<PostExposeEvent> out) throws Exception {
             try {
                 JsonNode rootNode = objectMapper.readTree(value);
-                
+
                 // 由于上游已经预过滤，这里只需要确认event_type
                 if (!rootNode.has("event_type") || rootNode.get("event_type").asInt() != 16) {
                     return;
@@ -157,7 +157,7 @@ public class UserFeatureCommon {
                         info.exposedPos = itemNode.has("exposed_pos") ? itemNode.get("exposed_pos").asInt() : 0;
                         info.expoTime = itemNode.has("expo_time") ? itemNode.get("expo_time").asLong() : 0;
                         info.recToken = itemNode.has("rec_token") ? itemNode.get("rec_token").asText() : "";
-                        
+
                         if (info.postId > 0) {
                             infoList.add(info);
                         }
@@ -186,7 +186,7 @@ public class UserFeatureCommon {
         public void flatMap(String value, Collector<PostViewEvent> out) throws Exception {
             try {
                 JsonNode rootNode = objectMapper.readTree(value);
-                
+
                 // 由于上游已经预过滤，这里只需要确认event_type
                 if (!rootNode.has("event_type") || rootNode.get("event_type").asInt() != 8) {
                     return;
@@ -219,7 +219,7 @@ public class UserFeatureCommon {
                         info.author = itemNode.has("author") ? itemNode.get("author").asLong() : 0;
                         info.viewer = itemNode.has("viewer") ? itemNode.get("viewer").asLong() : 0;
                         info.recToken = itemNode.has("rec_token") ? itemNode.get("rec_token").asText() : "";
-                        
+
                         // 解析interaction数组
                         if (itemNode.has("interaction")) {
                             JsonNode interactionNode = itemNode.get("interaction");
@@ -231,7 +231,7 @@ public class UserFeatureCommon {
                             }
                             info.interaction = interactions;
                         }
-                        
+
                         if (info.postId > 0) {
                             infoList.add(info);
                         }
@@ -253,7 +253,7 @@ public class UserFeatureCommon {
     }
 
     // ==================== 事件转换器 ====================
-    
+
     /**
      * 将曝光事件转换为用户特征事件
      */
@@ -296,49 +296,49 @@ public class UserFeatureCommon {
     }
 
     // ==================== 聚合逻辑 ====================
-    
+
     /**
      * 通用的用户特征聚合逻辑
      */
     public static UserFeatureAccumulator addEventToAccumulator(UserFeatureEvent event, UserFeatureAccumulator accumulator) {
         accumulator.uid = event.uid;
-        
+
         // 曝光相关特征
         if ("expose".equals(event.eventType)) {
             accumulator.exposePostIds.add(event.postId);
             accumulator.exposeRecTokens.add(event.recToken);
         }
-        
+
         // 观看相关特征
         if ("view".equals(event.eventType)) {
             accumulator.viewPostIds.add(event.postId);
             accumulator.viewRecTokens.add(event.recToken);
-            
+
             // 按post_type分类统计
             if (event.postType == 1) { // 图片
                 accumulator.view1PostIds.add(event.postId);
             } else if (event.postType == 2) { // 视频
                 accumulator.view2PostIds.add(event.postId);
             }
-            
+
             // 3秒以上观看
             if (event.progressTime >= 3) {
                 accumulator.view3sPostIds.add(event.postId);
                 accumulator.view3sPostDetails.put(event.postId, event.progressTime);
-                
+
                 if (event.postType == 1) {
                     accumulator.view3s1PostIds.add(event.postId);
                 } else if (event.postType == 2) {
                     accumulator.view3s2PostIds.add(event.postId);
                 }
             }
-            
+
             // 5秒以上停留
             if (event.standingTime >= 5) {
                 accumulator.stand5sPostIds.add(event.postId);
                 accumulator.stand5sPostDetails.put(event.postId, event.standingTime);
             }
-            
+
             // 处理交互行为
             if (event.interaction != null) {
                 for (Integer interactionType : event.interaction) {
@@ -362,7 +362,7 @@ public class UserFeatureCommon {
                 }
             }
         }
-        
+
         return accumulator;
     }
 
@@ -385,7 +385,7 @@ public class UserFeatureCommon {
         a.likeAuthors.addAll(b.likeAuthors);
         a.followAuthors.addAll(b.followAuthors);
         a.profileAuthors.addAll(b.profileAuthors);
-        
+
         // 合并详情map，取最大值
         for (Map.Entry<Long, Float> entry : b.view3sPostDetails.entrySet()) {
             a.view3sPostDetails.merge(entry.getKey(), entry.getValue(), Float::max);
@@ -393,12 +393,12 @@ public class UserFeatureCommon {
         for (Map.Entry<Long, Float> entry : b.stand5sPostDetails.entrySet()) {
             a.stand5sPostDetails.merge(entry.getKey(), entry.getValue(), Float::max);
         }
-        
+
         return a;
     }
 
     // ==================== 工具函数 ====================
-    
+
     /**
      * 构建带时长的post历史字符串 格式: "123|5,234|10"
      */
@@ -432,4 +432,4 @@ public class UserFeatureCommon {
             .reduce((a, b) -> a + "," + b)
             .orElse("");
     }
-} 
+}
