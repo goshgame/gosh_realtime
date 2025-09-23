@@ -120,15 +120,33 @@ public class UserFeature1hJob {
         // 打印聚合结果用于调试
         aggregatedStream
             .map(new MapFunction<UserFeatureAggregation, UserFeatureAggregation>() {
-                private final java.util.Random random = new java.util.Random();
+                private long totalCount = 0;
+                private int printedCount = 0;
+                private long lastLogTime = 0;
+                private static final int MAX_PRINT = 3;
+                private static final long LOG_INTERVAL = 60000; // 每分钟打印一次统计
                 
                 @Override
                 public UserFeatureAggregation map(UserFeatureAggregation value) throws Exception {
-                    // 百万分之一概率打印
-                    if (random.nextInt(1000000) == 0) {
+                    totalCount++;
+                    long now = System.currentTimeMillis();
+                    
+                    // 每分钟打印一次统计信息
+                    if (now - lastLogTime > LOG_INTERVAL) {
+                        System.out.println(String.format("\n=== Stats at %s ===", 
+                            new SimpleDateFormat("HH:mm:ss").format(new Date(now))));
+                        System.out.println("Total records processed: " + totalCount);
+                        lastLogTime = now;
+                        // 重置打印计数
+                        printedCount = 0;
+                    }
+
+                    // 只打印前3条
+                    if (printedCount < MAX_PRINT) {
+                        printedCount++;
                         StringBuilder sb = new StringBuilder();
-                        sb.append(String.format("\n[%s] User %d Stats:\n", 
-                            new SimpleDateFormat("HH:mm:ss").format(new Date(value.updateTime)),
+                        sb.append(String.format("[%d/%d] User %d Stats:\n", 
+                            printedCount, MAX_PRINT,
                             value.uid));
 
                         // 只有当有数据时才打印相应的统计
