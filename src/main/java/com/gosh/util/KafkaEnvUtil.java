@@ -63,7 +63,7 @@ public class KafkaEnvUtil {
     /**
      * 创建 Kafka 汇
      */
-    private static KafkaSink<String> createKafkaSink(Properties props,String topic) {
+    public static KafkaSink<String> createKafkaSink(Properties props,String topic) {
         String bootstrapServers = props.getProperty("bootstrap.servers", "localhost:9092");
         props.setProperty("output.topic",topic);
 
