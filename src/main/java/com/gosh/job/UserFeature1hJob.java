@@ -7,21 +7,19 @@ import com.gosh.config.RedisConfig;
 import com.gosh.entity.RecFeature;
 import com.gosh.job.UserFeatureCommon.*;
 import com.gosh.util.*;
-import com.gosh.util.EventFilterUtil;
-import com.gosh.util.FlinkEnvUtil;
-import com.gosh.util.KafkaEnvUtil;
-import com.gosh.util.RedisUtil;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.functions.AggregateFunction;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.java.functions.KeySelector;
+import org.apache.flink.api.java.tuple.Tuple2;
+import org.apache.flink.configuration.Configuration;
 import org.apache.flink.connector.kafka.source.KafkaSource;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
-import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.functions.ProcessFunction;
 import org.apache.flink.streaming.api.windowing.assigners.SlidingProcessingTimeWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.util.Collector;
@@ -31,11 +29,7 @@ import org.slf4j.LoggerFactory;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
-import java.util.function.Function;
+import java.util.Date;
 
 public class UserFeature1hJob {
     private static final Logger LOG = LoggerFactory.getLogger(UserFeature1hJob.class);
@@ -117,66 +111,49 @@ public class UserFeature1hJob {
             .aggregate(new UserFeatureAggregator())
             .name("User Feature Aggregation");
 
-        // 打印聚合结果用于调试
-        aggregatedStream
-            .map(new MapFunction<UserFeatureAggregation, UserFeatureAggregation>() {
-                private long totalCount = 0;
-                private long lastWindowTime = 0;
-                private int printedInWindow = 0;
-                private static final int MAX_PRINT_PER_WINDOW = 3;
+        // 打印聚合结果用于调试（采样）
+        SingleOutputStreamOperator<UserFeatureAggregation> processedStream = aggregatedStream
+            .process(new ProcessFunction<UserFeatureAggregation, UserFeatureAggregation>() {
+                private static final long SAMPLE_INTERVAL = 60000; // 采样间隔1分钟
+                private static final int SAMPLE_COUNT = 3; // 每次采样3条
+                private transient long lastSampleTime;
+                private transient int sampleCount;
                 
                 @Override
-                public UserFeatureAggregation map(UserFeatureAggregation value) throws Exception {
-                    totalCount++;
+                public void open(Configuration parameters) throws Exception {
+                    lastSampleTime = 0;
+                    sampleCount = 0;
+                }
+                
+                @Override
+                public void processElement(UserFeatureAggregation value, Context ctx, Collector<UserFeatureAggregation> out) throws Exception {
+                    // 先输出原始数据
+                    out.collect(value);
                     
-                    // 获取当前时间所在的2分钟窗口
-                    long currentWindowTime = value.updateTime / 120000 * 120000;  // 向下取整到2分钟
-                    
-                    // 如果是新窗口，重置计数并打印统计
-                    if (currentWindowTime > lastWindowTime) {
-                        if (lastWindowTime > 0) {  // 不是第一个窗口
-                            System.out.println(String.format("\n=== Window %s - %s ===", 
-                                new SimpleDateFormat("HH:mm:ss").format(new Date(lastWindowTime)),
-                                new SimpleDateFormat("HH:mm:ss").format(new Date(lastWindowTime + 120000))));
-                            System.out.println("Records in window: " + totalCount);
-                        }
-                        lastWindowTime = currentWindowTime;
-                        printedInWindow = 0;
-                        totalCount = 1;  // 重置计数
-                    }
-
-                    // 在每个窗口中只打印前3条
-                    if (printedInWindow < MAX_PRINT_PER_WINDOW) {
-                        printedInWindow++;
-                        StringBuilder sb = new StringBuilder();
-                        sb.append(String.format("[%d/%d] User %d Stats:\n", 
-                            printedInWindow, MAX_PRINT_PER_WINDOW,
-                            value.uid));
-
-                        // 只有当有数据时才打印相应的统计
-                        if (value.viewerExppostCnt1h > 0) {
-                            sb.append(String.format("- Expose: %d posts\n", value.viewerExppostCnt1h));
-                        }
-                        if (value.viewer3sviewPostCnt1h > 0) {
-                            sb.append(String.format("- 3s Views: %d posts\n", value.viewer3sviewPostCnt1h));
-                        }
-                        if (!value.viewerLikePostHis1h.isEmpty()) {
-                            sb.append("- Like history: ").append(value.viewerLikePostHis1h).append("\n");
-                        }
-                        if (!value.viewerFollowPostHis1h.isEmpty()) {
-                            sb.append("- Follow history: ").append(value.viewerFollowPostHis1h).append("\n");
-                        }
-
-                        System.out.println(sb.toString());
+                    // 采样日志
+                    long now = System.currentTimeMillis();
+                    if (now - lastSampleTime > SAMPLE_INTERVAL) {
+                        lastSampleTime = now - (now % SAMPLE_INTERVAL); // 对齐到分钟
+                        sampleCount = 0;
                     }
                     
-                    return value;
+                    // 只采样前3条
+                    if (sampleCount < SAMPLE_COUNT) {
+                        sampleCount++;
+                        LOG.info("[Sample {}/{}] User {} at {}: expose={}, 3s_views={}", 
+                            sampleCount, 
+                            SAMPLE_COUNT,
+                            value.uid,
+                            new SimpleDateFormat("HH:mm:ss").format(new Date(value.updateTime)),
+                            value.viewerExppostCnt1h,
+                            value.viewer3sviewPostCnt1h);
+                    }
                 }
             })
-            .name("Debug Output");
+            .name("Debug Sampling");
 
         // 第五步：转换为Protobuf并写入Redis
-        DataStream<Tuple2<String, byte[]>> dataStream = aggregatedStream
+        DataStream<Tuple2<String, byte[]>> dataStream = processedStream
             .map(new MapFunction<UserFeatureAggregation, Tuple2<String, byte[]>>() {
                 @Override
                 public Tuple2<String, byte[]> map(UserFeatureAggregation agg) throws Exception {
