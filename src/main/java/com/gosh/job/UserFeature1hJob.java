@@ -120,28 +120,15 @@ public class UserFeature1hJob {
         // 打印聚合结果用于调试
         aggregatedStream
             .map(new MapFunction<UserFeatureAggregation, UserFeatureAggregation>() {
-                private static final int MAX_PRINT_COUNT = 3;  // 每个窗口最多打印3条
-                private long lastWindowTime = 0;  // 用于跟踪窗口时间
-                private int currentWindowCount = 0;  // 当前窗口已打印的数量
+                private final java.util.Random random = new java.util.Random();
                 
                 @Override
                 public UserFeatureAggregation map(UserFeatureAggregation value) throws Exception {
-                    // 检查是否是新的窗口
-                    long currentWindowTime = value.updateTime / 60000 * 60000; // 向下取整到分钟
-                    if (currentWindowTime != lastWindowTime) {
-                        // 新窗口，重置计数
-                        lastWindowTime = currentWindowTime;
-                        currentWindowCount = 0;
-                        System.out.println("\n=== New Window at " + 
-                            new SimpleDateFormat("HH:mm:ss").format(new Date(currentWindowTime)) + " ===");
-                    }
-
-                    // 只打印前3条
-                    if (currentWindowCount < MAX_PRINT_COUNT) {
-                        currentWindowCount++;
+                    // 1%的概率打印
+                    if (random.nextInt(100) == 0) {
                         StringBuilder sb = new StringBuilder();
-                        sb.append(String.format("[%d/%d] User %d Stats:\n", 
-                            currentWindowCount, MAX_PRINT_COUNT,
+                        sb.append(String.format("\n[%s] User %d Stats:\n", 
+                            new SimpleDateFormat("HH:mm:ss").format(new Date(value.updateTime)),
                             value.uid));
 
                         // 只有当有数据时才打印相应的统计
@@ -159,10 +146,6 @@ public class UserFeature1hJob {
                         }
 
                         System.out.println(sb.toString());
-                    } else if (currentWindowCount == MAX_PRINT_COUNT) {
-                        // 在达到限制时打印一条提示信息
-                        currentWindowCount++; // 增加计数以避免重复打印此消息
-                        System.out.println("... more results in this window ...\n");
                     }
                     
                     return value;

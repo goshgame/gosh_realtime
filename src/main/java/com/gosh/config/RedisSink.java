@@ -174,31 +174,26 @@ public class RedisSink<T> extends RichSinkFunction<T> {
                 return;
             }
 
-//            System.out.println("写redis前：key ->" + key + " value ->" + value);
             Tuple2<String, byte[]> stringStringTuple2 = new Tuple2<>("", value);
             switch (command.toUpperCase()) {
                 case "SET":
-                    System.out.println("执行SET命令：key ->" + key + " value ->" + value);
+                    LOG.debug("Writing to Redis - key: {}", key);
                     commands.set(key, stringStringTuple2);
                     break;
                 case "LPUSH":
-                    LOG.info("执行LPUSH命令: key={}, value={}", config.getKeyPattern(), value);
+                    LOG.debug("LPUSH to Redis - key: {}", config.getKeyPattern());
                     commands.lpush(config.getKeyPattern(), stringStringTuple2);
                     break;
                 case "RPUSH":
-                    LOG.info("执行RPUSH命令: key={}, value={}", config.getKeyPattern(), value);
-
+                    LOG.debug("RPUSH to Redis - key: {}", config.getKeyPattern());
                     commands.rpush(config.getKeyPattern(), stringStringTuple2);
                     break;
                 case "SADD":
-                    LOG.info("执行SADD命令: key={}, value={}", config.getKeyPattern(), value);
-
+                    LOG.debug("SADD to Redis - key: {}", config.getKeyPattern());
                     commands.sadd(config.getKeyPattern(), stringStringTuple2);
                     break;
                 case "HSET":
-                    LOG.info("执行HSET命令: key={}, value={}", config.getKeyPattern(), value);
-
-                    //String field = fieldExtractor.apply(value);
+                    LOG.debug("HSET to Redis - key: {}", config.getKeyPattern());
                     commands.hset(config.getKeyPattern(), config.getKeyPattern(), stringStringTuple2);
                     break;
                 default:
@@ -221,24 +216,26 @@ public class RedisSink<T> extends RichSinkFunction<T> {
                 return;
             }
 
-
             Tuple2<String, byte[]> stringStringTuple2 = new Tuple2<>(key, value);
-            System.out.println("写redis前：" + stringStringTuple2);
             switch (command.toUpperCase()) {
                 case "SET":
+                    LOG.debug("Writing to Redis cluster - key: {}", key);
                     commands.set(key, stringStringTuple2);
                     break;
                 case "LPUSH":
+                    LOG.debug("LPUSH to Redis cluster - key: {}", config.getKeyPattern());
                     commands.lpush(config.getKeyPattern(), stringStringTuple2);
                     break;
                 case "RPUSH":
+                    LOG.debug("RPUSH to Redis cluster - key: {}", config.getKeyPattern());
                     commands.rpush(config.getKeyPattern(), stringStringTuple2);
                     break;
                 case "SADD":
+                    LOG.debug("SADD to Redis cluster - key: {}", config.getKeyPattern());
                     commands.sadd(config.getKeyPattern(), stringStringTuple2);
                     break;
                 case "HSET":
-                    //String field = fieldExtractor.apply(message);
+                    LOG.debug("HSET to Redis cluster - key: {}", config.getKeyPattern());
                     commands.hset(config.getKeyPattern(), key, stringStringTuple2);
                     break;
                 default:
