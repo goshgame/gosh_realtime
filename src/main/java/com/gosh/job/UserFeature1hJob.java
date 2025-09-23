@@ -111,8 +111,8 @@ public class UserFeature1hJob {
                 }
             })
             .window(SlidingProcessingTimeWindows.of(
-                Time.minutes(5),  // 窗口大小5分钟，便于测试
-                Time.minutes(1)   // 滑动间隔1分钟
+                Time.minutes(60),  // 窗口大小1小时，便于测试
+                Time.minutes(2)   // 滑动间隔2分钟
             ))
             .aggregate(new UserFeatureAggregator())
             .name("User Feature Aggregation");
@@ -124,8 +124,8 @@ public class UserFeature1hJob {
                 
                 @Override
                 public UserFeatureAggregation map(UserFeatureAggregation value) throws Exception {
-                    // 万分之一概率打印
-                    if (random.nextInt(10000) == 0) {
+                    // 百万分之一概率打印
+                    if (random.nextInt(1000000) == 0) {
                         StringBuilder sb = new StringBuilder();
                         sb.append(String.format("\n[%s] User %d Stats:\n", 
                             new SimpleDateFormat("HH:mm:ss").format(new Date(value.updateTime)),
