@@ -23,6 +23,7 @@ public class RedisSingleConnectionManager implements RedisConnectionManager {
     private final RedisConfig config;
     private final RedisClient redisClient;
     private final ExecutorService threadPool;
+    private final ScheduledExecutorService retryScheduler;
     private final String connectionKey;
     private StatefulRedisConnection<String, Tuple2<String, byte[]>> connection;
 
@@ -31,6 +32,11 @@ public class RedisSingleConnectionManager implements RedisConnectionManager {
         this.connectionKey = getConnectionKey(config);
         this.redisClient = createClient(config);
         this.threadPool = createThreadPool(config);
+        this.retryScheduler = Executors.newSingleThreadScheduledExecutor(r -> {
+            Thread t = new Thread(r, "redis-retry-scheduler");
+            t.setDaemon(true);
+            return t;
+        });
         // 初始化连接（只创建一次）
         this.connection = redisClient.connect(new StringTupleCodec());
     }
@@ -188,6 +194,12 @@ public class RedisSingleConnectionManager implements RedisConnectionManager {
                 LOG.warn("尚有 {} 个未完成的任务被强制终止", remaining.size());
             }
 
+            // 关闭重试调度器
+            retryScheduler.shutdown();
+            if (!retryScheduler.awaitTermination(5, TimeUnit.SECONDS)) {
+                retryScheduler.shutdownNow();
+            }
+
             // 关闭redis 连接
             if (connection != null) {
                 connection.close();
@@ -285,10 +297,8 @@ public class RedisSingleConnectionManager implements RedisConnectionManager {
                         long backoff = (long) (Math.pow(2, currentAttempt) * 100); // 指数退避
                         LOG.warn("Operation failed, retrying in {}ms (attempt {}/{})", backoff, currentAttempt + 1, maxRetries, ex);
 
-                        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-                        scheduler.schedule(() -> {
+                        retryScheduler.schedule(() -> {
                             retryOperation(operation, maxRetries, currentAttempt + 1, resultFuture);
-                            scheduler.shutdown();
                         }, backoff, TimeUnit.MILLISECONDS);
                     } else {
                         resultFuture.completeExceptionally(ex);
