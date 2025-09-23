@@ -120,28 +120,51 @@ public class UserFeature1hJob {
         // 打印聚合结果用于调试
         aggregatedStream
             .map(new MapFunction<UserFeatureAggregation, UserFeatureAggregation>() {
+                private static final int MAX_PRINT_COUNT = 3;  // 每个窗口最多打印3条
+                private long lastWindowTime = 0;  // 用于跟踪窗口时间
+                private int currentWindowCount = 0;  // 当前窗口已打印的数量
+                
                 @Override
                 public UserFeatureAggregation map(UserFeatureAggregation value) throws Exception {
-                    StringBuilder sb = new StringBuilder();
-                    sb.append(String.format("\n[%s] User %d Stats:\n", 
-                        new SimpleDateFormat("HH:mm:ss").format(new Date(value.updateTime)),
-                        value.uid));
-
-                    // 只有当有数据时才打印相应的统计
-                    if (value.viewerExppostCnt1h > 0) {
-                        sb.append(String.format("- Expose: %d posts\n", value.viewerExppostCnt1h));
-                    }
-                    if (value.viewer3sviewPostCnt1h > 0) {
-                        sb.append(String.format("- 3s Views: %d posts\n", value.viewer3sviewPostCnt1h));
-                    }
-                    if (!value.viewerLikePostHis1h.isEmpty()) {
-                        sb.append("- Like history: ").append(value.viewerLikePostHis1h).append("\n");
-                    }
-                    if (!value.viewerFollowPostHis1h.isEmpty()) {
-                        sb.append("- Follow history: ").append(value.viewerFollowPostHis1h).append("\n");
+                    // 检查是否是新的窗口
+                    long currentWindowTime = value.updateTime / 60000 * 60000; // 向下取整到分钟
+                    if (currentWindowTime != lastWindowTime) {
+                        // 新窗口，重置计数
+                        lastWindowTime = currentWindowTime;
+                        currentWindowCount = 0;
+                        System.out.println("\n=== New Window at " + 
+                            new SimpleDateFormat("HH:mm:ss").format(new Date(currentWindowTime)) + " ===");
                     }
 
-                    System.out.println(sb.toString());
+                    // 只打印前3条
+                    if (currentWindowCount < MAX_PRINT_COUNT) {
+                        currentWindowCount++;
+                        StringBuilder sb = new StringBuilder();
+                        sb.append(String.format("[%d/%d] User %d Stats:\n", 
+                            currentWindowCount, MAX_PRINT_COUNT,
+                            value.uid));
+
+                        // 只有当有数据时才打印相应的统计
+                        if (value.viewerExppostCnt1h > 0) {
+                            sb.append(String.format("- Expose: %d posts\n", value.viewerExppostCnt1h));
+                        }
+                        if (value.viewer3sviewPostCnt1h > 0) {
+                            sb.append(String.format("- 3s Views: %d posts\n", value.viewer3sviewPostCnt1h));
+                        }
+                        if (!value.viewerLikePostHis1h.isEmpty()) {
+                            sb.append("- Like history: ").append(value.viewerLikePostHis1h).append("\n");
+                        }
+                        if (!value.viewerFollowPostHis1h.isEmpty()) {
+                            sb.append("- Follow history: ").append(value.viewerFollowPostHis1h).append("\n");
+                        }
+
+                        System.out.println(sb.toString());
+                    } else if (currentWindowCount == MAX_PRINT_COUNT) {
+                        // 在达到限制时打印一条提示信息
+                        currentWindowCount++; // 增加计数以避免重复打印此消息
+                        System.out.println("... more results in this window ...\n");
+                    }
+                    
                     return value;
                 }
             })

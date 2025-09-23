@@ -174,7 +174,7 @@ public class RedisSink<T> extends RichSinkFunction<T> {
                 return;
             }
 
-            System.out.println("写redis前：key ->" + key + " value ->" + value);
+//            System.out.println("写redis前：key ->" + key + " value ->" + value);
             Tuple2<String, byte[]> stringStringTuple2 = new Tuple2<>("", value);
             switch (command.toUpperCase()) {
                 case "SET":
