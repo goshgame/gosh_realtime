@@ -125,55 +125,109 @@ public class UserFeatureCommon {
     public static class ExposeEventParser implements FlatMapFunction<String, PostExposeEvent> {
         @Override
         public void flatMap(String value, Collector<PostExposeEvent> out) throws Exception {
+            if (value == null || value.isEmpty()) {
+                LOG.warn("Empty input value");
+                return;
+            }
+
             try {
+                LOG.debug("Processing expose event: {}", value);
                 JsonNode rootNode = objectMapper.readTree(value);
 
-                // 由于上游已经预过滤，这里只需要确认event_type
-                if (!rootNode.has("event_type") || rootNode.get("event_type").asInt() != 16) {
+                // 检查event_type
+                if (!rootNode.has("event_type")) {
+                    LOG.warn("Missing event_type field");
                     return;
                 }
 
-                // 解析post_expose字段
-                if (!rootNode.has("post_expose")) {
-                    LOG.warn("Missing post_expose field in expose event: {}", value);
+                int eventType = rootNode.get("event_type").asInt();
+                if (eventType != 16) {
+                    LOG.debug("Skipping non-expose event: event_type={}", eventType);
                     return;
                 }
 
-                JsonNode exposeNode = rootNode.get("post_expose");
-                long uid = exposeNode.has("uid") ? exposeNode.get("uid").asLong() : 0;
-                long createdAt = exposeNode.has("created_at") ? exposeNode.get("created_at").asLong() : 0;
+                // 检查post_expose字段
+                JsonNode exposeNode = rootNode.path("post_expose");
+                if (exposeNode.isMissingNode()) {
+                    LOG.warn("Missing post_expose field");
+                    return;
+                }
 
-                if (uid == 0) {
-                    LOG.warn("Invalid uid in expose event: {}", value);
+                // 解析uid和created_at
+                JsonNode uidNode = exposeNode.path("uid");
+                if (uidNode.isMissingNode()) {
+                    LOG.warn("Missing uid field");
+                    return;
+                }
+                long uid = uidNode.asLong();
+                if (uid <= 0) {
+                    LOG.warn("Invalid uid: {}", uid);
+                    return;
+                }
+
+                long createdAt = exposeNode.path("created_at").asLong(0);
+                if (createdAt <= 0) {
+                    LOG.warn("Invalid created_at: {}", createdAt);
+                    return;
+                }
+
+                // 解析list字段
+                JsonNode listNode = exposeNode.path("list");
+                if (listNode.isMissingNode() || !listNode.isArray()) {
+                    LOG.warn("Missing or invalid list field");
                     return;
                 }
 
                 List<PostExposeInfo> infoList = new ArrayList<>();
-                if (exposeNode.has("list")) {
-                    JsonNode listNode = exposeNode.get("list");
-                    for (JsonNode itemNode : listNode) {
+                for (JsonNode itemNode : listNode) {
+                    try {
                         PostExposeInfo info = new PostExposeInfo();
-                        info.postId = itemNode.has("post_id") ? Long.parseLong(itemNode.get("post_id").asText()) : 0;
-                        info.exposedPos = itemNode.has("exposed_pos") ? itemNode.get("exposed_pos").asInt() : 0;
-                        info.expoTime = itemNode.has("expo_time") ? itemNode.get("expo_time").asLong() : 0;
-                        info.recToken = itemNode.has("rec_token") ? itemNode.get("rec_token").asText() : "";
-
-                        if (info.postId > 0) {
-                            infoList.add(info);
+                        
+                        // 解析post_id
+                        JsonNode postIdNode = itemNode.path("post_id");
+                        if (!postIdNode.isMissingNode()) {
+                            String postIdStr = postIdNode.asText();
+                            try {
+                                info.postId = Long.parseLong(postIdStr);
+                            } catch (NumberFormatException e) {
+                                LOG.warn("Invalid post_id format: {}", postIdStr);
+                                continue;
+                            }
                         }
+
+                        if (info.postId <= 0) {
+                            LOG.warn("Invalid post_id: {}", info.postId);
+                            continue;
+                        }
+
+                        // 解析其他字段
+                        info.exposedPos = itemNode.path("exposed_pos").asInt(0);
+                        info.expoTime = itemNode.path("expo_time").asLong(0);
+                        info.recToken = itemNode.path("rec_token").asText("");
+
+                        infoList.add(info);
+                        LOG.debug("Parsed expose info: postId={}, recToken={}", info.postId, info.recToken);
+                    } catch (Exception e) {
+                        LOG.warn("Failed to parse list item: {}", itemNode, e);
                     }
                 }
 
-                if (!infoList.isEmpty()) {
-                    PostExposeEvent event = new PostExposeEvent();
-                    event.uid = uid;
-                    event.infoList = infoList;
-                    event.createdAt = createdAt;
-                    out.collect(event);
+                if (infoList.isEmpty()) {
+                    LOG.warn("No valid items found in list");
+                    return;
                 }
+
+                // 创建并输出事件
+                PostExposeEvent event = new PostExposeEvent();
+                event.uid = uid;
+                event.infoList = infoList;
+                event.createdAt = createdAt;
+                LOG.debug("Emitting expose event: uid={}, items={}", uid, infoList.size());
+                out.collect(event);
 
             } catch (Exception e) {
                 LOG.error("Failed to parse expose event: {}", value, e);
+                LOG.error("Exception details:", e);
             }
         }
     }
@@ -184,70 +238,127 @@ public class UserFeatureCommon {
     public static class ViewEventParser implements FlatMapFunction<String, PostViewEvent> {
         @Override
         public void flatMap(String value, Collector<PostViewEvent> out) throws Exception {
+            if (value == null || value.isEmpty()) {
+                LOG.warn("Empty input value");
+                return;
+            }
+
             try {
+                LOG.debug("Processing view event: {}", value);
                 JsonNode rootNode = objectMapper.readTree(value);
 
-                // 由于上游已经预过滤，这里只需要确认event_type
-                if (!rootNode.has("event_type") || rootNode.get("event_type").asInt() != 8) {
+                // 检查event_type
+                if (!rootNode.has("event_type")) {
+                    LOG.warn("Missing event_type field");
                     return;
                 }
 
-                // 解析post_view字段
-                if (!rootNode.has("post_view")) {
-                    LOG.warn("Missing post_view field in view event: {}", value);
+                int eventType = rootNode.get("event_type").asInt();
+                if (eventType != 8) {
+                    LOG.debug("Skipping non-view event: event_type={}", eventType);
                     return;
                 }
 
-                JsonNode viewNode = rootNode.get("post_view");
-                long uid = viewNode.has("uid") ? viewNode.get("uid").asLong() : 0;
-                long createdAt = viewNode.has("created_at") ? viewNode.get("created_at").asLong() : 0;
+                // 检查post_view字段
+                JsonNode viewNode = rootNode.path("post_view");
+                if (viewNode.isMissingNode()) {
+                    LOG.warn("Missing post_view field");
+                    return;
+                }
 
-                if (uid == 0) {
-                    LOG.warn("Invalid uid in view event: {}", value);
+                // 解析uid和created_at
+                JsonNode uidNode = viewNode.path("uid");
+                if (uidNode.isMissingNode()) {
+                    LOG.warn("Missing uid field");
+                    return;
+                }
+                long uid = uidNode.asLong();
+                if (uid <= 0) {
+                    LOG.warn("Invalid uid: {}", uid);
+                    return;
+                }
+
+                long createdAt = viewNode.path("created_at").asLong(0);
+                if (createdAt <= 0) {
+                    LOG.warn("Invalid created_at: {}", createdAt);
+                    return;
+                }
+
+                // 解析list字段
+                JsonNode listNode = viewNode.path("list");
+                if (listNode.isMissingNode() || !listNode.isArray()) {
+                    LOG.warn("Missing or invalid list field");
                     return;
                 }
 
                 List<PostViewInfo> infoList = new ArrayList<>();
-                if (viewNode.has("list")) {
-                    JsonNode listNode = viewNode.get("list");
-                    for (JsonNode itemNode : listNode) {
+                for (JsonNode itemNode : listNode) {
+                    try {
                         PostViewInfo info = new PostViewInfo();
-                        info.postId = itemNode.has("post_id") ? Long.parseLong(itemNode.get("post_id").asText()) : 0;
-                        info.postType = itemNode.has("post_type") ? itemNode.get("post_type").asInt() : 0;
-                        info.standingTime = itemNode.has("standing_time") ? itemNode.get("standing_time").floatValue() : 0;
-                        info.progressTime = itemNode.has("progress_time") ? itemNode.get("progress_time").floatValue() : 0;
-                        info.author = itemNode.has("author") ? itemNode.get("author").asLong() : 0;
-                        info.viewer = itemNode.has("viewer") ? itemNode.get("viewer").asLong() : 0;
-                        info.recToken = itemNode.has("rec_token") ? itemNode.get("rec_token").asText() : "";
+                        
+                        // 解析post_id
+                        JsonNode postIdNode = itemNode.path("post_id");
+                        if (!postIdNode.isMissingNode()) {
+                            String postIdStr = postIdNode.asText();
+                            try {
+                                info.postId = Long.parseLong(postIdStr);
+                            } catch (NumberFormatException e) {
+                                LOG.warn("Invalid post_id format: {}", postIdStr);
+                                continue;
+                            }
+                        }
+
+                        if (info.postId <= 0) {
+                            LOG.warn("Invalid post_id: {}", info.postId);
+                            continue;
+                        }
+
+                        // 解析其他字段
+                        info.postType = itemNode.path("post_type").asInt(0);
+                        info.standingTime = itemNode.path("standing_time").floatValue();
+                        info.progressTime = itemNode.path("progress_time").floatValue();
+                        info.author = itemNode.path("author").asLong(0);
+                        info.viewer = itemNode.path("viewer").asLong(0);
+                        info.recToken = itemNode.path("rec_token").asText("");
 
                         // 解析interaction数组
-                        if (itemNode.has("interaction")) {
-                            JsonNode interactionNode = itemNode.get("interaction");
+                        JsonNode interactionNode = itemNode.path("interaction");
+                        if (!interactionNode.isMissingNode() && interactionNode.isArray()) {
                             List<Integer> interactions = new ArrayList<>();
-                            if (interactionNode.isArray()) {
-                                for (JsonNode intNode : interactionNode) {
+                            for (JsonNode intNode : interactionNode) {
+                                try {
                                     interactions.add(intNode.asInt());
+                                } catch (Exception e) {
+                                    LOG.warn("Invalid interaction value: {}", intNode);
                                 }
                             }
                             info.interaction = interactions;
                         }
 
-                        if (info.postId > 0) {
-                            infoList.add(info);
-                        }
+                        infoList.add(info);
+                        LOG.debug("Parsed view info: postId={}, postType={}, recToken={}", 
+                            info.postId, info.postType, info.recToken);
+                    } catch (Exception e) {
+                        LOG.warn("Failed to parse list item: {}", itemNode, e);
                     }
                 }
 
-                if (!infoList.isEmpty()) {
-                    PostViewEvent event = new PostViewEvent();
-                    event.uid = uid;
-                    event.infoList = infoList;
-                    event.createdAt = createdAt;
-                    out.collect(event);
+                if (infoList.isEmpty()) {
+                    LOG.warn("No valid items found in list");
+                    return;
                 }
+
+                // 创建并输出事件
+                PostViewEvent event = new PostViewEvent();
+                event.uid = uid;
+                event.infoList = infoList;
+                event.createdAt = createdAt;
+                LOG.debug("Emitting view event: uid={}, items={}", uid, infoList.size());
+                out.collect(event);
 
             } catch (Exception e) {
                 LOG.error("Failed to parse view event: {}", value, e);
+                LOG.error("Exception details:", e);
             }
         }
     }

@@ -120,11 +120,15 @@ public class ItemFeature1hJob {
             .name("Sample Debug Output");
 
         // 第五步：转换为Protobuf并写入Redis
-        DataStream<byte[]> dataStream = aggregatedStream
-            .map(new MapFunction<ItemFeature1hAggregation, byte[]>() {
+        DataStream<Tuple2<String, byte[]>> dataStream = aggregatedStream
+            .map(new MapFunction<ItemFeature1hAggregation, Tuple2<String, byte[]>>() {
                 @Override
-                public byte[] map(ItemFeature1hAggregation agg) throws Exception {
-                    return RecFeature.RecPostFeature.newBuilder()
+                public Tuple2<String, byte[]> map(ItemFeature1hAggregation agg) throws Exception {
+                    // 构建Redis key
+                    String redisKey = PREFIX + agg.postId + SUFFIX;
+                    
+                    // 构建Protobuf
+                    byte[] value = RecFeature.RecPostFeature.newBuilder()
                         .setPostId(agg.postId)
                         // 1小时曝光特征
                         .setPostExpCnt1H(agg.postExpCnt1h)
@@ -143,6 +147,8 @@ public class ItemFeature1hJob {
                         .setPostPosinterCnt1H(agg.postPosinterCnt1h)
                         .build()
                         .toByteArray();
+                    
+                    return new Tuple2<>(redisKey, value);
                 }
             })
             .name("Aggregation to Protobuf Bytes");
@@ -153,9 +159,7 @@ public class ItemFeature1hJob {
             dataStream,
             redisConfig,
             false, // 异步写入
-            100,  // 批量大小
-            RecFeature.RecPostFeature.class,
-            feature -> PREFIX + feature.getPostId() + SUFFIX
+            100   // 批量大小
         );
 
         // 执行任务
