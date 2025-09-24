@@ -29,14 +29,13 @@ public interface RedisConnectionManager {
     StatefulConnection<String, Tuple2<String, byte[]>> getRedisConnection();
 
     <T> CompletableFuture<T> executeAsync(Function<RedisCommands<String, Tuple2<String, byte[]>>, T> operation);
-
     <T> CompletableFuture<T> executeAsync(Function<RedisCommands<String, Tuple2<String, byte[]>>, T> operation, String threadPoolName);
-
     <T> CompletableFuture<T> executeClusterAsync(Function<RedisAdvancedClusterCommands<String, Tuple2<String, byte[]>>, T> operation);
     <T> CompletableFuture<T> executeClusterAsync(Function<RedisAdvancedClusterCommands<String, Tuple2<String, byte[]>>, T> operation, String threadPoolName);
-
     <T> CompletableFuture<T> executeWithRetry(Supplier<CompletableFuture<T>> operation, int maxRetries);
+
     void shutdown();
+
     static RedisConnectionManager getInstance(RedisConfig config) {
         if (config.isClusterMode()) {
             return new RedisClusterConnectionManager(config);
