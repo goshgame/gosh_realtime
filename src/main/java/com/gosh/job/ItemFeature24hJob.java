@@ -40,7 +40,7 @@ public class ItemFeature24hJob {
     public static void main(String[] args) throws Exception {
         // 第一步：创建flink环境
         StreamExecutionEnvironment env = FlinkEnvUtil.createStreamExecutionEnvironment();
-        env.setParallelism(1);
+//        env.setParallelism(1);
         
         // 第二步：创建Source，Kafka环境
         KafkaSource<String> inputTopic = KafkaEnvUtil.createKafkaSource(
@@ -103,41 +103,41 @@ public class ItemFeature24hJob {
             .name("Item Feature 24h Aggregation");
 
         // 打印聚合结果用于调试（采样）
-        aggregatedStream
-            .process(new ProcessFunction<ItemFeature24hAggregation, ItemFeature24hAggregation>() {
-                private static final long SAMPLE_INTERVAL = 60000; // 采样间隔1分钟
-                private static final int SAMPLE_COUNT = 3; // 每次采样3条
-                private transient long lastSampleTime;
-                private transient int sampleCount;
-
-                @Override
-                public void open(Configuration parameters) throws Exception {
-                    lastSampleTime = 0;
-                    sampleCount = 0;
-                }
-
-                @Override
-                public void processElement(ItemFeature24hAggregation value, Context ctx, Collector<ItemFeature24hAggregation> out) throws Exception {
-                    long now = System.currentTimeMillis();
-                    if (now - lastSampleTime > SAMPLE_INTERVAL) {
-                        lastSampleTime = now - (now % SAMPLE_INTERVAL);
-                        sampleCount = 0;
-                    }
-                    if (sampleCount < SAMPLE_COUNT) {
-                        sampleCount++;
-                        LOG.info("[Sample {}/{}] postId {} at {}: exp24h={}, 3sview24h={}, 8sview24h={}, like24h={}",
-                            sampleCount,
-                            SAMPLE_COUNT,
-                            value.postId,
-                            new SimpleDateFormat("HH:mm:ss").format(new Date()),
-                            value.postExpCnt24h,
-                            value.post3sviewCnt24h,
-                            value.post8sviewCnt24h,
-                            value.postLikeCnt24h);
-                    }
-                }
-            })
-            .name("Debug Sampling");
+//        aggregatedStream
+//            .process(new ProcessFunction<ItemFeature24hAggregation, ItemFeature24hAggregation>() {
+//                private static final long SAMPLE_INTERVAL = 60000; // 采样间隔1分钟
+//                private static final int SAMPLE_COUNT = 3; // 每次采样3条
+//                private transient long lastSampleTime;
+//                private transient int sampleCount;
+//
+//                @Override
+//                public void open(Configuration parameters) throws Exception {
+//                    lastSampleTime = 0;
+//                    sampleCount = 0;
+//                }
+//
+//                @Override
+//                public void processElement(ItemFeature24hAggregation value, Context ctx, Collector<ItemFeature24hAggregation> out) throws Exception {
+//                    long now = System.currentTimeMillis();
+//                    if (now - lastSampleTime > SAMPLE_INTERVAL) {
+//                        lastSampleTime = now - (now % SAMPLE_INTERVAL);
+//                        sampleCount = 0;
+//                    }
+//                    if (sampleCount < SAMPLE_COUNT) {
+//                        sampleCount++;
+//                        LOG.info("[Sample {}/{}] postId {} at {}: exp24h={}, 3sview24h={}, 8sview24h={}, like24h={}",
+//                            sampleCount,
+//                            SAMPLE_COUNT,
+//                            value.postId,
+//                            new SimpleDateFormat("HH:mm:ss").format(new Date()),
+//                            value.postExpCnt24h,
+//                            value.post3sviewCnt24h,
+//                            value.post8sviewCnt24h,
+//                            value.postLikeCnt24h);
+//                    }
+//                }
+//            })
+//            .name("Debug Sampling");
 
         // 第五步：转换为Protobuf并写入Redis
         DataStream<Tuple2<String, byte[]>> dataStream = aggregatedStream
