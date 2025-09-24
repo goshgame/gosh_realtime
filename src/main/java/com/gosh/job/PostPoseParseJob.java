@@ -71,6 +71,7 @@ public class PostPoseParseJob {
                             return;
                         }
 
+
                         // 遍历list中的每个元素，创建对应的ParsedPostEvent
                         for (PostEvent.PostItem item : event.getPostExpose().getList()) {
                             ParsedPostEvent parsed = new ParsedPostEvent();

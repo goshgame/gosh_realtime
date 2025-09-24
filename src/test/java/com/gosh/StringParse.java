@@ -2,6 +2,7 @@ package com.gosh;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gosh.entity.ParsedPostEvent;
 import com.gosh.entity.PostEvent;
 
 public class StringParse {
@@ -10,6 +11,51 @@ public class StringParse {
         ObjectMapper objectMapper = new ObjectMapper();
         PostEvent postEvent = objectMapper.readValue(line, PostEvent.class);
         System.out.println(postEvent);
+
+
+
+        for (PostEvent.PostItem item : postEvent.getPostExpose().getList()) {
+            ParsedPostEvent parsed = new ParsedPostEvent();
+
+            // 设置event_type
+            parsed.setEventType(postEvent.getEventType());
+
+            // 设置post item相关字段
+            parsed.setPostId(item.getPostId());
+            parsed.setExposedPos(item.getExposedPos());
+            parsed.setExpoTime(item.getExpoTime());
+            parsed.setRecToken(item.getRecToken());
+
+            // 设置post_expose中的其他字段
+            PostEvent.PostExpose expose = postEvent.getPostExpose();
+            parsed.setCreatedAt(expose.getCreatedAt());
+            parsed.setUID(expose.getUid());
+            parsed.setDID(expose.getDID());
+            parsed.setAPP(expose.getAPP());
+            parsed.setSMID(expose.getSMID());
+            parsed.setVersion(expose.getVersion());
+            parsed.setChannel(expose.getChannel());
+            parsed.setPlatform(expose.getPlatform());
+            parsed.setBrand(expose.getBrand());
+            parsed.setOS(expose.getOS());
+            parsed.setModel(expose.getModel());
+            parsed.setLang(expose.getLang());
+            parsed.setCountry(expose.getCountry());
+            parsed.setUS(expose.getUS());
+            parsed.setSeq(expose.getSeq());
+            parsed.setNetwork(expose.getNetwork());
+            parsed.setFeSystem(expose.getFeSystem());
+            parsed.setSubPartnerChannel(expose.getSubPartnerChannel());
+            parsed.setClientIP(expose.getClientIP());
+            parsed.setADID(expose.getADID());
+            parsed.setGAID(expose.getGAID());
+            parsed.setIDFA(expose.getIDFA());
+
+
+            String jsonString = objectMapper.writeValueAsString(parsed);
+            System.out.println(jsonString);
+        }
+
     }
 
 

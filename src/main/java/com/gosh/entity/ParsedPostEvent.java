@@ -1,10 +1,18 @@
 package com.gosh.entity;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * 调整后的解析后Post事件实体类，完全匹配目标JSON格式
  */
+/**
+ * 调整后的解析后Post事件实体类，完全匹配目标JSON格式
+ */
+@JsonAutoDetect(
+        fieldVisibility = JsonAutoDetect.Visibility.ANY,  // 识别所有字段
+        getterVisibility = JsonAutoDetect.Visibility.NONE  // 忽略getter方法生成的键
+)
 public class ParsedPostEvent {
     @JsonProperty("event_type")
     private Integer eventType;
@@ -70,7 +78,6 @@ public class ParsedPostEvent {
     @JsonProperty("IDFA")
     private String IDFA;
 
-    // Getter和Setter方法
     public Integer getEventType() {
         return eventType;
     }
@@ -286,6 +293,7 @@ public class ParsedPostEvent {
     public void setIDFA(String IDFA) {
         this.IDFA = IDFA;
     }
+
 
     @Override
     public String toString() {
