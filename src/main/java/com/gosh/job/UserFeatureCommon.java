@@ -126,55 +126,46 @@ public class UserFeatureCommon {
         @Override
         public void flatMap(String value, Collector<PostExposeEvent> out) throws Exception {
             if (value == null || value.isEmpty()) {
-                LOG.warn("Empty input value");
                 return;
             }
 
             try {
-                LOG.debug("Processing expose event: {}", value);
                 JsonNode rootNode = objectMapper.readTree(value);
 
                 // 检查event_type
                 if (!rootNode.has("event_type")) {
-                    LOG.warn("Missing event_type field");
                     return;
                 }
 
                 int eventType = rootNode.get("event_type").asInt();
                 if (eventType != 16) {
-                    LOG.debug("Skipping non-expose event: event_type={}", eventType);
                     return;
                 }
 
                 // 检查post_expose字段
                 JsonNode exposeNode = rootNode.path("post_expose");
                 if (exposeNode.isMissingNode()) {
-                    LOG.warn("Missing post_expose field");
                     return;
                 }
 
                 // 解析uid和created_at
                 JsonNode uidNode = exposeNode.path("uid");
                 if (uidNode.isMissingNode()) {
-                    LOG.warn("Missing uid field");
                     return;
                 }
                 long uid = uidNode.asLong();
                 if (uid <= 0) {
-                    LOG.warn("Invalid uid: {}", uid);
                     return;
                 }
 
                 long createdAt = exposeNode.path("created_at").asLong(0);
                 if (createdAt <= 0) {
-                    LOG.warn("Invalid created_at: {}", createdAt);
                     return;
                 }
 
                 // 解析list字段
                 JsonNode listNode = exposeNode.path("list");
                 if (listNode.isMissingNode() || !listNode.isArray()) {
-                    LOG.warn("Missing or invalid list field");
                     return;
                 }
 
@@ -190,13 +181,11 @@ public class UserFeatureCommon {
                             try {
                                 info.postId = Long.parseLong(postIdStr);
                             } catch (NumberFormatException e) {
-                                LOG.warn("Invalid post_id format: {}", postIdStr);
                                 continue;
                             }
                         }
 
                         if (info.postId <= 0) {
-                            LOG.warn("Invalid post_id: {}", info.postId);
                             continue;
                         }
 
@@ -206,14 +195,13 @@ public class UserFeatureCommon {
                         info.recToken = itemNode.path("rec_token").asText("");
 
                         infoList.add(info);
-                        LOG.debug("Parsed expose info: postId={}, recToken={}", info.postId, info.recToken);
                     } catch (Exception e) {
-                        LOG.warn("Failed to parse list item: {}", itemNode, e);
+                        // 静默处理单个item的解析错误
+                        continue;
                     }
                 }
 
                 if (infoList.isEmpty()) {
-                    LOG.warn("No valid items found in list");
                     return;
                 }
 
@@ -222,12 +210,10 @@ public class UserFeatureCommon {
                 event.uid = uid;
                 event.infoList = infoList;
                 event.createdAt = createdAt;
-                LOG.debug("Emitting expose event: uid={}, items={}", uid, infoList.size());
                 out.collect(event);
 
             } catch (Exception e) {
-                LOG.error("Failed to parse expose event: {}", value, e);
-                LOG.error("Exception details:", e);
+                LOG.error("Failed to parse expose event", e);
             }
         }
     }
@@ -239,55 +225,46 @@ public class UserFeatureCommon {
         @Override
         public void flatMap(String value, Collector<PostViewEvent> out) throws Exception {
             if (value == null || value.isEmpty()) {
-                LOG.warn("Empty input value");
                 return;
             }
 
             try {
-                LOG.debug("Processing view event: {}", value);
                 JsonNode rootNode = objectMapper.readTree(value);
 
                 // 检查event_type
                 if (!rootNode.has("event_type")) {
-                    LOG.warn("Missing event_type field");
                     return;
                 }
 
                 int eventType = rootNode.get("event_type").asInt();
                 if (eventType != 8) {
-                    LOG.debug("Skipping non-view event: event_type={}", eventType);
                     return;
                 }
 
                 // 检查post_view字段
                 JsonNode viewNode = rootNode.path("post_view");
                 if (viewNode.isMissingNode()) {
-                    LOG.warn("Missing post_view field");
                     return;
                 }
 
                 // 解析uid和created_at
                 JsonNode uidNode = viewNode.path("uid");
                 if (uidNode.isMissingNode()) {
-                    LOG.warn("Missing uid field");
                     return;
                 }
                 long uid = uidNode.asLong();
                 if (uid <= 0) {
-                    LOG.warn("Invalid uid: {}", uid);
                     return;
                 }
 
                 long createdAt = viewNode.path("created_at").asLong(0);
                 if (createdAt <= 0) {
-                    LOG.warn("Invalid created_at: {}", createdAt);
                     return;
                 }
 
                 // 解析list字段
                 JsonNode listNode = viewNode.path("list");
                 if (listNode.isMissingNode() || !listNode.isArray()) {
-                    LOG.warn("Missing or invalid list field");
                     return;
                 }
 
@@ -303,13 +280,11 @@ public class UserFeatureCommon {
                             try {
                                 info.postId = Long.parseLong(postIdStr);
                             } catch (NumberFormatException e) {
-                                LOG.warn("Invalid post_id format: {}", postIdStr);
                                 continue;
                             }
                         }
 
                         if (info.postId <= 0) {
-                            LOG.warn("Invalid post_id: {}", info.postId);
                             continue;
                         }
 
@@ -329,22 +304,21 @@ public class UserFeatureCommon {
                                 try {
                                     interactions.add(intNode.asInt());
                                 } catch (Exception e) {
-                                    LOG.warn("Invalid interaction value: {}", intNode);
+                                    // 静默处理单个交互值的解析错误
+                                    continue;
                                 }
                             }
                             info.interaction = interactions;
                         }
 
                         infoList.add(info);
-                        LOG.debug("Parsed view info: postId={}, postType={}, recToken={}", 
-                            info.postId, info.postType, info.recToken);
                     } catch (Exception e) {
-                        LOG.warn("Failed to parse list item: {}", itemNode, e);
+                        // 静默处理单个item的解析错误
+                        continue;
                     }
                 }
 
                 if (infoList.isEmpty()) {
-                    LOG.warn("No valid items found in list");
                     return;
                 }
 
@@ -353,12 +327,10 @@ public class UserFeatureCommon {
                 event.uid = uid;
                 event.infoList = infoList;
                 event.createdAt = createdAt;
-                LOG.debug("Emitting view event: uid={}, items={}", uid, infoList.size());
                 out.collect(event);
 
             } catch (Exception e) {
-                LOG.error("Failed to parse view event: {}", value, e);
-                LOG.error("Exception details:", e);
+                LOG.error("Failed to parse view event", e);
             }
         }
     }
