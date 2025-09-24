@@ -275,6 +275,11 @@ public class UserFeature1hJob {
         @Override
         public UserFeatureAggregation getResult(UserFeatureCommon.UserFeatureAccumulator accumulator) {
             UserFeatureAggregation result = new UserFeatureAggregation();
+            // 设置用户ID，确保下游Redis key正确
+            result.uid = accumulator.uid;
+            if (result.uid == 0L) {
+                LOG.warn("UserFeatureAggregation uid is 0, check upstream event parsing and keyBy logic");
+            }
             // 曝光特征
             result.viewerExppostCnt1h = accumulator.exposePostIds.size();
             // 注意：由于曝光事件中没有post_type信息，暂时无法统计图片和视频的单独曝光数
