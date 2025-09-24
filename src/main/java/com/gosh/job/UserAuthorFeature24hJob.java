@@ -102,42 +102,42 @@ public class UserAuthorFeature24hJob {
             .name("User-Author Feature 24h Aggregation");
 
         // 打印聚合结果用于调试（采样）
-        aggregatedStream
-            .process(new ProcessFunction<UserAuthorFeature24hAggregation, UserAuthorFeature24hAggregation>() {
-                private static final long SAMPLE_INTERVAL = 60000; // 采样间隔1分钟
-                private static final int SAMPLE_COUNT = 3; // 每次采样3条
-                private transient long lastSampleTime;
-                private transient int sampleCount;
-
-                @Override
-                public void open(Configuration parameters) throws Exception {
-                    lastSampleTime = 0;
-                    sampleCount = 0;
-                }
-
-                @Override
-                public void processElement(UserAuthorFeature24hAggregation value, Context ctx, Collector<UserAuthorFeature24hAggregation> out) throws Exception {
-                    long now = System.currentTimeMillis();
-                    if (now - lastSampleTime > SAMPLE_INTERVAL) {
-                        lastSampleTime = now - (now % SAMPLE_INTERVAL);
-                        sampleCount = 0;
-                    }
-                    if (sampleCount < SAMPLE_COUNT) {
-                        sampleCount++;
-                        LOG.info("[Sample {}/{}] uid {} author {} at {}: exp24h={}, 3sview24h={}, 8sview24h={}, like24h={}",
-                            sampleCount,
-                            SAMPLE_COUNT,
-                            value.uid,
-                            value.author,
-                            new SimpleDateFormat("HH:mm:ss").format(new Date()),
-                            value.userauthorExpCnt24h,
-                            value.userauthor3sviewCnt24h,
-                            value.userauthor8sviewCnt24h,
-                            value.userauthorLikeCnt24h);
-                    }
-                }
-            })
-            .name("Debug Sampling");
+//        aggregatedStream
+//            .process(new ProcessFunction<UserAuthorFeature24hAggregation, UserAuthorFeature24hAggregation>() {
+//                private static final long SAMPLE_INTERVAL = 60000; // 采样间隔1分钟
+//                private static final int SAMPLE_COUNT = 3; // 每次采样3条
+//                private transient long lastSampleTime;
+//                private transient int sampleCount;
+//
+//                @Override
+//                public void open(Configuration parameters) throws Exception {
+//                    lastSampleTime = 0;
+//                    sampleCount = 0;
+//                }
+//
+//                @Override
+//                public void processElement(UserAuthorFeature24hAggregation value, Context ctx, Collector<UserAuthorFeature24hAggregation> out) throws Exception {
+//                    long now = System.currentTimeMillis();
+//                    if (now - lastSampleTime > SAMPLE_INTERVAL) {
+//                        lastSampleTime = now - (now % SAMPLE_INTERVAL);
+//                        sampleCount = 0;
+//                    }
+//                    if (sampleCount < SAMPLE_COUNT) {
+//                        sampleCount++;
+//                        LOG.info("[Sample {}/{}] uid {} author {} at {}: exp24h={}, 3sview24h={}, 8sview24h={}, like24h={}",
+//                            sampleCount,
+//                            SAMPLE_COUNT,
+//                            value.uid,
+//                            value.author,
+//                            new SimpleDateFormat("HH:mm:ss").format(new Date()),
+//                            value.userauthorExpCnt24h,
+//                            value.userauthor3sviewCnt24h,
+//                            value.userauthor8sviewCnt24h,
+//                            value.userauthorLikeCnt24h);
+//                    }
+//                }
+//            })
+//            .name("Debug Sampling");
 
         // 第五步：转换为Protobuf并写入Redis
         DataStream<Tuple2<String, byte[]>> dataStream = aggregatedStream

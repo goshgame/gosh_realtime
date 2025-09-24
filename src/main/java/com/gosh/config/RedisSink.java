@@ -100,7 +100,7 @@ public class RedisSink<T> extends RichSinkFunction<T> {
         Tuple2<String, byte[]> tuple = (Tuple2<String, byte[]>) value;
         String key = tuple.f0;
         byte[] valueStr = tuple.f1;
-        LOG.info("处理数据 - key: {}, value: {}", key, valueStr);
+        // LOG.info("处理数据 - key: {}, value: {}", key, valueStr);
 
         if (async) {
             CompletableFuture<Void> future;
