@@ -57,20 +57,17 @@ public class ItemFeature24hJob {
         // 3.0 预过滤 - 只保留我们需要的事件类型
         DataStream<String> filteredStream = kafkaSource
             .filter(EventFilterUtil.createFastEventTypeFilter(16, 8))
-            .name("Pre-filter Events")
-            .setParallelism(1);
+            .name("Pre-filter Events");
 
         // 3.1 解析曝光事件 (event_type=16)
         SingleOutputStreamOperator<PostExposeEvent> exposeStream = filteredStream
             .flatMap(new UserFeatureCommon.ExposeEventParser())
-            .name("Parse Expose Events")
-            .setParallelism(1);
+            .name("Parse Expose Events");
 
         // 3.2 解析观看事件 (event_type=8)
         SingleOutputStreamOperator<PostViewEvent> viewStream = filteredStream
             .flatMap(new UserFeatureCommon.ViewEventParser())
-            .name("Parse View Events")
-            .setParallelism(1);
+            .name("Parse View Events");
 
         // 3.3 将曝光事件转换为统一的特征事件
         DataStream<UserFeatureEvent> exposeFeatureStream = exposeStream
