@@ -121,7 +121,6 @@ public class UserFeature1hJob {
                     
                     // 构建Protobuf
                     RecFeature.RecUserFeature feature = RecFeature.RecUserFeature.newBuilder()
-                        .setUserId(agg.uid)
                         // 1小时曝光特征
                         .setViewerExppostCnt1H(agg.viewerExppostCnt1h)
                         .setViewerExp1PostCnt1H(agg.viewerExp1PostCnt1h)
@@ -220,8 +219,6 @@ public class UserFeature1hJob {
         @Override
         public UserFeatureAggregation getResult(UserFeatureCommon.UserFeatureAccumulator accumulator) {
             UserFeatureAggregation result = new UserFeatureAggregation();
-            result.uid = accumulator.uid;
-            
             // 曝光特征
             result.viewerExppostCnt1h = accumulator.exposePostIds.size();
             // 注意：由于曝光事件中没有post_type信息，暂时无法统计图片和视频的单独曝光数

@@ -25,6 +25,11 @@ import org.slf4j.LoggerFactory;
 import java.io.Serializable;
 import java.time.Duration;
 import java.util.function.Function;
+import org.apache.flink.configuration.Configuration;
+import org.apache.flink.streaming.api.functions.ProcessFunction;
+import org.apache.flink.util.Collector;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class UserFeature24hJob {
     private static final Logger LOG = LoggerFactory.getLogger(UserFeature24hJob.class);
@@ -34,6 +39,7 @@ public class UserFeature24hJob {
     public static void main(String[] args) throws Exception {
         // 第一步：创建flink环境
         StreamExecutionEnvironment env = FlinkEnvUtil.createStreamExecutionEnvironment();
+        env.setParallelism(1);
         
         // 第二步：创建Source，Kafka环境
         KafkaSource<String> inputTopic = KafkaEnvUtil.createKafkaSource(
@@ -51,19 +57,19 @@ public class UserFeature24hJob {
         DataStream<String> filteredStream = kafkaSource
             .filter(EventFilterUtil.createFastEventTypeFilter(16, 8))
             .name("Pre-filter Events")
-            .setParallelism(8);
+            .setParallelism(1);
 
         // 3.1 解析曝光事件 (event_type=16)
         SingleOutputStreamOperator<PostExposeEvent> exposeStream = filteredStream
             .flatMap(new ExposeEventParser())
             .name("Parse Expose Events")
-            .setParallelism(4);
+            .setParallelism(1);
 
         // 3.2 解析观看事件 (event_type=8)
         SingleOutputStreamOperator<PostViewEvent> viewStream = filteredStream
             .flatMap(new ViewEventParser())
             .name("Parse View Events")
-            .setParallelism(4);
+            .setParallelism(1);
 
         // 3.3 将曝光事件转换为统一的用户特征事件
         DataStream<UserFeatureEvent> exposeFeatureStream = exposeStream
@@ -98,24 +104,41 @@ public class UserFeature24hJob {
             .aggregate(new UserFeature24hAggregator())
             .name("User Feature 24h Aggregation");
 
-        // 打印前3次聚合结果用于调试
+        // 打印聚合结果用于调试（采样）
         aggregatedStream
-            .map(new MapFunction<UserFeature24hAggregation, UserFeature24hAggregation>() {
-                private int counter = 0;
+            .process(new ProcessFunction<UserFeature24hAggregation, UserFeature24hAggregation>() {
+                private static final long SAMPLE_INTERVAL = 60000; // 采样间隔1分钟
+                private static final int SAMPLE_COUNT = 3; // 每次采样3条
+                private transient long lastSampleTime;
+                private transient int sampleCount;
+                
                 @Override
-                public UserFeature24hAggregation map(UserFeature24hAggregation value) throws Exception {
-                    if (counter < 3) {
-                        counter++;
-                        LOG.info("Sample aggregation result {}: uid={}, 24h history lists: 3sview={}, like={}, follow={}", 
-                            counter, value.uid, 
+                public void open(Configuration parameters) throws Exception {
+                    lastSampleTime = 0;
+                    sampleCount = 0;
+                }
+                
+                @Override
+                public void processElement(UserFeature24hAggregation value, Context ctx, Collector<UserFeature24hAggregation> out) throws Exception {
+                    long now = System.currentTimeMillis();
+                    if (now - lastSampleTime > SAMPLE_INTERVAL) {
+                        lastSampleTime = now - (now % SAMPLE_INTERVAL);
+                        sampleCount = 0;
+                    }
+                    if (sampleCount < SAMPLE_COUNT) {
+                        sampleCount++;
+                        LOG.info("[Sample {}/{}] uid {} at {}: 3sviewHis24h={}, likeHis24h={}, followHis24h={}", 
+                            sampleCount, 
+                            SAMPLE_COUNT,
+                            value.uid,
+                            new SimpleDateFormat("HH:mm:ss").format(new Date()),
                             value.viewer3sviewPostHis24h,
                             value.viewerLikePostHis24h,
                             value.viewerFollowPostHis24h);
                     }
-                    return value;
                 }
             })
-            .name("Sample Debug Output");
+            .name("Debug Sampling");
 
         // 第五步：转换为Protobuf并写入Redis
         DataStream<Tuple2<String, byte[]>> dataStream = aggregatedStream
@@ -127,7 +150,6 @@ public class UserFeature24hJob {
                     
                     // 构建Protobuf
                     byte[] value = RecFeature.RecUserFeature.newBuilder()
-                        .setUserId(agg.uid)
                         // 24小时历史记录特征
                         .setViewer3SviewPostHis24H(agg.viewer3sviewPostHis24h)
                         .setViewer5SstandPostHis24H(agg.viewer5sstandPostHis24h)
@@ -157,8 +179,6 @@ public class UserFeature24hJob {
             100   // 批量大小
         );
 
-        kafkaSource.print();
-
         // 执行任务
         env.execute("User Feature 24h Job");
     }
@@ -183,17 +203,17 @@ public class UserFeature24hJob {
             result.uid = accumulator.uid;
             
             // 24小时历史记录特征 - 构建字符串格式
-            result.viewer3sviewPostHis24h = UserFeatureCommon.buildPostHistoryString(accumulator.view3sPostDetails, 20);
-            result.viewer5sstandPostHis24h = UserFeatureCommon.buildPostHistoryString(accumulator.stand5sPostDetails, 20);
-            result.viewerLikePostHis24h = UserFeatureCommon.buildPostListString(accumulator.likePostIds, 20);
-            result.viewerFollowPostHis24h = UserFeatureCommon.buildPostListString(accumulator.followPostIds, 20);
-            result.viewerProfilePostHis24h = UserFeatureCommon.buildPostListString(accumulator.profilePostIds, 20);
-            result.viewerPosinterPostHis24h = UserFeatureCommon.buildPostListString(accumulator.posinterPostIds, 20);
+            result.viewer3sviewPostHis24h = UserFeatureCommon.buildPostHistoryString(accumulator.view3sPostDetails, 10);
+            result.viewer5sstandPostHis24h = UserFeatureCommon.buildPostHistoryString(accumulator.stand5sPostDetails, 10);
+            result.viewerLikePostHis24h = UserFeatureCommon.buildPostListString(accumulator.likePostIds, 10);
+            result.viewerFollowPostHis24h = UserFeatureCommon.buildPostListString(accumulator.followPostIds, 10);
+            result.viewerProfilePostHis24h = UserFeatureCommon.buildPostListString(accumulator.profilePostIds, 10);
+            result.viewerPosinterPostHis24h = UserFeatureCommon.buildPostListString(accumulator.posinterPostIds, 10);
             
             // 作者相关特征 (24小时)
-            result.viewerLikeAuthorHis24h = UserFeatureCommon.buildAuthorListString(accumulator.likeAuthors, 20);
-            result.viewerFollowAuthorHis24h = UserFeatureCommon.buildAuthorListString(accumulator.followAuthors, 20);
-            result.viewerProfileAuthorHis24h = UserFeatureCommon.buildAuthorListString(accumulator.profileAuthors, 20);
+            result.viewerLikeAuthorHis24h = UserFeatureCommon.buildAuthorListString(accumulator.likeAuthors, 10);
+            result.viewerFollowAuthorHis24h = UserFeatureCommon.buildAuthorListString(accumulator.followAuthors, 10);
+            result.viewerProfileAuthorHis24h = UserFeatureCommon.buildAuthorListString(accumulator.profileAuthors, 10);
             
             result.updateTime = System.currentTimeMillis();
             
