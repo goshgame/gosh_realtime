@@ -43,7 +43,7 @@ public class UserFeature1hJob {
         // 第一步：创建flink环境
         StreamExecutionEnvironment env = FlinkEnvUtil.createStreamExecutionEnvironment();
         // 设置全局并行度为1
-        env.setParallelism(1);
+//        env.setParallelism(1);
         System.out.println("Flink environment created with parallelism: " + env.getParallelism());
         
         // 第二步：创建Source，Kafka环境
