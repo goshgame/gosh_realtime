@@ -47,6 +47,8 @@ message RecUserFeature {
 // Item侧特征 (Post特征)
 // Redis Key: rec:item_feature:{post_id}:post1h, rec:item_feature:{post_id}:post24h
 message RecPostFeature {
+    // Post ID
+    int64 post_id = 1;
     
     // 1小时窗口特征
     // 曝光特征
@@ -93,6 +95,10 @@ message RecPostFeature {
 // 用户作者交叉特征
 // Redis Key: rec:user_author_feature:{user_id}_{author_id}:post1h, rec:user_author_feature:{user_id}_{author_id}:post24h
 message RecUserAuthorFeature {
+    // 用户ID
+    int64 user_id = 1;
+    // 作者id
+    int64 author_id =2;
     
     // 过期时间标识 (1h 或 24h)
     string expire_time = 3;

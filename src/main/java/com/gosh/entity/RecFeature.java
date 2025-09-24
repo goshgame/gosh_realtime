@@ -3885,6 +3885,16 @@ public final class RecFeature {
 
     /**
      * <pre>
+     * Post ID
+     * </pre>
+     *
+     * <code>int64 post_id = 1;</code>
+     * @return The postId.
+     */
+    long getPostId();
+
+    /**
+     * <pre>
      * 1小时窗口特征
      * 曝光特征
      * </pre>
@@ -4155,6 +4165,11 @@ public final class RecFeature {
             case 0:
               done = true;
               break;
+            case 8: {
+
+              postId_ = input.readInt64();
+              break;
+            }
             case 80: {
 
               postExpCnt1H_ = input.readInt32();
@@ -4297,6 +4312,21 @@ public final class RecFeature {
       return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_RecPostFeature_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.gosh.entity.RecFeature.RecPostFeature.class, com.gosh.entity.RecFeature.RecPostFeature.Builder.class);
+    }
+
+    public static final int POST_ID_FIELD_NUMBER = 1;
+    private long postId_;
+    /**
+     * <pre>
+     * Post ID
+     * </pre>
+     *
+     * <code>int64 post_id = 1;</code>
+     * @return The postId.
+     */
+    @java.lang.Override
+    public long getPostId() {
+      return postId_;
     }
 
     public static final int POST_EXP_CNT_1H_FIELD_NUMBER = 10;
@@ -4645,6 +4675,9 @@ public final class RecFeature {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
+      if (postId_ != 0L) {
+        output.writeInt64(1, postId_);
+      }
       if (postExpCnt1H_ != 0) {
         output.writeInt32(10, postExpCnt1H_);
       }
@@ -4720,6 +4753,10 @@ public final class RecFeature {
       if (size != -1) return size;
 
       size = 0;
+      if (postId_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(1, postId_);
+      }
       if (postExpCnt1H_ != 0) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(10, postExpCnt1H_);
@@ -4823,6 +4860,8 @@ public final class RecFeature {
       }
       com.gosh.entity.RecFeature.RecPostFeature other = (com.gosh.entity.RecFeature.RecPostFeature) obj;
 
+      if (getPostId()
+          != other.getPostId()) return false;
       if (getPostExpCnt1H()
           != other.getPostExpCnt1H()) return false;
       if (getPost3SviewCnt1H()
@@ -4878,6 +4917,9 @@ public final class RecFeature {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + POST_ID_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getPostId());
       hash = (37 * hash) + POST_EXP_CNT_1H_FIELD_NUMBER;
       hash = (53 * hash) + getPostExpCnt1H();
       hash = (37 * hash) + POST_3SVIEW_CNT_1H_FIELD_NUMBER;
@@ -5060,6 +5102,8 @@ public final class RecFeature {
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        postId_ = 0L;
+
         postExpCnt1H_ = 0;
 
         post3SviewCnt1H_ = 0;
@@ -5130,6 +5174,7 @@ public final class RecFeature {
       @java.lang.Override
       public com.gosh.entity.RecFeature.RecPostFeature buildPartial() {
         com.gosh.entity.RecFeature.RecPostFeature result = new com.gosh.entity.RecFeature.RecPostFeature(this);
+        result.postId_ = postId_;
         result.postExpCnt1H_ = postExpCnt1H_;
         result.post3SviewCnt1H_ = post3SviewCnt1H_;
         result.post8SviewCnt1H_ = post8SviewCnt1H_;
@@ -5200,6 +5245,9 @@ public final class RecFeature {
 
       public Builder mergeFrom(com.gosh.entity.RecFeature.RecPostFeature other) {
         if (other == com.gosh.entity.RecFeature.RecPostFeature.getDefaultInstance()) return this;
+        if (other.getPostId() != 0L) {
+          setPostId(other.getPostId());
+        }
         if (other.getPostExpCnt1H() != 0) {
           setPostExpCnt1H(other.getPostExpCnt1H());
         }
@@ -5292,6 +5340,49 @@ public final class RecFeature {
             mergeFrom(parsedMessage);
           }
         }
+        return this;
+      }
+
+      private long postId_ ;
+      /**
+       * <pre>
+       * Post ID
+       * </pre>
+       *
+       * <code>int64 post_id = 1;</code>
+       * @return The postId.
+       */
+      @java.lang.Override
+      public long getPostId() {
+        return postId_;
+      }
+      /**
+       * <pre>
+       * Post ID
+       * </pre>
+       *
+       * <code>int64 post_id = 1;</code>
+       * @param value The postId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPostId(long value) {
+        
+        postId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Post ID
+       * </pre>
+       *
+       * <code>int64 post_id = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPostId() {
+        
+        postId_ = 0L;
+        onChanged();
         return this;
       }
 
@@ -6305,6 +6396,26 @@ public final class RecFeature {
 
     /**
      * <pre>
+     * 用户ID
+     * </pre>
+     *
+     * <code>int64 user_id = 1;</code>
+     * @return The userId.
+     */
+    long getUserId();
+
+    /**
+     * <pre>
+     * 作者id
+     * </pre>
+     *
+     * <code>int64 author_id = 2;</code>
+     * @return The authorId.
+     */
+    long getAuthorId();
+
+    /**
+     * <pre>
      * 过期时间标识 (1h 或 24h)
      * </pre>
      *
@@ -6536,6 +6647,16 @@ public final class RecFeature {
             case 0:
               done = true;
               break;
+            case 8: {
+
+              userId_ = input.readInt64();
+              break;
+            }
+            case 16: {
+
+              authorId_ = input.readInt64();
+              break;
+            }
             case 26: {
               java.lang.String s = input.readStringRequireUtf8();
 
@@ -6654,6 +6775,36 @@ public final class RecFeature {
       return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_RecUserAuthorFeature_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.gosh.entity.RecFeature.RecUserAuthorFeature.class, com.gosh.entity.RecFeature.RecUserAuthorFeature.Builder.class);
+    }
+
+    public static final int USER_ID_FIELD_NUMBER = 1;
+    private long userId_;
+    /**
+     * <pre>
+     * 用户ID
+     * </pre>
+     *
+     * <code>int64 user_id = 1;</code>
+     * @return The userId.
+     */
+    @java.lang.Override
+    public long getUserId() {
+      return userId_;
+    }
+
+    public static final int AUTHOR_ID_FIELD_NUMBER = 2;
+    private long authorId_;
+    /**
+     * <pre>
+     * 作者id
+     * </pre>
+     *
+     * <code>int64 author_id = 2;</code>
+     * @return The authorId.
+     */
+    @java.lang.Override
+    public long getAuthorId() {
+      return authorId_;
     }
 
     public static final int EXPIRE_TIME_FIELD_NUMBER = 3;
@@ -6958,6 +7109,12 @@ public final class RecFeature {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
+      if (userId_ != 0L) {
+        output.writeInt64(1, userId_);
+      }
+      if (authorId_ != 0L) {
+        output.writeInt64(2, authorId_);
+      }
       if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(expireTime_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 3, expireTime_);
       }
@@ -7018,6 +7175,14 @@ public final class RecFeature {
       if (size != -1) return size;
 
       size = 0;
+      if (userId_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(1, userId_);
+      }
+      if (authorId_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(2, authorId_);
+      }
       if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(expireTime_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, expireTime_);
       }
@@ -7100,6 +7265,10 @@ public final class RecFeature {
       }
       com.gosh.entity.RecFeature.RecUserAuthorFeature other = (com.gosh.entity.RecFeature.RecUserAuthorFeature) obj;
 
+      if (getUserId()
+          != other.getUserId()) return false;
+      if (getAuthorId()
+          != other.getAuthorId()) return false;
       if (!getExpireTime()
           .equals(other.getExpireTime())) return false;
       if (getUserauthorExpCnt1H()
@@ -7145,6 +7314,12 @@ public final class RecFeature {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + USER_ID_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getUserId());
+      hash = (37 * hash) + AUTHOR_ID_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getAuthorId());
       hash = (37 * hash) + EXPIRE_TIME_FIELD_NUMBER;
       hash = (53 * hash) + getExpireTime().hashCode();
       hash = (37 * hash) + USERAUTHOR_EXP_CNT_1H_FIELD_NUMBER;
@@ -7317,6 +7492,10 @@ public final class RecFeature {
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        userId_ = 0L;
+
+        authorId_ = 0L;
+
         expireTime_ = "";
 
         userauthorExpCnt1H_ = 0;
@@ -7377,6 +7556,8 @@ public final class RecFeature {
       @java.lang.Override
       public com.gosh.entity.RecFeature.RecUserAuthorFeature buildPartial() {
         com.gosh.entity.RecFeature.RecUserAuthorFeature result = new com.gosh.entity.RecFeature.RecUserAuthorFeature(this);
+        result.userId_ = userId_;
+        result.authorId_ = authorId_;
         result.expireTime_ = expireTime_;
         result.userauthorExpCnt1H_ = userauthorExpCnt1H_;
         result.userauthor3SviewCnt1H_ = userauthor3SviewCnt1H_;
@@ -7442,6 +7623,12 @@ public final class RecFeature {
 
       public Builder mergeFrom(com.gosh.entity.RecFeature.RecUserAuthorFeature other) {
         if (other == com.gosh.entity.RecFeature.RecUserAuthorFeature.getDefaultInstance()) return this;
+        if (other.getUserId() != 0L) {
+          setUserId(other.getUserId());
+        }
+        if (other.getAuthorId() != 0L) {
+          setAuthorId(other.getAuthorId());
+        }
         if (!other.getExpireTime().isEmpty()) {
           expireTime_ = other.expireTime_;
           onChanged();
@@ -7520,6 +7707,92 @@ public final class RecFeature {
             mergeFrom(parsedMessage);
           }
         }
+        return this;
+      }
+
+      private long userId_ ;
+      /**
+       * <pre>
+       * 用户ID
+       * </pre>
+       *
+       * <code>int64 user_id = 1;</code>
+       * @return The userId.
+       */
+      @java.lang.Override
+      public long getUserId() {
+        return userId_;
+      }
+      /**
+       * <pre>
+       * 用户ID
+       * </pre>
+       *
+       * <code>int64 user_id = 1;</code>
+       * @param value The userId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserId(long value) {
+        
+        userId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户ID
+       * </pre>
+       *
+       * <code>int64 user_id = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserId() {
+        
+        userId_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long authorId_ ;
+      /**
+       * <pre>
+       * 作者id
+       * </pre>
+       *
+       * <code>int64 author_id = 2;</code>
+       * @return The authorId.
+       */
+      @java.lang.Override
+      public long getAuthorId() {
+        return authorId_;
+      }
+      /**
+       * <pre>
+       * 作者id
+       * </pre>
+       *
+       * <code>int64 author_id = 2;</code>
+       * @param value The authorId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAuthorId(long value) {
+        
+        authorId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 作者id
+       * </pre>
+       *
+       * <code>int64 author_id = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearAuthorId() {
+        
+        authorId_ = 0L;
+        onChanged();
         return this;
       }
 
@@ -8409,39 +8682,40 @@ public final class RecFeature {
       "\001(\t\022$\n\034viewer_posinter_post_his_24h\030# \001(" +
       "\t\022\"\n\032viewer_like_author_his_24h\030( \001(\t\022$\n" +
       "\034viewer_follow_author_his_24h\030) \001(\t\022%\n\035v" +
-      "iewer_profile_author_his_24h\030* \001(\t\"\211\005\n\016R" +
-      "ecPostFeature\022\027\n\017post_exp_cnt_1h\030\n \001(\005\022\032" +
-      "\n\022post_3sview_cnt_1h\030\013 \001(\005\022\032\n\022post_8svie" +
-      "w_cnt_1h\030\014 \001(\005\022\033\n\023post_12sview_cnt_1h\030\r " +
-      "\001(\005\022\033\n\023post_20sview_cnt_1h\030\016 \001(\005\022\033\n\023post" +
-      "_5sstand_cnt_1h\030\017 \001(\005\022\034\n\024post_10sstand_c" +
-      "nt_1h\030\020 \001(\005\022\030\n\020post_like_cnt_1h\030\021 \001(\005\022\032\n" +
-      "\022post_follow_cnt_1h\030\022 \001(\005\022\033\n\023post_profil" +
-      "e_cnt_1h\030\023 \001(\005\022\034\n\024post_posinter_cnt_1h\030\024" +
-      " \001(\005\022\030\n\020post_exp_cnt_24h\030\036 \001(\005\022\033\n\023post_3" +
-      "sview_cnt_24h\030\037 \001(\005\022\033\n\023post_8sview_cnt_2" +
-      "4h\030  \001(\005\022\034\n\024post_12sview_cnt_24h\030! \001(\005\022\034" +
-      "\n\024post_20sview_cnt_24h\030\" \001(\005\022\034\n\024post_5ss" +
-      "tand_cnt_24h\030# \001(\005\022\035\n\025post_10sstand_cnt_" +
-      "24h\030$ \001(\005\022\031\n\021post_like_cnt_24h\030% \001(\005\022\033\n\023" +
-      "post_follow_cnt_24h\030& \001(\005\022\034\n\024post_profil" +
-      "e_cnt_24h\030\' \001(\005\022\035\n\025post_posinter_cnt_24h" +
-      "\030( \001(\005\"\323\004\n\024RecUserAuthorFeature\022\023\n\013expir" +
-      "e_time\030\003 \001(\t\022\035\n\025userauthor_exp_cnt_1h\030\n " +
-      "\001(\005\022 \n\030userauthor_3sview_cnt_1h\030\013 \001(\005\022 \n" +
-      "\030userauthor_8sview_cnt_1h\030\014 \001(\005\022!\n\031usera" +
-      "uthor_12sview_cnt_1h\030\r \001(\005\022!\n\031userauthor" +
-      "_20sview_cnt_1h\030\016 \001(\005\022!\n\031userauthor_5sst" +
-      "and_cnt_1h\030\017 \001(\005\022\"\n\032userauthor_10sstand_" +
-      "cnt_1h\030\020 \001(\005\022\036\n\026userauthor_like_cnt_1h\030\021" +
-      " \001(\005\022\036\n\026userauthor_exp_cnt_24h\030\036 \001(\005\022!\n\031" +
-      "userauthor_3sview_cnt_24h\030\037 \001(\005\022!\n\031usera" +
-      "uthor_8sview_cnt_24h\030  \001(\005\022\"\n\032userauthor" +
-      "_12sview_cnt_24h\030! \001(\005\022\"\n\032userauthor_20s" +
-      "view_cnt_24h\030\" \001(\005\022\"\n\032userauthor_5sstand" +
-      "_cnt_24h\030# \001(\005\022#\n\033userauthor_10sstand_cn" +
-      "t_24h\030$ \001(\005\022\037\n\027userauthor_like_cnt_24h\030%" +
-      " \001(\005b\006proto3"
+      "iewer_profile_author_his_24h\030* \001(\t\"\232\005\n\016R" +
+      "ecPostFeature\022\017\n\007post_id\030\001 \001(\003\022\027\n\017post_e" +
+      "xp_cnt_1h\030\n \001(\005\022\032\n\022post_3sview_cnt_1h\030\013 " +
+      "\001(\005\022\032\n\022post_8sview_cnt_1h\030\014 \001(\005\022\033\n\023post_" +
+      "12sview_cnt_1h\030\r \001(\005\022\033\n\023post_20sview_cnt" +
+      "_1h\030\016 \001(\005\022\033\n\023post_5sstand_cnt_1h\030\017 \001(\005\022\034" +
+      "\n\024post_10sstand_cnt_1h\030\020 \001(\005\022\030\n\020post_lik" +
+      "e_cnt_1h\030\021 \001(\005\022\032\n\022post_follow_cnt_1h\030\022 \001" +
+      "(\005\022\033\n\023post_profile_cnt_1h\030\023 \001(\005\022\034\n\024post_" +
+      "posinter_cnt_1h\030\024 \001(\005\022\030\n\020post_exp_cnt_24" +
+      "h\030\036 \001(\005\022\033\n\023post_3sview_cnt_24h\030\037 \001(\005\022\033\n\023" +
+      "post_8sview_cnt_24h\030  \001(\005\022\034\n\024post_12svie" +
+      "w_cnt_24h\030! \001(\005\022\034\n\024post_20sview_cnt_24h\030" +
+      "\" \001(\005\022\034\n\024post_5sstand_cnt_24h\030# \001(\005\022\035\n\025p" +
+      "ost_10sstand_cnt_24h\030$ \001(\005\022\031\n\021post_like_" +
+      "cnt_24h\030% \001(\005\022\033\n\023post_follow_cnt_24h\030& \001" +
+      "(\005\022\034\n\024post_profile_cnt_24h\030\' \001(\005\022\035\n\025post" +
+      "_posinter_cnt_24h\030( \001(\005\"\367\004\n\024RecUserAutho" +
+      "rFeature\022\017\n\007user_id\030\001 \001(\003\022\021\n\tauthor_id\030\002" +
+      " \001(\003\022\023\n\013expire_time\030\003 \001(\t\022\035\n\025userauthor_" +
+      "exp_cnt_1h\030\n \001(\005\022 \n\030userauthor_3sview_cn" +
+      "t_1h\030\013 \001(\005\022 \n\030userauthor_8sview_cnt_1h\030\014" +
+      " \001(\005\022!\n\031userauthor_12sview_cnt_1h\030\r \001(\005\022" +
+      "!\n\031userauthor_20sview_cnt_1h\030\016 \001(\005\022!\n\031us" +
+      "erauthor_5sstand_cnt_1h\030\017 \001(\005\022\"\n\032useraut" +
+      "hor_10sstand_cnt_1h\030\020 \001(\005\022\036\n\026userauthor_" +
+      "like_cnt_1h\030\021 \001(\005\022\036\n\026userauthor_exp_cnt_" +
+      "24h\030\036 \001(\005\022!\n\031userauthor_3sview_cnt_24h\030\037" +
+      " \001(\005\022!\n\031userauthor_8sview_cnt_24h\030  \001(\005\022" +
+      "\"\n\032userauthor_12sview_cnt_24h\030! \001(\005\022\"\n\032u" +
+      "serauthor_20sview_cnt_24h\030\" \001(\005\022\"\n\032usera" +
+      "uthor_5sstand_cnt_24h\030# \001(\005\022#\n\033userautho" +
+      "r_10sstand_cnt_24h\030$ \001(\005\022\037\n\027userauthor_l" +
+      "ike_cnt_24h\030% \001(\005b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -8458,13 +8732,13 @@ public final class RecFeature {
     internal_static_com_gosh_entity_RecPostFeature_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_gosh_entity_RecPostFeature_descriptor,
-        new java.lang.String[] { "PostExpCnt1H", "Post3SviewCnt1H", "Post8SviewCnt1H", "Post12SviewCnt1H", "Post20SviewCnt1H", "Post5SstandCnt1H", "Post10SstandCnt1H", "PostLikeCnt1H", "PostFollowCnt1H", "PostProfileCnt1H", "PostPosinterCnt1H", "PostExpCnt24H", "Post3SviewCnt24H", "Post8SviewCnt24H", "Post12SviewCnt24H", "Post20SviewCnt24H", "Post5SstandCnt24H", "Post10SstandCnt24H", "PostLikeCnt24H", "PostFollowCnt24H", "PostProfileCnt24H", "PostPosinterCnt24H", });
+        new java.lang.String[] { "PostId", "PostExpCnt1H", "Post3SviewCnt1H", "Post8SviewCnt1H", "Post12SviewCnt1H", "Post20SviewCnt1H", "Post5SstandCnt1H", "Post10SstandCnt1H", "PostLikeCnt1H", "PostFollowCnt1H", "PostProfileCnt1H", "PostPosinterCnt1H", "PostExpCnt24H", "Post3SviewCnt24H", "Post8SviewCnt24H", "Post12SviewCnt24H", "Post20SviewCnt24H", "Post5SstandCnt24H", "Post10SstandCnt24H", "PostLikeCnt24H", "PostFollowCnt24H", "PostProfileCnt24H", "PostPosinterCnt24H", });
     internal_static_com_gosh_entity_RecUserAuthorFeature_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_com_gosh_entity_RecUserAuthorFeature_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_gosh_entity_RecUserAuthorFeature_descriptor,
-        new java.lang.String[] { "ExpireTime", "UserauthorExpCnt1H", "Userauthor3SviewCnt1H", "Userauthor8SviewCnt1H", "Userauthor12SviewCnt1H", "Userauthor20SviewCnt1H", "Userauthor5SstandCnt1H", "Userauthor10SstandCnt1H", "UserauthorLikeCnt1H", "UserauthorExpCnt24H", "Userauthor3SviewCnt24H", "Userauthor8SviewCnt24H", "Userauthor12SviewCnt24H", "Userauthor20SviewCnt24H", "Userauthor5SstandCnt24H", "Userauthor10SstandCnt24H", "UserauthorLikeCnt24H", });
+        new java.lang.String[] { "UserId", "AuthorId", "ExpireTime", "UserauthorExpCnt1H", "Userauthor3SviewCnt1H", "Userauthor8SviewCnt1H", "Userauthor12SviewCnt1H", "Userauthor20SviewCnt1H", "Userauthor5SstandCnt1H", "Userauthor10SstandCnt1H", "UserauthorLikeCnt1H", "UserauthorExpCnt24H", "Userauthor3SviewCnt24H", "Userauthor8SviewCnt24H", "Userauthor12SviewCnt24H", "Userauthor20SviewCnt24H", "Userauthor5SstandCnt24H", "Userauthor10SstandCnt24H", "UserauthorLikeCnt24H", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

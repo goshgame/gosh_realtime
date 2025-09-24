@@ -15,6 +15,7 @@ import org.apache.flink.connector.kafka.source.KafkaSource;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
+import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.windowing.assigners.SlidingProcessingTimeWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
@@ -117,11 +118,15 @@ public class UserFeature24hJob {
             .name("Sample Debug Output");
 
         // 第五步：转换为Protobuf并写入Redis
-        DataStream<byte[]> dataStream = aggregatedStream
-            .map(new MapFunction<UserFeature24hAggregation, byte[]>() {
+        DataStream<Tuple2<String, byte[]>> dataStream = aggregatedStream
+            .map(new MapFunction<UserFeature24hAggregation, Tuple2<String, byte[]>>() {
                 @Override
-                public byte[] map(UserFeature24hAggregation agg) throws Exception {
-                    return RecFeature.RecUserFeature.newBuilder()
+                public Tuple2<String, byte[]> map(UserFeature24hAggregation agg) throws Exception {
+                    // 构建Redis key
+                    String redisKey = PREFIX + agg.uid + SUFFIX;
+                    
+                    // 构建Protobuf
+                    byte[] value = RecFeature.RecUserFeature.newBuilder()
                         .setUserId(agg.uid)
                         // 24小时历史记录特征
                         .setViewer3SviewPostHis24H(agg.viewer3sviewPostHis24h)
@@ -136,6 +141,8 @@ public class UserFeature24hJob {
                         .setViewerProfileAuthorHis24H(agg.viewerProfileAuthorHis24h)
                         .build()
                         .toByteArray();
+                    
+                    return new Tuple2<>(redisKey, value);
                 }
             })
             .name("Aggregation to Protobuf Bytes");
@@ -143,14 +150,12 @@ public class UserFeature24hJob {
         // 第六步：创建sink，Redis环境
         RedisConfig redisConfig = RedisConfig.fromProperties(RedisUtil.loadProperties());
         redisConfig.setTtl(7200);
-//        RedisUtil.addRedisSink(
-//            dataStream,
-//            redisConfig,
-//            false, // 异步写入
-//            100,  // 批量大小
-//            RecFeature.RecUserFeature.class,
-//            feature -> PREFIX + feature.getUserId() + SUFFIX
-//        );
+        RedisUtil.addRedisSink(
+            dataStream,
+            redisConfig,
+            false, // 异步写入
+            100   // 批量大小
+        );
 
         kafkaSource.print();
 

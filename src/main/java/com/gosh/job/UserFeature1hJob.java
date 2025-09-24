@@ -6,20 +6,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gosh.config.RedisConfig;
 import com.gosh.entity.RecFeature;
 import com.gosh.job.UserFeatureCommon.*;
-import com.gosh.util.EventFilterUtil;
-import com.gosh.util.FlinkEnvUtil;
-import com.gosh.util.KafkaEnvUtil;
-import com.gosh.util.RedisUtil;
+import com.gosh.util.*;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.functions.AggregateFunction;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.java.functions.KeySelector;
+import org.apache.flink.api.java.tuple.Tuple2;
+import org.apache.flink.configuration.Configuration;
 import org.apache.flink.connector.kafka.source.KafkaSource;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.functions.ProcessFunction;
 import org.apache.flink.streaming.api.windowing.assigners.SlidingProcessingTimeWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.util.Collector;
@@ -27,12 +27,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
-import java.util.function.Function;
+import java.util.Date;
 
 public class UserFeature1hJob {
     private static final Logger LOG = LoggerFactory.getLogger(UserFeature1hJob.class);
@@ -41,13 +38,19 @@ public class UserFeature1hJob {
     private static String SUFFIX = "}:post1h";
 
     public static void main(String[] args) throws Exception {
+        System.out.println("Starting UserFeature1hJob...");
+        
         // 第一步：创建flink环境
         StreamExecutionEnvironment env = FlinkEnvUtil.createStreamExecutionEnvironment();
+        // 设置全局并行度为1
+        env.setParallelism(1);
+        System.out.println("Flink environment created with parallelism: " + env.getParallelism());
         
         // 第二步：创建Source，Kafka环境
         KafkaSource<String> inputTopic = KafkaEnvUtil.createKafkaSource(
             KafkaEnvUtil.loadProperties(), "post"
         );
+        System.out.println("Kafka source created for topic: post");
 
         // 第三步：使用KafkaSource创建DataStream
         DataStreamSource<String> kafkaSource = env.fromSource(
@@ -55,24 +58,25 @@ public class UserFeature1hJob {
             WatermarkStrategy.forBoundedOutOfOrderness(Duration.ofSeconds(5)),
             "Kafka Source"
         );
+        System.out.println("Kafka source stream created");
 
         // 3.0 预过滤 - 只保留我们需要的事件类型
         DataStream<String> filteredStream = kafkaSource
             .filter(EventFilterUtil.createFastEventTypeFilter(16, 8))
             .name("Pre-filter Events")
-            .setParallelism(8); // 过滤操作轻量，可以设置更高并行度
+            .setParallelism(1);
 
         // 3.1 解析曝光事件 (event_type=16)
         SingleOutputStreamOperator<UserFeatureCommon.PostExposeEvent> exposeStream = filteredStream
             .flatMap(new UserFeatureCommon.ExposeEventParser())
             .name("Parse Expose Events")
-            .setParallelism(4);
+            .setParallelism(1);
 
         // 3.2 解析观看事件 (event_type=8)
         SingleOutputStreamOperator<UserFeatureCommon.PostViewEvent> viewStream = filteredStream
             .flatMap(new UserFeatureCommon.ViewEventParser())
             .name("Parse View Events")
-            .setParallelism(4);
+            .setParallelism(1);
 
         // 3.3 将曝光事件转换为统一的用户特征事件
         DataStream<UserFeatureCommon.UserFeatureEvent> exposeFeatureStream = exposeStream
@@ -92,7 +96,7 @@ public class UserFeature1hJob {
                     .withTimestampAssigner((event, recordTimestamp) -> event.getTimestamp())
             );
 
-        // 第四步：按用户ID分组并进行1小时滑动窗口聚合
+        // 第四步：按用户ID分组并进行滑动窗口聚合
         DataStream<UserFeatureAggregation> aggregatedStream = unifiedStream
             .keyBy(new KeySelector<UserFeatureCommon.UserFeatureEvent, Long>() {
                 @Override
@@ -101,36 +105,22 @@ public class UserFeature1hJob {
                 }
             })
             .window(SlidingProcessingTimeWindows.of(
-                Time.hours(1), // 窗口大小1小时
-                Time.minutes(3) // 滑动间隔3分钟
+                Time.minutes(60),  // 窗口大小1小时，便于测试
+                Time.minutes(2)   // 滑动间隔2分钟
             ))
             .aggregate(new UserFeatureAggregator())
             .name("User Feature Aggregation");
 
-        // 打印前3次聚合结果用于调试
-        aggregatedStream
-            .map(new MapFunction<UserFeatureAggregation, UserFeatureAggregation>() {
-                private int counter = 0;
-                @Override
-                public UserFeatureAggregation map(UserFeatureAggregation value) throws Exception {
-                    if (counter < 3) {
-                        counter++;
-                        LOG.info("Sample aggregation result {}: uid={}, 1h features: exp={}/{}/{}, 3sview={}/{}/{}", 
-                            counter, value.uid, 
-                            value.viewerExppostCnt1h, value.viewerExp1PostCnt1h, value.viewerExp2PostCnt1h,
-                            value.viewer3sviewPostCnt1h, value.viewer3sview1PostCnt1h, value.viewer3sview2PostCnt1h);
-                    }
-                    return value;
-                }
-            })
-            .name("Sample Debug Output");
-
         // 第五步：转换为Protobuf并写入Redis
-        DataStream<byte[]> dataStream = aggregatedStream
-            .map(new MapFunction<UserFeatureAggregation, byte[]>() {
+        DataStream<Tuple2<String, byte[]>> dataStream = aggregatedStream
+            .map(new MapFunction<UserFeatureAggregation, Tuple2<String, byte[]>>() {
                 @Override
-                public byte[] map(UserFeatureAggregation agg) throws Exception {
-                    return RecFeature.RecUserFeature.newBuilder()
+                public Tuple2<String, byte[]> map(UserFeatureAggregation agg) throws Exception {
+                    // 构建Redis key
+                    String redisKey = PREFIX + agg.uid + SUFFIX;
+                    
+                    // 构建Protobuf
+                    RecFeature.RecUserFeature feature = RecFeature.RecUserFeature.newBuilder()
                         .setUserId(agg.uid)
                         // 1小时曝光特征
                         .setViewerExppostCnt1H(agg.viewerExppostCnt1h)
@@ -147,25 +137,67 @@ public class UserFeature1hJob {
                         .setViewerFollowPostHis1H(agg.viewerFollowPostHis1h)
                         .setViewerProfilePostHis1H(agg.viewerProfilePostHis1h)
                         .setViewerPosinterPostHis1H(agg.viewerPosinterPostHis1h)
-                        .build()
-                        .toByteArray();
+                        .build();
+
+                    byte[] value = feature.toByteArray();
+                    return new Tuple2<>(redisKey, value);
                 }
             })
             .name("Aggregation to Protobuf Bytes");
 
+        // 打印聚合结果用于调试（采样）
+        aggregatedStream
+            .process(new ProcessFunction<UserFeatureAggregation, UserFeatureAggregation>() {
+                private static final long SAMPLE_INTERVAL = 60000; // 采样间隔1分钟
+                private static final int SAMPLE_COUNT = 3; // 每次采样3条
+                private transient long lastSampleTime;
+                private transient int sampleCount;
+                
+                @Override
+                public void open(Configuration parameters) throws Exception {
+                    lastSampleTime = 0;
+                    sampleCount = 0;
+                }
+                
+                @Override
+                public void processElement(UserFeatureAggregation value, Context ctx, Collector<UserFeatureAggregation> out) throws Exception {
+                    // 采样日志
+                    long now = System.currentTimeMillis();
+                    if (now - lastSampleTime > SAMPLE_INTERVAL) {
+                        lastSampleTime = now - (now % SAMPLE_INTERVAL); // 对齐到分钟
+                        sampleCount = 0;
+                    }
+                    
+                    // 只采样前3条
+                    if (sampleCount < SAMPLE_COUNT) {
+                        sampleCount++;
+                        LOG.info("[Sample {}/{}] User {} at {}: expose={}, 3s_views={}", 
+                            sampleCount, 
+                            SAMPLE_COUNT,
+                            value.uid,
+                            new SimpleDateFormat("HH:mm:ss").format(new Date(value.updateTime)),
+                            value.viewerExppostCnt1h,
+                            value.viewer3sviewPostCnt1h);
+                    }
+                }
+            })
+            .name("Debug Sampling");
+
         // 第六步：创建sink，Redis环境
         RedisConfig redisConfig = RedisConfig.fromProperties(RedisUtil.loadProperties());
         redisConfig.setTtl(600);
-//        RedisUtil.addRedisSink(
-//            dataStream,
-//            redisConfig,
-//            false, // 异步写入
-//            100,  // 批量大小
-//            RecFeature.RecUserFeature.class,
-//            feature -> PREFIX + feature.getUserId() + SUFFIX
-//        );
+        System.out.println("Redis config created with TTL: " + redisConfig.getTtl());
+        
+        RedisUtil.addRedisSink(
+            dataStream,
+            redisConfig,
+            false, // 异步写入
+            100   // 批量大小
+        );
+        System.out.println("Redis sink added to the pipeline");
 
         // 执行任务
+        System.out.println("Starting Flink job execution...");
         env.execute("User Feature 1h Job");
     }
 
