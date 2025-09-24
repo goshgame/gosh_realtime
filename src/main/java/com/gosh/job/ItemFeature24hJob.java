@@ -23,6 +23,11 @@ import org.apache.flink.streaming.api.windowing.assigners.SlidingProcessingTimeW
 import org.apache.flink.streaming.api.windowing.time.Time;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.apache.flink.configuration.Configuration;
+import org.apache.flink.streaming.api.functions.ProcessFunction;
+import org.apache.flink.util.Collector;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import java.time.Duration;
 
@@ -35,6 +40,7 @@ public class ItemFeature24hJob {
     public static void main(String[] args) throws Exception {
         // 第一步：创建flink环境
         StreamExecutionEnvironment env = FlinkEnvUtil.createStreamExecutionEnvironment();
+//        env.setParallelism(1);
         
         // 第二步：创建Source，Kafka环境
         KafkaSource<String> inputTopic = KafkaEnvUtil.createKafkaSource(
@@ -51,20 +57,17 @@ public class ItemFeature24hJob {
         // 3.0 预过滤 - 只保留我们需要的事件类型
         DataStream<String> filteredStream = kafkaSource
             .filter(EventFilterUtil.createFastEventTypeFilter(16, 8))
-            .name("Pre-filter Events")
-            .setParallelism(8);
+            .name("Pre-filter Events");
 
         // 3.1 解析曝光事件 (event_type=16)
         SingleOutputStreamOperator<PostExposeEvent> exposeStream = filteredStream
             .flatMap(new UserFeatureCommon.ExposeEventParser())
-            .name("Parse Expose Events")
-            .setParallelism(4);
+            .name("Parse Expose Events");
 
         // 3.2 解析观看事件 (event_type=8)
         SingleOutputStreamOperator<PostViewEvent> viewStream = filteredStream
             .flatMap(new UserFeatureCommon.ViewEventParser())
-            .name("Parse View Events")
-            .setParallelism(4);
+            .name("Parse View Events");
 
         // 3.3 将曝光事件转换为统一的特征事件
         DataStream<UserFeatureEvent> exposeFeatureStream = exposeStream
@@ -99,25 +102,42 @@ public class ItemFeature24hJob {
             .aggregate(new ItemFeature24hAggregator())
             .name("Item Feature 24h Aggregation");
 
-        // 打印前3次聚合结果用于调试
-        aggregatedStream
-            .map(new MapFunction<ItemFeature24hAggregation, ItemFeature24hAggregation>() {
-                private int counter = 0;
-                @Override
-                public ItemFeature24hAggregation map(ItemFeature24hAggregation value) throws Exception {
-                    if (counter < 3) {
-                        counter++;
-                        LOG.info("Sample aggregation result {}: postId={}, 24h features: exp={}, view3s={}, view8s={}, like={}", 
-                            counter, value.postId, 
-                            value.postExpCnt24h,
-                            value.post3sviewCnt24h,
-                            value.post8sviewCnt24h,
-                            value.postLikeCnt24h);
-                    }
-                    return value;
-                }
-            })
-            .name("Sample Debug Output");
+        // 打印聚合结果用于调试（采样）
+//        aggregatedStream
+//            .process(new ProcessFunction<ItemFeature24hAggregation, ItemFeature24hAggregation>() {
+//                private static final long SAMPLE_INTERVAL = 60000; // 采样间隔1分钟
+//                private static final int SAMPLE_COUNT = 3; // 每次采样3条
+//                private transient long lastSampleTime;
+//                private transient int sampleCount;
+//
+//                @Override
+//                public void open(Configuration parameters) throws Exception {
+//                    lastSampleTime = 0;
+//                    sampleCount = 0;
+//                }
+//
+//                @Override
+//                public void processElement(ItemFeature24hAggregation value, Context ctx, Collector<ItemFeature24hAggregation> out) throws Exception {
+//                    long now = System.currentTimeMillis();
+//                    if (now - lastSampleTime > SAMPLE_INTERVAL) {
+//                        lastSampleTime = now - (now % SAMPLE_INTERVAL);
+//                        sampleCount = 0;
+//                    }
+//                    if (sampleCount < SAMPLE_COUNT) {
+//                        sampleCount++;
+//                        LOG.info("[Sample {}/{}] postId {} at {}: exp24h={}, 3sview24h={}, 8sview24h={}, like24h={}",
+//                            sampleCount,
+//                            SAMPLE_COUNT,
+//                            value.postId,
+//                            new SimpleDateFormat("HH:mm:ss").format(new Date()),
+//                            value.postExpCnt24h,
+//                            value.post3sviewCnt24h,
+//                            value.post8sviewCnt24h,
+//                            value.postLikeCnt24h);
+//                    }
+//                }
+//            })
+//            .name("Debug Sampling");
 
         // 第五步：转换为Protobuf并写入Redis
         DataStream<Tuple2<String, byte[]>> dataStream = aggregatedStream
@@ -129,7 +149,6 @@ public class ItemFeature24hJob {
                     
                     // 构建Protobuf
                     byte[] value = RecFeature.RecPostFeature.newBuilder()
-                        .setPostId(agg.postId)
                         // 24小时曝光特征
                         .setPostExpCnt24H(agg.postExpCnt24h)
                         // 24小时观看特征

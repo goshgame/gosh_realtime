@@ -6,9 +6,6 @@ package com.gosh.entity;
 // 用户侧特征
 // Redis Key: rec:user_feature:{user_id}:post1h, rec:user_feature:{user_id}:post24h
 message RecUserFeature {
-    // 用户ID
-    int64 user_id = 1;
-    
     // 1小时窗口特征
     // 曝光相关特征
     int32 viewer_exppost_cnt_1h = 10;           // 用户最近1h曝光post数
@@ -47,9 +44,6 @@ message RecUserFeature {
 // Item侧特征 (Post特征)
 // Redis Key: rec:item_feature:{post_id}:post1h, rec:item_feature:{post_id}:post24h
 message RecPostFeature {
-    // Post ID
-    int64 post_id = 1;
-    
     // 1小时窗口特征
     // 曝光特征
     int32 post_exp_cnt_1h = 10;                 // post最近1h曝光次数
@@ -95,11 +89,6 @@ message RecPostFeature {
 // 用户作者交叉特征
 // Redis Key: rec:user_author_feature:{user_id}_{author_id}:post1h, rec:user_author_feature:{user_id}_{author_id}:post24h
 message RecUserAuthorFeature {
-    // 用户ID
-    int64 user_id = 1;
-    // 作者id
-    int64 author_id =2;
-    
     // 过期时间标识 (1h 或 24h)
     string expire_time = 3;
     
