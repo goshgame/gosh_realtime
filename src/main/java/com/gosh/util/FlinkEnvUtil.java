@@ -58,33 +58,26 @@ public class FlinkEnvUtil {
      */
     public static StreamExecutionEnvironment createStreamExecutionEnvironment() {
         Configuration configuration = loadConfigurationFromProperties();
-        LOG.info("Loading Flink configuration: {}", configuration);
+        LOG.info("参数：{}",configuration);
 
-        // 创建本地执行环境
-        StreamExecutionEnvironment env = StreamExecutionEnvironment.createLocalEnvironmentWithWebUI(configuration);
-        System.out.println("Created local environment with configuration");
+        // 创建执行环境
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
-        // 设置状态后端
+        // 应用配置
+        env.configure(configuration, FlinkEnvUtil.class.getClassLoader());
+
+        // 设置状态后端 (Flink 1.20 中推荐使用配置方式，但也可以代码设置)
         try {
             String stateBackend = configuration.getString("state.backend", "hashmap");
             if ("rocksdb".equalsIgnoreCase(stateBackend)) {
-                String checkpointDir = configuration.getString("state.checkpoints.dir", "file:///tmp/flink-checkpoints");
-                System.out.println("Setting up RocksDB state backend with checkpoint dir: " + checkpointDir);
-                RocksDBStateBackend rocksDBStateBackend = new RocksDBStateBackend(checkpointDir);
+                // 对于 RocksDB，可以进一步配置
+                RocksDBStateBackend rocksDBStateBackend = new RocksDBStateBackend(
+                        configuration.getString("state.checkpoints.dir", "file:///tmp/flink-checkpoints"));
                 env.setStateBackend(rocksDBStateBackend);
-                System.out.println("RocksDB state backend configured successfully");
             }
         } catch (Exception e) {
-            System.err.println("Failed to set state backend: " + e.getMessage());
-            e.printStackTrace();
+            System.err.println("设置状态后端失败: " + e.getMessage());
         }
-
-        // 打印环境信息
-        System.out.println("Environment configuration:");
-        System.out.println("- Parallelism: " + env.getParallelism());
-        System.out.println("- Max parallelism: " + env.getMaxParallelism());
-        System.out.println("- Buffer timeout: " + env.getBufferTimeout());
-        System.out.println("- Checkpoint interval: " + configuration.getString("execution.checkpointing.interval", "not set"));
 
         return env;
     }

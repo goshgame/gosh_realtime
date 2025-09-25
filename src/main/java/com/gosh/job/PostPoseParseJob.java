@@ -15,7 +15,6 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.util.Collector;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.jline.utils.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -70,6 +69,7 @@ public class PostPoseParseJob {
                             System.err.println("PostEvent缺少必要的post_expose或list字段");
                             return;
                         }
+
 
                         // 遍历list中的每个元素，创建对应的ParsedPostEvent
                         for (PostEvent.PostItem item : event.getPostExpose().getList()) {
