@@ -174,7 +174,7 @@ public class UserAuthorFeature1hJob {
         RedisUtil.addRedisSink(
             dataStream,
             redisConfig,
-            false,
+            true,
             100
         );
 
