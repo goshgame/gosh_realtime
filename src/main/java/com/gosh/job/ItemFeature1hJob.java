@@ -177,7 +177,7 @@ public class ItemFeature1hJob {
         RedisUtil.addRedisSink(
             dataStream,
             redisConfig,
-            true, // 异步写入
+            false, // 异步写入
             100   // 批量大小
         );
 
