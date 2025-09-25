@@ -246,7 +246,7 @@ public class UserFeature1hJob {
         RedisUtil.addRedisSink(
             dataStream,
             redisConfig,
-            false, // 异步写入
+            true, // 异步写入
             100   // 批量大小
         );
         System.out.println("Redis sink added to the pipeline");

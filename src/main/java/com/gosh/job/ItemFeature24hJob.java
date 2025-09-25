@@ -174,10 +174,11 @@ public class ItemFeature24hJob {
 
         // 第六步：创建sink，Redis环境
         RedisConfig redisConfig = RedisConfig.fromProperties(RedisUtil.loadProperties());
+        redisConfig.setTtl(7200);
         RedisUtil.addRedisSink(
             dataStream,
             redisConfig,
-            false, // 异步写入
+            true, // 异步写入
             100   // 批量大小
         );
 
