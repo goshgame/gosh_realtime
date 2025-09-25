@@ -157,8 +157,26 @@ public class RedisSink<T> extends RichSinkFunction<T> {
         } else {
             if(isClusterMode){
                 executeCommand(redisClusterCommands, key, valueStr);
+                // 同步设置TTL（集群模式）
+                if (config.getTtl() > 0) {
+                    try {
+                        redisClusterCommands.expire(key, config.getTtl());
+                        LOG.debug("同步设置集群模式TTL成功, key={}, ttl={}", key, config.getTtl());
+                    } catch (Exception e) {
+                        LOG.error("同步设置集群模式TTL失败, key=" + key, e);
+                    }
+                }
             } else{
                 executeCommand(redisCommands, key, valueStr);
+                // 同步设置TTL（单机模式）
+                if (config.getTtl() > 0) {
+                    try {
+                        redisCommands.expire(key, config.getTtl());
+                        LOG.debug("同步设置单机模式TTL成功, key={}, ttl={}", key, config.getTtl());
+                    } catch (Exception e) {
+                        LOG.error("同步设置单机模式TTL失败, key=" + key, e);
+                    }
+                }
             }
         }
     }
