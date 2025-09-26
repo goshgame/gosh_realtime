@@ -235,6 +235,14 @@ public class UserFeature1hJob {
                     
                     // 找到所有包含当前事件的窗口
                     long firstWindowStart = (currentTime / slidingMs) * slidingMs;
+                    
+                    // 调试日志：事件时间和窗口信息
+                    LOG.error("[Debug] Processing event: uid={}, time={}, firstWindow={}, type={}",
+                        event.uid,
+                        new SimpleDateFormat("HH:mm:ss").format(new Date(currentTime)),
+                        new SimpleDateFormat("HH:mm:ss").format(new Date(firstWindowStart)),
+                        event.eventType);
+                    
                     for (long windowStart = firstWindowStart; windowStart > firstWindowStart - windowSizeMs; windowStart -= slidingMs) {
                         processEventForWindow(event, windowStart, currentTime, out);
                     }
@@ -243,13 +251,11 @@ public class UserFeature1hJob {
                 private void processEventForWindow(UserFeatureCommon.UserFeatureEvent event, final long windowStart, final long currentTime, Collector<Tuple2<String, Object>> out) {
                     String windowKey = event.uid + "_" + windowStart;
                     WindowState state = windowStates.computeIfAbsent(windowKey, k -> {
-                        if (LOG.isDebugEnabled()) {
-                            LOG.debug("[Subtask {}/{}] Created new window for uid {} at {}",
-                                subtaskIndex + 1,
-                                numberOfParallelSubtasks,
-                                event.uid,
-                                new SimpleDateFormat("HH:mm:ss").format(new Date(windowStart)));
-                        }
+                        LOG.error("[Debug] New window: uid={}, start={}, subtask={}/{}",
+                            event.uid,
+                            new SimpleDateFormat("HH:mm:ss").format(new Date(windowStart)),
+                            subtaskIndex + 1,
+                            numberOfParallelSubtasks);
                         return new WindowState(windowStart);
                     });
                     
@@ -288,6 +294,13 @@ public class UserFeature1hJob {
                         
                         // 如果到达窗口结束时间，输出结果
                         if (currentTime >= windowStart + windowSizeMs) {
+                            LOG.error("[Debug] Window complete: uid={}, start={}, end={}, events={}, subtask={}/{}",
+                                event.uid,
+                                new SimpleDateFormat("HH:mm:ss").format(new Date(windowStart)),
+                                new SimpleDateFormat("HH:mm:ss").format(new Date(currentTime)),
+                                state.eventCount,
+                                subtaskIndex + 1,
+                                numberOfParallelSubtasks);
                             // 1. 输出用户特征
                             UserFeatureAggregation userResult = new UserFeatureAggregation();
                             userResult.uid = event.uid;
