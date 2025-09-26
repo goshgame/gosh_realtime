@@ -172,7 +172,7 @@ public class UserFeature24hJob {
         RedisUtil.addRedisSink(
             dataStream,
             redisConfig,
-            false, // 异步写入
+            true, // 异步写入
             100   // 批量大小
         );
 

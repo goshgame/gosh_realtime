@@ -43,7 +43,7 @@ public class UserFeature1hJob {
         // 第一步：创建flink环境
         StreamExecutionEnvironment env = FlinkEnvUtil.createStreamExecutionEnvironment();
         // 设置全局并行度为1
-//        env.setParallelism(1);
+        env.setParallelism(3);
         System.out.println("Flink environment created with parallelism: " + env.getParallelism());
         
         // 第二步：创建Source，Kafka环境
@@ -246,7 +246,7 @@ public class UserFeature1hJob {
         RedisUtil.addRedisSink(
             dataStream,
             redisConfig,
-            false, // 异步写入
+            true, // 异步写入
             100   // 批量大小
         );
         System.out.println("Redis sink added to the pipeline");
