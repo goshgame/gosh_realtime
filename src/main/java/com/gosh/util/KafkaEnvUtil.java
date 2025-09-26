@@ -41,22 +41,17 @@ public class KafkaEnvUtil {
     public static KafkaSource<String> createKafkaSource(Properties props,String topic) {
         String bootstrapServers = props.getProperty("bootstrap.servers", "localhost:9092");
         String groupId = props.getProperty("group.id", "flink-kafka-consumer-group");
-        String offsetReset = props.getProperty("auto.offset.reset", "earliest");
+        String offsetReset = props.getProperty("auto.offset.reset", "latest");
         props.setProperty("input.topic",topic);
-
-        // 创建只包含必要配置的属性对象
-        Properties kafkaProps = new Properties();
-        kafkaProps.put("bootstrap.servers", bootstrapServers);
-        kafkaProps.put("group.id", groupId);
 
         return KafkaSource.<String>builder()
                 .setBootstrapServers(bootstrapServers)
                 .setTopics(topic)
                 .setGroupId(groupId)
                 .setStartingOffsets("latest".equals(offsetReset) ?
-                        OffsetsInitializer.earliest() : OffsetsInitializer.latest())
+                        OffsetsInitializer.latest() : OffsetsInitializer.earliest())
                 .setDeserializer(KafkaRecordDeserializationSchema.valueOnly(StringDeserializer.class))
-                .setProperties(kafkaProps)
+                .setProperties(props)
                 .build();
     }
 
@@ -65,7 +60,15 @@ public class KafkaEnvUtil {
      */
     public static KafkaSink<String> createKafkaSink(Properties props,String topic) {
         String bootstrapServers = props.getProperty("bootstrap.servers", "localhost:9092");
+
         props.setProperty("output.topic",topic);
+
+        Properties kafkaProps = new Properties();
+        // 复制原props中的所有配置（而非仅复制2个参数）
+        for (String key : props.stringPropertyNames()) {
+            kafkaProps.setProperty(key, props.getProperty(key));
+        }
+
 
         return KafkaSink.<String>builder()
                 .setBootstrapServers(bootstrapServers)
@@ -73,6 +76,7 @@ public class KafkaEnvUtil {
                         .setTopic(topic)
                         .setValueSerializationSchema(new SimpleStringSchema())
                         .build())
+                .setKafkaProducerConfig(kafkaProps)
                 .build();
     }
 
