@@ -34,6 +34,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Iterator;
+import org.apache.flink.streaming.api.functions.KeyedProcessFunction;
 
 public class UserFeature1hJob {
     private static final Logger LOG = LoggerFactory.getLogger(UserFeature1hJob.class);
@@ -203,7 +204,7 @@ public class UserFeature1hJob {
                     .withTimestampAssigner((event, recordTimestamp) -> event.getTimestamp())
             )
             .keyBy(event -> event.getUid())
-            .process(new ProcessFunction<UserFeatureCommon.UserFeatureEvent, Tuple2<String, Object>>() {
+            .process(new KeyedProcessFunction<Long, UserFeatureCommon.UserFeatureEvent, Tuple2<String, Object>>() {
                 private final int maxEventsPerWindow = 100;
                 private final long windowSizeMs = 3600000L; // 1小时窗口
                 private final long slidingMs = 120000L; // 2分钟滑动
@@ -215,7 +216,7 @@ public class UserFeature1hJob {
                 private transient int numberOfParallelSubtasks;
 
                 @Override
-                public void open(Configuration parameters) throws Exception {
+                public void open(Configuration parameters) {
                     windowStates = new HashMap<>();
                     lastCleanupTime = System.currentTimeMillis();
                     subtaskIndex = getRuntimeContext().getIndexOfThisSubtask();
@@ -243,8 +244,108 @@ public class UserFeature1hJob {
                         new SimpleDateFormat("HH:mm:ss").format(new Date(firstWindowStart)),
                         event.eventType);
                     
+                    // 为每个相关的窗口注册定时器
                     for (long windowStart = firstWindowStart; windowStart > firstWindowStart - windowSizeMs; windowStart -= slidingMs) {
+                        // 注册窗口结束时的定时器
+                        long windowEnd = windowStart + windowSizeMs;
+                        ctx.timerService().registerProcessingTimeTimer(windowEnd);
+                        
                         processEventForWindow(event, windowStart, currentTime, out);
+                    }
+                }
+
+                @Override
+                public void onTimer(long timestamp, OnTimerContext ctx, Collector<Tuple2<String, Object>> out) throws Exception {
+                    // 找到这个时间戳对应的窗口开始时间
+                    long windowStart = timestamp - windowSizeMs;
+                    String key = ctx.getCurrentKey() + "_" + windowStart;
+                    
+                    WindowState state = windowStates.get(key);
+                    if (state != null) {
+                        LOG.error("[Debug] Timer triggered: uid={}, start={}, end={}, events={}",
+                            ctx.getCurrentKey(),
+                            new SimpleDateFormat("HH:mm:ss").format(new Date(windowStart)),
+                            new SimpleDateFormat("HH:mm:ss").format(new Date(timestamp)),
+                            state.eventCount);
+                            
+                        // 1. 输出用户特征
+                        UserFeatureAggregation userResult = new UserFeatureAggregation();
+                        userResult.uid = ctx.getCurrentKey();
+                        userResult.viewerExppostCnt1h = state.userAccumulator.exposePostIds.size();
+                        userResult.viewerExp1PostCnt1h = 0;
+                        userResult.viewerExp2PostCnt1h = 0;
+                        userResult.viewer3sviewPostCnt1h = state.userAccumulator.view3sPostIds.size();
+                        userResult.viewer3sview1PostCnt1h = state.userAccumulator.view3s1PostIds.size();
+                        userResult.viewer3sview2PostCnt1h = state.userAccumulator.view3s2PostIds.size();
+                        userResult.viewer3sviewPostHis1h = UserFeatureCommon.buildPostHistoryString(state.userAccumulator.view3sPostDetails, 10);
+                        userResult.viewer5sstandPostHis1h = UserFeatureCommon.buildPostHistoryString(state.userAccumulator.stand5sPostDetails, 10);
+                        userResult.viewerLikePostHis1h = UserFeatureCommon.buildPostListString(state.userAccumulator.likePostIds, 10);
+                        userResult.viewerFollowPostHis1h = UserFeatureCommon.buildPostListString(state.userAccumulator.followPostIds, 10);
+                        userResult.viewerProfilePostHis1h = UserFeatureCommon.buildPostListString(state.userAccumulator.profilePostIds, 10);
+                        userResult.viewerPosinterPostHis1h = UserFeatureCommon.buildPostListString(state.userAccumulator.posinterPostIds, 10);
+                        userResult.updateTime = timestamp;
+                        
+                        if (state.eventCount >= 10) {
+                            LOG.info("[Window] uid={}, expose={}, 3s_views={}, events={}, subtask={}/{}",
+                                userResult.uid,
+                                userResult.viewerExppostCnt1h,
+                                userResult.viewer3sviewPostCnt1h,
+                                state.eventCount,
+                                subtaskIndex + 1,
+                                numberOfParallelSubtasks);
+                        }
+                        
+                        out.collect(new Tuple2<>("user", userResult));
+                        
+                        // 2. 输出用户-作者特征
+                        Map<String, byte[]> authorFeatures = new HashMap<>();
+                        for (Map.Entry<Long, UserAuthorFeature1hJob.UserAuthorAccumulator> entry : state.authorAccumulators.entrySet()) {
+                            UserAuthorFeature1hJob.UserAuthorFeature1hAggregation authorResult = 
+                                new UserAuthorFeature1hJob.UserAuthorFeature1hAggregation();
+                            UserAuthorFeature1hJob.UserAuthorAccumulator acc = entry.getValue();
+                            
+                            authorResult.uid = acc.uid;
+                            authorResult.author = acc.author;
+                            authorResult.userauthorExpCnt1h = acc.exposeRecTokens.size();
+                            authorResult.userauthor3sviewCnt1h = acc.view3sRecTokens.size();
+                            authorResult.userauthor8sviewCnt1h = acc.view8sRecTokens.size();
+                            authorResult.userauthor12sviewCnt1h = acc.view12sRecTokens.size();
+                            authorResult.userauthor20sviewCnt1h = acc.view20sRecTokens.size();
+                            authorResult.userauthor5sstandCnt1h = acc.stand5sRecTokens.size();
+                            authorResult.userauthor10sstandCnt1h = acc.stand10sRecTokens.size();
+                            authorResult.userauthorLikeCnt1h = acc.likeRecTokens.size();
+                            authorResult.updateTime = timestamp;
+
+                            byte[] value = RecFeature.RecUserAuthorFeature.newBuilder()
+                                .setUserauthorExpCnt1H(authorResult.userauthorExpCnt1h)
+                                .setUserauthor3SviewCnt1H(authorResult.userauthor3sviewCnt1h)
+                                .setUserauthor8SviewCnt1H(authorResult.userauthor8sviewCnt1h)
+                                .setUserauthor12SviewCnt1H(authorResult.userauthor12sviewCnt1h)
+                                .setUserauthor20SviewCnt1H(authorResult.userauthor20sviewCnt1h)
+                                .setUserauthor5SstandCnt1H(authorResult.userauthor5sstandCnt1h)
+                                .setUserauthor10SstandCnt1H(authorResult.userauthor10sstandCnt1h)
+                                .setUserauthorLikeCnt1H(authorResult.userauthorLikeCnt1h)
+                                .build()
+                                .toByteArray();
+
+                            authorFeatures.put(String.valueOf(acc.author), value);
+                        }
+                        
+                        if (!authorFeatures.isEmpty() && state.eventCount >= 10) {
+                            LOG.info("[Window] uid={}, authors={}, events={}, subtask={}/{}",
+                                userResult.uid,
+                                authorFeatures.size(),
+                                state.eventCount,
+                                subtaskIndex + 1,
+                                numberOfParallelSubtasks);
+                        }
+                        
+                        if (!authorFeatures.isEmpty()) {
+                            out.collect(new Tuple2<>("author", new Tuple2<>(userResult.uid, authorFeatures)));
+                        }
+                        
+                        // 移除已完成的窗口
+                        windowStates.remove(key);
                     }
                 }
 
