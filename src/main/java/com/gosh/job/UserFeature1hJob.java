@@ -212,11 +212,13 @@ public class UserFeature1hJob {
                 private void processEventForWindow(UserFeatureCommon.UserFeatureEvent event, final long windowStart, final long currentTime, Collector<Tuple2<String, Object>> out) {
                     String windowKey = event.uid + "_" + windowStart;
                     WindowState state = windowStates.computeIfAbsent(windowKey, k -> {
-                        LOG.info("[Subtask {}/{}] Created new window for uid {} at {}",
-                            subtaskIndex + 1,
-                            numberOfParallelSubtasks,
-                            event.uid,
-                            new SimpleDateFormat("HH:mm:ss").format(new Date(windowStart)));
+                        if (LOG.isDebugEnabled()) {
+                            LOG.debug("[Subtask {}/{}] Created new window for uid {} at {}",
+                                subtaskIndex + 1,
+                                numberOfParallelSubtasks,
+                                event.uid,
+                                new SimpleDateFormat("HH:mm:ss").format(new Date(windowStart)));
+                        }
                         return new WindowState(windowStart);
                     });
                     
@@ -272,14 +274,16 @@ public class UserFeature1hJob {
                             userResult.viewerPosinterPostHis1h = UserFeatureCommon.buildPostListString(state.userAccumulator.posinterPostIds, 10);
                             userResult.updateTime = currentTime;
                             
-                            LOG.info("[Subtask {}/{}] Window triggered for uid {} at {}: expose={}, 3s_views={}, events={}",
-                                subtaskIndex + 1,
-                                numberOfParallelSubtasks,
-                                event.uid,
-                                new SimpleDateFormat("HH:mm:ss").format(new Date(currentTime)),
-                                userResult.viewerExppostCnt1h,
-                                userResult.viewer3sviewPostCnt1h,
-                                state.eventCount);
+                            // 只打印有意义的聚合结果
+                            if (state.eventCount >= 10) {
+                                LOG.info("[Window] uid={}, expose={}, 3s_views={}, events={}, subtask={}/{}",
+                                    event.uid,
+                                    userResult.viewerExppostCnt1h,
+                                    userResult.viewer3sviewPostCnt1h,
+                                    state.eventCount,
+                                    subtaskIndex + 1,
+                                    numberOfParallelSubtasks);
+                            }
                             
                             out.collect(new Tuple2<>("user", userResult));
                             
@@ -317,14 +321,16 @@ public class UserFeature1hJob {
                                 authorFeatures.put(String.valueOf(acc.author), value);
                             }
                             
-                            if (!authorFeatures.isEmpty()) {
-                                LOG.info("[Subtask {}/{}] Window triggered for uid {} at {}: author_count={}, events={}",
-                                    subtaskIndex + 1,
-                                    numberOfParallelSubtasks,
+                            if (!authorFeatures.isEmpty() && state.eventCount >= 10) {
+                                LOG.info("[Window] uid={}, authors={}, events={}, subtask={}/{}",
                                     event.uid,
-                                    new SimpleDateFormat("HH:mm:ss").format(new Date(currentTime)),
                                     authorFeatures.size(),
-                                    state.eventCount);
+                                    state.eventCount,
+                                    subtaskIndex + 1,
+                                    numberOfParallelSubtasks);
+                            }
+                            
+                            if (!authorFeatures.isEmpty()) {
                                 out.collect(new Tuple2<>("author", new Tuple2<>(event.uid, authorFeatures)));
                             }
                             
@@ -332,12 +338,13 @@ public class UserFeature1hJob {
                             windowStates.remove(windowKey);
                         }
                     } else {
-                        LOG.debug("[Subtask {}/{}] Event limit reached for uid {} in window {}: count={}",
-                            subtaskIndex + 1,
-                            numberOfParallelSubtasks,
-                            event.uid,
-                            new SimpleDateFormat("HH:mm:ss").format(new Date(windowStart)),
-                            state.eventCount);
+                        if (LOG.isDebugEnabled()) {
+                            LOG.debug("[Limit] uid={}, events={}, subtask={}/{}",
+                                event.uid,
+                                state.eventCount,
+                                subtaskIndex + 1,
+                                numberOfParallelSubtasks);
+                        }
                     }
                 }
                 
@@ -352,10 +359,10 @@ public class UserFeature1hJob {
                         }
                     }
                     if (removedCount > 0) {
-                        LOG.info("[Subtask {}/{}] Cleaned up {} expired windows",
+                        LOG.info("[Cleanup] removed={}, subtask={}/{}",
+                            removedCount,
                             subtaskIndex + 1,
-                            numberOfParallelSubtasks,
-                            removedCount);
+                            numberOfParallelSubtasks);
                     }
                 }
             })
@@ -480,11 +487,8 @@ public class UserFeature1hJob {
                         typeSampleCount.put(type, currentCount + 1);
                         if ("user".equals(type)) {
                             UserFeatureAggregation userFeature = (UserFeatureAggregation) value.f1;
-                            LOG.info("[User Sample {}/{}] uid={} at {}: expose={}, 3s_views={}, like={}, follow={}",
-                                currentCount + 1,
-                                SAMPLE_COUNT,
+                            LOG.info("[Sample] user={}, expose={}, 3s_views={}, like={}, follow={}",
                                 userFeature.uid,
-                                new SimpleDateFormat("HH:mm:ss").format(new Date(userFeature.updateTime)),
                                 userFeature.viewerExppostCnt1h,
                                 userFeature.viewer3sviewPostCnt1h,
                                 userFeature.viewerLikePostHis1h,
@@ -492,20 +496,17 @@ public class UserFeature1hJob {
                         } else if ("author".equals(type)) {
                             @SuppressWarnings("unchecked")
                             Tuple2<Long, Map<String, byte[]>> authorFeature = (Tuple2<Long, Map<String, byte[]>>) value.f1;
-                            LOG.info("[Author Sample {}/{}] uid={} at {}: author_count={}, fields={}",
-                                currentCount + 1,
-                                SAMPLE_COUNT,
+                            LOG.info("[Sample] user={}, authors={}, fields={}",
                                 authorFeature.f0,
-                                new SimpleDateFormat("HH:mm:ss").format(new Date()),
                                 authorFeature.f1.size(),
                                 String.join(",", authorFeature.f1.keySet()));
                         }
-                    } else {
-                        LOG.debug("Sample skipped for type {} (count={})", type, currentCount);
                     }
                     out.collect(value);
                 }
             })
+            .setParallelism(1) // 采样处理器只需要一个并行度
+            .disableChaining() // 禁用链接，独立运行
             .name("Debug Sampling");
 
         // 执行任务
