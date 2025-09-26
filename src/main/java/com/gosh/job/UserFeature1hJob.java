@@ -213,7 +213,12 @@ public class UserFeature1hJob {
 
         // 4.2 用户-作者特征聚合
         DataStream<Tuple2<Long, Map<String, byte[]>>> userAuthorFeatureStream = unifiedStream
-            .keyBy(event -> new Tuple2<>(event.getUid(), event.author))
+            .keyBy(new KeySelector<UserFeatureCommon.UserFeatureEvent, Tuple2<Long, Long>>() {
+                @Override
+                public Tuple2<Long, Long> getKey(UserFeatureCommon.UserFeatureEvent event) {
+                    return new Tuple2<>(event.getUid(), event.author);
+                }
+            })
             .window(SlidingProcessingTimeWindows.of(
                 Time.hours(1),  // 窗口大小1小时
                 Time.minutes(2) // 滑动间隔2分钟
