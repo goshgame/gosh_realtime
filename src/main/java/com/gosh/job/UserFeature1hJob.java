@@ -65,6 +65,10 @@ public class UserFeature1hJob {
         // 设置全局并行度为1
         env.setParallelism(3);
         System.out.println("Flink environment created with parallelism: " + env.getParallelism());
+
+        // 打印日志级别
+        LOG.info("Log level: isDebugEnabled={}, isInfoEnabled={}, isWarnEnabled={}, isErrorEnabled={}",
+            LOG.isDebugEnabled(), LOG.isInfoEnabled(), LOG.isWarnEnabled(), LOG.isErrorEnabled());
         
         // 第二步：创建Source，Kafka环境
         KafkaSource<String> inputTopic = KafkaEnvUtil.createKafkaSource(
@@ -97,11 +101,14 @@ public class UserFeature1hJob {
                 private static final long SAMPLE_INTERVAL = 60000; // 1分钟
                 private transient long lastSampleTime;
                 private transient long counter;
+                private transient int subtaskIndex;
 
                 @Override
                 public void open(Configuration parameters) throws Exception {
                     lastSampleTime = 0L;
                     counter = 0L;
+                    subtaskIndex = getRuntimeContext().getIndexOfThisSubtask();
+                    LOG.info("Expose counter opened: subtask={}", subtaskIndex + 1);
                 }
 
                 @Override
@@ -109,7 +116,7 @@ public class UserFeature1hJob {
                     long now = System.currentTimeMillis();
                     if (now - lastSampleTime >= SAMPLE_INTERVAL) {
                         if (lastSampleTime != 0L) {
-                            LOG.info("[Expose Events] count in last minute: {}", counter);
+                            LOG.info("[Counter] expose_events={}, subtask={}", counter, subtaskIndex + 1);
                         }
                         lastSampleTime = now - (now % SAMPLE_INTERVAL);
                         counter = 0L;
@@ -131,11 +138,14 @@ public class UserFeature1hJob {
                 private static final long SAMPLE_INTERVAL = 60000; // 1分钟
                 private transient long lastSampleTime;
                 private transient long counter;
+                private transient int subtaskIndex;
 
                 @Override
                 public void open(Configuration parameters) throws Exception {
                     lastSampleTime = 0L;
                     counter = 0L;
+                    subtaskIndex = getRuntimeContext().getIndexOfThisSubtask();
+                    LOG.info("View counter opened: subtask={}", subtaskIndex + 1);
                 }
 
                 @Override
@@ -143,7 +153,7 @@ public class UserFeature1hJob {
                     long now = System.currentTimeMillis();
                     if (now - lastSampleTime >= SAMPLE_INTERVAL) {
                         if (lastSampleTime != 0L) {
-                            LOG.info("[View Events] count in last minute: {}", counter);
+                            LOG.info("[Counter] view_events={}, subtask={}", counter, subtaskIndex + 1);
                         }
                         lastSampleTime = now - (now % SAMPLE_INTERVAL);
                         counter = 0L;
