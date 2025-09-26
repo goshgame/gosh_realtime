@@ -37,11 +37,13 @@ import java.util.Iterator;
 
 public class UserFeature1hJob {
     private static final Logger LOG = LoggerFactory.getLogger(UserFeature1hJob.class);
+    private static final Logger MONITOR = LoggerFactory.getLogger("com.gosh.job.UserFeature1hJob.monitor");
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private static String PREFIX = "rec:user_feature:{";
     private static String SUFFIX = "}:post1h";
     private static String AUTHOR_PREFIX = "rec:user_author_feature:{";
     private static String AUTHOR_SUFFIX = "}:post1h";
+    private static final int MAX_EVENTS_PER_KEY = 100;
 
     private static class WindowState {
         int eventCount;
@@ -67,8 +69,19 @@ public class UserFeature1hJob {
         System.out.println("Flink environment created with parallelism: " + env.getParallelism());
 
         // 打印日志级别
-        LOG.info("Log level: isDebugEnabled={}, isInfoEnabled={}, isWarnEnabled={}, isErrorEnabled={}",
-            LOG.isDebugEnabled(), LOG.isInfoEnabled(), LOG.isWarnEnabled(), LOG.isErrorEnabled());
+        System.out.println("Log level check - DEBUG: " + LOG.isDebugEnabled() + 
+            ", INFO: " + LOG.isInfoEnabled() + 
+            ", WARN: " + LOG.isWarnEnabled() + 
+            ", ERROR: " + LOG.isErrorEnabled());
+        LOG.error("Log level check via LOG.error");
+        LOG.warn("Log level check via LOG.warn");
+        LOG.info("Log level check via LOG.info");
+        LOG.debug("Log level check via LOG.debug");
+        
+        MONITOR.error("Monitor log level check via ERROR");
+        MONITOR.warn("Monitor log level check via WARN");
+        MONITOR.info("Monitor log level check via INFO");
+        MONITOR.debug("Monitor log level check via DEBUG");
         
         // 第二步：创建Source，Kafka环境
         KafkaSource<String> inputTopic = KafkaEnvUtil.createKafkaSource(
@@ -108,7 +121,9 @@ public class UserFeature1hJob {
                     lastSampleTime = 0L;
                     counter = 0L;
                     subtaskIndex = getRuntimeContext().getIndexOfThisSubtask();
-                    LOG.info("Expose counter opened: subtask={}", subtaskIndex + 1);
+                    String msg = "Expose counter opened: subtask=" + (subtaskIndex + 1);
+                    System.out.println(msg);
+                    LOG.error(msg); // 使用 ERROR 级别确保可见
                 }
 
                 @Override
@@ -116,7 +131,9 @@ public class UserFeature1hJob {
                     long now = System.currentTimeMillis();
                     if (now - lastSampleTime >= SAMPLE_INTERVAL) {
                         if (lastSampleTime != 0L) {
-                            LOG.info("[Counter] expose_events={}, subtask={}", counter, subtaskIndex + 1);
+                            String msg = String.format("[Counter] expose_events=%d, subtask=%d", counter, subtaskIndex + 1);
+                            System.out.println(msg);
+                            LOG.error(msg); // 使用 ERROR 级别确保可见
                         }
                         lastSampleTime = now - (now % SAMPLE_INTERVAL);
                         counter = 0L;
@@ -145,7 +162,9 @@ public class UserFeature1hJob {
                     lastSampleTime = 0L;
                     counter = 0L;
                     subtaskIndex = getRuntimeContext().getIndexOfThisSubtask();
-                    LOG.info("View counter opened: subtask={}", subtaskIndex + 1);
+                    String msg = "View counter opened: subtask=" + (subtaskIndex + 1);
+                    System.out.println(msg);
+                    LOG.error(msg); // 使用 ERROR 级别确保可见
                 }
 
                 @Override
@@ -153,7 +172,9 @@ public class UserFeature1hJob {
                     long now = System.currentTimeMillis();
                     if (now - lastSampleTime >= SAMPLE_INTERVAL) {
                         if (lastSampleTime != 0L) {
-                            LOG.info("[Counter] view_events={}, subtask={}", counter, subtaskIndex + 1);
+                            String msg = String.format("[Counter] view_events=%d, subtask=%d", counter, subtaskIndex + 1);
+                            System.out.println(msg);
+                            LOG.error(msg); // 使用 ERROR 级别确保可见
                         }
                         lastSampleTime = now - (now % SAMPLE_INTERVAL);
                         counter = 0L;
