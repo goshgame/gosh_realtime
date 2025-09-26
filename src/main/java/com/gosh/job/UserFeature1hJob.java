@@ -226,7 +226,11 @@ public class UserFeature1hJob {
 
                 @Override
                 public void processElement(UserFeatureCommon.UserFeatureEvent event, Context ctx, Collector<Tuple2<String, Object>> out) throws Exception {
+                    // 检查事件时间戳是否是秒级的
                     long currentTime = event.timestamp;
+                    if (currentTime < 1000000000000L) { // 如果是秒级时间戳
+                        currentTime = currentTime * 1000; // 转换为毫秒级
+                    }
                     
                     // 定期清理过期的窗口
                     if (currentTime - lastCleanupTime > cleanupInterval) {
@@ -238,8 +242,9 @@ public class UserFeature1hJob {
                     long firstWindowStart = (currentTime / slidingMs) * slidingMs;
                     
                     // 调试日志：事件时间和窗口信息
-                    LOG.error("[Debug] Processing event: uid={}, time={}, firstWindow={}, type={}",
+                    LOG.error("[Debug] Processing event: uid={}, event_time={}, current_time={}, firstWindow={}, type={}",
                         event.uid,
+                        new SimpleDateFormat("HH:mm:ss").format(new Date(event.timestamp)),
                         new SimpleDateFormat("HH:mm:ss").format(new Date(currentTime)),
                         new SimpleDateFormat("HH:mm:ss").format(new Date(firstWindowStart)),
                         event.eventType);
@@ -352,9 +357,10 @@ public class UserFeature1hJob {
                 private void processEventForWindow(UserFeatureCommon.UserFeatureEvent event, final long windowStart, final long currentTime, Collector<Tuple2<String, Object>> out) {
                     String windowKey = event.uid + "_" + windowStart;
                     WindowState state = windowStates.computeIfAbsent(windowKey, k -> {
-                        LOG.error("[Debug] New window: uid={}, start={}, subtask={}/{}",
+                        LOG.error("[Debug] New window: uid={}, start={}, current_time={}, subtask={}/{}",
                             event.uid,
                             new SimpleDateFormat("HH:mm:ss").format(new Date(windowStart)),
+                            new SimpleDateFormat("HH:mm:ss").format(new Date(System.currentTimeMillis())),
                             subtaskIndex + 1,
                             numberOfParallelSubtasks);
                         return new WindowState(windowStart);
