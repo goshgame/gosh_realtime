@@ -167,6 +167,10 @@ public class UserFeature1hJob {
         // 3.5 合并两个流，限制数据量并直接在ProcessFunction中实现时间窗口聚合
         DataStream<Tuple2<String, Object>> processedStream = exposeFeatureStream
             .union(viewFeatureStream)
+            .assignTimestampsAndWatermarks(
+                WatermarkStrategy.<UserFeatureCommon.UserFeatureEvent>forBoundedOutOfOrderness(Duration.ofSeconds(10))
+                    .withTimestampAssigner((event, recordTimestamp) -> event.getTimestamp())
+            )
             .keyBy(event -> event.getUid())
             .process(new ProcessFunction<UserFeatureCommon.UserFeatureEvent, Tuple2<String, Object>>() {
                 private final int maxEventsPerWindow = 100;
@@ -176,11 +180,16 @@ public class UserFeature1hJob {
                 
                 private transient Map<String, WindowState> windowStates; // key: uid_windowStart
                 private transient long lastCleanupTime;
+                private transient int subtaskIndex;
+                private transient int numberOfParallelSubtasks;
 
                 @Override
-                public void open(Configuration parameters) {
+                public void open(Configuration parameters) throws Exception {
                     windowStates = new HashMap<>();
                     lastCleanupTime = System.currentTimeMillis();
+                    subtaskIndex = getRuntimeContext().getIndexOfThisSubtask();
+                    numberOfParallelSubtasks = getRuntimeContext().getNumberOfParallelSubtasks();
+                    LOG.info("Process function opened: subtask {}/{}", subtaskIndex + 1, numberOfParallelSubtasks);
                 }
 
                 @Override
@@ -202,7 +211,14 @@ public class UserFeature1hJob {
 
                 private void processEventForWindow(UserFeatureCommon.UserFeatureEvent event, final long windowStart, final long currentTime, Collector<Tuple2<String, Object>> out) {
                     String windowKey = event.uid + "_" + windowStart;
-                    WindowState state = windowStates.computeIfAbsent(windowKey, k -> new WindowState(windowStart));
+                    WindowState state = windowStates.computeIfAbsent(windowKey, k -> {
+                        LOG.info("[Subtask {}/{}] Created new window for uid {} at {}",
+                            subtaskIndex + 1,
+                            numberOfParallelSubtasks,
+                            event.uid,
+                            new SimpleDateFormat("HH:mm:ss").format(new Date(windowStart)));
+                        return new WindowState(windowStart);
+                    });
                     
                     // 如果未超过限制，处理事件
                     if (state.eventCount < maxEventsPerWindow) {
@@ -256,11 +272,14 @@ public class UserFeature1hJob {
                             userResult.viewerPosinterPostHis1h = UserFeatureCommon.buildPostListString(state.userAccumulator.posinterPostIds, 10);
                             userResult.updateTime = currentTime;
                             
-                            LOG.info("Window triggered for uid {} at {}: expose={}, 3s_views={}",
+                            LOG.info("[Subtask {}/{}] Window triggered for uid {} at {}: expose={}, 3s_views={}, events={}",
+                                subtaskIndex + 1,
+                                numberOfParallelSubtasks,
                                 event.uid,
                                 new SimpleDateFormat("HH:mm:ss").format(new Date(currentTime)),
                                 userResult.viewerExppostCnt1h,
-                                userResult.viewer3sviewPostCnt1h);
+                                userResult.viewer3sviewPostCnt1h,
+                                state.eventCount);
                             
                             out.collect(new Tuple2<>("user", userResult));
                             
@@ -299,16 +318,26 @@ public class UserFeature1hJob {
                             }
                             
                             if (!authorFeatures.isEmpty()) {
-                                LOG.info("Window triggered for uid {} at {}: author_count={}",
+                                LOG.info("[Subtask {}/{}] Window triggered for uid {} at {}: author_count={}, events={}",
+                                    subtaskIndex + 1,
+                                    numberOfParallelSubtasks,
                                     event.uid,
                                     new SimpleDateFormat("HH:mm:ss").format(new Date(currentTime)),
-                                    authorFeatures.size());
+                                    authorFeatures.size(),
+                                    state.eventCount);
                                 out.collect(new Tuple2<>("author", new Tuple2<>(event.uid, authorFeatures)));
                             }
                             
                             // 移除已完成的窗口
                             windowStates.remove(windowKey);
                         }
+                    } else {
+                        LOG.debug("[Subtask {}/{}] Event limit reached for uid {} in window {}: count={}",
+                            subtaskIndex + 1,
+                            numberOfParallelSubtasks,
+                            event.uid,
+                            new SimpleDateFormat("HH:mm:ss").format(new Date(windowStart)),
+                            state.eventCount);
                     }
                 }
                 
@@ -323,7 +352,10 @@ public class UserFeature1hJob {
                         }
                     }
                     if (removedCount > 0) {
-                        LOG.info("Cleaned up {} expired windows", removedCount);
+                        LOG.info("[Subtask {}/{}] Cleaned up {} expired windows",
+                            subtaskIndex + 1,
+                            numberOfParallelSubtasks,
+                            removedCount);
                     }
                 }
             })
