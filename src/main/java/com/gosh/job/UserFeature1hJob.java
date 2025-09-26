@@ -33,6 +33,7 @@ import java.time.Duration;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Iterator;
 
 public class UserFeature1hJob {
     private static final Logger LOG = LoggerFactory.getLogger(UserFeature1hJob.class);
@@ -255,6 +256,12 @@ public class UserFeature1hJob {
                             userResult.viewerPosinterPostHis1h = UserFeatureCommon.buildPostListString(state.userAccumulator.posinterPostIds, 10);
                             userResult.updateTime = currentTime;
                             
+                            LOG.info("Window triggered for uid {} at {}: expose={}, 3s_views={}",
+                                event.uid,
+                                new SimpleDateFormat("HH:mm:ss").format(new Date(currentTime)),
+                                userResult.viewerExppostCnt1h,
+                                userResult.viewer3sviewPostCnt1h);
+                            
                             out.collect(new Tuple2<>("user", userResult));
                             
                             // 2. 输出用户-作者特征
@@ -292,6 +299,10 @@ public class UserFeature1hJob {
                             }
                             
                             if (!authorFeatures.isEmpty()) {
+                                LOG.info("Window triggered for uid {} at {}: author_count={}",
+                                    event.uid,
+                                    new SimpleDateFormat("HH:mm:ss").format(new Date(currentTime)),
+                                    authorFeatures.size());
                                 out.collect(new Tuple2<>("author", new Tuple2<>(event.uid, authorFeatures)));
                             }
                             
@@ -303,7 +314,17 @@ public class UserFeature1hJob {
                 
                 private void cleanupExpiredWindows(long currentTime) {
                     final long cutoffTime = currentTime - (2 * windowSizeMs);
-                    windowStates.entrySet().removeIf(entry -> entry.getValue().windowStart < cutoffTime);
+                    int removedCount = 0;
+                    for (Iterator<Map.Entry<String, WindowState>> it = windowStates.entrySet().iterator(); it.hasNext();) {
+                        Map.Entry<String, WindowState> entry = it.next();
+                        if (entry.getValue().windowStart < cutoffTime) {
+                            it.remove();
+                            removedCount++;
+                        }
+                    }
+                    if (removedCount > 0) {
+                        LOG.info("Cleaned up {} expired windows", removedCount);
+                    }
                 }
             })
             .name("Combined Feature Processing");
@@ -406,6 +427,7 @@ public class UserFeature1hJob {
                 public void open(Configuration parameters) throws Exception {
                     lastSampleTime = 0;
                     typeSampleCount = new HashMap<>();
+                    LOG.info("Sample processor opened");
                 }
 
                 @Override
@@ -415,6 +437,7 @@ public class UserFeature1hJob {
                     if (now - lastSampleTime > SAMPLE_INTERVAL) {
                         lastSampleTime = now - (now % SAMPLE_INTERVAL); // 对齐到分钟
                         typeSampleCount.clear();
+                        LOG.info("Sample interval reset");
                     }
 
                     String type = value.f0;
@@ -445,6 +468,8 @@ public class UserFeature1hJob {
                                 authorFeature.f1.size(),
                                 String.join(",", authorFeature.f1.keySet()));
                         }
+                    } else {
+                        LOG.debug("Sample skipped for type {} (count={})", type, currentCount);
                     }
                     out.collect(value);
                 }
