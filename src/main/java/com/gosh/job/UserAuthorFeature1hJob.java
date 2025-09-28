@@ -38,7 +38,7 @@ public class UserAuthorFeature1hJob {
     private static String PREFIX = "rec:user_author_feature:{";
     private static String SUFFIX = "}:post1h";
     // 每个窗口内每个用户的最大事件数限制
-    private static final int MAX_EVENTS_PER_WINDOW = 100;
+    private static final int MAX_EVENTS_PER_WINDOW = 200;
 
     public static void main(String[] args) throws Exception {
         // 第一步：创建flink环境
@@ -183,15 +183,18 @@ public class UserAuthorFeature1hJob {
 
         @Override
         public UserAuthorAccumulator add(UserFeatureEvent event, UserAuthorAccumulator acc) {
+            // 先设置用户ID，确保即使跳过也能写入Redis
+            acc.uid = event.uid;
+            
             if (acc.totalEventCount >= MAX_EVENTS_PER_WINDOW) {
-                // 如果超过限制，直接返回当前accumulator，不再更新
-                LOG.warn("User {} has exceeded the event limit ({}). Current events: {}. Skipping update.", 
-                        event.getUid(), MAX_EVENTS_PER_WINDOW, acc.totalEventCount);
+                // 如果超过限制，记录一次警告并跳过，但不影响现有数据的写入
+                if (acc.totalEventCount == MAX_EVENTS_PER_WINDOW) {
+                    LOG.warn("User {} has exceeded the event limit ({}). Further events will be skipped.", 
+                            event.getUid(), MAX_EVENTS_PER_WINDOW);
+                }
                 return acc;
             }
-            acc.totalEventCount++;
-            
-            acc.uid = event.uid;
+
             // 获取或创建作者特征对象
             UserAuthorAccumulator.AuthorFeatures authorFeatures = acc.authorFeatureMap.computeIfAbsent(event.author, 
                 k -> new UserAuthorAccumulator.AuthorFeatures());
@@ -211,6 +214,7 @@ public class UserAuthorFeature1hJob {
                     }
                 }
             }
+            acc.totalEventCount++;
             return acc;
         }
 

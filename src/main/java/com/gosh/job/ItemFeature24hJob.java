@@ -36,6 +36,8 @@ public class ItemFeature24hJob {
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private static String PREFIX = "rec:item_feature:{";
     private static String SUFFIX = "}:post24h";
+    // 每个窗口内每个item的最大事件数限制
+    private static final int MAX_EVENTS_PER_WINDOW = 200000;
 
     public static void main(String[] args) throws Exception {
         // 第一步：创建flink环境
@@ -197,6 +199,18 @@ public class ItemFeature24hJob {
 
         @Override
         public ItemFeatureAccumulator add(UserFeatureEvent event, ItemFeatureAccumulator accumulator) {
+            // 先设置postId，确保即使跳过也能写入Redis
+            accumulator.postId = event.postId;
+            
+            if (accumulator.totalEventCount >= MAX_EVENTS_PER_WINDOW) {
+                // 如果超过限制，记录一次警告并跳过，但不影响现有数据的写入
+                if (accumulator.totalEventCount == MAX_EVENTS_PER_WINDOW) {
+                    LOG.warn("Post {} has exceeded the event limit ({}). Further events will be skipped.", 
+                            event.postId, MAX_EVENTS_PER_WINDOW);
+                }
+                return accumulator;
+            }
+
             return ItemFeatureCommon.addEventToAccumulator(event, accumulator);
         }
 
@@ -206,23 +220,23 @@ public class ItemFeature24hJob {
             result.postId = accumulator.postId;
             
             // 曝光特征
-            result.postExpCnt24h = accumulator.exposeRecTokens.size();
+            result.postExpCnt24h = (int) accumulator.exposeHLL.cardinality();
             
             // 观看特征
-            result.post3sviewCnt24h = accumulator.view3sRecTokens.size();
-            result.post8sviewCnt24h = accumulator.view8sRecTokens.size();
-            result.post12sviewCnt24h = accumulator.view12sRecTokens.size();
-            result.post20sviewCnt24h = accumulator.view20sRecTokens.size();
+            result.post3sviewCnt24h = (int) accumulator.view3sHLL.cardinality();
+            result.post8sviewCnt24h = (int) accumulator.view8sHLL.cardinality();
+            result.post12sviewCnt24h = (int) accumulator.view12sHLL.cardinality();
+            result.post20sviewCnt24h = (int) accumulator.view20sHLL.cardinality();
             
             // 停留特征
-            result.post5sstandCnt24h = accumulator.stand5sRecTokens.size();
-            result.post10sstandCnt24h = accumulator.stand10sRecTokens.size();
+            result.post5sstandCnt24h = (int) accumulator.stand5sHLL.cardinality();
+            result.post10sstandCnt24h = (int) accumulator.stand10sHLL.cardinality();
             
             // 互动特征
-            result.postLikeCnt24h = accumulator.likeRecTokens.size();
-            result.postFollowCnt24h = accumulator.followRecTokens.size();
-            result.postProfileCnt24h = accumulator.profileRecTokens.size();
-            result.postPosinterCnt24h = accumulator.posinterRecTokens.size();
+            result.postLikeCnt24h = (int) accumulator.likeHLL.cardinality();
+            result.postFollowCnt24h = (int) accumulator.followHLL.cardinality();
+            result.postProfileCnt24h = (int) accumulator.profileHLL.cardinality();
+            result.postPosinterCnt24h = (int) accumulator.posinterHLL.cardinality();
             
             return result;
         }

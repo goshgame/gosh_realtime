@@ -36,7 +36,7 @@ public class UserFeature1hJob {
     private static String PREFIX = "rec:user_feature:{";
     private static String SUFFIX = "}:post1h";
     // 每个窗口内每个用户的最大事件数限制
-    private static final int MAX_EVENTS_PER_WINDOW = 100;
+    private static final int MAX_EVENTS_PER_WINDOW = 200;
 
     public static void main(String[] args) throws Exception {
         System.out.println("Starting UserFeature1hJob...");
