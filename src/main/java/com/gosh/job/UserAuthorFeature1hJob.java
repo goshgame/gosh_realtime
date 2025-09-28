@@ -172,6 +172,7 @@ public class UserAuthorFeature1hJob {
         // 第六步：创建sink，Redis环境
         RedisConfig redisConfig = RedisConfig.fromProperties(RedisUtil.loadProperties());
         redisConfig.setTtl(600);
+        redisConfig.setCommand("DEL_HMSET"); // 设置正确的命令用于HashMap操作
         RedisUtil.addRedisHashMapSink(
             dataStream,
             redisConfig,
