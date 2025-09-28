@@ -237,6 +237,12 @@ public class UserAuthorFeature1hJob {
 
         @Override
         public UserAuthorFeature1hAggregation getResult(UserAuthorAccumulator acc) {
+            // 如果没有任何作者特征，返回null
+            if (acc.authorFeatureMap.isEmpty()) {
+                LOG.debug("No author features found for user {}", acc.uid);
+                return null;
+            }
+
             UserAuthorFeature1hAggregation result = new UserAuthorFeature1hAggregation();
             result.uid = acc.uid;
             result.authorFeatures = new HashMap<>();
@@ -245,6 +251,20 @@ public class UserAuthorFeature1hJob {
             for (Map.Entry<Long, UserAuthorAccumulator.AuthorFeatures> entry : acc.authorFeatureMap.entrySet()) {
                 long authorId = entry.getKey();
                 UserAuthorAccumulator.AuthorFeatures features = entry.getValue();
+
+                // 检查是否有任何特征
+                boolean hasFeatures = !features.view3sRecTokens.isEmpty() ||
+                                    !features.view8sRecTokens.isEmpty() ||
+                                    !features.view12sRecTokens.isEmpty() ||
+                                    !features.view20sRecTokens.isEmpty() ||
+                                    !features.stand5sRecTokens.isEmpty() ||
+                                    !features.stand10sRecTokens.isEmpty() ||
+                                    !features.likeRecTokens.isEmpty();
+
+                if (!hasFeatures) {
+                    LOG.debug("Skipping author {} for user {} as it has no features", authorId, acc.uid);
+                    continue;
+                }
 
                 byte[] featureBytes = RecFeature.RecUserAuthorFeature.newBuilder()
                     // 1小时观看特征
@@ -262,6 +282,12 @@ public class UserAuthorFeature1hJob {
                     .toByteArray();
 
                 result.authorFeatures.put(String.valueOf(authorId), featureBytes);
+            }
+
+            // 如果所有作者都被跳过了（没有有效特征），返回null
+            if (result.authorFeatures.isEmpty()) {
+                LOG.debug("No valid features found for any author for user {}", acc.uid);
+                return null;
             }
             
             result.updateTime = System.currentTimeMillis();
