@@ -92,42 +92,50 @@ public class UserAuthorFeature1hJob {
             .name("User-Author Feature 1h Aggregation");
 
         // 打印聚合结果用于调试（采样）
-//        aggregatedStream
-//            .process(new ProcessFunction<UserAuthorFeature1hAggregation, UserAuthorFeature1hAggregation>() {
-//                private static final long SAMPLE_INTERVAL = 60000; // 采样间隔1分钟
-//                private static final int SAMPLE_COUNT = 3; // 每次采样3条
-//                private transient long lastSampleTime;
-//                private transient int sampleCount;
-//
-//                @Override
-//                public void open(Configuration parameters) throws Exception {
-//                    lastSampleTime = 0;
-//                    sampleCount = 0;
-//                }
-//
-//                @Override
-//                public void processElement(UserAuthorFeature1hAggregation value, Context ctx, Collector<UserAuthorFeature1hAggregation> out) throws Exception {
-//                    long now = System.currentTimeMillis();
-//                    if (now - lastSampleTime > SAMPLE_INTERVAL) {
-//                        lastSampleTime = now - (now % SAMPLE_INTERVAL);
-//                        sampleCount = 0;
-//                    }
-//                    if (sampleCount < SAMPLE_COUNT) {
-//                        sampleCount++;
-//                        LOG.info("[Sample {}/{}] uid {} author {} at {}: exp1h={}, 3sview1h={}, 8sview1h={}, like1h={}",
-//                            sampleCount,
-//                            SAMPLE_COUNT,
-//                            value.uid,
-//                            value.author,
-//                            new SimpleDateFormat("HH:mm:ss").format(new Date()),
-//                            value.userauthorExpCnt1h,
-//                            value.userauthor3sviewCnt1h,
-//                            value.userauthor8sviewCnt1h,
-//                            value.userauthorLikeCnt1h);
-//                    }
-//                }
-//            })
-//            .name("Debug Sampling");
+       aggregatedStream
+           .process(new ProcessFunction<UserAuthorFeature1hAggregation, UserAuthorFeature1hAggregation>() {
+               private static final long SAMPLE_INTERVAL = 60000; // 采样间隔1分钟
+               private static final int SAMPLE_COUNT = 3; // 每次采样3条
+               private transient long lastSampleTime;
+               private transient int sampleCount;
+
+               @Override
+               public void open(Configuration parameters) throws Exception {
+                   lastSampleTime = 0;
+                   sampleCount = 0;
+               }
+
+               @Override
+               public void processElement(UserAuthorFeature1hAggregation value, Context ctx, Collector<UserAuthorFeature1hAggregation> out) throws Exception {
+                   long now = System.currentTimeMillis();
+                   if (now - lastSampleTime > SAMPLE_INTERVAL) {
+                       lastSampleTime = now - (now % SAMPLE_INTERVAL);
+                       sampleCount = 0;
+                   }
+                   if (sampleCount < SAMPLE_COUNT) {
+                       sampleCount++;
+                       // 遍历每个作者的特征并打印
+                       for (Map.Entry<String, byte[]> entry : value.authorFeatures.entrySet()) {
+                           String authorId = entry.getKey();
+                           RecFeature.RecUserAuthorFeature feature = RecFeature.RecUserAuthorFeature.parseFrom(entry.getValue());
+                           LOG.info("[Sample {}/{}] uid {} author {} at {}: 3sview1h={}, 8sview1h={}, 12sview1h={}, 20sview1h={}, 5sstand1h={}, 10sstand1h={}, like1h={}",
+                               sampleCount,
+                               SAMPLE_COUNT,
+                               value.uid,
+                               authorId,
+                               new SimpleDateFormat("HH:mm:ss").format(new Date()),
+                               feature.getUserauthor3SviewCnt1H(),
+                               feature.getUserauthor8SviewCnt1H(),
+                               feature.getUserauthor12SviewCnt1H(),
+                               feature.getUserauthor20SviewCnt1H(),
+                               feature.getUserauthor5SstandCnt1H(),
+                               feature.getUserauthor10SstandCnt1H(),
+                               feature.getUserauthorLikeCnt1H());
+                       }
+                   }
+               }
+           })
+           .name("Debug Sampling");
 
         // 第五步：转换为Protobuf并写入Redis
         DataStream<Tuple2<String, Map<String, byte[]>>> dataStream = aggregatedStream
@@ -188,10 +196,10 @@ public class UserAuthorFeature1hJob {
             
             if (acc.totalEventCount >= MAX_EVENTS_PER_WINDOW) {
                 // 如果超过限制，记录一次警告并跳过，但不影响现有数据的写入
-                if (acc.totalEventCount == MAX_EVENTS_PER_WINDOW) {
-                    LOG.warn("User {} has exceeded the event limit ({}). Further events will be skipped.", 
-                            event.getUid(), MAX_EVENTS_PER_WINDOW);
-                }
+                // if (acc.totalEventCount == MAX_EVENTS_PER_WINDOW) {
+                //     LOG.warn("User {} has exceeded the event limit ({}). Further events will be skipped.", 
+                //             event.getUid(), MAX_EVENTS_PER_WINDOW);
+                // }
                 return acc;
             }
 
