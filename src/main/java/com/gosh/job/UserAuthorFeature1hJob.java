@@ -147,14 +147,26 @@ public class UserAuthorFeature1hJob {
                     // 过滤掉map中的null值
                     Map<String, byte[]> cleanFeatures = new HashMap<>();
                     for (Map.Entry<String, byte[]> entry : agg.authorFeatures.entrySet()) {
-                        if (entry.getKey() != null && entry.getValue() != null) {
+                        if (entry.getKey() != null && entry.getValue() != null && entry.getValue().length > 0) {
                             cleanFeatures.put(entry.getKey(), entry.getValue());
+                            LOG.debug("Adding feature for author {} with {} bytes", entry.getKey(), entry.getValue().length);
+                        } else {
+                            LOG.warn("Skipping invalid feature for author {}: key={}, value={}",
+                                entry.getKey(),
+                                entry.getKey() != null ? "valid" : "null",
+                                entry.getValue() != null ? (entry.getValue().length + " bytes") : "null");
                         }
                     }
+                    
+                    if (cleanFeatures.isEmpty()) {
+                        LOG.warn("No valid features found for user {}", agg.uid);
+                        return null;
+                    }
+                    
                     return new Tuple2<>(redisKey, cleanFeatures);
                 }
             })
-            .filter(tuple -> !tuple.f1.isEmpty()) // 确保没有空的特征map
+            .filter(tuple -> tuple != null && tuple.f1 != null && !tuple.f1.isEmpty()) // 确保没有空的特征map
             .name("Aggregation to Protobuf Bytes");
 
         // 第六步：创建sink，Redis环境
