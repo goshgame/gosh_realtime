@@ -84,6 +84,8 @@ public class UserFeatureCommon {
      */
     public static class UserFeatureAccumulator {
         public long uid;
+        // 事件总数计数器
+        public int totalEventCount = 0;
 
         // 曝光相关
         public Set<Long> exposePostIds = new HashSet<>();

@@ -13,7 +13,6 @@ import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.java.functions.KeySelector;
 import org.apache.flink.api.java.tuple.Tuple2;
-import org.apache.flink.api.java.tuple.Tuple3;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.connector.kafka.source.KafkaSource;
 import org.apache.flink.streaming.api.datastream.DataStream;
@@ -21,10 +20,8 @@ import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.ProcessFunction;
-import org.apache.flink.streaming.api.functions.windowing.ProcessWindowFunction;
 import org.apache.flink.streaming.api.windowing.assigners.SlidingProcessingTimeWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
-import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 import org.apache.flink.util.Collector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,32 +29,14 @@ import org.slf4j.LoggerFactory;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.util.*;
-import org.apache.flink.streaming.api.functions.KeyedProcessFunction;
+import java.util.Date;
 
 public class UserFeature1hJob {
     private static final Logger LOG = LoggerFactory.getLogger(UserFeature1hJob.class);
-    private static final Logger MONITOR = LoggerFactory.getLogger("com.gosh.job.UserFeature1hJob.monitor");
-    private static final ObjectMapper objectMapper = new ObjectMapper();
     private static String PREFIX = "rec:user_feature:{";
     private static String SUFFIX = "}:post1h";
-    private static String AUTHOR_PREFIX = "rec:user_author_feature:{";
-    private static String AUTHOR_SUFFIX = "}:post1h";
-    private static final int MAX_EVENTS_PER_KEY = 100;
-
-    private static class WindowState {
-        int eventCount;
-        UserFeatureCommon.UserFeatureAccumulator userAccumulator;
-        Map<Long, UserAuthorFeature1hJob.UserAuthorAccumulator> authorAccumulators; // key: authorId
-        long windowStart;
-        
-        WindowState(long windowStart) {
-            this.eventCount = 0;
-            this.userAccumulator = new UserFeatureCommon.UserFeatureAccumulator();
-            this.authorAccumulators = new HashMap<>();
-            this.windowStart = windowStart;
-        }
-    }
+    // 每个窗口内每个用户的最大事件数限制
+    private static final int MAX_EVENTS_PER_WINDOW = 100;
 
     public static void main(String[] args) throws Exception {
         System.out.println("Starting UserFeature1hJob...");
@@ -67,21 +46,6 @@ public class UserFeature1hJob {
         // 设置全局并行度为1
         env.setParallelism(3);
         System.out.println("Flink environment created with parallelism: " + env.getParallelism());
-
-        // 打印日志级别
-        System.out.println("Log level check - DEBUG: " + LOG.isDebugEnabled() + 
-            ", INFO: " + LOG.isInfoEnabled() + 
-            ", WARN: " + LOG.isWarnEnabled() + 
-            ", ERROR: " + LOG.isErrorEnabled());
-        LOG.error("Log level check via LOG.error");
-        LOG.warn("Log level check via LOG.warn");
-        LOG.info("Log level check via LOG.info");
-        LOG.debug("Log level check via LOG.debug");
-        
-        MONITOR.error("Monitor log level check via ERROR");
-        MONITOR.warn("Monitor log level check via WARN");
-        MONITOR.info("Monitor log level check via INFO");
-        MONITOR.debug("Monitor log level check via DEBUG");
         
         // 第二步：创建Source，Kafka环境
         KafkaSource<String> inputTopic = KafkaEnvUtil.createKafkaSource(
@@ -109,40 +73,33 @@ public class UserFeature1hJob {
             .name("Parse Expose Events");
 
         // 增加曝光事件计数日志（每分钟采样一次）
-        exposeStream = exposeStream
-            .process(new ProcessFunction<UserFeatureCommon.PostExposeEvent, UserFeatureCommon.PostExposeEvent>() {
-                private static final long SAMPLE_INTERVAL = 60000; // 1分钟
-                private transient long lastSampleTime;
-                private transient long counter;
-                private transient int subtaskIndex;
-
-                @Override
-                public void open(Configuration parameters) throws Exception {
-                    lastSampleTime = 0L;
-                    counter = 0L;
-                    subtaskIndex = getRuntimeContext().getIndexOfThisSubtask();
-                    String msg = "Expose counter opened: subtask=" + (subtaskIndex + 1);
-                    System.out.println(msg);
-                    LOG.error(msg); // 使用 ERROR 级别确保可见
-                }
-
-                @Override
-                public void processElement(UserFeatureCommon.PostExposeEvent value, Context ctx, Collector<UserFeatureCommon.PostExposeEvent> out) throws Exception {
-                    long now = System.currentTimeMillis();
-                    if (now - lastSampleTime >= SAMPLE_INTERVAL) {
-                        if (lastSampleTime != 0L) {
-                            String msg = String.format("[Counter] expose_events=%d, subtask=%d", counter, subtaskIndex + 1);
-                            System.out.println(msg);
-                            LOG.error(msg); // 使用 ERROR 级别确保可见
-                        }
-                        lastSampleTime = now - (now % SAMPLE_INTERVAL);
-                        counter = 0L;
-                    }
-                    counter++;
-                    out.collect(value);
-                }
-            })
-            .name("Debug Expose Event Count");
+//        exposeStream = exposeStream
+//            .process(new ProcessFunction<UserFeatureCommon.PostExposeEvent, UserFeatureCommon.PostExposeEvent>() {
+//                private static final long SAMPLE_INTERVAL = 60000; // 1分钟
+//                private transient long lastSampleTime;
+//                private transient long counter;
+//
+//                @Override
+//                public void open(Configuration parameters) throws Exception {
+//                    lastSampleTime = 0L;
+//                    counter = 0L;
+//                }
+//
+//                @Override
+//                public void processElement(UserFeatureCommon.PostExposeEvent value, Context ctx, Collector<UserFeatureCommon.PostExposeEvent> out) throws Exception {
+//                    long now = System.currentTimeMillis();
+//                    if (now - lastSampleTime >= SAMPLE_INTERVAL) {
+//                        if (lastSampleTime != 0L) {
+//                            LOG.info("[Expose Events] count in last minute: {}", counter);
+//                        }
+//                        lastSampleTime = now - (now % SAMPLE_INTERVAL);
+//                        counter = 0L;
+//                    }
+//                    counter++;
+//                    out.collect(value);
+//                }
+//            })
+//            .name("Debug Expose Event Count");
 
         // 3.2 解析观看事件 (event_type=8)
         SingleOutputStreamOperator<UserFeatureCommon.PostViewEvent> viewStream = filteredStream
@@ -150,40 +107,33 @@ public class UserFeature1hJob {
             .name("Parse View Events");
 
         // 增加观看事件计数日志（每分钟采样一次）
-        viewStream = viewStream
-            .process(new ProcessFunction<UserFeatureCommon.PostViewEvent, UserFeatureCommon.PostViewEvent>() {
-                private static final long SAMPLE_INTERVAL = 60000; // 1分钟
-                private transient long lastSampleTime;
-                private transient long counter;
-                private transient int subtaskIndex;
-
-                @Override
-                public void open(Configuration parameters) throws Exception {
-                    lastSampleTime = 0L;
-                    counter = 0L;
-                    subtaskIndex = getRuntimeContext().getIndexOfThisSubtask();
-                    String msg = "View counter opened: subtask=" + (subtaskIndex + 1);
-                    System.out.println(msg);
-                    LOG.error(msg); // 使用 ERROR 级别确保可见
-                }
-
-                @Override
-                public void processElement(UserFeatureCommon.PostViewEvent value, Context ctx, Collector<UserFeatureCommon.PostViewEvent> out) throws Exception {
-                    long now = System.currentTimeMillis();
-                    if (now - lastSampleTime >= SAMPLE_INTERVAL) {
-                        if (lastSampleTime != 0L) {
-                            String msg = String.format("[Counter] view_events=%d, subtask=%d", counter, subtaskIndex + 1);
-                            System.out.println(msg);
-                            LOG.error(msg); // 使用 ERROR 级别确保可见
-                        }
-                        lastSampleTime = now - (now % SAMPLE_INTERVAL);
-                        counter = 0L;
-                    }
-                    counter++;
-                    out.collect(value);
-                }
-            })
-            .name("Debug View Event Count");
+//        viewStream = viewStream
+//            .process(new ProcessFunction<UserFeatureCommon.PostViewEvent, UserFeatureCommon.PostViewEvent>() {
+//                private static final long SAMPLE_INTERVAL = 60000; // 1分钟
+//                private transient long lastSampleTime;
+//                private transient long counter;
+//
+//                @Override
+//                public void open(Configuration parameters) throws Exception {
+//                    lastSampleTime = 0L;
+//                    counter = 0L;
+//                }
+//
+//                @Override
+//                public void processElement(UserFeatureCommon.PostViewEvent value, Context ctx, Collector<UserFeatureCommon.PostViewEvent> out) throws Exception {
+//                    long now = System.currentTimeMillis();
+//                    if (now - lastSampleTime >= SAMPLE_INTERVAL) {
+//                        if (lastSampleTime != 0L) {
+//                            LOG.info("[View Events] count in last minute: {}", counter);
+//                        }
+//                        lastSampleTime = now - (now % SAMPLE_INTERVAL);
+//                        counter = 0L;
+//                    }
+//                    counter++;
+//                    out.collect(value);
+//                }
+//            })
+//            .name("Debug View Event Count");
 
         // 3.3 将曝光事件转换为统一的用户特征事件
         DataStream<UserFeatureCommon.UserFeatureEvent> exposeFeatureStream = exposeStream
@@ -195,284 +145,48 @@ public class UserFeature1hJob {
             .flatMap(new UserFeatureCommon.ViewToFeatureMapper())
             .name("View to Feature");
 
-        // 3.5 合并两个流，限制数据量并在一个算子中实现所有特征的聚合
-        DataStream<Tuple2<String, Object>> processedStream = exposeFeatureStream
+        // 3.5 合并两个流
+        DataStream<UserFeatureCommon.UserFeatureEvent> unifiedStream = exposeFeatureStream
             .union(viewFeatureStream)
-            .keyBy(event -> event.getUid())
-            .process(new KeyedProcessFunction<Long, UserFeatureCommon.UserFeatureEvent, UserFeatureCommon.UserFeatureEvent>() {
-                private final int maxEventsPerWindow = 100;
-                private transient Map<Long, Integer> eventCounters; // key: uid
+            .assignTimestampsAndWatermarks(
+                WatermarkStrategy.<UserFeatureCommon.UserFeatureEvent>forBoundedOutOfOrderness(Duration.ofSeconds(10))
+                    .withTimestampAssigner((event, recordTimestamp) -> event.getTimestamp())
+            );
 
+        // 第四步：按用户ID分组并进行滑动窗口聚合
+        DataStream<UserFeatureAggregation> aggregatedStream = unifiedStream
+            .keyBy(new KeySelector<UserFeatureCommon.UserFeatureEvent, Long>() {
                 @Override
-                public void open(Configuration parameters) {
-                    eventCounters = new HashMap<>();
-                }
-
-                @Override
-                public void processElement(UserFeatureCommon.UserFeatureEvent event, Context ctx, Collector<UserFeatureCommon.UserFeatureEvent> out) throws Exception {
-                    long uid = event.getUid();
-                    int count = eventCounters.getOrDefault(uid, 0);
-                    
-                    // 如果未超过限制，处理事件
-                    if (count < maxEventsPerWindow) {
-                        eventCounters.put(uid, count + 1);
-                        out.collect(event);
-                    } else {
-                        LOG.debug("[Limit] uid={}, events={}", uid, count);
-                    }
+                public Long getKey(UserFeatureCommon.UserFeatureEvent value) throws Exception {
+                    return value.getUid();
                 }
             })
-            .name("Event Limiter")
-            .keyBy(UserFeatureCommon.UserFeatureEvent::getUid)  // 使用方法引用更简洁
-            .window(SlidingProcessingTimeWindows.of(Time.hours(1), Time.minutes(2)))
-            .process(new ProcessWindowFunction<UserFeatureCommon.UserFeatureEvent, Tuple2<String, Object>, Long, TimeWindow>() {
-                private transient int subtaskIndex;
-                private transient int numberOfParallelSubtasks;
+            .window(SlidingProcessingTimeWindows.of(
+                Time.minutes(60),  // 窗口大小1小时，便于测试
+                Time.minutes(2)   // 滑动间隔2分钟
+            ))
+            .aggregate(new UserFeatureAggregator())
+            .name("User Feature Aggregation");
 
-                @Override
-                public void open(Configuration parameters) throws Exception {
-                    subtaskIndex = getRuntimeContext().getIndexOfThisSubtask();
-                    numberOfParallelSubtasks = getRuntimeContext().getNumberOfParallelSubtasks();
-                    LOG.info("Window function opened: subtask {}/{}", subtaskIndex + 1, numberOfParallelSubtasks);
-                }
-
-                @Override
-                public void process(Long key, ProcessWindowFunction<UserFeatureCommon.UserFeatureEvent, Tuple2<String, Object>, Long, TimeWindow>.Context context, Iterable<UserFeatureCommon.UserFeatureEvent> input, Collector<Tuple2<String, Object>> out) throws Exception {
-                    TimeWindow window = context.window();
-                    
-                    // 1. 初始化累加器
-                    UserFeatureCommon.UserFeatureAccumulator userAccumulator = new UserFeatureCommon.UserFeatureAccumulator();
-                    Map<Long, UserAuthorFeature1hJob.UserAuthorAccumulator> authorAccumulators = new HashMap<>();
-                    int eventCount = 0;
-
-                    // 2. 处理所有事件
-                    for (UserFeatureCommon.UserFeatureEvent event : input) {
-                        eventCount++;
-                        
-                        // 更新用户特征累加器
-                        UserFeatureCommon.addEventToAccumulator(event, userAccumulator);
-                        
-                        // 更新用户-作者特征累加器
-                        if (event.author > 0) {
-                            UserAuthorFeature1hJob.UserAuthorAccumulator authorAccumulator = 
-                                authorAccumulators.computeIfAbsent(event.author, 
-                                    k -> new UserAuthorFeature1hJob.UserAuthorAccumulator());
-                            authorAccumulator.uid = event.uid;
-                            authorAccumulator.author = event.author;
-                            
-                            if ("expose".equals(event.eventType)) {
-                                authorAccumulator.exposeRecTokens.add(event.recToken);
-                            }
-                            if ("view".equals(event.eventType)) {
-                                if (event.progressTime >= 3) authorAccumulator.view3sRecTokens.add(event.recToken);
-                                if (event.progressTime >= 8) authorAccumulator.view8sRecTokens.add(event.recToken);
-                                if (event.progressTime >= 12) authorAccumulator.view12sRecTokens.add(event.recToken);
-                                if (event.progressTime >= 20) authorAccumulator.view20sRecTokens.add(event.recToken);
-                                if (event.standingTime >= 5) authorAccumulator.stand5sRecTokens.add(event.recToken);
-                                if (event.standingTime >= 10) authorAccumulator.stand10sRecTokens.add(event.recToken);
-                                if (event.interaction != null) {
-                                    for (Integer it : event.interaction) {
-                                        if (it == 1) authorAccumulator.likeRecTokens.add(event.recToken);
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    // 3. 输出用户特征
-                    UserFeatureAggregation userResult = new UserFeatureAggregation();
-                    userResult.uid = key;
-                    userResult.viewerExppostCnt1h = userAccumulator.exposePostIds.size();
-                    userResult.viewerExp1PostCnt1h = 0;
-                    userResult.viewerExp2PostCnt1h = 0;
-                    userResult.viewer3sviewPostCnt1h = userAccumulator.view3sPostIds.size();
-                    userResult.viewer3sview1PostCnt1h = userAccumulator.view3s1PostIds.size();
-                    userResult.viewer3sview2PostCnt1h = userAccumulator.view3s2PostIds.size();
-                    userResult.viewer3sviewPostHis1h = UserFeatureCommon.buildPostHistoryString(userAccumulator.view3sPostDetails, 10);
-                    userResult.viewer5sstandPostHis1h = UserFeatureCommon.buildPostHistoryString(userAccumulator.stand5sPostDetails, 10);
-                    userResult.viewerLikePostHis1h = UserFeatureCommon.buildPostListString(userAccumulator.likePostIds, 10);
-                    userResult.viewerFollowPostHis1h = UserFeatureCommon.buildPostListString(userAccumulator.followPostIds, 10);
-                    userResult.viewerProfilePostHis1h = UserFeatureCommon.buildPostListString(userAccumulator.profilePostIds, 10);
-                    userResult.viewerPosinterPostHis1h = UserFeatureCommon.buildPostListString(userAccumulator.posinterPostIds, 10);
-                    userResult.updateTime = window.getEnd();
-                    
-                    if (eventCount >= 10) {
-                        LOG.info("[Window] uid={}, expose={}, 3s_views={}, events={}, window=[{} - {}], subtask={}/{}",
-                            userResult.uid,
-                            userResult.viewerExppostCnt1h,
-                            userResult.viewer3sviewPostCnt1h,
-                            eventCount,
-                            new SimpleDateFormat("HH:mm:ss").format(new Date(window.getStart())),
-                            new SimpleDateFormat("HH:mm:ss").format(new Date(window.getEnd())),
-                            subtaskIndex + 1,
-                            numberOfParallelSubtasks);
-                    }
-                    
-                    out.collect(new Tuple2<>("user", userResult));
-                    
-                    // 4. 输出用户-作者特征
-                    if (!authorAccumulators.isEmpty()) {
-                        Map<String, byte[]> authorFeatures = new HashMap<>();
-                        for (Map.Entry<Long, UserAuthorFeature1hJob.UserAuthorAccumulator> entry : authorAccumulators.entrySet()) {
-                            UserAuthorFeature1hJob.UserAuthorFeature1hAggregation authorResult = 
-                                new UserAuthorFeature1hJob.UserAuthorFeature1hAggregation();
-                            UserAuthorFeature1hJob.UserAuthorAccumulator acc = entry.getValue();
-                            
-                            authorResult.uid = acc.uid;
-                            authorResult.author = acc.author;
-                            authorResult.userauthorExpCnt1h = acc.exposeRecTokens.size();
-                            authorResult.userauthor3sviewCnt1h = acc.view3sRecTokens.size();
-                            authorResult.userauthor8sviewCnt1h = acc.view8sRecTokens.size();
-                            authorResult.userauthor12sviewCnt1h = acc.view12sRecTokens.size();
-                            authorResult.userauthor20sviewCnt1h = acc.view20sRecTokens.size();
-                            authorResult.userauthor5sstandCnt1h = acc.stand5sRecTokens.size();
-                            authorResult.userauthor10sstandCnt1h = acc.stand10sRecTokens.size();
-                            authorResult.userauthorLikeCnt1h = acc.likeRecTokens.size();
-                            authorResult.updateTime = window.getEnd();
-
-                            byte[] value = RecFeature.RecUserAuthorFeature.newBuilder()
-                                .setUserauthorExpCnt1H(authorResult.userauthorExpCnt1h)
-                                .setUserauthor3SviewCnt1H(authorResult.userauthor3sviewCnt1h)
-                                .setUserauthor8SviewCnt1H(authorResult.userauthor8sviewCnt1h)
-                                .setUserauthor12SviewCnt1H(authorResult.userauthor12sviewCnt1h)
-                                .setUserauthor20SviewCnt1H(authorResult.userauthor20sviewCnt1h)
-                                .setUserauthor5SstandCnt1H(authorResult.userauthor5sstandCnt1h)
-                                .setUserauthor10SstandCnt1H(authorResult.userauthor10sstandCnt1h)
-                                .setUserauthorLikeCnt1H(authorResult.userauthorLikeCnt1h)
-                                .build()
-                                .toByteArray();
-
-                            authorFeatures.put(String.valueOf(acc.author), value);
-                        }
-
-                        if (eventCount >= 10) {
-                            LOG.info("[Window] uid={}, authors={}, events={}, window=[{} - {}], subtask={}/{}",
-                                key,
-                                authorFeatures.size(),
-                                eventCount,
-                                new SimpleDateFormat("HH:mm:ss").format(new Date(window.getStart())),
-                                new SimpleDateFormat("HH:mm:ss").format(new Date(window.getEnd())),
-                                subtaskIndex + 1,
-                                numberOfParallelSubtasks);
-                        }
-
-                        String redisKey = AUTHOR_PREFIX + key + AUTHOR_SUFFIX;
-                        out.collect(new Tuple2<>("author", new Tuple2<>(redisKey, authorFeatures)));
-                    }
-                }
-            })
-            .name("Combined Feature Processing");
-
-        // 4.1 用户特征聚合
-        DataStream<UserFeatureAggregation> userFeatureStream = processedStream
-            .filter(tuple -> "user".equals(tuple.f0))
-            .map(new MapFunction<Tuple2<String, Object>, UserFeatureAggregation>() {
-                @Override
-                public UserFeatureAggregation map(Tuple2<String, Object> tuple) throws Exception {
-                    return (UserFeatureAggregation) tuple.f1;
-                }
-            })
-            .name("Extract User Feature");
-
-        // 4.2 用户-作者特征聚合
-        DataStream<Tuple2<String, Map<String, byte[]>>> userAuthorFeatureStream = processedStream
-            .filter(tuple -> "author".equals(tuple.f0))
-            .map(new MapFunction<Tuple2<String, Object>, Tuple2<String, Map<String, byte[]>>>() {
-                @Override
-                public Tuple2<String, Map<String, byte[]>> map(Tuple2<String, Object> tuple) throws Exception {
-                    @SuppressWarnings("unchecked")
-                    Tuple2<String, Map<String, byte[]>> result = (Tuple2<String, Map<String, byte[]>>) tuple.f1;
-                    return result;
-                }
-            })
-            .name("Extract User-Author Feature");
-
-        // 打印聚合结果用于调试（采样）
-        userFeatureStream
-            .process(new ProcessFunction<UserFeatureAggregation, UserFeatureAggregation>() {
-                private static final long SAMPLE_INTERVAL = 60000; // 采样间隔1分钟
-                private static final int SAMPLE_COUNT = 3; // 每次采样3条
-                private transient long lastSampleTime;
-                private transient int sampleCount;
-
-                @Override
-                public void open(Configuration parameters) throws Exception {
-                    lastSampleTime = 0;
-                    sampleCount = 0;
-                }
-
-                @Override
-                public void processElement(UserFeatureAggregation value, Context ctx, Collector<UserFeatureAggregation> out) throws Exception {
-                    long now = System.currentTimeMillis();
-                    if (now - lastSampleTime > SAMPLE_INTERVAL) {
-                        lastSampleTime = now - (now % SAMPLE_INTERVAL);
-                        sampleCount = 0;
-                    }
-                    if (sampleCount < SAMPLE_COUNT) {
-                        sampleCount++;
-                        LOG.info("[User Sample {}/{}] uid={} at {}: expose={}, 3s_views={}, like={}, follow={}",
-                            sampleCount,
-                            SAMPLE_COUNT,
-                            value.uid,
-                            new SimpleDateFormat("HH:mm:ss").format(new Date()),
-                            value.viewerExppostCnt1h,
-                            value.viewer3sviewPostCnt1h,
-                            value.viewerLikePostHis1h,
-                            value.viewerFollowPostHis1h);
-                    }
-                    out.collect(value);
-                }
-            })
-            .name("Debug User Sampling");
-
-        userAuthorFeatureStream
-            .process(new ProcessFunction<Tuple2<String, Map<String, byte[]>>, Tuple2<String, Map<String, byte[]>>>() {
-                private static final long SAMPLE_INTERVAL = 60000; // 采样间隔1分钟
-                private static final int SAMPLE_COUNT = 3; // 每次采样3条
-                private transient long lastSampleTime;
-                private transient int sampleCount;
-
-                @Override
-                public void open(Configuration parameters) throws Exception {
-                    lastSampleTime = 0;
-                    sampleCount = 0;
-                }
-
-                @Override
-                public void processElement(Tuple2<String, Map<String, byte[]>> value, Context ctx, Collector<Tuple2<String, Map<String, byte[]>>> out) throws Exception {
-                    long now = System.currentTimeMillis();
-                    if (now - lastSampleTime > SAMPLE_INTERVAL) {
-                        lastSampleTime = now - (now % SAMPLE_INTERVAL);
-                        sampleCount = 0;
-                    }
-                    if (sampleCount < SAMPLE_COUNT) {
-                        sampleCount++;
-                        LOG.info("[Author Sample {}/{}] key={} at {}: fields={}",
-                            sampleCount,
-                            SAMPLE_COUNT,
-                            value.f0,
-                            new SimpleDateFormat("HH:mm:ss").format(new Date()),
-                            String.join(",", value.f1.keySet()));
-                    }
-                    out.collect(value);
-                }
-            })
-            .name("Debug Author Sampling");
-
-        // 5.1 用户特征写入Redis
-        DataStream<Tuple2<String, byte[]>> userDataStream = userFeatureStream
+        // 第五步：转换为Protobuf并写入Redis
+        DataStream<Tuple2<String, byte[]>> dataStream = aggregatedStream
             .map(new MapFunction<UserFeatureAggregation, Tuple2<String, byte[]>>() {
                 @Override
                 public Tuple2<String, byte[]> map(UserFeatureAggregation agg) throws Exception {
+                    // 构建Redis key
                     String redisKey = PREFIX + agg.uid + SUFFIX;
                     
+                    // 构建Protobuf
                     RecFeature.RecUserFeature feature = RecFeature.RecUserFeature.newBuilder()
+                        // 1小时曝光特征
                         .setViewerExppostCnt1H(agg.viewerExppostCnt1h)
                         .setViewerExp1PostCnt1H(agg.viewerExp1PostCnt1h)
                         .setViewerExp2PostCnt1H(agg.viewerExp2PostCnt1h)
+                        // 1小时观看特征
                         .setViewer3SviewPostCnt1H(agg.viewer3sviewPostCnt1h)
                         .setViewer3Sview1PostCnt1H(agg.viewer3sview1PostCnt1h)
                         .setViewer3Sview2PostCnt1H(agg.viewer3sview2PostCnt1h)
+                        // 1小时历史记录特征
                         .setViewer3SviewPostHis1H(agg.viewer3sviewPostHis1h)
                         .setViewer5SstandPostHis1H(agg.viewer5sstandPostHis1h)
                         .setViewerLikePostHis1H(agg.viewerLikePostHis1h)
@@ -485,35 +199,58 @@ public class UserFeature1hJob {
                     return new Tuple2<>(redisKey, value);
                 }
             })
-            .name("User Feature to Protobuf Bytes");
+            .name("Aggregation to Protobuf Bytes");
 
-        // 5.2 用户-作者特征写入Redis（直接使用已经准备好的key和fields）
-        // 这里 userAuthorFeatureStream 已经是 Tuple2<String, Map<String, byte[]>> 格式
-        // f0 是 Redis key (rec:user_author_feature:{uid}:post1h)
-        // f1 是 Map<authorId, protobuf bytes>
+        // 打印聚合结果用于调试（采样）
+//        aggregatedStream
+//            .process(new ProcessFunction<UserFeatureAggregation, UserFeatureAggregation>() {
+//                private static final long SAMPLE_INTERVAL = 60000; // 采样间隔1分钟
+//                private static final int SAMPLE_COUNT = 3; // 每次采样3条
+//                private transient long lastSampleTime;
+//                private transient int sampleCount;
+//
+//                @Override
+//                public void open(Configuration parameters) throws Exception {
+//                    lastSampleTime = 0;
+//                    sampleCount = 0;
+//                }
+//
+//                @Override
+//                public void processElement(UserFeatureAggregation value, Context ctx, Collector<UserFeatureAggregation> out) throws Exception {
+//                    // 采样日志
+//                    long now = System.currentTimeMillis();
+//                    if (now - lastSampleTime > SAMPLE_INTERVAL) {
+//                        lastSampleTime = now - (now % SAMPLE_INTERVAL); // 对齐到分钟
+//                        sampleCount = 0;
+//                    }
+//
+//                    // 只采样前3条
+//                    if (sampleCount < SAMPLE_COUNT) {
+//                        sampleCount++;
+//                        LOG.info("[Sample {}/{}] User {} at {}: expose={}, 3s_views={}",
+//                            sampleCount,
+//                            SAMPLE_COUNT,
+//                            value.uid,
+//                            new SimpleDateFormat("HH:mm:ss").format(new Date(value.updateTime)),
+//                            value.viewerExppostCnt1h,
+//                            value.viewer3sviewPostCnt1h);
+//                    }
+//                }
+//            })
+//            .name("Debug Sampling");
 
-        // 6. 写入Redis
-        // 6.1 用户特征写入
-        RedisConfig userConfig = RedisConfig.fromProperties(RedisUtil.loadProperties());
-        userConfig.setCommand("SET");
-        userConfig.setTtl(600);
+        // 第六步：创建sink，Redis环境
+        RedisConfig redisConfig = RedisConfig.fromProperties(RedisUtil.loadProperties());
+        redisConfig.setTtl(600);
+        System.out.println("Redis config created with TTL: " + redisConfig.getTtl());
+        
         RedisUtil.addRedisSink(
-            userDataStream,
-            userConfig,
-            true,
-            100
+            dataStream,
+            redisConfig,
+            true, // 异步写入
+            100   // 批量大小
         );
-
-        // 6.2 用户-作者特征写入（使用DEL_HMSET模式）
-        RedisConfig authorConfig = RedisConfig.fromProperties(RedisUtil.loadProperties());
-        authorConfig.setCommand("DEL_HMSET");
-        authorConfig.setTtl(600);
-        RedisUtil.addRedisHashMapSink(
-            userAuthorFeatureStream,
-            authorConfig,
-            true,
-            100
-        );
+        System.out.println("Redis sink added to the pipeline");
 
         // 执行任务
         System.out.println("Starting Flink job execution...");
@@ -528,11 +265,20 @@ public class UserFeature1hJob {
     public static class UserFeatureAggregator implements AggregateFunction<UserFeatureCommon.UserFeatureEvent, UserFeatureCommon.UserFeatureAccumulator, UserFeatureAggregation> {
         @Override
         public UserFeatureCommon.UserFeatureAccumulator createAccumulator() {
-            return new UserFeatureCommon.UserFeatureAccumulator();
+            UserFeatureCommon.UserFeatureAccumulator acc = new UserFeatureCommon.UserFeatureAccumulator();
+            acc.totalEventCount = 0;
+            return acc;
         }
 
         @Override
         public UserFeatureCommon.UserFeatureAccumulator add(UserFeatureCommon.UserFeatureEvent event, UserFeatureCommon.UserFeatureAccumulator accumulator) {
+            if (accumulator.totalEventCount >= MAX_EVENTS_PER_WINDOW) {
+                // 如果超过限制，直接返回当前accumulator，不再更新
+                LOG.warn("User {} has exceeded the event limit ({}). Current events: {}. Skipping update.", 
+                        event.getUid(), MAX_EVENTS_PER_WINDOW, accumulator.totalEventCount);
+                return accumulator;
+            }
+            accumulator.totalEventCount++;
             return UserFeatureCommon.addEventToAccumulator(event, accumulator);
         }
 
@@ -571,7 +317,9 @@ public class UserFeature1hJob {
 
         @Override
         public UserFeatureCommon.UserFeatureAccumulator merge(UserFeatureCommon.UserFeatureAccumulator a, UserFeatureCommon.UserFeatureAccumulator b) {
-            return UserFeatureCommon.mergeAccumulators(a, b);
+            UserFeatureCommon.UserFeatureAccumulator merged = UserFeatureCommon.mergeAccumulators(a, b);
+            merged.totalEventCount = a.totalEventCount + b.totalEventCount;
+            return merged;
         }
     }
 
@@ -597,89 +345,6 @@ public class UserFeature1hJob {
         public long updateTime;
 
 
-    }
-
-    /**
-     * 用户-作者特征聚合器
-     */
-    public static class UserAuthorFeatureAggregator implements AggregateFunction<UserFeatureEvent, UserAuthorFeature1hJob.UserAuthorAccumulator, Tuple2<Long, Map<String, byte[]>>> {
-        @Override
-        public UserAuthorFeature1hJob.UserAuthorAccumulator createAccumulator() {
-            return new UserAuthorFeature1hJob.UserAuthorAccumulator();
-        }
-
-        @Override
-        public UserAuthorFeature1hJob.UserAuthorAccumulator add(UserFeatureEvent event, UserAuthorFeature1hJob.UserAuthorAccumulator accumulator) {
-            accumulator.uid = event.uid;
-            accumulator.author = event.author;
-            
-            if ("expose".equals(event.eventType)) {
-                accumulator.exposeRecTokens.add(event.recToken);
-            }
-            if ("view".equals(event.eventType)) {
-                if (event.progressTime >= 3) accumulator.view3sRecTokens.add(event.recToken);
-                if (event.progressTime >= 8) accumulator.view8sRecTokens.add(event.recToken);
-                if (event.progressTime >= 12) accumulator.view12sRecTokens.add(event.recToken);
-                if (event.progressTime >= 20) accumulator.view20sRecTokens.add(event.recToken);
-                if (event.standingTime >= 5) accumulator.stand5sRecTokens.add(event.recToken);
-                if (event.standingTime >= 10) accumulator.stand10sRecTokens.add(event.recToken);
-                if (event.interaction != null) {
-                    for (Integer it : event.interaction) {
-                        if (it == 1) accumulator.likeRecTokens.add(event.recToken);
-                    }
-                }
-            }
-            
-            return accumulator;
-        }
-
-        @Override
-        public Tuple2<Long, Map<String, byte[]>> getResult(UserAuthorFeature1hJob.UserAuthorAccumulator accumulator) {
-            Map<String, byte[]> authorFeatures = new HashMap<>();
-            
-            UserAuthorFeature1hJob.UserAuthorFeature1hAggregation authorResult = 
-                new UserAuthorFeature1hJob.UserAuthorFeature1hAggregation();
-            
-            authorResult.uid = accumulator.uid;
-            authorResult.author = accumulator.author;
-            authorResult.userauthorExpCnt1h = accumulator.exposeRecTokens.size();
-            authorResult.userauthor3sviewCnt1h = accumulator.view3sRecTokens.size();
-            authorResult.userauthor8sviewCnt1h = accumulator.view8sRecTokens.size();
-            authorResult.userauthor12sviewCnt1h = accumulator.view12sRecTokens.size();
-            authorResult.userauthor20sviewCnt1h = accumulator.view20sRecTokens.size();
-            authorResult.userauthor5sstandCnt1h = accumulator.stand5sRecTokens.size();
-            authorResult.userauthor10sstandCnt1h = accumulator.stand10sRecTokens.size();
-            authorResult.userauthorLikeCnt1h = accumulator.likeRecTokens.size();
-            authorResult.updateTime = System.currentTimeMillis();
-
-            byte[] value = RecFeature.RecUserAuthorFeature.newBuilder()
-                .setUserauthorExpCnt1H(authorResult.userauthorExpCnt1h)
-                .setUserauthor3SviewCnt1H(authorResult.userauthor3sviewCnt1h)
-                .setUserauthor8SviewCnt1H(authorResult.userauthor8sviewCnt1h)
-                .setUserauthor12SviewCnt1H(authorResult.userauthor12sviewCnt1h)
-                .setUserauthor20SviewCnt1H(authorResult.userauthor20sviewCnt1h)
-                .setUserauthor5SstandCnt1H(authorResult.userauthor5sstandCnt1h)
-                .setUserauthor10SstandCnt1H(authorResult.userauthor10sstandCnt1h)
-                .setUserauthorLikeCnt1H(authorResult.userauthorLikeCnt1h)
-                .build()
-                .toByteArray();
-
-            authorFeatures.put(String.valueOf(accumulator.author), value);
-            return new Tuple2<>(accumulator.uid, authorFeatures);
-        }
-
-        @Override
-        public UserAuthorFeature1hJob.UserAuthorAccumulator merge(UserAuthorFeature1hJob.UserAuthorAccumulator a, UserAuthorFeature1hJob.UserAuthorAccumulator b) {
-            a.exposeRecTokens.addAll(b.exposeRecTokens);
-            a.view3sRecTokens.addAll(b.view3sRecTokens);
-            a.view8sRecTokens.addAll(b.view8sRecTokens);
-            a.view12sRecTokens.addAll(b.view12sRecTokens);
-            a.view20sRecTokens.addAll(b.view20sRecTokens);
-            a.stand5sRecTokens.addAll(b.stand5sRecTokens);
-            a.stand10sRecTokens.addAll(b.stand10sRecTokens);
-            a.likeRecTokens.addAll(b.likeRecTokens);
-            return a;
-        }
     }
 
 

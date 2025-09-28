@@ -35,6 +35,8 @@ public class UserFeature24hJob {
     private static final Logger LOG = LoggerFactory.getLogger(UserFeature24hJob.class);
     private static String PREFIX = "rec:user_feature:{";
     private static String SUFFIX = "}:post24h";
+    // 每个窗口内每个用户的最大事件数限制
+    private static final int MAX_EVENTS_PER_WINDOW = 100;
 
     public static void main(String[] args) throws Exception {
         // 第一步：创建flink环境
@@ -186,11 +188,20 @@ public class UserFeature24hJob {
     public static class UserFeature24hAggregator implements AggregateFunction<UserFeatureEvent, UserFeatureAccumulator, UserFeature24hAggregation> {
         @Override
         public UserFeatureAccumulator createAccumulator() {
-            return new UserFeatureAccumulator();
+            UserFeatureAccumulator acc = new UserFeatureAccumulator();
+            acc.totalEventCount = 0;
+            return acc;
         }
 
         @Override
         public UserFeatureAccumulator add(UserFeatureEvent event, UserFeatureAccumulator accumulator) {
+            if (accumulator.totalEventCount >= MAX_EVENTS_PER_WINDOW) {
+                // 如果超过限制，直接返回当前accumulator，不再更新
+                LOG.warn("User {} has exceeded the event limit ({}). Current events: {}. Skipping update.", 
+                        event.getUid(), MAX_EVENTS_PER_WINDOW, accumulator.totalEventCount);
+                return accumulator;
+            }
+            accumulator.totalEventCount++;
             return UserFeatureCommon.addEventToAccumulator(event, accumulator);
         }
 
@@ -220,7 +231,9 @@ public class UserFeature24hJob {
 
         @Override
         public UserFeatureAccumulator merge(UserFeatureAccumulator a, UserFeatureAccumulator b) {
-            return UserFeatureCommon.mergeAccumulators(a, b);
+            UserFeatureAccumulator merged = UserFeatureCommon.mergeAccumulators(a, b);
+            merged.totalEventCount = a.totalEventCount + b.totalEventCount;
+            return merged;
         }
     }
 
