@@ -139,13 +139,22 @@ public class UserAuthorFeature1hJob {
 
         // 第五步：转换为Protobuf并写入Redis
         DataStream<Tuple2<String, Map<String, byte[]>>> dataStream = aggregatedStream
+            .filter(agg -> agg != null && agg.authorFeatures != null && !agg.authorFeatures.isEmpty()) // 过滤掉空值
             .map(new MapFunction<UserAuthorFeature1hAggregation, Tuple2<String, Map<String, byte[]>>>() {
                 @Override
                 public Tuple2<String, Map<String, byte[]>> map(UserAuthorFeature1hAggregation agg) throws Exception {
                     String redisKey = PREFIX + agg.uid + SUFFIX;
-                    return new Tuple2<>(redisKey, agg.authorFeatures);
+                    // 过滤掉map中的null值
+                    Map<String, byte[]> cleanFeatures = new HashMap<>();
+                    for (Map.Entry<String, byte[]> entry : agg.authorFeatures.entrySet()) {
+                        if (entry.getKey() != null && entry.getValue() != null) {
+                            cleanFeatures.put(entry.getKey(), entry.getValue());
+                        }
+                    }
+                    return new Tuple2<>(redisKey, cleanFeatures);
                 }
             })
+            .filter(tuple -> !tuple.f1.isEmpty()) // 确保没有空的特征map
             .name("Aggregation to Protobuf Bytes");
 
         // 第六步：创建sink，Redis环境
