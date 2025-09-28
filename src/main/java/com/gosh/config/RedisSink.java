@@ -237,7 +237,7 @@ public class RedisSink<T> extends RichSinkFunction<T> {
             Tuple2<String, byte[]> stringStringTuple2 = new Tuple2<>(key, value);
             switch (command.toUpperCase()) {
                 case "SET":
-                    LOG.debug("Writing to Redis cluster - key: {}", key);
+                    LOG.info("WritingToRedisCluster - key: {} value:{}", key,value);
                     commands.set(key, stringStringTuple2);
                     break;
                 case "LPUSH":

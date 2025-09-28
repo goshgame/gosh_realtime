@@ -21,6 +21,7 @@ import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.windowing.assigners.SlidingProcessingTimeWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
+import org.apache.flink.util.OutputTag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.time.Duration;
@@ -36,10 +37,13 @@ public class ItemFeature1hJob {
     private static String PREFIX = "rec:item_feature:{";
     private static String SUFFIX = "}:post1h";
 
+    //定义迟到数据的侧输出标签
+    private static final OutputTag<UserFeatureEvent> LATE_DATA_TAG = new OutputTag<UserFeatureEvent>("late-data") {};
+
+
     public static void main(String[] args) throws Exception {
         // 第一步：创建flink环境
         StreamExecutionEnvironment env = FlinkEnvUtil.createStreamExecutionEnvironment();
-        env.setParallelism(3);
         
         // 第二步：创建Source，Kafka环境
         KafkaSource<String> inputTopic = KafkaEnvUtil.createKafkaSource(
@@ -49,7 +53,8 @@ public class ItemFeature1hJob {
         // 第三步：使用KafkaSource创建DataStream
         DataStreamSource<String> kafkaSource = env.fromSource(
             inputTopic,
-            WatermarkStrategy.forBoundedOutOfOrderness(Duration.ofSeconds(5)),
+            WatermarkStrategy.<String>forBoundedOutOfOrderness(Duration.ofSeconds(30))
+                            .withIdleness(Duration.ofMinutes(5)),
             "Kafka Source"
         );
 
@@ -82,12 +87,13 @@ public class ItemFeature1hJob {
         DataStream<UserFeatureEvent> unifiedStream = exposeFeatureStream
             .union(viewFeatureStream)
             .assignTimestampsAndWatermarks(
-                WatermarkStrategy.<UserFeatureEvent>forBoundedOutOfOrderness(Duration.ofSeconds(10))
+                WatermarkStrategy.<UserFeatureEvent>forBoundedOutOfOrderness(Duration.ofSeconds(20))
                     .withTimestampAssigner((event, recordTimestamp) -> event.getTimestamp())
+                        .withIdleness(Duration.ofMinutes(5))
             );
 
         // 第四步：按post_id分组并进行1小时滑动窗口聚合
-        DataStream<ItemFeature1hAggregation> aggregatedStream = unifiedStream
+        SingleOutputStreamOperator<ItemFeature1hAggregation> aggregatedStream = unifiedStream
             .keyBy(new KeySelector<UserFeatureEvent, Long>() {
                 @Override
                 public Long getKey(UserFeatureEvent value) throws Exception {
@@ -98,8 +104,26 @@ public class ItemFeature1hJob {
                 Time.hours(1), // 窗口大小1小时
                 Time.minutes(3) // 滑动间隔3分钟
             ))
+                .allowedLateness(Time.minutes(5))  //允许迟到5分钟的数据
+                .sideOutputLateData(LATE_DATA_TAG)
             .aggregate(new ItemFeature1hAggregator())
             .name("Item Feature 1h Aggregation");
+
+        // 处理迟到数据：记录日志并可选择后续处理
+        DataStream<UserFeatureEvent> lateDataStream = aggregatedStream.getSideOutput(LATE_DATA_TAG);
+        lateDataStream.process(new ProcessFunction<UserFeatureEvent, Void>() {
+            @Override
+            public void processElement(UserFeatureEvent value, Context ctx, Collector<Void> out) throws Exception {
+                long currentWatermark = ctx.timerService().currentWatermark();
+                long eventDelay = currentWatermark - value.getTimestamp();
+                LOG.warn("Late data detected - postId: {}, eventTime: {}, currentWatermark: {}, delay: {}ms",
+                        value.postId,
+                        new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(value.getTimestamp())),
+                        new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(currentWatermark)),
+                        eventDelay);
+                // 可根据需要将迟到数据写入专门的存储进行后续处理
+            }
+        }).name("Late Data Handler");
 
         // // 打印聚合结果用于调试（采样）
          aggregatedStream
@@ -165,7 +189,7 @@ public class ItemFeature1hJob {
                         .setPostPosinterCnt1H(agg.postPosinterCnt1h)
                         .build()
                         .toByteArray();
-                    
+                    LOG.info("[WriteToRedis] key {} ,value {}",redisKey, value);
                     return new Tuple2<>(redisKey, value);
                 }
             })
