@@ -86,6 +86,8 @@ public class UserFeatureCommon {
         public long uid;
         // 事件总数计数器
         public int totalEventCount = 0;
+        // 是否超过事件限制的标记
+        public boolean exceededLimit = false;
 
         // 曝光相关
         public Set<Long> exposePostIds = new HashSet<>();
