@@ -36,8 +36,6 @@ public class ItemFeature24hJob {
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private static String PREFIX = "rec:item_feature:{";
     private static String SUFFIX = "}:post24h";
-    // 每个窗口内每个item的最大事件数限制
-    private static final int MAX_EVENTS_PER_WINDOW = 200000;
 
     public static void main(String[] args) throws Exception {
         // 第一步：创建flink环境
@@ -199,18 +197,6 @@ public class ItemFeature24hJob {
 
         @Override
         public ItemFeatureAccumulator add(UserFeatureEvent event, ItemFeatureAccumulator accumulator) {
-            // 先设置postId，确保即使跳过也能写入Redis
-            accumulator.postId = event.postId;
-            
-            if (accumulator.totalEventCount >= MAX_EVENTS_PER_WINDOW) {
-                // 如果超过限制，记录一次警告并跳过，但不影响现有数据的写入
-                if (accumulator.totalEventCount == MAX_EVENTS_PER_WINDOW) {
-                    LOG.warn("Post {} has exceeded the event limit ({}). Further events will be skipped.", 
-                            event.postId, MAX_EVENTS_PER_WINDOW);
-                }
-                return accumulator;
-            }
-
             return ItemFeatureCommon.addEventToAccumulator(event, accumulator);
         }
 

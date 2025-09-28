@@ -36,7 +36,7 @@ public class UserFeature24hJob {
     private static String PREFIX = "rec:user_feature:{";
     private static String SUFFIX = "}:post24h";
     // 每个窗口内每个用户的最大事件数限制
-    private static final int MAX_EVENTS_PER_WINDOW = 200;
+    private static final int MAX_EVENTS_PER_WINDOW = 1000;
 
     public static void main(String[] args) throws Exception {
         // 第一步：创建flink环境
@@ -195,6 +195,9 @@ public class UserFeature24hJob {
 
         @Override
         public UserFeatureAccumulator add(UserFeatureEvent event, UserFeatureAccumulator accumulator) {
+            // 先设置uid，确保能写入Redis
+            accumulator.uid = event.uid;
+            
             if (accumulator.totalEventCount >= MAX_EVENTS_PER_WINDOW) {
                 // 如果超过限制，直接返回当前accumulator，不再更新
                 LOG.warn("User {} has exceeded the event limit ({}). Current events: {}. Skipping update.", 
@@ -208,7 +211,11 @@ public class UserFeature24hJob {
         @Override
         public UserFeature24hAggregation getResult(UserFeatureAccumulator accumulator) {
             UserFeature24hAggregation result = new UserFeature24hAggregation();
+            // 设置用户ID，确保下游Redis key正确
             result.uid = accumulator.uid;
+            if (result.uid == 0L) {
+                LOG.warn("UserFeature24hAggregation uid is 0, check upstream event parsing and keyBy logic");
+            }
             
             // 24小时历史记录特征 - 构建字符串格式
             result.viewer3sviewPostHis24h = UserFeatureCommon.buildPostHistoryString(accumulator.view3sPostDetails, 10);

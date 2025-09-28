@@ -386,6 +386,7 @@ public class UserFeatureCommon {
      * 通用的用户特征聚合逻辑
      */
     public static UserFeatureAccumulator addEventToAccumulator(UserFeatureEvent event, UserFeatureAccumulator accumulator) {
+        // 确保设置uid
         accumulator.uid = event.uid;
 
         // 曝光相关特征
