@@ -117,160 +117,6 @@ public class UserFeatureCommon {
         public Set<Long> profileAuthors = new HashSet<>();
     }
 
-    /**
-     * 用户特征聚合结果
-     */
-    public static class UserFeatureAggregation {
-        public long uid;
-        
-        // 1小时特征
-        public int viewerExppostCnt1h;
-        public int viewerExp1PostCnt1h;  // 图片曝光数
-        public int viewerExp2PostCnt1h;  // 视频曝光数
-        public int viewer3sviewPostCnt1h;
-        public int viewer3sview1PostCnt1h;
-        public int viewer3sview2PostCnt1h;
-        
-        // 历史记录
-        public String viewer3sviewPostHis1h;
-        public String viewer5sstandPostHis1h;
-        public String viewerLikePostHis1h;
-        public String viewerFollowPostHis1h;
-        public String viewerProfilePostHis1h;
-        public String viewerPosinterPostHis1h;
-        
-        public long updateTime;
-    }
-
-    // ==================== 工具函数 ====================
-
-    /**
-     * 将事件添加到累加器
-     */
-    public static UserFeatureAccumulator addEventToAccumulator(UserFeatureEvent event, UserFeatureAccumulator acc) {
-        acc.uid = event.uid;
-
-        if ("expose".equals(event.eventType)) {
-            acc.exposePostIds.add(event.postId);
-            if (event.recToken != null) {
-                acc.exposeRecTokens.add(event.recToken);
-            }
-        }
-
-        if ("view".equals(event.eventType)) {
-            acc.viewPostIds.add(event.postId);
-            if (event.recToken != null) {
-                acc.viewRecTokens.add(event.recToken);
-            }
-
-            // 按类型统计
-            if (event.postType == 1) {
-                acc.view1PostIds.add(event.postId);
-            } else if (event.postType == 2) {
-                acc.view2PostIds.add(event.postId);
-            }
-
-            // 3秒观看
-            if (event.progressTime >= 3) {
-                acc.view3sPostIds.add(event.postId);
-                acc.view3sPostDetails.put(event.postId, event.progressTime);
-                if (event.postType == 1) {
-                    acc.view3s1PostIds.add(event.postId);
-                } else if (event.postType == 2) {
-                    acc.view3s2PostIds.add(event.postId);
-                }
-            }
-
-            // 5秒停留
-            if (event.standingTime >= 5) {
-                acc.stand5sPostIds.add(event.postId);
-                acc.stand5sPostDetails.put(event.postId, event.standingTime);
-            }
-
-            // 交互行为
-            if (event.interaction != null) {
-                for (Integer it : event.interaction) {
-                    if (it == 1) { // 点赞
-                        acc.likePostIds.add(event.postId);
-                        acc.likeAuthors.add(event.author);
-                    } else if (it == 2) { // 关注
-                        acc.followPostIds.add(event.postId);
-                        acc.followAuthors.add(event.author);
-                    } else if (it == 3) { // 点主页
-                        acc.profilePostIds.add(event.postId);
-                        acc.profileAuthors.add(event.author);
-                    } else if (it >= 4) { // 评论/收藏/分享
-                        acc.posinterPostIds.add(event.postId);
-                    }
-                }
-            }
-        }
-
-        return acc;
-    }
-
-    /**
-     * 合并两个累加器
-     */
-    public static UserFeatureAccumulator mergeAccumulators(UserFeatureAccumulator a, UserFeatureAccumulator b) {
-        a.exposePostIds.addAll(b.exposePostIds);
-        a.exposeRecTokens.addAll(b.exposeRecTokens);
-        a.viewPostIds.addAll(b.viewPostIds);
-        a.viewRecTokens.addAll(b.viewRecTokens);
-        a.view1PostIds.addAll(b.view1PostIds);
-        a.view2PostIds.addAll(b.view2PostIds);
-        a.view3sPostIds.addAll(b.view3sPostIds);
-        a.view3s1PostIds.addAll(b.view3s1PostIds);
-        a.view3s2PostIds.addAll(b.view3s2PostIds);
-        a.view3sPostDetails.putAll(b.view3sPostDetails);
-        a.stand5sPostIds.addAll(b.stand5sPostIds);
-        a.stand5sPostDetails.putAll(b.stand5sPostDetails);
-        a.likePostIds.addAll(b.likePostIds);
-        a.followPostIds.addAll(b.followPostIds);
-        a.profilePostIds.addAll(b.profilePostIds);
-        a.posinterPostIds.addAll(b.posinterPostIds);
-        a.likeAuthors.addAll(b.likeAuthors);
-        a.followAuthors.addAll(b.followAuthors);
-        a.profileAuthors.addAll(b.profileAuthors);
-        return a;
-    }
-
-    /**
-     * 构建带时长的post历史字符串
-     */
-    public static String buildPostHistoryString(Map<Long, Float> postDetails, int maxLength) {
-        if (postDetails.isEmpty()) {
-            return "";
-        }
-        StringBuilder sb = new StringBuilder();
-        int count = 0;
-        for (Map.Entry<Long, Float> entry : postDetails.entrySet()) {
-            if (count >= maxLength) break;
-            if (count > 0) sb.append(",");
-            sb.append(entry.getKey()).append(":").append(String.format("%.1f", entry.getValue()));
-            count++;
-        }
-        return sb.toString();
-    }
-
-    /**
-     * 构建post列表字符串
-     */
-    public static String buildPostListString(Set<Long> postIds, int maxLength) {
-        if (postIds.isEmpty()) {
-            return "";
-        }
-        StringBuilder sb = new StringBuilder();
-        int count = 0;
-        for (Long postId : postIds) {
-            if (count >= maxLength) break;
-            if (count > 0) sb.append(",");
-            sb.append(postId);
-            count++;
-        }
-        return sb.toString();
-    }
-
     // ==================== 解析器 ====================
 
     /**
@@ -279,32 +125,95 @@ public class UserFeatureCommon {
     public static class ExposeEventParser implements FlatMapFunction<String, PostExposeEvent> {
         @Override
         public void flatMap(String value, Collector<PostExposeEvent> out) throws Exception {
+            if (value == null || value.isEmpty()) {
+                return;
+            }
+
             try {
-                JsonNode root = objectMapper.readTree(value);
-                if (root.get("event_type").asInt() != 16) {
+                JsonNode rootNode = objectMapper.readTree(value);
+
+                // 检查event_type
+                if (!rootNode.has("event_type")) {
                     return;
                 }
 
-                PostExposeEvent event = new PostExposeEvent();
-                event.uid = root.get("uid").asLong();
-                event.createdAt = root.get("created_at").asLong();
-                event.infoList = new ArrayList<>();
+                int eventType = rootNode.get("event_type").asInt();
+                if (eventType != 16) {
+                    return;
+                }
 
-                JsonNode infoList = root.get("info_list");
-                if (infoList != null && infoList.isArray()) {
-                    for (JsonNode info : infoList) {
-                        PostExposeInfo exposeInfo = new PostExposeInfo();
-                        exposeInfo.postId = info.get("post_id").asLong();
-                        exposeInfo.exposedPos = info.get("exposed_pos").asInt();
-                        exposeInfo.expoTime = info.get("expo_time").asLong();
-                        exposeInfo.recToken = info.get("rec_token").asText();
-                        event.infoList.add(exposeInfo);
+                // 检查post_expose字段
+                JsonNode exposeNode = rootNode.path("post_expose");
+                if (exposeNode.isMissingNode()) {
+                    return;
+                }
+
+                // 解析uid和created_at
+                JsonNode uidNode = exposeNode.path("uid");
+                if (uidNode.isMissingNode()) {
+                    return;
+                }
+                long uid = uidNode.asLong();
+                if (uid <= 0) {
+                    return;
+                }
+
+                long createdAt = exposeNode.path("created_at").asLong(0);
+                if (createdAt <= 0) {
+                    return;
+                }
+
+                // 解析list字段
+                JsonNode listNode = exposeNode.path("list");
+                if (listNode.isMissingNode() || !listNode.isArray()) {
+                    return;
+                }
+
+                List<PostExposeInfo> infoList = new ArrayList<>();
+                for (JsonNode itemNode : listNode) {
+                    try {
+                        PostExposeInfo info = new PostExposeInfo();
+                        
+                        // 解析post_id
+                        JsonNode postIdNode = itemNode.path("post_id");
+                        if (!postIdNode.isMissingNode()) {
+                            String postIdStr = postIdNode.asText();
+                            try {
+                                info.postId = Long.parseLong(postIdStr);
+                            } catch (NumberFormatException e) {
+                                continue;
+                            }
+                        }
+
+                        if (info.postId <= 0) {
+                            continue;
+                        }
+
+                        // 解析其他字段
+                        info.exposedPos = itemNode.path("exposed_pos").asInt(0);
+                        info.expoTime = itemNode.path("expo_time").asLong(0);
+                        info.recToken = itemNode.path("rec_token").asText("");
+
+                        infoList.add(info);
+                    } catch (Exception e) {
+                        // 静默处理单个item的解析错误
+                        continue;
                     }
                 }
 
+                if (infoList.isEmpty()) {
+                    return;
+                }
+
+                // 创建并输出事件
+                PostExposeEvent event = new PostExposeEvent();
+                event.uid = uid;
+                event.infoList = infoList;
+                event.createdAt = createdAt;
                 out.collect(event);
+
             } catch (Exception e) {
-                LOG.error("解析曝光事件失败: {}", e.getMessage());
+                LOG.error("Failed to parse expose event", e);
             }
         }
     }
@@ -315,86 +224,295 @@ public class UserFeatureCommon {
     public static class ViewEventParser implements FlatMapFunction<String, PostViewEvent> {
         @Override
         public void flatMap(String value, Collector<PostViewEvent> out) throws Exception {
+            if (value == null || value.isEmpty()) {
+                return;
+            }
+
             try {
-                JsonNode root = objectMapper.readTree(value);
-                if (root.get("event_type").asInt() != 8) {
+                JsonNode rootNode = objectMapper.readTree(value);
+
+                // 检查event_type
+                if (!rootNode.has("event_type")) {
                     return;
                 }
 
-                PostViewEvent event = new PostViewEvent();
-                event.uid = root.get("uid").asLong();
-                event.createdAt = root.get("created_at").asLong();
-                event.infoList = new ArrayList<>();
+                int eventType = rootNode.get("event_type").asInt();
+                if (eventType != 8) {
+                    return;
+                }
 
-                JsonNode infoList = root.get("info_list");
-                if (infoList != null && infoList.isArray()) {
-                    for (JsonNode info : infoList) {
-                        PostViewInfo viewInfo = new PostViewInfo();
-                        viewInfo.postId = info.get("post_id").asLong();
-                        viewInfo.postType = info.get("post_type").asInt();
-                        viewInfo.standingTime = (float) info.get("standing_time").asDouble();
-                        viewInfo.progressTime = (float) info.get("progress_time").asDouble();
-                        viewInfo.author = info.get("author").asLong();
-                        viewInfo.viewer = info.get("viewer").asLong();
-                        viewInfo.recToken = info.get("rec_token").asText();
+                // 检查post_view字段
+                JsonNode viewNode = rootNode.path("post_view");
+                if (viewNode.isMissingNode()) {
+                    return;
+                }
 
-                        JsonNode interaction = info.get("interaction");
-                        if (interaction != null && interaction.isArray()) {
-                            viewInfo.interaction = new ArrayList<>();
-                            for (JsonNode it : interaction) {
-                                viewInfo.interaction.add(it.asInt());
+                // 解析uid和created_at
+                JsonNode uidNode = viewNode.path("uid");
+                if (uidNode.isMissingNode()) {
+                    return;
+                }
+                long uid = uidNode.asLong();
+                if (uid <= 0) {
+                    return;
+                }
+
+                long createdAt = viewNode.path("created_at").asLong(0);
+                if (createdAt <= 0) {
+                    return;
+                }
+
+                // 解析list字段
+                JsonNode listNode = viewNode.path("list");
+                if (listNode.isMissingNode() || !listNode.isArray()) {
+                    return;
+                }
+
+                List<PostViewInfo> infoList = new ArrayList<>();
+                for (JsonNode itemNode : listNode) {
+                    try {
+                        PostViewInfo info = new PostViewInfo();
+                        
+                        // 解析post_id
+                        JsonNode postIdNode = itemNode.path("post_id");
+                        if (!postIdNode.isMissingNode()) {
+                            String postIdStr = postIdNode.asText();
+                            try {
+                                info.postId = Long.parseLong(postIdStr);
+                            } catch (NumberFormatException e) {
+                                continue;
                             }
                         }
 
-                        event.infoList.add(viewInfo);
+                        if (info.postId <= 0) {
+                            continue;
+                        }
+
+                        // 解析其他字段
+                        info.postType = itemNode.path("post_type").asInt(0);
+                        info.standingTime = itemNode.path("standing_time").floatValue();
+                        info.progressTime = itemNode.path("progress_time").floatValue();
+                        info.author = itemNode.path("author").asLong(0);
+                        info.viewer = itemNode.path("viewer").asLong(0);
+                        info.recToken = itemNode.path("rec_token").asText("");
+
+                        // 解析interaction数组
+                        JsonNode interactionNode = itemNode.path("interaction");
+                        if (!interactionNode.isMissingNode() && interactionNode.isArray()) {
+                            List<Integer> interactions = new ArrayList<>();
+                            for (JsonNode intNode : interactionNode) {
+                                try {
+                                    interactions.add(intNode.asInt());
+                                } catch (Exception e) {
+                                    // 静默处理单个交互值的解析错误
+                                    continue;
+                                }
+                            }
+                            info.interaction = interactions;
+                        }
+
+                        infoList.add(info);
+                    } catch (Exception e) {
+                        // 静默处理单个item的解析错误
+                        continue;
                     }
                 }
 
+                if (infoList.isEmpty()) {
+                    return;
+                }
+
+                // 创建并输出事件
+                PostViewEvent event = new PostViewEvent();
+                event.uid = uid;
+                event.infoList = infoList;
+                event.createdAt = createdAt;
                 out.collect(event);
+
             } catch (Exception e) {
-                LOG.error("解析观看事件失败: {}", e.getMessage());
+                LOG.error("Failed to parse view event", e);
             }
         }
     }
 
+    // ==================== 事件转换器 ====================
+
     /**
-     * 曝光事件转换为特征事件
+     * 将曝光事件转换为用户特征事件
      */
     public static class ExposeToFeatureMapper implements FlatMapFunction<PostExposeEvent, UserFeatureEvent> {
         @Override
-        public void flatMap(PostExposeEvent value, Collector<UserFeatureEvent> out) throws Exception {
-            for (PostExposeInfo info : value.infoList) {
-                UserFeatureEvent event = new UserFeatureEvent();
-                event.uid = value.uid;
-                event.postId = info.postId;
-                event.eventType = "expose";
-                event.timestamp = value.createdAt;
-                event.recToken = info.recToken;
-                out.collect(event);
+        public void flatMap(PostExposeEvent exposeEvent, Collector<UserFeatureEvent> out) throws Exception {
+            for (PostExposeInfo info : exposeEvent.infoList) {
+                UserFeatureEvent featureEvent = new UserFeatureEvent();
+                featureEvent.uid = exposeEvent.uid;
+                featureEvent.postId = info.postId;
+                featureEvent.eventType = "expose";
+                featureEvent.timestamp = exposeEvent.createdAt * 1000; // 转换为毫秒
+                featureEvent.recToken = info.recToken;
+                out.collect(featureEvent);
             }
         }
     }
 
     /**
-     * 观看事件转换为特征事件
+     * 将观看事件转换为用户特征事件
      */
     public static class ViewToFeatureMapper implements FlatMapFunction<PostViewEvent, UserFeatureEvent> {
         @Override
-        public void flatMap(PostViewEvent value, Collector<UserFeatureEvent> out) throws Exception {
-            for (PostViewInfo info : value.infoList) {
-                UserFeatureEvent event = new UserFeatureEvent();
-                event.uid = value.uid;
-                event.postId = info.postId;
-                event.postType = info.postType;
-                event.author = info.author;
-                event.eventType = "view";
-                event.timestamp = value.createdAt;
-                event.standingTime = info.standingTime;
-                event.progressTime = info.progressTime;
-                event.interaction = info.interaction;
-                event.recToken = info.recToken;
-                out.collect(event);
+        public void flatMap(PostViewEvent viewEvent, Collector<UserFeatureEvent> out) throws Exception {
+            for (PostViewInfo info : viewEvent.infoList) {
+                UserFeatureEvent featureEvent = new UserFeatureEvent();
+                featureEvent.uid = viewEvent.uid;
+                featureEvent.postId = info.postId;
+                featureEvent.postType = info.postType;
+                featureEvent.author = info.author;
+                featureEvent.eventType = "view";
+                featureEvent.timestamp = viewEvent.createdAt * 1000; // 转换为毫秒
+                featureEvent.standingTime = info.standingTime;
+                featureEvent.progressTime = info.progressTime;
+                featureEvent.interaction = info.interaction;
+                featureEvent.recToken = info.recToken;
+                out.collect(featureEvent);
             }
         }
+    }
+
+    // ==================== 聚合逻辑 ====================
+
+    /**
+     * 通用的用户特征聚合逻辑
+     */
+    public static UserFeatureAccumulator addEventToAccumulator(UserFeatureEvent event, UserFeatureAccumulator accumulator) {
+        accumulator.uid = event.uid;
+
+        // 曝光相关特征
+        if ("expose".equals(event.eventType)) {
+            accumulator.exposePostIds.add(event.postId);
+            accumulator.exposeRecTokens.add(event.recToken);
+        }
+
+        // 观看相关特征
+        if ("view".equals(event.eventType)) {
+            accumulator.viewPostIds.add(event.postId);
+            accumulator.viewRecTokens.add(event.recToken);
+
+            // 按post_type分类统计
+            if (event.postType == 1) { // 图片
+                accumulator.view1PostIds.add(event.postId);
+            } else if (event.postType == 2) { // 视频
+                accumulator.view2PostIds.add(event.postId);
+            }
+
+            // 3秒以上观看
+            if (event.progressTime >= 3) {
+                accumulator.view3sPostIds.add(event.postId);
+                accumulator.view3sPostDetails.put(event.postId, event.progressTime);
+
+                if (event.postType == 1) {
+                    accumulator.view3s1PostIds.add(event.postId);
+                } else if (event.postType == 2) {
+                    accumulator.view3s2PostIds.add(event.postId);
+                }
+            }
+
+            // 5秒以上停留
+            if (event.standingTime >= 5) {
+                accumulator.stand5sPostIds.add(event.postId);
+                accumulator.stand5sPostDetails.put(event.postId, event.standingTime);
+            }
+
+            // 处理交互行为
+            if (event.interaction != null) {
+                for (Integer interactionType : event.interaction) {
+                    switch (interactionType) {
+                        case 1: // 点赞
+                            accumulator.likePostIds.add(event.postId);
+                            accumulator.likeAuthors.add(event.author);
+                            break;
+                        case 13: // 关注
+                            accumulator.followPostIds.add(event.postId);
+                            accumulator.followAuthors.add(event.author);
+                            break;
+                        case 15: // 查看主页
+                            accumulator.profilePostIds.add(event.postId);
+                            accumulator.profileAuthors.add(event.author);
+                            break;
+                        case 3: case 5: case 6: // 评论、收藏、分享
+                            accumulator.posinterPostIds.add(event.postId);
+                            break;
+                    }
+                }
+            }
+        }
+
+        return accumulator;
+    }
+
+    /**
+     * 合并两个累加器
+     */
+    public static UserFeatureAccumulator mergeAccumulators(UserFeatureAccumulator a, UserFeatureAccumulator b) {
+        a.exposePostIds.addAll(b.exposePostIds);
+        a.viewPostIds.addAll(b.viewPostIds);
+        a.view1PostIds.addAll(b.view1PostIds);
+        a.view2PostIds.addAll(b.view2PostIds);
+        a.view3sPostIds.addAll(b.view3sPostIds);
+        a.view3s1PostIds.addAll(b.view3s1PostIds);
+        a.view3s2PostIds.addAll(b.view3s2PostIds);
+        a.stand5sPostIds.addAll(b.stand5sPostIds);
+        a.likePostIds.addAll(b.likePostIds);
+        a.followPostIds.addAll(b.followPostIds);
+        a.profilePostIds.addAll(b.profilePostIds);
+        a.posinterPostIds.addAll(b.posinterPostIds);
+        a.likeAuthors.addAll(b.likeAuthors);
+        a.followAuthors.addAll(b.followAuthors);
+        a.profileAuthors.addAll(b.profileAuthors);
+
+        // 合并详情map，取最大值
+        for (Map.Entry<Long, Float> entry : b.view3sPostDetails.entrySet()) {
+            a.view3sPostDetails.merge(entry.getKey(), entry.getValue(), Float::max);
+        }
+        for (Map.Entry<Long, Float> entry : b.stand5sPostDetails.entrySet()) {
+            a.stand5sPostDetails.merge(entry.getKey(), entry.getValue(), Float::max);
+        }
+
+        return a;
+    }
+
+    // ==================== 工具函数 ====================
+
+    /**
+     * 构建带时长的post历史字符串 格式: "123|5,234|10"
+     */
+    public static String buildPostHistoryString(Map<Long, Float> postDetails, int limit) {
+        return postDetails.entrySet().stream()
+            .sorted(Map.Entry.<Long, Float>comparingByValue().reversed())
+            .limit(limit)
+            .map(entry -> entry.getKey() + "|" + entry.getValue().intValue())
+            .reduce((a, b) -> a + "," + b)
+            .orElse("");
+    }
+
+    /**
+     * 构建post列表字符串 格式: "123,234"
+     */
+    public static String buildPostListString(Set<Long> postIds, int limit) {
+        return postIds.stream()
+            .limit(limit)
+            .map(String::valueOf)
+            .reduce((a, b) -> a + "," + b)
+            .orElse("");
+    }
+
+    /**
+     * 构建作者列表字符串 格式: "123,234"
+     */
+    public static String buildAuthorListString(Set<Long> authorIds, int limit) {
+        return authorIds.stream()
+            .limit(limit)
+            .map(String::valueOf)
+            .reduce((a, b) -> a + "," + b)
+            .orElse("");
     }
 }
