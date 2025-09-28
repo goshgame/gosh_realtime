@@ -272,6 +272,9 @@ public class UserFeature1hJob {
 
         @Override
         public UserFeatureCommon.UserFeatureAccumulator add(UserFeatureCommon.UserFeatureEvent event, UserFeatureCommon.UserFeatureAccumulator accumulator) {
+            // 先设置uid，确保能写入Redis
+            accumulator.uid = event.uid;
+            
             if (accumulator.totalEventCount >= MAX_EVENTS_PER_WINDOW) {
                 // 如果超过限制，直接返回当前accumulator，不再更新
                 LOG.warn("User {} has exceeded the event limit ({}). Current events: {}. Skipping update.", 

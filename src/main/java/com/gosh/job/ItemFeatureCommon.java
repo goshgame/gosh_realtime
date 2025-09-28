@@ -34,7 +34,6 @@ public class ItemFeatureCommon {
      */
     public static class ItemFeatureAccumulator {
         public long postId;
-        public int totalEventCount = 0;
         
         // 使用HyperLogLog替代HashSet，提供近似去重计数
         // 曝光相关
@@ -61,7 +60,6 @@ public class ItemFeatureCommon {
      * 通用的item特征聚合逻辑
      */
     public static ItemFeatureAccumulator addEventToAccumulator(UserFeatureEvent event, ItemFeatureAccumulator accumulator) {
-        // 先设置postId，确保即使跳过也能写入Redis
         accumulator.postId = event.postId;
         
         // 曝光相关特征
@@ -114,7 +112,6 @@ public class ItemFeatureCommon {
             }
         }
         
-        accumulator.totalEventCount++;
         return accumulator;
     }
 
@@ -138,9 +135,6 @@ public class ItemFeatureCommon {
             a.followHLL = (HyperLogLog) a.followHLL.merge(b.followHLL);
             a.profileHLL = (HyperLogLog) a.profileHLL.merge(b.profileHLL);
             a.posinterHLL = (HyperLogLog) a.posinterHLL.merge(b.posinterHLL);
-            
-            // 合并事件计数
-            a.totalEventCount += b.totalEventCount;
         } catch (Exception e) {
             // 如果合并失败，记录错误并返回a
             System.err.println("Error merging HyperLogLog: " + e.getMessage());
