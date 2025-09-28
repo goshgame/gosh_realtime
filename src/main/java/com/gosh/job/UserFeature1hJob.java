@@ -33,9 +33,10 @@ import java.util.Date;
 
 public class UserFeature1hJob {
     private static final Logger LOG = LoggerFactory.getLogger(UserFeature1hJob.class);
-    private static final ObjectMapper objectMapper = new ObjectMapper();
     private static String PREFIX = "rec:user_feature:{";
     private static String SUFFIX = "}:post1h";
+    // 每个窗口内每个用户的最大事件数限制
+    private static final int MAX_EVENTS_PER_WINDOW = 100;
 
     public static void main(String[] args) throws Exception {
         System.out.println("Starting UserFeature1hJob...");
@@ -72,33 +73,33 @@ public class UserFeature1hJob {
             .name("Parse Expose Events");
 
         // 增加曝光事件计数日志（每分钟采样一次）
-        exposeStream = exposeStream
-            .process(new ProcessFunction<UserFeatureCommon.PostExposeEvent, UserFeatureCommon.PostExposeEvent>() {
-                private static final long SAMPLE_INTERVAL = 60000; // 1分钟
-                private transient long lastSampleTime;
-                private transient long counter;
-
-                @Override
-                public void open(Configuration parameters) throws Exception {
-                    lastSampleTime = 0L;
-                    counter = 0L;
-                }
-
-                @Override
-                public void processElement(UserFeatureCommon.PostExposeEvent value, Context ctx, Collector<UserFeatureCommon.PostExposeEvent> out) throws Exception {
-                    long now = System.currentTimeMillis();
-                    if (now - lastSampleTime >= SAMPLE_INTERVAL) {
-                        if (lastSampleTime != 0L) {
-                            LOG.info("[Expose Events] count in last minute: {}", counter);
-                        }
-                        lastSampleTime = now - (now % SAMPLE_INTERVAL);
-                        counter = 0L;
-                    }
-                    counter++;
-                    out.collect(value);
-                }
-            })
-            .name("Debug Expose Event Count");
+//        exposeStream = exposeStream
+//            .process(new ProcessFunction<UserFeatureCommon.PostExposeEvent, UserFeatureCommon.PostExposeEvent>() {
+//                private static final long SAMPLE_INTERVAL = 60000; // 1分钟
+//                private transient long lastSampleTime;
+//                private transient long counter;
+//
+//                @Override
+//                public void open(Configuration parameters) throws Exception {
+//                    lastSampleTime = 0L;
+//                    counter = 0L;
+//                }
+//
+//                @Override
+//                public void processElement(UserFeatureCommon.PostExposeEvent value, Context ctx, Collector<UserFeatureCommon.PostExposeEvent> out) throws Exception {
+//                    long now = System.currentTimeMillis();
+//                    if (now - lastSampleTime >= SAMPLE_INTERVAL) {
+//                        if (lastSampleTime != 0L) {
+//                            LOG.info("[Expose Events] count in last minute: {}", counter);
+//                        }
+//                        lastSampleTime = now - (now % SAMPLE_INTERVAL);
+//                        counter = 0L;
+//                    }
+//                    counter++;
+//                    out.collect(value);
+//                }
+//            })
+//            .name("Debug Expose Event Count");
 
         // 3.2 解析观看事件 (event_type=8)
         SingleOutputStreamOperator<UserFeatureCommon.PostViewEvent> viewStream = filteredStream
@@ -106,33 +107,33 @@ public class UserFeature1hJob {
             .name("Parse View Events");
 
         // 增加观看事件计数日志（每分钟采样一次）
-        viewStream = viewStream
-            .process(new ProcessFunction<UserFeatureCommon.PostViewEvent, UserFeatureCommon.PostViewEvent>() {
-                private static final long SAMPLE_INTERVAL = 60000; // 1分钟
-                private transient long lastSampleTime;
-                private transient long counter;
-
-                @Override
-                public void open(Configuration parameters) throws Exception {
-                    lastSampleTime = 0L;
-                    counter = 0L;
-                }
-
-                @Override
-                public void processElement(UserFeatureCommon.PostViewEvent value, Context ctx, Collector<UserFeatureCommon.PostViewEvent> out) throws Exception {
-                    long now = System.currentTimeMillis();
-                    if (now - lastSampleTime >= SAMPLE_INTERVAL) {
-                        if (lastSampleTime != 0L) {
-                            LOG.info("[View Events] count in last minute: {}", counter);
-                        }
-                        lastSampleTime = now - (now % SAMPLE_INTERVAL);
-                        counter = 0L;
-                    }
-                    counter++;
-                    out.collect(value);
-                }
-            })
-            .name("Debug View Event Count");
+//        viewStream = viewStream
+//            .process(new ProcessFunction<UserFeatureCommon.PostViewEvent, UserFeatureCommon.PostViewEvent>() {
+//                private static final long SAMPLE_INTERVAL = 60000; // 1分钟
+//                private transient long lastSampleTime;
+//                private transient long counter;
+//
+//                @Override
+//                public void open(Configuration parameters) throws Exception {
+//                    lastSampleTime = 0L;
+//                    counter = 0L;
+//                }
+//
+//                @Override
+//                public void processElement(UserFeatureCommon.PostViewEvent value, Context ctx, Collector<UserFeatureCommon.PostViewEvent> out) throws Exception {
+//                    long now = System.currentTimeMillis();
+//                    if (now - lastSampleTime >= SAMPLE_INTERVAL) {
+//                        if (lastSampleTime != 0L) {
+//                            LOG.info("[View Events] count in last minute: {}", counter);
+//                        }
+//                        lastSampleTime = now - (now % SAMPLE_INTERVAL);
+//                        counter = 0L;
+//                    }
+//                    counter++;
+//                    out.collect(value);
+//                }
+//            })
+//            .name("Debug View Event Count");
 
         // 3.3 将曝光事件转换为统一的用户特征事件
         DataStream<UserFeatureCommon.UserFeatureEvent> exposeFeatureStream = exposeStream
@@ -264,11 +265,20 @@ public class UserFeature1hJob {
     public static class UserFeatureAggregator implements AggregateFunction<UserFeatureCommon.UserFeatureEvent, UserFeatureCommon.UserFeatureAccumulator, UserFeatureAggregation> {
         @Override
         public UserFeatureCommon.UserFeatureAccumulator createAccumulator() {
-            return new UserFeatureCommon.UserFeatureAccumulator();
+            UserFeatureCommon.UserFeatureAccumulator acc = new UserFeatureCommon.UserFeatureAccumulator();
+            acc.totalEventCount = 0;
+            return acc;
         }
 
         @Override
         public UserFeatureCommon.UserFeatureAccumulator add(UserFeatureCommon.UserFeatureEvent event, UserFeatureCommon.UserFeatureAccumulator accumulator) {
+            if (accumulator.totalEventCount >= MAX_EVENTS_PER_WINDOW) {
+                // 如果超过限制，直接返回当前accumulator，不再更新
+                LOG.warn("User {} has exceeded the event limit ({}). Current events: {}. Skipping update.", 
+                        event.getUid(), MAX_EVENTS_PER_WINDOW, accumulator.totalEventCount);
+                return accumulator;
+            }
+            accumulator.totalEventCount++;
             return UserFeatureCommon.addEventToAccumulator(event, accumulator);
         }
 
@@ -307,9 +317,10 @@ public class UserFeature1hJob {
 
         @Override
         public UserFeatureCommon.UserFeatureAccumulator merge(UserFeatureCommon.UserFeatureAccumulator a, UserFeatureCommon.UserFeatureAccumulator b) {
-            return UserFeatureCommon.mergeAccumulators(a, b);
+            UserFeatureCommon.UserFeatureAccumulator merged = UserFeatureCommon.mergeAccumulators(a, b);
+            merged.totalEventCount = a.totalEventCount + b.totalEventCount;
+            return merged;
         }
-
     }
 
     public static class UserFeatureAggregation {

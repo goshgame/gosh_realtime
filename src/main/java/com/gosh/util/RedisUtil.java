@@ -8,6 +8,7 @@ import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 import java.io.InputStream;
+import java.util.Map;
 import java.util.Properties;
 
 public class RedisUtil {
@@ -82,5 +83,17 @@ public class RedisUtil {
             int batchSize) {
         stream.addSink(new RedisSink<>(config, async, batchSize))
                 .name("Redis Hash Sink (Tuple3)");
+    }
+
+    /**
+     * 添加Redis HashMap Sink - 用于批量HMSET操作
+     */
+    public static void addRedisHashMapSink(
+            DataStream<Tuple2<String, Map<String, byte[]>>> stream,
+            RedisConfig config,
+            boolean async,
+            int batchSize) {
+        stream.addSink(new RedisSink<>(config, async, batchSize))
+                .name("Redis HashMap Sink (DEL_HMSET)");
     }
 }
