@@ -276,9 +276,10 @@ public class UserFeature1hJob {
             accumulator.uid = event.uid;
             
             if (accumulator.totalEventCount >= MAX_EVENTS_PER_WINDOW) {
-                // 如果超过限制，直接返回当前accumulator，不再更新
-                LOG.warn("User {} has exceeded the event limit ({}). Current events: {}. Skipping update.", 
-                        event.getUid(), MAX_EVENTS_PER_WINDOW, accumulator.totalEventCount);
+                // 如果超过限制，标记超限状态，不再更新
+                if (!accumulator.exceededLimit) {
+                    accumulator.exceededLimit = true;
+                }
                 return accumulator;
             }
             accumulator.totalEventCount++;
@@ -293,6 +294,13 @@ public class UserFeature1hJob {
             if (result.uid == 0L) {
                 LOG.warn("UserFeatureAggregation uid is 0, check upstream event parsing and keyBy logic");
             }
+            
+            // 检查是否超限，如果是则打印日志
+            if (accumulator.exceededLimit) {
+                LOG.warn("User {} exceeded event limit ({}). Final event count: {}.", 
+                        accumulator.uid, MAX_EVENTS_PER_WINDOW, accumulator.totalEventCount);
+            }
+            
             // 曝光特征
             result.viewerExppostCnt1h = accumulator.exposePostIds.size();
             // 注意：由于曝光事件中没有post_type信息，暂时无法统计图片和视频的单独曝光数
