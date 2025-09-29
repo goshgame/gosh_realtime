@@ -239,7 +239,7 @@ public class UserFeature24hJob {
             
             result.updateTime = System.currentTimeMillis();
             
-            LOG.info("Generated user 24h feature aggregation for uid {}: {}", result.uid, result);
+//            LOG.info("Generated user 24h feature aggregation for uid {}: {}", result.uid, result);
             return result;
         }
 

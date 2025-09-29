@@ -21,6 +21,7 @@ import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.windowing.assigners.SlidingProcessingTimeWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
+import org.apache.flink.util.OutputTag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.time.Duration;
@@ -36,10 +37,14 @@ public class ItemFeature1hJob {
     private static String PREFIX = "rec:item_feature:{";
     private static String SUFFIX = "}:post1h";
 
+    //定义迟到数据的侧输出标签
+    private static final OutputTag<UserFeatureEvent> LATE_DATA_TAG = new OutputTag<UserFeatureEvent>("late-data") {};
+
+
     public static void main(String[] args) throws Exception {
         // 第一步：创建flink环境
         StreamExecutionEnvironment env = FlinkEnvUtil.createStreamExecutionEnvironment();
-        env.setParallelism(3);
+//        env.setParallelism(3);
         
         // 第二步：创建Source，Kafka环境
         KafkaSource<String> inputTopic = KafkaEnvUtil.createKafkaSource(
@@ -49,7 +54,8 @@ public class ItemFeature1hJob {
         // 第三步：使用KafkaSource创建DataStream
         DataStreamSource<String> kafkaSource = env.fromSource(
             inputTopic,
-            WatermarkStrategy.forBoundedOutOfOrderness(Duration.ofSeconds(5)),
+            WatermarkStrategy.<String>forBoundedOutOfOrderness(Duration.ofSeconds(30))
+                            .withIdleness(Duration.ofMinutes(5)),
             "Kafka Source"
         );
 
@@ -82,12 +88,13 @@ public class ItemFeature1hJob {
         DataStream<UserFeatureEvent> unifiedStream = exposeFeatureStream
             .union(viewFeatureStream)
             .assignTimestampsAndWatermarks(
-                WatermarkStrategy.<UserFeatureEvent>forBoundedOutOfOrderness(Duration.ofSeconds(10))
+                WatermarkStrategy.<UserFeatureEvent>forBoundedOutOfOrderness(Duration.ofSeconds(20))
                     .withTimestampAssigner((event, recordTimestamp) -> event.getTimestamp())
+                        .withIdleness(Duration.ofMinutes(5))
             );
 
         // 第四步：按post_id分组并进行1小时滑动窗口聚合
-        DataStream<ItemFeature1hAggregation> aggregatedStream = unifiedStream
+        SingleOutputStreamOperator<ItemFeature1hAggregation> aggregatedStream = unifiedStream
             .keyBy(new KeySelector<UserFeatureEvent, Long>() {
                 @Override
                 public Long getKey(UserFeatureEvent value) throws Exception {
@@ -98,6 +105,8 @@ public class ItemFeature1hJob {
                 Time.hours(1), // 窗口大小1小时
                 Time.minutes(3) // 滑动间隔3分钟
             ))
+                .allowedLateness(Time.minutes(5))  //允许迟到5分钟的数据
+                .sideOutputLateData(LATE_DATA_TAG)
             .aggregate(new ItemFeature1hAggregator())
             .name("Item Feature 1h Aggregation");
 

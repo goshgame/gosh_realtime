@@ -1,54 +1,34 @@
 package com.gosh.entity;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.time.Instant;
-import java.util.Date;
+import java.util.List;
 
 /**
- * 调整后的解析后Post事件实体类，完全匹配目标JSON格式
+ * post_expose字段对应的实体类
  */
-/**
- * 调整后的解析后Post事件实体类，完全匹配目标JSON格式
- */
-@JsonAutoDetect(
-        fieldVisibility = JsonAutoDetect.Visibility.ANY,  // 识别所有字段
-        getterVisibility = JsonAutoDetect.Visibility.NONE  // 忽略getter方法生成的键
-)
-public class ParsedPostEvent {
-    @JsonProperty("event_type")
-    private Integer eventType;
+public class PostExpose {
+    @JsonProperty("uid")
+    private Long uid;
 
-    @JsonProperty("post_id")
-    private String postId;
+    @JsonProperty("UID")
+    private Long UUID;
 
-    @JsonProperty("exposed_pos")
-    private Integer exposedPos;
-
-    @JsonProperty("expo_time")
-    private Long expoTime;
-
-    @JsonProperty("rec_token")
-    private String recToken;
-
-    @JsonProperty("from_index")
-    private String fromIndex;
-
-    @JsonProperty("dest_index")
-    private String destIndex;
+    @JsonProperty("list")
+    private List<PostItem> list;
 
     @JsonProperty("created_at")
     private Long createdAt;
 
-    @JsonProperty("UID")
-    private Long UID;
     @JsonProperty("DID")
     private String DID;
+
     @JsonProperty("APP")
     private String APP;
+
     @JsonProperty("SMID")
     private String SMID;
+
     @JsonProperty("Version")
     private String Version;
     @JsonProperty("Channel")
@@ -79,54 +59,36 @@ public class ParsedPostEvent {
 
     @JsonProperty("ClientIP")
     private String clientIP;
-
     @JsonProperty("ADID")
     private String ADID;
     @JsonProperty("GAID")
     private String GAID;
     @JsonProperty("IDFA")
     private String IDFA;
-    @JsonProperty("event_time")
-    private Long eventTime;
 
-    public Integer getEventType() {
-        return eventType;
+    // Getter和Setter方法
+    public Long getUid() {
+        return uid;
     }
 
-    public void setEventType(Integer eventType) {
-        this.eventType = eventType;
+    public void setUid(Long uid) {
+        this.uid = uid;
     }
 
-    public String getPostId() {
-        return postId;
+    public Long getUUID() {
+        return UUID;
     }
 
-    public void setPostId(String postId) {
-        this.postId = postId;
+    public void setUUID(Long UUID) {
+        this.UUID = UUID;
     }
 
-    public Integer getExposedPos() {
-        return exposedPos;
+    public List<PostItem> getList() {
+        return list;
     }
 
-    public void setExposedPos(Integer exposedPos) {
-        this.exposedPos = exposedPos;
-    }
-
-    public Long getExpoTime() {
-        return expoTime;
-    }
-
-    public void setExpoTime(Long expoTime) {
-        this.expoTime = expoTime;
-    }
-
-    public String getRecToken() {
-        return recToken;
-    }
-
-    public void setRecToken(String recToken) {
-        this.recToken = recToken;
+    public void setList(List<PostItem> list) {
+        this.list = list;
     }
 
     public Long getCreatedAt() {
@@ -135,14 +97,6 @@ public class ParsedPostEvent {
 
     public void setCreatedAt(Long createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public Long getUID() {
-        return UID;
-    }
-
-    public void setUID(Long UID) {
-        this.UID = UID;
     }
 
     public String getDID() {
@@ -305,42 +259,13 @@ public class ParsedPostEvent {
         this.IDFA = IDFA;
     }
 
-    public String getFromIndex() {
-        return fromIndex;
-    }
-
-    public void setFromIndex(String fromIndex) {
-        this.fromIndex = fromIndex;
-    }
-
-    public String getDestIndex() {
-        return destIndex;
-    }
-
-    public void setDestIndex(String destIndex) {
-        this.destIndex = destIndex;
-    }
-
-    public Long getEventTime() {
-        return eventTime;
-    }
-
-    public void setEventTime(Long eventTime) {
-        this.eventTime = eventTime;
-    }
-
     @Override
     public String toString() {
-        return "ParsedPostEvent{" +
-                "eventType=" + eventType +
-                ", postId='" + postId + '\'' +
-                ", exposedPos=" + exposedPos +
-                ", expoTime=" + expoTime +
-                ", recToken='" + recToken + '\'' +
-                ", fromIndex='" + fromIndex + '\'' +
-                ", destIndex='" + destIndex + '\'' +
+        return "PostExpose{" +
+                "uid=" + uid +
+                ", UUID=" + UUID +
+                ", list=" + list +
                 ", createdAt=" + createdAt +
-                ", UID=" + UID +
                 ", DID='" + DID + '\'' +
                 ", APP='" + APP + '\'' +
                 ", SMID='" + SMID + '\'' +
@@ -361,7 +286,6 @@ public class ParsedPostEvent {
                 ", ADID='" + ADID + '\'' +
                 ", GAID='" + GAID + '\'' +
                 ", IDFA='" + IDFA + '\'' +
-                ", eventTime=" + eventTime +
                 '}';
     }
 }
