@@ -77,7 +77,9 @@ public class RedisSink<T> extends RichSinkFunction<T> {
     @Override
     @SuppressWarnings("unchecked")
     public void invoke(T value, Context context) throws Exception {
-        if (value == null) {
+        // 检查连接是否已关闭
+        if (connectionManager == null || !isRunning()) {
+            LOG.warn("连接已关闭，跳过处理任务");
             return;
         }
 
@@ -310,5 +312,14 @@ public class RedisSink<T> extends RichSinkFunction<T> {
         super.close();
         connectionManager.shutdown();
         LOG.info("Redis Sink closed");
+    }
+
+    private static class DefaultFieldExtractor<M extends Message> implements Function<M, String>, Serializable {
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        public String apply(M m) {
+            return String.valueOf(m.hashCode());
+        }
     }
 }

@@ -1,7 +1,9 @@
 package com.gosh.job;
 
-import com.gosh.entity.PostEvent;
-import com.gosh.entity.ParsedPostEvent;
+import java.time.Instant;
+import java.util.Date;
+
+import com.gosh.entity.*;
 import com.gosh.util.FlinkEnvUtil;
 import com.gosh.util.KafkaEnvUtil;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
@@ -17,6 +19,7 @@ import org.apache.flink.util.Collector;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import shaded.parquet.org.apache.thrift.protocol.TJSONProtocol;
 
 import java.time.Duration;
 
@@ -28,12 +31,12 @@ public class PostPoseParseJob {
         StreamExecutionEnvironment env = FlinkEnvUtil.createStreamExecutionEnvironment();
 
         // 第二步：创建Source，Kafka环境
-        KafkaSource<String> inputTopic = KafkaEnvUtil.createKafkaSource(
+        KafkaSource<KafkaRawEvent> inputTopic = KafkaEnvUtil.createKafkaRawSource(
                 KafkaEnvUtil.loadProperties(), "post"
         );
 
         // 第三步：使用KafkaSource创建DataStream
-        DataStreamSource<String> kafkaSource = env.fromSource(
+        DataStreamSource<KafkaRawEvent> kafkaSource = env.fromSource(
                 inputTopic,
                 WatermarkStrategy.forBoundedOutOfOrderness(Duration.ofSeconds(5)),
                 "Kafka Source"
@@ -43,18 +46,20 @@ public class PostPoseParseJob {
         ObjectMapper objectMapper = new ObjectMapper();
         // 解析JSON为PostEvent实体，并筛选出event_type=16的数据
         DataStream<PostEvent> filteredEvents = kafkaSource
-                .map(jsonString -> {
+                .map(kafkaRawEvent -> {
                     try {
-                        return objectMapper.readValue(jsonString, PostEvent.class);
+                        PostEvent postEvent = objectMapper.readValue(kafkaRawEvent.getMessage(), PostEvent.class);
+                        postEvent.setEvenTime(kafkaRawEvent.getTimestamp());
+
+                        return postEvent;
                     } catch (Exception e) {
-                        LOG.info("异常解析数据：{}",jsonString);
+                        LOG.info("异常解析数据：{}",kafkaRawEvent);
                         return null;
                     }
                 })
                 .filter(new FilterFunction<PostEvent>() {
                     @Override
                     public boolean filter(PostEvent event) {
-                        // 过滤掉解析失败的记录和event_type不等于16的记录
                         return event != null && event.getEventType() != null && event.getEventType() == 16;
                     }
                 });
@@ -66,26 +71,29 @@ public class PostPoseParseJob {
                     public void flatMap(PostEvent event, Collector<ParsedPostEvent> collector) {
                         // 检查必要字段是否存在
                         if (event.getPostExpose() == null || event.getPostExpose().getList() == null) {
-                            System.err.println("PostEvent缺少必要的post_expose或list字段");
+                            LOG.info("PostEvent缺少必要的post_expose或list字段");
                             return;
                         }
 
 
                         // 遍历list中的每个元素，创建对应的ParsedPostEvent
-                        for (PostEvent.PostItem item : event.getPostExpose().getList()) {
+                        for (PostItem item : event.getPostExpose().getList()) {
                             ParsedPostEvent parsed = new ParsedPostEvent();
 
                             // 设置event_type
                             parsed.setEventType(event.getEventType());
+                            parsed.setEventTime(event.getEvenTime());
 
                             // 设置post item相关字段
                             parsed.setPostId(item.getPostId());
                             parsed.setExposedPos(item.getExposedPos());
                             parsed.setExpoTime(item.getExpoTime());
                             parsed.setRecToken(item.getRecToken());
+                            parsed.setFromIndex(item.getFromIndex() == null?"" : item.getFromIndex());
+                            parsed.setDestIndex(item.getDestIndex()== null?"" : item.getDestIndex());
 
                             // 设置post_expose中的其他字段
-                            PostEvent.PostExpose expose = event.getPostExpose();
+                            PostExpose expose = event.getPostExpose();
                             parsed.setCreatedAt(expose.getCreatedAt());
                             parsed.setUID(expose.getUid());
                             parsed.setDID(expose.getDID());
@@ -118,10 +126,10 @@ public class PostPoseParseJob {
                 .map(parsedEvent -> {
                     try {
                         String jsonString = objectMapper.writeValueAsString(parsedEvent);
-                        System.out.println("最终输出结果：" + jsonString);
+                        LOG.info("最终输出结果：{}"  , jsonString);
                         return jsonString;
                     } catch (Exception e) {
-                        System.err.println("对象转JSON失败: " + e.getMessage());
+                        LOG.info("对象转JSON失败: {}" , e.getMessage());
                         return null;
                     }
                 })
