@@ -30,11 +30,15 @@ import java.time.Duration;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 public class UserAuthorFeature1hJob {
     private static final Logger LOG = LoggerFactory.getLogger(UserAuthorFeature1hJob.class);
     private static String PREFIX = "rec:user_author_feature:{";
     private static String SUFFIX = "}:post1h";
+    // 每个窗口内每个用户的最大事件数限制
+    private static final int MAX_EVENTS_PER_WINDOW = 200;
 
     public static void main(String[] args) throws Exception {
         // 第一步：创建flink环境
@@ -53,45 +57,31 @@ public class UserAuthorFeature1hJob {
             "Kafka Source"
         );
 
-        // 3.0 预过滤 - 只保留我们需要的事件类型
+        // 3.0 预过滤 - 只保留观看事件
         DataStream<String> filteredStream = kafkaSource
-            .filter(EventFilterUtil.createFastEventTypeFilter(16, 8))
-            .name("Pre-filter Events");
+            .filter(EventFilterUtil.createFastEventTypeFilter(8))
+            .name("Pre-filter View Events");
 
-        // 3.1 解析曝光事件 (event_type=16)
-        SingleOutputStreamOperator<PostExposeEvent> exposeStream = filteredStream
-            .flatMap(new UserFeatureCommon.ExposeEventParser())
-            .name("Parse Expose Events");
-
-        // 3.2 解析观看事件 (event_type=8)
+        // 3.1 解析观看事件 (event_type=8)
         SingleOutputStreamOperator<PostViewEvent> viewStream = filteredStream
-            .flatMap(new UserFeatureCommon.ViewEventParser())
+            .flatMap(new ViewEventParser())
             .name("Parse View Events");
 
-        // 3.3 将曝光事件转换为统一的用户特征事件
-        DataStream<UserFeatureEvent> exposeFeatureStream = exposeStream
-            .flatMap(new UserFeatureCommon.ExposeToFeatureMapper())
-            .name("Expose to Feature");
-
-        // 3.4 将观看事件转换为统一的用户特征事件
-        DataStream<UserFeatureEvent> viewFeatureStream = viewStream
-            .flatMap(new UserFeatureCommon.ViewToFeatureMapper())
-            .name("View to Feature");
-
-        // 3.5 合并两个流
-        DataStream<UserFeatureEvent> unifiedStream = exposeFeatureStream
-            .union(viewFeatureStream)
+        // 3.2 将观看事件转换为统一的用户特征事件
+        DataStream<UserFeatureEvent> unifiedStream = viewStream
+            .flatMap(new ViewToFeatureMapper())
+            .name("View to Feature")
             .assignTimestampsAndWatermarks(
                 WatermarkStrategy.<UserFeatureEvent>forBoundedOutOfOrderness(Duration.ofSeconds(10))
                     .withTimestampAssigner((event, recordTimestamp) -> event.getTimestamp())
             );
 
-        // 第四步：按(uid, author)分组并进行1小时滑动窗口聚合
+        // 第四步：按uid分组并进行1小时滑动窗口聚合
         DataStream<UserAuthorFeature1hAggregation> aggregatedStream = unifiedStream
-            .keyBy(new KeySelector<UserFeatureEvent, Tuple2<Long, Long>>() {
+            .keyBy(new KeySelector<UserFeatureEvent, Long>() {
                 @Override
-                public Tuple2<Long, Long> getKey(UserFeatureEvent value) throws Exception {
-                    return new Tuple2<>(value.getUid(), value.author);
+                public Long getKey(UserFeatureEvent value) throws Exception {
+                    return value.getUid();
                 }
             })
             .window(SlidingProcessingTimeWindows.of(
@@ -102,76 +92,88 @@ public class UserAuthorFeature1hJob {
             .name("User-Author Feature 1h Aggregation");
 
         // 打印聚合结果用于调试（采样）
-//        aggregatedStream
-//            .process(new ProcessFunction<UserAuthorFeature1hAggregation, UserAuthorFeature1hAggregation>() {
-//                private static final long SAMPLE_INTERVAL = 60000; // 采样间隔1分钟
-//                private static final int SAMPLE_COUNT = 3; // 每次采样3条
-//                private transient long lastSampleTime;
-//                private transient int sampleCount;
-//
-//                @Override
-//                public void open(Configuration parameters) throws Exception {
-//                    lastSampleTime = 0;
-//                    sampleCount = 0;
-//                }
-//
-//                @Override
-//                public void processElement(UserAuthorFeature1hAggregation value, Context ctx, Collector<UserAuthorFeature1hAggregation> out) throws Exception {
-//                    long now = System.currentTimeMillis();
-//                    if (now - lastSampleTime > SAMPLE_INTERVAL) {
-//                        lastSampleTime = now - (now % SAMPLE_INTERVAL);
-//                        sampleCount = 0;
-//                    }
-//                    if (sampleCount < SAMPLE_COUNT) {
-//                        sampleCount++;
-//                        LOG.info("[Sample {}/{}] uid {} author {} at {}: exp1h={}, 3sview1h={}, 8sview1h={}, like1h={}",
-//                            sampleCount,
-//                            SAMPLE_COUNT,
-//                            value.uid,
-//                            value.author,
-//                            new SimpleDateFormat("HH:mm:ss").format(new Date()),
-//                            value.userauthorExpCnt1h,
-//                            value.userauthor3sviewCnt1h,
-//                            value.userauthor8sviewCnt1h,
-//                            value.userauthorLikeCnt1h);
-//                    }
-//                }
-//            })
-//            .name("Debug Sampling");
+       aggregatedStream
+           .process(new ProcessFunction<UserAuthorFeature1hAggregation, UserAuthorFeature1hAggregation>() {
+               private static final long SAMPLE_INTERVAL = 60000; // 采样间隔1分钟
+               private static final int SAMPLE_COUNT = 3; // 每次采样3条
+               private transient long lastSampleTime;
+               private transient int sampleCount;
+
+               @Override
+               public void open(Configuration parameters) throws Exception {
+                   lastSampleTime = 0;
+                   sampleCount = 0;
+               }
+
+               @Override
+               public void processElement(UserAuthorFeature1hAggregation value, Context ctx, Collector<UserAuthorFeature1hAggregation> out) throws Exception {
+                   long now = System.currentTimeMillis();
+                   if (now - lastSampleTime > SAMPLE_INTERVAL) {
+                       lastSampleTime = now - (now % SAMPLE_INTERVAL);
+                       sampleCount = 0;
+                   }
+                   if (sampleCount < SAMPLE_COUNT) {
+                       sampleCount++;
+                       // 遍历每个作者的特征并打印
+                       for (Map.Entry<String, byte[]> entry : value.authorFeatures.entrySet()) {
+                           String authorId = entry.getKey();
+                           RecFeature.RecUserAuthorFeature feature = RecFeature.RecUserAuthorFeature.parseFrom(entry.getValue());
+                           LOG.info("[Sample {}/{}] uid {} author {} at {}: 3sview1h={}, 8sview1h={}, 12sview1h={}, 20sview1h={}, 5sstand1h={}, 10sstand1h={}, like1h={}",
+                               sampleCount,
+                               SAMPLE_COUNT,
+                               value.uid,
+                               authorId,
+                               new SimpleDateFormat("HH:mm:ss").format(new Date()),
+                               feature.getUserauthor3SviewCnt1H(),
+                               feature.getUserauthor8SviewCnt1H(),
+                               feature.getUserauthor12SviewCnt1H(),
+                               feature.getUserauthor20SviewCnt1H(),
+                               feature.getUserauthor5SstandCnt1H(),
+                               feature.getUserauthor10SstandCnt1H(),
+                               feature.getUserauthorLikeCnt1H());
+                       }
+                   }
+               }
+           })
+           .name("Debug Sampling");
 
         // 第五步：转换为Protobuf并写入Redis
-        DataStream<Tuple2<String, byte[]>> dataStream = aggregatedStream
-            .map(new MapFunction<UserAuthorFeature1hAggregation, Tuple2<String, byte[]>>() {
+        DataStream<Tuple2<String, Map<String, byte[]>>> dataStream = aggregatedStream
+            .filter(agg -> agg != null && agg.authorFeatures != null && !agg.authorFeatures.isEmpty()) // 过滤掉空值
+            .map(new MapFunction<UserAuthorFeature1hAggregation, Tuple2<String, Map<String, byte[]>>>() {
                 @Override
-                public Tuple2<String, byte[]> map(UserAuthorFeature1hAggregation agg) throws Exception {
-                    String redisKey = PREFIX + agg.uid + "_" + agg.author + SUFFIX;
-
-                    byte[] value = RecFeature.RecUserAuthorFeature.newBuilder()
-                        // 1小时曝光特征（当前无作者信息来源，置0）
-                        .setUserauthorExpCnt1H(agg.userauthorExpCnt1h)
-                        // 1小时观看特征
-                        .setUserauthor3SviewCnt1H(agg.userauthor3sviewCnt1h)
-                        .setUserauthor8SviewCnt1H(agg.userauthor8sviewCnt1h)
-                        .setUserauthor12SviewCnt1H(agg.userauthor12sviewCnt1h)
-                        .setUserauthor20SviewCnt1H(agg.userauthor20sviewCnt1h)
-                        // 1小时停留特征
-                        .setUserauthor5SstandCnt1H(agg.userauthor5sstandCnt1h)
-                        .setUserauthor10SstandCnt1H(agg.userauthor10sstandCnt1h)
-                        // 1小时互动特征
-                        .setUserauthorLikeCnt1H(agg.userauthorLikeCnt1h)
-                        .setExpireTime("1h")
-                        .build()
-                        .toByteArray();
-
-                    return new Tuple2<>(redisKey, value);
+                public Tuple2<String, Map<String, byte[]>> map(UserAuthorFeature1hAggregation agg) throws Exception {
+                    String redisKey = PREFIX + agg.uid + SUFFIX;
+                    // 过滤掉map中的null值
+                    Map<String, byte[]> cleanFeatures = new HashMap<>();
+                    for (Map.Entry<String, byte[]> entry : agg.authorFeatures.entrySet()) {
+                        if (entry.getKey() != null && entry.getValue() != null && entry.getValue().length > 0) {
+                            cleanFeatures.put(entry.getKey(), entry.getValue());
+                            LOG.debug("Adding feature for author {} with {} bytes", entry.getKey(), entry.getValue().length);
+                        } else {
+                            LOG.warn("Skipping invalid feature for author {}: key={}, value={}",
+                                entry.getKey(),
+                                entry.getKey() != null ? "valid" : "null",
+                                entry.getValue() != null ? (entry.getValue().length + " bytes") : "null");
+                        }
+                    }
+                    
+                    if (cleanFeatures.isEmpty()) {
+                        LOG.warn("No valid features found for user {}", agg.uid);
+                        return null;
+                    }
+                    
+                    return new Tuple2<>(redisKey, cleanFeatures);
                 }
             })
+            .filter(tuple -> tuple != null && tuple.f1 != null && !tuple.f1.isEmpty()) // 确保没有空的特征map
             .name("Aggregation to Protobuf Bytes");
 
         // 第六步：创建sink，Redis环境
         RedisConfig redisConfig = RedisConfig.fromProperties(RedisUtil.loadProperties());
         redisConfig.setTtl(600);
-        RedisUtil.addRedisSink(
+        redisConfig.setCommand("DEL_HMSET"); // 设置正确的命令用于HashMap操作
+        RedisUtil.addRedisHashMapSink(
             dataStream,
             redisConfig,
             true,
@@ -183,96 +185,156 @@ public class UserAuthorFeature1hJob {
 
     public static class UserAuthorAccumulator {
         public long uid;
-        public long author;
-        // 曝光（无作者信息来源，保留结构以便后续扩展）
-        public Set<String> exposeRecTokens = new HashSet<>();
-        // 观看
-        public Set<String> view3sRecTokens = new HashSet<>();
-        public Set<String> view8sRecTokens = new HashSet<>();
-        public Set<String> view12sRecTokens = new HashSet<>();
-        public Set<String> view20sRecTokens = new HashSet<>();
-        // 停留
-        public Set<String> stand5sRecTokens = new HashSet<>();
-        public Set<String> stand10sRecTokens = new HashSet<>();
-        // 互动
-        public Set<String> likeRecTokens = new HashSet<>();
+        public int totalEventCount = 0;
+        // 按作者ID存储特征
+        public Map<Long, AuthorFeatures> authorFeatureMap = new HashMap<>();
+
+        public static class AuthorFeatures {
+            // 观看
+            public Set<String> view3sRecTokens = new HashSet<>();
+            public Set<String> view8sRecTokens = new HashSet<>();
+            public Set<String> view12sRecTokens = new HashSet<>();
+            public Set<String> view20sRecTokens = new HashSet<>();
+            // 停留
+            public Set<String> stand5sRecTokens = new HashSet<>();
+            public Set<String> stand10sRecTokens = new HashSet<>();
+            // 互动
+            public Set<String> likeRecTokens = new HashSet<>();
+        }
     }
 
     public static class UserAuthorFeature1hAggregator implements AggregateFunction<UserFeatureEvent, UserAuthorAccumulator, UserAuthorFeature1hAggregation> {
         @Override
         public UserAuthorAccumulator createAccumulator() {
-            return new UserAuthorAccumulator();
+            UserAuthorAccumulator acc = new UserAuthorAccumulator();
+            acc.totalEventCount = 0;
+            return acc;
         }
 
         @Override
         public UserAuthorAccumulator add(UserFeatureEvent event, UserAuthorAccumulator acc) {
+            // 先设置用户ID，确保即使跳过也能写入Redis
             acc.uid = event.uid;
-            acc.author = event.author;
-            if ("expose".equals(event.eventType)) {
-                // 暂无author信息，无法归因到作者层面
+            
+            if (acc.totalEventCount >= MAX_EVENTS_PER_WINDOW) {
+                // 如果超过限制，记录一次警告并跳过，但不影响现有数据的写入
+                // if (acc.totalEventCount == MAX_EVENTS_PER_WINDOW) {
+                //     LOG.warn("User {} has exceeded the event limit ({}). Further events will be skipped.", 
+                //             event.getUid(), MAX_EVENTS_PER_WINDOW);
+                // }
+                return acc;
             }
-            if ("view".equals(event.eventType)) {
-                if (event.progressTime >= 3) acc.view3sRecTokens.add(event.recToken);
-                if (event.progressTime >= 8) acc.view8sRecTokens.add(event.recToken);
-                if (event.progressTime >= 12) acc.view12sRecTokens.add(event.recToken);
-                if (event.progressTime >= 20) acc.view20sRecTokens.add(event.recToken);
 
-                if (event.standingTime >= 5) acc.stand5sRecTokens.add(event.recToken);
-                if (event.standingTime >= 10) acc.stand10sRecTokens.add(event.recToken);
+            // 获取或创建作者特征对象
+            UserAuthorAccumulator.AuthorFeatures authorFeatures = acc.authorFeatureMap.computeIfAbsent(event.author, 
+                k -> new UserAuthorAccumulator.AuthorFeatures());
 
-                if (event.interaction != null) {
-                    for (Integer it : event.interaction) {
-                        if (it == 1) { // 点赞
-                            acc.likeRecTokens.add(event.recToken);
-                        }
+            if (event.progressTime >= 3) authorFeatures.view3sRecTokens.add(event.recToken);
+            if (event.progressTime >= 8) authorFeatures.view8sRecTokens.add(event.recToken);
+            if (event.progressTime >= 12) authorFeatures.view12sRecTokens.add(event.recToken);
+            if (event.progressTime >= 20) authorFeatures.view20sRecTokens.add(event.recToken);
+
+            if (event.standingTime >= 5) authorFeatures.stand5sRecTokens.add(event.recToken);
+            if (event.standingTime >= 10) authorFeatures.stand10sRecTokens.add(event.recToken);
+
+            if (event.interaction != null) {
+                for (Integer it : event.interaction) {
+                    if (it == 1) { // 点赞
+                        authorFeatures.likeRecTokens.add(event.recToken);
                     }
                 }
             }
+            acc.totalEventCount++;
             return acc;
         }
 
         @Override
         public UserAuthorFeature1hAggregation getResult(UserAuthorAccumulator acc) {
-            UserAuthorFeature1hAggregation r = new UserAuthorFeature1hAggregation();
-            r.uid = acc.uid;
-            r.author = acc.author;
-            r.userauthorExpCnt1h = acc.exposeRecTokens.size(); // 目前为0，因缺author
-            r.userauthor3sviewCnt1h = acc.view3sRecTokens.size();
-            r.userauthor8sviewCnt1h = acc.view8sRecTokens.size();
-            r.userauthor12sviewCnt1h = acc.view12sRecTokens.size();
-            r.userauthor20sviewCnt1h = acc.view20sRecTokens.size();
-            r.userauthor5sstandCnt1h = acc.stand5sRecTokens.size();
-            r.userauthor10sstandCnt1h = acc.stand10sRecTokens.size();
-            r.userauthorLikeCnt1h = acc.likeRecTokens.size();
-            r.updateTime = System.currentTimeMillis();
-            return r;
+            // 如果没有任何作者特征，返回null
+            if (acc.authorFeatureMap.isEmpty()) {
+                LOG.debug("No author features found for user {}", acc.uid);
+                return null;
+            }
+
+            UserAuthorFeature1hAggregation result = new UserAuthorFeature1hAggregation();
+            result.uid = acc.uid;
+            result.authorFeatures = new HashMap<>();
+
+            // 为每个作者生成特征protobuf
+            for (Map.Entry<Long, UserAuthorAccumulator.AuthorFeatures> entry : acc.authorFeatureMap.entrySet()) {
+                long authorId = entry.getKey();
+                UserAuthorAccumulator.AuthorFeatures features = entry.getValue();
+
+                // 检查是否有任何特征
+                boolean hasFeatures = !features.view3sRecTokens.isEmpty() ||
+                                    !features.view8sRecTokens.isEmpty() ||
+                                    !features.view12sRecTokens.isEmpty() ||
+                                    !features.view20sRecTokens.isEmpty() ||
+                                    !features.stand5sRecTokens.isEmpty() ||
+                                    !features.stand10sRecTokens.isEmpty() ||
+                                    !features.likeRecTokens.isEmpty();
+
+                if (!hasFeatures) {
+                    LOG.debug("Skipping author {} for user {} as it has no features", authorId, acc.uid);
+                    continue;
+                }
+
+                byte[] featureBytes = RecFeature.RecUserAuthorFeature.newBuilder()
+                    // 1小时观看特征
+                    .setUserauthor3SviewCnt1H(features.view3sRecTokens.size())
+                    .setUserauthor8SviewCnt1H(features.view8sRecTokens.size())
+                    .setUserauthor12SviewCnt1H(features.view12sRecTokens.size())
+                    .setUserauthor20SviewCnt1H(features.view20sRecTokens.size())
+                    // 1小时停留特征
+                    .setUserauthor5SstandCnt1H(features.stand5sRecTokens.size())
+                    .setUserauthor10SstandCnt1H(features.stand10sRecTokens.size())
+                    // 1小时互动特征
+                    .setUserauthorLikeCnt1H(features.likeRecTokens.size())
+                    .setExpireTime("1h")
+                    .build()
+                    .toByteArray();
+
+                result.authorFeatures.put(String.valueOf(authorId), featureBytes);
+            }
+
+            // 如果所有作者都被跳过了（没有有效特征），返回null
+            if (result.authorFeatures.isEmpty()) {
+                LOG.debug("No valid features found for any author for user {}", acc.uid);
+                return null;
+            }
+            
+            result.updateTime = System.currentTimeMillis();
+            return result;
         }
 
         @Override
         public UserAuthorAccumulator merge(UserAuthorAccumulator a, UserAuthorAccumulator b) {
-            a.exposeRecTokens.addAll(b.exposeRecTokens);
-            a.view3sRecTokens.addAll(b.view3sRecTokens);
-            a.view8sRecTokens.addAll(b.view8sRecTokens);
-            a.view12sRecTokens.addAll(b.view12sRecTokens);
-            a.view20sRecTokens.addAll(b.view20sRecTokens);
-            a.stand5sRecTokens.addAll(b.stand5sRecTokens);
-            a.stand10sRecTokens.addAll(b.stand10sRecTokens);
-            a.likeRecTokens.addAll(b.likeRecTokens);
+            // 合并事件计数
+            a.totalEventCount += b.totalEventCount;
+
+            // 合并作者特征
+            for (Map.Entry<Long, UserAuthorAccumulator.AuthorFeatures> entry : b.authorFeatureMap.entrySet()) {
+                long authorId = entry.getKey();
+                UserAuthorAccumulator.AuthorFeatures bFeatures = entry.getValue();
+                UserAuthorAccumulator.AuthorFeatures aFeatures = a.authorFeatureMap.computeIfAbsent(authorId, 
+                    k -> new UserAuthorAccumulator.AuthorFeatures());
+
+                // 合并所有Set
+                aFeatures.view3sRecTokens.addAll(bFeatures.view3sRecTokens);
+                aFeatures.view8sRecTokens.addAll(bFeatures.view8sRecTokens);
+                aFeatures.view12sRecTokens.addAll(bFeatures.view12sRecTokens);
+                aFeatures.view20sRecTokens.addAll(bFeatures.view20sRecTokens);
+                aFeatures.stand5sRecTokens.addAll(bFeatures.stand5sRecTokens);
+                aFeatures.stand10sRecTokens.addAll(bFeatures.stand10sRecTokens);
+                aFeatures.likeRecTokens.addAll(bFeatures.likeRecTokens);
+            }
             return a;
         }
     }
 
     public static class UserAuthorFeature1hAggregation {
         public long uid;
-        public long author;
-        public int userauthorExpCnt1h;
-        public int userauthor3sviewCnt1h;
-        public int userauthor8sviewCnt1h;
-        public int userauthor12sviewCnt1h;
-        public int userauthor20sviewCnt1h;
-        public int userauthor5sstandCnt1h;
-        public int userauthor10sstandCnt1h;
-        public int userauthorLikeCnt1h;
+        public Map<String, byte[]> authorFeatures; // authorId -> protobuf bytes
         public long updateTime;
     }
 } 

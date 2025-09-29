@@ -26,6 +26,13 @@
             <!--            <scope>${gosh.dependency.scope}</scope>-->
         </dependency>
 
+        <!-- HyperLogLog support -->
+        <dependency>
+            <groupId>com.addthis</groupId>
+            <artifactId>stream-lib</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+
         <!-- Protobuf -->
 
         <dependency>

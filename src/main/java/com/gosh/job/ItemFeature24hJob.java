@@ -206,23 +206,23 @@ public class ItemFeature24hJob {
             result.postId = accumulator.postId;
             
             // 曝光特征
-            result.postExpCnt24h = accumulator.exposeRecTokens.size();
+            result.postExpCnt24h = (int) accumulator.exposeHLL.cardinality();
             
             // 观看特征
-            result.post3sviewCnt24h = accumulator.view3sRecTokens.size();
-            result.post8sviewCnt24h = accumulator.view8sRecTokens.size();
-            result.post12sviewCnt24h = accumulator.view12sRecTokens.size();
-            result.post20sviewCnt24h = accumulator.view20sRecTokens.size();
+            result.post3sviewCnt24h = (int) accumulator.view3sHLL.cardinality();
+            result.post8sviewCnt24h = (int) accumulator.view8sHLL.cardinality();
+            result.post12sviewCnt24h = (int) accumulator.view12sHLL.cardinality();
+            result.post20sviewCnt24h = (int) accumulator.view20sHLL.cardinality();
             
             // 停留特征
-            result.post5sstandCnt24h = accumulator.stand5sRecTokens.size();
-            result.post10sstandCnt24h = accumulator.stand10sRecTokens.size();
+            result.post5sstandCnt24h = (int) accumulator.stand5sHLL.cardinality();
+            result.post10sstandCnt24h = (int) accumulator.stand10sHLL.cardinality();
             
             // 互动特征
-            result.postLikeCnt24h = accumulator.likeRecTokens.size();
-            result.postFollowCnt24h = accumulator.followRecTokens.size();
-            result.postProfileCnt24h = accumulator.profileRecTokens.size();
-            result.postPosinterCnt24h = accumulator.posinterRecTokens.size();
+            result.postLikeCnt24h = (int) accumulator.likeHLL.cardinality();
+            result.postFollowCnt24h = (int) accumulator.followHLL.cardinality();
+            result.postProfileCnt24h = (int) accumulator.profileHLL.cardinality();
+            result.postPosinterCnt24h = (int) accumulator.posinterHLL.cardinality();
             
             return result;
         }

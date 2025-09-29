@@ -84,6 +84,10 @@ public class UserFeatureCommon {
      */
     public static class UserFeatureAccumulator {
         public long uid;
+        // 事件总数计数器
+        public int totalEventCount = 0;
+        // 是否超过事件限制的标记
+        public boolean exceededLimit = false;
 
         // 曝光相关
         public Set<Long> exposePostIds = new HashSet<>();
@@ -384,6 +388,7 @@ public class UserFeatureCommon {
      * 通用的用户特征聚合逻辑
      */
     public static UserFeatureAccumulator addEventToAccumulator(UserFeatureEvent event, UserFeatureAccumulator accumulator) {
+        // 确保设置uid
         accumulator.uid = event.uid;
 
         // 曝光相关特征

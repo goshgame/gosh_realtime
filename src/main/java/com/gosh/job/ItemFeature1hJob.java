@@ -44,6 +44,7 @@ public class ItemFeature1hJob {
     public static void main(String[] args) throws Exception {
         // 第一步：创建flink环境
         StreamExecutionEnvironment env = FlinkEnvUtil.createStreamExecutionEnvironment();
+//        env.setParallelism(3);
         
         // 第二步：创建Source，Kafka环境
         KafkaSource<String> inputTopic = KafkaEnvUtil.createKafkaSource(
@@ -109,22 +110,6 @@ public class ItemFeature1hJob {
             .aggregate(new ItemFeature1hAggregator())
             .name("Item Feature 1h Aggregation");
 
-        // 处理迟到数据：记录日志并可选择后续处理
-        DataStream<UserFeatureEvent> lateDataStream = aggregatedStream.getSideOutput(LATE_DATA_TAG);
-        lateDataStream.process(new ProcessFunction<UserFeatureEvent, Void>() {
-            @Override
-            public void processElement(UserFeatureEvent value, Context ctx, Collector<Void> out) throws Exception {
-                long currentWatermark = ctx.timerService().currentWatermark();
-                long eventDelay = currentWatermark - value.getTimestamp();
-                LOG.warn("Late data detected - postId: {}, eventTime: {}, currentWatermark: {}, delay: {}ms",
-                        value.postId,
-                        new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(value.getTimestamp())),
-                        new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(currentWatermark)),
-                        eventDelay);
-                // 可根据需要将迟到数据写入专门的存储进行后续处理
-            }
-        }).name("Late Data Handler");
-
         // // 打印聚合结果用于调试（采样）
          aggregatedStream
              .process(new ProcessFunction<ItemFeature1hAggregation, ItemFeature1hAggregation>() {
@@ -189,7 +174,7 @@ public class ItemFeature1hJob {
                         .setPostPosinterCnt1H(agg.postPosinterCnt1h)
                         .build()
                         .toByteArray();
-                    LOG.info("[WriteToRedis] key {} ,value {}",redisKey, value);
+                    
                     return new Tuple2<>(redisKey, value);
                 }
             })
@@ -229,23 +214,23 @@ public class ItemFeature1hJob {
             result.postId = accumulator.postId;
             
             // 曝光特征
-            result.postExpCnt1h = accumulator.exposeRecTokens.size();
+            result.postExpCnt1h = (int) accumulator.exposeHLL.cardinality();
             
             // 观看特征
-            result.post3sviewCnt1h = accumulator.view3sRecTokens.size();
-            result.post8sviewCnt1h = accumulator.view8sRecTokens.size();
-            result.post12sviewCnt1h = accumulator.view12sRecTokens.size();
-            result.post20sviewCnt1h = accumulator.view20sRecTokens.size();
+            result.post3sviewCnt1h = (int) accumulator.view3sHLL.cardinality();
+            result.post8sviewCnt1h = (int) accumulator.view8sHLL.cardinality();
+            result.post12sviewCnt1h = (int) accumulator.view12sHLL.cardinality();
+            result.post20sviewCnt1h = (int) accumulator.view20sHLL.cardinality();
             
             // 停留特征
-            result.post5sstandCnt1h = accumulator.stand5sRecTokens.size();
-            result.post10sstandCnt1h = accumulator.stand10sRecTokens.size();
+            result.post5sstandCnt1h = (int) accumulator.stand5sHLL.cardinality();
+            result.post10sstandCnt1h = (int) accumulator.stand10sHLL.cardinality();
             
             // 互动特征
-            result.postLikeCnt1h = accumulator.likeRecTokens.size();
-            result.postFollowCnt1h = accumulator.followRecTokens.size();
-            result.postProfileCnt1h = accumulator.profileRecTokens.size();
-            result.postPosinterCnt1h = accumulator.posinterRecTokens.size();
+            result.postLikeCnt1h = (int) accumulator.likeHLL.cardinality();
+            result.postFollowCnt1h = (int) accumulator.followHLL.cardinality();
+            result.postProfileCnt1h = (int) accumulator.profileHLL.cardinality();
+            result.postPosinterCnt1h = (int) accumulator.posinterHLL.cardinality();
             
             return result;
         }

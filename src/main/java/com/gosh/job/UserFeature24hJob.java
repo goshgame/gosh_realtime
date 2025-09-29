@@ -35,6 +35,8 @@ public class UserFeature24hJob {
     private static final Logger LOG = LoggerFactory.getLogger(UserFeature24hJob.class);
     private static String PREFIX = "rec:user_feature:{";
     private static String SUFFIX = "}:post24h";
+    // 每个窗口内每个用户的最大事件数限制
+    private static final int MAX_EVENTS_PER_WINDOW = 1000;
 
     public static void main(String[] args) throws Exception {
         // 第一步：创建flink环境
@@ -186,18 +188,41 @@ public class UserFeature24hJob {
     public static class UserFeature24hAggregator implements AggregateFunction<UserFeatureEvent, UserFeatureAccumulator, UserFeature24hAggregation> {
         @Override
         public UserFeatureAccumulator createAccumulator() {
-            return new UserFeatureAccumulator();
+            UserFeatureAccumulator acc = new UserFeatureAccumulator();
+            acc.totalEventCount = 0;
+            return acc;
         }
 
         @Override
         public UserFeatureAccumulator add(UserFeatureEvent event, UserFeatureAccumulator accumulator) {
+            // 先设置uid，确保能写入Redis
+            accumulator.uid = event.uid;
+            
+            if (accumulator.totalEventCount >= MAX_EVENTS_PER_WINDOW) {
+                // 如果超过限制，标记超限状态，不再更新
+                if (!accumulator.exceededLimit) {
+                    accumulator.exceededLimit = true;
+                }
+                return accumulator;
+            }
+            accumulator.totalEventCount++;
             return UserFeatureCommon.addEventToAccumulator(event, accumulator);
         }
 
         @Override
         public UserFeature24hAggregation getResult(UserFeatureAccumulator accumulator) {
             UserFeature24hAggregation result = new UserFeature24hAggregation();
+            // 设置用户ID，确保下游Redis key正确
             result.uid = accumulator.uid;
+            if (result.uid == 0L) {
+                LOG.warn("UserFeature24hAggregation uid is 0, check upstream event parsing and keyBy logic");
+            }
+            
+            // 检查是否超限，如果是则打印日志
+            if (accumulator.exceededLimit) {
+                LOG.warn("User {} exceeded event limit ({}). Final event count: {}.", 
+                        accumulator.uid, MAX_EVENTS_PER_WINDOW, accumulator.totalEventCount);
+            }
             
             // 24小时历史记录特征 - 构建字符串格式
             result.viewer3sviewPostHis24h = UserFeatureCommon.buildPostHistoryString(accumulator.view3sPostDetails, 10);
@@ -214,13 +239,15 @@ public class UserFeature24hJob {
             
             result.updateTime = System.currentTimeMillis();
             
-            LOG.info("Generated user 24h feature aggregation for uid {}: {}", result.uid, result);
+//            LOG.info("Generated user 24h feature aggregation for uid {}: {}", result.uid, result);
             return result;
         }
 
         @Override
         public UserFeatureAccumulator merge(UserFeatureAccumulator a, UserFeatureAccumulator b) {
-            return UserFeatureCommon.mergeAccumulators(a, b);
+            UserFeatureAccumulator merged = UserFeatureCommon.mergeAccumulators(a, b);
+            merged.totalEventCount = a.totalEventCount + b.totalEventCount;
+            return merged;
         }
     }
 
