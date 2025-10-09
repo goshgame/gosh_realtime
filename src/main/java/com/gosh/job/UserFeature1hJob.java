@@ -162,8 +162,8 @@ public class UserFeature1hJob {
                 }
             })
             .window(SlidingProcessingTimeWindows.of(
-                Time.minutes(60),  // 窗口大小1小时，便于测试
-                Time.minutes(2)   // 滑动间隔2分钟
+                Time.minutes(60),  // 窗口大小1小时
+                Time.minutes(5)   // 滑动间隔5分钟
             ))
             .aggregate(new UserFeatureAggregator())
             .name("User Feature Aggregation");
