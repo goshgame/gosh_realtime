@@ -33,6 +33,8 @@ public class LiveUserAnchorFeature15minJob {
     private static String SUFFIX = "}:live15min";
 
     public static void main(String[] args) throws Exception {
+        LOG.info("Starting LiveUserAnchorFeature15minJob - looking for advertise topic with event_type=3");
+        
         // 第一步：创建flink环境
         StreamExecutionEnvironment env = FlinkEnvUtil.createStreamExecutionEnvironment();
 
@@ -48,18 +50,82 @@ public class LiveUserAnchorFeature15minJob {
             "Kafka Source"
         );
 
+        // 添加原始数据采样日志
+        kafkaSource
+            .process(new org.apache.flink.streaming.api.functions.ProcessFunction<String, String>() {
+                private transient int sampleCount = 0;
+                private transient long lastLogTime = 0;
+                
+                @Override
+                public void processElement(String value, Context ctx, Collector<String> out) throws Exception {
+                    long now = System.currentTimeMillis();
+                    if (now - lastLogTime > 30000) { // 每30秒采样一次
+                        lastLogTime = now;
+                        if (sampleCount < 3) {
+                            sampleCount++;
+                            LOG.info("[Kafka Raw Sample {}/3] Raw message: {}", sampleCount, value);
+                        }
+                    }
+                    out.collect(value);
+                }
+            })
+            .name("Kafka Raw Sampling");
+
         // 3.0 预过滤 - 只保留 event_type=3 的事件
         DataStream<String> filteredStream = kafkaSource
             .filter(EventFilterUtil.createFastEventTypeFilter(3))
             .name("Pre-filter Advertise Events");
+
+        // 添加过滤后数据采样日志
+        filteredStream
+            .process(new org.apache.flink.streaming.api.functions.ProcessFunction<String, String>() {
+                private transient int sampleCount = 0;
+                private transient long lastLogTime = 0;
+                
+                @Override
+                public void processElement(String value, Context ctx, Collector<String> out) throws Exception {
+                    long now = System.currentTimeMillis();
+                    if (now - lastLogTime > 30000) { // 每30秒采样一次
+                        lastLogTime = now;
+                        if (sampleCount < 3) {
+                            sampleCount++;
+                            LOG.info("[Filtered Sample {}/3] After event_type=3 filter: {}", sampleCount, value);
+                        }
+                    }
+                    out.collect(value);
+                }
+            })
+            .name("Filtered Sampling");
 
         // 3.1 解析 recommend_data.event_data（JSON 字符串）为 Live 用户-主播 事件
         SingleOutputStreamOperator<LiveUserAnchorEvent> eventStream = filteredStream
             .flatMap(new LiveEventParser())
             .name("Parse Live Quit Events");
 
-        // 第四步：按 uid 分组并进行 3 小时窗口（滑动 5 分钟）聚合
-        DataStream<UserAnchorFeature3hAggregation> aggregatedStream = eventStream
+        // 添加解析后数据采样日志
+        eventStream
+            .process(new org.apache.flink.streaming.api.functions.ProcessFunction<LiveUserAnchorEvent, LiveUserAnchorEvent>() {
+                private transient int sampleCount = 0;
+                private transient long lastLogTime = 0;
+                
+                @Override
+                public void processElement(LiveUserAnchorEvent value, Context ctx, Collector<LiveUserAnchorEvent> out) throws Exception {
+                    long now = System.currentTimeMillis();
+                    if (now - lastLogTime > 30000) { // 每30秒采样一次
+                        lastLogTime = now;
+                        if (sampleCount < 3) {
+                            sampleCount++;
+                            LOG.info("[Parsed Sample {}/3] Parsed event: uid={}, anchorId={}, watchTime={}", 
+                                sampleCount, value.uid, value.anchorId, value.watchTime);
+                        }
+                    }
+                    out.collect(value);
+                }
+            })
+            .name("Parsed Event Sampling");
+
+        // 第四步：按 uid 分组并进行 15 分钟窗口（滑动 5 分钟）聚合
+        DataStream<UserAnchorFeatureAggregation> aggregatedStream = eventStream
             .keyBy(new KeySelector<LiveUserAnchorEvent, Long>() {
                 @Override
                 public Long getKey(LiveUserAnchorEvent value) throws Exception {
@@ -70,25 +136,78 @@ public class LiveUserAnchorFeature15minJob {
                 Time.minutes(15),
                 Time.seconds(15)
             ))
-            .aggregate(new UserAnchorFeature3hAggregator())
-            .name("User-Anchor Feature 3h Aggregation");
+            .aggregate(new UserAnchorFeatureAggregator())
+            .name("User-Anchor Feature Aggregation");
+
+        // 添加聚合结果采样日志
+        aggregatedStream
+            .process(new org.apache.flink.streaming.api.functions.ProcessFunction<UserAnchorFeatureAggregation, UserAnchorFeatureAggregation>() {
+                private transient int sampleCount = 0;
+                private transient long lastLogTime = 0;
+                
+                @Override
+                public void processElement(UserAnchorFeatureAggregation value, Context ctx, Collector<UserAnchorFeatureAggregation> out) throws Exception {
+                    long now = System.currentTimeMillis();
+                    if (now - lastLogTime > 60000) { // 每60秒采样一次
+                        lastLogTime = now;
+                        if (sampleCount < 3) {
+                            sampleCount++;
+                            LOG.info("[Aggregation Sample {}/3] Aggregated result: uid={}, anchorCount={}", 
+                                sampleCount, value.uid, value.anchorFeatures != null ? value.anchorFeatures.size() : 0);
+                            if (value.anchorFeatures != null) {
+                                for (Map.Entry<String, byte[]> entry : value.anchorFeatures.entrySet()) {
+                                    LOG.info("  - anchorId={}, protobufSize={} bytes", entry.getKey(), entry.getValue().length);
+                                }
+                            }
+                        }
+                    }
+                    out.collect(value);
+                }
+            })
+            .name("Aggregation Result Sampling");
 
         // 第五步：转换为Protobuf并写入Redis（HashMap：key=uid，field=anchorId）
         DataStream<Tuple2<String, Map<String, byte[]>>> dataStream = aggregatedStream
             .filter(agg -> agg != null && agg.anchorFeatures != null && !agg.anchorFeatures.isEmpty())
-            .map(new MapFunction<UserAnchorFeature3hAggregation, Tuple2<String, Map<String, byte[]>>>() {
+            .map(new MapFunction<UserAnchorFeatureAggregation, Tuple2<String, Map<String, byte[]>>>() {
                 @Override
-                public Tuple2<String, Map<String, byte[]>> map(UserAnchorFeature3hAggregation agg) throws Exception {
+                public Tuple2<String, Map<String, byte[]>> map(UserAnchorFeatureAggregation agg) throws Exception {
                     String redisKey = PREFIX + agg.uid + SUFFIX;
+                    LOG.info("[Redis Write] Preparing to write: key={}, anchorCount={}", redisKey, agg.anchorFeatures.size());
                     return new Tuple2<>(redisKey, agg.anchorFeatures);
                 }
             })
             .name("Aggregation to Protobuf Bytes");
 
+        // 添加Redis写入前采样日志
+        dataStream
+            .process(new org.apache.flink.streaming.api.functions.ProcessFunction<Tuple2<String, Map<String, byte[]>>, Tuple2<String, Map<String, byte[]>>>() {
+                private transient int sampleCount = 0;
+                private transient long lastLogTime = 0;
+                
+                @Override
+                public void processElement(Tuple2<String, Map<String, byte[]>> value, Context ctx, Collector<Tuple2<String, Map<String, byte[]>>> out) throws Exception {
+                    long now = System.currentTimeMillis();
+                    if (now - lastLogTime > 60000) { // 每60秒采样一次
+                        lastLogTime = now;
+                        if (sampleCount < 3) {
+                            sampleCount++;
+                            LOG.info("[Redis Sample {}/3] About to write: key={}, fieldCount={}", 
+                                sampleCount, value.f0, value.f1 != null ? value.f1.size() : 0);
+                        }
+                    }
+                    out.collect(value);
+                }
+            })
+            .name("Redis Write Sampling");
+
         // 第六步：创建sink，Redis环境（TTL=10分钟，DEL_HMSET）
         RedisConfig redisConfig = RedisConfig.fromProperties(RedisUtil.loadProperties());
         redisConfig.setTtl(300);
         redisConfig.setCommand("DEL_HMSET");
+        LOG.info("Redis config: TTL={}, Command={}", 
+            redisConfig.getTtl(), redisConfig.getCommand());
+        
         RedisUtil.addRedisHashMapSink(
             dataStream,
             redisConfig,
@@ -96,7 +215,8 @@ public class LiveUserAnchorFeature15minJob {
             100
         );
 
-        env.execute("Live User-Anchor Feature 3h Job");
+        LOG.info("Job configured, starting execution...");
+        env.execute("Live User-Anchor Feature 15min Job");
     }
 
     // 输入事件：从 advertise.recommend_data.event_data 解析
@@ -106,9 +226,10 @@ public class LiveUserAnchorFeature15minJob {
         public long watchTime;
     }
 
-    // 解析器：解析外层 JSON，提取 recommend_data.event_data 再解析内层 JSON
+        // 解析器：解析外层 JSON，提取 recommend_data.event_data 再解析内层 JSON
     public static class LiveEventParser implements FlatMapFunction<String, LiveUserAnchorEvent> {
         private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+        private static volatile long totalParsedEvents = 0;
 
         @Override
         public void flatMap(String value, Collector<LiveUserAnchorEvent> out) throws Exception {
@@ -116,14 +237,17 @@ public class LiveUserAnchorFeature15minJob {
                 JsonNode root = OBJECT_MAPPER.readTree(value);
                 JsonNode recommend = root.path("recommend_data");
                 if (recommend.isMissingNode()) {
+                    LOG.debug("Missing recommend_data in message: {}", value);
                     return;
                 }
                 JsonNode eventDataNode = recommend.path("event_data");
                 if (eventDataNode.isMissingNode() || !eventDataNode.isTextual()) {
+                    LOG.debug("Missing or invalid event_data in recommend_data: {}", value);
                     return;
                 }
                 String eventData = eventDataNode.asText();
                 if (eventData == null || eventData.isEmpty()) {
+                    LOG.debug("Empty event_data string: {}", value);
                     return;
                 }
                 JsonNode liveQuit = OBJECT_MAPPER.readTree(eventData);
@@ -131,12 +255,19 @@ public class LiveUserAnchorFeature15minJob {
                 long anchorId = liveQuit.path("anchor_id").asLong(0);
                 long watchTime = liveQuit.path("watch_time").asLong(0);
                 if (uid <= 0 || anchorId <= 0) {
+                    LOG.debug("Invalid uid or anchor_id: uid={}, anchorId={}, watchTime={}, rawEventData={}", 
+                        uid, anchorId, watchTime, eventData);
                     return;
                 }
                 LiveUserAnchorEvent evt = new LiveUserAnchorEvent();
                 evt.uid = uid;
                 evt.anchorId = anchorId;
                 evt.watchTime = watchTime;
+                totalParsedEvents++;
+                if (totalParsedEvents % 100 == 0) {
+                    LOG.info("Total parsed events so far: {}", totalParsedEvents);
+                }
+                LOG.debug("Successfully parsed event: uid={}, anchorId={}, watchTime={}", uid, anchorId, watchTime);
                 out.collect(evt);
             } catch (Exception e) {
                 LOG.warn("Failed to parse advertise event: {}", value, e);
@@ -145,7 +276,7 @@ public class LiveUserAnchorFeature15minJob {
     }
 
     // 聚合器：统计每个 uid 对每个 anchor 的曝光、3s+进房、6s+进房与负反馈（派生）
-    public static class UserAnchorFeature3hAggregator implements AggregateFunction<LiveUserAnchorEvent, UserAnchorAccumulator, UserAnchorFeature3hAggregation> {
+    public static class UserAnchorFeatureAggregator implements AggregateFunction<LiveUserAnchorEvent, UserAnchorAccumulator, UserAnchorFeatureAggregation> {
         @Override
         public UserAnchorAccumulator createAccumulator() {
             return new UserAnchorAccumulator();
@@ -158,18 +289,22 @@ public class LiveUserAnchorFeature15minJob {
             counts.exposureCount += 1;
             if (event.watchTime >= 3) counts.watch3sPlusCount += 1;
             if (event.watchTime >= 6) counts.watch6sPlusCount += 1;
+            LOG.debug("Added event to accumulator: uid={}, anchorId={}, watchTime={}, totalExposure={}, total3s={}, total6s={}", 
+                event.uid, event.anchorId, event.watchTime, counts.exposureCount, counts.watch3sPlusCount, counts.watch6sPlusCount);
             return acc;
         }
 
         @Override
-        public UserAnchorFeature3hAggregation getResult(UserAnchorAccumulator acc) {
+        public UserAnchorFeatureAggregation getResult(UserAnchorAccumulator acc) {
             if (acc.anchorIdToCounts.isEmpty()) {
+                LOG.debug("Empty accumulator for uid={}, returning null", acc.uid);
                 return null;
             }
-            UserAnchorFeature3hAggregation result = new UserAnchorFeature3hAggregation();
+            UserAnchorFeatureAggregation result = new UserAnchorFeatureAggregation();
             result.uid = acc.uid;
             result.anchorFeatures = new HashMap<>();
 
+            LOG.info("Generating aggregation result for uid={}, anchorCount={}", acc.uid, acc.anchorIdToCounts.size());
             for (Map.Entry<Long, Counts> e : acc.anchorIdToCounts.entrySet()) {
                 long anchorId = e.getKey();
                 Counts c = e.getValue();
@@ -184,6 +319,8 @@ public class LiveUserAnchorFeature15minJob {
                     .build()
                     .toByteArray();
                 result.anchorFeatures.put(String.valueOf(anchorId), bytes);
+                LOG.info("Generated feature for uid={}, anchorId={}: exp={}, 3s={}, 6s={}, neg={}, protobufSize={} bytes", 
+                    acc.uid, anchorId, c.exposureCount, c.watch3sPlusCount, c.watch6sPlusCount, negative, bytes.length);
             }
             return result.anchorFeatures.isEmpty() ? null : result;
         }
@@ -213,7 +350,7 @@ public class LiveUserAnchorFeature15minJob {
         public int watch6sPlusCount;
     }
 
-    public static class UserAnchorFeature3hAggregation {
+    public static class UserAnchorFeatureAggregation {
         public long uid;
         public Map<String, byte[]> anchorFeatures; // anchorId -> protobuf bytes
     }
