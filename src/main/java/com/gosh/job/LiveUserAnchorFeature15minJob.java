@@ -96,7 +96,7 @@ public class LiveUserAnchorFeature15minJob {
             100
         );
 
-        env.execute("Live User-Anchor Feature 3h Job");
+        env.execute("Live User-Anchor Feature 15min Job");
     }
 
     // 输入事件：从 advertise.recommend_data.event_data 解析
