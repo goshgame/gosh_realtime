@@ -290,7 +290,6 @@ public class UserAuthorFeature1hJob {
                     .setUserauthor10SstandCnt1H(features.stand10sRecTokens.size())
                     // 1小时互动特征
                     .setUserauthorLikeCnt1H(features.likeRecTokens.size())
-                    .setExpireTime("1h")
                     .build()
                     .toByteArray();
 

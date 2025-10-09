@@ -20,6 +20,16 @@ public final class RecFeature {
 
     /**
      * <pre>
+     * 用户状态特征
+     * </pre>
+     *
+     * <code>int32 viewer_is_old = 1;</code>
+     * @return The viewerIsOld.
+     */
+    int getViewerIsOld();
+
+    /**
+     * <pre>
      * 1小时窗口特征
      * 曝光相关特征
      * </pre>
@@ -380,11 +390,476 @@ public final class RecFeature {
      */
     com.google.protobuf.ByteString
         getViewerProfileAuthorHis24HBytes();
+
+    /**
+     * <pre>
+     * 7天特征
+     * </pre>
+     *
+     * <code>int32 viewer_active_days_7d = 50;</code>
+     * @return The viewerActiveDays7d.
+     */
+    int getViewerActiveDays7D();
+
+    /**
+     * <pre>
+     * 最近7天曝光item数
+     * </pre>
+     *
+     * <code>int32 viewer_view_cnt_7d = 51;</code>
+     * @return The viewerViewCnt7d.
+     */
+    int getViewerViewCnt7D();
+
+    /**
+     * <pre>
+     * 最近7天有效观看次数
+     * </pre>
+     *
+     * <code>int32 viewer_validview_cnt_7d = 52;</code>
+     * @return The viewerValidviewCnt7d.
+     */
+    int getViewerValidviewCnt7D();
+
+    /**
+     * <pre>
+     * 最近7天完整观看次数
+     * </pre>
+     *
+     * <code>int32 viewer_complete_view_cnt_7d = 53;</code>
+     * @return The viewerCompleteViewCnt7d.
+     */
+    int getViewerCompleteViewCnt7D();
+
+    /**
+     * <pre>
+     * 最近7天观看时长（秒）
+     * </pre>
+     *
+     * <code>float viewer_view_duration_7d = 54;</code>
+     * @return The viewerViewDuration7d.
+     */
+    float getViewerViewDuration7D();
+
+    /**
+     * <pre>
+     * 最近7天点赞次数
+     * </pre>
+     *
+     * <code>int32 viewer_like_cnt_7d = 55;</code>
+     * @return The viewerLikeCnt7d.
+     */
+    int getViewerLikeCnt7D();
+
+    /**
+     * <pre>
+     * 最近7天评论次数
+     * </pre>
+     *
+     * <code>int32 viewer_comment_cnt_7d = 56;</code>
+     * @return The viewerCommentCnt7d.
+     */
+    int getViewerCommentCnt7D();
+
+    /**
+     * <pre>
+     * 最近7天有效观看率
+     * </pre>
+     *
+     * <code>float viewer_validview_rate_7d = 57;</code>
+     * @return The viewerValidviewRate7d.
+     */
+    float getViewerValidviewRate7D();
+
+    /**
+     * <pre>
+     * id列表
+     * </pre>
+     *
+     * <code>string user_deepview_postids_7d = 58;</code>
+     * @return The userDeepviewPostids7d.
+     */
+    java.lang.String getUserDeepviewPostids7D();
+    /**
+     * <pre>
+     * id列表
+     * </pre>
+     *
+     * <code>string user_deepview_postids_7d = 58;</code>
+     * @return The bytes for userDeepviewPostids7d.
+     */
+    com.google.protobuf.ByteString
+        getUserDeepviewPostids7DBytes();
+
+    /**
+     * <pre>
+     * 最近7天有正向交互的itemid列表
+     * </pre>
+     *
+     * <code>string user_interact_postids_7d = 59;</code>
+     * @return The userInteractPostids7d.
+     */
+    java.lang.String getUserInteractPostids7D();
+    /**
+     * <pre>
+     * 最近7天有正向交互的itemid列表
+     * </pre>
+     *
+     * <code>string user_interact_postids_7d = 59;</code>
+     * @return The bytes for userInteractPostids7d.
+     */
+    com.google.protobuf.ByteString
+        getUserInteractPostids7DBytes();
+
+    /**
+     * <pre>
+     * 直播15天
+     * </pre>
+     *
+     * <code>int32 user_gift_count = 60;</code>
+     * @return The userGiftCount.
+     */
+    int getUserGiftCount();
+
+    /**
+     * <code>float user_daily_watchlive_minutes = 61;</code>
+     * @return The userDailyWatchliveMinutes.
+     */
+    float getUserDailyWatchliveMinutes();
+
+    /**
+     * <pre>
+     * 正偏好特征v2
+     * </pre>
+     *
+     * <code>string prefer_pos_tag1_7d_top3 = 70;</code>
+     * @return The preferPosTag17dTop3.
+     */
+    java.lang.String getPreferPosTag17DTop3();
+    /**
+     * <pre>
+     * 正偏好特征v2
+     * </pre>
+     *
+     * <code>string prefer_pos_tag1_7d_top3 = 70;</code>
+     * @return The bytes for preferPosTag17dTop3.
+     */
+    com.google.protobuf.ByteString
+        getPreferPosTag17DTop3Bytes();
+
+    /**
+     * <code>string prefer_pos_tag2_7d_top3 = 71;</code>
+     * @return The preferPosTag27dTop3.
+     */
+    java.lang.String getPreferPosTag27DTop3();
+    /**
+     * <code>string prefer_pos_tag2_7d_top3 = 71;</code>
+     * @return The bytes for preferPosTag27dTop3.
+     */
+    com.google.protobuf.ByteString
+        getPreferPosTag27DTop3Bytes();
+
+    /**
+     * <code>string prefer_pos_tag3_7d_top3 = 72;</code>
+     * @return The preferPosTag37dTop3.
+     */
+    java.lang.String getPreferPosTag37DTop3();
+    /**
+     * <code>string prefer_pos_tag3_7d_top3 = 72;</code>
+     * @return The bytes for preferPosTag37dTop3.
+     */
+    com.google.protobuf.ByteString
+        getPreferPosTag37DTop3Bytes();
+
+    /**
+     * <code>string prefer_pos_tag4_7d_top3 = 73;</code>
+     * @return The preferPosTag47dTop3.
+     */
+    java.lang.String getPreferPosTag47DTop3();
+    /**
+     * <code>string prefer_pos_tag4_7d_top3 = 73;</code>
+     * @return The bytes for preferPosTag47dTop3.
+     */
+    com.google.protobuf.ByteString
+        getPreferPosTag47DTop3Bytes();
+
+    /**
+     * <code>string prefer_pos_tag5_7d_top3 = 74;</code>
+     * @return The preferPosTag57dTop3.
+     */
+    java.lang.String getPreferPosTag57DTop3();
+    /**
+     * <code>string prefer_pos_tag5_7d_top3 = 74;</code>
+     * @return The bytes for preferPosTag57dTop3.
+     */
+    com.google.protobuf.ByteString
+        getPreferPosTag57DTop3Bytes();
+
+    /**
+     * <code>string prefer_pos_tag6_7d_top3 = 75;</code>
+     * @return The preferPosTag67dTop3.
+     */
+    java.lang.String getPreferPosTag67DTop3();
+    /**
+     * <code>string prefer_pos_tag6_7d_top3 = 75;</code>
+     * @return The bytes for preferPosTag67dTop3.
+     */
+    com.google.protobuf.ByteString
+        getPreferPosTag67DTop3Bytes();
+
+    /**
+     * <code>string prefer_pos_tag7_7d_top3 = 76;</code>
+     * @return The preferPosTag77dTop3.
+     */
+    java.lang.String getPreferPosTag77DTop3();
+    /**
+     * <code>string prefer_pos_tag7_7d_top3 = 76;</code>
+     * @return The bytes for preferPosTag77dTop3.
+     */
+    com.google.protobuf.ByteString
+        getPreferPosTag77DTop3Bytes();
+
+    /**
+     * <code>string prefer_pos_ftag1_7d_top3 = 77;</code>
+     * @return The preferPosFtag17dTop3.
+     */
+    java.lang.String getPreferPosFtag17DTop3();
+    /**
+     * <code>string prefer_pos_ftag1_7d_top3 = 77;</code>
+     * @return The bytes for preferPosFtag17dTop3.
+     */
+    com.google.protobuf.ByteString
+        getPreferPosFtag17DTop3Bytes();
+
+    /**
+     * <code>string prefer_pos_ftag2_7d_top3 = 78;</code>
+     * @return The preferPosFtag27dTop3.
+     */
+    java.lang.String getPreferPosFtag27DTop3();
+    /**
+     * <code>string prefer_pos_ftag2_7d_top3 = 78;</code>
+     * @return The bytes for preferPosFtag27dTop3.
+     */
+    com.google.protobuf.ByteString
+        getPreferPosFtag27DTop3Bytes();
+
+    /**
+     * <code>string prefer_pos_ftag3_7d_top3 = 79;</code>
+     * @return The preferPosFtag37dTop3.
+     */
+    java.lang.String getPreferPosFtag37DTop3();
+    /**
+     * <code>string prefer_pos_ftag3_7d_top3 = 79;</code>
+     * @return The bytes for preferPosFtag37dTop3.
+     */
+    com.google.protobuf.ByteString
+        getPreferPosFtag37DTop3Bytes();
+
+    /**
+     * <code>string prefer_pos_ftag4_7d_top3 = 80;</code>
+     * @return The preferPosFtag47dTop3.
+     */
+    java.lang.String getPreferPosFtag47DTop3();
+    /**
+     * <code>string prefer_pos_ftag4_7d_top3 = 80;</code>
+     * @return The bytes for preferPosFtag47dTop3.
+     */
+    com.google.protobuf.ByteString
+        getPreferPosFtag47DTop3Bytes();
+
+    /**
+     * <code>string prefer_pos_ftag5_7d_top3 = 81;</code>
+     * @return The preferPosFtag57dTop3.
+     */
+    java.lang.String getPreferPosFtag57DTop3();
+    /**
+     * <code>string prefer_pos_ftag5_7d_top3 = 81;</code>
+     * @return The bytes for preferPosFtag57dTop3.
+     */
+    com.google.protobuf.ByteString
+        getPreferPosFtag57DTop3Bytes();
+
+    /**
+     * <code>string prefer_pos_ftag6_7d_top3 = 82;</code>
+     * @return The preferPosFtag67dTop3.
+     */
+    java.lang.String getPreferPosFtag67DTop3();
+    /**
+     * <code>string prefer_pos_ftag6_7d_top3 = 82;</code>
+     * @return The bytes for preferPosFtag67dTop3.
+     */
+    com.google.protobuf.ByteString
+        getPreferPosFtag67DTop3Bytes();
+
+    /**
+     * <pre>
+     * 负偏好特征v2
+     * </pre>
+     *
+     * <code>string prefer_neg_tag1_7d_top3 = 83;</code>
+     * @return The preferNegTag17dTop3.
+     */
+    java.lang.String getPreferNegTag17DTop3();
+    /**
+     * <pre>
+     * 负偏好特征v2
+     * </pre>
+     *
+     * <code>string prefer_neg_tag1_7d_top3 = 83;</code>
+     * @return The bytes for preferNegTag17dTop3.
+     */
+    com.google.protobuf.ByteString
+        getPreferNegTag17DTop3Bytes();
+
+    /**
+     * <code>string prefer_neg_tag2_7d_top3 = 84;</code>
+     * @return The preferNegTag27dTop3.
+     */
+    java.lang.String getPreferNegTag27DTop3();
+    /**
+     * <code>string prefer_neg_tag2_7d_top3 = 84;</code>
+     * @return The bytes for preferNegTag27dTop3.
+     */
+    com.google.protobuf.ByteString
+        getPreferNegTag27DTop3Bytes();
+
+    /**
+     * <code>string prefer_neg_tag3_7d_top3 = 85;</code>
+     * @return The preferNegTag37dTop3.
+     */
+    java.lang.String getPreferNegTag37DTop3();
+    /**
+     * <code>string prefer_neg_tag3_7d_top3 = 85;</code>
+     * @return The bytes for preferNegTag37dTop3.
+     */
+    com.google.protobuf.ByteString
+        getPreferNegTag37DTop3Bytes();
+
+    /**
+     * <code>string prefer_neg_tag4_7d_top3 = 86;</code>
+     * @return The preferNegTag47dTop3.
+     */
+    java.lang.String getPreferNegTag47DTop3();
+    /**
+     * <code>string prefer_neg_tag4_7d_top3 = 86;</code>
+     * @return The bytes for preferNegTag47dTop3.
+     */
+    com.google.protobuf.ByteString
+        getPreferNegTag47DTop3Bytes();
+
+    /**
+     * <code>string prefer_neg_tag5_7d_top3 = 87;</code>
+     * @return The preferNegTag57dTop3.
+     */
+    java.lang.String getPreferNegTag57DTop3();
+    /**
+     * <code>string prefer_neg_tag5_7d_top3 = 87;</code>
+     * @return The bytes for preferNegTag57dTop3.
+     */
+    com.google.protobuf.ByteString
+        getPreferNegTag57DTop3Bytes();
+
+    /**
+     * <code>string prefer_neg_tag6_7d_top3 = 88;</code>
+     * @return The preferNegTag67dTop3.
+     */
+    java.lang.String getPreferNegTag67DTop3();
+    /**
+     * <code>string prefer_neg_tag6_7d_top3 = 88;</code>
+     * @return The bytes for preferNegTag67dTop3.
+     */
+    com.google.protobuf.ByteString
+        getPreferNegTag67DTop3Bytes();
+
+    /**
+     * <code>string prefer_neg_tag7_7d_top3 = 89;</code>
+     * @return The preferNegTag77dTop3.
+     */
+    java.lang.String getPreferNegTag77DTop3();
+    /**
+     * <code>string prefer_neg_tag7_7d_top3 = 89;</code>
+     * @return The bytes for preferNegTag77dTop3.
+     */
+    com.google.protobuf.ByteString
+        getPreferNegTag77DTop3Bytes();
+
+    /**
+     * <code>string prefer_neg_ftag1_7d_top3 = 90;</code>
+     * @return The preferNegFtag17dTop3.
+     */
+    java.lang.String getPreferNegFtag17DTop3();
+    /**
+     * <code>string prefer_neg_ftag1_7d_top3 = 90;</code>
+     * @return The bytes for preferNegFtag17dTop3.
+     */
+    com.google.protobuf.ByteString
+        getPreferNegFtag17DTop3Bytes();
+
+    /**
+     * <code>string prefer_neg_ftag2_7d_top3 = 91;</code>
+     * @return The preferNegFtag27dTop3.
+     */
+    java.lang.String getPreferNegFtag27DTop3();
+    /**
+     * <code>string prefer_neg_ftag2_7d_top3 = 91;</code>
+     * @return The bytes for preferNegFtag27dTop3.
+     */
+    com.google.protobuf.ByteString
+        getPreferNegFtag27DTop3Bytes();
+
+    /**
+     * <code>string prefer_neg_ftag3_7d_top3 = 92;</code>
+     * @return The preferNegFtag37dTop3.
+     */
+    java.lang.String getPreferNegFtag37DTop3();
+    /**
+     * <code>string prefer_neg_ftag3_7d_top3 = 92;</code>
+     * @return The bytes for preferNegFtag37dTop3.
+     */
+    com.google.protobuf.ByteString
+        getPreferNegFtag37DTop3Bytes();
+
+    /**
+     * <code>string prefer_neg_ftag4_7d_top3 = 93;</code>
+     * @return The preferNegFtag47dTop3.
+     */
+    java.lang.String getPreferNegFtag47DTop3();
+    /**
+     * <code>string prefer_neg_ftag4_7d_top3 = 93;</code>
+     * @return The bytes for preferNegFtag47dTop3.
+     */
+    com.google.protobuf.ByteString
+        getPreferNegFtag47DTop3Bytes();
+
+    /**
+     * <code>string prefer_neg_ftag5_7d_top3 = 94;</code>
+     * @return The preferNegFtag57dTop3.
+     */
+    java.lang.String getPreferNegFtag57DTop3();
+    /**
+     * <code>string prefer_neg_ftag5_7d_top3 = 94;</code>
+     * @return The bytes for preferNegFtag57dTop3.
+     */
+    com.google.protobuf.ByteString
+        getPreferNegFtag57DTop3Bytes();
+
+    /**
+     * <code>string prefer_neg_ftag6_7d_top3 = 95;</code>
+     * @return The preferNegFtag67dTop3.
+     */
+    java.lang.String getPreferNegFtag67DTop3();
+    /**
+     * <code>string prefer_neg_ftag6_7d_top3 = 95;</code>
+     * @return The bytes for preferNegFtag67dTop3.
+     */
+    com.google.protobuf.ByteString
+        getPreferNegFtag67DTop3Bytes();
   }
   /**
    * <pre>
    * 用户侧特征
    * Redis Key: rec:user_feature:{user_id}:post1h, rec:user_feature:{user_id}:post24h
+   *            rec:user_feature:{user_id}:offpic
    * </pre>
    *
    * Protobuf type {@code com.gosh.entity.RecUserFeature}
@@ -414,6 +889,34 @@ public final class RecFeature {
       viewerLikeAuthorHis24H_ = "";
       viewerFollowAuthorHis24H_ = "";
       viewerProfileAuthorHis24H_ = "";
+      userDeepviewPostids7D_ = "";
+      userInteractPostids7D_ = "";
+      preferPosTag17DTop3_ = "";
+      preferPosTag27DTop3_ = "";
+      preferPosTag37DTop3_ = "";
+      preferPosTag47DTop3_ = "";
+      preferPosTag57DTop3_ = "";
+      preferPosTag67DTop3_ = "";
+      preferPosTag77DTop3_ = "";
+      preferPosFtag17DTop3_ = "";
+      preferPosFtag27DTop3_ = "";
+      preferPosFtag37DTop3_ = "";
+      preferPosFtag47DTop3_ = "";
+      preferPosFtag57DTop3_ = "";
+      preferPosFtag67DTop3_ = "";
+      preferNegTag17DTop3_ = "";
+      preferNegTag27DTop3_ = "";
+      preferNegTag37DTop3_ = "";
+      preferNegTag47DTop3_ = "";
+      preferNegTag57DTop3_ = "";
+      preferNegTag67DTop3_ = "";
+      preferNegTag77DTop3_ = "";
+      preferNegFtag17DTop3_ = "";
+      preferNegFtag27DTop3_ = "";
+      preferNegFtag37DTop3_ = "";
+      preferNegFtag47DTop3_ = "";
+      preferNegFtag57DTop3_ = "";
+      preferNegFtag67DTop3_ = "";
     }
 
     @java.lang.Override
@@ -446,6 +949,11 @@ public final class RecFeature {
             case 0:
               done = true;
               break;
+            case 8: {
+
+              viewerIsOld_ = input.readInt32();
+              break;
+            }
             case 80: {
 
               viewerExppostCnt1H_ = input.readInt32();
@@ -566,6 +1074,224 @@ public final class RecFeature {
               viewerProfileAuthorHis24H_ = s;
               break;
             }
+            case 400: {
+
+              viewerActiveDays7D_ = input.readInt32();
+              break;
+            }
+            case 408: {
+
+              viewerViewCnt7D_ = input.readInt32();
+              break;
+            }
+            case 416: {
+
+              viewerValidviewCnt7D_ = input.readInt32();
+              break;
+            }
+            case 424: {
+
+              viewerCompleteViewCnt7D_ = input.readInt32();
+              break;
+            }
+            case 437: {
+
+              viewerViewDuration7D_ = input.readFloat();
+              break;
+            }
+            case 440: {
+
+              viewerLikeCnt7D_ = input.readInt32();
+              break;
+            }
+            case 448: {
+
+              viewerCommentCnt7D_ = input.readInt32();
+              break;
+            }
+            case 461: {
+
+              viewerValidviewRate7D_ = input.readFloat();
+              break;
+            }
+            case 466: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              userDeepviewPostids7D_ = s;
+              break;
+            }
+            case 474: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              userInteractPostids7D_ = s;
+              break;
+            }
+            case 480: {
+
+              userGiftCount_ = input.readInt32();
+              break;
+            }
+            case 493: {
+
+              userDailyWatchliveMinutes_ = input.readFloat();
+              break;
+            }
+            case 562: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              preferPosTag17DTop3_ = s;
+              break;
+            }
+            case 570: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              preferPosTag27DTop3_ = s;
+              break;
+            }
+            case 578: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              preferPosTag37DTop3_ = s;
+              break;
+            }
+            case 586: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              preferPosTag47DTop3_ = s;
+              break;
+            }
+            case 594: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              preferPosTag57DTop3_ = s;
+              break;
+            }
+            case 602: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              preferPosTag67DTop3_ = s;
+              break;
+            }
+            case 610: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              preferPosTag77DTop3_ = s;
+              break;
+            }
+            case 618: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              preferPosFtag17DTop3_ = s;
+              break;
+            }
+            case 626: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              preferPosFtag27DTop3_ = s;
+              break;
+            }
+            case 634: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              preferPosFtag37DTop3_ = s;
+              break;
+            }
+            case 642: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              preferPosFtag47DTop3_ = s;
+              break;
+            }
+            case 650: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              preferPosFtag57DTop3_ = s;
+              break;
+            }
+            case 658: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              preferPosFtag67DTop3_ = s;
+              break;
+            }
+            case 666: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              preferNegTag17DTop3_ = s;
+              break;
+            }
+            case 674: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              preferNegTag27DTop3_ = s;
+              break;
+            }
+            case 682: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              preferNegTag37DTop3_ = s;
+              break;
+            }
+            case 690: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              preferNegTag47DTop3_ = s;
+              break;
+            }
+            case 698: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              preferNegTag57DTop3_ = s;
+              break;
+            }
+            case 706: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              preferNegTag67DTop3_ = s;
+              break;
+            }
+            case 714: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              preferNegTag77DTop3_ = s;
+              break;
+            }
+            case 722: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              preferNegFtag17DTop3_ = s;
+              break;
+            }
+            case 730: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              preferNegFtag27DTop3_ = s;
+              break;
+            }
+            case 738: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              preferNegFtag37DTop3_ = s;
+              break;
+            }
+            case 746: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              preferNegFtag47DTop3_ = s;
+              break;
+            }
+            case 754: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              preferNegFtag57DTop3_ = s;
+              break;
+            }
+            case 762: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              preferNegFtag67DTop3_ = s;
+              break;
+            }
             default: {
               if (!parseUnknownField(
                   input, unknownFields, extensionRegistry, tag)) {
@@ -598,6 +1324,21 @@ public final class RecFeature {
       return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_RecUserFeature_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.gosh.entity.RecFeature.RecUserFeature.class, com.gosh.entity.RecFeature.RecUserFeature.Builder.class);
+    }
+
+    public static final int VIEWER_IS_OLD_FIELD_NUMBER = 1;
+    private int viewerIsOld_;
+    /**
+     * <pre>
+     * 用户状态特征
+     * </pre>
+     *
+     * <code>int32 viewer_is_old = 1;</code>
+     * @return The viewerIsOld.
+     */
+    @java.lang.Override
+    public int getViewerIsOld() {
+      return viewerIsOld_;
     }
 
     public static final int VIEWER_EXPPOST_CNT_1H_FIELD_NUMBER = 10;
@@ -1383,6 +2124,1248 @@ public final class RecFeature {
       }
     }
 
+    public static final int VIEWER_ACTIVE_DAYS_7D_FIELD_NUMBER = 50;
+    private int viewerActiveDays7D_;
+    /**
+     * <pre>
+     * 7天特征
+     * </pre>
+     *
+     * <code>int32 viewer_active_days_7d = 50;</code>
+     * @return The viewerActiveDays7d.
+     */
+    @java.lang.Override
+    public int getViewerActiveDays7D() {
+      return viewerActiveDays7D_;
+    }
+
+    public static final int VIEWER_VIEW_CNT_7D_FIELD_NUMBER = 51;
+    private int viewerViewCnt7D_;
+    /**
+     * <pre>
+     * 最近7天曝光item数
+     * </pre>
+     *
+     * <code>int32 viewer_view_cnt_7d = 51;</code>
+     * @return The viewerViewCnt7d.
+     */
+    @java.lang.Override
+    public int getViewerViewCnt7D() {
+      return viewerViewCnt7D_;
+    }
+
+    public static final int VIEWER_VALIDVIEW_CNT_7D_FIELD_NUMBER = 52;
+    private int viewerValidviewCnt7D_;
+    /**
+     * <pre>
+     * 最近7天有效观看次数
+     * </pre>
+     *
+     * <code>int32 viewer_validview_cnt_7d = 52;</code>
+     * @return The viewerValidviewCnt7d.
+     */
+    @java.lang.Override
+    public int getViewerValidviewCnt7D() {
+      return viewerValidviewCnt7D_;
+    }
+
+    public static final int VIEWER_COMPLETE_VIEW_CNT_7D_FIELD_NUMBER = 53;
+    private int viewerCompleteViewCnt7D_;
+    /**
+     * <pre>
+     * 最近7天完整观看次数
+     * </pre>
+     *
+     * <code>int32 viewer_complete_view_cnt_7d = 53;</code>
+     * @return The viewerCompleteViewCnt7d.
+     */
+    @java.lang.Override
+    public int getViewerCompleteViewCnt7D() {
+      return viewerCompleteViewCnt7D_;
+    }
+
+    public static final int VIEWER_VIEW_DURATION_7D_FIELD_NUMBER = 54;
+    private float viewerViewDuration7D_;
+    /**
+     * <pre>
+     * 最近7天观看时长（秒）
+     * </pre>
+     *
+     * <code>float viewer_view_duration_7d = 54;</code>
+     * @return The viewerViewDuration7d.
+     */
+    @java.lang.Override
+    public float getViewerViewDuration7D() {
+      return viewerViewDuration7D_;
+    }
+
+    public static final int VIEWER_LIKE_CNT_7D_FIELD_NUMBER = 55;
+    private int viewerLikeCnt7D_;
+    /**
+     * <pre>
+     * 最近7天点赞次数
+     * </pre>
+     *
+     * <code>int32 viewer_like_cnt_7d = 55;</code>
+     * @return The viewerLikeCnt7d.
+     */
+    @java.lang.Override
+    public int getViewerLikeCnt7D() {
+      return viewerLikeCnt7D_;
+    }
+
+    public static final int VIEWER_COMMENT_CNT_7D_FIELD_NUMBER = 56;
+    private int viewerCommentCnt7D_;
+    /**
+     * <pre>
+     * 最近7天评论次数
+     * </pre>
+     *
+     * <code>int32 viewer_comment_cnt_7d = 56;</code>
+     * @return The viewerCommentCnt7d.
+     */
+    @java.lang.Override
+    public int getViewerCommentCnt7D() {
+      return viewerCommentCnt7D_;
+    }
+
+    public static final int VIEWER_VALIDVIEW_RATE_7D_FIELD_NUMBER = 57;
+    private float viewerValidviewRate7D_;
+    /**
+     * <pre>
+     * 最近7天有效观看率
+     * </pre>
+     *
+     * <code>float viewer_validview_rate_7d = 57;</code>
+     * @return The viewerValidviewRate7d.
+     */
+    @java.lang.Override
+    public float getViewerValidviewRate7D() {
+      return viewerValidviewRate7D_;
+    }
+
+    public static final int USER_DEEPVIEW_POSTIDS_7D_FIELD_NUMBER = 58;
+    private volatile java.lang.Object userDeepviewPostids7D_;
+    /**
+     * <pre>
+     * id列表
+     * </pre>
+     *
+     * <code>string user_deepview_postids_7d = 58;</code>
+     * @return The userDeepviewPostids7d.
+     */
+    @java.lang.Override
+    public java.lang.String getUserDeepviewPostids7D() {
+      java.lang.Object ref = userDeepviewPostids7D_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        userDeepviewPostids7D_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * id列表
+     * </pre>
+     *
+     * <code>string user_deepview_postids_7d = 58;</code>
+     * @return The bytes for userDeepviewPostids7d.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getUserDeepviewPostids7DBytes() {
+      java.lang.Object ref = userDeepviewPostids7D_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        userDeepviewPostids7D_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int USER_INTERACT_POSTIDS_7D_FIELD_NUMBER = 59;
+    private volatile java.lang.Object userInteractPostids7D_;
+    /**
+     * <pre>
+     * 最近7天有正向交互的itemid列表
+     * </pre>
+     *
+     * <code>string user_interact_postids_7d = 59;</code>
+     * @return The userInteractPostids7d.
+     */
+    @java.lang.Override
+    public java.lang.String getUserInteractPostids7D() {
+      java.lang.Object ref = userInteractPostids7D_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        userInteractPostids7D_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * 最近7天有正向交互的itemid列表
+     * </pre>
+     *
+     * <code>string user_interact_postids_7d = 59;</code>
+     * @return The bytes for userInteractPostids7d.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getUserInteractPostids7DBytes() {
+      java.lang.Object ref = userInteractPostids7D_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        userInteractPostids7D_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int USER_GIFT_COUNT_FIELD_NUMBER = 60;
+    private int userGiftCount_;
+    /**
+     * <pre>
+     * 直播15天
+     * </pre>
+     *
+     * <code>int32 user_gift_count = 60;</code>
+     * @return The userGiftCount.
+     */
+    @java.lang.Override
+    public int getUserGiftCount() {
+      return userGiftCount_;
+    }
+
+    public static final int USER_DAILY_WATCHLIVE_MINUTES_FIELD_NUMBER = 61;
+    private float userDailyWatchliveMinutes_;
+    /**
+     * <code>float user_daily_watchlive_minutes = 61;</code>
+     * @return The userDailyWatchliveMinutes.
+     */
+    @java.lang.Override
+    public float getUserDailyWatchliveMinutes() {
+      return userDailyWatchliveMinutes_;
+    }
+
+    public static final int PREFER_POS_TAG1_7D_TOP3_FIELD_NUMBER = 70;
+    private volatile java.lang.Object preferPosTag17DTop3_;
+    /**
+     * <pre>
+     * 正偏好特征v2
+     * </pre>
+     *
+     * <code>string prefer_pos_tag1_7d_top3 = 70;</code>
+     * @return The preferPosTag17dTop3.
+     */
+    @java.lang.Override
+    public java.lang.String getPreferPosTag17DTop3() {
+      java.lang.Object ref = preferPosTag17DTop3_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        preferPosTag17DTop3_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * 正偏好特征v2
+     * </pre>
+     *
+     * <code>string prefer_pos_tag1_7d_top3 = 70;</code>
+     * @return The bytes for preferPosTag17dTop3.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getPreferPosTag17DTop3Bytes() {
+      java.lang.Object ref = preferPosTag17DTop3_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        preferPosTag17DTop3_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PREFER_POS_TAG2_7D_TOP3_FIELD_NUMBER = 71;
+    private volatile java.lang.Object preferPosTag27DTop3_;
+    /**
+     * <code>string prefer_pos_tag2_7d_top3 = 71;</code>
+     * @return The preferPosTag27dTop3.
+     */
+    @java.lang.Override
+    public java.lang.String getPreferPosTag27DTop3() {
+      java.lang.Object ref = preferPosTag27DTop3_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        preferPosTag27DTop3_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string prefer_pos_tag2_7d_top3 = 71;</code>
+     * @return The bytes for preferPosTag27dTop3.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getPreferPosTag27DTop3Bytes() {
+      java.lang.Object ref = preferPosTag27DTop3_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        preferPosTag27DTop3_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PREFER_POS_TAG3_7D_TOP3_FIELD_NUMBER = 72;
+    private volatile java.lang.Object preferPosTag37DTop3_;
+    /**
+     * <code>string prefer_pos_tag3_7d_top3 = 72;</code>
+     * @return The preferPosTag37dTop3.
+     */
+    @java.lang.Override
+    public java.lang.String getPreferPosTag37DTop3() {
+      java.lang.Object ref = preferPosTag37DTop3_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        preferPosTag37DTop3_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string prefer_pos_tag3_7d_top3 = 72;</code>
+     * @return The bytes for preferPosTag37dTop3.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getPreferPosTag37DTop3Bytes() {
+      java.lang.Object ref = preferPosTag37DTop3_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        preferPosTag37DTop3_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PREFER_POS_TAG4_7D_TOP3_FIELD_NUMBER = 73;
+    private volatile java.lang.Object preferPosTag47DTop3_;
+    /**
+     * <code>string prefer_pos_tag4_7d_top3 = 73;</code>
+     * @return The preferPosTag47dTop3.
+     */
+    @java.lang.Override
+    public java.lang.String getPreferPosTag47DTop3() {
+      java.lang.Object ref = preferPosTag47DTop3_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        preferPosTag47DTop3_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string prefer_pos_tag4_7d_top3 = 73;</code>
+     * @return The bytes for preferPosTag47dTop3.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getPreferPosTag47DTop3Bytes() {
+      java.lang.Object ref = preferPosTag47DTop3_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        preferPosTag47DTop3_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PREFER_POS_TAG5_7D_TOP3_FIELD_NUMBER = 74;
+    private volatile java.lang.Object preferPosTag57DTop3_;
+    /**
+     * <code>string prefer_pos_tag5_7d_top3 = 74;</code>
+     * @return The preferPosTag57dTop3.
+     */
+    @java.lang.Override
+    public java.lang.String getPreferPosTag57DTop3() {
+      java.lang.Object ref = preferPosTag57DTop3_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        preferPosTag57DTop3_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string prefer_pos_tag5_7d_top3 = 74;</code>
+     * @return The bytes for preferPosTag57dTop3.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getPreferPosTag57DTop3Bytes() {
+      java.lang.Object ref = preferPosTag57DTop3_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        preferPosTag57DTop3_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PREFER_POS_TAG6_7D_TOP3_FIELD_NUMBER = 75;
+    private volatile java.lang.Object preferPosTag67DTop3_;
+    /**
+     * <code>string prefer_pos_tag6_7d_top3 = 75;</code>
+     * @return The preferPosTag67dTop3.
+     */
+    @java.lang.Override
+    public java.lang.String getPreferPosTag67DTop3() {
+      java.lang.Object ref = preferPosTag67DTop3_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        preferPosTag67DTop3_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string prefer_pos_tag6_7d_top3 = 75;</code>
+     * @return The bytes for preferPosTag67dTop3.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getPreferPosTag67DTop3Bytes() {
+      java.lang.Object ref = preferPosTag67DTop3_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        preferPosTag67DTop3_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PREFER_POS_TAG7_7D_TOP3_FIELD_NUMBER = 76;
+    private volatile java.lang.Object preferPosTag77DTop3_;
+    /**
+     * <code>string prefer_pos_tag7_7d_top3 = 76;</code>
+     * @return The preferPosTag77dTop3.
+     */
+    @java.lang.Override
+    public java.lang.String getPreferPosTag77DTop3() {
+      java.lang.Object ref = preferPosTag77DTop3_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        preferPosTag77DTop3_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string prefer_pos_tag7_7d_top3 = 76;</code>
+     * @return The bytes for preferPosTag77dTop3.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getPreferPosTag77DTop3Bytes() {
+      java.lang.Object ref = preferPosTag77DTop3_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        preferPosTag77DTop3_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PREFER_POS_FTAG1_7D_TOP3_FIELD_NUMBER = 77;
+    private volatile java.lang.Object preferPosFtag17DTop3_;
+    /**
+     * <code>string prefer_pos_ftag1_7d_top3 = 77;</code>
+     * @return The preferPosFtag17dTop3.
+     */
+    @java.lang.Override
+    public java.lang.String getPreferPosFtag17DTop3() {
+      java.lang.Object ref = preferPosFtag17DTop3_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        preferPosFtag17DTop3_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string prefer_pos_ftag1_7d_top3 = 77;</code>
+     * @return The bytes for preferPosFtag17dTop3.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getPreferPosFtag17DTop3Bytes() {
+      java.lang.Object ref = preferPosFtag17DTop3_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        preferPosFtag17DTop3_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PREFER_POS_FTAG2_7D_TOP3_FIELD_NUMBER = 78;
+    private volatile java.lang.Object preferPosFtag27DTop3_;
+    /**
+     * <code>string prefer_pos_ftag2_7d_top3 = 78;</code>
+     * @return The preferPosFtag27dTop3.
+     */
+    @java.lang.Override
+    public java.lang.String getPreferPosFtag27DTop3() {
+      java.lang.Object ref = preferPosFtag27DTop3_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        preferPosFtag27DTop3_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string prefer_pos_ftag2_7d_top3 = 78;</code>
+     * @return The bytes for preferPosFtag27dTop3.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getPreferPosFtag27DTop3Bytes() {
+      java.lang.Object ref = preferPosFtag27DTop3_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        preferPosFtag27DTop3_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PREFER_POS_FTAG3_7D_TOP3_FIELD_NUMBER = 79;
+    private volatile java.lang.Object preferPosFtag37DTop3_;
+    /**
+     * <code>string prefer_pos_ftag3_7d_top3 = 79;</code>
+     * @return The preferPosFtag37dTop3.
+     */
+    @java.lang.Override
+    public java.lang.String getPreferPosFtag37DTop3() {
+      java.lang.Object ref = preferPosFtag37DTop3_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        preferPosFtag37DTop3_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string prefer_pos_ftag3_7d_top3 = 79;</code>
+     * @return The bytes for preferPosFtag37dTop3.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getPreferPosFtag37DTop3Bytes() {
+      java.lang.Object ref = preferPosFtag37DTop3_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        preferPosFtag37DTop3_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PREFER_POS_FTAG4_7D_TOP3_FIELD_NUMBER = 80;
+    private volatile java.lang.Object preferPosFtag47DTop3_;
+    /**
+     * <code>string prefer_pos_ftag4_7d_top3 = 80;</code>
+     * @return The preferPosFtag47dTop3.
+     */
+    @java.lang.Override
+    public java.lang.String getPreferPosFtag47DTop3() {
+      java.lang.Object ref = preferPosFtag47DTop3_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        preferPosFtag47DTop3_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string prefer_pos_ftag4_7d_top3 = 80;</code>
+     * @return The bytes for preferPosFtag47dTop3.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getPreferPosFtag47DTop3Bytes() {
+      java.lang.Object ref = preferPosFtag47DTop3_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        preferPosFtag47DTop3_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PREFER_POS_FTAG5_7D_TOP3_FIELD_NUMBER = 81;
+    private volatile java.lang.Object preferPosFtag57DTop3_;
+    /**
+     * <code>string prefer_pos_ftag5_7d_top3 = 81;</code>
+     * @return The preferPosFtag57dTop3.
+     */
+    @java.lang.Override
+    public java.lang.String getPreferPosFtag57DTop3() {
+      java.lang.Object ref = preferPosFtag57DTop3_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        preferPosFtag57DTop3_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string prefer_pos_ftag5_7d_top3 = 81;</code>
+     * @return The bytes for preferPosFtag57dTop3.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getPreferPosFtag57DTop3Bytes() {
+      java.lang.Object ref = preferPosFtag57DTop3_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        preferPosFtag57DTop3_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PREFER_POS_FTAG6_7D_TOP3_FIELD_NUMBER = 82;
+    private volatile java.lang.Object preferPosFtag67DTop3_;
+    /**
+     * <code>string prefer_pos_ftag6_7d_top3 = 82;</code>
+     * @return The preferPosFtag67dTop3.
+     */
+    @java.lang.Override
+    public java.lang.String getPreferPosFtag67DTop3() {
+      java.lang.Object ref = preferPosFtag67DTop3_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        preferPosFtag67DTop3_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string prefer_pos_ftag6_7d_top3 = 82;</code>
+     * @return The bytes for preferPosFtag67dTop3.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getPreferPosFtag67DTop3Bytes() {
+      java.lang.Object ref = preferPosFtag67DTop3_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        preferPosFtag67DTop3_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PREFER_NEG_TAG1_7D_TOP3_FIELD_NUMBER = 83;
+    private volatile java.lang.Object preferNegTag17DTop3_;
+    /**
+     * <pre>
+     * 负偏好特征v2
+     * </pre>
+     *
+     * <code>string prefer_neg_tag1_7d_top3 = 83;</code>
+     * @return The preferNegTag17dTop3.
+     */
+    @java.lang.Override
+    public java.lang.String getPreferNegTag17DTop3() {
+      java.lang.Object ref = preferNegTag17DTop3_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        preferNegTag17DTop3_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * 负偏好特征v2
+     * </pre>
+     *
+     * <code>string prefer_neg_tag1_7d_top3 = 83;</code>
+     * @return The bytes for preferNegTag17dTop3.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getPreferNegTag17DTop3Bytes() {
+      java.lang.Object ref = preferNegTag17DTop3_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        preferNegTag17DTop3_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PREFER_NEG_TAG2_7D_TOP3_FIELD_NUMBER = 84;
+    private volatile java.lang.Object preferNegTag27DTop3_;
+    /**
+     * <code>string prefer_neg_tag2_7d_top3 = 84;</code>
+     * @return The preferNegTag27dTop3.
+     */
+    @java.lang.Override
+    public java.lang.String getPreferNegTag27DTop3() {
+      java.lang.Object ref = preferNegTag27DTop3_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        preferNegTag27DTop3_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string prefer_neg_tag2_7d_top3 = 84;</code>
+     * @return The bytes for preferNegTag27dTop3.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getPreferNegTag27DTop3Bytes() {
+      java.lang.Object ref = preferNegTag27DTop3_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        preferNegTag27DTop3_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PREFER_NEG_TAG3_7D_TOP3_FIELD_NUMBER = 85;
+    private volatile java.lang.Object preferNegTag37DTop3_;
+    /**
+     * <code>string prefer_neg_tag3_7d_top3 = 85;</code>
+     * @return The preferNegTag37dTop3.
+     */
+    @java.lang.Override
+    public java.lang.String getPreferNegTag37DTop3() {
+      java.lang.Object ref = preferNegTag37DTop3_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        preferNegTag37DTop3_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string prefer_neg_tag3_7d_top3 = 85;</code>
+     * @return The bytes for preferNegTag37dTop3.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getPreferNegTag37DTop3Bytes() {
+      java.lang.Object ref = preferNegTag37DTop3_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        preferNegTag37DTop3_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PREFER_NEG_TAG4_7D_TOP3_FIELD_NUMBER = 86;
+    private volatile java.lang.Object preferNegTag47DTop3_;
+    /**
+     * <code>string prefer_neg_tag4_7d_top3 = 86;</code>
+     * @return The preferNegTag47dTop3.
+     */
+    @java.lang.Override
+    public java.lang.String getPreferNegTag47DTop3() {
+      java.lang.Object ref = preferNegTag47DTop3_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        preferNegTag47DTop3_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string prefer_neg_tag4_7d_top3 = 86;</code>
+     * @return The bytes for preferNegTag47dTop3.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getPreferNegTag47DTop3Bytes() {
+      java.lang.Object ref = preferNegTag47DTop3_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        preferNegTag47DTop3_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PREFER_NEG_TAG5_7D_TOP3_FIELD_NUMBER = 87;
+    private volatile java.lang.Object preferNegTag57DTop3_;
+    /**
+     * <code>string prefer_neg_tag5_7d_top3 = 87;</code>
+     * @return The preferNegTag57dTop3.
+     */
+    @java.lang.Override
+    public java.lang.String getPreferNegTag57DTop3() {
+      java.lang.Object ref = preferNegTag57DTop3_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        preferNegTag57DTop3_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string prefer_neg_tag5_7d_top3 = 87;</code>
+     * @return The bytes for preferNegTag57dTop3.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getPreferNegTag57DTop3Bytes() {
+      java.lang.Object ref = preferNegTag57DTop3_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        preferNegTag57DTop3_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PREFER_NEG_TAG6_7D_TOP3_FIELD_NUMBER = 88;
+    private volatile java.lang.Object preferNegTag67DTop3_;
+    /**
+     * <code>string prefer_neg_tag6_7d_top3 = 88;</code>
+     * @return The preferNegTag67dTop3.
+     */
+    @java.lang.Override
+    public java.lang.String getPreferNegTag67DTop3() {
+      java.lang.Object ref = preferNegTag67DTop3_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        preferNegTag67DTop3_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string prefer_neg_tag6_7d_top3 = 88;</code>
+     * @return The bytes for preferNegTag67dTop3.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getPreferNegTag67DTop3Bytes() {
+      java.lang.Object ref = preferNegTag67DTop3_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        preferNegTag67DTop3_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PREFER_NEG_TAG7_7D_TOP3_FIELD_NUMBER = 89;
+    private volatile java.lang.Object preferNegTag77DTop3_;
+    /**
+     * <code>string prefer_neg_tag7_7d_top3 = 89;</code>
+     * @return The preferNegTag77dTop3.
+     */
+    @java.lang.Override
+    public java.lang.String getPreferNegTag77DTop3() {
+      java.lang.Object ref = preferNegTag77DTop3_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        preferNegTag77DTop3_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string prefer_neg_tag7_7d_top3 = 89;</code>
+     * @return The bytes for preferNegTag77dTop3.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getPreferNegTag77DTop3Bytes() {
+      java.lang.Object ref = preferNegTag77DTop3_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        preferNegTag77DTop3_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PREFER_NEG_FTAG1_7D_TOP3_FIELD_NUMBER = 90;
+    private volatile java.lang.Object preferNegFtag17DTop3_;
+    /**
+     * <code>string prefer_neg_ftag1_7d_top3 = 90;</code>
+     * @return The preferNegFtag17dTop3.
+     */
+    @java.lang.Override
+    public java.lang.String getPreferNegFtag17DTop3() {
+      java.lang.Object ref = preferNegFtag17DTop3_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        preferNegFtag17DTop3_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string prefer_neg_ftag1_7d_top3 = 90;</code>
+     * @return The bytes for preferNegFtag17dTop3.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getPreferNegFtag17DTop3Bytes() {
+      java.lang.Object ref = preferNegFtag17DTop3_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        preferNegFtag17DTop3_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PREFER_NEG_FTAG2_7D_TOP3_FIELD_NUMBER = 91;
+    private volatile java.lang.Object preferNegFtag27DTop3_;
+    /**
+     * <code>string prefer_neg_ftag2_7d_top3 = 91;</code>
+     * @return The preferNegFtag27dTop3.
+     */
+    @java.lang.Override
+    public java.lang.String getPreferNegFtag27DTop3() {
+      java.lang.Object ref = preferNegFtag27DTop3_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        preferNegFtag27DTop3_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string prefer_neg_ftag2_7d_top3 = 91;</code>
+     * @return The bytes for preferNegFtag27dTop3.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getPreferNegFtag27DTop3Bytes() {
+      java.lang.Object ref = preferNegFtag27DTop3_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        preferNegFtag27DTop3_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PREFER_NEG_FTAG3_7D_TOP3_FIELD_NUMBER = 92;
+    private volatile java.lang.Object preferNegFtag37DTop3_;
+    /**
+     * <code>string prefer_neg_ftag3_7d_top3 = 92;</code>
+     * @return The preferNegFtag37dTop3.
+     */
+    @java.lang.Override
+    public java.lang.String getPreferNegFtag37DTop3() {
+      java.lang.Object ref = preferNegFtag37DTop3_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        preferNegFtag37DTop3_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string prefer_neg_ftag3_7d_top3 = 92;</code>
+     * @return The bytes for preferNegFtag37dTop3.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getPreferNegFtag37DTop3Bytes() {
+      java.lang.Object ref = preferNegFtag37DTop3_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        preferNegFtag37DTop3_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PREFER_NEG_FTAG4_7D_TOP3_FIELD_NUMBER = 93;
+    private volatile java.lang.Object preferNegFtag47DTop3_;
+    /**
+     * <code>string prefer_neg_ftag4_7d_top3 = 93;</code>
+     * @return The preferNegFtag47dTop3.
+     */
+    @java.lang.Override
+    public java.lang.String getPreferNegFtag47DTop3() {
+      java.lang.Object ref = preferNegFtag47DTop3_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        preferNegFtag47DTop3_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string prefer_neg_ftag4_7d_top3 = 93;</code>
+     * @return The bytes for preferNegFtag47dTop3.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getPreferNegFtag47DTop3Bytes() {
+      java.lang.Object ref = preferNegFtag47DTop3_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        preferNegFtag47DTop3_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PREFER_NEG_FTAG5_7D_TOP3_FIELD_NUMBER = 94;
+    private volatile java.lang.Object preferNegFtag57DTop3_;
+    /**
+     * <code>string prefer_neg_ftag5_7d_top3 = 94;</code>
+     * @return The preferNegFtag57dTop3.
+     */
+    @java.lang.Override
+    public java.lang.String getPreferNegFtag57DTop3() {
+      java.lang.Object ref = preferNegFtag57DTop3_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        preferNegFtag57DTop3_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string prefer_neg_ftag5_7d_top3 = 94;</code>
+     * @return The bytes for preferNegFtag57dTop3.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getPreferNegFtag57DTop3Bytes() {
+      java.lang.Object ref = preferNegFtag57DTop3_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        preferNegFtag57DTop3_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PREFER_NEG_FTAG6_7D_TOP3_FIELD_NUMBER = 95;
+    private volatile java.lang.Object preferNegFtag67DTop3_;
+    /**
+     * <code>string prefer_neg_ftag6_7d_top3 = 95;</code>
+     * @return The preferNegFtag67dTop3.
+     */
+    @java.lang.Override
+    public java.lang.String getPreferNegFtag67DTop3() {
+      java.lang.Object ref = preferNegFtag67DTop3_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        preferNegFtag67DTop3_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string prefer_neg_ftag6_7d_top3 = 95;</code>
+     * @return The bytes for preferNegFtag67dTop3.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getPreferNegFtag67DTop3Bytes() {
+      java.lang.Object ref = preferNegFtag67DTop3_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        preferNegFtag67DTop3_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -1397,6 +3380,9 @@ public final class RecFeature {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
+      if (viewerIsOld_ != 0) {
+        output.writeInt32(1, viewerIsOld_);
+      }
       if (viewerExppostCnt1H_ != 0) {
         output.writeInt32(10, viewerExppostCnt1H_);
       }
@@ -1460,6 +3446,120 @@ public final class RecFeature {
       if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(viewerProfileAuthorHis24H_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 42, viewerProfileAuthorHis24H_);
       }
+      if (viewerActiveDays7D_ != 0) {
+        output.writeInt32(50, viewerActiveDays7D_);
+      }
+      if (viewerViewCnt7D_ != 0) {
+        output.writeInt32(51, viewerViewCnt7D_);
+      }
+      if (viewerValidviewCnt7D_ != 0) {
+        output.writeInt32(52, viewerValidviewCnt7D_);
+      }
+      if (viewerCompleteViewCnt7D_ != 0) {
+        output.writeInt32(53, viewerCompleteViewCnt7D_);
+      }
+      if (java.lang.Float.floatToRawIntBits(viewerViewDuration7D_) != 0) {
+        output.writeFloat(54, viewerViewDuration7D_);
+      }
+      if (viewerLikeCnt7D_ != 0) {
+        output.writeInt32(55, viewerLikeCnt7D_);
+      }
+      if (viewerCommentCnt7D_ != 0) {
+        output.writeInt32(56, viewerCommentCnt7D_);
+      }
+      if (java.lang.Float.floatToRawIntBits(viewerValidviewRate7D_) != 0) {
+        output.writeFloat(57, viewerValidviewRate7D_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(userDeepviewPostids7D_)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 58, userDeepviewPostids7D_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(userInteractPostids7D_)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 59, userInteractPostids7D_);
+      }
+      if (userGiftCount_ != 0) {
+        output.writeInt32(60, userGiftCount_);
+      }
+      if (java.lang.Float.floatToRawIntBits(userDailyWatchliveMinutes_) != 0) {
+        output.writeFloat(61, userDailyWatchliveMinutes_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferPosTag17DTop3_)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 70, preferPosTag17DTop3_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferPosTag27DTop3_)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 71, preferPosTag27DTop3_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferPosTag37DTop3_)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 72, preferPosTag37DTop3_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferPosTag47DTop3_)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 73, preferPosTag47DTop3_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferPosTag57DTop3_)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 74, preferPosTag57DTop3_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferPosTag67DTop3_)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 75, preferPosTag67DTop3_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferPosTag77DTop3_)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 76, preferPosTag77DTop3_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferPosFtag17DTop3_)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 77, preferPosFtag17DTop3_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferPosFtag27DTop3_)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 78, preferPosFtag27DTop3_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferPosFtag37DTop3_)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 79, preferPosFtag37DTop3_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferPosFtag47DTop3_)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 80, preferPosFtag47DTop3_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferPosFtag57DTop3_)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 81, preferPosFtag57DTop3_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferPosFtag67DTop3_)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 82, preferPosFtag67DTop3_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferNegTag17DTop3_)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 83, preferNegTag17DTop3_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferNegTag27DTop3_)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 84, preferNegTag27DTop3_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferNegTag37DTop3_)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 85, preferNegTag37DTop3_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferNegTag47DTop3_)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 86, preferNegTag47DTop3_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferNegTag57DTop3_)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 87, preferNegTag57DTop3_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferNegTag67DTop3_)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 88, preferNegTag67DTop3_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferNegTag77DTop3_)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 89, preferNegTag77DTop3_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferNegFtag17DTop3_)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 90, preferNegFtag17DTop3_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferNegFtag27DTop3_)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 91, preferNegFtag27DTop3_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferNegFtag37DTop3_)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 92, preferNegFtag37DTop3_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferNegFtag47DTop3_)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 93, preferNegFtag47DTop3_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferNegFtag57DTop3_)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 94, preferNegFtag57DTop3_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferNegFtag67DTop3_)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 95, preferNegFtag67DTop3_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -1469,6 +3569,10 @@ public final class RecFeature {
       if (size != -1) return size;
 
       size = 0;
+      if (viewerIsOld_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(1, viewerIsOld_);
+      }
       if (viewerExppostCnt1H_ != 0) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(10, viewerExppostCnt1H_);
@@ -1538,6 +3642,130 @@ public final class RecFeature {
       if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(viewerProfileAuthorHis24H_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(42, viewerProfileAuthorHis24H_);
       }
+      if (viewerActiveDays7D_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(50, viewerActiveDays7D_);
+      }
+      if (viewerViewCnt7D_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(51, viewerViewCnt7D_);
+      }
+      if (viewerValidviewCnt7D_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(52, viewerValidviewCnt7D_);
+      }
+      if (viewerCompleteViewCnt7D_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(53, viewerCompleteViewCnt7D_);
+      }
+      if (java.lang.Float.floatToRawIntBits(viewerViewDuration7D_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(54, viewerViewDuration7D_);
+      }
+      if (viewerLikeCnt7D_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(55, viewerLikeCnt7D_);
+      }
+      if (viewerCommentCnt7D_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(56, viewerCommentCnt7D_);
+      }
+      if (java.lang.Float.floatToRawIntBits(viewerValidviewRate7D_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(57, viewerValidviewRate7D_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(userDeepviewPostids7D_)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(58, userDeepviewPostids7D_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(userInteractPostids7D_)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(59, userInteractPostids7D_);
+      }
+      if (userGiftCount_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(60, userGiftCount_);
+      }
+      if (java.lang.Float.floatToRawIntBits(userDailyWatchliveMinutes_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(61, userDailyWatchliveMinutes_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferPosTag17DTop3_)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(70, preferPosTag17DTop3_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferPosTag27DTop3_)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(71, preferPosTag27DTop3_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferPosTag37DTop3_)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(72, preferPosTag37DTop3_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferPosTag47DTop3_)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(73, preferPosTag47DTop3_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferPosTag57DTop3_)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(74, preferPosTag57DTop3_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferPosTag67DTop3_)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(75, preferPosTag67DTop3_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferPosTag77DTop3_)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(76, preferPosTag77DTop3_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferPosFtag17DTop3_)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(77, preferPosFtag17DTop3_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferPosFtag27DTop3_)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(78, preferPosFtag27DTop3_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferPosFtag37DTop3_)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(79, preferPosFtag37DTop3_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferPosFtag47DTop3_)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(80, preferPosFtag47DTop3_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferPosFtag57DTop3_)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(81, preferPosFtag57DTop3_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferPosFtag67DTop3_)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(82, preferPosFtag67DTop3_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferNegTag17DTop3_)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(83, preferNegTag17DTop3_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferNegTag27DTop3_)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(84, preferNegTag27DTop3_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferNegTag37DTop3_)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(85, preferNegTag37DTop3_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferNegTag47DTop3_)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(86, preferNegTag47DTop3_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferNegTag57DTop3_)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(87, preferNegTag57DTop3_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferNegTag67DTop3_)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(88, preferNegTag67DTop3_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferNegTag77DTop3_)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(89, preferNegTag77DTop3_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferNegFtag17DTop3_)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(90, preferNegFtag17DTop3_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferNegFtag27DTop3_)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(91, preferNegFtag27DTop3_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferNegFtag37DTop3_)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(92, preferNegFtag37DTop3_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferNegFtag47DTop3_)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(93, preferNegFtag47DTop3_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferNegFtag57DTop3_)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(94, preferNegFtag57DTop3_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferNegFtag67DTop3_)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(95, preferNegFtag67DTop3_);
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -1553,6 +3781,8 @@ public final class RecFeature {
       }
       com.gosh.entity.RecFeature.RecUserFeature other = (com.gosh.entity.RecFeature.RecUserFeature) obj;
 
+      if (getViewerIsOld()
+          != other.getViewerIsOld()) return false;
       if (getViewerExppostCnt1H()
           != other.getViewerExppostCnt1H()) return false;
       if (getViewerExp1PostCnt1H()
@@ -1595,6 +3825,85 @@ public final class RecFeature {
           .equals(other.getViewerFollowAuthorHis24H())) return false;
       if (!getViewerProfileAuthorHis24H()
           .equals(other.getViewerProfileAuthorHis24H())) return false;
+      if (getViewerActiveDays7D()
+          != other.getViewerActiveDays7D()) return false;
+      if (getViewerViewCnt7D()
+          != other.getViewerViewCnt7D()) return false;
+      if (getViewerValidviewCnt7D()
+          != other.getViewerValidviewCnt7D()) return false;
+      if (getViewerCompleteViewCnt7D()
+          != other.getViewerCompleteViewCnt7D()) return false;
+      if (java.lang.Float.floatToIntBits(getViewerViewDuration7D())
+          != java.lang.Float.floatToIntBits(
+              other.getViewerViewDuration7D())) return false;
+      if (getViewerLikeCnt7D()
+          != other.getViewerLikeCnt7D()) return false;
+      if (getViewerCommentCnt7D()
+          != other.getViewerCommentCnt7D()) return false;
+      if (java.lang.Float.floatToIntBits(getViewerValidviewRate7D())
+          != java.lang.Float.floatToIntBits(
+              other.getViewerValidviewRate7D())) return false;
+      if (!getUserDeepviewPostids7D()
+          .equals(other.getUserDeepviewPostids7D())) return false;
+      if (!getUserInteractPostids7D()
+          .equals(other.getUserInteractPostids7D())) return false;
+      if (getUserGiftCount()
+          != other.getUserGiftCount()) return false;
+      if (java.lang.Float.floatToIntBits(getUserDailyWatchliveMinutes())
+          != java.lang.Float.floatToIntBits(
+              other.getUserDailyWatchliveMinutes())) return false;
+      if (!getPreferPosTag17DTop3()
+          .equals(other.getPreferPosTag17DTop3())) return false;
+      if (!getPreferPosTag27DTop3()
+          .equals(other.getPreferPosTag27DTop3())) return false;
+      if (!getPreferPosTag37DTop3()
+          .equals(other.getPreferPosTag37DTop3())) return false;
+      if (!getPreferPosTag47DTop3()
+          .equals(other.getPreferPosTag47DTop3())) return false;
+      if (!getPreferPosTag57DTop3()
+          .equals(other.getPreferPosTag57DTop3())) return false;
+      if (!getPreferPosTag67DTop3()
+          .equals(other.getPreferPosTag67DTop3())) return false;
+      if (!getPreferPosTag77DTop3()
+          .equals(other.getPreferPosTag77DTop3())) return false;
+      if (!getPreferPosFtag17DTop3()
+          .equals(other.getPreferPosFtag17DTop3())) return false;
+      if (!getPreferPosFtag27DTop3()
+          .equals(other.getPreferPosFtag27DTop3())) return false;
+      if (!getPreferPosFtag37DTop3()
+          .equals(other.getPreferPosFtag37DTop3())) return false;
+      if (!getPreferPosFtag47DTop3()
+          .equals(other.getPreferPosFtag47DTop3())) return false;
+      if (!getPreferPosFtag57DTop3()
+          .equals(other.getPreferPosFtag57DTop3())) return false;
+      if (!getPreferPosFtag67DTop3()
+          .equals(other.getPreferPosFtag67DTop3())) return false;
+      if (!getPreferNegTag17DTop3()
+          .equals(other.getPreferNegTag17DTop3())) return false;
+      if (!getPreferNegTag27DTop3()
+          .equals(other.getPreferNegTag27DTop3())) return false;
+      if (!getPreferNegTag37DTop3()
+          .equals(other.getPreferNegTag37DTop3())) return false;
+      if (!getPreferNegTag47DTop3()
+          .equals(other.getPreferNegTag47DTop3())) return false;
+      if (!getPreferNegTag57DTop3()
+          .equals(other.getPreferNegTag57DTop3())) return false;
+      if (!getPreferNegTag67DTop3()
+          .equals(other.getPreferNegTag67DTop3())) return false;
+      if (!getPreferNegTag77DTop3()
+          .equals(other.getPreferNegTag77DTop3())) return false;
+      if (!getPreferNegFtag17DTop3()
+          .equals(other.getPreferNegFtag17DTop3())) return false;
+      if (!getPreferNegFtag27DTop3()
+          .equals(other.getPreferNegFtag27DTop3())) return false;
+      if (!getPreferNegFtag37DTop3()
+          .equals(other.getPreferNegFtag37DTop3())) return false;
+      if (!getPreferNegFtag47DTop3()
+          .equals(other.getPreferNegFtag47DTop3())) return false;
+      if (!getPreferNegFtag57DTop3()
+          .equals(other.getPreferNegFtag57DTop3())) return false;
+      if (!getPreferNegFtag67DTop3()
+          .equals(other.getPreferNegFtag67DTop3())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -1606,6 +3915,8 @@ public final class RecFeature {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + VIEWER_IS_OLD_FIELD_NUMBER;
+      hash = (53 * hash) + getViewerIsOld();
       hash = (37 * hash) + VIEWER_EXPPOST_CNT_1H_FIELD_NUMBER;
       hash = (53 * hash) + getViewerExppostCnt1H();
       hash = (37 * hash) + VIEWER_EXP1_POST_CNT_1H_FIELD_NUMBER;
@@ -1648,6 +3959,85 @@ public final class RecFeature {
       hash = (53 * hash) + getViewerFollowAuthorHis24H().hashCode();
       hash = (37 * hash) + VIEWER_PROFILE_AUTHOR_HIS_24H_FIELD_NUMBER;
       hash = (53 * hash) + getViewerProfileAuthorHis24H().hashCode();
+      hash = (37 * hash) + VIEWER_ACTIVE_DAYS_7D_FIELD_NUMBER;
+      hash = (53 * hash) + getViewerActiveDays7D();
+      hash = (37 * hash) + VIEWER_VIEW_CNT_7D_FIELD_NUMBER;
+      hash = (53 * hash) + getViewerViewCnt7D();
+      hash = (37 * hash) + VIEWER_VALIDVIEW_CNT_7D_FIELD_NUMBER;
+      hash = (53 * hash) + getViewerValidviewCnt7D();
+      hash = (37 * hash) + VIEWER_COMPLETE_VIEW_CNT_7D_FIELD_NUMBER;
+      hash = (53 * hash) + getViewerCompleteViewCnt7D();
+      hash = (37 * hash) + VIEWER_VIEW_DURATION_7D_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getViewerViewDuration7D());
+      hash = (37 * hash) + VIEWER_LIKE_CNT_7D_FIELD_NUMBER;
+      hash = (53 * hash) + getViewerLikeCnt7D();
+      hash = (37 * hash) + VIEWER_COMMENT_CNT_7D_FIELD_NUMBER;
+      hash = (53 * hash) + getViewerCommentCnt7D();
+      hash = (37 * hash) + VIEWER_VALIDVIEW_RATE_7D_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getViewerValidviewRate7D());
+      hash = (37 * hash) + USER_DEEPVIEW_POSTIDS_7D_FIELD_NUMBER;
+      hash = (53 * hash) + getUserDeepviewPostids7D().hashCode();
+      hash = (37 * hash) + USER_INTERACT_POSTIDS_7D_FIELD_NUMBER;
+      hash = (53 * hash) + getUserInteractPostids7D().hashCode();
+      hash = (37 * hash) + USER_GIFT_COUNT_FIELD_NUMBER;
+      hash = (53 * hash) + getUserGiftCount();
+      hash = (37 * hash) + USER_DAILY_WATCHLIVE_MINUTES_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getUserDailyWatchliveMinutes());
+      hash = (37 * hash) + PREFER_POS_TAG1_7D_TOP3_FIELD_NUMBER;
+      hash = (53 * hash) + getPreferPosTag17DTop3().hashCode();
+      hash = (37 * hash) + PREFER_POS_TAG2_7D_TOP3_FIELD_NUMBER;
+      hash = (53 * hash) + getPreferPosTag27DTop3().hashCode();
+      hash = (37 * hash) + PREFER_POS_TAG3_7D_TOP3_FIELD_NUMBER;
+      hash = (53 * hash) + getPreferPosTag37DTop3().hashCode();
+      hash = (37 * hash) + PREFER_POS_TAG4_7D_TOP3_FIELD_NUMBER;
+      hash = (53 * hash) + getPreferPosTag47DTop3().hashCode();
+      hash = (37 * hash) + PREFER_POS_TAG5_7D_TOP3_FIELD_NUMBER;
+      hash = (53 * hash) + getPreferPosTag57DTop3().hashCode();
+      hash = (37 * hash) + PREFER_POS_TAG6_7D_TOP3_FIELD_NUMBER;
+      hash = (53 * hash) + getPreferPosTag67DTop3().hashCode();
+      hash = (37 * hash) + PREFER_POS_TAG7_7D_TOP3_FIELD_NUMBER;
+      hash = (53 * hash) + getPreferPosTag77DTop3().hashCode();
+      hash = (37 * hash) + PREFER_POS_FTAG1_7D_TOP3_FIELD_NUMBER;
+      hash = (53 * hash) + getPreferPosFtag17DTop3().hashCode();
+      hash = (37 * hash) + PREFER_POS_FTAG2_7D_TOP3_FIELD_NUMBER;
+      hash = (53 * hash) + getPreferPosFtag27DTop3().hashCode();
+      hash = (37 * hash) + PREFER_POS_FTAG3_7D_TOP3_FIELD_NUMBER;
+      hash = (53 * hash) + getPreferPosFtag37DTop3().hashCode();
+      hash = (37 * hash) + PREFER_POS_FTAG4_7D_TOP3_FIELD_NUMBER;
+      hash = (53 * hash) + getPreferPosFtag47DTop3().hashCode();
+      hash = (37 * hash) + PREFER_POS_FTAG5_7D_TOP3_FIELD_NUMBER;
+      hash = (53 * hash) + getPreferPosFtag57DTop3().hashCode();
+      hash = (37 * hash) + PREFER_POS_FTAG6_7D_TOP3_FIELD_NUMBER;
+      hash = (53 * hash) + getPreferPosFtag67DTop3().hashCode();
+      hash = (37 * hash) + PREFER_NEG_TAG1_7D_TOP3_FIELD_NUMBER;
+      hash = (53 * hash) + getPreferNegTag17DTop3().hashCode();
+      hash = (37 * hash) + PREFER_NEG_TAG2_7D_TOP3_FIELD_NUMBER;
+      hash = (53 * hash) + getPreferNegTag27DTop3().hashCode();
+      hash = (37 * hash) + PREFER_NEG_TAG3_7D_TOP3_FIELD_NUMBER;
+      hash = (53 * hash) + getPreferNegTag37DTop3().hashCode();
+      hash = (37 * hash) + PREFER_NEG_TAG4_7D_TOP3_FIELD_NUMBER;
+      hash = (53 * hash) + getPreferNegTag47DTop3().hashCode();
+      hash = (37 * hash) + PREFER_NEG_TAG5_7D_TOP3_FIELD_NUMBER;
+      hash = (53 * hash) + getPreferNegTag57DTop3().hashCode();
+      hash = (37 * hash) + PREFER_NEG_TAG6_7D_TOP3_FIELD_NUMBER;
+      hash = (53 * hash) + getPreferNegTag67DTop3().hashCode();
+      hash = (37 * hash) + PREFER_NEG_TAG7_7D_TOP3_FIELD_NUMBER;
+      hash = (53 * hash) + getPreferNegTag77DTop3().hashCode();
+      hash = (37 * hash) + PREFER_NEG_FTAG1_7D_TOP3_FIELD_NUMBER;
+      hash = (53 * hash) + getPreferNegFtag17DTop3().hashCode();
+      hash = (37 * hash) + PREFER_NEG_FTAG2_7D_TOP3_FIELD_NUMBER;
+      hash = (53 * hash) + getPreferNegFtag27DTop3().hashCode();
+      hash = (37 * hash) + PREFER_NEG_FTAG3_7D_TOP3_FIELD_NUMBER;
+      hash = (53 * hash) + getPreferNegFtag37DTop3().hashCode();
+      hash = (37 * hash) + PREFER_NEG_FTAG4_7D_TOP3_FIELD_NUMBER;
+      hash = (53 * hash) + getPreferNegFtag47DTop3().hashCode();
+      hash = (37 * hash) + PREFER_NEG_FTAG5_7D_TOP3_FIELD_NUMBER;
+      hash = (53 * hash) + getPreferNegFtag57DTop3().hashCode();
+      hash = (37 * hash) + PREFER_NEG_FTAG6_7D_TOP3_FIELD_NUMBER;
+      hash = (53 * hash) + getPreferNegFtag67DTop3().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -1747,6 +4137,7 @@ public final class RecFeature {
      * <pre>
      * 用户侧特征
      * Redis Key: rec:user_feature:{user_id}:post1h, rec:user_feature:{user_id}:post24h
+     *            rec:user_feature:{user_id}:offpic
      * </pre>
      *
      * Protobuf type {@code com.gosh.entity.RecUserFeature}
@@ -1786,6 +4177,8 @@ public final class RecFeature {
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        viewerIsOld_ = 0;
+
         viewerExppostCnt1H_ = 0;
 
         viewerExp1PostCnt1H_ = 0;
@@ -1828,6 +4221,82 @@ public final class RecFeature {
 
         viewerProfileAuthorHis24H_ = "";
 
+        viewerActiveDays7D_ = 0;
+
+        viewerViewCnt7D_ = 0;
+
+        viewerValidviewCnt7D_ = 0;
+
+        viewerCompleteViewCnt7D_ = 0;
+
+        viewerViewDuration7D_ = 0F;
+
+        viewerLikeCnt7D_ = 0;
+
+        viewerCommentCnt7D_ = 0;
+
+        viewerValidviewRate7D_ = 0F;
+
+        userDeepviewPostids7D_ = "";
+
+        userInteractPostids7D_ = "";
+
+        userGiftCount_ = 0;
+
+        userDailyWatchliveMinutes_ = 0F;
+
+        preferPosTag17DTop3_ = "";
+
+        preferPosTag27DTop3_ = "";
+
+        preferPosTag37DTop3_ = "";
+
+        preferPosTag47DTop3_ = "";
+
+        preferPosTag57DTop3_ = "";
+
+        preferPosTag67DTop3_ = "";
+
+        preferPosTag77DTop3_ = "";
+
+        preferPosFtag17DTop3_ = "";
+
+        preferPosFtag27DTop3_ = "";
+
+        preferPosFtag37DTop3_ = "";
+
+        preferPosFtag47DTop3_ = "";
+
+        preferPosFtag57DTop3_ = "";
+
+        preferPosFtag67DTop3_ = "";
+
+        preferNegTag17DTop3_ = "";
+
+        preferNegTag27DTop3_ = "";
+
+        preferNegTag37DTop3_ = "";
+
+        preferNegTag47DTop3_ = "";
+
+        preferNegTag57DTop3_ = "";
+
+        preferNegTag67DTop3_ = "";
+
+        preferNegTag77DTop3_ = "";
+
+        preferNegFtag17DTop3_ = "";
+
+        preferNegFtag27DTop3_ = "";
+
+        preferNegFtag37DTop3_ = "";
+
+        preferNegFtag47DTop3_ = "";
+
+        preferNegFtag57DTop3_ = "";
+
+        preferNegFtag67DTop3_ = "";
+
         return this;
       }
 
@@ -1854,6 +4323,7 @@ public final class RecFeature {
       @java.lang.Override
       public com.gosh.entity.RecFeature.RecUserFeature buildPartial() {
         com.gosh.entity.RecFeature.RecUserFeature result = new com.gosh.entity.RecFeature.RecUserFeature(this);
+        result.viewerIsOld_ = viewerIsOld_;
         result.viewerExppostCnt1H_ = viewerExppostCnt1H_;
         result.viewerExp1PostCnt1H_ = viewerExp1PostCnt1H_;
         result.viewerExp2PostCnt1H_ = viewerExp2PostCnt1H_;
@@ -1875,6 +4345,44 @@ public final class RecFeature {
         result.viewerLikeAuthorHis24H_ = viewerLikeAuthorHis24H_;
         result.viewerFollowAuthorHis24H_ = viewerFollowAuthorHis24H_;
         result.viewerProfileAuthorHis24H_ = viewerProfileAuthorHis24H_;
+        result.viewerActiveDays7D_ = viewerActiveDays7D_;
+        result.viewerViewCnt7D_ = viewerViewCnt7D_;
+        result.viewerValidviewCnt7D_ = viewerValidviewCnt7D_;
+        result.viewerCompleteViewCnt7D_ = viewerCompleteViewCnt7D_;
+        result.viewerViewDuration7D_ = viewerViewDuration7D_;
+        result.viewerLikeCnt7D_ = viewerLikeCnt7D_;
+        result.viewerCommentCnt7D_ = viewerCommentCnt7D_;
+        result.viewerValidviewRate7D_ = viewerValidviewRate7D_;
+        result.userDeepviewPostids7D_ = userDeepviewPostids7D_;
+        result.userInteractPostids7D_ = userInteractPostids7D_;
+        result.userGiftCount_ = userGiftCount_;
+        result.userDailyWatchliveMinutes_ = userDailyWatchliveMinutes_;
+        result.preferPosTag17DTop3_ = preferPosTag17DTop3_;
+        result.preferPosTag27DTop3_ = preferPosTag27DTop3_;
+        result.preferPosTag37DTop3_ = preferPosTag37DTop3_;
+        result.preferPosTag47DTop3_ = preferPosTag47DTop3_;
+        result.preferPosTag57DTop3_ = preferPosTag57DTop3_;
+        result.preferPosTag67DTop3_ = preferPosTag67DTop3_;
+        result.preferPosTag77DTop3_ = preferPosTag77DTop3_;
+        result.preferPosFtag17DTop3_ = preferPosFtag17DTop3_;
+        result.preferPosFtag27DTop3_ = preferPosFtag27DTop3_;
+        result.preferPosFtag37DTop3_ = preferPosFtag37DTop3_;
+        result.preferPosFtag47DTop3_ = preferPosFtag47DTop3_;
+        result.preferPosFtag57DTop3_ = preferPosFtag57DTop3_;
+        result.preferPosFtag67DTop3_ = preferPosFtag67DTop3_;
+        result.preferNegTag17DTop3_ = preferNegTag17DTop3_;
+        result.preferNegTag27DTop3_ = preferNegTag27DTop3_;
+        result.preferNegTag37DTop3_ = preferNegTag37DTop3_;
+        result.preferNegTag47DTop3_ = preferNegTag47DTop3_;
+        result.preferNegTag57DTop3_ = preferNegTag57DTop3_;
+        result.preferNegTag67DTop3_ = preferNegTag67DTop3_;
+        result.preferNegTag77DTop3_ = preferNegTag77DTop3_;
+        result.preferNegFtag17DTop3_ = preferNegFtag17DTop3_;
+        result.preferNegFtag27DTop3_ = preferNegFtag27DTop3_;
+        result.preferNegFtag37DTop3_ = preferNegFtag37DTop3_;
+        result.preferNegFtag47DTop3_ = preferNegFtag47DTop3_;
+        result.preferNegFtag57DTop3_ = preferNegFtag57DTop3_;
+        result.preferNegFtag67DTop3_ = preferNegFtag67DTop3_;
         onBuilt();
         return result;
       }
@@ -1923,6 +4431,9 @@ public final class RecFeature {
 
       public Builder mergeFrom(com.gosh.entity.RecFeature.RecUserFeature other) {
         if (other == com.gosh.entity.RecFeature.RecUserFeature.getDefaultInstance()) return this;
+        if (other.getViewerIsOld() != 0) {
+          setViewerIsOld(other.getViewerIsOld());
+        }
         if (other.getViewerExppostCnt1H() != 0) {
           setViewerExppostCnt1H(other.getViewerExppostCnt1H());
         }
@@ -2001,6 +4512,148 @@ public final class RecFeature {
           viewerProfileAuthorHis24H_ = other.viewerProfileAuthorHis24H_;
           onChanged();
         }
+        if (other.getViewerActiveDays7D() != 0) {
+          setViewerActiveDays7D(other.getViewerActiveDays7D());
+        }
+        if (other.getViewerViewCnt7D() != 0) {
+          setViewerViewCnt7D(other.getViewerViewCnt7D());
+        }
+        if (other.getViewerValidviewCnt7D() != 0) {
+          setViewerValidviewCnt7D(other.getViewerValidviewCnt7D());
+        }
+        if (other.getViewerCompleteViewCnt7D() != 0) {
+          setViewerCompleteViewCnt7D(other.getViewerCompleteViewCnt7D());
+        }
+        if (other.getViewerViewDuration7D() != 0F) {
+          setViewerViewDuration7D(other.getViewerViewDuration7D());
+        }
+        if (other.getViewerLikeCnt7D() != 0) {
+          setViewerLikeCnt7D(other.getViewerLikeCnt7D());
+        }
+        if (other.getViewerCommentCnt7D() != 0) {
+          setViewerCommentCnt7D(other.getViewerCommentCnt7D());
+        }
+        if (other.getViewerValidviewRate7D() != 0F) {
+          setViewerValidviewRate7D(other.getViewerValidviewRate7D());
+        }
+        if (!other.getUserDeepviewPostids7D().isEmpty()) {
+          userDeepviewPostids7D_ = other.userDeepviewPostids7D_;
+          onChanged();
+        }
+        if (!other.getUserInteractPostids7D().isEmpty()) {
+          userInteractPostids7D_ = other.userInteractPostids7D_;
+          onChanged();
+        }
+        if (other.getUserGiftCount() != 0) {
+          setUserGiftCount(other.getUserGiftCount());
+        }
+        if (other.getUserDailyWatchliveMinutes() != 0F) {
+          setUserDailyWatchliveMinutes(other.getUserDailyWatchliveMinutes());
+        }
+        if (!other.getPreferPosTag17DTop3().isEmpty()) {
+          preferPosTag17DTop3_ = other.preferPosTag17DTop3_;
+          onChanged();
+        }
+        if (!other.getPreferPosTag27DTop3().isEmpty()) {
+          preferPosTag27DTop3_ = other.preferPosTag27DTop3_;
+          onChanged();
+        }
+        if (!other.getPreferPosTag37DTop3().isEmpty()) {
+          preferPosTag37DTop3_ = other.preferPosTag37DTop3_;
+          onChanged();
+        }
+        if (!other.getPreferPosTag47DTop3().isEmpty()) {
+          preferPosTag47DTop3_ = other.preferPosTag47DTop3_;
+          onChanged();
+        }
+        if (!other.getPreferPosTag57DTop3().isEmpty()) {
+          preferPosTag57DTop3_ = other.preferPosTag57DTop3_;
+          onChanged();
+        }
+        if (!other.getPreferPosTag67DTop3().isEmpty()) {
+          preferPosTag67DTop3_ = other.preferPosTag67DTop3_;
+          onChanged();
+        }
+        if (!other.getPreferPosTag77DTop3().isEmpty()) {
+          preferPosTag77DTop3_ = other.preferPosTag77DTop3_;
+          onChanged();
+        }
+        if (!other.getPreferPosFtag17DTop3().isEmpty()) {
+          preferPosFtag17DTop3_ = other.preferPosFtag17DTop3_;
+          onChanged();
+        }
+        if (!other.getPreferPosFtag27DTop3().isEmpty()) {
+          preferPosFtag27DTop3_ = other.preferPosFtag27DTop3_;
+          onChanged();
+        }
+        if (!other.getPreferPosFtag37DTop3().isEmpty()) {
+          preferPosFtag37DTop3_ = other.preferPosFtag37DTop3_;
+          onChanged();
+        }
+        if (!other.getPreferPosFtag47DTop3().isEmpty()) {
+          preferPosFtag47DTop3_ = other.preferPosFtag47DTop3_;
+          onChanged();
+        }
+        if (!other.getPreferPosFtag57DTop3().isEmpty()) {
+          preferPosFtag57DTop3_ = other.preferPosFtag57DTop3_;
+          onChanged();
+        }
+        if (!other.getPreferPosFtag67DTop3().isEmpty()) {
+          preferPosFtag67DTop3_ = other.preferPosFtag67DTop3_;
+          onChanged();
+        }
+        if (!other.getPreferNegTag17DTop3().isEmpty()) {
+          preferNegTag17DTop3_ = other.preferNegTag17DTop3_;
+          onChanged();
+        }
+        if (!other.getPreferNegTag27DTop3().isEmpty()) {
+          preferNegTag27DTop3_ = other.preferNegTag27DTop3_;
+          onChanged();
+        }
+        if (!other.getPreferNegTag37DTop3().isEmpty()) {
+          preferNegTag37DTop3_ = other.preferNegTag37DTop3_;
+          onChanged();
+        }
+        if (!other.getPreferNegTag47DTop3().isEmpty()) {
+          preferNegTag47DTop3_ = other.preferNegTag47DTop3_;
+          onChanged();
+        }
+        if (!other.getPreferNegTag57DTop3().isEmpty()) {
+          preferNegTag57DTop3_ = other.preferNegTag57DTop3_;
+          onChanged();
+        }
+        if (!other.getPreferNegTag67DTop3().isEmpty()) {
+          preferNegTag67DTop3_ = other.preferNegTag67DTop3_;
+          onChanged();
+        }
+        if (!other.getPreferNegTag77DTop3().isEmpty()) {
+          preferNegTag77DTop3_ = other.preferNegTag77DTop3_;
+          onChanged();
+        }
+        if (!other.getPreferNegFtag17DTop3().isEmpty()) {
+          preferNegFtag17DTop3_ = other.preferNegFtag17DTop3_;
+          onChanged();
+        }
+        if (!other.getPreferNegFtag27DTop3().isEmpty()) {
+          preferNegFtag27DTop3_ = other.preferNegFtag27DTop3_;
+          onChanged();
+        }
+        if (!other.getPreferNegFtag37DTop3().isEmpty()) {
+          preferNegFtag37DTop3_ = other.preferNegFtag37DTop3_;
+          onChanged();
+        }
+        if (!other.getPreferNegFtag47DTop3().isEmpty()) {
+          preferNegFtag47DTop3_ = other.preferNegFtag47DTop3_;
+          onChanged();
+        }
+        if (!other.getPreferNegFtag57DTop3().isEmpty()) {
+          preferNegFtag57DTop3_ = other.preferNegFtag57DTop3_;
+          onChanged();
+        }
+        if (!other.getPreferNegFtag67DTop3().isEmpty()) {
+          preferNegFtag67DTop3_ = other.preferNegFtag67DTop3_;
+          onChanged();
+        }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
@@ -2027,6 +4680,49 @@ public final class RecFeature {
             mergeFrom(parsedMessage);
           }
         }
+        return this;
+      }
+
+      private int viewerIsOld_ ;
+      /**
+       * <pre>
+       * 用户状态特征
+       * </pre>
+       *
+       * <code>int32 viewer_is_old = 1;</code>
+       * @return The viewerIsOld.
+       */
+      @java.lang.Override
+      public int getViewerIsOld() {
+        return viewerIsOld_;
+      }
+      /**
+       * <pre>
+       * 用户状态特征
+       * </pre>
+       *
+       * <code>int32 viewer_is_old = 1;</code>
+       * @param value The viewerIsOld to set.
+       * @return This builder for chaining.
+       */
+      public Builder setViewerIsOld(int value) {
+        
+        viewerIsOld_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户状态特征
+       * </pre>
+       *
+       * <code>int32 viewer_is_old = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearViewerIsOld() {
+        
+        viewerIsOld_ = 0;
+        onChanged();
         return this;
       }
 
@@ -3735,6 +6431,2632 @@ public final class RecFeature {
         onChanged();
         return this;
       }
+
+      private int viewerActiveDays7D_ ;
+      /**
+       * <pre>
+       * 7天特征
+       * </pre>
+       *
+       * <code>int32 viewer_active_days_7d = 50;</code>
+       * @return The viewerActiveDays7d.
+       */
+      @java.lang.Override
+      public int getViewerActiveDays7D() {
+        return viewerActiveDays7D_;
+      }
+      /**
+       * <pre>
+       * 7天特征
+       * </pre>
+       *
+       * <code>int32 viewer_active_days_7d = 50;</code>
+       * @param value The viewerActiveDays7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setViewerActiveDays7D(int value) {
+        
+        viewerActiveDays7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 7天特征
+       * </pre>
+       *
+       * <code>int32 viewer_active_days_7d = 50;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearViewerActiveDays7D() {
+        
+        viewerActiveDays7D_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int viewerViewCnt7D_ ;
+      /**
+       * <pre>
+       * 最近7天曝光item数
+       * </pre>
+       *
+       * <code>int32 viewer_view_cnt_7d = 51;</code>
+       * @return The viewerViewCnt7d.
+       */
+      @java.lang.Override
+      public int getViewerViewCnt7D() {
+        return viewerViewCnt7D_;
+      }
+      /**
+       * <pre>
+       * 最近7天曝光item数
+       * </pre>
+       *
+       * <code>int32 viewer_view_cnt_7d = 51;</code>
+       * @param value The viewerViewCnt7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setViewerViewCnt7D(int value) {
+        
+        viewerViewCnt7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 最近7天曝光item数
+       * </pre>
+       *
+       * <code>int32 viewer_view_cnt_7d = 51;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearViewerViewCnt7D() {
+        
+        viewerViewCnt7D_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int viewerValidviewCnt7D_ ;
+      /**
+       * <pre>
+       * 最近7天有效观看次数
+       * </pre>
+       *
+       * <code>int32 viewer_validview_cnt_7d = 52;</code>
+       * @return The viewerValidviewCnt7d.
+       */
+      @java.lang.Override
+      public int getViewerValidviewCnt7D() {
+        return viewerValidviewCnt7D_;
+      }
+      /**
+       * <pre>
+       * 最近7天有效观看次数
+       * </pre>
+       *
+       * <code>int32 viewer_validview_cnt_7d = 52;</code>
+       * @param value The viewerValidviewCnt7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setViewerValidviewCnt7D(int value) {
+        
+        viewerValidviewCnt7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 最近7天有效观看次数
+       * </pre>
+       *
+       * <code>int32 viewer_validview_cnt_7d = 52;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearViewerValidviewCnt7D() {
+        
+        viewerValidviewCnt7D_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int viewerCompleteViewCnt7D_ ;
+      /**
+       * <pre>
+       * 最近7天完整观看次数
+       * </pre>
+       *
+       * <code>int32 viewer_complete_view_cnt_7d = 53;</code>
+       * @return The viewerCompleteViewCnt7d.
+       */
+      @java.lang.Override
+      public int getViewerCompleteViewCnt7D() {
+        return viewerCompleteViewCnt7D_;
+      }
+      /**
+       * <pre>
+       * 最近7天完整观看次数
+       * </pre>
+       *
+       * <code>int32 viewer_complete_view_cnt_7d = 53;</code>
+       * @param value The viewerCompleteViewCnt7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setViewerCompleteViewCnt7D(int value) {
+        
+        viewerCompleteViewCnt7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 最近7天完整观看次数
+       * </pre>
+       *
+       * <code>int32 viewer_complete_view_cnt_7d = 53;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearViewerCompleteViewCnt7D() {
+        
+        viewerCompleteViewCnt7D_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private float viewerViewDuration7D_ ;
+      /**
+       * <pre>
+       * 最近7天观看时长（秒）
+       * </pre>
+       *
+       * <code>float viewer_view_duration_7d = 54;</code>
+       * @return The viewerViewDuration7d.
+       */
+      @java.lang.Override
+      public float getViewerViewDuration7D() {
+        return viewerViewDuration7D_;
+      }
+      /**
+       * <pre>
+       * 最近7天观看时长（秒）
+       * </pre>
+       *
+       * <code>float viewer_view_duration_7d = 54;</code>
+       * @param value The viewerViewDuration7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setViewerViewDuration7D(float value) {
+        
+        viewerViewDuration7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 最近7天观看时长（秒）
+       * </pre>
+       *
+       * <code>float viewer_view_duration_7d = 54;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearViewerViewDuration7D() {
+        
+        viewerViewDuration7D_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private int viewerLikeCnt7D_ ;
+      /**
+       * <pre>
+       * 最近7天点赞次数
+       * </pre>
+       *
+       * <code>int32 viewer_like_cnt_7d = 55;</code>
+       * @return The viewerLikeCnt7d.
+       */
+      @java.lang.Override
+      public int getViewerLikeCnt7D() {
+        return viewerLikeCnt7D_;
+      }
+      /**
+       * <pre>
+       * 最近7天点赞次数
+       * </pre>
+       *
+       * <code>int32 viewer_like_cnt_7d = 55;</code>
+       * @param value The viewerLikeCnt7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setViewerLikeCnt7D(int value) {
+        
+        viewerLikeCnt7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 最近7天点赞次数
+       * </pre>
+       *
+       * <code>int32 viewer_like_cnt_7d = 55;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearViewerLikeCnt7D() {
+        
+        viewerLikeCnt7D_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int viewerCommentCnt7D_ ;
+      /**
+       * <pre>
+       * 最近7天评论次数
+       * </pre>
+       *
+       * <code>int32 viewer_comment_cnt_7d = 56;</code>
+       * @return The viewerCommentCnt7d.
+       */
+      @java.lang.Override
+      public int getViewerCommentCnt7D() {
+        return viewerCommentCnt7D_;
+      }
+      /**
+       * <pre>
+       * 最近7天评论次数
+       * </pre>
+       *
+       * <code>int32 viewer_comment_cnt_7d = 56;</code>
+       * @param value The viewerCommentCnt7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setViewerCommentCnt7D(int value) {
+        
+        viewerCommentCnt7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 最近7天评论次数
+       * </pre>
+       *
+       * <code>int32 viewer_comment_cnt_7d = 56;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearViewerCommentCnt7D() {
+        
+        viewerCommentCnt7D_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private float viewerValidviewRate7D_ ;
+      /**
+       * <pre>
+       * 最近7天有效观看率
+       * </pre>
+       *
+       * <code>float viewer_validview_rate_7d = 57;</code>
+       * @return The viewerValidviewRate7d.
+       */
+      @java.lang.Override
+      public float getViewerValidviewRate7D() {
+        return viewerValidviewRate7D_;
+      }
+      /**
+       * <pre>
+       * 最近7天有效观看率
+       * </pre>
+       *
+       * <code>float viewer_validview_rate_7d = 57;</code>
+       * @param value The viewerValidviewRate7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setViewerValidviewRate7D(float value) {
+        
+        viewerValidviewRate7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 最近7天有效观看率
+       * </pre>
+       *
+       * <code>float viewer_validview_rate_7d = 57;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearViewerValidviewRate7D() {
+        
+        viewerValidviewRate7D_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object userDeepviewPostids7D_ = "";
+      /**
+       * <pre>
+       * id列表
+       * </pre>
+       *
+       * <code>string user_deepview_postids_7d = 58;</code>
+       * @return The userDeepviewPostids7d.
+       */
+      public java.lang.String getUserDeepviewPostids7D() {
+        java.lang.Object ref = userDeepviewPostids7D_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          userDeepviewPostids7D_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * id列表
+       * </pre>
+       *
+       * <code>string user_deepview_postids_7d = 58;</code>
+       * @return The bytes for userDeepviewPostids7d.
+       */
+      public com.google.protobuf.ByteString
+          getUserDeepviewPostids7DBytes() {
+        java.lang.Object ref = userDeepviewPostids7D_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          userDeepviewPostids7D_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * id列表
+       * </pre>
+       *
+       * <code>string user_deepview_postids_7d = 58;</code>
+       * @param value The userDeepviewPostids7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserDeepviewPostids7D(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        userDeepviewPostids7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * id列表
+       * </pre>
+       *
+       * <code>string user_deepview_postids_7d = 58;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserDeepviewPostids7D() {
+        
+        userDeepviewPostids7D_ = getDefaultInstance().getUserDeepviewPostids7D();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * id列表
+       * </pre>
+       *
+       * <code>string user_deepview_postids_7d = 58;</code>
+       * @param value The bytes for userDeepviewPostids7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserDeepviewPostids7DBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        userDeepviewPostids7D_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object userInteractPostids7D_ = "";
+      /**
+       * <pre>
+       * 最近7天有正向交互的itemid列表
+       * </pre>
+       *
+       * <code>string user_interact_postids_7d = 59;</code>
+       * @return The userInteractPostids7d.
+       */
+      public java.lang.String getUserInteractPostids7D() {
+        java.lang.Object ref = userInteractPostids7D_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          userInteractPostids7D_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 最近7天有正向交互的itemid列表
+       * </pre>
+       *
+       * <code>string user_interact_postids_7d = 59;</code>
+       * @return The bytes for userInteractPostids7d.
+       */
+      public com.google.protobuf.ByteString
+          getUserInteractPostids7DBytes() {
+        java.lang.Object ref = userInteractPostids7D_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          userInteractPostids7D_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 最近7天有正向交互的itemid列表
+       * </pre>
+       *
+       * <code>string user_interact_postids_7d = 59;</code>
+       * @param value The userInteractPostids7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserInteractPostids7D(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        userInteractPostids7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 最近7天有正向交互的itemid列表
+       * </pre>
+       *
+       * <code>string user_interact_postids_7d = 59;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserInteractPostids7D() {
+        
+        userInteractPostids7D_ = getDefaultInstance().getUserInteractPostids7D();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 最近7天有正向交互的itemid列表
+       * </pre>
+       *
+       * <code>string user_interact_postids_7d = 59;</code>
+       * @param value The bytes for userInteractPostids7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserInteractPostids7DBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        userInteractPostids7D_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int userGiftCount_ ;
+      /**
+       * <pre>
+       * 直播15天
+       * </pre>
+       *
+       * <code>int32 user_gift_count = 60;</code>
+       * @return The userGiftCount.
+       */
+      @java.lang.Override
+      public int getUserGiftCount() {
+        return userGiftCount_;
+      }
+      /**
+       * <pre>
+       * 直播15天
+       * </pre>
+       *
+       * <code>int32 user_gift_count = 60;</code>
+       * @param value The userGiftCount to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserGiftCount(int value) {
+        
+        userGiftCount_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 直播15天
+       * </pre>
+       *
+       * <code>int32 user_gift_count = 60;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserGiftCount() {
+        
+        userGiftCount_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private float userDailyWatchliveMinutes_ ;
+      /**
+       * <code>float user_daily_watchlive_minutes = 61;</code>
+       * @return The userDailyWatchliveMinutes.
+       */
+      @java.lang.Override
+      public float getUserDailyWatchliveMinutes() {
+        return userDailyWatchliveMinutes_;
+      }
+      /**
+       * <code>float user_daily_watchlive_minutes = 61;</code>
+       * @param value The userDailyWatchliveMinutes to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserDailyWatchliveMinutes(float value) {
+        
+        userDailyWatchliveMinutes_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>float user_daily_watchlive_minutes = 61;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserDailyWatchliveMinutes() {
+        
+        userDailyWatchliveMinutes_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object preferPosTag17DTop3_ = "";
+      /**
+       * <pre>
+       * 正偏好特征v2
+       * </pre>
+       *
+       * <code>string prefer_pos_tag1_7d_top3 = 70;</code>
+       * @return The preferPosTag17dTop3.
+       */
+      public java.lang.String getPreferPosTag17DTop3() {
+        java.lang.Object ref = preferPosTag17DTop3_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          preferPosTag17DTop3_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 正偏好特征v2
+       * </pre>
+       *
+       * <code>string prefer_pos_tag1_7d_top3 = 70;</code>
+       * @return The bytes for preferPosTag17dTop3.
+       */
+      public com.google.protobuf.ByteString
+          getPreferPosTag17DTop3Bytes() {
+        java.lang.Object ref = preferPosTag17DTop3_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          preferPosTag17DTop3_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 正偏好特征v2
+       * </pre>
+       *
+       * <code>string prefer_pos_tag1_7d_top3 = 70;</code>
+       * @param value The preferPosTag17dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferPosTag17DTop3(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        preferPosTag17DTop3_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 正偏好特征v2
+       * </pre>
+       *
+       * <code>string prefer_pos_tag1_7d_top3 = 70;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPreferPosTag17DTop3() {
+        
+        preferPosTag17DTop3_ = getDefaultInstance().getPreferPosTag17DTop3();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 正偏好特征v2
+       * </pre>
+       *
+       * <code>string prefer_pos_tag1_7d_top3 = 70;</code>
+       * @param value The bytes for preferPosTag17dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferPosTag17DTop3Bytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        preferPosTag17DTop3_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object preferPosTag27DTop3_ = "";
+      /**
+       * <code>string prefer_pos_tag2_7d_top3 = 71;</code>
+       * @return The preferPosTag27dTop3.
+       */
+      public java.lang.String getPreferPosTag27DTop3() {
+        java.lang.Object ref = preferPosTag27DTop3_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          preferPosTag27DTop3_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string prefer_pos_tag2_7d_top3 = 71;</code>
+       * @return The bytes for preferPosTag27dTop3.
+       */
+      public com.google.protobuf.ByteString
+          getPreferPosTag27DTop3Bytes() {
+        java.lang.Object ref = preferPosTag27DTop3_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          preferPosTag27DTop3_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string prefer_pos_tag2_7d_top3 = 71;</code>
+       * @param value The preferPosTag27dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferPosTag27DTop3(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        preferPosTag27DTop3_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string prefer_pos_tag2_7d_top3 = 71;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPreferPosTag27DTop3() {
+        
+        preferPosTag27DTop3_ = getDefaultInstance().getPreferPosTag27DTop3();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string prefer_pos_tag2_7d_top3 = 71;</code>
+       * @param value The bytes for preferPosTag27dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferPosTag27DTop3Bytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        preferPosTag27DTop3_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object preferPosTag37DTop3_ = "";
+      /**
+       * <code>string prefer_pos_tag3_7d_top3 = 72;</code>
+       * @return The preferPosTag37dTop3.
+       */
+      public java.lang.String getPreferPosTag37DTop3() {
+        java.lang.Object ref = preferPosTag37DTop3_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          preferPosTag37DTop3_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string prefer_pos_tag3_7d_top3 = 72;</code>
+       * @return The bytes for preferPosTag37dTop3.
+       */
+      public com.google.protobuf.ByteString
+          getPreferPosTag37DTop3Bytes() {
+        java.lang.Object ref = preferPosTag37DTop3_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          preferPosTag37DTop3_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string prefer_pos_tag3_7d_top3 = 72;</code>
+       * @param value The preferPosTag37dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferPosTag37DTop3(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        preferPosTag37DTop3_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string prefer_pos_tag3_7d_top3 = 72;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPreferPosTag37DTop3() {
+        
+        preferPosTag37DTop3_ = getDefaultInstance().getPreferPosTag37DTop3();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string prefer_pos_tag3_7d_top3 = 72;</code>
+       * @param value The bytes for preferPosTag37dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferPosTag37DTop3Bytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        preferPosTag37DTop3_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object preferPosTag47DTop3_ = "";
+      /**
+       * <code>string prefer_pos_tag4_7d_top3 = 73;</code>
+       * @return The preferPosTag47dTop3.
+       */
+      public java.lang.String getPreferPosTag47DTop3() {
+        java.lang.Object ref = preferPosTag47DTop3_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          preferPosTag47DTop3_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string prefer_pos_tag4_7d_top3 = 73;</code>
+       * @return The bytes for preferPosTag47dTop3.
+       */
+      public com.google.protobuf.ByteString
+          getPreferPosTag47DTop3Bytes() {
+        java.lang.Object ref = preferPosTag47DTop3_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          preferPosTag47DTop3_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string prefer_pos_tag4_7d_top3 = 73;</code>
+       * @param value The preferPosTag47dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferPosTag47DTop3(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        preferPosTag47DTop3_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string prefer_pos_tag4_7d_top3 = 73;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPreferPosTag47DTop3() {
+        
+        preferPosTag47DTop3_ = getDefaultInstance().getPreferPosTag47DTop3();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string prefer_pos_tag4_7d_top3 = 73;</code>
+       * @param value The bytes for preferPosTag47dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferPosTag47DTop3Bytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        preferPosTag47DTop3_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object preferPosTag57DTop3_ = "";
+      /**
+       * <code>string prefer_pos_tag5_7d_top3 = 74;</code>
+       * @return The preferPosTag57dTop3.
+       */
+      public java.lang.String getPreferPosTag57DTop3() {
+        java.lang.Object ref = preferPosTag57DTop3_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          preferPosTag57DTop3_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string prefer_pos_tag5_7d_top3 = 74;</code>
+       * @return The bytes for preferPosTag57dTop3.
+       */
+      public com.google.protobuf.ByteString
+          getPreferPosTag57DTop3Bytes() {
+        java.lang.Object ref = preferPosTag57DTop3_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          preferPosTag57DTop3_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string prefer_pos_tag5_7d_top3 = 74;</code>
+       * @param value The preferPosTag57dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferPosTag57DTop3(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        preferPosTag57DTop3_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string prefer_pos_tag5_7d_top3 = 74;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPreferPosTag57DTop3() {
+        
+        preferPosTag57DTop3_ = getDefaultInstance().getPreferPosTag57DTop3();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string prefer_pos_tag5_7d_top3 = 74;</code>
+       * @param value The bytes for preferPosTag57dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferPosTag57DTop3Bytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        preferPosTag57DTop3_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object preferPosTag67DTop3_ = "";
+      /**
+       * <code>string prefer_pos_tag6_7d_top3 = 75;</code>
+       * @return The preferPosTag67dTop3.
+       */
+      public java.lang.String getPreferPosTag67DTop3() {
+        java.lang.Object ref = preferPosTag67DTop3_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          preferPosTag67DTop3_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string prefer_pos_tag6_7d_top3 = 75;</code>
+       * @return The bytes for preferPosTag67dTop3.
+       */
+      public com.google.protobuf.ByteString
+          getPreferPosTag67DTop3Bytes() {
+        java.lang.Object ref = preferPosTag67DTop3_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          preferPosTag67DTop3_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string prefer_pos_tag6_7d_top3 = 75;</code>
+       * @param value The preferPosTag67dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferPosTag67DTop3(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        preferPosTag67DTop3_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string prefer_pos_tag6_7d_top3 = 75;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPreferPosTag67DTop3() {
+        
+        preferPosTag67DTop3_ = getDefaultInstance().getPreferPosTag67DTop3();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string prefer_pos_tag6_7d_top3 = 75;</code>
+       * @param value The bytes for preferPosTag67dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferPosTag67DTop3Bytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        preferPosTag67DTop3_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object preferPosTag77DTop3_ = "";
+      /**
+       * <code>string prefer_pos_tag7_7d_top3 = 76;</code>
+       * @return The preferPosTag77dTop3.
+       */
+      public java.lang.String getPreferPosTag77DTop3() {
+        java.lang.Object ref = preferPosTag77DTop3_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          preferPosTag77DTop3_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string prefer_pos_tag7_7d_top3 = 76;</code>
+       * @return The bytes for preferPosTag77dTop3.
+       */
+      public com.google.protobuf.ByteString
+          getPreferPosTag77DTop3Bytes() {
+        java.lang.Object ref = preferPosTag77DTop3_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          preferPosTag77DTop3_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string prefer_pos_tag7_7d_top3 = 76;</code>
+       * @param value The preferPosTag77dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferPosTag77DTop3(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        preferPosTag77DTop3_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string prefer_pos_tag7_7d_top3 = 76;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPreferPosTag77DTop3() {
+        
+        preferPosTag77DTop3_ = getDefaultInstance().getPreferPosTag77DTop3();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string prefer_pos_tag7_7d_top3 = 76;</code>
+       * @param value The bytes for preferPosTag77dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferPosTag77DTop3Bytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        preferPosTag77DTop3_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object preferPosFtag17DTop3_ = "";
+      /**
+       * <code>string prefer_pos_ftag1_7d_top3 = 77;</code>
+       * @return The preferPosFtag17dTop3.
+       */
+      public java.lang.String getPreferPosFtag17DTop3() {
+        java.lang.Object ref = preferPosFtag17DTop3_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          preferPosFtag17DTop3_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string prefer_pos_ftag1_7d_top3 = 77;</code>
+       * @return The bytes for preferPosFtag17dTop3.
+       */
+      public com.google.protobuf.ByteString
+          getPreferPosFtag17DTop3Bytes() {
+        java.lang.Object ref = preferPosFtag17DTop3_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          preferPosFtag17DTop3_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string prefer_pos_ftag1_7d_top3 = 77;</code>
+       * @param value The preferPosFtag17dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferPosFtag17DTop3(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        preferPosFtag17DTop3_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string prefer_pos_ftag1_7d_top3 = 77;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPreferPosFtag17DTop3() {
+        
+        preferPosFtag17DTop3_ = getDefaultInstance().getPreferPosFtag17DTop3();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string prefer_pos_ftag1_7d_top3 = 77;</code>
+       * @param value The bytes for preferPosFtag17dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferPosFtag17DTop3Bytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        preferPosFtag17DTop3_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object preferPosFtag27DTop3_ = "";
+      /**
+       * <code>string prefer_pos_ftag2_7d_top3 = 78;</code>
+       * @return The preferPosFtag27dTop3.
+       */
+      public java.lang.String getPreferPosFtag27DTop3() {
+        java.lang.Object ref = preferPosFtag27DTop3_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          preferPosFtag27DTop3_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string prefer_pos_ftag2_7d_top3 = 78;</code>
+       * @return The bytes for preferPosFtag27dTop3.
+       */
+      public com.google.protobuf.ByteString
+          getPreferPosFtag27DTop3Bytes() {
+        java.lang.Object ref = preferPosFtag27DTop3_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          preferPosFtag27DTop3_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string prefer_pos_ftag2_7d_top3 = 78;</code>
+       * @param value The preferPosFtag27dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferPosFtag27DTop3(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        preferPosFtag27DTop3_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string prefer_pos_ftag2_7d_top3 = 78;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPreferPosFtag27DTop3() {
+        
+        preferPosFtag27DTop3_ = getDefaultInstance().getPreferPosFtag27DTop3();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string prefer_pos_ftag2_7d_top3 = 78;</code>
+       * @param value The bytes for preferPosFtag27dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferPosFtag27DTop3Bytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        preferPosFtag27DTop3_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object preferPosFtag37DTop3_ = "";
+      /**
+       * <code>string prefer_pos_ftag3_7d_top3 = 79;</code>
+       * @return The preferPosFtag37dTop3.
+       */
+      public java.lang.String getPreferPosFtag37DTop3() {
+        java.lang.Object ref = preferPosFtag37DTop3_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          preferPosFtag37DTop3_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string prefer_pos_ftag3_7d_top3 = 79;</code>
+       * @return The bytes for preferPosFtag37dTop3.
+       */
+      public com.google.protobuf.ByteString
+          getPreferPosFtag37DTop3Bytes() {
+        java.lang.Object ref = preferPosFtag37DTop3_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          preferPosFtag37DTop3_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string prefer_pos_ftag3_7d_top3 = 79;</code>
+       * @param value The preferPosFtag37dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferPosFtag37DTop3(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        preferPosFtag37DTop3_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string prefer_pos_ftag3_7d_top3 = 79;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPreferPosFtag37DTop3() {
+        
+        preferPosFtag37DTop3_ = getDefaultInstance().getPreferPosFtag37DTop3();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string prefer_pos_ftag3_7d_top3 = 79;</code>
+       * @param value The bytes for preferPosFtag37dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferPosFtag37DTop3Bytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        preferPosFtag37DTop3_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object preferPosFtag47DTop3_ = "";
+      /**
+       * <code>string prefer_pos_ftag4_7d_top3 = 80;</code>
+       * @return The preferPosFtag47dTop3.
+       */
+      public java.lang.String getPreferPosFtag47DTop3() {
+        java.lang.Object ref = preferPosFtag47DTop3_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          preferPosFtag47DTop3_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string prefer_pos_ftag4_7d_top3 = 80;</code>
+       * @return The bytes for preferPosFtag47dTop3.
+       */
+      public com.google.protobuf.ByteString
+          getPreferPosFtag47DTop3Bytes() {
+        java.lang.Object ref = preferPosFtag47DTop3_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          preferPosFtag47DTop3_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string prefer_pos_ftag4_7d_top3 = 80;</code>
+       * @param value The preferPosFtag47dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferPosFtag47DTop3(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        preferPosFtag47DTop3_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string prefer_pos_ftag4_7d_top3 = 80;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPreferPosFtag47DTop3() {
+        
+        preferPosFtag47DTop3_ = getDefaultInstance().getPreferPosFtag47DTop3();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string prefer_pos_ftag4_7d_top3 = 80;</code>
+       * @param value The bytes for preferPosFtag47dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferPosFtag47DTop3Bytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        preferPosFtag47DTop3_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object preferPosFtag57DTop3_ = "";
+      /**
+       * <code>string prefer_pos_ftag5_7d_top3 = 81;</code>
+       * @return The preferPosFtag57dTop3.
+       */
+      public java.lang.String getPreferPosFtag57DTop3() {
+        java.lang.Object ref = preferPosFtag57DTop3_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          preferPosFtag57DTop3_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string prefer_pos_ftag5_7d_top3 = 81;</code>
+       * @return The bytes for preferPosFtag57dTop3.
+       */
+      public com.google.protobuf.ByteString
+          getPreferPosFtag57DTop3Bytes() {
+        java.lang.Object ref = preferPosFtag57DTop3_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          preferPosFtag57DTop3_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string prefer_pos_ftag5_7d_top3 = 81;</code>
+       * @param value The preferPosFtag57dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferPosFtag57DTop3(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        preferPosFtag57DTop3_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string prefer_pos_ftag5_7d_top3 = 81;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPreferPosFtag57DTop3() {
+        
+        preferPosFtag57DTop3_ = getDefaultInstance().getPreferPosFtag57DTop3();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string prefer_pos_ftag5_7d_top3 = 81;</code>
+       * @param value The bytes for preferPosFtag57dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferPosFtag57DTop3Bytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        preferPosFtag57DTop3_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object preferPosFtag67DTop3_ = "";
+      /**
+       * <code>string prefer_pos_ftag6_7d_top3 = 82;</code>
+       * @return The preferPosFtag67dTop3.
+       */
+      public java.lang.String getPreferPosFtag67DTop3() {
+        java.lang.Object ref = preferPosFtag67DTop3_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          preferPosFtag67DTop3_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string prefer_pos_ftag6_7d_top3 = 82;</code>
+       * @return The bytes for preferPosFtag67dTop3.
+       */
+      public com.google.protobuf.ByteString
+          getPreferPosFtag67DTop3Bytes() {
+        java.lang.Object ref = preferPosFtag67DTop3_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          preferPosFtag67DTop3_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string prefer_pos_ftag6_7d_top3 = 82;</code>
+       * @param value The preferPosFtag67dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferPosFtag67DTop3(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        preferPosFtag67DTop3_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string prefer_pos_ftag6_7d_top3 = 82;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPreferPosFtag67DTop3() {
+        
+        preferPosFtag67DTop3_ = getDefaultInstance().getPreferPosFtag67DTop3();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string prefer_pos_ftag6_7d_top3 = 82;</code>
+       * @param value The bytes for preferPosFtag67dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferPosFtag67DTop3Bytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        preferPosFtag67DTop3_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object preferNegTag17DTop3_ = "";
+      /**
+       * <pre>
+       * 负偏好特征v2
+       * </pre>
+       *
+       * <code>string prefer_neg_tag1_7d_top3 = 83;</code>
+       * @return The preferNegTag17dTop3.
+       */
+      public java.lang.String getPreferNegTag17DTop3() {
+        java.lang.Object ref = preferNegTag17DTop3_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          preferNegTag17DTop3_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 负偏好特征v2
+       * </pre>
+       *
+       * <code>string prefer_neg_tag1_7d_top3 = 83;</code>
+       * @return The bytes for preferNegTag17dTop3.
+       */
+      public com.google.protobuf.ByteString
+          getPreferNegTag17DTop3Bytes() {
+        java.lang.Object ref = preferNegTag17DTop3_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          preferNegTag17DTop3_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 负偏好特征v2
+       * </pre>
+       *
+       * <code>string prefer_neg_tag1_7d_top3 = 83;</code>
+       * @param value The preferNegTag17dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferNegTag17DTop3(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        preferNegTag17DTop3_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 负偏好特征v2
+       * </pre>
+       *
+       * <code>string prefer_neg_tag1_7d_top3 = 83;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPreferNegTag17DTop3() {
+        
+        preferNegTag17DTop3_ = getDefaultInstance().getPreferNegTag17DTop3();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 负偏好特征v2
+       * </pre>
+       *
+       * <code>string prefer_neg_tag1_7d_top3 = 83;</code>
+       * @param value The bytes for preferNegTag17dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferNegTag17DTop3Bytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        preferNegTag17DTop3_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object preferNegTag27DTop3_ = "";
+      /**
+       * <code>string prefer_neg_tag2_7d_top3 = 84;</code>
+       * @return The preferNegTag27dTop3.
+       */
+      public java.lang.String getPreferNegTag27DTop3() {
+        java.lang.Object ref = preferNegTag27DTop3_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          preferNegTag27DTop3_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string prefer_neg_tag2_7d_top3 = 84;</code>
+       * @return The bytes for preferNegTag27dTop3.
+       */
+      public com.google.protobuf.ByteString
+          getPreferNegTag27DTop3Bytes() {
+        java.lang.Object ref = preferNegTag27DTop3_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          preferNegTag27DTop3_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string prefer_neg_tag2_7d_top3 = 84;</code>
+       * @param value The preferNegTag27dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferNegTag27DTop3(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        preferNegTag27DTop3_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string prefer_neg_tag2_7d_top3 = 84;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPreferNegTag27DTop3() {
+        
+        preferNegTag27DTop3_ = getDefaultInstance().getPreferNegTag27DTop3();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string prefer_neg_tag2_7d_top3 = 84;</code>
+       * @param value The bytes for preferNegTag27dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferNegTag27DTop3Bytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        preferNegTag27DTop3_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object preferNegTag37DTop3_ = "";
+      /**
+       * <code>string prefer_neg_tag3_7d_top3 = 85;</code>
+       * @return The preferNegTag37dTop3.
+       */
+      public java.lang.String getPreferNegTag37DTop3() {
+        java.lang.Object ref = preferNegTag37DTop3_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          preferNegTag37DTop3_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string prefer_neg_tag3_7d_top3 = 85;</code>
+       * @return The bytes for preferNegTag37dTop3.
+       */
+      public com.google.protobuf.ByteString
+          getPreferNegTag37DTop3Bytes() {
+        java.lang.Object ref = preferNegTag37DTop3_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          preferNegTag37DTop3_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string prefer_neg_tag3_7d_top3 = 85;</code>
+       * @param value The preferNegTag37dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferNegTag37DTop3(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        preferNegTag37DTop3_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string prefer_neg_tag3_7d_top3 = 85;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPreferNegTag37DTop3() {
+        
+        preferNegTag37DTop3_ = getDefaultInstance().getPreferNegTag37DTop3();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string prefer_neg_tag3_7d_top3 = 85;</code>
+       * @param value The bytes for preferNegTag37dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferNegTag37DTop3Bytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        preferNegTag37DTop3_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object preferNegTag47DTop3_ = "";
+      /**
+       * <code>string prefer_neg_tag4_7d_top3 = 86;</code>
+       * @return The preferNegTag47dTop3.
+       */
+      public java.lang.String getPreferNegTag47DTop3() {
+        java.lang.Object ref = preferNegTag47DTop3_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          preferNegTag47DTop3_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string prefer_neg_tag4_7d_top3 = 86;</code>
+       * @return The bytes for preferNegTag47dTop3.
+       */
+      public com.google.protobuf.ByteString
+          getPreferNegTag47DTop3Bytes() {
+        java.lang.Object ref = preferNegTag47DTop3_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          preferNegTag47DTop3_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string prefer_neg_tag4_7d_top3 = 86;</code>
+       * @param value The preferNegTag47dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferNegTag47DTop3(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        preferNegTag47DTop3_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string prefer_neg_tag4_7d_top3 = 86;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPreferNegTag47DTop3() {
+        
+        preferNegTag47DTop3_ = getDefaultInstance().getPreferNegTag47DTop3();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string prefer_neg_tag4_7d_top3 = 86;</code>
+       * @param value The bytes for preferNegTag47dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferNegTag47DTop3Bytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        preferNegTag47DTop3_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object preferNegTag57DTop3_ = "";
+      /**
+       * <code>string prefer_neg_tag5_7d_top3 = 87;</code>
+       * @return The preferNegTag57dTop3.
+       */
+      public java.lang.String getPreferNegTag57DTop3() {
+        java.lang.Object ref = preferNegTag57DTop3_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          preferNegTag57DTop3_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string prefer_neg_tag5_7d_top3 = 87;</code>
+       * @return The bytes for preferNegTag57dTop3.
+       */
+      public com.google.protobuf.ByteString
+          getPreferNegTag57DTop3Bytes() {
+        java.lang.Object ref = preferNegTag57DTop3_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          preferNegTag57DTop3_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string prefer_neg_tag5_7d_top3 = 87;</code>
+       * @param value The preferNegTag57dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferNegTag57DTop3(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        preferNegTag57DTop3_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string prefer_neg_tag5_7d_top3 = 87;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPreferNegTag57DTop3() {
+        
+        preferNegTag57DTop3_ = getDefaultInstance().getPreferNegTag57DTop3();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string prefer_neg_tag5_7d_top3 = 87;</code>
+       * @param value The bytes for preferNegTag57dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferNegTag57DTop3Bytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        preferNegTag57DTop3_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object preferNegTag67DTop3_ = "";
+      /**
+       * <code>string prefer_neg_tag6_7d_top3 = 88;</code>
+       * @return The preferNegTag67dTop3.
+       */
+      public java.lang.String getPreferNegTag67DTop3() {
+        java.lang.Object ref = preferNegTag67DTop3_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          preferNegTag67DTop3_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string prefer_neg_tag6_7d_top3 = 88;</code>
+       * @return The bytes for preferNegTag67dTop3.
+       */
+      public com.google.protobuf.ByteString
+          getPreferNegTag67DTop3Bytes() {
+        java.lang.Object ref = preferNegTag67DTop3_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          preferNegTag67DTop3_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string prefer_neg_tag6_7d_top3 = 88;</code>
+       * @param value The preferNegTag67dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferNegTag67DTop3(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        preferNegTag67DTop3_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string prefer_neg_tag6_7d_top3 = 88;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPreferNegTag67DTop3() {
+        
+        preferNegTag67DTop3_ = getDefaultInstance().getPreferNegTag67DTop3();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string prefer_neg_tag6_7d_top3 = 88;</code>
+       * @param value The bytes for preferNegTag67dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferNegTag67DTop3Bytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        preferNegTag67DTop3_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object preferNegTag77DTop3_ = "";
+      /**
+       * <code>string prefer_neg_tag7_7d_top3 = 89;</code>
+       * @return The preferNegTag77dTop3.
+       */
+      public java.lang.String getPreferNegTag77DTop3() {
+        java.lang.Object ref = preferNegTag77DTop3_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          preferNegTag77DTop3_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string prefer_neg_tag7_7d_top3 = 89;</code>
+       * @return The bytes for preferNegTag77dTop3.
+       */
+      public com.google.protobuf.ByteString
+          getPreferNegTag77DTop3Bytes() {
+        java.lang.Object ref = preferNegTag77DTop3_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          preferNegTag77DTop3_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string prefer_neg_tag7_7d_top3 = 89;</code>
+       * @param value The preferNegTag77dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferNegTag77DTop3(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        preferNegTag77DTop3_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string prefer_neg_tag7_7d_top3 = 89;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPreferNegTag77DTop3() {
+        
+        preferNegTag77DTop3_ = getDefaultInstance().getPreferNegTag77DTop3();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string prefer_neg_tag7_7d_top3 = 89;</code>
+       * @param value The bytes for preferNegTag77dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferNegTag77DTop3Bytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        preferNegTag77DTop3_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object preferNegFtag17DTop3_ = "";
+      /**
+       * <code>string prefer_neg_ftag1_7d_top3 = 90;</code>
+       * @return The preferNegFtag17dTop3.
+       */
+      public java.lang.String getPreferNegFtag17DTop3() {
+        java.lang.Object ref = preferNegFtag17DTop3_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          preferNegFtag17DTop3_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string prefer_neg_ftag1_7d_top3 = 90;</code>
+       * @return The bytes for preferNegFtag17dTop3.
+       */
+      public com.google.protobuf.ByteString
+          getPreferNegFtag17DTop3Bytes() {
+        java.lang.Object ref = preferNegFtag17DTop3_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          preferNegFtag17DTop3_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string prefer_neg_ftag1_7d_top3 = 90;</code>
+       * @param value The preferNegFtag17dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferNegFtag17DTop3(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        preferNegFtag17DTop3_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string prefer_neg_ftag1_7d_top3 = 90;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPreferNegFtag17DTop3() {
+        
+        preferNegFtag17DTop3_ = getDefaultInstance().getPreferNegFtag17DTop3();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string prefer_neg_ftag1_7d_top3 = 90;</code>
+       * @param value The bytes for preferNegFtag17dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferNegFtag17DTop3Bytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        preferNegFtag17DTop3_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object preferNegFtag27DTop3_ = "";
+      /**
+       * <code>string prefer_neg_ftag2_7d_top3 = 91;</code>
+       * @return The preferNegFtag27dTop3.
+       */
+      public java.lang.String getPreferNegFtag27DTop3() {
+        java.lang.Object ref = preferNegFtag27DTop3_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          preferNegFtag27DTop3_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string prefer_neg_ftag2_7d_top3 = 91;</code>
+       * @return The bytes for preferNegFtag27dTop3.
+       */
+      public com.google.protobuf.ByteString
+          getPreferNegFtag27DTop3Bytes() {
+        java.lang.Object ref = preferNegFtag27DTop3_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          preferNegFtag27DTop3_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string prefer_neg_ftag2_7d_top3 = 91;</code>
+       * @param value The preferNegFtag27dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferNegFtag27DTop3(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        preferNegFtag27DTop3_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string prefer_neg_ftag2_7d_top3 = 91;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPreferNegFtag27DTop3() {
+        
+        preferNegFtag27DTop3_ = getDefaultInstance().getPreferNegFtag27DTop3();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string prefer_neg_ftag2_7d_top3 = 91;</code>
+       * @param value The bytes for preferNegFtag27dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferNegFtag27DTop3Bytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        preferNegFtag27DTop3_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object preferNegFtag37DTop3_ = "";
+      /**
+       * <code>string prefer_neg_ftag3_7d_top3 = 92;</code>
+       * @return The preferNegFtag37dTop3.
+       */
+      public java.lang.String getPreferNegFtag37DTop3() {
+        java.lang.Object ref = preferNegFtag37DTop3_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          preferNegFtag37DTop3_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string prefer_neg_ftag3_7d_top3 = 92;</code>
+       * @return The bytes for preferNegFtag37dTop3.
+       */
+      public com.google.protobuf.ByteString
+          getPreferNegFtag37DTop3Bytes() {
+        java.lang.Object ref = preferNegFtag37DTop3_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          preferNegFtag37DTop3_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string prefer_neg_ftag3_7d_top3 = 92;</code>
+       * @param value The preferNegFtag37dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferNegFtag37DTop3(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        preferNegFtag37DTop3_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string prefer_neg_ftag3_7d_top3 = 92;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPreferNegFtag37DTop3() {
+        
+        preferNegFtag37DTop3_ = getDefaultInstance().getPreferNegFtag37DTop3();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string prefer_neg_ftag3_7d_top3 = 92;</code>
+       * @param value The bytes for preferNegFtag37dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferNegFtag37DTop3Bytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        preferNegFtag37DTop3_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object preferNegFtag47DTop3_ = "";
+      /**
+       * <code>string prefer_neg_ftag4_7d_top3 = 93;</code>
+       * @return The preferNegFtag47dTop3.
+       */
+      public java.lang.String getPreferNegFtag47DTop3() {
+        java.lang.Object ref = preferNegFtag47DTop3_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          preferNegFtag47DTop3_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string prefer_neg_ftag4_7d_top3 = 93;</code>
+       * @return The bytes for preferNegFtag47dTop3.
+       */
+      public com.google.protobuf.ByteString
+          getPreferNegFtag47DTop3Bytes() {
+        java.lang.Object ref = preferNegFtag47DTop3_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          preferNegFtag47DTop3_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string prefer_neg_ftag4_7d_top3 = 93;</code>
+       * @param value The preferNegFtag47dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferNegFtag47DTop3(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        preferNegFtag47DTop3_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string prefer_neg_ftag4_7d_top3 = 93;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPreferNegFtag47DTop3() {
+        
+        preferNegFtag47DTop3_ = getDefaultInstance().getPreferNegFtag47DTop3();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string prefer_neg_ftag4_7d_top3 = 93;</code>
+       * @param value The bytes for preferNegFtag47dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferNegFtag47DTop3Bytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        preferNegFtag47DTop3_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object preferNegFtag57DTop3_ = "";
+      /**
+       * <code>string prefer_neg_ftag5_7d_top3 = 94;</code>
+       * @return The preferNegFtag57dTop3.
+       */
+      public java.lang.String getPreferNegFtag57DTop3() {
+        java.lang.Object ref = preferNegFtag57DTop3_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          preferNegFtag57DTop3_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string prefer_neg_ftag5_7d_top3 = 94;</code>
+       * @return The bytes for preferNegFtag57dTop3.
+       */
+      public com.google.protobuf.ByteString
+          getPreferNegFtag57DTop3Bytes() {
+        java.lang.Object ref = preferNegFtag57DTop3_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          preferNegFtag57DTop3_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string prefer_neg_ftag5_7d_top3 = 94;</code>
+       * @param value The preferNegFtag57dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferNegFtag57DTop3(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        preferNegFtag57DTop3_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string prefer_neg_ftag5_7d_top3 = 94;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPreferNegFtag57DTop3() {
+        
+        preferNegFtag57DTop3_ = getDefaultInstance().getPreferNegFtag57DTop3();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string prefer_neg_ftag5_7d_top3 = 94;</code>
+       * @param value The bytes for preferNegFtag57dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferNegFtag57DTop3Bytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        preferNegFtag57DTop3_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object preferNegFtag67DTop3_ = "";
+      /**
+       * <code>string prefer_neg_ftag6_7d_top3 = 95;</code>
+       * @return The preferNegFtag67dTop3.
+       */
+      public java.lang.String getPreferNegFtag67DTop3() {
+        java.lang.Object ref = preferNegFtag67DTop3_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          preferNegFtag67DTop3_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string prefer_neg_ftag6_7d_top3 = 95;</code>
+       * @return The bytes for preferNegFtag67dTop3.
+       */
+      public com.google.protobuf.ByteString
+          getPreferNegFtag67DTop3Bytes() {
+        java.lang.Object ref = preferNegFtag67DTop3_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          preferNegFtag67DTop3_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string prefer_neg_ftag6_7d_top3 = 95;</code>
+       * @param value The preferNegFtag67dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferNegFtag67DTop3(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        preferNegFtag67DTop3_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string prefer_neg_ftag6_7d_top3 = 95;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPreferNegFtag67DTop3() {
+        
+        preferNegFtag67DTop3_ = getDefaultInstance().getPreferNegFtag67DTop3();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string prefer_neg_ftag6_7d_top3 = 95;</code>
+       * @param value The bytes for preferNegFtag67dTop3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreferNegFtag67DTop3Bytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        preferNegFtag67DTop3_ = value;
+        onChanged();
+        return this;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -3791,6 +9113,16 @@ public final class RecFeature {
   public interface RecPostFeatureOrBuilder extends
       // @@protoc_insertion_point(interface_extends:com.gosh.entity.RecPostFeature)
       com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * 作品ID（整数）
+     * </pre>
+     *
+     * <code>uint64 post_id = 1;</code>
+     * @return The postId.
+     */
+    long getPostId();
 
     /**
      * <pre>
@@ -4013,6 +9345,324 @@ public final class RecFeature {
      * @return The postPosinterCnt24h.
      */
     int getPostPosinterCnt24H();
+
+    /**
+     * <pre>
+     * 7天互动指标
+     * </pre>
+     *
+     * <code>int32 post_view_cnt_7d = 41;</code>
+     * @return The postViewCnt7d.
+     */
+    int getPostViewCnt7D();
+
+    /**
+     * <pre>
+     * 最近7天有效观看次数
+     * </pre>
+     *
+     * <code>int32 post_validview_cnt_7d = 42;</code>
+     * @return The postValidviewCnt7d.
+     */
+    int getPostValidviewCnt7D();
+
+    /**
+     * <pre>
+     * 最近7天完播次数
+     * </pre>
+     *
+     * <code>int32 post_completeview_cnt_7d = 43;</code>
+     * @return The postCompleteviewCnt7d.
+     */
+    int getPostCompleteviewCnt7D();
+
+    /**
+     * <pre>
+     * 最近7天观看总时长（秒）
+     * </pre>
+     *
+     * <code>float post_view_duration_7d = 44;</code>
+     * @return The postViewDuration7d.
+     */
+    float getPostViewDuration7D();
+
+    /**
+     * <pre>
+     * 最近7天点赞次数
+     * </pre>
+     *
+     * <code>int32 post_like_cnt_7d = 45;</code>
+     * @return The postLikeCnt7d.
+     */
+    int getPostLikeCnt7D();
+
+    /**
+     * <pre>
+     * 最近7天评论次数
+     * </pre>
+     *
+     * <code>int32 post_comment_cnt_7d = 46;</code>
+     * @return The postCommentCnt7d.
+     */
+    int getPostCommentCnt7D();
+
+    /**
+     * <pre>
+     * 作者相关指标
+     * </pre>
+     *
+     * <code>repeated int32 tag_ids = 47;</code>
+     * @return A list containing the tagIds.
+     */
+    java.util.List<java.lang.Integer> getTagIdsList();
+    /**
+     * <pre>
+     * 作者相关指标
+     * </pre>
+     *
+     * <code>repeated int32 tag_ids = 47;</code>
+     * @return The count of tagIds.
+     */
+    int getTagIdsCount();
+    /**
+     * <pre>
+     * 作者相关指标
+     * </pre>
+     *
+     * <code>repeated int32 tag_ids = 47;</code>
+     * @param index The index of the element to return.
+     * @return The tagIds at the given index.
+     */
+    int getTagIds(int index);
+
+    /**
+     * <pre>
+     * 作者最近7天曝光作品数
+     * </pre>
+     *
+     * <code>int32 author_exp_distinct_post_cnt_7d = 48;</code>
+     * @return The authorExpDistinctPostCnt7d.
+     */
+    int getAuthorExpDistinctPostCnt7D();
+
+    /**
+     * <pre>
+     * 作者最近7天曝光次数
+     * </pre>
+     *
+     * <code>int32 author_exp_post_cnt_7d = 49;</code>
+     * @return The authorExpPostCnt7d.
+     */
+    int getAuthorExpPostCnt7D();
+
+    /**
+     * <pre>
+     * 作者最近7天有效观看次数
+     * </pre>
+     *
+     * <code>int32 author_validview_post_cnt_7d = 50;</code>
+     * @return The authorValidviewPostCnt7d.
+     */
+    int getAuthorValidviewPostCnt7D();
+
+    /**
+     * <pre>
+     * 作者最近7天观看时长（秒）
+     * </pre>
+     *
+     * <code>float author_view_post_duration_7d = 51;</code>
+     * @return The authorViewPostDuration7d.
+     */
+    float getAuthorViewPostDuration7D();
+
+    /**
+     * <pre>
+     * 作者最近7天点赞次数
+     * </pre>
+     *
+     * <code>int32 author_like_cnt_7d = 52;</code>
+     * @return The authorLikeCnt7d.
+     */
+    int getAuthorLikeCnt7D();
+
+    /**
+     * <pre>
+     * 作者最近7天评论次数
+     * </pre>
+     *
+     * <code>int32 author_comment_cnt_7d = 53;</code>
+     * @return The authorCommentCnt7d.
+     */
+    int getAuthorCommentCnt7D();
+
+    /**
+     * <pre>
+     * 作者最近7天完整观看次数
+     * </pre>
+     *
+     * <code>int32 author_completeview_post_cnt_7d = 54;</code>
+     * @return The authorCompleteviewPostCnt7d.
+     */
+    int getAuthorCompleteviewPostCnt7D();
+
+    /**
+     * <pre>
+     * 作者最近7天平均观看时长（秒）
+     * </pre>
+     *
+     * <code>float author_view_avg_duration_7d = 55;</code>
+     * @return The authorViewAvgDuration7d.
+     */
+    float getAuthorViewAvgDuration7D();
+
+    /**
+     * <pre>
+     * 作者主页最近7天post流被访问次数
+     * </pre>
+     *
+     * <code>int32 author_inter_profile_cnt_7d = 56;</code>
+     * @return The authorInterProfileCnt7d.
+     */
+    int getAuthorInterProfileCnt7D();
+
+    /**
+     * <pre>
+     * 作者主页最近7天post流被关注次数
+     * </pre>
+     *
+     * <code>int32 author_follow_cnt_7d = 57;</code>
+     * @return The authorFollowCnt7d.
+     */
+    int getAuthorFollowCnt7D();
+
+    /**
+     * <pre>
+     * 作者粉丝数
+     * </pre>
+     *
+     * <code>int32 author_followers_cnt = 58;</code>
+     * @return The authorFollowersCnt.
+     */
+    int getAuthorFollowersCnt();
+
+    /**
+     * <pre>
+     * 7天比率指标
+     * </pre>
+     *
+     * <code>float post_validview_rate_7d = 60;</code>
+     * @return The postValidviewRate7d.
+     */
+    float getPostValidviewRate7D();
+
+    /**
+     * <pre>
+     * 最近7天完整观看率（完播率）
+     * </pre>
+     *
+     * <code>float post_completeview_rate_7d = 61;</code>
+     * @return The postCompleteviewRate7d.
+     */
+    float getPostCompleteviewRate7D();
+
+    /**
+     * <pre>
+     * 最近7天平均每次观看时长（秒）
+     * </pre>
+     *
+     * <code>float post_avg_view_duration_7d = 62;</code>
+     * @return The postAvgViewDuration7d.
+     */
+    float getPostAvgViewDuration7D();
+
+    /**
+     * <pre>
+     * 最近7天点赞率
+     * </pre>
+     *
+     * <code>float post_like_rate_7d = 63;</code>
+     * @return The postLikeRate7d.
+     */
+    float getPostLikeRate7D();
+
+    /**
+     * <pre>
+     * 最近7天评论率
+     * </pre>
+     *
+     * <code>float post_comment_rate_7d = 64;</code>
+     * @return The postCommentRate7d.
+     */
+    float getPostCommentRate7D();
+
+    /**
+     * <pre>
+     * embedding
+     * </pre>
+     *
+     * <code>repeated float post_ai_embedding = 70;</code>
+     * @return A list containing the postAiEmbedding.
+     */
+    java.util.List<java.lang.Float> getPostAiEmbeddingList();
+    /**
+     * <pre>
+     * embedding
+     * </pre>
+     *
+     * <code>repeated float post_ai_embedding = 70;</code>
+     * @return The count of postAiEmbedding.
+     */
+    int getPostAiEmbeddingCount();
+    /**
+     * <pre>
+     * embedding
+     * </pre>
+     *
+     * <code>repeated float post_ai_embedding = 70;</code>
+     * @param index The index of the element to return.
+     * @return The postAiEmbedding at the given index.
+     */
+    float getPostAiEmbedding(int index);
+
+    /**
+     * <pre>
+     * item的ai标签
+     * </pre>
+     *
+     * <code>string post_ai_tags = 71;</code>
+     * @return The postAiTags.
+     */
+    java.lang.String getPostAiTags();
+    /**
+     * <pre>
+     * item的ai标签
+     * </pre>
+     *
+     * <code>string post_ai_tags = 71;</code>
+     * @return The bytes for postAiTags.
+     */
+    com.google.protobuf.ByteString
+        getPostAiTagsBytes();
+
+    /**
+     * <pre>
+     * item的asr识别语言
+     * </pre>
+     *
+     * <code>string post_asr_lang = 72;</code>
+     * @return The postAsrLang.
+     */
+    java.lang.String getPostAsrLang();
+    /**
+     * <pre>
+     * item的asr识别语言
+     * </pre>
+     *
+     * <code>string post_asr_lang = 72;</code>
+     * @return The bytes for postAsrLang.
+     */
+    com.google.protobuf.ByteString
+        getPostAsrLangBytes();
   }
   /**
    * <pre>
@@ -4032,6 +9682,10 @@ public final class RecFeature {
       super(builder);
     }
     private RecPostFeature() {
+      tagIds_ = emptyIntList();
+      postAiEmbedding_ = emptyFloatList();
+      postAiTags_ = "";
+      postAsrLang_ = "";
     }
 
     @java.lang.Override
@@ -4054,6 +9708,7 @@ public final class RecFeature {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
+      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -4064,6 +9719,11 @@ public final class RecFeature {
             case 0:
               done = true;
               break;
+            case 8: {
+
+              postId_ = input.readUInt64();
+              break;
+            }
             case 80: {
 
               postExpCnt1H_ = input.readInt32();
@@ -4174,6 +9834,170 @@ public final class RecFeature {
               postPosinterCnt24H_ = input.readInt32();
               break;
             }
+            case 328: {
+
+              postViewCnt7D_ = input.readInt32();
+              break;
+            }
+            case 336: {
+
+              postValidviewCnt7D_ = input.readInt32();
+              break;
+            }
+            case 344: {
+
+              postCompleteviewCnt7D_ = input.readInt32();
+              break;
+            }
+            case 357: {
+
+              postViewDuration7D_ = input.readFloat();
+              break;
+            }
+            case 360: {
+
+              postLikeCnt7D_ = input.readInt32();
+              break;
+            }
+            case 368: {
+
+              postCommentCnt7D_ = input.readInt32();
+              break;
+            }
+            case 376: {
+              if (!((mutable_bitField0_ & 0x00000001) != 0)) {
+                tagIds_ = newIntList();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              tagIds_.addInt(input.readInt32());
+              break;
+            }
+            case 378: {
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField0_ & 0x00000001) != 0) && input.getBytesUntilLimit() > 0) {
+                tagIds_ = newIntList();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                tagIds_.addInt(input.readInt32());
+              }
+              input.popLimit(limit);
+              break;
+            }
+            case 384: {
+
+              authorExpDistinctPostCnt7D_ = input.readInt32();
+              break;
+            }
+            case 392: {
+
+              authorExpPostCnt7D_ = input.readInt32();
+              break;
+            }
+            case 400: {
+
+              authorValidviewPostCnt7D_ = input.readInt32();
+              break;
+            }
+            case 413: {
+
+              authorViewPostDuration7D_ = input.readFloat();
+              break;
+            }
+            case 416: {
+
+              authorLikeCnt7D_ = input.readInt32();
+              break;
+            }
+            case 424: {
+
+              authorCommentCnt7D_ = input.readInt32();
+              break;
+            }
+            case 432: {
+
+              authorCompleteviewPostCnt7D_ = input.readInt32();
+              break;
+            }
+            case 445: {
+
+              authorViewAvgDuration7D_ = input.readFloat();
+              break;
+            }
+            case 448: {
+
+              authorInterProfileCnt7D_ = input.readInt32();
+              break;
+            }
+            case 456: {
+
+              authorFollowCnt7D_ = input.readInt32();
+              break;
+            }
+            case 464: {
+
+              authorFollowersCnt_ = input.readInt32();
+              break;
+            }
+            case 485: {
+
+              postValidviewRate7D_ = input.readFloat();
+              break;
+            }
+            case 493: {
+
+              postCompleteviewRate7D_ = input.readFloat();
+              break;
+            }
+            case 501: {
+
+              postAvgViewDuration7D_ = input.readFloat();
+              break;
+            }
+            case 509: {
+
+              postLikeRate7D_ = input.readFloat();
+              break;
+            }
+            case 517: {
+
+              postCommentRate7D_ = input.readFloat();
+              break;
+            }
+            case 565: {
+              if (!((mutable_bitField0_ & 0x00000002) != 0)) {
+                postAiEmbedding_ = newFloatList();
+                mutable_bitField0_ |= 0x00000002;
+              }
+              postAiEmbedding_.addFloat(input.readFloat());
+              break;
+            }
+            case 562: {
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField0_ & 0x00000002) != 0) && input.getBytesUntilLimit() > 0) {
+                postAiEmbedding_ = newFloatList();
+                mutable_bitField0_ |= 0x00000002;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                postAiEmbedding_.addFloat(input.readFloat());
+              }
+              input.popLimit(limit);
+              break;
+            }
+            case 570: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              postAiTags_ = s;
+              break;
+            }
+            case 578: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              postAsrLang_ = s;
+              break;
+            }
             default: {
               if (!parseUnknownField(
                   input, unknownFields, extensionRegistry, tag)) {
@@ -4191,6 +10015,12 @@ public final class RecFeature {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        if (((mutable_bitField0_ & 0x00000001) != 0)) {
+          tagIds_.makeImmutable(); // C
+        }
+        if (((mutable_bitField0_ & 0x00000002) != 0)) {
+          postAiEmbedding_.makeImmutable(); // C
+        }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
@@ -4206,6 +10036,21 @@ public final class RecFeature {
       return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_RecPostFeature_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.gosh.entity.RecFeature.RecPostFeature.class, com.gosh.entity.RecFeature.RecPostFeature.Builder.class);
+    }
+
+    public static final int POST_ID_FIELD_NUMBER = 1;
+    private long postId_;
+    /**
+     * <pre>
+     * 作品ID（整数）
+     * </pre>
+     *
+     * <code>uint64 post_id = 1;</code>
+     * @return The postId.
+     */
+    @java.lang.Override
+    public long getPostId() {
+      return postId_;
     }
 
     public static final int POST_EXP_CNT_1H_FIELD_NUMBER = 10;
@@ -4540,6 +10385,508 @@ public final class RecFeature {
       return postPosinterCnt24H_;
     }
 
+    public static final int POST_VIEW_CNT_7D_FIELD_NUMBER = 41;
+    private int postViewCnt7D_;
+    /**
+     * <pre>
+     * 7天互动指标
+     * </pre>
+     *
+     * <code>int32 post_view_cnt_7d = 41;</code>
+     * @return The postViewCnt7d.
+     */
+    @java.lang.Override
+    public int getPostViewCnt7D() {
+      return postViewCnt7D_;
+    }
+
+    public static final int POST_VALIDVIEW_CNT_7D_FIELD_NUMBER = 42;
+    private int postValidviewCnt7D_;
+    /**
+     * <pre>
+     * 最近7天有效观看次数
+     * </pre>
+     *
+     * <code>int32 post_validview_cnt_7d = 42;</code>
+     * @return The postValidviewCnt7d.
+     */
+    @java.lang.Override
+    public int getPostValidviewCnt7D() {
+      return postValidviewCnt7D_;
+    }
+
+    public static final int POST_COMPLETEVIEW_CNT_7D_FIELD_NUMBER = 43;
+    private int postCompleteviewCnt7D_;
+    /**
+     * <pre>
+     * 最近7天完播次数
+     * </pre>
+     *
+     * <code>int32 post_completeview_cnt_7d = 43;</code>
+     * @return The postCompleteviewCnt7d.
+     */
+    @java.lang.Override
+    public int getPostCompleteviewCnt7D() {
+      return postCompleteviewCnt7D_;
+    }
+
+    public static final int POST_VIEW_DURATION_7D_FIELD_NUMBER = 44;
+    private float postViewDuration7D_;
+    /**
+     * <pre>
+     * 最近7天观看总时长（秒）
+     * </pre>
+     *
+     * <code>float post_view_duration_7d = 44;</code>
+     * @return The postViewDuration7d.
+     */
+    @java.lang.Override
+    public float getPostViewDuration7D() {
+      return postViewDuration7D_;
+    }
+
+    public static final int POST_LIKE_CNT_7D_FIELD_NUMBER = 45;
+    private int postLikeCnt7D_;
+    /**
+     * <pre>
+     * 最近7天点赞次数
+     * </pre>
+     *
+     * <code>int32 post_like_cnt_7d = 45;</code>
+     * @return The postLikeCnt7d.
+     */
+    @java.lang.Override
+    public int getPostLikeCnt7D() {
+      return postLikeCnt7D_;
+    }
+
+    public static final int POST_COMMENT_CNT_7D_FIELD_NUMBER = 46;
+    private int postCommentCnt7D_;
+    /**
+     * <pre>
+     * 最近7天评论次数
+     * </pre>
+     *
+     * <code>int32 post_comment_cnt_7d = 46;</code>
+     * @return The postCommentCnt7d.
+     */
+    @java.lang.Override
+    public int getPostCommentCnt7D() {
+      return postCommentCnt7D_;
+    }
+
+    public static final int TAG_IDS_FIELD_NUMBER = 47;
+    private com.google.protobuf.Internal.IntList tagIds_;
+    /**
+     * <pre>
+     * 作者相关指标
+     * </pre>
+     *
+     * <code>repeated int32 tag_ids = 47;</code>
+     * @return A list containing the tagIds.
+     */
+    @java.lang.Override
+    public java.util.List<java.lang.Integer>
+        getTagIdsList() {
+      return tagIds_;
+    }
+    /**
+     * <pre>
+     * 作者相关指标
+     * </pre>
+     *
+     * <code>repeated int32 tag_ids = 47;</code>
+     * @return The count of tagIds.
+     */
+    public int getTagIdsCount() {
+      return tagIds_.size();
+    }
+    /**
+     * <pre>
+     * 作者相关指标
+     * </pre>
+     *
+     * <code>repeated int32 tag_ids = 47;</code>
+     * @param index The index of the element to return.
+     * @return The tagIds at the given index.
+     */
+    public int getTagIds(int index) {
+      return tagIds_.getInt(index);
+    }
+    private int tagIdsMemoizedSerializedSize = -1;
+
+    public static final int AUTHOR_EXP_DISTINCT_POST_CNT_7D_FIELD_NUMBER = 48;
+    private int authorExpDistinctPostCnt7D_;
+    /**
+     * <pre>
+     * 作者最近7天曝光作品数
+     * </pre>
+     *
+     * <code>int32 author_exp_distinct_post_cnt_7d = 48;</code>
+     * @return The authorExpDistinctPostCnt7d.
+     */
+    @java.lang.Override
+    public int getAuthorExpDistinctPostCnt7D() {
+      return authorExpDistinctPostCnt7D_;
+    }
+
+    public static final int AUTHOR_EXP_POST_CNT_7D_FIELD_NUMBER = 49;
+    private int authorExpPostCnt7D_;
+    /**
+     * <pre>
+     * 作者最近7天曝光次数
+     * </pre>
+     *
+     * <code>int32 author_exp_post_cnt_7d = 49;</code>
+     * @return The authorExpPostCnt7d.
+     */
+    @java.lang.Override
+    public int getAuthorExpPostCnt7D() {
+      return authorExpPostCnt7D_;
+    }
+
+    public static final int AUTHOR_VALIDVIEW_POST_CNT_7D_FIELD_NUMBER = 50;
+    private int authorValidviewPostCnt7D_;
+    /**
+     * <pre>
+     * 作者最近7天有效观看次数
+     * </pre>
+     *
+     * <code>int32 author_validview_post_cnt_7d = 50;</code>
+     * @return The authorValidviewPostCnt7d.
+     */
+    @java.lang.Override
+    public int getAuthorValidviewPostCnt7D() {
+      return authorValidviewPostCnt7D_;
+    }
+
+    public static final int AUTHOR_VIEW_POST_DURATION_7D_FIELD_NUMBER = 51;
+    private float authorViewPostDuration7D_;
+    /**
+     * <pre>
+     * 作者最近7天观看时长（秒）
+     * </pre>
+     *
+     * <code>float author_view_post_duration_7d = 51;</code>
+     * @return The authorViewPostDuration7d.
+     */
+    @java.lang.Override
+    public float getAuthorViewPostDuration7D() {
+      return authorViewPostDuration7D_;
+    }
+
+    public static final int AUTHOR_LIKE_CNT_7D_FIELD_NUMBER = 52;
+    private int authorLikeCnt7D_;
+    /**
+     * <pre>
+     * 作者最近7天点赞次数
+     * </pre>
+     *
+     * <code>int32 author_like_cnt_7d = 52;</code>
+     * @return The authorLikeCnt7d.
+     */
+    @java.lang.Override
+    public int getAuthorLikeCnt7D() {
+      return authorLikeCnt7D_;
+    }
+
+    public static final int AUTHOR_COMMENT_CNT_7D_FIELD_NUMBER = 53;
+    private int authorCommentCnt7D_;
+    /**
+     * <pre>
+     * 作者最近7天评论次数
+     * </pre>
+     *
+     * <code>int32 author_comment_cnt_7d = 53;</code>
+     * @return The authorCommentCnt7d.
+     */
+    @java.lang.Override
+    public int getAuthorCommentCnt7D() {
+      return authorCommentCnt7D_;
+    }
+
+    public static final int AUTHOR_COMPLETEVIEW_POST_CNT_7D_FIELD_NUMBER = 54;
+    private int authorCompleteviewPostCnt7D_;
+    /**
+     * <pre>
+     * 作者最近7天完整观看次数
+     * </pre>
+     *
+     * <code>int32 author_completeview_post_cnt_7d = 54;</code>
+     * @return The authorCompleteviewPostCnt7d.
+     */
+    @java.lang.Override
+    public int getAuthorCompleteviewPostCnt7D() {
+      return authorCompleteviewPostCnt7D_;
+    }
+
+    public static final int AUTHOR_VIEW_AVG_DURATION_7D_FIELD_NUMBER = 55;
+    private float authorViewAvgDuration7D_;
+    /**
+     * <pre>
+     * 作者最近7天平均观看时长（秒）
+     * </pre>
+     *
+     * <code>float author_view_avg_duration_7d = 55;</code>
+     * @return The authorViewAvgDuration7d.
+     */
+    @java.lang.Override
+    public float getAuthorViewAvgDuration7D() {
+      return authorViewAvgDuration7D_;
+    }
+
+    public static final int AUTHOR_INTER_PROFILE_CNT_7D_FIELD_NUMBER = 56;
+    private int authorInterProfileCnt7D_;
+    /**
+     * <pre>
+     * 作者主页最近7天post流被访问次数
+     * </pre>
+     *
+     * <code>int32 author_inter_profile_cnt_7d = 56;</code>
+     * @return The authorInterProfileCnt7d.
+     */
+    @java.lang.Override
+    public int getAuthorInterProfileCnt7D() {
+      return authorInterProfileCnt7D_;
+    }
+
+    public static final int AUTHOR_FOLLOW_CNT_7D_FIELD_NUMBER = 57;
+    private int authorFollowCnt7D_;
+    /**
+     * <pre>
+     * 作者主页最近7天post流被关注次数
+     * </pre>
+     *
+     * <code>int32 author_follow_cnt_7d = 57;</code>
+     * @return The authorFollowCnt7d.
+     */
+    @java.lang.Override
+    public int getAuthorFollowCnt7D() {
+      return authorFollowCnt7D_;
+    }
+
+    public static final int AUTHOR_FOLLOWERS_CNT_FIELD_NUMBER = 58;
+    private int authorFollowersCnt_;
+    /**
+     * <pre>
+     * 作者粉丝数
+     * </pre>
+     *
+     * <code>int32 author_followers_cnt = 58;</code>
+     * @return The authorFollowersCnt.
+     */
+    @java.lang.Override
+    public int getAuthorFollowersCnt() {
+      return authorFollowersCnt_;
+    }
+
+    public static final int POST_VALIDVIEW_RATE_7D_FIELD_NUMBER = 60;
+    private float postValidviewRate7D_;
+    /**
+     * <pre>
+     * 7天比率指标
+     * </pre>
+     *
+     * <code>float post_validview_rate_7d = 60;</code>
+     * @return The postValidviewRate7d.
+     */
+    @java.lang.Override
+    public float getPostValidviewRate7D() {
+      return postValidviewRate7D_;
+    }
+
+    public static final int POST_COMPLETEVIEW_RATE_7D_FIELD_NUMBER = 61;
+    private float postCompleteviewRate7D_;
+    /**
+     * <pre>
+     * 最近7天完整观看率（完播率）
+     * </pre>
+     *
+     * <code>float post_completeview_rate_7d = 61;</code>
+     * @return The postCompleteviewRate7d.
+     */
+    @java.lang.Override
+    public float getPostCompleteviewRate7D() {
+      return postCompleteviewRate7D_;
+    }
+
+    public static final int POST_AVG_VIEW_DURATION_7D_FIELD_NUMBER = 62;
+    private float postAvgViewDuration7D_;
+    /**
+     * <pre>
+     * 最近7天平均每次观看时长（秒）
+     * </pre>
+     *
+     * <code>float post_avg_view_duration_7d = 62;</code>
+     * @return The postAvgViewDuration7d.
+     */
+    @java.lang.Override
+    public float getPostAvgViewDuration7D() {
+      return postAvgViewDuration7D_;
+    }
+
+    public static final int POST_LIKE_RATE_7D_FIELD_NUMBER = 63;
+    private float postLikeRate7D_;
+    /**
+     * <pre>
+     * 最近7天点赞率
+     * </pre>
+     *
+     * <code>float post_like_rate_7d = 63;</code>
+     * @return The postLikeRate7d.
+     */
+    @java.lang.Override
+    public float getPostLikeRate7D() {
+      return postLikeRate7D_;
+    }
+
+    public static final int POST_COMMENT_RATE_7D_FIELD_NUMBER = 64;
+    private float postCommentRate7D_;
+    /**
+     * <pre>
+     * 最近7天评论率
+     * </pre>
+     *
+     * <code>float post_comment_rate_7d = 64;</code>
+     * @return The postCommentRate7d.
+     */
+    @java.lang.Override
+    public float getPostCommentRate7D() {
+      return postCommentRate7D_;
+    }
+
+    public static final int POST_AI_EMBEDDING_FIELD_NUMBER = 70;
+    private com.google.protobuf.Internal.FloatList postAiEmbedding_;
+    /**
+     * <pre>
+     * embedding
+     * </pre>
+     *
+     * <code>repeated float post_ai_embedding = 70;</code>
+     * @return A list containing the postAiEmbedding.
+     */
+    @java.lang.Override
+    public java.util.List<java.lang.Float>
+        getPostAiEmbeddingList() {
+      return postAiEmbedding_;
+    }
+    /**
+     * <pre>
+     * embedding
+     * </pre>
+     *
+     * <code>repeated float post_ai_embedding = 70;</code>
+     * @return The count of postAiEmbedding.
+     */
+    public int getPostAiEmbeddingCount() {
+      return postAiEmbedding_.size();
+    }
+    /**
+     * <pre>
+     * embedding
+     * </pre>
+     *
+     * <code>repeated float post_ai_embedding = 70;</code>
+     * @param index The index of the element to return.
+     * @return The postAiEmbedding at the given index.
+     */
+    public float getPostAiEmbedding(int index) {
+      return postAiEmbedding_.getFloat(index);
+    }
+    private int postAiEmbeddingMemoizedSerializedSize = -1;
+
+    public static final int POST_AI_TAGS_FIELD_NUMBER = 71;
+    private volatile java.lang.Object postAiTags_;
+    /**
+     * <pre>
+     * item的ai标签
+     * </pre>
+     *
+     * <code>string post_ai_tags = 71;</code>
+     * @return The postAiTags.
+     */
+    @java.lang.Override
+    public java.lang.String getPostAiTags() {
+      java.lang.Object ref = postAiTags_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        postAiTags_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * item的ai标签
+     * </pre>
+     *
+     * <code>string post_ai_tags = 71;</code>
+     * @return The bytes for postAiTags.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getPostAiTagsBytes() {
+      java.lang.Object ref = postAiTags_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        postAiTags_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int POST_ASR_LANG_FIELD_NUMBER = 72;
+    private volatile java.lang.Object postAsrLang_;
+    /**
+     * <pre>
+     * item的asr识别语言
+     * </pre>
+     *
+     * <code>string post_asr_lang = 72;</code>
+     * @return The postAsrLang.
+     */
+    @java.lang.Override
+    public java.lang.String getPostAsrLang() {
+      java.lang.Object ref = postAsrLang_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        postAsrLang_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * item的asr识别语言
+     * </pre>
+     *
+     * <code>string post_asr_lang = 72;</code>
+     * @return The bytes for postAsrLang.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getPostAsrLangBytes() {
+      java.lang.Object ref = postAsrLang_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        postAsrLang_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -4554,6 +10901,10 @@ public final class RecFeature {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
+      getSerializedSize();
+      if (postId_ != 0L) {
+        output.writeUInt64(1, postId_);
+      }
       if (postExpCnt1H_ != 0) {
         output.writeInt32(10, postExpCnt1H_);
       }
@@ -4620,6 +10971,92 @@ public final class RecFeature {
       if (postPosinterCnt24H_ != 0) {
         output.writeInt32(40, postPosinterCnt24H_);
       }
+      if (postViewCnt7D_ != 0) {
+        output.writeInt32(41, postViewCnt7D_);
+      }
+      if (postValidviewCnt7D_ != 0) {
+        output.writeInt32(42, postValidviewCnt7D_);
+      }
+      if (postCompleteviewCnt7D_ != 0) {
+        output.writeInt32(43, postCompleteviewCnt7D_);
+      }
+      if (java.lang.Float.floatToRawIntBits(postViewDuration7D_) != 0) {
+        output.writeFloat(44, postViewDuration7D_);
+      }
+      if (postLikeCnt7D_ != 0) {
+        output.writeInt32(45, postLikeCnt7D_);
+      }
+      if (postCommentCnt7D_ != 0) {
+        output.writeInt32(46, postCommentCnt7D_);
+      }
+      if (getTagIdsList().size() > 0) {
+        output.writeUInt32NoTag(378);
+        output.writeUInt32NoTag(tagIdsMemoizedSerializedSize);
+      }
+      for (int i = 0; i < tagIds_.size(); i++) {
+        output.writeInt32NoTag(tagIds_.getInt(i));
+      }
+      if (authorExpDistinctPostCnt7D_ != 0) {
+        output.writeInt32(48, authorExpDistinctPostCnt7D_);
+      }
+      if (authorExpPostCnt7D_ != 0) {
+        output.writeInt32(49, authorExpPostCnt7D_);
+      }
+      if (authorValidviewPostCnt7D_ != 0) {
+        output.writeInt32(50, authorValidviewPostCnt7D_);
+      }
+      if (java.lang.Float.floatToRawIntBits(authorViewPostDuration7D_) != 0) {
+        output.writeFloat(51, authorViewPostDuration7D_);
+      }
+      if (authorLikeCnt7D_ != 0) {
+        output.writeInt32(52, authorLikeCnt7D_);
+      }
+      if (authorCommentCnt7D_ != 0) {
+        output.writeInt32(53, authorCommentCnt7D_);
+      }
+      if (authorCompleteviewPostCnt7D_ != 0) {
+        output.writeInt32(54, authorCompleteviewPostCnt7D_);
+      }
+      if (java.lang.Float.floatToRawIntBits(authorViewAvgDuration7D_) != 0) {
+        output.writeFloat(55, authorViewAvgDuration7D_);
+      }
+      if (authorInterProfileCnt7D_ != 0) {
+        output.writeInt32(56, authorInterProfileCnt7D_);
+      }
+      if (authorFollowCnt7D_ != 0) {
+        output.writeInt32(57, authorFollowCnt7D_);
+      }
+      if (authorFollowersCnt_ != 0) {
+        output.writeInt32(58, authorFollowersCnt_);
+      }
+      if (java.lang.Float.floatToRawIntBits(postValidviewRate7D_) != 0) {
+        output.writeFloat(60, postValidviewRate7D_);
+      }
+      if (java.lang.Float.floatToRawIntBits(postCompleteviewRate7D_) != 0) {
+        output.writeFloat(61, postCompleteviewRate7D_);
+      }
+      if (java.lang.Float.floatToRawIntBits(postAvgViewDuration7D_) != 0) {
+        output.writeFloat(62, postAvgViewDuration7D_);
+      }
+      if (java.lang.Float.floatToRawIntBits(postLikeRate7D_) != 0) {
+        output.writeFloat(63, postLikeRate7D_);
+      }
+      if (java.lang.Float.floatToRawIntBits(postCommentRate7D_) != 0) {
+        output.writeFloat(64, postCommentRate7D_);
+      }
+      if (getPostAiEmbeddingList().size() > 0) {
+        output.writeUInt32NoTag(562);
+        output.writeUInt32NoTag(postAiEmbeddingMemoizedSerializedSize);
+      }
+      for (int i = 0; i < postAiEmbedding_.size(); i++) {
+        output.writeFloatNoTag(postAiEmbedding_.getFloat(i));
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(postAiTags_)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 71, postAiTags_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(postAsrLang_)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 72, postAsrLang_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -4629,6 +11066,10 @@ public final class RecFeature {
       if (size != -1) return size;
 
       size = 0;
+      if (postId_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, postId_);
+      }
       if (postExpCnt1H_ != 0) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(10, postExpCnt1H_);
@@ -4717,6 +11158,125 @@ public final class RecFeature {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(40, postPosinterCnt24H_);
       }
+      if (postViewCnt7D_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(41, postViewCnt7D_);
+      }
+      if (postValidviewCnt7D_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(42, postValidviewCnt7D_);
+      }
+      if (postCompleteviewCnt7D_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(43, postCompleteviewCnt7D_);
+      }
+      if (java.lang.Float.floatToRawIntBits(postViewDuration7D_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(44, postViewDuration7D_);
+      }
+      if (postLikeCnt7D_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(45, postLikeCnt7D_);
+      }
+      if (postCommentCnt7D_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(46, postCommentCnt7D_);
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < tagIds_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeInt32SizeNoTag(tagIds_.getInt(i));
+        }
+        size += dataSize;
+        if (!getTagIdsList().isEmpty()) {
+          size += 2;
+          size += com.google.protobuf.CodedOutputStream
+              .computeInt32SizeNoTag(dataSize);
+        }
+        tagIdsMemoizedSerializedSize = dataSize;
+      }
+      if (authorExpDistinctPostCnt7D_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(48, authorExpDistinctPostCnt7D_);
+      }
+      if (authorExpPostCnt7D_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(49, authorExpPostCnt7D_);
+      }
+      if (authorValidviewPostCnt7D_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(50, authorValidviewPostCnt7D_);
+      }
+      if (java.lang.Float.floatToRawIntBits(authorViewPostDuration7D_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(51, authorViewPostDuration7D_);
+      }
+      if (authorLikeCnt7D_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(52, authorLikeCnt7D_);
+      }
+      if (authorCommentCnt7D_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(53, authorCommentCnt7D_);
+      }
+      if (authorCompleteviewPostCnt7D_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(54, authorCompleteviewPostCnt7D_);
+      }
+      if (java.lang.Float.floatToRawIntBits(authorViewAvgDuration7D_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(55, authorViewAvgDuration7D_);
+      }
+      if (authorInterProfileCnt7D_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(56, authorInterProfileCnt7D_);
+      }
+      if (authorFollowCnt7D_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(57, authorFollowCnt7D_);
+      }
+      if (authorFollowersCnt_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(58, authorFollowersCnt_);
+      }
+      if (java.lang.Float.floatToRawIntBits(postValidviewRate7D_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(60, postValidviewRate7D_);
+      }
+      if (java.lang.Float.floatToRawIntBits(postCompleteviewRate7D_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(61, postCompleteviewRate7D_);
+      }
+      if (java.lang.Float.floatToRawIntBits(postAvgViewDuration7D_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(62, postAvgViewDuration7D_);
+      }
+      if (java.lang.Float.floatToRawIntBits(postLikeRate7D_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(63, postLikeRate7D_);
+      }
+      if (java.lang.Float.floatToRawIntBits(postCommentRate7D_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(64, postCommentRate7D_);
+      }
+      {
+        int dataSize = 0;
+        dataSize = 4 * getPostAiEmbeddingList().size();
+        size += dataSize;
+        if (!getPostAiEmbeddingList().isEmpty()) {
+          size += 2;
+          size += com.google.protobuf.CodedOutputStream
+              .computeInt32SizeNoTag(dataSize);
+        }
+        postAiEmbeddingMemoizedSerializedSize = dataSize;
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(postAiTags_)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(71, postAiTags_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(postAsrLang_)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(72, postAsrLang_);
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -4732,6 +11292,8 @@ public final class RecFeature {
       }
       com.gosh.entity.RecFeature.RecPostFeature other = (com.gosh.entity.RecFeature.RecPostFeature) obj;
 
+      if (getPostId()
+          != other.getPostId()) return false;
       if (getPostExpCnt1H()
           != other.getPostExpCnt1H()) return false;
       if (getPost3SviewCnt1H()
@@ -4776,6 +11338,66 @@ public final class RecFeature {
           != other.getPostProfileCnt24H()) return false;
       if (getPostPosinterCnt24H()
           != other.getPostPosinterCnt24H()) return false;
+      if (getPostViewCnt7D()
+          != other.getPostViewCnt7D()) return false;
+      if (getPostValidviewCnt7D()
+          != other.getPostValidviewCnt7D()) return false;
+      if (getPostCompleteviewCnt7D()
+          != other.getPostCompleteviewCnt7D()) return false;
+      if (java.lang.Float.floatToIntBits(getPostViewDuration7D())
+          != java.lang.Float.floatToIntBits(
+              other.getPostViewDuration7D())) return false;
+      if (getPostLikeCnt7D()
+          != other.getPostLikeCnt7D()) return false;
+      if (getPostCommentCnt7D()
+          != other.getPostCommentCnt7D()) return false;
+      if (!getTagIdsList()
+          .equals(other.getTagIdsList())) return false;
+      if (getAuthorExpDistinctPostCnt7D()
+          != other.getAuthorExpDistinctPostCnt7D()) return false;
+      if (getAuthorExpPostCnt7D()
+          != other.getAuthorExpPostCnt7D()) return false;
+      if (getAuthorValidviewPostCnt7D()
+          != other.getAuthorValidviewPostCnt7D()) return false;
+      if (java.lang.Float.floatToIntBits(getAuthorViewPostDuration7D())
+          != java.lang.Float.floatToIntBits(
+              other.getAuthorViewPostDuration7D())) return false;
+      if (getAuthorLikeCnt7D()
+          != other.getAuthorLikeCnt7D()) return false;
+      if (getAuthorCommentCnt7D()
+          != other.getAuthorCommentCnt7D()) return false;
+      if (getAuthorCompleteviewPostCnt7D()
+          != other.getAuthorCompleteviewPostCnt7D()) return false;
+      if (java.lang.Float.floatToIntBits(getAuthorViewAvgDuration7D())
+          != java.lang.Float.floatToIntBits(
+              other.getAuthorViewAvgDuration7D())) return false;
+      if (getAuthorInterProfileCnt7D()
+          != other.getAuthorInterProfileCnt7D()) return false;
+      if (getAuthorFollowCnt7D()
+          != other.getAuthorFollowCnt7D()) return false;
+      if (getAuthorFollowersCnt()
+          != other.getAuthorFollowersCnt()) return false;
+      if (java.lang.Float.floatToIntBits(getPostValidviewRate7D())
+          != java.lang.Float.floatToIntBits(
+              other.getPostValidviewRate7D())) return false;
+      if (java.lang.Float.floatToIntBits(getPostCompleteviewRate7D())
+          != java.lang.Float.floatToIntBits(
+              other.getPostCompleteviewRate7D())) return false;
+      if (java.lang.Float.floatToIntBits(getPostAvgViewDuration7D())
+          != java.lang.Float.floatToIntBits(
+              other.getPostAvgViewDuration7D())) return false;
+      if (java.lang.Float.floatToIntBits(getPostLikeRate7D())
+          != java.lang.Float.floatToIntBits(
+              other.getPostLikeRate7D())) return false;
+      if (java.lang.Float.floatToIntBits(getPostCommentRate7D())
+          != java.lang.Float.floatToIntBits(
+              other.getPostCommentRate7D())) return false;
+      if (!getPostAiEmbeddingList()
+          .equals(other.getPostAiEmbeddingList())) return false;
+      if (!getPostAiTags()
+          .equals(other.getPostAiTags())) return false;
+      if (!getPostAsrLang()
+          .equals(other.getPostAsrLang())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -4787,6 +11409,9 @@ public final class RecFeature {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + POST_ID_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getPostId());
       hash = (37 * hash) + POST_EXP_CNT_1H_FIELD_NUMBER;
       hash = (53 * hash) + getPostExpCnt1H();
       hash = (37 * hash) + POST_3SVIEW_CNT_1H_FIELD_NUMBER;
@@ -4831,6 +11456,70 @@ public final class RecFeature {
       hash = (53 * hash) + getPostProfileCnt24H();
       hash = (37 * hash) + POST_POSINTER_CNT_24H_FIELD_NUMBER;
       hash = (53 * hash) + getPostPosinterCnt24H();
+      hash = (37 * hash) + POST_VIEW_CNT_7D_FIELD_NUMBER;
+      hash = (53 * hash) + getPostViewCnt7D();
+      hash = (37 * hash) + POST_VALIDVIEW_CNT_7D_FIELD_NUMBER;
+      hash = (53 * hash) + getPostValidviewCnt7D();
+      hash = (37 * hash) + POST_COMPLETEVIEW_CNT_7D_FIELD_NUMBER;
+      hash = (53 * hash) + getPostCompleteviewCnt7D();
+      hash = (37 * hash) + POST_VIEW_DURATION_7D_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getPostViewDuration7D());
+      hash = (37 * hash) + POST_LIKE_CNT_7D_FIELD_NUMBER;
+      hash = (53 * hash) + getPostLikeCnt7D();
+      hash = (37 * hash) + POST_COMMENT_CNT_7D_FIELD_NUMBER;
+      hash = (53 * hash) + getPostCommentCnt7D();
+      if (getTagIdsCount() > 0) {
+        hash = (37 * hash) + TAG_IDS_FIELD_NUMBER;
+        hash = (53 * hash) + getTagIdsList().hashCode();
+      }
+      hash = (37 * hash) + AUTHOR_EXP_DISTINCT_POST_CNT_7D_FIELD_NUMBER;
+      hash = (53 * hash) + getAuthorExpDistinctPostCnt7D();
+      hash = (37 * hash) + AUTHOR_EXP_POST_CNT_7D_FIELD_NUMBER;
+      hash = (53 * hash) + getAuthorExpPostCnt7D();
+      hash = (37 * hash) + AUTHOR_VALIDVIEW_POST_CNT_7D_FIELD_NUMBER;
+      hash = (53 * hash) + getAuthorValidviewPostCnt7D();
+      hash = (37 * hash) + AUTHOR_VIEW_POST_DURATION_7D_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getAuthorViewPostDuration7D());
+      hash = (37 * hash) + AUTHOR_LIKE_CNT_7D_FIELD_NUMBER;
+      hash = (53 * hash) + getAuthorLikeCnt7D();
+      hash = (37 * hash) + AUTHOR_COMMENT_CNT_7D_FIELD_NUMBER;
+      hash = (53 * hash) + getAuthorCommentCnt7D();
+      hash = (37 * hash) + AUTHOR_COMPLETEVIEW_POST_CNT_7D_FIELD_NUMBER;
+      hash = (53 * hash) + getAuthorCompleteviewPostCnt7D();
+      hash = (37 * hash) + AUTHOR_VIEW_AVG_DURATION_7D_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getAuthorViewAvgDuration7D());
+      hash = (37 * hash) + AUTHOR_INTER_PROFILE_CNT_7D_FIELD_NUMBER;
+      hash = (53 * hash) + getAuthorInterProfileCnt7D();
+      hash = (37 * hash) + AUTHOR_FOLLOW_CNT_7D_FIELD_NUMBER;
+      hash = (53 * hash) + getAuthorFollowCnt7D();
+      hash = (37 * hash) + AUTHOR_FOLLOWERS_CNT_FIELD_NUMBER;
+      hash = (53 * hash) + getAuthorFollowersCnt();
+      hash = (37 * hash) + POST_VALIDVIEW_RATE_7D_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getPostValidviewRate7D());
+      hash = (37 * hash) + POST_COMPLETEVIEW_RATE_7D_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getPostCompleteviewRate7D());
+      hash = (37 * hash) + POST_AVG_VIEW_DURATION_7D_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getPostAvgViewDuration7D());
+      hash = (37 * hash) + POST_LIKE_RATE_7D_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getPostLikeRate7D());
+      hash = (37 * hash) + POST_COMMENT_RATE_7D_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getPostCommentRate7D());
+      if (getPostAiEmbeddingCount() > 0) {
+        hash = (37 * hash) + POST_AI_EMBEDDING_FIELD_NUMBER;
+        hash = (53 * hash) + getPostAiEmbeddingList().hashCode();
+      }
+      hash = (37 * hash) + POST_AI_TAGS_FIELD_NUMBER;
+      hash = (53 * hash) + getPostAiTags().hashCode();
+      hash = (37 * hash) + POST_ASR_LANG_FIELD_NUMBER;
+      hash = (53 * hash) + getPostAsrLang().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -4969,6 +11658,8 @@ public final class RecFeature {
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        postId_ = 0L;
+
         postExpCnt1H_ = 0;
 
         post3SviewCnt1H_ = 0;
@@ -5013,6 +11704,58 @@ public final class RecFeature {
 
         postPosinterCnt24H_ = 0;
 
+        postViewCnt7D_ = 0;
+
+        postValidviewCnt7D_ = 0;
+
+        postCompleteviewCnt7D_ = 0;
+
+        postViewDuration7D_ = 0F;
+
+        postLikeCnt7D_ = 0;
+
+        postCommentCnt7D_ = 0;
+
+        tagIds_ = emptyIntList();
+        bitField0_ = (bitField0_ & ~0x00000001);
+        authorExpDistinctPostCnt7D_ = 0;
+
+        authorExpPostCnt7D_ = 0;
+
+        authorValidviewPostCnt7D_ = 0;
+
+        authorViewPostDuration7D_ = 0F;
+
+        authorLikeCnt7D_ = 0;
+
+        authorCommentCnt7D_ = 0;
+
+        authorCompleteviewPostCnt7D_ = 0;
+
+        authorViewAvgDuration7D_ = 0F;
+
+        authorInterProfileCnt7D_ = 0;
+
+        authorFollowCnt7D_ = 0;
+
+        authorFollowersCnt_ = 0;
+
+        postValidviewRate7D_ = 0F;
+
+        postCompleteviewRate7D_ = 0F;
+
+        postAvgViewDuration7D_ = 0F;
+
+        postLikeRate7D_ = 0F;
+
+        postCommentRate7D_ = 0F;
+
+        postAiEmbedding_ = emptyFloatList();
+        bitField0_ = (bitField0_ & ~0x00000002);
+        postAiTags_ = "";
+
+        postAsrLang_ = "";
+
         return this;
       }
 
@@ -5039,6 +11782,8 @@ public final class RecFeature {
       @java.lang.Override
       public com.gosh.entity.RecFeature.RecPostFeature buildPartial() {
         com.gosh.entity.RecFeature.RecPostFeature result = new com.gosh.entity.RecFeature.RecPostFeature(this);
+        int from_bitField0_ = bitField0_;
+        result.postId_ = postId_;
         result.postExpCnt1H_ = postExpCnt1H_;
         result.post3SviewCnt1H_ = post3SviewCnt1H_;
         result.post8SviewCnt1H_ = post8SviewCnt1H_;
@@ -5061,6 +11806,40 @@ public final class RecFeature {
         result.postFollowCnt24H_ = postFollowCnt24H_;
         result.postProfileCnt24H_ = postProfileCnt24H_;
         result.postPosinterCnt24H_ = postPosinterCnt24H_;
+        result.postViewCnt7D_ = postViewCnt7D_;
+        result.postValidviewCnt7D_ = postValidviewCnt7D_;
+        result.postCompleteviewCnt7D_ = postCompleteviewCnt7D_;
+        result.postViewDuration7D_ = postViewDuration7D_;
+        result.postLikeCnt7D_ = postLikeCnt7D_;
+        result.postCommentCnt7D_ = postCommentCnt7D_;
+        if (((bitField0_ & 0x00000001) != 0)) {
+          tagIds_.makeImmutable();
+          bitField0_ = (bitField0_ & ~0x00000001);
+        }
+        result.tagIds_ = tagIds_;
+        result.authorExpDistinctPostCnt7D_ = authorExpDistinctPostCnt7D_;
+        result.authorExpPostCnt7D_ = authorExpPostCnt7D_;
+        result.authorValidviewPostCnt7D_ = authorValidviewPostCnt7D_;
+        result.authorViewPostDuration7D_ = authorViewPostDuration7D_;
+        result.authorLikeCnt7D_ = authorLikeCnt7D_;
+        result.authorCommentCnt7D_ = authorCommentCnt7D_;
+        result.authorCompleteviewPostCnt7D_ = authorCompleteviewPostCnt7D_;
+        result.authorViewAvgDuration7D_ = authorViewAvgDuration7D_;
+        result.authorInterProfileCnt7D_ = authorInterProfileCnt7D_;
+        result.authorFollowCnt7D_ = authorFollowCnt7D_;
+        result.authorFollowersCnt_ = authorFollowersCnt_;
+        result.postValidviewRate7D_ = postValidviewRate7D_;
+        result.postCompleteviewRate7D_ = postCompleteviewRate7D_;
+        result.postAvgViewDuration7D_ = postAvgViewDuration7D_;
+        result.postLikeRate7D_ = postLikeRate7D_;
+        result.postCommentRate7D_ = postCommentRate7D_;
+        if (((bitField0_ & 0x00000002) != 0)) {
+          postAiEmbedding_.makeImmutable();
+          bitField0_ = (bitField0_ & ~0x00000002);
+        }
+        result.postAiEmbedding_ = postAiEmbedding_;
+        result.postAiTags_ = postAiTags_;
+        result.postAsrLang_ = postAsrLang_;
         onBuilt();
         return result;
       }
@@ -5109,6 +11888,9 @@ public final class RecFeature {
 
       public Builder mergeFrom(com.gosh.entity.RecFeature.RecPostFeature other) {
         if (other == com.gosh.entity.RecFeature.RecPostFeature.getDefaultInstance()) return this;
+        if (other.getPostId() != 0L) {
+          setPostId(other.getPostId());
+        }
         if (other.getPostExpCnt1H() != 0) {
           setPostExpCnt1H(other.getPostExpCnt1H());
         }
@@ -5175,6 +11957,100 @@ public final class RecFeature {
         if (other.getPostPosinterCnt24H() != 0) {
           setPostPosinterCnt24H(other.getPostPosinterCnt24H());
         }
+        if (other.getPostViewCnt7D() != 0) {
+          setPostViewCnt7D(other.getPostViewCnt7D());
+        }
+        if (other.getPostValidviewCnt7D() != 0) {
+          setPostValidviewCnt7D(other.getPostValidviewCnt7D());
+        }
+        if (other.getPostCompleteviewCnt7D() != 0) {
+          setPostCompleteviewCnt7D(other.getPostCompleteviewCnt7D());
+        }
+        if (other.getPostViewDuration7D() != 0F) {
+          setPostViewDuration7D(other.getPostViewDuration7D());
+        }
+        if (other.getPostLikeCnt7D() != 0) {
+          setPostLikeCnt7D(other.getPostLikeCnt7D());
+        }
+        if (other.getPostCommentCnt7D() != 0) {
+          setPostCommentCnt7D(other.getPostCommentCnt7D());
+        }
+        if (!other.tagIds_.isEmpty()) {
+          if (tagIds_.isEmpty()) {
+            tagIds_ = other.tagIds_;
+            bitField0_ = (bitField0_ & ~0x00000001);
+          } else {
+            ensureTagIdsIsMutable();
+            tagIds_.addAll(other.tagIds_);
+          }
+          onChanged();
+        }
+        if (other.getAuthorExpDistinctPostCnt7D() != 0) {
+          setAuthorExpDistinctPostCnt7D(other.getAuthorExpDistinctPostCnt7D());
+        }
+        if (other.getAuthorExpPostCnt7D() != 0) {
+          setAuthorExpPostCnt7D(other.getAuthorExpPostCnt7D());
+        }
+        if (other.getAuthorValidviewPostCnt7D() != 0) {
+          setAuthorValidviewPostCnt7D(other.getAuthorValidviewPostCnt7D());
+        }
+        if (other.getAuthorViewPostDuration7D() != 0F) {
+          setAuthorViewPostDuration7D(other.getAuthorViewPostDuration7D());
+        }
+        if (other.getAuthorLikeCnt7D() != 0) {
+          setAuthorLikeCnt7D(other.getAuthorLikeCnt7D());
+        }
+        if (other.getAuthorCommentCnt7D() != 0) {
+          setAuthorCommentCnt7D(other.getAuthorCommentCnt7D());
+        }
+        if (other.getAuthorCompleteviewPostCnt7D() != 0) {
+          setAuthorCompleteviewPostCnt7D(other.getAuthorCompleteviewPostCnt7D());
+        }
+        if (other.getAuthorViewAvgDuration7D() != 0F) {
+          setAuthorViewAvgDuration7D(other.getAuthorViewAvgDuration7D());
+        }
+        if (other.getAuthorInterProfileCnt7D() != 0) {
+          setAuthorInterProfileCnt7D(other.getAuthorInterProfileCnt7D());
+        }
+        if (other.getAuthorFollowCnt7D() != 0) {
+          setAuthorFollowCnt7D(other.getAuthorFollowCnt7D());
+        }
+        if (other.getAuthorFollowersCnt() != 0) {
+          setAuthorFollowersCnt(other.getAuthorFollowersCnt());
+        }
+        if (other.getPostValidviewRate7D() != 0F) {
+          setPostValidviewRate7D(other.getPostValidviewRate7D());
+        }
+        if (other.getPostCompleteviewRate7D() != 0F) {
+          setPostCompleteviewRate7D(other.getPostCompleteviewRate7D());
+        }
+        if (other.getPostAvgViewDuration7D() != 0F) {
+          setPostAvgViewDuration7D(other.getPostAvgViewDuration7D());
+        }
+        if (other.getPostLikeRate7D() != 0F) {
+          setPostLikeRate7D(other.getPostLikeRate7D());
+        }
+        if (other.getPostCommentRate7D() != 0F) {
+          setPostCommentRate7D(other.getPostCommentRate7D());
+        }
+        if (!other.postAiEmbedding_.isEmpty()) {
+          if (postAiEmbedding_.isEmpty()) {
+            postAiEmbedding_ = other.postAiEmbedding_;
+            bitField0_ = (bitField0_ & ~0x00000002);
+          } else {
+            ensurePostAiEmbeddingIsMutable();
+            postAiEmbedding_.addAll(other.postAiEmbedding_);
+          }
+          onChanged();
+        }
+        if (!other.getPostAiTags().isEmpty()) {
+          postAiTags_ = other.postAiTags_;
+          onChanged();
+        }
+        if (!other.getPostAsrLang().isEmpty()) {
+          postAsrLang_ = other.postAsrLang_;
+          onChanged();
+        }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
@@ -5201,6 +12077,50 @@ public final class RecFeature {
             mergeFrom(parsedMessage);
           }
         }
+        return this;
+      }
+      private int bitField0_;
+
+      private long postId_ ;
+      /**
+       * <pre>
+       * 作品ID（整数）
+       * </pre>
+       *
+       * <code>uint64 post_id = 1;</code>
+       * @return The postId.
+       */
+      @java.lang.Override
+      public long getPostId() {
+        return postId_;
+      }
+      /**
+       * <pre>
+       * 作品ID（整数）
+       * </pre>
+       *
+       * <code>uint64 post_id = 1;</code>
+       * @param value The postId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPostId(long value) {
+        
+        postId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 作品ID（整数）
+       * </pre>
+       *
+       * <code>uint64 post_id = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPostId() {
+        
+        postId_ = 0L;
+        onChanged();
         return this;
       }
 
@@ -6155,6 +13075,1358 @@ public final class RecFeature {
         onChanged();
         return this;
       }
+
+      private int postViewCnt7D_ ;
+      /**
+       * <pre>
+       * 7天互动指标
+       * </pre>
+       *
+       * <code>int32 post_view_cnt_7d = 41;</code>
+       * @return The postViewCnt7d.
+       */
+      @java.lang.Override
+      public int getPostViewCnt7D() {
+        return postViewCnt7D_;
+      }
+      /**
+       * <pre>
+       * 7天互动指标
+       * </pre>
+       *
+       * <code>int32 post_view_cnt_7d = 41;</code>
+       * @param value The postViewCnt7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPostViewCnt7D(int value) {
+        
+        postViewCnt7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 7天互动指标
+       * </pre>
+       *
+       * <code>int32 post_view_cnt_7d = 41;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPostViewCnt7D() {
+        
+        postViewCnt7D_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int postValidviewCnt7D_ ;
+      /**
+       * <pre>
+       * 最近7天有效观看次数
+       * </pre>
+       *
+       * <code>int32 post_validview_cnt_7d = 42;</code>
+       * @return The postValidviewCnt7d.
+       */
+      @java.lang.Override
+      public int getPostValidviewCnt7D() {
+        return postValidviewCnt7D_;
+      }
+      /**
+       * <pre>
+       * 最近7天有效观看次数
+       * </pre>
+       *
+       * <code>int32 post_validview_cnt_7d = 42;</code>
+       * @param value The postValidviewCnt7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPostValidviewCnt7D(int value) {
+        
+        postValidviewCnt7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 最近7天有效观看次数
+       * </pre>
+       *
+       * <code>int32 post_validview_cnt_7d = 42;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPostValidviewCnt7D() {
+        
+        postValidviewCnt7D_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int postCompleteviewCnt7D_ ;
+      /**
+       * <pre>
+       * 最近7天完播次数
+       * </pre>
+       *
+       * <code>int32 post_completeview_cnt_7d = 43;</code>
+       * @return The postCompleteviewCnt7d.
+       */
+      @java.lang.Override
+      public int getPostCompleteviewCnt7D() {
+        return postCompleteviewCnt7D_;
+      }
+      /**
+       * <pre>
+       * 最近7天完播次数
+       * </pre>
+       *
+       * <code>int32 post_completeview_cnt_7d = 43;</code>
+       * @param value The postCompleteviewCnt7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPostCompleteviewCnt7D(int value) {
+        
+        postCompleteviewCnt7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 最近7天完播次数
+       * </pre>
+       *
+       * <code>int32 post_completeview_cnt_7d = 43;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPostCompleteviewCnt7D() {
+        
+        postCompleteviewCnt7D_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private float postViewDuration7D_ ;
+      /**
+       * <pre>
+       * 最近7天观看总时长（秒）
+       * </pre>
+       *
+       * <code>float post_view_duration_7d = 44;</code>
+       * @return The postViewDuration7d.
+       */
+      @java.lang.Override
+      public float getPostViewDuration7D() {
+        return postViewDuration7D_;
+      }
+      /**
+       * <pre>
+       * 最近7天观看总时长（秒）
+       * </pre>
+       *
+       * <code>float post_view_duration_7d = 44;</code>
+       * @param value The postViewDuration7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPostViewDuration7D(float value) {
+        
+        postViewDuration7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 最近7天观看总时长（秒）
+       * </pre>
+       *
+       * <code>float post_view_duration_7d = 44;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPostViewDuration7D() {
+        
+        postViewDuration7D_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private int postLikeCnt7D_ ;
+      /**
+       * <pre>
+       * 最近7天点赞次数
+       * </pre>
+       *
+       * <code>int32 post_like_cnt_7d = 45;</code>
+       * @return The postLikeCnt7d.
+       */
+      @java.lang.Override
+      public int getPostLikeCnt7D() {
+        return postLikeCnt7D_;
+      }
+      /**
+       * <pre>
+       * 最近7天点赞次数
+       * </pre>
+       *
+       * <code>int32 post_like_cnt_7d = 45;</code>
+       * @param value The postLikeCnt7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPostLikeCnt7D(int value) {
+        
+        postLikeCnt7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 最近7天点赞次数
+       * </pre>
+       *
+       * <code>int32 post_like_cnt_7d = 45;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPostLikeCnt7D() {
+        
+        postLikeCnt7D_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int postCommentCnt7D_ ;
+      /**
+       * <pre>
+       * 最近7天评论次数
+       * </pre>
+       *
+       * <code>int32 post_comment_cnt_7d = 46;</code>
+       * @return The postCommentCnt7d.
+       */
+      @java.lang.Override
+      public int getPostCommentCnt7D() {
+        return postCommentCnt7D_;
+      }
+      /**
+       * <pre>
+       * 最近7天评论次数
+       * </pre>
+       *
+       * <code>int32 post_comment_cnt_7d = 46;</code>
+       * @param value The postCommentCnt7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPostCommentCnt7D(int value) {
+        
+        postCommentCnt7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 最近7天评论次数
+       * </pre>
+       *
+       * <code>int32 post_comment_cnt_7d = 46;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPostCommentCnt7D() {
+        
+        postCommentCnt7D_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.Internal.IntList tagIds_ = emptyIntList();
+      private void ensureTagIdsIsMutable() {
+        if (!((bitField0_ & 0x00000001) != 0)) {
+          tagIds_ = mutableCopy(tagIds_);
+          bitField0_ |= 0x00000001;
+         }
+      }
+      /**
+       * <pre>
+       * 作者相关指标
+       * </pre>
+       *
+       * <code>repeated int32 tag_ids = 47;</code>
+       * @return A list containing the tagIds.
+       */
+      public java.util.List<java.lang.Integer>
+          getTagIdsList() {
+        return ((bitField0_ & 0x00000001) != 0) ?
+                 java.util.Collections.unmodifiableList(tagIds_) : tagIds_;
+      }
+      /**
+       * <pre>
+       * 作者相关指标
+       * </pre>
+       *
+       * <code>repeated int32 tag_ids = 47;</code>
+       * @return The count of tagIds.
+       */
+      public int getTagIdsCount() {
+        return tagIds_.size();
+      }
+      /**
+       * <pre>
+       * 作者相关指标
+       * </pre>
+       *
+       * <code>repeated int32 tag_ids = 47;</code>
+       * @param index The index of the element to return.
+       * @return The tagIds at the given index.
+       */
+      public int getTagIds(int index) {
+        return tagIds_.getInt(index);
+      }
+      /**
+       * <pre>
+       * 作者相关指标
+       * </pre>
+       *
+       * <code>repeated int32 tag_ids = 47;</code>
+       * @param index The index to set the value at.
+       * @param value The tagIds to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTagIds(
+          int index, int value) {
+        ensureTagIdsIsMutable();
+        tagIds_.setInt(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 作者相关指标
+       * </pre>
+       *
+       * <code>repeated int32 tag_ids = 47;</code>
+       * @param value The tagIds to add.
+       * @return This builder for chaining.
+       */
+      public Builder addTagIds(int value) {
+        ensureTagIdsIsMutable();
+        tagIds_.addInt(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 作者相关指标
+       * </pre>
+       *
+       * <code>repeated int32 tag_ids = 47;</code>
+       * @param values The tagIds to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAllTagIds(
+          java.lang.Iterable<? extends java.lang.Integer> values) {
+        ensureTagIdsIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, tagIds_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 作者相关指标
+       * </pre>
+       *
+       * <code>repeated int32 tag_ids = 47;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearTagIds() {
+        tagIds_ = emptyIntList();
+        bitField0_ = (bitField0_ & ~0x00000001);
+        onChanged();
+        return this;
+      }
+
+      private int authorExpDistinctPostCnt7D_ ;
+      /**
+       * <pre>
+       * 作者最近7天曝光作品数
+       * </pre>
+       *
+       * <code>int32 author_exp_distinct_post_cnt_7d = 48;</code>
+       * @return The authorExpDistinctPostCnt7d.
+       */
+      @java.lang.Override
+      public int getAuthorExpDistinctPostCnt7D() {
+        return authorExpDistinctPostCnt7D_;
+      }
+      /**
+       * <pre>
+       * 作者最近7天曝光作品数
+       * </pre>
+       *
+       * <code>int32 author_exp_distinct_post_cnt_7d = 48;</code>
+       * @param value The authorExpDistinctPostCnt7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAuthorExpDistinctPostCnt7D(int value) {
+        
+        authorExpDistinctPostCnt7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 作者最近7天曝光作品数
+       * </pre>
+       *
+       * <code>int32 author_exp_distinct_post_cnt_7d = 48;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearAuthorExpDistinctPostCnt7D() {
+        
+        authorExpDistinctPostCnt7D_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int authorExpPostCnt7D_ ;
+      /**
+       * <pre>
+       * 作者最近7天曝光次数
+       * </pre>
+       *
+       * <code>int32 author_exp_post_cnt_7d = 49;</code>
+       * @return The authorExpPostCnt7d.
+       */
+      @java.lang.Override
+      public int getAuthorExpPostCnt7D() {
+        return authorExpPostCnt7D_;
+      }
+      /**
+       * <pre>
+       * 作者最近7天曝光次数
+       * </pre>
+       *
+       * <code>int32 author_exp_post_cnt_7d = 49;</code>
+       * @param value The authorExpPostCnt7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAuthorExpPostCnt7D(int value) {
+        
+        authorExpPostCnt7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 作者最近7天曝光次数
+       * </pre>
+       *
+       * <code>int32 author_exp_post_cnt_7d = 49;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearAuthorExpPostCnt7D() {
+        
+        authorExpPostCnt7D_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int authorValidviewPostCnt7D_ ;
+      /**
+       * <pre>
+       * 作者最近7天有效观看次数
+       * </pre>
+       *
+       * <code>int32 author_validview_post_cnt_7d = 50;</code>
+       * @return The authorValidviewPostCnt7d.
+       */
+      @java.lang.Override
+      public int getAuthorValidviewPostCnt7D() {
+        return authorValidviewPostCnt7D_;
+      }
+      /**
+       * <pre>
+       * 作者最近7天有效观看次数
+       * </pre>
+       *
+       * <code>int32 author_validview_post_cnt_7d = 50;</code>
+       * @param value The authorValidviewPostCnt7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAuthorValidviewPostCnt7D(int value) {
+        
+        authorValidviewPostCnt7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 作者最近7天有效观看次数
+       * </pre>
+       *
+       * <code>int32 author_validview_post_cnt_7d = 50;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearAuthorValidviewPostCnt7D() {
+        
+        authorValidviewPostCnt7D_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private float authorViewPostDuration7D_ ;
+      /**
+       * <pre>
+       * 作者最近7天观看时长（秒）
+       * </pre>
+       *
+       * <code>float author_view_post_duration_7d = 51;</code>
+       * @return The authorViewPostDuration7d.
+       */
+      @java.lang.Override
+      public float getAuthorViewPostDuration7D() {
+        return authorViewPostDuration7D_;
+      }
+      /**
+       * <pre>
+       * 作者最近7天观看时长（秒）
+       * </pre>
+       *
+       * <code>float author_view_post_duration_7d = 51;</code>
+       * @param value The authorViewPostDuration7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAuthorViewPostDuration7D(float value) {
+        
+        authorViewPostDuration7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 作者最近7天观看时长（秒）
+       * </pre>
+       *
+       * <code>float author_view_post_duration_7d = 51;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearAuthorViewPostDuration7D() {
+        
+        authorViewPostDuration7D_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private int authorLikeCnt7D_ ;
+      /**
+       * <pre>
+       * 作者最近7天点赞次数
+       * </pre>
+       *
+       * <code>int32 author_like_cnt_7d = 52;</code>
+       * @return The authorLikeCnt7d.
+       */
+      @java.lang.Override
+      public int getAuthorLikeCnt7D() {
+        return authorLikeCnt7D_;
+      }
+      /**
+       * <pre>
+       * 作者最近7天点赞次数
+       * </pre>
+       *
+       * <code>int32 author_like_cnt_7d = 52;</code>
+       * @param value The authorLikeCnt7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAuthorLikeCnt7D(int value) {
+        
+        authorLikeCnt7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 作者最近7天点赞次数
+       * </pre>
+       *
+       * <code>int32 author_like_cnt_7d = 52;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearAuthorLikeCnt7D() {
+        
+        authorLikeCnt7D_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int authorCommentCnt7D_ ;
+      /**
+       * <pre>
+       * 作者最近7天评论次数
+       * </pre>
+       *
+       * <code>int32 author_comment_cnt_7d = 53;</code>
+       * @return The authorCommentCnt7d.
+       */
+      @java.lang.Override
+      public int getAuthorCommentCnt7D() {
+        return authorCommentCnt7D_;
+      }
+      /**
+       * <pre>
+       * 作者最近7天评论次数
+       * </pre>
+       *
+       * <code>int32 author_comment_cnt_7d = 53;</code>
+       * @param value The authorCommentCnt7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAuthorCommentCnt7D(int value) {
+        
+        authorCommentCnt7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 作者最近7天评论次数
+       * </pre>
+       *
+       * <code>int32 author_comment_cnt_7d = 53;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearAuthorCommentCnt7D() {
+        
+        authorCommentCnt7D_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int authorCompleteviewPostCnt7D_ ;
+      /**
+       * <pre>
+       * 作者最近7天完整观看次数
+       * </pre>
+       *
+       * <code>int32 author_completeview_post_cnt_7d = 54;</code>
+       * @return The authorCompleteviewPostCnt7d.
+       */
+      @java.lang.Override
+      public int getAuthorCompleteviewPostCnt7D() {
+        return authorCompleteviewPostCnt7D_;
+      }
+      /**
+       * <pre>
+       * 作者最近7天完整观看次数
+       * </pre>
+       *
+       * <code>int32 author_completeview_post_cnt_7d = 54;</code>
+       * @param value The authorCompleteviewPostCnt7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAuthorCompleteviewPostCnt7D(int value) {
+        
+        authorCompleteviewPostCnt7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 作者最近7天完整观看次数
+       * </pre>
+       *
+       * <code>int32 author_completeview_post_cnt_7d = 54;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearAuthorCompleteviewPostCnt7D() {
+        
+        authorCompleteviewPostCnt7D_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private float authorViewAvgDuration7D_ ;
+      /**
+       * <pre>
+       * 作者最近7天平均观看时长（秒）
+       * </pre>
+       *
+       * <code>float author_view_avg_duration_7d = 55;</code>
+       * @return The authorViewAvgDuration7d.
+       */
+      @java.lang.Override
+      public float getAuthorViewAvgDuration7D() {
+        return authorViewAvgDuration7D_;
+      }
+      /**
+       * <pre>
+       * 作者最近7天平均观看时长（秒）
+       * </pre>
+       *
+       * <code>float author_view_avg_duration_7d = 55;</code>
+       * @param value The authorViewAvgDuration7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAuthorViewAvgDuration7D(float value) {
+        
+        authorViewAvgDuration7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 作者最近7天平均观看时长（秒）
+       * </pre>
+       *
+       * <code>float author_view_avg_duration_7d = 55;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearAuthorViewAvgDuration7D() {
+        
+        authorViewAvgDuration7D_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private int authorInterProfileCnt7D_ ;
+      /**
+       * <pre>
+       * 作者主页最近7天post流被访问次数
+       * </pre>
+       *
+       * <code>int32 author_inter_profile_cnt_7d = 56;</code>
+       * @return The authorInterProfileCnt7d.
+       */
+      @java.lang.Override
+      public int getAuthorInterProfileCnt7D() {
+        return authorInterProfileCnt7D_;
+      }
+      /**
+       * <pre>
+       * 作者主页最近7天post流被访问次数
+       * </pre>
+       *
+       * <code>int32 author_inter_profile_cnt_7d = 56;</code>
+       * @param value The authorInterProfileCnt7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAuthorInterProfileCnt7D(int value) {
+        
+        authorInterProfileCnt7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 作者主页最近7天post流被访问次数
+       * </pre>
+       *
+       * <code>int32 author_inter_profile_cnt_7d = 56;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearAuthorInterProfileCnt7D() {
+        
+        authorInterProfileCnt7D_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int authorFollowCnt7D_ ;
+      /**
+       * <pre>
+       * 作者主页最近7天post流被关注次数
+       * </pre>
+       *
+       * <code>int32 author_follow_cnt_7d = 57;</code>
+       * @return The authorFollowCnt7d.
+       */
+      @java.lang.Override
+      public int getAuthorFollowCnt7D() {
+        return authorFollowCnt7D_;
+      }
+      /**
+       * <pre>
+       * 作者主页最近7天post流被关注次数
+       * </pre>
+       *
+       * <code>int32 author_follow_cnt_7d = 57;</code>
+       * @param value The authorFollowCnt7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAuthorFollowCnt7D(int value) {
+        
+        authorFollowCnt7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 作者主页最近7天post流被关注次数
+       * </pre>
+       *
+       * <code>int32 author_follow_cnt_7d = 57;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearAuthorFollowCnt7D() {
+        
+        authorFollowCnt7D_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int authorFollowersCnt_ ;
+      /**
+       * <pre>
+       * 作者粉丝数
+       * </pre>
+       *
+       * <code>int32 author_followers_cnt = 58;</code>
+       * @return The authorFollowersCnt.
+       */
+      @java.lang.Override
+      public int getAuthorFollowersCnt() {
+        return authorFollowersCnt_;
+      }
+      /**
+       * <pre>
+       * 作者粉丝数
+       * </pre>
+       *
+       * <code>int32 author_followers_cnt = 58;</code>
+       * @param value The authorFollowersCnt to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAuthorFollowersCnt(int value) {
+        
+        authorFollowersCnt_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 作者粉丝数
+       * </pre>
+       *
+       * <code>int32 author_followers_cnt = 58;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearAuthorFollowersCnt() {
+        
+        authorFollowersCnt_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private float postValidviewRate7D_ ;
+      /**
+       * <pre>
+       * 7天比率指标
+       * </pre>
+       *
+       * <code>float post_validview_rate_7d = 60;</code>
+       * @return The postValidviewRate7d.
+       */
+      @java.lang.Override
+      public float getPostValidviewRate7D() {
+        return postValidviewRate7D_;
+      }
+      /**
+       * <pre>
+       * 7天比率指标
+       * </pre>
+       *
+       * <code>float post_validview_rate_7d = 60;</code>
+       * @param value The postValidviewRate7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPostValidviewRate7D(float value) {
+        
+        postValidviewRate7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 7天比率指标
+       * </pre>
+       *
+       * <code>float post_validview_rate_7d = 60;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPostValidviewRate7D() {
+        
+        postValidviewRate7D_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float postCompleteviewRate7D_ ;
+      /**
+       * <pre>
+       * 最近7天完整观看率（完播率）
+       * </pre>
+       *
+       * <code>float post_completeview_rate_7d = 61;</code>
+       * @return The postCompleteviewRate7d.
+       */
+      @java.lang.Override
+      public float getPostCompleteviewRate7D() {
+        return postCompleteviewRate7D_;
+      }
+      /**
+       * <pre>
+       * 最近7天完整观看率（完播率）
+       * </pre>
+       *
+       * <code>float post_completeview_rate_7d = 61;</code>
+       * @param value The postCompleteviewRate7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPostCompleteviewRate7D(float value) {
+        
+        postCompleteviewRate7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 最近7天完整观看率（完播率）
+       * </pre>
+       *
+       * <code>float post_completeview_rate_7d = 61;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPostCompleteviewRate7D() {
+        
+        postCompleteviewRate7D_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float postAvgViewDuration7D_ ;
+      /**
+       * <pre>
+       * 最近7天平均每次观看时长（秒）
+       * </pre>
+       *
+       * <code>float post_avg_view_duration_7d = 62;</code>
+       * @return The postAvgViewDuration7d.
+       */
+      @java.lang.Override
+      public float getPostAvgViewDuration7D() {
+        return postAvgViewDuration7D_;
+      }
+      /**
+       * <pre>
+       * 最近7天平均每次观看时长（秒）
+       * </pre>
+       *
+       * <code>float post_avg_view_duration_7d = 62;</code>
+       * @param value The postAvgViewDuration7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPostAvgViewDuration7D(float value) {
+        
+        postAvgViewDuration7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 最近7天平均每次观看时长（秒）
+       * </pre>
+       *
+       * <code>float post_avg_view_duration_7d = 62;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPostAvgViewDuration7D() {
+        
+        postAvgViewDuration7D_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float postLikeRate7D_ ;
+      /**
+       * <pre>
+       * 最近7天点赞率
+       * </pre>
+       *
+       * <code>float post_like_rate_7d = 63;</code>
+       * @return The postLikeRate7d.
+       */
+      @java.lang.Override
+      public float getPostLikeRate7D() {
+        return postLikeRate7D_;
+      }
+      /**
+       * <pre>
+       * 最近7天点赞率
+       * </pre>
+       *
+       * <code>float post_like_rate_7d = 63;</code>
+       * @param value The postLikeRate7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPostLikeRate7D(float value) {
+        
+        postLikeRate7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 最近7天点赞率
+       * </pre>
+       *
+       * <code>float post_like_rate_7d = 63;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPostLikeRate7D() {
+        
+        postLikeRate7D_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float postCommentRate7D_ ;
+      /**
+       * <pre>
+       * 最近7天评论率
+       * </pre>
+       *
+       * <code>float post_comment_rate_7d = 64;</code>
+       * @return The postCommentRate7d.
+       */
+      @java.lang.Override
+      public float getPostCommentRate7D() {
+        return postCommentRate7D_;
+      }
+      /**
+       * <pre>
+       * 最近7天评论率
+       * </pre>
+       *
+       * <code>float post_comment_rate_7d = 64;</code>
+       * @param value The postCommentRate7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPostCommentRate7D(float value) {
+        
+        postCommentRate7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 最近7天评论率
+       * </pre>
+       *
+       * <code>float post_comment_rate_7d = 64;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPostCommentRate7D() {
+        
+        postCommentRate7D_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.Internal.FloatList postAiEmbedding_ = emptyFloatList();
+      private void ensurePostAiEmbeddingIsMutable() {
+        if (!((bitField0_ & 0x00000002) != 0)) {
+          postAiEmbedding_ = mutableCopy(postAiEmbedding_);
+          bitField0_ |= 0x00000002;
+         }
+      }
+      /**
+       * <pre>
+       * embedding
+       * </pre>
+       *
+       * <code>repeated float post_ai_embedding = 70;</code>
+       * @return A list containing the postAiEmbedding.
+       */
+      public java.util.List<java.lang.Float>
+          getPostAiEmbeddingList() {
+        return ((bitField0_ & 0x00000002) != 0) ?
+                 java.util.Collections.unmodifiableList(postAiEmbedding_) : postAiEmbedding_;
+      }
+      /**
+       * <pre>
+       * embedding
+       * </pre>
+       *
+       * <code>repeated float post_ai_embedding = 70;</code>
+       * @return The count of postAiEmbedding.
+       */
+      public int getPostAiEmbeddingCount() {
+        return postAiEmbedding_.size();
+      }
+      /**
+       * <pre>
+       * embedding
+       * </pre>
+       *
+       * <code>repeated float post_ai_embedding = 70;</code>
+       * @param index The index of the element to return.
+       * @return The postAiEmbedding at the given index.
+       */
+      public float getPostAiEmbedding(int index) {
+        return postAiEmbedding_.getFloat(index);
+      }
+      /**
+       * <pre>
+       * embedding
+       * </pre>
+       *
+       * <code>repeated float post_ai_embedding = 70;</code>
+       * @param index The index to set the value at.
+       * @param value The postAiEmbedding to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPostAiEmbedding(
+          int index, float value) {
+        ensurePostAiEmbeddingIsMutable();
+        postAiEmbedding_.setFloat(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * embedding
+       * </pre>
+       *
+       * <code>repeated float post_ai_embedding = 70;</code>
+       * @param value The postAiEmbedding to add.
+       * @return This builder for chaining.
+       */
+      public Builder addPostAiEmbedding(float value) {
+        ensurePostAiEmbeddingIsMutable();
+        postAiEmbedding_.addFloat(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * embedding
+       * </pre>
+       *
+       * <code>repeated float post_ai_embedding = 70;</code>
+       * @param values The postAiEmbedding to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAllPostAiEmbedding(
+          java.lang.Iterable<? extends java.lang.Float> values) {
+        ensurePostAiEmbeddingIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, postAiEmbedding_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * embedding
+       * </pre>
+       *
+       * <code>repeated float post_ai_embedding = 70;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPostAiEmbedding() {
+        postAiEmbedding_ = emptyFloatList();
+        bitField0_ = (bitField0_ & ~0x00000002);
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object postAiTags_ = "";
+      /**
+       * <pre>
+       * item的ai标签
+       * </pre>
+       *
+       * <code>string post_ai_tags = 71;</code>
+       * @return The postAiTags.
+       */
+      public java.lang.String getPostAiTags() {
+        java.lang.Object ref = postAiTags_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          postAiTags_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * item的ai标签
+       * </pre>
+       *
+       * <code>string post_ai_tags = 71;</code>
+       * @return The bytes for postAiTags.
+       */
+      public com.google.protobuf.ByteString
+          getPostAiTagsBytes() {
+        java.lang.Object ref = postAiTags_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          postAiTags_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * item的ai标签
+       * </pre>
+       *
+       * <code>string post_ai_tags = 71;</code>
+       * @param value The postAiTags to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPostAiTags(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        postAiTags_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * item的ai标签
+       * </pre>
+       *
+       * <code>string post_ai_tags = 71;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPostAiTags() {
+        
+        postAiTags_ = getDefaultInstance().getPostAiTags();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * item的ai标签
+       * </pre>
+       *
+       * <code>string post_ai_tags = 71;</code>
+       * @param value The bytes for postAiTags to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPostAiTagsBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        postAiTags_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object postAsrLang_ = "";
+      /**
+       * <pre>
+       * item的asr识别语言
+       * </pre>
+       *
+       * <code>string post_asr_lang = 72;</code>
+       * @return The postAsrLang.
+       */
+      public java.lang.String getPostAsrLang() {
+        java.lang.Object ref = postAsrLang_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          postAsrLang_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * item的asr识别语言
+       * </pre>
+       *
+       * <code>string post_asr_lang = 72;</code>
+       * @return The bytes for postAsrLang.
+       */
+      public com.google.protobuf.ByteString
+          getPostAsrLangBytes() {
+        java.lang.Object ref = postAsrLang_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          postAsrLang_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * item的asr识别语言
+       * </pre>
+       *
+       * <code>string post_asr_lang = 72;</code>
+       * @param value The postAsrLang to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPostAsrLang(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        postAsrLang_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * item的asr识别语言
+       * </pre>
+       *
+       * <code>string post_asr_lang = 72;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPostAsrLang() {
+        
+        postAsrLang_ = getDefaultInstance().getPostAsrLang();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * item的asr识别语言
+       * </pre>
+       *
+       * <code>string post_asr_lang = 72;</code>
+       * @param value The bytes for postAsrLang to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPostAsrLangBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        postAsrLang_ = value;
+        onChanged();
+        return this;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -6213,24 +14485,21 @@ public final class RecFeature {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <pre>
-     * 过期时间标识 (1h 或 24h)
-     * </pre>
-     *
-     * <code>string expire_time = 3;</code>
-     * @return The expireTime.
+     * <code>uint64 user_id = 1;</code>
+     * @return The userId.
      */
-    java.lang.String getExpireTime();
+    long getUserId();
+
     /**
      * <pre>
      * 过期时间标识 (1h 或 24h)
+     *   string expire_time = 3;
      * </pre>
      *
-     * <code>string expire_time = 3;</code>
-     * @return The bytes for expireTime.
+     * <code>uint64 author_id = 2;</code>
+     * @return The authorId.
      */
-    com.google.protobuf.ByteString
-        getExpireTimeBytes();
+    long getAuthorId();
 
     /**
      * <pre>
@@ -6393,11 +14662,522 @@ public final class RecFeature {
      * @return The userauthorLikeCnt24h.
      */
     int getUserauthorLikeCnt24H();
+
+    /**
+     * <pre>
+     * 7d特征
+     * 基础互动指标
+     * </pre>
+     *
+     * <code>int32 user_author_view_cnt_7d = 40;</code>
+     * @return The userAuthorViewCnt7d.
+     */
+    int getUserAuthorViewCnt7D();
+
+    /**
+     * <pre>
+     * 用户对作者最近7天观看时长（秒）
+     * </pre>
+     *
+     * <code>float user_author_validview_cnt_7d = 41;</code>
+     * @return The userAuthorValidviewCnt7d.
+     */
+    float getUserAuthorValidviewCnt7D();
+
+    /**
+     * <pre>
+     * 用户对作者最近7天完整观看次数
+     * </pre>
+     *
+     * <code>int32 user_author_compeleteview_cnt_7d = 42;</code>
+     * @return The userAuthorCompeleteviewCnt7d.
+     */
+    int getUserAuthorCompeleteviewCnt7D();
+
+    /**
+     * <pre>
+     * 用户对作者最近7天点赞次数
+     * </pre>
+     *
+     * <code>int32 user_author_like_cnt_7d = 43;</code>
+     * @return The userAuthorLikeCnt7d.
+     */
+    int getUserAuthorLikeCnt7D();
+
+    /**
+     * <pre>
+     * 用户对作者最近7天评论次数
+     * </pre>
+     *
+     * <code>int32 user_author_comment_cnt_7d = 44;</code>
+     * @return The userAuthorCommentCnt7d.
+     */
+    int getUserAuthorCommentCnt7D();
+
+    /**
+     * <pre>
+     * 用户对作者最近7天平均每次曝光观看时长（秒）
+     * </pre>
+     *
+     * <code>float user_author_avg_view_duration_7d = 45;</code>
+     * @return The userAuthorAvgViewDuration7d.
+     */
+    float getUserAuthorAvgViewDuration7D();
+
+    /**
+     * <pre>
+     * TF-IDF特征
+     * </pre>
+     *
+     * <code>float user_author_validview_tfidf_7d = 46;</code>
+     * @return The userAuthorValidviewTfidf7d.
+     */
+    float getUserAuthorValidviewTfidf7D();
+
+    /**
+     * <pre>
+     * 用户对作者最近七天完整观看的TF-IDF值
+     * </pre>
+     *
+     * <code>float user_author_compeleteview_tfidf_7d = 47;</code>
+     * @return The userAuthorCompeleteviewTfidf7d.
+     */
+    float getUserAuthorCompeleteviewTfidf7D();
+
+    /**
+     * <pre>
+     * 用户对作者最近七天点赞+评论的TF-IDF值
+     * </pre>
+     *
+     * <code>float user_author_likecomment_tfidf_7d = 48;</code>
+     * @return The userAuthorLikecommentTfidf7d.
+     */
+    float getUserAuthorLikecommentTfidf7D();
+
+    /**
+     * <pre>
+     * 7d交叉v11+v12
+     * </pre>
+     *
+     * <code>int32 user_tag11_is_like = 50;</code>
+     * @return The userTag11IsLike.
+     */
+    int getUserTag11IsLike();
+
+    /**
+     * <pre>
+     * 用户对内容11最近7是否非常感兴趣
+     * </pre>
+     *
+     * <code>int32 user_tag11_is_play = 51;</code>
+     * @return The userTag11IsPlay.
+     */
+    int getUserTag11IsPlay();
+
+    /**
+     * <pre>
+     * 用户对内容11最近7是否评论
+     * </pre>
+     *
+     * <code>int32 user_tag11_is_comment = 52;</code>
+     * @return The userTag11IsComment.
+     */
+    int getUserTag11IsComment();
+
+    /**
+     * <pre>
+     * 用户对内容12最近7是否喜欢
+     * </pre>
+     *
+     * <code>int32 user_tag12_is_like = 53;</code>
+     * @return The userTag12IsLike.
+     */
+    int getUserTag12IsLike();
+
+    /**
+     * <pre>
+     * 用户对内容12最近7是否非常感兴趣
+     * </pre>
+     *
+     * <code>int32 user_tag12_is_play = 54;</code>
+     * @return The userTag12IsPlay.
+     */
+    int getUserTag12IsPlay();
+
+    /**
+     * <pre>
+     * 用户对内容12最近7是否评论
+     * </pre>
+     *
+     * <code>int32 user_tag12_is_comment = 55;</code>
+     * @return The userTag12IsComment.
+     */
+    int getUserTag12IsComment();
+
+    /**
+     * <pre>
+     * 用户对内容13最近7是否喜欢
+     * </pre>
+     *
+     * <code>int32 user_tag13_is_like = 56;</code>
+     * @return The userTag13IsLike.
+     */
+    int getUserTag13IsLike();
+
+    /**
+     * <pre>
+     * 用户对内容13最近7是否非常感兴趣
+     * </pre>
+     *
+     * <code>int32 user_tag13_is_play = 57;</code>
+     * @return The userTag13IsPlay.
+     */
+    int getUserTag13IsPlay();
+
+    /**
+     * <pre>
+     * 用户对内容13最近7是否评论
+     * </pre>
+     *
+     * <code>int32 user_tag13_is_comment = 58;</code>
+     * @return The userTag13IsComment.
+     */
+    int getUserTag13IsComment();
+
+    /**
+     * <pre>
+     * 用户对内容14最近7是否喜欢
+     * </pre>
+     *
+     * <code>int32 user_tag14_is_like = 59;</code>
+     * @return The userTag14IsLike.
+     */
+    int getUserTag14IsLike();
+
+    /**
+     * <pre>
+     * 用户对内容14最近7是否非常感兴趣
+     * </pre>
+     *
+     * <code>int32 user_tag14_is_play = 60;</code>
+     * @return The userTag14IsPlay.
+     */
+    int getUserTag14IsPlay();
+
+    /**
+     * <pre>
+     * 用户对内容14最近7是否评论
+     * </pre>
+     *
+     * <code>int32 user_tag14_is_comment = 61;</code>
+     * @return The userTag14IsComment.
+     */
+    int getUserTag14IsComment();
+
+    /**
+     * <pre>
+     * 用户对内容15最近7是否喜欢
+     * </pre>
+     *
+     * <code>int32 user_tag15_is_like = 62;</code>
+     * @return The userTag15IsLike.
+     */
+    int getUserTag15IsLike();
+
+    /**
+     * <pre>
+     * 用户对内容15最近7是否非常感兴趣
+     * </pre>
+     *
+     * <code>int32 user_tag15_is_play = 63;</code>
+     * @return The userTag15IsPlay.
+     */
+    int getUserTag15IsPlay();
+
+    /**
+     * <pre>
+     * 用户对内容15最近7是否评论
+     * </pre>
+     *
+     * <code>int32 user_tag15_is_comment = 64;</code>
+     * @return The userTag15IsComment.
+     */
+    int getUserTag15IsComment();
+
+    /**
+     * <pre>
+     * 用户对内容16最近7是否喜欢
+     * </pre>
+     *
+     * <code>int32 user_tag16_is_like = 65;</code>
+     * @return The userTag16IsLike.
+     */
+    int getUserTag16IsLike();
+
+    /**
+     * <pre>
+     * 用户对内容16最近7是否非常感兴趣
+     * </pre>
+     *
+     * <code>int32 user_tag16_is_play = 66;</code>
+     * @return The userTag16IsPlay.
+     */
+    int getUserTag16IsPlay();
+
+    /**
+     * <pre>
+     * 用户对内容16最近7是否评论
+     * </pre>
+     *
+     * <code>int32 user_tag16_is_comment = 67;</code>
+     * @return The userTag16IsComment.
+     */
+    int getUserTag16IsComment();
+
+    /**
+     * <pre>
+     * 用户对内容17最近7是否喜欢
+     * </pre>
+     *
+     * <code>int32 user_tag17_is_like = 68;</code>
+     * @return The userTag17IsLike.
+     */
+    int getUserTag17IsLike();
+
+    /**
+     * <pre>
+     * 用户对内容17最近7是否非常感兴趣
+     * </pre>
+     *
+     * <code>int32 user_tag17_is_play = 69;</code>
+     * @return The userTag17IsPlay.
+     */
+    int getUserTag17IsPlay();
+
+    /**
+     * <pre>
+     * 用户对内容17最近7是否评论
+     * </pre>
+     *
+     * <code>int32 user_tag17_is_comment = 70;</code>
+     * @return The userTag17IsComment.
+     */
+    int getUserTag17IsComment();
+
+    /**
+     * <pre>
+     * 用户对内容11最近7喜欢数
+     * </pre>
+     *
+     * <code>int32 user_tag11_like_cnt = 71;</code>
+     * @return The userTag11LikeCnt.
+     */
+    int getUserTag11LikeCnt();
+
+    /**
+     * <pre>
+     * 用户对内容11最近7播放数
+     * </pre>
+     *
+     * <code>int32 user_tag11_play_cnt = 72;</code>
+     * @return The userTag11PlayCnt.
+     */
+    int getUserTag11PlayCnt();
+
+    /**
+     * <pre>
+     * 用户对内容11最近7评论数
+     * </pre>
+     *
+     * <code>int32 user_tag11_comment_cnt = 73;</code>
+     * @return The userTag11CommentCnt.
+     */
+    int getUserTag11CommentCnt();
+
+    /**
+     * <pre>
+     * 用户对内容12最近7喜欢数
+     * </pre>
+     *
+     * <code>int32 user_tag12_like_cnt = 74;</code>
+     * @return The userTag12LikeCnt.
+     */
+    int getUserTag12LikeCnt();
+
+    /**
+     * <pre>
+     * 用户对内容12最近7播放数
+     * </pre>
+     *
+     * <code>int32 user_tag12_play_cnt = 75;</code>
+     * @return The userTag12PlayCnt.
+     */
+    int getUserTag12PlayCnt();
+
+    /**
+     * <pre>
+     * 用户对内容12最近7评论数
+     * </pre>
+     *
+     * <code>int32 user_tag12_comment_cnt = 76;</code>
+     * @return The userTag12CommentCnt.
+     */
+    int getUserTag12CommentCnt();
+
+    /**
+     * <pre>
+     * 用户对内容13最近7喜欢数
+     * </pre>
+     *
+     * <code>int32 user_tag13_like_cnt = 77;</code>
+     * @return The userTag13LikeCnt.
+     */
+    int getUserTag13LikeCnt();
+
+    /**
+     * <pre>
+     * 用户对内容13最近7播放数
+     * </pre>
+     *
+     * <code>int32 user_tag13_play_cnt = 78;</code>
+     * @return The userTag13PlayCnt.
+     */
+    int getUserTag13PlayCnt();
+
+    /**
+     * <pre>
+     * 用户对内容13最近7评论数
+     * </pre>
+     *
+     * <code>int32 user_tag13_comment_cnt = 79;</code>
+     * @return The userTag13CommentCnt.
+     */
+    int getUserTag13CommentCnt();
+
+    /**
+     * <pre>
+     * 用户对内容14最近7喜欢数
+     * </pre>
+     *
+     * <code>int32 user_tag14_like_cnt = 80;</code>
+     * @return The userTag14LikeCnt.
+     */
+    int getUserTag14LikeCnt();
+
+    /**
+     * <pre>
+     * 用户对内容14最近7播放数
+     * </pre>
+     *
+     * <code>int32 user_tag14_play_cnt = 81;</code>
+     * @return The userTag14PlayCnt.
+     */
+    int getUserTag14PlayCnt();
+
+    /**
+     * <pre>
+     * 用户对内容14最近7评论数
+     * </pre>
+     *
+     * <code>int32 user_tag14_comment_cnt = 82;</code>
+     * @return The userTag14CommentCnt.
+     */
+    int getUserTag14CommentCnt();
+
+    /**
+     * <pre>
+     * 用户对内容15最近7喜欢数
+     * </pre>
+     *
+     * <code>int32 user_tag15_like_cnt = 83;</code>
+     * @return The userTag15LikeCnt.
+     */
+    int getUserTag15LikeCnt();
+
+    /**
+     * <pre>
+     * 用户对内容15最近7播放数
+     * </pre>
+     *
+     * <code>int32 user_tag15_play_cnt = 84;</code>
+     * @return The userTag15PlayCnt.
+     */
+    int getUserTag15PlayCnt();
+
+    /**
+     * <pre>
+     * 用户对内容15最近7评论数
+     * </pre>
+     *
+     * <code>int32 user_tag15_comment_cnt = 85;</code>
+     * @return The userTag15CommentCnt.
+     */
+    int getUserTag15CommentCnt();
+
+    /**
+     * <pre>
+     * 用户对内容16最近7喜欢数
+     * </pre>
+     *
+     * <code>int32 user_tag16_like_cnt = 86;</code>
+     * @return The userTag16LikeCnt.
+     */
+    int getUserTag16LikeCnt();
+
+    /**
+     * <pre>
+     * 用户对内容16最近7播放数
+     * </pre>
+     *
+     * <code>int32 user_tag16_play_cnt = 87;</code>
+     * @return The userTag16PlayCnt.
+     */
+    int getUserTag16PlayCnt();
+
+    /**
+     * <pre>
+     * 用户对内容16最近7评论数
+     * </pre>
+     *
+     * <code>int32 user_tag16_comment_cnt = 88;</code>
+     * @return The userTag16CommentCnt.
+     */
+    int getUserTag16CommentCnt();
+
+    /**
+     * <pre>
+     * 用户对内容17最近7喜欢数
+     * </pre>
+     *
+     * <code>int32 user_tag17_like_cnt = 89;</code>
+     * @return The userTag17LikeCnt.
+     */
+    int getUserTag17LikeCnt();
+
+    /**
+     * <pre>
+     * 用户对内容17最近7播放数
+     * </pre>
+     *
+     * <code>int32 user_tag17_play_cnt = 90;</code>
+     * @return The userTag17PlayCnt.
+     */
+    int getUserTag17PlayCnt();
+
+    /**
+     * <pre>
+     * 用户对内容17最近7评论数
+     * </pre>
+     *
+     * <code>int32 user_tag17_comment_cnt = 91;</code>
+     * @return The userTag17CommentCnt.
+     */
+    int getUserTag17CommentCnt();
   }
   /**
    * <pre>
-   * 用户作者交叉特征
-   * Redis Key: rec:user_author_feature:{user_id}_{author_id}:post1h, rec:user_author_feature:{user_id}_{author_id}:post24h
+   * 用户作者交叉特征,hset格式
+   * Redis Key: rec:user_author_feature:{user_id}:post1h, rec:user_author_feature:{user_id}:post24h
    * </pre>
    *
    * Protobuf type {@code com.gosh.entity.RecUserAuthorFeature}
@@ -6412,7 +15192,6 @@ public final class RecFeature {
       super(builder);
     }
     private RecUserAuthorFeature() {
-      expireTime_ = "";
     }
 
     @java.lang.Override
@@ -6445,10 +15224,14 @@ public final class RecFeature {
             case 0:
               done = true;
               break;
-            case 26: {
-              java.lang.String s = input.readStringRequireUtf8();
+            case 8: {
 
-              expireTime_ = s;
+              userId_ = input.readUInt64();
+              break;
+            }
+            case 16: {
+
+              authorId_ = input.readUInt64();
               break;
             }
             case 80: {
@@ -6531,6 +15314,261 @@ public final class RecFeature {
               userauthorLikeCnt24H_ = input.readInt32();
               break;
             }
+            case 320: {
+
+              userAuthorViewCnt7D_ = input.readInt32();
+              break;
+            }
+            case 333: {
+
+              userAuthorValidviewCnt7D_ = input.readFloat();
+              break;
+            }
+            case 336: {
+
+              userAuthorCompeleteviewCnt7D_ = input.readInt32();
+              break;
+            }
+            case 344: {
+
+              userAuthorLikeCnt7D_ = input.readInt32();
+              break;
+            }
+            case 352: {
+
+              userAuthorCommentCnt7D_ = input.readInt32();
+              break;
+            }
+            case 365: {
+
+              userAuthorAvgViewDuration7D_ = input.readFloat();
+              break;
+            }
+            case 373: {
+
+              userAuthorValidviewTfidf7D_ = input.readFloat();
+              break;
+            }
+            case 381: {
+
+              userAuthorCompeleteviewTfidf7D_ = input.readFloat();
+              break;
+            }
+            case 389: {
+
+              userAuthorLikecommentTfidf7D_ = input.readFloat();
+              break;
+            }
+            case 400: {
+
+              userTag11IsLike_ = input.readInt32();
+              break;
+            }
+            case 408: {
+
+              userTag11IsPlay_ = input.readInt32();
+              break;
+            }
+            case 416: {
+
+              userTag11IsComment_ = input.readInt32();
+              break;
+            }
+            case 424: {
+
+              userTag12IsLike_ = input.readInt32();
+              break;
+            }
+            case 432: {
+
+              userTag12IsPlay_ = input.readInt32();
+              break;
+            }
+            case 440: {
+
+              userTag12IsComment_ = input.readInt32();
+              break;
+            }
+            case 448: {
+
+              userTag13IsLike_ = input.readInt32();
+              break;
+            }
+            case 456: {
+
+              userTag13IsPlay_ = input.readInt32();
+              break;
+            }
+            case 464: {
+
+              userTag13IsComment_ = input.readInt32();
+              break;
+            }
+            case 472: {
+
+              userTag14IsLike_ = input.readInt32();
+              break;
+            }
+            case 480: {
+
+              userTag14IsPlay_ = input.readInt32();
+              break;
+            }
+            case 488: {
+
+              userTag14IsComment_ = input.readInt32();
+              break;
+            }
+            case 496: {
+
+              userTag15IsLike_ = input.readInt32();
+              break;
+            }
+            case 504: {
+
+              userTag15IsPlay_ = input.readInt32();
+              break;
+            }
+            case 512: {
+
+              userTag15IsComment_ = input.readInt32();
+              break;
+            }
+            case 520: {
+
+              userTag16IsLike_ = input.readInt32();
+              break;
+            }
+            case 528: {
+
+              userTag16IsPlay_ = input.readInt32();
+              break;
+            }
+            case 536: {
+
+              userTag16IsComment_ = input.readInt32();
+              break;
+            }
+            case 544: {
+
+              userTag17IsLike_ = input.readInt32();
+              break;
+            }
+            case 552: {
+
+              userTag17IsPlay_ = input.readInt32();
+              break;
+            }
+            case 560: {
+
+              userTag17IsComment_ = input.readInt32();
+              break;
+            }
+            case 568: {
+
+              userTag11LikeCnt_ = input.readInt32();
+              break;
+            }
+            case 576: {
+
+              userTag11PlayCnt_ = input.readInt32();
+              break;
+            }
+            case 584: {
+
+              userTag11CommentCnt_ = input.readInt32();
+              break;
+            }
+            case 592: {
+
+              userTag12LikeCnt_ = input.readInt32();
+              break;
+            }
+            case 600: {
+
+              userTag12PlayCnt_ = input.readInt32();
+              break;
+            }
+            case 608: {
+
+              userTag12CommentCnt_ = input.readInt32();
+              break;
+            }
+            case 616: {
+
+              userTag13LikeCnt_ = input.readInt32();
+              break;
+            }
+            case 624: {
+
+              userTag13PlayCnt_ = input.readInt32();
+              break;
+            }
+            case 632: {
+
+              userTag13CommentCnt_ = input.readInt32();
+              break;
+            }
+            case 640: {
+
+              userTag14LikeCnt_ = input.readInt32();
+              break;
+            }
+            case 648: {
+
+              userTag14PlayCnt_ = input.readInt32();
+              break;
+            }
+            case 656: {
+
+              userTag14CommentCnt_ = input.readInt32();
+              break;
+            }
+            case 664: {
+
+              userTag15LikeCnt_ = input.readInt32();
+              break;
+            }
+            case 672: {
+
+              userTag15PlayCnt_ = input.readInt32();
+              break;
+            }
+            case 680: {
+
+              userTag15CommentCnt_ = input.readInt32();
+              break;
+            }
+            case 688: {
+
+              userTag16LikeCnt_ = input.readInt32();
+              break;
+            }
+            case 696: {
+
+              userTag16PlayCnt_ = input.readInt32();
+              break;
+            }
+            case 704: {
+
+              userTag16CommentCnt_ = input.readInt32();
+              break;
+            }
+            case 712: {
+
+              userTag17LikeCnt_ = input.readInt32();
+              break;
+            }
+            case 720: {
+
+              userTag17PlayCnt_ = input.readInt32();
+              break;
+            }
+            case 728: {
+
+              userTag17CommentCnt_ = input.readInt32();
+              break;
+            }
             default: {
               if (!parseUnknownField(
                   input, unknownFields, extensionRegistry, tag)) {
@@ -6565,50 +15603,31 @@ public final class RecFeature {
               com.gosh.entity.RecFeature.RecUserAuthorFeature.class, com.gosh.entity.RecFeature.RecUserAuthorFeature.Builder.class);
     }
 
-    public static final int EXPIRE_TIME_FIELD_NUMBER = 3;
-    private volatile java.lang.Object expireTime_;
+    public static final int USER_ID_FIELD_NUMBER = 1;
+    private long userId_;
     /**
-     * <pre>
-     * 过期时间标识 (1h 或 24h)
-     * </pre>
-     *
-     * <code>string expire_time = 3;</code>
-     * @return The expireTime.
+     * <code>uint64 user_id = 1;</code>
+     * @return The userId.
      */
     @java.lang.Override
-    public java.lang.String getExpireTime() {
-      java.lang.Object ref = expireTime_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        expireTime_ = s;
-        return s;
-      }
+    public long getUserId() {
+      return userId_;
     }
+
+    public static final int AUTHOR_ID_FIELD_NUMBER = 2;
+    private long authorId_;
     /**
      * <pre>
      * 过期时间标识 (1h 或 24h)
+     *   string expire_time = 3;
      * </pre>
      *
-     * <code>string expire_time = 3;</code>
-     * @return The bytes for expireTime.
+     * <code>uint64 author_id = 2;</code>
+     * @return The authorId.
      */
     @java.lang.Override
-    public com.google.protobuf.ByteString
-        getExpireTimeBytes() {
-      java.lang.Object ref = expireTime_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        expireTime_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+    public long getAuthorId() {
+      return authorId_;
     }
 
     public static final int USERAUTHOR_EXP_CNT_1H_FIELD_NUMBER = 10;
@@ -6853,6 +15872,772 @@ public final class RecFeature {
       return userauthorLikeCnt24H_;
     }
 
+    public static final int USER_AUTHOR_VIEW_CNT_7D_FIELD_NUMBER = 40;
+    private int userAuthorViewCnt7D_;
+    /**
+     * <pre>
+     * 7d特征
+     * 基础互动指标
+     * </pre>
+     *
+     * <code>int32 user_author_view_cnt_7d = 40;</code>
+     * @return The userAuthorViewCnt7d.
+     */
+    @java.lang.Override
+    public int getUserAuthorViewCnt7D() {
+      return userAuthorViewCnt7D_;
+    }
+
+    public static final int USER_AUTHOR_VALIDVIEW_CNT_7D_FIELD_NUMBER = 41;
+    private float userAuthorValidviewCnt7D_;
+    /**
+     * <pre>
+     * 用户对作者最近7天观看时长（秒）
+     * </pre>
+     *
+     * <code>float user_author_validview_cnt_7d = 41;</code>
+     * @return The userAuthorValidviewCnt7d.
+     */
+    @java.lang.Override
+    public float getUserAuthorValidviewCnt7D() {
+      return userAuthorValidviewCnt7D_;
+    }
+
+    public static final int USER_AUTHOR_COMPELETEVIEW_CNT_7D_FIELD_NUMBER = 42;
+    private int userAuthorCompeleteviewCnt7D_;
+    /**
+     * <pre>
+     * 用户对作者最近7天完整观看次数
+     * </pre>
+     *
+     * <code>int32 user_author_compeleteview_cnt_7d = 42;</code>
+     * @return The userAuthorCompeleteviewCnt7d.
+     */
+    @java.lang.Override
+    public int getUserAuthorCompeleteviewCnt7D() {
+      return userAuthorCompeleteviewCnt7D_;
+    }
+
+    public static final int USER_AUTHOR_LIKE_CNT_7D_FIELD_NUMBER = 43;
+    private int userAuthorLikeCnt7D_;
+    /**
+     * <pre>
+     * 用户对作者最近7天点赞次数
+     * </pre>
+     *
+     * <code>int32 user_author_like_cnt_7d = 43;</code>
+     * @return The userAuthorLikeCnt7d.
+     */
+    @java.lang.Override
+    public int getUserAuthorLikeCnt7D() {
+      return userAuthorLikeCnt7D_;
+    }
+
+    public static final int USER_AUTHOR_COMMENT_CNT_7D_FIELD_NUMBER = 44;
+    private int userAuthorCommentCnt7D_;
+    /**
+     * <pre>
+     * 用户对作者最近7天评论次数
+     * </pre>
+     *
+     * <code>int32 user_author_comment_cnt_7d = 44;</code>
+     * @return The userAuthorCommentCnt7d.
+     */
+    @java.lang.Override
+    public int getUserAuthorCommentCnt7D() {
+      return userAuthorCommentCnt7D_;
+    }
+
+    public static final int USER_AUTHOR_AVG_VIEW_DURATION_7D_FIELD_NUMBER = 45;
+    private float userAuthorAvgViewDuration7D_;
+    /**
+     * <pre>
+     * 用户对作者最近7天平均每次曝光观看时长（秒）
+     * </pre>
+     *
+     * <code>float user_author_avg_view_duration_7d = 45;</code>
+     * @return The userAuthorAvgViewDuration7d.
+     */
+    @java.lang.Override
+    public float getUserAuthorAvgViewDuration7D() {
+      return userAuthorAvgViewDuration7D_;
+    }
+
+    public static final int USER_AUTHOR_VALIDVIEW_TFIDF_7D_FIELD_NUMBER = 46;
+    private float userAuthorValidviewTfidf7D_;
+    /**
+     * <pre>
+     * TF-IDF特征
+     * </pre>
+     *
+     * <code>float user_author_validview_tfidf_7d = 46;</code>
+     * @return The userAuthorValidviewTfidf7d.
+     */
+    @java.lang.Override
+    public float getUserAuthorValidviewTfidf7D() {
+      return userAuthorValidviewTfidf7D_;
+    }
+
+    public static final int USER_AUTHOR_COMPELETEVIEW_TFIDF_7D_FIELD_NUMBER = 47;
+    private float userAuthorCompeleteviewTfidf7D_;
+    /**
+     * <pre>
+     * 用户对作者最近七天完整观看的TF-IDF值
+     * </pre>
+     *
+     * <code>float user_author_compeleteview_tfidf_7d = 47;</code>
+     * @return The userAuthorCompeleteviewTfidf7d.
+     */
+    @java.lang.Override
+    public float getUserAuthorCompeleteviewTfidf7D() {
+      return userAuthorCompeleteviewTfidf7D_;
+    }
+
+    public static final int USER_AUTHOR_LIKECOMMENT_TFIDF_7D_FIELD_NUMBER = 48;
+    private float userAuthorLikecommentTfidf7D_;
+    /**
+     * <pre>
+     * 用户对作者最近七天点赞+评论的TF-IDF值
+     * </pre>
+     *
+     * <code>float user_author_likecomment_tfidf_7d = 48;</code>
+     * @return The userAuthorLikecommentTfidf7d.
+     */
+    @java.lang.Override
+    public float getUserAuthorLikecommentTfidf7D() {
+      return userAuthorLikecommentTfidf7D_;
+    }
+
+    public static final int USER_TAG11_IS_LIKE_FIELD_NUMBER = 50;
+    private int userTag11IsLike_;
+    /**
+     * <pre>
+     * 7d交叉v11+v12
+     * </pre>
+     *
+     * <code>int32 user_tag11_is_like = 50;</code>
+     * @return The userTag11IsLike.
+     */
+    @java.lang.Override
+    public int getUserTag11IsLike() {
+      return userTag11IsLike_;
+    }
+
+    public static final int USER_TAG11_IS_PLAY_FIELD_NUMBER = 51;
+    private int userTag11IsPlay_;
+    /**
+     * <pre>
+     * 用户对内容11最近7是否非常感兴趣
+     * </pre>
+     *
+     * <code>int32 user_tag11_is_play = 51;</code>
+     * @return The userTag11IsPlay.
+     */
+    @java.lang.Override
+    public int getUserTag11IsPlay() {
+      return userTag11IsPlay_;
+    }
+
+    public static final int USER_TAG11_IS_COMMENT_FIELD_NUMBER = 52;
+    private int userTag11IsComment_;
+    /**
+     * <pre>
+     * 用户对内容11最近7是否评论
+     * </pre>
+     *
+     * <code>int32 user_tag11_is_comment = 52;</code>
+     * @return The userTag11IsComment.
+     */
+    @java.lang.Override
+    public int getUserTag11IsComment() {
+      return userTag11IsComment_;
+    }
+
+    public static final int USER_TAG12_IS_LIKE_FIELD_NUMBER = 53;
+    private int userTag12IsLike_;
+    /**
+     * <pre>
+     * 用户对内容12最近7是否喜欢
+     * </pre>
+     *
+     * <code>int32 user_tag12_is_like = 53;</code>
+     * @return The userTag12IsLike.
+     */
+    @java.lang.Override
+    public int getUserTag12IsLike() {
+      return userTag12IsLike_;
+    }
+
+    public static final int USER_TAG12_IS_PLAY_FIELD_NUMBER = 54;
+    private int userTag12IsPlay_;
+    /**
+     * <pre>
+     * 用户对内容12最近7是否非常感兴趣
+     * </pre>
+     *
+     * <code>int32 user_tag12_is_play = 54;</code>
+     * @return The userTag12IsPlay.
+     */
+    @java.lang.Override
+    public int getUserTag12IsPlay() {
+      return userTag12IsPlay_;
+    }
+
+    public static final int USER_TAG12_IS_COMMENT_FIELD_NUMBER = 55;
+    private int userTag12IsComment_;
+    /**
+     * <pre>
+     * 用户对内容12最近7是否评论
+     * </pre>
+     *
+     * <code>int32 user_tag12_is_comment = 55;</code>
+     * @return The userTag12IsComment.
+     */
+    @java.lang.Override
+    public int getUserTag12IsComment() {
+      return userTag12IsComment_;
+    }
+
+    public static final int USER_TAG13_IS_LIKE_FIELD_NUMBER = 56;
+    private int userTag13IsLike_;
+    /**
+     * <pre>
+     * 用户对内容13最近7是否喜欢
+     * </pre>
+     *
+     * <code>int32 user_tag13_is_like = 56;</code>
+     * @return The userTag13IsLike.
+     */
+    @java.lang.Override
+    public int getUserTag13IsLike() {
+      return userTag13IsLike_;
+    }
+
+    public static final int USER_TAG13_IS_PLAY_FIELD_NUMBER = 57;
+    private int userTag13IsPlay_;
+    /**
+     * <pre>
+     * 用户对内容13最近7是否非常感兴趣
+     * </pre>
+     *
+     * <code>int32 user_tag13_is_play = 57;</code>
+     * @return The userTag13IsPlay.
+     */
+    @java.lang.Override
+    public int getUserTag13IsPlay() {
+      return userTag13IsPlay_;
+    }
+
+    public static final int USER_TAG13_IS_COMMENT_FIELD_NUMBER = 58;
+    private int userTag13IsComment_;
+    /**
+     * <pre>
+     * 用户对内容13最近7是否评论
+     * </pre>
+     *
+     * <code>int32 user_tag13_is_comment = 58;</code>
+     * @return The userTag13IsComment.
+     */
+    @java.lang.Override
+    public int getUserTag13IsComment() {
+      return userTag13IsComment_;
+    }
+
+    public static final int USER_TAG14_IS_LIKE_FIELD_NUMBER = 59;
+    private int userTag14IsLike_;
+    /**
+     * <pre>
+     * 用户对内容14最近7是否喜欢
+     * </pre>
+     *
+     * <code>int32 user_tag14_is_like = 59;</code>
+     * @return The userTag14IsLike.
+     */
+    @java.lang.Override
+    public int getUserTag14IsLike() {
+      return userTag14IsLike_;
+    }
+
+    public static final int USER_TAG14_IS_PLAY_FIELD_NUMBER = 60;
+    private int userTag14IsPlay_;
+    /**
+     * <pre>
+     * 用户对内容14最近7是否非常感兴趣
+     * </pre>
+     *
+     * <code>int32 user_tag14_is_play = 60;</code>
+     * @return The userTag14IsPlay.
+     */
+    @java.lang.Override
+    public int getUserTag14IsPlay() {
+      return userTag14IsPlay_;
+    }
+
+    public static final int USER_TAG14_IS_COMMENT_FIELD_NUMBER = 61;
+    private int userTag14IsComment_;
+    /**
+     * <pre>
+     * 用户对内容14最近7是否评论
+     * </pre>
+     *
+     * <code>int32 user_tag14_is_comment = 61;</code>
+     * @return The userTag14IsComment.
+     */
+    @java.lang.Override
+    public int getUserTag14IsComment() {
+      return userTag14IsComment_;
+    }
+
+    public static final int USER_TAG15_IS_LIKE_FIELD_NUMBER = 62;
+    private int userTag15IsLike_;
+    /**
+     * <pre>
+     * 用户对内容15最近7是否喜欢
+     * </pre>
+     *
+     * <code>int32 user_tag15_is_like = 62;</code>
+     * @return The userTag15IsLike.
+     */
+    @java.lang.Override
+    public int getUserTag15IsLike() {
+      return userTag15IsLike_;
+    }
+
+    public static final int USER_TAG15_IS_PLAY_FIELD_NUMBER = 63;
+    private int userTag15IsPlay_;
+    /**
+     * <pre>
+     * 用户对内容15最近7是否非常感兴趣
+     * </pre>
+     *
+     * <code>int32 user_tag15_is_play = 63;</code>
+     * @return The userTag15IsPlay.
+     */
+    @java.lang.Override
+    public int getUserTag15IsPlay() {
+      return userTag15IsPlay_;
+    }
+
+    public static final int USER_TAG15_IS_COMMENT_FIELD_NUMBER = 64;
+    private int userTag15IsComment_;
+    /**
+     * <pre>
+     * 用户对内容15最近7是否评论
+     * </pre>
+     *
+     * <code>int32 user_tag15_is_comment = 64;</code>
+     * @return The userTag15IsComment.
+     */
+    @java.lang.Override
+    public int getUserTag15IsComment() {
+      return userTag15IsComment_;
+    }
+
+    public static final int USER_TAG16_IS_LIKE_FIELD_NUMBER = 65;
+    private int userTag16IsLike_;
+    /**
+     * <pre>
+     * 用户对内容16最近7是否喜欢
+     * </pre>
+     *
+     * <code>int32 user_tag16_is_like = 65;</code>
+     * @return The userTag16IsLike.
+     */
+    @java.lang.Override
+    public int getUserTag16IsLike() {
+      return userTag16IsLike_;
+    }
+
+    public static final int USER_TAG16_IS_PLAY_FIELD_NUMBER = 66;
+    private int userTag16IsPlay_;
+    /**
+     * <pre>
+     * 用户对内容16最近7是否非常感兴趣
+     * </pre>
+     *
+     * <code>int32 user_tag16_is_play = 66;</code>
+     * @return The userTag16IsPlay.
+     */
+    @java.lang.Override
+    public int getUserTag16IsPlay() {
+      return userTag16IsPlay_;
+    }
+
+    public static final int USER_TAG16_IS_COMMENT_FIELD_NUMBER = 67;
+    private int userTag16IsComment_;
+    /**
+     * <pre>
+     * 用户对内容16最近7是否评论
+     * </pre>
+     *
+     * <code>int32 user_tag16_is_comment = 67;</code>
+     * @return The userTag16IsComment.
+     */
+    @java.lang.Override
+    public int getUserTag16IsComment() {
+      return userTag16IsComment_;
+    }
+
+    public static final int USER_TAG17_IS_LIKE_FIELD_NUMBER = 68;
+    private int userTag17IsLike_;
+    /**
+     * <pre>
+     * 用户对内容17最近7是否喜欢
+     * </pre>
+     *
+     * <code>int32 user_tag17_is_like = 68;</code>
+     * @return The userTag17IsLike.
+     */
+    @java.lang.Override
+    public int getUserTag17IsLike() {
+      return userTag17IsLike_;
+    }
+
+    public static final int USER_TAG17_IS_PLAY_FIELD_NUMBER = 69;
+    private int userTag17IsPlay_;
+    /**
+     * <pre>
+     * 用户对内容17最近7是否非常感兴趣
+     * </pre>
+     *
+     * <code>int32 user_tag17_is_play = 69;</code>
+     * @return The userTag17IsPlay.
+     */
+    @java.lang.Override
+    public int getUserTag17IsPlay() {
+      return userTag17IsPlay_;
+    }
+
+    public static final int USER_TAG17_IS_COMMENT_FIELD_NUMBER = 70;
+    private int userTag17IsComment_;
+    /**
+     * <pre>
+     * 用户对内容17最近7是否评论
+     * </pre>
+     *
+     * <code>int32 user_tag17_is_comment = 70;</code>
+     * @return The userTag17IsComment.
+     */
+    @java.lang.Override
+    public int getUserTag17IsComment() {
+      return userTag17IsComment_;
+    }
+
+    public static final int USER_TAG11_LIKE_CNT_FIELD_NUMBER = 71;
+    private int userTag11LikeCnt_;
+    /**
+     * <pre>
+     * 用户对内容11最近7喜欢数
+     * </pre>
+     *
+     * <code>int32 user_tag11_like_cnt = 71;</code>
+     * @return The userTag11LikeCnt.
+     */
+    @java.lang.Override
+    public int getUserTag11LikeCnt() {
+      return userTag11LikeCnt_;
+    }
+
+    public static final int USER_TAG11_PLAY_CNT_FIELD_NUMBER = 72;
+    private int userTag11PlayCnt_;
+    /**
+     * <pre>
+     * 用户对内容11最近7播放数
+     * </pre>
+     *
+     * <code>int32 user_tag11_play_cnt = 72;</code>
+     * @return The userTag11PlayCnt.
+     */
+    @java.lang.Override
+    public int getUserTag11PlayCnt() {
+      return userTag11PlayCnt_;
+    }
+
+    public static final int USER_TAG11_COMMENT_CNT_FIELD_NUMBER = 73;
+    private int userTag11CommentCnt_;
+    /**
+     * <pre>
+     * 用户对内容11最近7评论数
+     * </pre>
+     *
+     * <code>int32 user_tag11_comment_cnt = 73;</code>
+     * @return The userTag11CommentCnt.
+     */
+    @java.lang.Override
+    public int getUserTag11CommentCnt() {
+      return userTag11CommentCnt_;
+    }
+
+    public static final int USER_TAG12_LIKE_CNT_FIELD_NUMBER = 74;
+    private int userTag12LikeCnt_;
+    /**
+     * <pre>
+     * 用户对内容12最近7喜欢数
+     * </pre>
+     *
+     * <code>int32 user_tag12_like_cnt = 74;</code>
+     * @return The userTag12LikeCnt.
+     */
+    @java.lang.Override
+    public int getUserTag12LikeCnt() {
+      return userTag12LikeCnt_;
+    }
+
+    public static final int USER_TAG12_PLAY_CNT_FIELD_NUMBER = 75;
+    private int userTag12PlayCnt_;
+    /**
+     * <pre>
+     * 用户对内容12最近7播放数
+     * </pre>
+     *
+     * <code>int32 user_tag12_play_cnt = 75;</code>
+     * @return The userTag12PlayCnt.
+     */
+    @java.lang.Override
+    public int getUserTag12PlayCnt() {
+      return userTag12PlayCnt_;
+    }
+
+    public static final int USER_TAG12_COMMENT_CNT_FIELD_NUMBER = 76;
+    private int userTag12CommentCnt_;
+    /**
+     * <pre>
+     * 用户对内容12最近7评论数
+     * </pre>
+     *
+     * <code>int32 user_tag12_comment_cnt = 76;</code>
+     * @return The userTag12CommentCnt.
+     */
+    @java.lang.Override
+    public int getUserTag12CommentCnt() {
+      return userTag12CommentCnt_;
+    }
+
+    public static final int USER_TAG13_LIKE_CNT_FIELD_NUMBER = 77;
+    private int userTag13LikeCnt_;
+    /**
+     * <pre>
+     * 用户对内容13最近7喜欢数
+     * </pre>
+     *
+     * <code>int32 user_tag13_like_cnt = 77;</code>
+     * @return The userTag13LikeCnt.
+     */
+    @java.lang.Override
+    public int getUserTag13LikeCnt() {
+      return userTag13LikeCnt_;
+    }
+
+    public static final int USER_TAG13_PLAY_CNT_FIELD_NUMBER = 78;
+    private int userTag13PlayCnt_;
+    /**
+     * <pre>
+     * 用户对内容13最近7播放数
+     * </pre>
+     *
+     * <code>int32 user_tag13_play_cnt = 78;</code>
+     * @return The userTag13PlayCnt.
+     */
+    @java.lang.Override
+    public int getUserTag13PlayCnt() {
+      return userTag13PlayCnt_;
+    }
+
+    public static final int USER_TAG13_COMMENT_CNT_FIELD_NUMBER = 79;
+    private int userTag13CommentCnt_;
+    /**
+     * <pre>
+     * 用户对内容13最近7评论数
+     * </pre>
+     *
+     * <code>int32 user_tag13_comment_cnt = 79;</code>
+     * @return The userTag13CommentCnt.
+     */
+    @java.lang.Override
+    public int getUserTag13CommentCnt() {
+      return userTag13CommentCnt_;
+    }
+
+    public static final int USER_TAG14_LIKE_CNT_FIELD_NUMBER = 80;
+    private int userTag14LikeCnt_;
+    /**
+     * <pre>
+     * 用户对内容14最近7喜欢数
+     * </pre>
+     *
+     * <code>int32 user_tag14_like_cnt = 80;</code>
+     * @return The userTag14LikeCnt.
+     */
+    @java.lang.Override
+    public int getUserTag14LikeCnt() {
+      return userTag14LikeCnt_;
+    }
+
+    public static final int USER_TAG14_PLAY_CNT_FIELD_NUMBER = 81;
+    private int userTag14PlayCnt_;
+    /**
+     * <pre>
+     * 用户对内容14最近7播放数
+     * </pre>
+     *
+     * <code>int32 user_tag14_play_cnt = 81;</code>
+     * @return The userTag14PlayCnt.
+     */
+    @java.lang.Override
+    public int getUserTag14PlayCnt() {
+      return userTag14PlayCnt_;
+    }
+
+    public static final int USER_TAG14_COMMENT_CNT_FIELD_NUMBER = 82;
+    private int userTag14CommentCnt_;
+    /**
+     * <pre>
+     * 用户对内容14最近7评论数
+     * </pre>
+     *
+     * <code>int32 user_tag14_comment_cnt = 82;</code>
+     * @return The userTag14CommentCnt.
+     */
+    @java.lang.Override
+    public int getUserTag14CommentCnt() {
+      return userTag14CommentCnt_;
+    }
+
+    public static final int USER_TAG15_LIKE_CNT_FIELD_NUMBER = 83;
+    private int userTag15LikeCnt_;
+    /**
+     * <pre>
+     * 用户对内容15最近7喜欢数
+     * </pre>
+     *
+     * <code>int32 user_tag15_like_cnt = 83;</code>
+     * @return The userTag15LikeCnt.
+     */
+    @java.lang.Override
+    public int getUserTag15LikeCnt() {
+      return userTag15LikeCnt_;
+    }
+
+    public static final int USER_TAG15_PLAY_CNT_FIELD_NUMBER = 84;
+    private int userTag15PlayCnt_;
+    /**
+     * <pre>
+     * 用户对内容15最近7播放数
+     * </pre>
+     *
+     * <code>int32 user_tag15_play_cnt = 84;</code>
+     * @return The userTag15PlayCnt.
+     */
+    @java.lang.Override
+    public int getUserTag15PlayCnt() {
+      return userTag15PlayCnt_;
+    }
+
+    public static final int USER_TAG15_COMMENT_CNT_FIELD_NUMBER = 85;
+    private int userTag15CommentCnt_;
+    /**
+     * <pre>
+     * 用户对内容15最近7评论数
+     * </pre>
+     *
+     * <code>int32 user_tag15_comment_cnt = 85;</code>
+     * @return The userTag15CommentCnt.
+     */
+    @java.lang.Override
+    public int getUserTag15CommentCnt() {
+      return userTag15CommentCnt_;
+    }
+
+    public static final int USER_TAG16_LIKE_CNT_FIELD_NUMBER = 86;
+    private int userTag16LikeCnt_;
+    /**
+     * <pre>
+     * 用户对内容16最近7喜欢数
+     * </pre>
+     *
+     * <code>int32 user_tag16_like_cnt = 86;</code>
+     * @return The userTag16LikeCnt.
+     */
+    @java.lang.Override
+    public int getUserTag16LikeCnt() {
+      return userTag16LikeCnt_;
+    }
+
+    public static final int USER_TAG16_PLAY_CNT_FIELD_NUMBER = 87;
+    private int userTag16PlayCnt_;
+    /**
+     * <pre>
+     * 用户对内容16最近7播放数
+     * </pre>
+     *
+     * <code>int32 user_tag16_play_cnt = 87;</code>
+     * @return The userTag16PlayCnt.
+     */
+    @java.lang.Override
+    public int getUserTag16PlayCnt() {
+      return userTag16PlayCnt_;
+    }
+
+    public static final int USER_TAG16_COMMENT_CNT_FIELD_NUMBER = 88;
+    private int userTag16CommentCnt_;
+    /**
+     * <pre>
+     * 用户对内容16最近7评论数
+     * </pre>
+     *
+     * <code>int32 user_tag16_comment_cnt = 88;</code>
+     * @return The userTag16CommentCnt.
+     */
+    @java.lang.Override
+    public int getUserTag16CommentCnt() {
+      return userTag16CommentCnt_;
+    }
+
+    public static final int USER_TAG17_LIKE_CNT_FIELD_NUMBER = 89;
+    private int userTag17LikeCnt_;
+    /**
+     * <pre>
+     * 用户对内容17最近7喜欢数
+     * </pre>
+     *
+     * <code>int32 user_tag17_like_cnt = 89;</code>
+     * @return The userTag17LikeCnt.
+     */
+    @java.lang.Override
+    public int getUserTag17LikeCnt() {
+      return userTag17LikeCnt_;
+    }
+
+    public static final int USER_TAG17_PLAY_CNT_FIELD_NUMBER = 90;
+    private int userTag17PlayCnt_;
+    /**
+     * <pre>
+     * 用户对内容17最近7播放数
+     * </pre>
+     *
+     * <code>int32 user_tag17_play_cnt = 90;</code>
+     * @return The userTag17PlayCnt.
+     */
+    @java.lang.Override
+    public int getUserTag17PlayCnt() {
+      return userTag17PlayCnt_;
+    }
+
+    public static final int USER_TAG17_COMMENT_CNT_FIELD_NUMBER = 91;
+    private int userTag17CommentCnt_;
+    /**
+     * <pre>
+     * 用户对内容17最近7评论数
+     * </pre>
+     *
+     * <code>int32 user_tag17_comment_cnt = 91;</code>
+     * @return The userTag17CommentCnt.
+     */
+    @java.lang.Override
+    public int getUserTag17CommentCnt() {
+      return userTag17CommentCnt_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -6867,8 +16652,11 @@ public final class RecFeature {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(expireTime_)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, expireTime_);
+      if (userId_ != 0L) {
+        output.writeUInt64(1, userId_);
+      }
+      if (authorId_ != 0L) {
+        output.writeUInt64(2, authorId_);
       }
       if (userauthorExpCnt1H_ != 0) {
         output.writeInt32(10, userauthorExpCnt1H_);
@@ -6918,6 +16706,159 @@ public final class RecFeature {
       if (userauthorLikeCnt24H_ != 0) {
         output.writeInt32(37, userauthorLikeCnt24H_);
       }
+      if (userAuthorViewCnt7D_ != 0) {
+        output.writeInt32(40, userAuthorViewCnt7D_);
+      }
+      if (java.lang.Float.floatToRawIntBits(userAuthorValidviewCnt7D_) != 0) {
+        output.writeFloat(41, userAuthorValidviewCnt7D_);
+      }
+      if (userAuthorCompeleteviewCnt7D_ != 0) {
+        output.writeInt32(42, userAuthorCompeleteviewCnt7D_);
+      }
+      if (userAuthorLikeCnt7D_ != 0) {
+        output.writeInt32(43, userAuthorLikeCnt7D_);
+      }
+      if (userAuthorCommentCnt7D_ != 0) {
+        output.writeInt32(44, userAuthorCommentCnt7D_);
+      }
+      if (java.lang.Float.floatToRawIntBits(userAuthorAvgViewDuration7D_) != 0) {
+        output.writeFloat(45, userAuthorAvgViewDuration7D_);
+      }
+      if (java.lang.Float.floatToRawIntBits(userAuthorValidviewTfidf7D_) != 0) {
+        output.writeFloat(46, userAuthorValidviewTfidf7D_);
+      }
+      if (java.lang.Float.floatToRawIntBits(userAuthorCompeleteviewTfidf7D_) != 0) {
+        output.writeFloat(47, userAuthorCompeleteviewTfidf7D_);
+      }
+      if (java.lang.Float.floatToRawIntBits(userAuthorLikecommentTfidf7D_) != 0) {
+        output.writeFloat(48, userAuthorLikecommentTfidf7D_);
+      }
+      if (userTag11IsLike_ != 0) {
+        output.writeInt32(50, userTag11IsLike_);
+      }
+      if (userTag11IsPlay_ != 0) {
+        output.writeInt32(51, userTag11IsPlay_);
+      }
+      if (userTag11IsComment_ != 0) {
+        output.writeInt32(52, userTag11IsComment_);
+      }
+      if (userTag12IsLike_ != 0) {
+        output.writeInt32(53, userTag12IsLike_);
+      }
+      if (userTag12IsPlay_ != 0) {
+        output.writeInt32(54, userTag12IsPlay_);
+      }
+      if (userTag12IsComment_ != 0) {
+        output.writeInt32(55, userTag12IsComment_);
+      }
+      if (userTag13IsLike_ != 0) {
+        output.writeInt32(56, userTag13IsLike_);
+      }
+      if (userTag13IsPlay_ != 0) {
+        output.writeInt32(57, userTag13IsPlay_);
+      }
+      if (userTag13IsComment_ != 0) {
+        output.writeInt32(58, userTag13IsComment_);
+      }
+      if (userTag14IsLike_ != 0) {
+        output.writeInt32(59, userTag14IsLike_);
+      }
+      if (userTag14IsPlay_ != 0) {
+        output.writeInt32(60, userTag14IsPlay_);
+      }
+      if (userTag14IsComment_ != 0) {
+        output.writeInt32(61, userTag14IsComment_);
+      }
+      if (userTag15IsLike_ != 0) {
+        output.writeInt32(62, userTag15IsLike_);
+      }
+      if (userTag15IsPlay_ != 0) {
+        output.writeInt32(63, userTag15IsPlay_);
+      }
+      if (userTag15IsComment_ != 0) {
+        output.writeInt32(64, userTag15IsComment_);
+      }
+      if (userTag16IsLike_ != 0) {
+        output.writeInt32(65, userTag16IsLike_);
+      }
+      if (userTag16IsPlay_ != 0) {
+        output.writeInt32(66, userTag16IsPlay_);
+      }
+      if (userTag16IsComment_ != 0) {
+        output.writeInt32(67, userTag16IsComment_);
+      }
+      if (userTag17IsLike_ != 0) {
+        output.writeInt32(68, userTag17IsLike_);
+      }
+      if (userTag17IsPlay_ != 0) {
+        output.writeInt32(69, userTag17IsPlay_);
+      }
+      if (userTag17IsComment_ != 0) {
+        output.writeInt32(70, userTag17IsComment_);
+      }
+      if (userTag11LikeCnt_ != 0) {
+        output.writeInt32(71, userTag11LikeCnt_);
+      }
+      if (userTag11PlayCnt_ != 0) {
+        output.writeInt32(72, userTag11PlayCnt_);
+      }
+      if (userTag11CommentCnt_ != 0) {
+        output.writeInt32(73, userTag11CommentCnt_);
+      }
+      if (userTag12LikeCnt_ != 0) {
+        output.writeInt32(74, userTag12LikeCnt_);
+      }
+      if (userTag12PlayCnt_ != 0) {
+        output.writeInt32(75, userTag12PlayCnt_);
+      }
+      if (userTag12CommentCnt_ != 0) {
+        output.writeInt32(76, userTag12CommentCnt_);
+      }
+      if (userTag13LikeCnt_ != 0) {
+        output.writeInt32(77, userTag13LikeCnt_);
+      }
+      if (userTag13PlayCnt_ != 0) {
+        output.writeInt32(78, userTag13PlayCnt_);
+      }
+      if (userTag13CommentCnt_ != 0) {
+        output.writeInt32(79, userTag13CommentCnt_);
+      }
+      if (userTag14LikeCnt_ != 0) {
+        output.writeInt32(80, userTag14LikeCnt_);
+      }
+      if (userTag14PlayCnt_ != 0) {
+        output.writeInt32(81, userTag14PlayCnt_);
+      }
+      if (userTag14CommentCnt_ != 0) {
+        output.writeInt32(82, userTag14CommentCnt_);
+      }
+      if (userTag15LikeCnt_ != 0) {
+        output.writeInt32(83, userTag15LikeCnt_);
+      }
+      if (userTag15PlayCnt_ != 0) {
+        output.writeInt32(84, userTag15PlayCnt_);
+      }
+      if (userTag15CommentCnt_ != 0) {
+        output.writeInt32(85, userTag15CommentCnt_);
+      }
+      if (userTag16LikeCnt_ != 0) {
+        output.writeInt32(86, userTag16LikeCnt_);
+      }
+      if (userTag16PlayCnt_ != 0) {
+        output.writeInt32(87, userTag16PlayCnt_);
+      }
+      if (userTag16CommentCnt_ != 0) {
+        output.writeInt32(88, userTag16CommentCnt_);
+      }
+      if (userTag17LikeCnt_ != 0) {
+        output.writeInt32(89, userTag17LikeCnt_);
+      }
+      if (userTag17PlayCnt_ != 0) {
+        output.writeInt32(90, userTag17PlayCnt_);
+      }
+      if (userTag17CommentCnt_ != 0) {
+        output.writeInt32(91, userTag17CommentCnt_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -6927,8 +16868,13 @@ public final class RecFeature {
       if (size != -1) return size;
 
       size = 0;
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(expireTime_)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, expireTime_);
+      if (userId_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, userId_);
+      }
+      if (authorId_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(2, authorId_);
       }
       if (userauthorExpCnt1H_ != 0) {
         size += com.google.protobuf.CodedOutputStream
@@ -6994,6 +16940,210 @@ public final class RecFeature {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(37, userauthorLikeCnt24H_);
       }
+      if (userAuthorViewCnt7D_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(40, userAuthorViewCnt7D_);
+      }
+      if (java.lang.Float.floatToRawIntBits(userAuthorValidviewCnt7D_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(41, userAuthorValidviewCnt7D_);
+      }
+      if (userAuthorCompeleteviewCnt7D_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(42, userAuthorCompeleteviewCnt7D_);
+      }
+      if (userAuthorLikeCnt7D_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(43, userAuthorLikeCnt7D_);
+      }
+      if (userAuthorCommentCnt7D_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(44, userAuthorCommentCnt7D_);
+      }
+      if (java.lang.Float.floatToRawIntBits(userAuthorAvgViewDuration7D_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(45, userAuthorAvgViewDuration7D_);
+      }
+      if (java.lang.Float.floatToRawIntBits(userAuthorValidviewTfidf7D_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(46, userAuthorValidviewTfidf7D_);
+      }
+      if (java.lang.Float.floatToRawIntBits(userAuthorCompeleteviewTfidf7D_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(47, userAuthorCompeleteviewTfidf7D_);
+      }
+      if (java.lang.Float.floatToRawIntBits(userAuthorLikecommentTfidf7D_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(48, userAuthorLikecommentTfidf7D_);
+      }
+      if (userTag11IsLike_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(50, userTag11IsLike_);
+      }
+      if (userTag11IsPlay_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(51, userTag11IsPlay_);
+      }
+      if (userTag11IsComment_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(52, userTag11IsComment_);
+      }
+      if (userTag12IsLike_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(53, userTag12IsLike_);
+      }
+      if (userTag12IsPlay_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(54, userTag12IsPlay_);
+      }
+      if (userTag12IsComment_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(55, userTag12IsComment_);
+      }
+      if (userTag13IsLike_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(56, userTag13IsLike_);
+      }
+      if (userTag13IsPlay_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(57, userTag13IsPlay_);
+      }
+      if (userTag13IsComment_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(58, userTag13IsComment_);
+      }
+      if (userTag14IsLike_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(59, userTag14IsLike_);
+      }
+      if (userTag14IsPlay_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(60, userTag14IsPlay_);
+      }
+      if (userTag14IsComment_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(61, userTag14IsComment_);
+      }
+      if (userTag15IsLike_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(62, userTag15IsLike_);
+      }
+      if (userTag15IsPlay_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(63, userTag15IsPlay_);
+      }
+      if (userTag15IsComment_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(64, userTag15IsComment_);
+      }
+      if (userTag16IsLike_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(65, userTag16IsLike_);
+      }
+      if (userTag16IsPlay_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(66, userTag16IsPlay_);
+      }
+      if (userTag16IsComment_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(67, userTag16IsComment_);
+      }
+      if (userTag17IsLike_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(68, userTag17IsLike_);
+      }
+      if (userTag17IsPlay_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(69, userTag17IsPlay_);
+      }
+      if (userTag17IsComment_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(70, userTag17IsComment_);
+      }
+      if (userTag11LikeCnt_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(71, userTag11LikeCnt_);
+      }
+      if (userTag11PlayCnt_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(72, userTag11PlayCnt_);
+      }
+      if (userTag11CommentCnt_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(73, userTag11CommentCnt_);
+      }
+      if (userTag12LikeCnt_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(74, userTag12LikeCnt_);
+      }
+      if (userTag12PlayCnt_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(75, userTag12PlayCnt_);
+      }
+      if (userTag12CommentCnt_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(76, userTag12CommentCnt_);
+      }
+      if (userTag13LikeCnt_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(77, userTag13LikeCnt_);
+      }
+      if (userTag13PlayCnt_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(78, userTag13PlayCnt_);
+      }
+      if (userTag13CommentCnt_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(79, userTag13CommentCnt_);
+      }
+      if (userTag14LikeCnt_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(80, userTag14LikeCnt_);
+      }
+      if (userTag14PlayCnt_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(81, userTag14PlayCnt_);
+      }
+      if (userTag14CommentCnt_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(82, userTag14CommentCnt_);
+      }
+      if (userTag15LikeCnt_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(83, userTag15LikeCnt_);
+      }
+      if (userTag15PlayCnt_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(84, userTag15PlayCnt_);
+      }
+      if (userTag15CommentCnt_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(85, userTag15CommentCnt_);
+      }
+      if (userTag16LikeCnt_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(86, userTag16LikeCnt_);
+      }
+      if (userTag16PlayCnt_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(87, userTag16PlayCnt_);
+      }
+      if (userTag16CommentCnt_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(88, userTag16CommentCnt_);
+      }
+      if (userTag17LikeCnt_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(89, userTag17LikeCnt_);
+      }
+      if (userTag17PlayCnt_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(90, userTag17PlayCnt_);
+      }
+      if (userTag17CommentCnt_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(91, userTag17CommentCnt_);
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -7009,8 +17159,10 @@ public final class RecFeature {
       }
       com.gosh.entity.RecFeature.RecUserAuthorFeature other = (com.gosh.entity.RecFeature.RecUserAuthorFeature) obj;
 
-      if (!getExpireTime()
-          .equals(other.getExpireTime())) return false;
+      if (getUserId()
+          != other.getUserId()) return false;
+      if (getAuthorId()
+          != other.getAuthorId()) return false;
       if (getUserauthorExpCnt1H()
           != other.getUserauthorExpCnt1H()) return false;
       if (getUserauthor3SviewCnt1H()
@@ -7043,6 +17195,113 @@ public final class RecFeature {
           != other.getUserauthor10SstandCnt24H()) return false;
       if (getUserauthorLikeCnt24H()
           != other.getUserauthorLikeCnt24H()) return false;
+      if (getUserAuthorViewCnt7D()
+          != other.getUserAuthorViewCnt7D()) return false;
+      if (java.lang.Float.floatToIntBits(getUserAuthorValidviewCnt7D())
+          != java.lang.Float.floatToIntBits(
+              other.getUserAuthorValidviewCnt7D())) return false;
+      if (getUserAuthorCompeleteviewCnt7D()
+          != other.getUserAuthorCompeleteviewCnt7D()) return false;
+      if (getUserAuthorLikeCnt7D()
+          != other.getUserAuthorLikeCnt7D()) return false;
+      if (getUserAuthorCommentCnt7D()
+          != other.getUserAuthorCommentCnt7D()) return false;
+      if (java.lang.Float.floatToIntBits(getUserAuthorAvgViewDuration7D())
+          != java.lang.Float.floatToIntBits(
+              other.getUserAuthorAvgViewDuration7D())) return false;
+      if (java.lang.Float.floatToIntBits(getUserAuthorValidviewTfidf7D())
+          != java.lang.Float.floatToIntBits(
+              other.getUserAuthorValidviewTfidf7D())) return false;
+      if (java.lang.Float.floatToIntBits(getUserAuthorCompeleteviewTfidf7D())
+          != java.lang.Float.floatToIntBits(
+              other.getUserAuthorCompeleteviewTfidf7D())) return false;
+      if (java.lang.Float.floatToIntBits(getUserAuthorLikecommentTfidf7D())
+          != java.lang.Float.floatToIntBits(
+              other.getUserAuthorLikecommentTfidf7D())) return false;
+      if (getUserTag11IsLike()
+          != other.getUserTag11IsLike()) return false;
+      if (getUserTag11IsPlay()
+          != other.getUserTag11IsPlay()) return false;
+      if (getUserTag11IsComment()
+          != other.getUserTag11IsComment()) return false;
+      if (getUserTag12IsLike()
+          != other.getUserTag12IsLike()) return false;
+      if (getUserTag12IsPlay()
+          != other.getUserTag12IsPlay()) return false;
+      if (getUserTag12IsComment()
+          != other.getUserTag12IsComment()) return false;
+      if (getUserTag13IsLike()
+          != other.getUserTag13IsLike()) return false;
+      if (getUserTag13IsPlay()
+          != other.getUserTag13IsPlay()) return false;
+      if (getUserTag13IsComment()
+          != other.getUserTag13IsComment()) return false;
+      if (getUserTag14IsLike()
+          != other.getUserTag14IsLike()) return false;
+      if (getUserTag14IsPlay()
+          != other.getUserTag14IsPlay()) return false;
+      if (getUserTag14IsComment()
+          != other.getUserTag14IsComment()) return false;
+      if (getUserTag15IsLike()
+          != other.getUserTag15IsLike()) return false;
+      if (getUserTag15IsPlay()
+          != other.getUserTag15IsPlay()) return false;
+      if (getUserTag15IsComment()
+          != other.getUserTag15IsComment()) return false;
+      if (getUserTag16IsLike()
+          != other.getUserTag16IsLike()) return false;
+      if (getUserTag16IsPlay()
+          != other.getUserTag16IsPlay()) return false;
+      if (getUserTag16IsComment()
+          != other.getUserTag16IsComment()) return false;
+      if (getUserTag17IsLike()
+          != other.getUserTag17IsLike()) return false;
+      if (getUserTag17IsPlay()
+          != other.getUserTag17IsPlay()) return false;
+      if (getUserTag17IsComment()
+          != other.getUserTag17IsComment()) return false;
+      if (getUserTag11LikeCnt()
+          != other.getUserTag11LikeCnt()) return false;
+      if (getUserTag11PlayCnt()
+          != other.getUserTag11PlayCnt()) return false;
+      if (getUserTag11CommentCnt()
+          != other.getUserTag11CommentCnt()) return false;
+      if (getUserTag12LikeCnt()
+          != other.getUserTag12LikeCnt()) return false;
+      if (getUserTag12PlayCnt()
+          != other.getUserTag12PlayCnt()) return false;
+      if (getUserTag12CommentCnt()
+          != other.getUserTag12CommentCnt()) return false;
+      if (getUserTag13LikeCnt()
+          != other.getUserTag13LikeCnt()) return false;
+      if (getUserTag13PlayCnt()
+          != other.getUserTag13PlayCnt()) return false;
+      if (getUserTag13CommentCnt()
+          != other.getUserTag13CommentCnt()) return false;
+      if (getUserTag14LikeCnt()
+          != other.getUserTag14LikeCnt()) return false;
+      if (getUserTag14PlayCnt()
+          != other.getUserTag14PlayCnt()) return false;
+      if (getUserTag14CommentCnt()
+          != other.getUserTag14CommentCnt()) return false;
+      if (getUserTag15LikeCnt()
+          != other.getUserTag15LikeCnt()) return false;
+      if (getUserTag15PlayCnt()
+          != other.getUserTag15PlayCnt()) return false;
+      if (getUserTag15CommentCnt()
+          != other.getUserTag15CommentCnt()) return false;
+      if (getUserTag16LikeCnt()
+          != other.getUserTag16LikeCnt()) return false;
+      if (getUserTag16PlayCnt()
+          != other.getUserTag16PlayCnt()) return false;
+      if (getUserTag16CommentCnt()
+          != other.getUserTag16CommentCnt()) return false;
+      if (getUserTag17LikeCnt()
+          != other.getUserTag17LikeCnt()) return false;
+      if (getUserTag17PlayCnt()
+          != other.getUserTag17PlayCnt()) return false;
+      if (getUserTag17CommentCnt()
+          != other.getUserTag17CommentCnt()) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -7054,8 +17313,12 @@ public final class RecFeature {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + EXPIRE_TIME_FIELD_NUMBER;
-      hash = (53 * hash) + getExpireTime().hashCode();
+      hash = (37 * hash) + USER_ID_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getUserId());
+      hash = (37 * hash) + AUTHOR_ID_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getAuthorId());
       hash = (37 * hash) + USERAUTHOR_EXP_CNT_1H_FIELD_NUMBER;
       hash = (53 * hash) + getUserauthorExpCnt1H();
       hash = (37 * hash) + USERAUTHOR_3SVIEW_CNT_1H_FIELD_NUMBER;
@@ -7088,6 +17351,113 @@ public final class RecFeature {
       hash = (53 * hash) + getUserauthor10SstandCnt24H();
       hash = (37 * hash) + USERAUTHOR_LIKE_CNT_24H_FIELD_NUMBER;
       hash = (53 * hash) + getUserauthorLikeCnt24H();
+      hash = (37 * hash) + USER_AUTHOR_VIEW_CNT_7D_FIELD_NUMBER;
+      hash = (53 * hash) + getUserAuthorViewCnt7D();
+      hash = (37 * hash) + USER_AUTHOR_VALIDVIEW_CNT_7D_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getUserAuthorValidviewCnt7D());
+      hash = (37 * hash) + USER_AUTHOR_COMPELETEVIEW_CNT_7D_FIELD_NUMBER;
+      hash = (53 * hash) + getUserAuthorCompeleteviewCnt7D();
+      hash = (37 * hash) + USER_AUTHOR_LIKE_CNT_7D_FIELD_NUMBER;
+      hash = (53 * hash) + getUserAuthorLikeCnt7D();
+      hash = (37 * hash) + USER_AUTHOR_COMMENT_CNT_7D_FIELD_NUMBER;
+      hash = (53 * hash) + getUserAuthorCommentCnt7D();
+      hash = (37 * hash) + USER_AUTHOR_AVG_VIEW_DURATION_7D_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getUserAuthorAvgViewDuration7D());
+      hash = (37 * hash) + USER_AUTHOR_VALIDVIEW_TFIDF_7D_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getUserAuthorValidviewTfidf7D());
+      hash = (37 * hash) + USER_AUTHOR_COMPELETEVIEW_TFIDF_7D_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getUserAuthorCompeleteviewTfidf7D());
+      hash = (37 * hash) + USER_AUTHOR_LIKECOMMENT_TFIDF_7D_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getUserAuthorLikecommentTfidf7D());
+      hash = (37 * hash) + USER_TAG11_IS_LIKE_FIELD_NUMBER;
+      hash = (53 * hash) + getUserTag11IsLike();
+      hash = (37 * hash) + USER_TAG11_IS_PLAY_FIELD_NUMBER;
+      hash = (53 * hash) + getUserTag11IsPlay();
+      hash = (37 * hash) + USER_TAG11_IS_COMMENT_FIELD_NUMBER;
+      hash = (53 * hash) + getUserTag11IsComment();
+      hash = (37 * hash) + USER_TAG12_IS_LIKE_FIELD_NUMBER;
+      hash = (53 * hash) + getUserTag12IsLike();
+      hash = (37 * hash) + USER_TAG12_IS_PLAY_FIELD_NUMBER;
+      hash = (53 * hash) + getUserTag12IsPlay();
+      hash = (37 * hash) + USER_TAG12_IS_COMMENT_FIELD_NUMBER;
+      hash = (53 * hash) + getUserTag12IsComment();
+      hash = (37 * hash) + USER_TAG13_IS_LIKE_FIELD_NUMBER;
+      hash = (53 * hash) + getUserTag13IsLike();
+      hash = (37 * hash) + USER_TAG13_IS_PLAY_FIELD_NUMBER;
+      hash = (53 * hash) + getUserTag13IsPlay();
+      hash = (37 * hash) + USER_TAG13_IS_COMMENT_FIELD_NUMBER;
+      hash = (53 * hash) + getUserTag13IsComment();
+      hash = (37 * hash) + USER_TAG14_IS_LIKE_FIELD_NUMBER;
+      hash = (53 * hash) + getUserTag14IsLike();
+      hash = (37 * hash) + USER_TAG14_IS_PLAY_FIELD_NUMBER;
+      hash = (53 * hash) + getUserTag14IsPlay();
+      hash = (37 * hash) + USER_TAG14_IS_COMMENT_FIELD_NUMBER;
+      hash = (53 * hash) + getUserTag14IsComment();
+      hash = (37 * hash) + USER_TAG15_IS_LIKE_FIELD_NUMBER;
+      hash = (53 * hash) + getUserTag15IsLike();
+      hash = (37 * hash) + USER_TAG15_IS_PLAY_FIELD_NUMBER;
+      hash = (53 * hash) + getUserTag15IsPlay();
+      hash = (37 * hash) + USER_TAG15_IS_COMMENT_FIELD_NUMBER;
+      hash = (53 * hash) + getUserTag15IsComment();
+      hash = (37 * hash) + USER_TAG16_IS_LIKE_FIELD_NUMBER;
+      hash = (53 * hash) + getUserTag16IsLike();
+      hash = (37 * hash) + USER_TAG16_IS_PLAY_FIELD_NUMBER;
+      hash = (53 * hash) + getUserTag16IsPlay();
+      hash = (37 * hash) + USER_TAG16_IS_COMMENT_FIELD_NUMBER;
+      hash = (53 * hash) + getUserTag16IsComment();
+      hash = (37 * hash) + USER_TAG17_IS_LIKE_FIELD_NUMBER;
+      hash = (53 * hash) + getUserTag17IsLike();
+      hash = (37 * hash) + USER_TAG17_IS_PLAY_FIELD_NUMBER;
+      hash = (53 * hash) + getUserTag17IsPlay();
+      hash = (37 * hash) + USER_TAG17_IS_COMMENT_FIELD_NUMBER;
+      hash = (53 * hash) + getUserTag17IsComment();
+      hash = (37 * hash) + USER_TAG11_LIKE_CNT_FIELD_NUMBER;
+      hash = (53 * hash) + getUserTag11LikeCnt();
+      hash = (37 * hash) + USER_TAG11_PLAY_CNT_FIELD_NUMBER;
+      hash = (53 * hash) + getUserTag11PlayCnt();
+      hash = (37 * hash) + USER_TAG11_COMMENT_CNT_FIELD_NUMBER;
+      hash = (53 * hash) + getUserTag11CommentCnt();
+      hash = (37 * hash) + USER_TAG12_LIKE_CNT_FIELD_NUMBER;
+      hash = (53 * hash) + getUserTag12LikeCnt();
+      hash = (37 * hash) + USER_TAG12_PLAY_CNT_FIELD_NUMBER;
+      hash = (53 * hash) + getUserTag12PlayCnt();
+      hash = (37 * hash) + USER_TAG12_COMMENT_CNT_FIELD_NUMBER;
+      hash = (53 * hash) + getUserTag12CommentCnt();
+      hash = (37 * hash) + USER_TAG13_LIKE_CNT_FIELD_NUMBER;
+      hash = (53 * hash) + getUserTag13LikeCnt();
+      hash = (37 * hash) + USER_TAG13_PLAY_CNT_FIELD_NUMBER;
+      hash = (53 * hash) + getUserTag13PlayCnt();
+      hash = (37 * hash) + USER_TAG13_COMMENT_CNT_FIELD_NUMBER;
+      hash = (53 * hash) + getUserTag13CommentCnt();
+      hash = (37 * hash) + USER_TAG14_LIKE_CNT_FIELD_NUMBER;
+      hash = (53 * hash) + getUserTag14LikeCnt();
+      hash = (37 * hash) + USER_TAG14_PLAY_CNT_FIELD_NUMBER;
+      hash = (53 * hash) + getUserTag14PlayCnt();
+      hash = (37 * hash) + USER_TAG14_COMMENT_CNT_FIELD_NUMBER;
+      hash = (53 * hash) + getUserTag14CommentCnt();
+      hash = (37 * hash) + USER_TAG15_LIKE_CNT_FIELD_NUMBER;
+      hash = (53 * hash) + getUserTag15LikeCnt();
+      hash = (37 * hash) + USER_TAG15_PLAY_CNT_FIELD_NUMBER;
+      hash = (53 * hash) + getUserTag15PlayCnt();
+      hash = (37 * hash) + USER_TAG15_COMMENT_CNT_FIELD_NUMBER;
+      hash = (53 * hash) + getUserTag15CommentCnt();
+      hash = (37 * hash) + USER_TAG16_LIKE_CNT_FIELD_NUMBER;
+      hash = (53 * hash) + getUserTag16LikeCnt();
+      hash = (37 * hash) + USER_TAG16_PLAY_CNT_FIELD_NUMBER;
+      hash = (53 * hash) + getUserTag16PlayCnt();
+      hash = (37 * hash) + USER_TAG16_COMMENT_CNT_FIELD_NUMBER;
+      hash = (53 * hash) + getUserTag16CommentCnt();
+      hash = (37 * hash) + USER_TAG17_LIKE_CNT_FIELD_NUMBER;
+      hash = (53 * hash) + getUserTag17LikeCnt();
+      hash = (37 * hash) + USER_TAG17_PLAY_CNT_FIELD_NUMBER;
+      hash = (53 * hash) + getUserTag17PlayCnt();
+      hash = (37 * hash) + USER_TAG17_COMMENT_CNT_FIELD_NUMBER;
+      hash = (53 * hash) + getUserTag17CommentCnt();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -7185,8 +17555,8 @@ public final class RecFeature {
     }
     /**
      * <pre>
-     * 用户作者交叉特征
-     * Redis Key: rec:user_author_feature:{user_id}_{author_id}:post1h, rec:user_author_feature:{user_id}_{author_id}:post24h
+     * 用户作者交叉特征,hset格式
+     * Redis Key: rec:user_author_feature:{user_id}:post1h, rec:user_author_feature:{user_id}:post24h
      * </pre>
      *
      * Protobuf type {@code com.gosh.entity.RecUserAuthorFeature}
@@ -7226,7 +17596,9 @@ public final class RecFeature {
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        expireTime_ = "";
+        userId_ = 0L;
+
+        authorId_ = 0L;
 
         userauthorExpCnt1H_ = 0;
 
@@ -7260,6 +17632,108 @@ public final class RecFeature {
 
         userauthorLikeCnt24H_ = 0;
 
+        userAuthorViewCnt7D_ = 0;
+
+        userAuthorValidviewCnt7D_ = 0F;
+
+        userAuthorCompeleteviewCnt7D_ = 0;
+
+        userAuthorLikeCnt7D_ = 0;
+
+        userAuthorCommentCnt7D_ = 0;
+
+        userAuthorAvgViewDuration7D_ = 0F;
+
+        userAuthorValidviewTfidf7D_ = 0F;
+
+        userAuthorCompeleteviewTfidf7D_ = 0F;
+
+        userAuthorLikecommentTfidf7D_ = 0F;
+
+        userTag11IsLike_ = 0;
+
+        userTag11IsPlay_ = 0;
+
+        userTag11IsComment_ = 0;
+
+        userTag12IsLike_ = 0;
+
+        userTag12IsPlay_ = 0;
+
+        userTag12IsComment_ = 0;
+
+        userTag13IsLike_ = 0;
+
+        userTag13IsPlay_ = 0;
+
+        userTag13IsComment_ = 0;
+
+        userTag14IsLike_ = 0;
+
+        userTag14IsPlay_ = 0;
+
+        userTag14IsComment_ = 0;
+
+        userTag15IsLike_ = 0;
+
+        userTag15IsPlay_ = 0;
+
+        userTag15IsComment_ = 0;
+
+        userTag16IsLike_ = 0;
+
+        userTag16IsPlay_ = 0;
+
+        userTag16IsComment_ = 0;
+
+        userTag17IsLike_ = 0;
+
+        userTag17IsPlay_ = 0;
+
+        userTag17IsComment_ = 0;
+
+        userTag11LikeCnt_ = 0;
+
+        userTag11PlayCnt_ = 0;
+
+        userTag11CommentCnt_ = 0;
+
+        userTag12LikeCnt_ = 0;
+
+        userTag12PlayCnt_ = 0;
+
+        userTag12CommentCnt_ = 0;
+
+        userTag13LikeCnt_ = 0;
+
+        userTag13PlayCnt_ = 0;
+
+        userTag13CommentCnt_ = 0;
+
+        userTag14LikeCnt_ = 0;
+
+        userTag14PlayCnt_ = 0;
+
+        userTag14CommentCnt_ = 0;
+
+        userTag15LikeCnt_ = 0;
+
+        userTag15PlayCnt_ = 0;
+
+        userTag15CommentCnt_ = 0;
+
+        userTag16LikeCnt_ = 0;
+
+        userTag16PlayCnt_ = 0;
+
+        userTag16CommentCnt_ = 0;
+
+        userTag17LikeCnt_ = 0;
+
+        userTag17PlayCnt_ = 0;
+
+        userTag17CommentCnt_ = 0;
+
         return this;
       }
 
@@ -7286,7 +17760,8 @@ public final class RecFeature {
       @java.lang.Override
       public com.gosh.entity.RecFeature.RecUserAuthorFeature buildPartial() {
         com.gosh.entity.RecFeature.RecUserAuthorFeature result = new com.gosh.entity.RecFeature.RecUserAuthorFeature(this);
-        result.expireTime_ = expireTime_;
+        result.userId_ = userId_;
+        result.authorId_ = authorId_;
         result.userauthorExpCnt1H_ = userauthorExpCnt1H_;
         result.userauthor3SviewCnt1H_ = userauthor3SviewCnt1H_;
         result.userauthor8SviewCnt1H_ = userauthor8SviewCnt1H_;
@@ -7303,6 +17778,57 @@ public final class RecFeature {
         result.userauthor5SstandCnt24H_ = userauthor5SstandCnt24H_;
         result.userauthor10SstandCnt24H_ = userauthor10SstandCnt24H_;
         result.userauthorLikeCnt24H_ = userauthorLikeCnt24H_;
+        result.userAuthorViewCnt7D_ = userAuthorViewCnt7D_;
+        result.userAuthorValidviewCnt7D_ = userAuthorValidviewCnt7D_;
+        result.userAuthorCompeleteviewCnt7D_ = userAuthorCompeleteviewCnt7D_;
+        result.userAuthorLikeCnt7D_ = userAuthorLikeCnt7D_;
+        result.userAuthorCommentCnt7D_ = userAuthorCommentCnt7D_;
+        result.userAuthorAvgViewDuration7D_ = userAuthorAvgViewDuration7D_;
+        result.userAuthorValidviewTfidf7D_ = userAuthorValidviewTfidf7D_;
+        result.userAuthorCompeleteviewTfidf7D_ = userAuthorCompeleteviewTfidf7D_;
+        result.userAuthorLikecommentTfidf7D_ = userAuthorLikecommentTfidf7D_;
+        result.userTag11IsLike_ = userTag11IsLike_;
+        result.userTag11IsPlay_ = userTag11IsPlay_;
+        result.userTag11IsComment_ = userTag11IsComment_;
+        result.userTag12IsLike_ = userTag12IsLike_;
+        result.userTag12IsPlay_ = userTag12IsPlay_;
+        result.userTag12IsComment_ = userTag12IsComment_;
+        result.userTag13IsLike_ = userTag13IsLike_;
+        result.userTag13IsPlay_ = userTag13IsPlay_;
+        result.userTag13IsComment_ = userTag13IsComment_;
+        result.userTag14IsLike_ = userTag14IsLike_;
+        result.userTag14IsPlay_ = userTag14IsPlay_;
+        result.userTag14IsComment_ = userTag14IsComment_;
+        result.userTag15IsLike_ = userTag15IsLike_;
+        result.userTag15IsPlay_ = userTag15IsPlay_;
+        result.userTag15IsComment_ = userTag15IsComment_;
+        result.userTag16IsLike_ = userTag16IsLike_;
+        result.userTag16IsPlay_ = userTag16IsPlay_;
+        result.userTag16IsComment_ = userTag16IsComment_;
+        result.userTag17IsLike_ = userTag17IsLike_;
+        result.userTag17IsPlay_ = userTag17IsPlay_;
+        result.userTag17IsComment_ = userTag17IsComment_;
+        result.userTag11LikeCnt_ = userTag11LikeCnt_;
+        result.userTag11PlayCnt_ = userTag11PlayCnt_;
+        result.userTag11CommentCnt_ = userTag11CommentCnt_;
+        result.userTag12LikeCnt_ = userTag12LikeCnt_;
+        result.userTag12PlayCnt_ = userTag12PlayCnt_;
+        result.userTag12CommentCnt_ = userTag12CommentCnt_;
+        result.userTag13LikeCnt_ = userTag13LikeCnt_;
+        result.userTag13PlayCnt_ = userTag13PlayCnt_;
+        result.userTag13CommentCnt_ = userTag13CommentCnt_;
+        result.userTag14LikeCnt_ = userTag14LikeCnt_;
+        result.userTag14PlayCnt_ = userTag14PlayCnt_;
+        result.userTag14CommentCnt_ = userTag14CommentCnt_;
+        result.userTag15LikeCnt_ = userTag15LikeCnt_;
+        result.userTag15PlayCnt_ = userTag15PlayCnt_;
+        result.userTag15CommentCnt_ = userTag15CommentCnt_;
+        result.userTag16LikeCnt_ = userTag16LikeCnt_;
+        result.userTag16PlayCnt_ = userTag16PlayCnt_;
+        result.userTag16CommentCnt_ = userTag16CommentCnt_;
+        result.userTag17LikeCnt_ = userTag17LikeCnt_;
+        result.userTag17PlayCnt_ = userTag17PlayCnt_;
+        result.userTag17CommentCnt_ = userTag17CommentCnt_;
         onBuilt();
         return result;
       }
@@ -7351,9 +17877,11 @@ public final class RecFeature {
 
       public Builder mergeFrom(com.gosh.entity.RecFeature.RecUserAuthorFeature other) {
         if (other == com.gosh.entity.RecFeature.RecUserAuthorFeature.getDefaultInstance()) return this;
-        if (!other.getExpireTime().isEmpty()) {
-          expireTime_ = other.expireTime_;
-          onChanged();
+        if (other.getUserId() != 0L) {
+          setUserId(other.getUserId());
+        }
+        if (other.getAuthorId() != 0L) {
+          setAuthorId(other.getAuthorId());
         }
         if (other.getUserauthorExpCnt1H() != 0) {
           setUserauthorExpCnt1H(other.getUserauthorExpCnt1H());
@@ -7403,6 +17931,159 @@ public final class RecFeature {
         if (other.getUserauthorLikeCnt24H() != 0) {
           setUserauthorLikeCnt24H(other.getUserauthorLikeCnt24H());
         }
+        if (other.getUserAuthorViewCnt7D() != 0) {
+          setUserAuthorViewCnt7D(other.getUserAuthorViewCnt7D());
+        }
+        if (other.getUserAuthorValidviewCnt7D() != 0F) {
+          setUserAuthorValidviewCnt7D(other.getUserAuthorValidviewCnt7D());
+        }
+        if (other.getUserAuthorCompeleteviewCnt7D() != 0) {
+          setUserAuthorCompeleteviewCnt7D(other.getUserAuthorCompeleteviewCnt7D());
+        }
+        if (other.getUserAuthorLikeCnt7D() != 0) {
+          setUserAuthorLikeCnt7D(other.getUserAuthorLikeCnt7D());
+        }
+        if (other.getUserAuthorCommentCnt7D() != 0) {
+          setUserAuthorCommentCnt7D(other.getUserAuthorCommentCnt7D());
+        }
+        if (other.getUserAuthorAvgViewDuration7D() != 0F) {
+          setUserAuthorAvgViewDuration7D(other.getUserAuthorAvgViewDuration7D());
+        }
+        if (other.getUserAuthorValidviewTfidf7D() != 0F) {
+          setUserAuthorValidviewTfidf7D(other.getUserAuthorValidviewTfidf7D());
+        }
+        if (other.getUserAuthorCompeleteviewTfidf7D() != 0F) {
+          setUserAuthorCompeleteviewTfidf7D(other.getUserAuthorCompeleteviewTfidf7D());
+        }
+        if (other.getUserAuthorLikecommentTfidf7D() != 0F) {
+          setUserAuthorLikecommentTfidf7D(other.getUserAuthorLikecommentTfidf7D());
+        }
+        if (other.getUserTag11IsLike() != 0) {
+          setUserTag11IsLike(other.getUserTag11IsLike());
+        }
+        if (other.getUserTag11IsPlay() != 0) {
+          setUserTag11IsPlay(other.getUserTag11IsPlay());
+        }
+        if (other.getUserTag11IsComment() != 0) {
+          setUserTag11IsComment(other.getUserTag11IsComment());
+        }
+        if (other.getUserTag12IsLike() != 0) {
+          setUserTag12IsLike(other.getUserTag12IsLike());
+        }
+        if (other.getUserTag12IsPlay() != 0) {
+          setUserTag12IsPlay(other.getUserTag12IsPlay());
+        }
+        if (other.getUserTag12IsComment() != 0) {
+          setUserTag12IsComment(other.getUserTag12IsComment());
+        }
+        if (other.getUserTag13IsLike() != 0) {
+          setUserTag13IsLike(other.getUserTag13IsLike());
+        }
+        if (other.getUserTag13IsPlay() != 0) {
+          setUserTag13IsPlay(other.getUserTag13IsPlay());
+        }
+        if (other.getUserTag13IsComment() != 0) {
+          setUserTag13IsComment(other.getUserTag13IsComment());
+        }
+        if (other.getUserTag14IsLike() != 0) {
+          setUserTag14IsLike(other.getUserTag14IsLike());
+        }
+        if (other.getUserTag14IsPlay() != 0) {
+          setUserTag14IsPlay(other.getUserTag14IsPlay());
+        }
+        if (other.getUserTag14IsComment() != 0) {
+          setUserTag14IsComment(other.getUserTag14IsComment());
+        }
+        if (other.getUserTag15IsLike() != 0) {
+          setUserTag15IsLike(other.getUserTag15IsLike());
+        }
+        if (other.getUserTag15IsPlay() != 0) {
+          setUserTag15IsPlay(other.getUserTag15IsPlay());
+        }
+        if (other.getUserTag15IsComment() != 0) {
+          setUserTag15IsComment(other.getUserTag15IsComment());
+        }
+        if (other.getUserTag16IsLike() != 0) {
+          setUserTag16IsLike(other.getUserTag16IsLike());
+        }
+        if (other.getUserTag16IsPlay() != 0) {
+          setUserTag16IsPlay(other.getUserTag16IsPlay());
+        }
+        if (other.getUserTag16IsComment() != 0) {
+          setUserTag16IsComment(other.getUserTag16IsComment());
+        }
+        if (other.getUserTag17IsLike() != 0) {
+          setUserTag17IsLike(other.getUserTag17IsLike());
+        }
+        if (other.getUserTag17IsPlay() != 0) {
+          setUserTag17IsPlay(other.getUserTag17IsPlay());
+        }
+        if (other.getUserTag17IsComment() != 0) {
+          setUserTag17IsComment(other.getUserTag17IsComment());
+        }
+        if (other.getUserTag11LikeCnt() != 0) {
+          setUserTag11LikeCnt(other.getUserTag11LikeCnt());
+        }
+        if (other.getUserTag11PlayCnt() != 0) {
+          setUserTag11PlayCnt(other.getUserTag11PlayCnt());
+        }
+        if (other.getUserTag11CommentCnt() != 0) {
+          setUserTag11CommentCnt(other.getUserTag11CommentCnt());
+        }
+        if (other.getUserTag12LikeCnt() != 0) {
+          setUserTag12LikeCnt(other.getUserTag12LikeCnt());
+        }
+        if (other.getUserTag12PlayCnt() != 0) {
+          setUserTag12PlayCnt(other.getUserTag12PlayCnt());
+        }
+        if (other.getUserTag12CommentCnt() != 0) {
+          setUserTag12CommentCnt(other.getUserTag12CommentCnt());
+        }
+        if (other.getUserTag13LikeCnt() != 0) {
+          setUserTag13LikeCnt(other.getUserTag13LikeCnt());
+        }
+        if (other.getUserTag13PlayCnt() != 0) {
+          setUserTag13PlayCnt(other.getUserTag13PlayCnt());
+        }
+        if (other.getUserTag13CommentCnt() != 0) {
+          setUserTag13CommentCnt(other.getUserTag13CommentCnt());
+        }
+        if (other.getUserTag14LikeCnt() != 0) {
+          setUserTag14LikeCnt(other.getUserTag14LikeCnt());
+        }
+        if (other.getUserTag14PlayCnt() != 0) {
+          setUserTag14PlayCnt(other.getUserTag14PlayCnt());
+        }
+        if (other.getUserTag14CommentCnt() != 0) {
+          setUserTag14CommentCnt(other.getUserTag14CommentCnt());
+        }
+        if (other.getUserTag15LikeCnt() != 0) {
+          setUserTag15LikeCnt(other.getUserTag15LikeCnt());
+        }
+        if (other.getUserTag15PlayCnt() != 0) {
+          setUserTag15PlayCnt(other.getUserTag15PlayCnt());
+        }
+        if (other.getUserTag15CommentCnt() != 0) {
+          setUserTag15CommentCnt(other.getUserTag15CommentCnt());
+        }
+        if (other.getUserTag16LikeCnt() != 0) {
+          setUserTag16LikeCnt(other.getUserTag16LikeCnt());
+        }
+        if (other.getUserTag16PlayCnt() != 0) {
+          setUserTag16PlayCnt(other.getUserTag16PlayCnt());
+        }
+        if (other.getUserTag16CommentCnt() != 0) {
+          setUserTag16CommentCnt(other.getUserTag16CommentCnt());
+        }
+        if (other.getUserTag17LikeCnt() != 0) {
+          setUserTag17LikeCnt(other.getUserTag17LikeCnt());
+        }
+        if (other.getUserTag17PlayCnt() != 0) {
+          setUserTag17PlayCnt(other.getUserTag17PlayCnt());
+        }
+        if (other.getUserTag17CommentCnt() != 0) {
+          setUserTag17CommentCnt(other.getUserTag17CommentCnt());
+        }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
@@ -7432,98 +18113,79 @@ public final class RecFeature {
         return this;
       }
 
-      private java.lang.Object expireTime_ = "";
+      private long userId_ ;
       /**
-       * <pre>
-       * 过期时间标识 (1h 或 24h)
-       * </pre>
-       *
-       * <code>string expire_time = 3;</code>
-       * @return The expireTime.
+       * <code>uint64 user_id = 1;</code>
+       * @return The userId.
        */
-      public java.lang.String getExpireTime() {
-        java.lang.Object ref = expireTime_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          expireTime_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
+      @java.lang.Override
+      public long getUserId() {
+        return userId_;
       }
       /**
-       * <pre>
-       * 过期时间标识 (1h 或 24h)
-       * </pre>
-       *
-       * <code>string expire_time = 3;</code>
-       * @return The bytes for expireTime.
-       */
-      public com.google.protobuf.ByteString
-          getExpireTimeBytes() {
-        java.lang.Object ref = expireTime_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          expireTime_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <pre>
-       * 过期时间标识 (1h 或 24h)
-       * </pre>
-       *
-       * <code>string expire_time = 3;</code>
-       * @param value The expireTime to set.
+       * <code>uint64 user_id = 1;</code>
+       * @param value The userId to set.
        * @return This builder for chaining.
        */
-      public Builder setExpireTime(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        expireTime_ = value;
+      public Builder setUserId(long value) {
+        
+        userId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>uint64 user_id = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserId() {
+        
+        userId_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long authorId_ ;
+      /**
+       * <pre>
+       * 过期时间标识 (1h 或 24h)
+       *   string expire_time = 3;
+       * </pre>
+       *
+       * <code>uint64 author_id = 2;</code>
+       * @return The authorId.
+       */
+      @java.lang.Override
+      public long getAuthorId() {
+        return authorId_;
+      }
+      /**
+       * <pre>
+       * 过期时间标识 (1h 或 24h)
+       *   string expire_time = 3;
+       * </pre>
+       *
+       * <code>uint64 author_id = 2;</code>
+       * @param value The authorId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAuthorId(long value) {
+        
+        authorId_ = value;
         onChanged();
         return this;
       }
       /**
        * <pre>
        * 过期时间标识 (1h 或 24h)
+       *   string expire_time = 3;
        * </pre>
        *
-       * <code>string expire_time = 3;</code>
+       * <code>uint64 author_id = 2;</code>
        * @return This builder for chaining.
        */
-      public Builder clearExpireTime() {
+      public Builder clearAuthorId() {
         
-        expireTime_ = getDefaultInstance().getExpireTime();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 过期时间标识 (1h 或 24h)
-       * </pre>
-       *
-       * <code>string expire_time = 3;</code>
-       * @param value The bytes for expireTime to set.
-       * @return This builder for chaining.
-       */
-      public Builder setExpireTimeBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        expireTime_ = value;
+        authorId_ = 0L;
         onChanged();
         return this;
       }
@@ -8221,6 +18883,2202 @@ public final class RecFeature {
         onChanged();
         return this;
       }
+
+      private int userAuthorViewCnt7D_ ;
+      /**
+       * <pre>
+       * 7d特征
+       * 基础互动指标
+       * </pre>
+       *
+       * <code>int32 user_author_view_cnt_7d = 40;</code>
+       * @return The userAuthorViewCnt7d.
+       */
+      @java.lang.Override
+      public int getUserAuthorViewCnt7D() {
+        return userAuthorViewCnt7D_;
+      }
+      /**
+       * <pre>
+       * 7d特征
+       * 基础互动指标
+       * </pre>
+       *
+       * <code>int32 user_author_view_cnt_7d = 40;</code>
+       * @param value The userAuthorViewCnt7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserAuthorViewCnt7D(int value) {
+        
+        userAuthorViewCnt7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 7d特征
+       * 基础互动指标
+       * </pre>
+       *
+       * <code>int32 user_author_view_cnt_7d = 40;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserAuthorViewCnt7D() {
+        
+        userAuthorViewCnt7D_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private float userAuthorValidviewCnt7D_ ;
+      /**
+       * <pre>
+       * 用户对作者最近7天观看时长（秒）
+       * </pre>
+       *
+       * <code>float user_author_validview_cnt_7d = 41;</code>
+       * @return The userAuthorValidviewCnt7d.
+       */
+      @java.lang.Override
+      public float getUserAuthorValidviewCnt7D() {
+        return userAuthorValidviewCnt7D_;
+      }
+      /**
+       * <pre>
+       * 用户对作者最近7天观看时长（秒）
+       * </pre>
+       *
+       * <code>float user_author_validview_cnt_7d = 41;</code>
+       * @param value The userAuthorValidviewCnt7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserAuthorValidviewCnt7D(float value) {
+        
+        userAuthorValidviewCnt7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户对作者最近7天观看时长（秒）
+       * </pre>
+       *
+       * <code>float user_author_validview_cnt_7d = 41;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserAuthorValidviewCnt7D() {
+        
+        userAuthorValidviewCnt7D_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private int userAuthorCompeleteviewCnt7D_ ;
+      /**
+       * <pre>
+       * 用户对作者最近7天完整观看次数
+       * </pre>
+       *
+       * <code>int32 user_author_compeleteview_cnt_7d = 42;</code>
+       * @return The userAuthorCompeleteviewCnt7d.
+       */
+      @java.lang.Override
+      public int getUserAuthorCompeleteviewCnt7D() {
+        return userAuthorCompeleteviewCnt7D_;
+      }
+      /**
+       * <pre>
+       * 用户对作者最近7天完整观看次数
+       * </pre>
+       *
+       * <code>int32 user_author_compeleteview_cnt_7d = 42;</code>
+       * @param value The userAuthorCompeleteviewCnt7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserAuthorCompeleteviewCnt7D(int value) {
+        
+        userAuthorCompeleteviewCnt7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户对作者最近7天完整观看次数
+       * </pre>
+       *
+       * <code>int32 user_author_compeleteview_cnt_7d = 42;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserAuthorCompeleteviewCnt7D() {
+        
+        userAuthorCompeleteviewCnt7D_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userAuthorLikeCnt7D_ ;
+      /**
+       * <pre>
+       * 用户对作者最近7天点赞次数
+       * </pre>
+       *
+       * <code>int32 user_author_like_cnt_7d = 43;</code>
+       * @return The userAuthorLikeCnt7d.
+       */
+      @java.lang.Override
+      public int getUserAuthorLikeCnt7D() {
+        return userAuthorLikeCnt7D_;
+      }
+      /**
+       * <pre>
+       * 用户对作者最近7天点赞次数
+       * </pre>
+       *
+       * <code>int32 user_author_like_cnt_7d = 43;</code>
+       * @param value The userAuthorLikeCnt7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserAuthorLikeCnt7D(int value) {
+        
+        userAuthorLikeCnt7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户对作者最近7天点赞次数
+       * </pre>
+       *
+       * <code>int32 user_author_like_cnt_7d = 43;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserAuthorLikeCnt7D() {
+        
+        userAuthorLikeCnt7D_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userAuthorCommentCnt7D_ ;
+      /**
+       * <pre>
+       * 用户对作者最近7天评论次数
+       * </pre>
+       *
+       * <code>int32 user_author_comment_cnt_7d = 44;</code>
+       * @return The userAuthorCommentCnt7d.
+       */
+      @java.lang.Override
+      public int getUserAuthorCommentCnt7D() {
+        return userAuthorCommentCnt7D_;
+      }
+      /**
+       * <pre>
+       * 用户对作者最近7天评论次数
+       * </pre>
+       *
+       * <code>int32 user_author_comment_cnt_7d = 44;</code>
+       * @param value The userAuthorCommentCnt7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserAuthorCommentCnt7D(int value) {
+        
+        userAuthorCommentCnt7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户对作者最近7天评论次数
+       * </pre>
+       *
+       * <code>int32 user_author_comment_cnt_7d = 44;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserAuthorCommentCnt7D() {
+        
+        userAuthorCommentCnt7D_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private float userAuthorAvgViewDuration7D_ ;
+      /**
+       * <pre>
+       * 用户对作者最近7天平均每次曝光观看时长（秒）
+       * </pre>
+       *
+       * <code>float user_author_avg_view_duration_7d = 45;</code>
+       * @return The userAuthorAvgViewDuration7d.
+       */
+      @java.lang.Override
+      public float getUserAuthorAvgViewDuration7D() {
+        return userAuthorAvgViewDuration7D_;
+      }
+      /**
+       * <pre>
+       * 用户对作者最近7天平均每次曝光观看时长（秒）
+       * </pre>
+       *
+       * <code>float user_author_avg_view_duration_7d = 45;</code>
+       * @param value The userAuthorAvgViewDuration7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserAuthorAvgViewDuration7D(float value) {
+        
+        userAuthorAvgViewDuration7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户对作者最近7天平均每次曝光观看时长（秒）
+       * </pre>
+       *
+       * <code>float user_author_avg_view_duration_7d = 45;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserAuthorAvgViewDuration7D() {
+        
+        userAuthorAvgViewDuration7D_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float userAuthorValidviewTfidf7D_ ;
+      /**
+       * <pre>
+       * TF-IDF特征
+       * </pre>
+       *
+       * <code>float user_author_validview_tfidf_7d = 46;</code>
+       * @return The userAuthorValidviewTfidf7d.
+       */
+      @java.lang.Override
+      public float getUserAuthorValidviewTfidf7D() {
+        return userAuthorValidviewTfidf7D_;
+      }
+      /**
+       * <pre>
+       * TF-IDF特征
+       * </pre>
+       *
+       * <code>float user_author_validview_tfidf_7d = 46;</code>
+       * @param value The userAuthorValidviewTfidf7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserAuthorValidviewTfidf7D(float value) {
+        
+        userAuthorValidviewTfidf7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * TF-IDF特征
+       * </pre>
+       *
+       * <code>float user_author_validview_tfidf_7d = 46;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserAuthorValidviewTfidf7D() {
+        
+        userAuthorValidviewTfidf7D_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float userAuthorCompeleteviewTfidf7D_ ;
+      /**
+       * <pre>
+       * 用户对作者最近七天完整观看的TF-IDF值
+       * </pre>
+       *
+       * <code>float user_author_compeleteview_tfidf_7d = 47;</code>
+       * @return The userAuthorCompeleteviewTfidf7d.
+       */
+      @java.lang.Override
+      public float getUserAuthorCompeleteviewTfidf7D() {
+        return userAuthorCompeleteviewTfidf7D_;
+      }
+      /**
+       * <pre>
+       * 用户对作者最近七天完整观看的TF-IDF值
+       * </pre>
+       *
+       * <code>float user_author_compeleteview_tfidf_7d = 47;</code>
+       * @param value The userAuthorCompeleteviewTfidf7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserAuthorCompeleteviewTfidf7D(float value) {
+        
+        userAuthorCompeleteviewTfidf7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户对作者最近七天完整观看的TF-IDF值
+       * </pre>
+       *
+       * <code>float user_author_compeleteview_tfidf_7d = 47;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserAuthorCompeleteviewTfidf7D() {
+        
+        userAuthorCompeleteviewTfidf7D_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float userAuthorLikecommentTfidf7D_ ;
+      /**
+       * <pre>
+       * 用户对作者最近七天点赞+评论的TF-IDF值
+       * </pre>
+       *
+       * <code>float user_author_likecomment_tfidf_7d = 48;</code>
+       * @return The userAuthorLikecommentTfidf7d.
+       */
+      @java.lang.Override
+      public float getUserAuthorLikecommentTfidf7D() {
+        return userAuthorLikecommentTfidf7D_;
+      }
+      /**
+       * <pre>
+       * 用户对作者最近七天点赞+评论的TF-IDF值
+       * </pre>
+       *
+       * <code>float user_author_likecomment_tfidf_7d = 48;</code>
+       * @param value The userAuthorLikecommentTfidf7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserAuthorLikecommentTfidf7D(float value) {
+        
+        userAuthorLikecommentTfidf7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户对作者最近七天点赞+评论的TF-IDF值
+       * </pre>
+       *
+       * <code>float user_author_likecomment_tfidf_7d = 48;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserAuthorLikecommentTfidf7D() {
+        
+        userAuthorLikecommentTfidf7D_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private int userTag11IsLike_ ;
+      /**
+       * <pre>
+       * 7d交叉v11+v12
+       * </pre>
+       *
+       * <code>int32 user_tag11_is_like = 50;</code>
+       * @return The userTag11IsLike.
+       */
+      @java.lang.Override
+      public int getUserTag11IsLike() {
+        return userTag11IsLike_;
+      }
+      /**
+       * <pre>
+       * 7d交叉v11+v12
+       * </pre>
+       *
+       * <code>int32 user_tag11_is_like = 50;</code>
+       * @param value The userTag11IsLike to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserTag11IsLike(int value) {
+        
+        userTag11IsLike_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 7d交叉v11+v12
+       * </pre>
+       *
+       * <code>int32 user_tag11_is_like = 50;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserTag11IsLike() {
+        
+        userTag11IsLike_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userTag11IsPlay_ ;
+      /**
+       * <pre>
+       * 用户对内容11最近7是否非常感兴趣
+       * </pre>
+       *
+       * <code>int32 user_tag11_is_play = 51;</code>
+       * @return The userTag11IsPlay.
+       */
+      @java.lang.Override
+      public int getUserTag11IsPlay() {
+        return userTag11IsPlay_;
+      }
+      /**
+       * <pre>
+       * 用户对内容11最近7是否非常感兴趣
+       * </pre>
+       *
+       * <code>int32 user_tag11_is_play = 51;</code>
+       * @param value The userTag11IsPlay to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserTag11IsPlay(int value) {
+        
+        userTag11IsPlay_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户对内容11最近7是否非常感兴趣
+       * </pre>
+       *
+       * <code>int32 user_tag11_is_play = 51;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserTag11IsPlay() {
+        
+        userTag11IsPlay_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userTag11IsComment_ ;
+      /**
+       * <pre>
+       * 用户对内容11最近7是否评论
+       * </pre>
+       *
+       * <code>int32 user_tag11_is_comment = 52;</code>
+       * @return The userTag11IsComment.
+       */
+      @java.lang.Override
+      public int getUserTag11IsComment() {
+        return userTag11IsComment_;
+      }
+      /**
+       * <pre>
+       * 用户对内容11最近7是否评论
+       * </pre>
+       *
+       * <code>int32 user_tag11_is_comment = 52;</code>
+       * @param value The userTag11IsComment to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserTag11IsComment(int value) {
+        
+        userTag11IsComment_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户对内容11最近7是否评论
+       * </pre>
+       *
+       * <code>int32 user_tag11_is_comment = 52;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserTag11IsComment() {
+        
+        userTag11IsComment_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userTag12IsLike_ ;
+      /**
+       * <pre>
+       * 用户对内容12最近7是否喜欢
+       * </pre>
+       *
+       * <code>int32 user_tag12_is_like = 53;</code>
+       * @return The userTag12IsLike.
+       */
+      @java.lang.Override
+      public int getUserTag12IsLike() {
+        return userTag12IsLike_;
+      }
+      /**
+       * <pre>
+       * 用户对内容12最近7是否喜欢
+       * </pre>
+       *
+       * <code>int32 user_tag12_is_like = 53;</code>
+       * @param value The userTag12IsLike to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserTag12IsLike(int value) {
+        
+        userTag12IsLike_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户对内容12最近7是否喜欢
+       * </pre>
+       *
+       * <code>int32 user_tag12_is_like = 53;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserTag12IsLike() {
+        
+        userTag12IsLike_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userTag12IsPlay_ ;
+      /**
+       * <pre>
+       * 用户对内容12最近7是否非常感兴趣
+       * </pre>
+       *
+       * <code>int32 user_tag12_is_play = 54;</code>
+       * @return The userTag12IsPlay.
+       */
+      @java.lang.Override
+      public int getUserTag12IsPlay() {
+        return userTag12IsPlay_;
+      }
+      /**
+       * <pre>
+       * 用户对内容12最近7是否非常感兴趣
+       * </pre>
+       *
+       * <code>int32 user_tag12_is_play = 54;</code>
+       * @param value The userTag12IsPlay to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserTag12IsPlay(int value) {
+        
+        userTag12IsPlay_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户对内容12最近7是否非常感兴趣
+       * </pre>
+       *
+       * <code>int32 user_tag12_is_play = 54;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserTag12IsPlay() {
+        
+        userTag12IsPlay_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userTag12IsComment_ ;
+      /**
+       * <pre>
+       * 用户对内容12最近7是否评论
+       * </pre>
+       *
+       * <code>int32 user_tag12_is_comment = 55;</code>
+       * @return The userTag12IsComment.
+       */
+      @java.lang.Override
+      public int getUserTag12IsComment() {
+        return userTag12IsComment_;
+      }
+      /**
+       * <pre>
+       * 用户对内容12最近7是否评论
+       * </pre>
+       *
+       * <code>int32 user_tag12_is_comment = 55;</code>
+       * @param value The userTag12IsComment to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserTag12IsComment(int value) {
+        
+        userTag12IsComment_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户对内容12最近7是否评论
+       * </pre>
+       *
+       * <code>int32 user_tag12_is_comment = 55;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserTag12IsComment() {
+        
+        userTag12IsComment_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userTag13IsLike_ ;
+      /**
+       * <pre>
+       * 用户对内容13最近7是否喜欢
+       * </pre>
+       *
+       * <code>int32 user_tag13_is_like = 56;</code>
+       * @return The userTag13IsLike.
+       */
+      @java.lang.Override
+      public int getUserTag13IsLike() {
+        return userTag13IsLike_;
+      }
+      /**
+       * <pre>
+       * 用户对内容13最近7是否喜欢
+       * </pre>
+       *
+       * <code>int32 user_tag13_is_like = 56;</code>
+       * @param value The userTag13IsLike to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserTag13IsLike(int value) {
+        
+        userTag13IsLike_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户对内容13最近7是否喜欢
+       * </pre>
+       *
+       * <code>int32 user_tag13_is_like = 56;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserTag13IsLike() {
+        
+        userTag13IsLike_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userTag13IsPlay_ ;
+      /**
+       * <pre>
+       * 用户对内容13最近7是否非常感兴趣
+       * </pre>
+       *
+       * <code>int32 user_tag13_is_play = 57;</code>
+       * @return The userTag13IsPlay.
+       */
+      @java.lang.Override
+      public int getUserTag13IsPlay() {
+        return userTag13IsPlay_;
+      }
+      /**
+       * <pre>
+       * 用户对内容13最近7是否非常感兴趣
+       * </pre>
+       *
+       * <code>int32 user_tag13_is_play = 57;</code>
+       * @param value The userTag13IsPlay to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserTag13IsPlay(int value) {
+        
+        userTag13IsPlay_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户对内容13最近7是否非常感兴趣
+       * </pre>
+       *
+       * <code>int32 user_tag13_is_play = 57;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserTag13IsPlay() {
+        
+        userTag13IsPlay_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userTag13IsComment_ ;
+      /**
+       * <pre>
+       * 用户对内容13最近7是否评论
+       * </pre>
+       *
+       * <code>int32 user_tag13_is_comment = 58;</code>
+       * @return The userTag13IsComment.
+       */
+      @java.lang.Override
+      public int getUserTag13IsComment() {
+        return userTag13IsComment_;
+      }
+      /**
+       * <pre>
+       * 用户对内容13最近7是否评论
+       * </pre>
+       *
+       * <code>int32 user_tag13_is_comment = 58;</code>
+       * @param value The userTag13IsComment to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserTag13IsComment(int value) {
+        
+        userTag13IsComment_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户对内容13最近7是否评论
+       * </pre>
+       *
+       * <code>int32 user_tag13_is_comment = 58;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserTag13IsComment() {
+        
+        userTag13IsComment_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userTag14IsLike_ ;
+      /**
+       * <pre>
+       * 用户对内容14最近7是否喜欢
+       * </pre>
+       *
+       * <code>int32 user_tag14_is_like = 59;</code>
+       * @return The userTag14IsLike.
+       */
+      @java.lang.Override
+      public int getUserTag14IsLike() {
+        return userTag14IsLike_;
+      }
+      /**
+       * <pre>
+       * 用户对内容14最近7是否喜欢
+       * </pre>
+       *
+       * <code>int32 user_tag14_is_like = 59;</code>
+       * @param value The userTag14IsLike to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserTag14IsLike(int value) {
+        
+        userTag14IsLike_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户对内容14最近7是否喜欢
+       * </pre>
+       *
+       * <code>int32 user_tag14_is_like = 59;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserTag14IsLike() {
+        
+        userTag14IsLike_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userTag14IsPlay_ ;
+      /**
+       * <pre>
+       * 用户对内容14最近7是否非常感兴趣
+       * </pre>
+       *
+       * <code>int32 user_tag14_is_play = 60;</code>
+       * @return The userTag14IsPlay.
+       */
+      @java.lang.Override
+      public int getUserTag14IsPlay() {
+        return userTag14IsPlay_;
+      }
+      /**
+       * <pre>
+       * 用户对内容14最近7是否非常感兴趣
+       * </pre>
+       *
+       * <code>int32 user_tag14_is_play = 60;</code>
+       * @param value The userTag14IsPlay to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserTag14IsPlay(int value) {
+        
+        userTag14IsPlay_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户对内容14最近7是否非常感兴趣
+       * </pre>
+       *
+       * <code>int32 user_tag14_is_play = 60;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserTag14IsPlay() {
+        
+        userTag14IsPlay_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userTag14IsComment_ ;
+      /**
+       * <pre>
+       * 用户对内容14最近7是否评论
+       * </pre>
+       *
+       * <code>int32 user_tag14_is_comment = 61;</code>
+       * @return The userTag14IsComment.
+       */
+      @java.lang.Override
+      public int getUserTag14IsComment() {
+        return userTag14IsComment_;
+      }
+      /**
+       * <pre>
+       * 用户对内容14最近7是否评论
+       * </pre>
+       *
+       * <code>int32 user_tag14_is_comment = 61;</code>
+       * @param value The userTag14IsComment to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserTag14IsComment(int value) {
+        
+        userTag14IsComment_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户对内容14最近7是否评论
+       * </pre>
+       *
+       * <code>int32 user_tag14_is_comment = 61;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserTag14IsComment() {
+        
+        userTag14IsComment_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userTag15IsLike_ ;
+      /**
+       * <pre>
+       * 用户对内容15最近7是否喜欢
+       * </pre>
+       *
+       * <code>int32 user_tag15_is_like = 62;</code>
+       * @return The userTag15IsLike.
+       */
+      @java.lang.Override
+      public int getUserTag15IsLike() {
+        return userTag15IsLike_;
+      }
+      /**
+       * <pre>
+       * 用户对内容15最近7是否喜欢
+       * </pre>
+       *
+       * <code>int32 user_tag15_is_like = 62;</code>
+       * @param value The userTag15IsLike to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserTag15IsLike(int value) {
+        
+        userTag15IsLike_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户对内容15最近7是否喜欢
+       * </pre>
+       *
+       * <code>int32 user_tag15_is_like = 62;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserTag15IsLike() {
+        
+        userTag15IsLike_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userTag15IsPlay_ ;
+      /**
+       * <pre>
+       * 用户对内容15最近7是否非常感兴趣
+       * </pre>
+       *
+       * <code>int32 user_tag15_is_play = 63;</code>
+       * @return The userTag15IsPlay.
+       */
+      @java.lang.Override
+      public int getUserTag15IsPlay() {
+        return userTag15IsPlay_;
+      }
+      /**
+       * <pre>
+       * 用户对内容15最近7是否非常感兴趣
+       * </pre>
+       *
+       * <code>int32 user_tag15_is_play = 63;</code>
+       * @param value The userTag15IsPlay to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserTag15IsPlay(int value) {
+        
+        userTag15IsPlay_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户对内容15最近7是否非常感兴趣
+       * </pre>
+       *
+       * <code>int32 user_tag15_is_play = 63;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserTag15IsPlay() {
+        
+        userTag15IsPlay_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userTag15IsComment_ ;
+      /**
+       * <pre>
+       * 用户对内容15最近7是否评论
+       * </pre>
+       *
+       * <code>int32 user_tag15_is_comment = 64;</code>
+       * @return The userTag15IsComment.
+       */
+      @java.lang.Override
+      public int getUserTag15IsComment() {
+        return userTag15IsComment_;
+      }
+      /**
+       * <pre>
+       * 用户对内容15最近7是否评论
+       * </pre>
+       *
+       * <code>int32 user_tag15_is_comment = 64;</code>
+       * @param value The userTag15IsComment to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserTag15IsComment(int value) {
+        
+        userTag15IsComment_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户对内容15最近7是否评论
+       * </pre>
+       *
+       * <code>int32 user_tag15_is_comment = 64;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserTag15IsComment() {
+        
+        userTag15IsComment_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userTag16IsLike_ ;
+      /**
+       * <pre>
+       * 用户对内容16最近7是否喜欢
+       * </pre>
+       *
+       * <code>int32 user_tag16_is_like = 65;</code>
+       * @return The userTag16IsLike.
+       */
+      @java.lang.Override
+      public int getUserTag16IsLike() {
+        return userTag16IsLike_;
+      }
+      /**
+       * <pre>
+       * 用户对内容16最近7是否喜欢
+       * </pre>
+       *
+       * <code>int32 user_tag16_is_like = 65;</code>
+       * @param value The userTag16IsLike to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserTag16IsLike(int value) {
+        
+        userTag16IsLike_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户对内容16最近7是否喜欢
+       * </pre>
+       *
+       * <code>int32 user_tag16_is_like = 65;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserTag16IsLike() {
+        
+        userTag16IsLike_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userTag16IsPlay_ ;
+      /**
+       * <pre>
+       * 用户对内容16最近7是否非常感兴趣
+       * </pre>
+       *
+       * <code>int32 user_tag16_is_play = 66;</code>
+       * @return The userTag16IsPlay.
+       */
+      @java.lang.Override
+      public int getUserTag16IsPlay() {
+        return userTag16IsPlay_;
+      }
+      /**
+       * <pre>
+       * 用户对内容16最近7是否非常感兴趣
+       * </pre>
+       *
+       * <code>int32 user_tag16_is_play = 66;</code>
+       * @param value The userTag16IsPlay to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserTag16IsPlay(int value) {
+        
+        userTag16IsPlay_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户对内容16最近7是否非常感兴趣
+       * </pre>
+       *
+       * <code>int32 user_tag16_is_play = 66;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserTag16IsPlay() {
+        
+        userTag16IsPlay_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userTag16IsComment_ ;
+      /**
+       * <pre>
+       * 用户对内容16最近7是否评论
+       * </pre>
+       *
+       * <code>int32 user_tag16_is_comment = 67;</code>
+       * @return The userTag16IsComment.
+       */
+      @java.lang.Override
+      public int getUserTag16IsComment() {
+        return userTag16IsComment_;
+      }
+      /**
+       * <pre>
+       * 用户对内容16最近7是否评论
+       * </pre>
+       *
+       * <code>int32 user_tag16_is_comment = 67;</code>
+       * @param value The userTag16IsComment to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserTag16IsComment(int value) {
+        
+        userTag16IsComment_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户对内容16最近7是否评论
+       * </pre>
+       *
+       * <code>int32 user_tag16_is_comment = 67;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserTag16IsComment() {
+        
+        userTag16IsComment_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userTag17IsLike_ ;
+      /**
+       * <pre>
+       * 用户对内容17最近7是否喜欢
+       * </pre>
+       *
+       * <code>int32 user_tag17_is_like = 68;</code>
+       * @return The userTag17IsLike.
+       */
+      @java.lang.Override
+      public int getUserTag17IsLike() {
+        return userTag17IsLike_;
+      }
+      /**
+       * <pre>
+       * 用户对内容17最近7是否喜欢
+       * </pre>
+       *
+       * <code>int32 user_tag17_is_like = 68;</code>
+       * @param value The userTag17IsLike to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserTag17IsLike(int value) {
+        
+        userTag17IsLike_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户对内容17最近7是否喜欢
+       * </pre>
+       *
+       * <code>int32 user_tag17_is_like = 68;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserTag17IsLike() {
+        
+        userTag17IsLike_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userTag17IsPlay_ ;
+      /**
+       * <pre>
+       * 用户对内容17最近7是否非常感兴趣
+       * </pre>
+       *
+       * <code>int32 user_tag17_is_play = 69;</code>
+       * @return The userTag17IsPlay.
+       */
+      @java.lang.Override
+      public int getUserTag17IsPlay() {
+        return userTag17IsPlay_;
+      }
+      /**
+       * <pre>
+       * 用户对内容17最近7是否非常感兴趣
+       * </pre>
+       *
+       * <code>int32 user_tag17_is_play = 69;</code>
+       * @param value The userTag17IsPlay to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserTag17IsPlay(int value) {
+        
+        userTag17IsPlay_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户对内容17最近7是否非常感兴趣
+       * </pre>
+       *
+       * <code>int32 user_tag17_is_play = 69;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserTag17IsPlay() {
+        
+        userTag17IsPlay_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userTag17IsComment_ ;
+      /**
+       * <pre>
+       * 用户对内容17最近7是否评论
+       * </pre>
+       *
+       * <code>int32 user_tag17_is_comment = 70;</code>
+       * @return The userTag17IsComment.
+       */
+      @java.lang.Override
+      public int getUserTag17IsComment() {
+        return userTag17IsComment_;
+      }
+      /**
+       * <pre>
+       * 用户对内容17最近7是否评论
+       * </pre>
+       *
+       * <code>int32 user_tag17_is_comment = 70;</code>
+       * @param value The userTag17IsComment to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserTag17IsComment(int value) {
+        
+        userTag17IsComment_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户对内容17最近7是否评论
+       * </pre>
+       *
+       * <code>int32 user_tag17_is_comment = 70;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserTag17IsComment() {
+        
+        userTag17IsComment_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userTag11LikeCnt_ ;
+      /**
+       * <pre>
+       * 用户对内容11最近7喜欢数
+       * </pre>
+       *
+       * <code>int32 user_tag11_like_cnt = 71;</code>
+       * @return The userTag11LikeCnt.
+       */
+      @java.lang.Override
+      public int getUserTag11LikeCnt() {
+        return userTag11LikeCnt_;
+      }
+      /**
+       * <pre>
+       * 用户对内容11最近7喜欢数
+       * </pre>
+       *
+       * <code>int32 user_tag11_like_cnt = 71;</code>
+       * @param value The userTag11LikeCnt to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserTag11LikeCnt(int value) {
+        
+        userTag11LikeCnt_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户对内容11最近7喜欢数
+       * </pre>
+       *
+       * <code>int32 user_tag11_like_cnt = 71;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserTag11LikeCnt() {
+        
+        userTag11LikeCnt_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userTag11PlayCnt_ ;
+      /**
+       * <pre>
+       * 用户对内容11最近7播放数
+       * </pre>
+       *
+       * <code>int32 user_tag11_play_cnt = 72;</code>
+       * @return The userTag11PlayCnt.
+       */
+      @java.lang.Override
+      public int getUserTag11PlayCnt() {
+        return userTag11PlayCnt_;
+      }
+      /**
+       * <pre>
+       * 用户对内容11最近7播放数
+       * </pre>
+       *
+       * <code>int32 user_tag11_play_cnt = 72;</code>
+       * @param value The userTag11PlayCnt to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserTag11PlayCnt(int value) {
+        
+        userTag11PlayCnt_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户对内容11最近7播放数
+       * </pre>
+       *
+       * <code>int32 user_tag11_play_cnt = 72;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserTag11PlayCnt() {
+        
+        userTag11PlayCnt_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userTag11CommentCnt_ ;
+      /**
+       * <pre>
+       * 用户对内容11最近7评论数
+       * </pre>
+       *
+       * <code>int32 user_tag11_comment_cnt = 73;</code>
+       * @return The userTag11CommentCnt.
+       */
+      @java.lang.Override
+      public int getUserTag11CommentCnt() {
+        return userTag11CommentCnt_;
+      }
+      /**
+       * <pre>
+       * 用户对内容11最近7评论数
+       * </pre>
+       *
+       * <code>int32 user_tag11_comment_cnt = 73;</code>
+       * @param value The userTag11CommentCnt to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserTag11CommentCnt(int value) {
+        
+        userTag11CommentCnt_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户对内容11最近7评论数
+       * </pre>
+       *
+       * <code>int32 user_tag11_comment_cnt = 73;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserTag11CommentCnt() {
+        
+        userTag11CommentCnt_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userTag12LikeCnt_ ;
+      /**
+       * <pre>
+       * 用户对内容12最近7喜欢数
+       * </pre>
+       *
+       * <code>int32 user_tag12_like_cnt = 74;</code>
+       * @return The userTag12LikeCnt.
+       */
+      @java.lang.Override
+      public int getUserTag12LikeCnt() {
+        return userTag12LikeCnt_;
+      }
+      /**
+       * <pre>
+       * 用户对内容12最近7喜欢数
+       * </pre>
+       *
+       * <code>int32 user_tag12_like_cnt = 74;</code>
+       * @param value The userTag12LikeCnt to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserTag12LikeCnt(int value) {
+        
+        userTag12LikeCnt_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户对内容12最近7喜欢数
+       * </pre>
+       *
+       * <code>int32 user_tag12_like_cnt = 74;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserTag12LikeCnt() {
+        
+        userTag12LikeCnt_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userTag12PlayCnt_ ;
+      /**
+       * <pre>
+       * 用户对内容12最近7播放数
+       * </pre>
+       *
+       * <code>int32 user_tag12_play_cnt = 75;</code>
+       * @return The userTag12PlayCnt.
+       */
+      @java.lang.Override
+      public int getUserTag12PlayCnt() {
+        return userTag12PlayCnt_;
+      }
+      /**
+       * <pre>
+       * 用户对内容12最近7播放数
+       * </pre>
+       *
+       * <code>int32 user_tag12_play_cnt = 75;</code>
+       * @param value The userTag12PlayCnt to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserTag12PlayCnt(int value) {
+        
+        userTag12PlayCnt_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户对内容12最近7播放数
+       * </pre>
+       *
+       * <code>int32 user_tag12_play_cnt = 75;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserTag12PlayCnt() {
+        
+        userTag12PlayCnt_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userTag12CommentCnt_ ;
+      /**
+       * <pre>
+       * 用户对内容12最近7评论数
+       * </pre>
+       *
+       * <code>int32 user_tag12_comment_cnt = 76;</code>
+       * @return The userTag12CommentCnt.
+       */
+      @java.lang.Override
+      public int getUserTag12CommentCnt() {
+        return userTag12CommentCnt_;
+      }
+      /**
+       * <pre>
+       * 用户对内容12最近7评论数
+       * </pre>
+       *
+       * <code>int32 user_tag12_comment_cnt = 76;</code>
+       * @param value The userTag12CommentCnt to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserTag12CommentCnt(int value) {
+        
+        userTag12CommentCnt_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户对内容12最近7评论数
+       * </pre>
+       *
+       * <code>int32 user_tag12_comment_cnt = 76;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserTag12CommentCnt() {
+        
+        userTag12CommentCnt_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userTag13LikeCnt_ ;
+      /**
+       * <pre>
+       * 用户对内容13最近7喜欢数
+       * </pre>
+       *
+       * <code>int32 user_tag13_like_cnt = 77;</code>
+       * @return The userTag13LikeCnt.
+       */
+      @java.lang.Override
+      public int getUserTag13LikeCnt() {
+        return userTag13LikeCnt_;
+      }
+      /**
+       * <pre>
+       * 用户对内容13最近7喜欢数
+       * </pre>
+       *
+       * <code>int32 user_tag13_like_cnt = 77;</code>
+       * @param value The userTag13LikeCnt to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserTag13LikeCnt(int value) {
+        
+        userTag13LikeCnt_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户对内容13最近7喜欢数
+       * </pre>
+       *
+       * <code>int32 user_tag13_like_cnt = 77;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserTag13LikeCnt() {
+        
+        userTag13LikeCnt_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userTag13PlayCnt_ ;
+      /**
+       * <pre>
+       * 用户对内容13最近7播放数
+       * </pre>
+       *
+       * <code>int32 user_tag13_play_cnt = 78;</code>
+       * @return The userTag13PlayCnt.
+       */
+      @java.lang.Override
+      public int getUserTag13PlayCnt() {
+        return userTag13PlayCnt_;
+      }
+      /**
+       * <pre>
+       * 用户对内容13最近7播放数
+       * </pre>
+       *
+       * <code>int32 user_tag13_play_cnt = 78;</code>
+       * @param value The userTag13PlayCnt to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserTag13PlayCnt(int value) {
+        
+        userTag13PlayCnt_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户对内容13最近7播放数
+       * </pre>
+       *
+       * <code>int32 user_tag13_play_cnt = 78;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserTag13PlayCnt() {
+        
+        userTag13PlayCnt_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userTag13CommentCnt_ ;
+      /**
+       * <pre>
+       * 用户对内容13最近7评论数
+       * </pre>
+       *
+       * <code>int32 user_tag13_comment_cnt = 79;</code>
+       * @return The userTag13CommentCnt.
+       */
+      @java.lang.Override
+      public int getUserTag13CommentCnt() {
+        return userTag13CommentCnt_;
+      }
+      /**
+       * <pre>
+       * 用户对内容13最近7评论数
+       * </pre>
+       *
+       * <code>int32 user_tag13_comment_cnt = 79;</code>
+       * @param value The userTag13CommentCnt to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserTag13CommentCnt(int value) {
+        
+        userTag13CommentCnt_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户对内容13最近7评论数
+       * </pre>
+       *
+       * <code>int32 user_tag13_comment_cnt = 79;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserTag13CommentCnt() {
+        
+        userTag13CommentCnt_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userTag14LikeCnt_ ;
+      /**
+       * <pre>
+       * 用户对内容14最近7喜欢数
+       * </pre>
+       *
+       * <code>int32 user_tag14_like_cnt = 80;</code>
+       * @return The userTag14LikeCnt.
+       */
+      @java.lang.Override
+      public int getUserTag14LikeCnt() {
+        return userTag14LikeCnt_;
+      }
+      /**
+       * <pre>
+       * 用户对内容14最近7喜欢数
+       * </pre>
+       *
+       * <code>int32 user_tag14_like_cnt = 80;</code>
+       * @param value The userTag14LikeCnt to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserTag14LikeCnt(int value) {
+        
+        userTag14LikeCnt_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户对内容14最近7喜欢数
+       * </pre>
+       *
+       * <code>int32 user_tag14_like_cnt = 80;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserTag14LikeCnt() {
+        
+        userTag14LikeCnt_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userTag14PlayCnt_ ;
+      /**
+       * <pre>
+       * 用户对内容14最近7播放数
+       * </pre>
+       *
+       * <code>int32 user_tag14_play_cnt = 81;</code>
+       * @return The userTag14PlayCnt.
+       */
+      @java.lang.Override
+      public int getUserTag14PlayCnt() {
+        return userTag14PlayCnt_;
+      }
+      /**
+       * <pre>
+       * 用户对内容14最近7播放数
+       * </pre>
+       *
+       * <code>int32 user_tag14_play_cnt = 81;</code>
+       * @param value The userTag14PlayCnt to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserTag14PlayCnt(int value) {
+        
+        userTag14PlayCnt_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户对内容14最近7播放数
+       * </pre>
+       *
+       * <code>int32 user_tag14_play_cnt = 81;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserTag14PlayCnt() {
+        
+        userTag14PlayCnt_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userTag14CommentCnt_ ;
+      /**
+       * <pre>
+       * 用户对内容14最近7评论数
+       * </pre>
+       *
+       * <code>int32 user_tag14_comment_cnt = 82;</code>
+       * @return The userTag14CommentCnt.
+       */
+      @java.lang.Override
+      public int getUserTag14CommentCnt() {
+        return userTag14CommentCnt_;
+      }
+      /**
+       * <pre>
+       * 用户对内容14最近7评论数
+       * </pre>
+       *
+       * <code>int32 user_tag14_comment_cnt = 82;</code>
+       * @param value The userTag14CommentCnt to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserTag14CommentCnt(int value) {
+        
+        userTag14CommentCnt_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户对内容14最近7评论数
+       * </pre>
+       *
+       * <code>int32 user_tag14_comment_cnt = 82;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserTag14CommentCnt() {
+        
+        userTag14CommentCnt_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userTag15LikeCnt_ ;
+      /**
+       * <pre>
+       * 用户对内容15最近7喜欢数
+       * </pre>
+       *
+       * <code>int32 user_tag15_like_cnt = 83;</code>
+       * @return The userTag15LikeCnt.
+       */
+      @java.lang.Override
+      public int getUserTag15LikeCnt() {
+        return userTag15LikeCnt_;
+      }
+      /**
+       * <pre>
+       * 用户对内容15最近7喜欢数
+       * </pre>
+       *
+       * <code>int32 user_tag15_like_cnt = 83;</code>
+       * @param value The userTag15LikeCnt to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserTag15LikeCnt(int value) {
+        
+        userTag15LikeCnt_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户对内容15最近7喜欢数
+       * </pre>
+       *
+       * <code>int32 user_tag15_like_cnt = 83;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserTag15LikeCnt() {
+        
+        userTag15LikeCnt_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userTag15PlayCnt_ ;
+      /**
+       * <pre>
+       * 用户对内容15最近7播放数
+       * </pre>
+       *
+       * <code>int32 user_tag15_play_cnt = 84;</code>
+       * @return The userTag15PlayCnt.
+       */
+      @java.lang.Override
+      public int getUserTag15PlayCnt() {
+        return userTag15PlayCnt_;
+      }
+      /**
+       * <pre>
+       * 用户对内容15最近7播放数
+       * </pre>
+       *
+       * <code>int32 user_tag15_play_cnt = 84;</code>
+       * @param value The userTag15PlayCnt to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserTag15PlayCnt(int value) {
+        
+        userTag15PlayCnt_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户对内容15最近7播放数
+       * </pre>
+       *
+       * <code>int32 user_tag15_play_cnt = 84;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserTag15PlayCnt() {
+        
+        userTag15PlayCnt_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userTag15CommentCnt_ ;
+      /**
+       * <pre>
+       * 用户对内容15最近7评论数
+       * </pre>
+       *
+       * <code>int32 user_tag15_comment_cnt = 85;</code>
+       * @return The userTag15CommentCnt.
+       */
+      @java.lang.Override
+      public int getUserTag15CommentCnt() {
+        return userTag15CommentCnt_;
+      }
+      /**
+       * <pre>
+       * 用户对内容15最近7评论数
+       * </pre>
+       *
+       * <code>int32 user_tag15_comment_cnt = 85;</code>
+       * @param value The userTag15CommentCnt to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserTag15CommentCnt(int value) {
+        
+        userTag15CommentCnt_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户对内容15最近7评论数
+       * </pre>
+       *
+       * <code>int32 user_tag15_comment_cnt = 85;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserTag15CommentCnt() {
+        
+        userTag15CommentCnt_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userTag16LikeCnt_ ;
+      /**
+       * <pre>
+       * 用户对内容16最近7喜欢数
+       * </pre>
+       *
+       * <code>int32 user_tag16_like_cnt = 86;</code>
+       * @return The userTag16LikeCnt.
+       */
+      @java.lang.Override
+      public int getUserTag16LikeCnt() {
+        return userTag16LikeCnt_;
+      }
+      /**
+       * <pre>
+       * 用户对内容16最近7喜欢数
+       * </pre>
+       *
+       * <code>int32 user_tag16_like_cnt = 86;</code>
+       * @param value The userTag16LikeCnt to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserTag16LikeCnt(int value) {
+        
+        userTag16LikeCnt_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户对内容16最近7喜欢数
+       * </pre>
+       *
+       * <code>int32 user_tag16_like_cnt = 86;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserTag16LikeCnt() {
+        
+        userTag16LikeCnt_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userTag16PlayCnt_ ;
+      /**
+       * <pre>
+       * 用户对内容16最近7播放数
+       * </pre>
+       *
+       * <code>int32 user_tag16_play_cnt = 87;</code>
+       * @return The userTag16PlayCnt.
+       */
+      @java.lang.Override
+      public int getUserTag16PlayCnt() {
+        return userTag16PlayCnt_;
+      }
+      /**
+       * <pre>
+       * 用户对内容16最近7播放数
+       * </pre>
+       *
+       * <code>int32 user_tag16_play_cnt = 87;</code>
+       * @param value The userTag16PlayCnt to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserTag16PlayCnt(int value) {
+        
+        userTag16PlayCnt_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户对内容16最近7播放数
+       * </pre>
+       *
+       * <code>int32 user_tag16_play_cnt = 87;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserTag16PlayCnt() {
+        
+        userTag16PlayCnt_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userTag16CommentCnt_ ;
+      /**
+       * <pre>
+       * 用户对内容16最近7评论数
+       * </pre>
+       *
+       * <code>int32 user_tag16_comment_cnt = 88;</code>
+       * @return The userTag16CommentCnt.
+       */
+      @java.lang.Override
+      public int getUserTag16CommentCnt() {
+        return userTag16CommentCnt_;
+      }
+      /**
+       * <pre>
+       * 用户对内容16最近7评论数
+       * </pre>
+       *
+       * <code>int32 user_tag16_comment_cnt = 88;</code>
+       * @param value The userTag16CommentCnt to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserTag16CommentCnt(int value) {
+        
+        userTag16CommentCnt_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户对内容16最近7评论数
+       * </pre>
+       *
+       * <code>int32 user_tag16_comment_cnt = 88;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserTag16CommentCnt() {
+        
+        userTag16CommentCnt_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userTag17LikeCnt_ ;
+      /**
+       * <pre>
+       * 用户对内容17最近7喜欢数
+       * </pre>
+       *
+       * <code>int32 user_tag17_like_cnt = 89;</code>
+       * @return The userTag17LikeCnt.
+       */
+      @java.lang.Override
+      public int getUserTag17LikeCnt() {
+        return userTag17LikeCnt_;
+      }
+      /**
+       * <pre>
+       * 用户对内容17最近7喜欢数
+       * </pre>
+       *
+       * <code>int32 user_tag17_like_cnt = 89;</code>
+       * @param value The userTag17LikeCnt to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserTag17LikeCnt(int value) {
+        
+        userTag17LikeCnt_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户对内容17最近7喜欢数
+       * </pre>
+       *
+       * <code>int32 user_tag17_like_cnt = 89;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserTag17LikeCnt() {
+        
+        userTag17LikeCnt_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userTag17PlayCnt_ ;
+      /**
+       * <pre>
+       * 用户对内容17最近7播放数
+       * </pre>
+       *
+       * <code>int32 user_tag17_play_cnt = 90;</code>
+       * @return The userTag17PlayCnt.
+       */
+      @java.lang.Override
+      public int getUserTag17PlayCnt() {
+        return userTag17PlayCnt_;
+      }
+      /**
+       * <pre>
+       * 用户对内容17最近7播放数
+       * </pre>
+       *
+       * <code>int32 user_tag17_play_cnt = 90;</code>
+       * @param value The userTag17PlayCnt to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserTag17PlayCnt(int value) {
+        
+        userTag17PlayCnt_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户对内容17最近7播放数
+       * </pre>
+       *
+       * <code>int32 user_tag17_play_cnt = 90;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserTag17PlayCnt() {
+        
+        userTag17PlayCnt_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userTag17CommentCnt_ ;
+      /**
+       * <pre>
+       * 用户对内容17最近7评论数
+       * </pre>
+       *
+       * <code>int32 user_tag17_comment_cnt = 91;</code>
+       * @return The userTag17CommentCnt.
+       */
+      @java.lang.Override
+      public int getUserTag17CommentCnt() {
+        return userTag17CommentCnt_;
+      }
+      /**
+       * <pre>
+       * 用户对内容17最近7评论数
+       * </pre>
+       *
+       * <code>int32 user_tag17_comment_cnt = 91;</code>
+       * @param value The userTag17CommentCnt to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserTag17CommentCnt(int value) {
+        
+        userTag17CommentCnt_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户对内容17最近7评论数
+       * </pre>
+       *
+       * <code>int32 user_tag17_comment_cnt = 91;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserTag17CommentCnt() {
+        
+        userTag17CommentCnt_ = 0;
+        onChanged();
+        return this;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -8274,6 +21132,1483 @@ public final class RecFeature {
 
   }
 
+  public interface LiveUserAnchorFeatureOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.gosh.entity.LiveUserAnchorFeature)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>uint64 user_id = 1;</code>
+     * @return The userId.
+     */
+    long getUserId();
+
+    /**
+     * <code>uint64 anchor_id = 2;</code>
+     * @return The anchorId.
+     */
+    long getAnchorId();
+
+    /**
+     * <pre>
+     * 3小时窗口特征
+     * 曝光特征
+     * </pre>
+     *
+     * <code>int32 user_anchor_exp_cnt_3h = 10;</code>
+     * @return The userAnchorExpCnt3h.
+     */
+    int getUserAnchorExpCnt3H();
+
+    /**
+     * <pre>
+     * 停留特征 (3小时)
+     * </pre>
+     *
+     * <code>int32 user_anchor_3squit_cnt_1h = 11;</code>
+     * @return The userAnchor3squitCnt1h.
+     */
+    int getUserAnchor3SquitCnt1H();
+
+    /**
+     * <pre>
+     * 用户作者最近3h停留6s次数
+     * </pre>
+     *
+     * <code>int32 user_anchor_6squit_cnt_1h = 12;</code>
+     * @return The userAnchor6squitCnt1h.
+     */
+    int getUserAnchor6SquitCnt1H();
+
+    /**
+     * <pre>
+     *点赞特征 (3小时)
+     * </pre>
+     *
+     * <code>int32 user_anchor_like_cnt_3h = 13;</code>
+     * @return The userAnchorLikeCnt3h.
+     */
+    int getUserAnchorLikeCnt3H();
+
+    /**
+     * <pre>
+     *评论特征 (3小时)
+     * </pre>
+     *
+     * <code>int32 user_anchor_comment_cnt_3h = 14;</code>
+     * @return The userAnchorCommentCnt3h.
+     */
+    int getUserAnchorCommentCnt3H();
+
+    /**
+     * <pre>
+     *关注特征 (3小时)
+     * </pre>
+     *
+     * <code>int32 user_anchor_follow_cnt_3h = 15;</code>
+     * @return The userAnchorFollowCnt3h.
+     */
+    int getUserAnchorFollowCnt3H();
+
+    /**
+     * <pre>
+     *分享特征 (3小时)
+     * </pre>
+     *
+     * <code>int32 user_anchor_share_cnt_3h = 16;</code>
+     * @return The userAnchorShareCnt3h.
+     */
+    int getUserAnchorShareCnt3H();
+
+    /**
+     * <pre>
+     *送礼特征 (3小时)
+     * </pre>
+     *
+     * <code>int32 user_anchor_gift_cnt_3h = 17;</code>
+     * @return The userAnchorGiftCnt3h.
+     */
+    int getUserAnchorGiftCnt3H();
+
+    /**
+     * <pre>
+     *送礼金额特征 (3小时)
+     * </pre>
+     *
+     * <code>int32 user_anchor_gift_amount_3h = 18;</code>
+     * @return The userAnchorGiftAmount3h.
+     */
+    int getUserAnchorGiftAmount3H();
+
+    /**
+     * <pre>
+     * 负反馈特征
+     * </pre>
+     *
+     * <code>int32 user_anchor_negative_feedback_cnt_3h = 19;</code>
+     * @return The userAnchorNegativeFeedbackCnt3h.
+     */
+    int getUserAnchorNegativeFeedbackCnt3H();
+  }
+  /**
+   * <pre>
+   * 直播用户主播交叉特征,hset格式
+   * Redis Key: rec:user_anchor_feature:{user_id}:live3h
+   * </pre>
+   *
+   * Protobuf type {@code com.gosh.entity.LiveUserAnchorFeature}
+   */
+  public static final class LiveUserAnchorFeature extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:com.gosh.entity.LiveUserAnchorFeature)
+      LiveUserAnchorFeatureOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use LiveUserAnchorFeature.newBuilder() to construct.
+    private LiveUserAnchorFeature(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private LiveUserAnchorFeature() {
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new LiveUserAnchorFeature();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private LiveUserAnchorFeature(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+
+              userId_ = input.readUInt64();
+              break;
+            }
+            case 16: {
+
+              anchorId_ = input.readUInt64();
+              break;
+            }
+            case 80: {
+
+              userAnchorExpCnt3H_ = input.readInt32();
+              break;
+            }
+            case 88: {
+
+              userAnchor3SquitCnt1H_ = input.readInt32();
+              break;
+            }
+            case 96: {
+
+              userAnchor6SquitCnt1H_ = input.readInt32();
+              break;
+            }
+            case 104: {
+
+              userAnchorLikeCnt3H_ = input.readInt32();
+              break;
+            }
+            case 112: {
+
+              userAnchorCommentCnt3H_ = input.readInt32();
+              break;
+            }
+            case 120: {
+
+              userAnchorFollowCnt3H_ = input.readInt32();
+              break;
+            }
+            case 128: {
+
+              userAnchorShareCnt3H_ = input.readInt32();
+              break;
+            }
+            case 136: {
+
+              userAnchorGiftCnt3H_ = input.readInt32();
+              break;
+            }
+            case 144: {
+
+              userAnchorGiftAmount3H_ = input.readInt32();
+              break;
+            }
+            case 152: {
+
+              userAnchorNegativeFeedbackCnt3H_ = input.readInt32();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (com.google.protobuf.UninitializedMessageException e) {
+        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_LiveUserAnchorFeature_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_LiveUserAnchorFeature_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.gosh.entity.RecFeature.LiveUserAnchorFeature.class, com.gosh.entity.RecFeature.LiveUserAnchorFeature.Builder.class);
+    }
+
+    public static final int USER_ID_FIELD_NUMBER = 1;
+    private long userId_;
+    /**
+     * <code>uint64 user_id = 1;</code>
+     * @return The userId.
+     */
+    @java.lang.Override
+    public long getUserId() {
+      return userId_;
+    }
+
+    public static final int ANCHOR_ID_FIELD_NUMBER = 2;
+    private long anchorId_;
+    /**
+     * <code>uint64 anchor_id = 2;</code>
+     * @return The anchorId.
+     */
+    @java.lang.Override
+    public long getAnchorId() {
+      return anchorId_;
+    }
+
+    public static final int USER_ANCHOR_EXP_CNT_3H_FIELD_NUMBER = 10;
+    private int userAnchorExpCnt3H_;
+    /**
+     * <pre>
+     * 3小时窗口特征
+     * 曝光特征
+     * </pre>
+     *
+     * <code>int32 user_anchor_exp_cnt_3h = 10;</code>
+     * @return The userAnchorExpCnt3h.
+     */
+    @java.lang.Override
+    public int getUserAnchorExpCnt3H() {
+      return userAnchorExpCnt3H_;
+    }
+
+    public static final int USER_ANCHOR_3SQUIT_CNT_1H_FIELD_NUMBER = 11;
+    private int userAnchor3SquitCnt1H_;
+    /**
+     * <pre>
+     * 停留特征 (3小时)
+     * </pre>
+     *
+     * <code>int32 user_anchor_3squit_cnt_1h = 11;</code>
+     * @return The userAnchor3squitCnt1h.
+     */
+    @java.lang.Override
+    public int getUserAnchor3SquitCnt1H() {
+      return userAnchor3SquitCnt1H_;
+    }
+
+    public static final int USER_ANCHOR_6SQUIT_CNT_1H_FIELD_NUMBER = 12;
+    private int userAnchor6SquitCnt1H_;
+    /**
+     * <pre>
+     * 用户作者最近3h停留6s次数
+     * </pre>
+     *
+     * <code>int32 user_anchor_6squit_cnt_1h = 12;</code>
+     * @return The userAnchor6squitCnt1h.
+     */
+    @java.lang.Override
+    public int getUserAnchor6SquitCnt1H() {
+      return userAnchor6SquitCnt1H_;
+    }
+
+    public static final int USER_ANCHOR_LIKE_CNT_3H_FIELD_NUMBER = 13;
+    private int userAnchorLikeCnt3H_;
+    /**
+     * <pre>
+     *点赞特征 (3小时)
+     * </pre>
+     *
+     * <code>int32 user_anchor_like_cnt_3h = 13;</code>
+     * @return The userAnchorLikeCnt3h.
+     */
+    @java.lang.Override
+    public int getUserAnchorLikeCnt3H() {
+      return userAnchorLikeCnt3H_;
+    }
+
+    public static final int USER_ANCHOR_COMMENT_CNT_3H_FIELD_NUMBER = 14;
+    private int userAnchorCommentCnt3H_;
+    /**
+     * <pre>
+     *评论特征 (3小时)
+     * </pre>
+     *
+     * <code>int32 user_anchor_comment_cnt_3h = 14;</code>
+     * @return The userAnchorCommentCnt3h.
+     */
+    @java.lang.Override
+    public int getUserAnchorCommentCnt3H() {
+      return userAnchorCommentCnt3H_;
+    }
+
+    public static final int USER_ANCHOR_FOLLOW_CNT_3H_FIELD_NUMBER = 15;
+    private int userAnchorFollowCnt3H_;
+    /**
+     * <pre>
+     *关注特征 (3小时)
+     * </pre>
+     *
+     * <code>int32 user_anchor_follow_cnt_3h = 15;</code>
+     * @return The userAnchorFollowCnt3h.
+     */
+    @java.lang.Override
+    public int getUserAnchorFollowCnt3H() {
+      return userAnchorFollowCnt3H_;
+    }
+
+    public static final int USER_ANCHOR_SHARE_CNT_3H_FIELD_NUMBER = 16;
+    private int userAnchorShareCnt3H_;
+    /**
+     * <pre>
+     *分享特征 (3小时)
+     * </pre>
+     *
+     * <code>int32 user_anchor_share_cnt_3h = 16;</code>
+     * @return The userAnchorShareCnt3h.
+     */
+    @java.lang.Override
+    public int getUserAnchorShareCnt3H() {
+      return userAnchorShareCnt3H_;
+    }
+
+    public static final int USER_ANCHOR_GIFT_CNT_3H_FIELD_NUMBER = 17;
+    private int userAnchorGiftCnt3H_;
+    /**
+     * <pre>
+     *送礼特征 (3小时)
+     * </pre>
+     *
+     * <code>int32 user_anchor_gift_cnt_3h = 17;</code>
+     * @return The userAnchorGiftCnt3h.
+     */
+    @java.lang.Override
+    public int getUserAnchorGiftCnt3H() {
+      return userAnchorGiftCnt3H_;
+    }
+
+    public static final int USER_ANCHOR_GIFT_AMOUNT_3H_FIELD_NUMBER = 18;
+    private int userAnchorGiftAmount3H_;
+    /**
+     * <pre>
+     *送礼金额特征 (3小时)
+     * </pre>
+     *
+     * <code>int32 user_anchor_gift_amount_3h = 18;</code>
+     * @return The userAnchorGiftAmount3h.
+     */
+    @java.lang.Override
+    public int getUserAnchorGiftAmount3H() {
+      return userAnchorGiftAmount3H_;
+    }
+
+    public static final int USER_ANCHOR_NEGATIVE_FEEDBACK_CNT_3H_FIELD_NUMBER = 19;
+    private int userAnchorNegativeFeedbackCnt3H_;
+    /**
+     * <pre>
+     * 负反馈特征
+     * </pre>
+     *
+     * <code>int32 user_anchor_negative_feedback_cnt_3h = 19;</code>
+     * @return The userAnchorNegativeFeedbackCnt3h.
+     */
+    @java.lang.Override
+    public int getUserAnchorNegativeFeedbackCnt3H() {
+      return userAnchorNegativeFeedbackCnt3H_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (userId_ != 0L) {
+        output.writeUInt64(1, userId_);
+      }
+      if (anchorId_ != 0L) {
+        output.writeUInt64(2, anchorId_);
+      }
+      if (userAnchorExpCnt3H_ != 0) {
+        output.writeInt32(10, userAnchorExpCnt3H_);
+      }
+      if (userAnchor3SquitCnt1H_ != 0) {
+        output.writeInt32(11, userAnchor3SquitCnt1H_);
+      }
+      if (userAnchor6SquitCnt1H_ != 0) {
+        output.writeInt32(12, userAnchor6SquitCnt1H_);
+      }
+      if (userAnchorLikeCnt3H_ != 0) {
+        output.writeInt32(13, userAnchorLikeCnt3H_);
+      }
+      if (userAnchorCommentCnt3H_ != 0) {
+        output.writeInt32(14, userAnchorCommentCnt3H_);
+      }
+      if (userAnchorFollowCnt3H_ != 0) {
+        output.writeInt32(15, userAnchorFollowCnt3H_);
+      }
+      if (userAnchorShareCnt3H_ != 0) {
+        output.writeInt32(16, userAnchorShareCnt3H_);
+      }
+      if (userAnchorGiftCnt3H_ != 0) {
+        output.writeInt32(17, userAnchorGiftCnt3H_);
+      }
+      if (userAnchorGiftAmount3H_ != 0) {
+        output.writeInt32(18, userAnchorGiftAmount3H_);
+      }
+      if (userAnchorNegativeFeedbackCnt3H_ != 0) {
+        output.writeInt32(19, userAnchorNegativeFeedbackCnt3H_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (userId_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, userId_);
+      }
+      if (anchorId_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(2, anchorId_);
+      }
+      if (userAnchorExpCnt3H_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(10, userAnchorExpCnt3H_);
+      }
+      if (userAnchor3SquitCnt1H_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(11, userAnchor3SquitCnt1H_);
+      }
+      if (userAnchor6SquitCnt1H_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(12, userAnchor6SquitCnt1H_);
+      }
+      if (userAnchorLikeCnt3H_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(13, userAnchorLikeCnt3H_);
+      }
+      if (userAnchorCommentCnt3H_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(14, userAnchorCommentCnt3H_);
+      }
+      if (userAnchorFollowCnt3H_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(15, userAnchorFollowCnt3H_);
+      }
+      if (userAnchorShareCnt3H_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(16, userAnchorShareCnt3H_);
+      }
+      if (userAnchorGiftCnt3H_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(17, userAnchorGiftCnt3H_);
+      }
+      if (userAnchorGiftAmount3H_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(18, userAnchorGiftAmount3H_);
+      }
+      if (userAnchorNegativeFeedbackCnt3H_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(19, userAnchorNegativeFeedbackCnt3H_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.gosh.entity.RecFeature.LiveUserAnchorFeature)) {
+        return super.equals(obj);
+      }
+      com.gosh.entity.RecFeature.LiveUserAnchorFeature other = (com.gosh.entity.RecFeature.LiveUserAnchorFeature) obj;
+
+      if (getUserId()
+          != other.getUserId()) return false;
+      if (getAnchorId()
+          != other.getAnchorId()) return false;
+      if (getUserAnchorExpCnt3H()
+          != other.getUserAnchorExpCnt3H()) return false;
+      if (getUserAnchor3SquitCnt1H()
+          != other.getUserAnchor3SquitCnt1H()) return false;
+      if (getUserAnchor6SquitCnt1H()
+          != other.getUserAnchor6SquitCnt1H()) return false;
+      if (getUserAnchorLikeCnt3H()
+          != other.getUserAnchorLikeCnt3H()) return false;
+      if (getUserAnchorCommentCnt3H()
+          != other.getUserAnchorCommentCnt3H()) return false;
+      if (getUserAnchorFollowCnt3H()
+          != other.getUserAnchorFollowCnt3H()) return false;
+      if (getUserAnchorShareCnt3H()
+          != other.getUserAnchorShareCnt3H()) return false;
+      if (getUserAnchorGiftCnt3H()
+          != other.getUserAnchorGiftCnt3H()) return false;
+      if (getUserAnchorGiftAmount3H()
+          != other.getUserAnchorGiftAmount3H()) return false;
+      if (getUserAnchorNegativeFeedbackCnt3H()
+          != other.getUserAnchorNegativeFeedbackCnt3H()) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + USER_ID_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getUserId());
+      hash = (37 * hash) + ANCHOR_ID_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getAnchorId());
+      hash = (37 * hash) + USER_ANCHOR_EXP_CNT_3H_FIELD_NUMBER;
+      hash = (53 * hash) + getUserAnchorExpCnt3H();
+      hash = (37 * hash) + USER_ANCHOR_3SQUIT_CNT_1H_FIELD_NUMBER;
+      hash = (53 * hash) + getUserAnchor3SquitCnt1H();
+      hash = (37 * hash) + USER_ANCHOR_6SQUIT_CNT_1H_FIELD_NUMBER;
+      hash = (53 * hash) + getUserAnchor6SquitCnt1H();
+      hash = (37 * hash) + USER_ANCHOR_LIKE_CNT_3H_FIELD_NUMBER;
+      hash = (53 * hash) + getUserAnchorLikeCnt3H();
+      hash = (37 * hash) + USER_ANCHOR_COMMENT_CNT_3H_FIELD_NUMBER;
+      hash = (53 * hash) + getUserAnchorCommentCnt3H();
+      hash = (37 * hash) + USER_ANCHOR_FOLLOW_CNT_3H_FIELD_NUMBER;
+      hash = (53 * hash) + getUserAnchorFollowCnt3H();
+      hash = (37 * hash) + USER_ANCHOR_SHARE_CNT_3H_FIELD_NUMBER;
+      hash = (53 * hash) + getUserAnchorShareCnt3H();
+      hash = (37 * hash) + USER_ANCHOR_GIFT_CNT_3H_FIELD_NUMBER;
+      hash = (53 * hash) + getUserAnchorGiftCnt3H();
+      hash = (37 * hash) + USER_ANCHOR_GIFT_AMOUNT_3H_FIELD_NUMBER;
+      hash = (53 * hash) + getUserAnchorGiftAmount3H();
+      hash = (37 * hash) + USER_ANCHOR_NEGATIVE_FEEDBACK_CNT_3H_FIELD_NUMBER;
+      hash = (53 * hash) + getUserAnchorNegativeFeedbackCnt3H();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.gosh.entity.RecFeature.LiveUserAnchorFeature parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.gosh.entity.RecFeature.LiveUserAnchorFeature parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.gosh.entity.RecFeature.LiveUserAnchorFeature parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.gosh.entity.RecFeature.LiveUserAnchorFeature parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.gosh.entity.RecFeature.LiveUserAnchorFeature parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.gosh.entity.RecFeature.LiveUserAnchorFeature parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.gosh.entity.RecFeature.LiveUserAnchorFeature parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.gosh.entity.RecFeature.LiveUserAnchorFeature parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.gosh.entity.RecFeature.LiveUserAnchorFeature parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.gosh.entity.RecFeature.LiveUserAnchorFeature parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.gosh.entity.RecFeature.LiveUserAnchorFeature parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.gosh.entity.RecFeature.LiveUserAnchorFeature parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.gosh.entity.RecFeature.LiveUserAnchorFeature prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * <pre>
+     * 直播用户主播交叉特征,hset格式
+     * Redis Key: rec:user_anchor_feature:{user_id}:live3h
+     * </pre>
+     *
+     * Protobuf type {@code com.gosh.entity.LiveUserAnchorFeature}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.gosh.entity.LiveUserAnchorFeature)
+        com.gosh.entity.RecFeature.LiveUserAnchorFeatureOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_LiveUserAnchorFeature_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_LiveUserAnchorFeature_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.gosh.entity.RecFeature.LiveUserAnchorFeature.class, com.gosh.entity.RecFeature.LiveUserAnchorFeature.Builder.class);
+      }
+
+      // Construct using com.gosh.entity.RecFeature.LiveUserAnchorFeature.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        userId_ = 0L;
+
+        anchorId_ = 0L;
+
+        userAnchorExpCnt3H_ = 0;
+
+        userAnchor3SquitCnt1H_ = 0;
+
+        userAnchor6SquitCnt1H_ = 0;
+
+        userAnchorLikeCnt3H_ = 0;
+
+        userAnchorCommentCnt3H_ = 0;
+
+        userAnchorFollowCnt3H_ = 0;
+
+        userAnchorShareCnt3H_ = 0;
+
+        userAnchorGiftCnt3H_ = 0;
+
+        userAnchorGiftAmount3H_ = 0;
+
+        userAnchorNegativeFeedbackCnt3H_ = 0;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_LiveUserAnchorFeature_descriptor;
+      }
+
+      @java.lang.Override
+      public com.gosh.entity.RecFeature.LiveUserAnchorFeature getDefaultInstanceForType() {
+        return com.gosh.entity.RecFeature.LiveUserAnchorFeature.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.gosh.entity.RecFeature.LiveUserAnchorFeature build() {
+        com.gosh.entity.RecFeature.LiveUserAnchorFeature result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.gosh.entity.RecFeature.LiveUserAnchorFeature buildPartial() {
+        com.gosh.entity.RecFeature.LiveUserAnchorFeature result = new com.gosh.entity.RecFeature.LiveUserAnchorFeature(this);
+        result.userId_ = userId_;
+        result.anchorId_ = anchorId_;
+        result.userAnchorExpCnt3H_ = userAnchorExpCnt3H_;
+        result.userAnchor3SquitCnt1H_ = userAnchor3SquitCnt1H_;
+        result.userAnchor6SquitCnt1H_ = userAnchor6SquitCnt1H_;
+        result.userAnchorLikeCnt3H_ = userAnchorLikeCnt3H_;
+        result.userAnchorCommentCnt3H_ = userAnchorCommentCnt3H_;
+        result.userAnchorFollowCnt3H_ = userAnchorFollowCnt3H_;
+        result.userAnchorShareCnt3H_ = userAnchorShareCnt3H_;
+        result.userAnchorGiftCnt3H_ = userAnchorGiftCnt3H_;
+        result.userAnchorGiftAmount3H_ = userAnchorGiftAmount3H_;
+        result.userAnchorNegativeFeedbackCnt3H_ = userAnchorNegativeFeedbackCnt3H_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.gosh.entity.RecFeature.LiveUserAnchorFeature) {
+          return mergeFrom((com.gosh.entity.RecFeature.LiveUserAnchorFeature)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.gosh.entity.RecFeature.LiveUserAnchorFeature other) {
+        if (other == com.gosh.entity.RecFeature.LiveUserAnchorFeature.getDefaultInstance()) return this;
+        if (other.getUserId() != 0L) {
+          setUserId(other.getUserId());
+        }
+        if (other.getAnchorId() != 0L) {
+          setAnchorId(other.getAnchorId());
+        }
+        if (other.getUserAnchorExpCnt3H() != 0) {
+          setUserAnchorExpCnt3H(other.getUserAnchorExpCnt3H());
+        }
+        if (other.getUserAnchor3SquitCnt1H() != 0) {
+          setUserAnchor3SquitCnt1H(other.getUserAnchor3SquitCnt1H());
+        }
+        if (other.getUserAnchor6SquitCnt1H() != 0) {
+          setUserAnchor6SquitCnt1H(other.getUserAnchor6SquitCnt1H());
+        }
+        if (other.getUserAnchorLikeCnt3H() != 0) {
+          setUserAnchorLikeCnt3H(other.getUserAnchorLikeCnt3H());
+        }
+        if (other.getUserAnchorCommentCnt3H() != 0) {
+          setUserAnchorCommentCnt3H(other.getUserAnchorCommentCnt3H());
+        }
+        if (other.getUserAnchorFollowCnt3H() != 0) {
+          setUserAnchorFollowCnt3H(other.getUserAnchorFollowCnt3H());
+        }
+        if (other.getUserAnchorShareCnt3H() != 0) {
+          setUserAnchorShareCnt3H(other.getUserAnchorShareCnt3H());
+        }
+        if (other.getUserAnchorGiftCnt3H() != 0) {
+          setUserAnchorGiftCnt3H(other.getUserAnchorGiftCnt3H());
+        }
+        if (other.getUserAnchorGiftAmount3H() != 0) {
+          setUserAnchorGiftAmount3H(other.getUserAnchorGiftAmount3H());
+        }
+        if (other.getUserAnchorNegativeFeedbackCnt3H() != 0) {
+          setUserAnchorNegativeFeedbackCnt3H(other.getUserAnchorNegativeFeedbackCnt3H());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.gosh.entity.RecFeature.LiveUserAnchorFeature parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.gosh.entity.RecFeature.LiveUserAnchorFeature) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private long userId_ ;
+      /**
+       * <code>uint64 user_id = 1;</code>
+       * @return The userId.
+       */
+      @java.lang.Override
+      public long getUserId() {
+        return userId_;
+      }
+      /**
+       * <code>uint64 user_id = 1;</code>
+       * @param value The userId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserId(long value) {
+        
+        userId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>uint64 user_id = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserId() {
+        
+        userId_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long anchorId_ ;
+      /**
+       * <code>uint64 anchor_id = 2;</code>
+       * @return The anchorId.
+       */
+      @java.lang.Override
+      public long getAnchorId() {
+        return anchorId_;
+      }
+      /**
+       * <code>uint64 anchor_id = 2;</code>
+       * @param value The anchorId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAnchorId(long value) {
+        
+        anchorId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>uint64 anchor_id = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearAnchorId() {
+        
+        anchorId_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private int userAnchorExpCnt3H_ ;
+      /**
+       * <pre>
+       * 3小时窗口特征
+       * 曝光特征
+       * </pre>
+       *
+       * <code>int32 user_anchor_exp_cnt_3h = 10;</code>
+       * @return The userAnchorExpCnt3h.
+       */
+      @java.lang.Override
+      public int getUserAnchorExpCnt3H() {
+        return userAnchorExpCnt3H_;
+      }
+      /**
+       * <pre>
+       * 3小时窗口特征
+       * 曝光特征
+       * </pre>
+       *
+       * <code>int32 user_anchor_exp_cnt_3h = 10;</code>
+       * @param value The userAnchorExpCnt3h to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserAnchorExpCnt3H(int value) {
+        
+        userAnchorExpCnt3H_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 3小时窗口特征
+       * 曝光特征
+       * </pre>
+       *
+       * <code>int32 user_anchor_exp_cnt_3h = 10;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserAnchorExpCnt3H() {
+        
+        userAnchorExpCnt3H_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userAnchor3SquitCnt1H_ ;
+      /**
+       * <pre>
+       * 停留特征 (3小时)
+       * </pre>
+       *
+       * <code>int32 user_anchor_3squit_cnt_1h = 11;</code>
+       * @return The userAnchor3squitCnt1h.
+       */
+      @java.lang.Override
+      public int getUserAnchor3SquitCnt1H() {
+        return userAnchor3SquitCnt1H_;
+      }
+      /**
+       * <pre>
+       * 停留特征 (3小时)
+       * </pre>
+       *
+       * <code>int32 user_anchor_3squit_cnt_1h = 11;</code>
+       * @param value The userAnchor3squitCnt1h to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserAnchor3SquitCnt1H(int value) {
+        
+        userAnchor3SquitCnt1H_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 停留特征 (3小时)
+       * </pre>
+       *
+       * <code>int32 user_anchor_3squit_cnt_1h = 11;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserAnchor3SquitCnt1H() {
+        
+        userAnchor3SquitCnt1H_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userAnchor6SquitCnt1H_ ;
+      /**
+       * <pre>
+       * 用户作者最近3h停留6s次数
+       * </pre>
+       *
+       * <code>int32 user_anchor_6squit_cnt_1h = 12;</code>
+       * @return The userAnchor6squitCnt1h.
+       */
+      @java.lang.Override
+      public int getUserAnchor6SquitCnt1H() {
+        return userAnchor6SquitCnt1H_;
+      }
+      /**
+       * <pre>
+       * 用户作者最近3h停留6s次数
+       * </pre>
+       *
+       * <code>int32 user_anchor_6squit_cnt_1h = 12;</code>
+       * @param value The userAnchor6squitCnt1h to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserAnchor6SquitCnt1H(int value) {
+        
+        userAnchor6SquitCnt1H_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户作者最近3h停留6s次数
+       * </pre>
+       *
+       * <code>int32 user_anchor_6squit_cnt_1h = 12;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserAnchor6SquitCnt1H() {
+        
+        userAnchor6SquitCnt1H_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userAnchorLikeCnt3H_ ;
+      /**
+       * <pre>
+       *点赞特征 (3小时)
+       * </pre>
+       *
+       * <code>int32 user_anchor_like_cnt_3h = 13;</code>
+       * @return The userAnchorLikeCnt3h.
+       */
+      @java.lang.Override
+      public int getUserAnchorLikeCnt3H() {
+        return userAnchorLikeCnt3H_;
+      }
+      /**
+       * <pre>
+       *点赞特征 (3小时)
+       * </pre>
+       *
+       * <code>int32 user_anchor_like_cnt_3h = 13;</code>
+       * @param value The userAnchorLikeCnt3h to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserAnchorLikeCnt3H(int value) {
+        
+        userAnchorLikeCnt3H_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *点赞特征 (3小时)
+       * </pre>
+       *
+       * <code>int32 user_anchor_like_cnt_3h = 13;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserAnchorLikeCnt3H() {
+        
+        userAnchorLikeCnt3H_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userAnchorCommentCnt3H_ ;
+      /**
+       * <pre>
+       *评论特征 (3小时)
+       * </pre>
+       *
+       * <code>int32 user_anchor_comment_cnt_3h = 14;</code>
+       * @return The userAnchorCommentCnt3h.
+       */
+      @java.lang.Override
+      public int getUserAnchorCommentCnt3H() {
+        return userAnchorCommentCnt3H_;
+      }
+      /**
+       * <pre>
+       *评论特征 (3小时)
+       * </pre>
+       *
+       * <code>int32 user_anchor_comment_cnt_3h = 14;</code>
+       * @param value The userAnchorCommentCnt3h to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserAnchorCommentCnt3H(int value) {
+        
+        userAnchorCommentCnt3H_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *评论特征 (3小时)
+       * </pre>
+       *
+       * <code>int32 user_anchor_comment_cnt_3h = 14;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserAnchorCommentCnt3H() {
+        
+        userAnchorCommentCnt3H_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userAnchorFollowCnt3H_ ;
+      /**
+       * <pre>
+       *关注特征 (3小时)
+       * </pre>
+       *
+       * <code>int32 user_anchor_follow_cnt_3h = 15;</code>
+       * @return The userAnchorFollowCnt3h.
+       */
+      @java.lang.Override
+      public int getUserAnchorFollowCnt3H() {
+        return userAnchorFollowCnt3H_;
+      }
+      /**
+       * <pre>
+       *关注特征 (3小时)
+       * </pre>
+       *
+       * <code>int32 user_anchor_follow_cnt_3h = 15;</code>
+       * @param value The userAnchorFollowCnt3h to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserAnchorFollowCnt3H(int value) {
+        
+        userAnchorFollowCnt3H_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *关注特征 (3小时)
+       * </pre>
+       *
+       * <code>int32 user_anchor_follow_cnt_3h = 15;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserAnchorFollowCnt3H() {
+        
+        userAnchorFollowCnt3H_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userAnchorShareCnt3H_ ;
+      /**
+       * <pre>
+       *分享特征 (3小时)
+       * </pre>
+       *
+       * <code>int32 user_anchor_share_cnt_3h = 16;</code>
+       * @return The userAnchorShareCnt3h.
+       */
+      @java.lang.Override
+      public int getUserAnchorShareCnt3H() {
+        return userAnchorShareCnt3H_;
+      }
+      /**
+       * <pre>
+       *分享特征 (3小时)
+       * </pre>
+       *
+       * <code>int32 user_anchor_share_cnt_3h = 16;</code>
+       * @param value The userAnchorShareCnt3h to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserAnchorShareCnt3H(int value) {
+        
+        userAnchorShareCnt3H_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *分享特征 (3小时)
+       * </pre>
+       *
+       * <code>int32 user_anchor_share_cnt_3h = 16;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserAnchorShareCnt3H() {
+        
+        userAnchorShareCnt3H_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userAnchorGiftCnt3H_ ;
+      /**
+       * <pre>
+       *送礼特征 (3小时)
+       * </pre>
+       *
+       * <code>int32 user_anchor_gift_cnt_3h = 17;</code>
+       * @return The userAnchorGiftCnt3h.
+       */
+      @java.lang.Override
+      public int getUserAnchorGiftCnt3H() {
+        return userAnchorGiftCnt3H_;
+      }
+      /**
+       * <pre>
+       *送礼特征 (3小时)
+       * </pre>
+       *
+       * <code>int32 user_anchor_gift_cnt_3h = 17;</code>
+       * @param value The userAnchorGiftCnt3h to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserAnchorGiftCnt3H(int value) {
+        
+        userAnchorGiftCnt3H_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *送礼特征 (3小时)
+       * </pre>
+       *
+       * <code>int32 user_anchor_gift_cnt_3h = 17;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserAnchorGiftCnt3H() {
+        
+        userAnchorGiftCnt3H_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userAnchorGiftAmount3H_ ;
+      /**
+       * <pre>
+       *送礼金额特征 (3小时)
+       * </pre>
+       *
+       * <code>int32 user_anchor_gift_amount_3h = 18;</code>
+       * @return The userAnchorGiftAmount3h.
+       */
+      @java.lang.Override
+      public int getUserAnchorGiftAmount3H() {
+        return userAnchorGiftAmount3H_;
+      }
+      /**
+       * <pre>
+       *送礼金额特征 (3小时)
+       * </pre>
+       *
+       * <code>int32 user_anchor_gift_amount_3h = 18;</code>
+       * @param value The userAnchorGiftAmount3h to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserAnchorGiftAmount3H(int value) {
+        
+        userAnchorGiftAmount3H_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *送礼金额特征 (3小时)
+       * </pre>
+       *
+       * <code>int32 user_anchor_gift_amount_3h = 18;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserAnchorGiftAmount3H() {
+        
+        userAnchorGiftAmount3H_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userAnchorNegativeFeedbackCnt3H_ ;
+      /**
+       * <pre>
+       * 负反馈特征
+       * </pre>
+       *
+       * <code>int32 user_anchor_negative_feedback_cnt_3h = 19;</code>
+       * @return The userAnchorNegativeFeedbackCnt3h.
+       */
+      @java.lang.Override
+      public int getUserAnchorNegativeFeedbackCnt3H() {
+        return userAnchorNegativeFeedbackCnt3H_;
+      }
+      /**
+       * <pre>
+       * 负反馈特征
+       * </pre>
+       *
+       * <code>int32 user_anchor_negative_feedback_cnt_3h = 19;</code>
+       * @param value The userAnchorNegativeFeedbackCnt3h to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserAnchorNegativeFeedbackCnt3H(int value) {
+        
+        userAnchorNegativeFeedbackCnt3H_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 负反馈特征
+       * </pre>
+       *
+       * <code>int32 user_anchor_negative_feedback_cnt_3h = 19;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserAnchorNegativeFeedbackCnt3H() {
+        
+        userAnchorNegativeFeedbackCnt3H_ = 0;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:com.gosh.entity.LiveUserAnchorFeature)
+    }
+
+    // @@protoc_insertion_point(class_scope:com.gosh.entity.LiveUserAnchorFeature)
+    private static final com.gosh.entity.RecFeature.LiveUserAnchorFeature DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.gosh.entity.RecFeature.LiveUserAnchorFeature();
+    }
+
+    public static com.gosh.entity.RecFeature.LiveUserAnchorFeature getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<LiveUserAnchorFeature>
+        PARSER = new com.google.protobuf.AbstractParser<LiveUserAnchorFeature>() {
+      @java.lang.Override
+      public LiveUserAnchorFeature parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new LiveUserAnchorFeature(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<LiveUserAnchorFeature> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<LiveUserAnchorFeature> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.gosh.entity.RecFeature.LiveUserAnchorFeature getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_gosh_entity_RecUserFeature_descriptor;
   private static final 
@@ -8289,6 +22624,11 @@ public final class RecFeature {
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_com_gosh_entity_RecUserAuthorFeature_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_gosh_entity_LiveUserAnchorFeature_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_com_gosh_entity_LiveUserAnchorFeature_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -8299,57 +22639,160 @@ public final class RecFeature {
   static {
     java.lang.String[] descriptorData = {
       "\n com/gosh/entity/RecFeature.proto\022\017com." +
-      "gosh.entity\"\373\005\n\016RecUserFeature\022\035\n\025viewer" +
-      "_exppost_cnt_1h\030\n \001(\005\022\037\n\027viewer_exp1_pos" +
-      "t_cnt_1h\030\013 \001(\005\022\037\n\027viewer_exp2_post_cnt_1" +
-      "h\030\014 \001(\005\022!\n\031viewer_3sview_post_cnt_1h\030\r \001" +
-      "(\005\022\"\n\032viewer_3sview1_post_cnt_1h\030\016 \001(\005\022\"" +
-      "\n\032viewer_3sview2_post_cnt_1h\030\017 \001(\005\022!\n\031vi" +
-      "ewer_3sview_post_his_1h\030\020 \001(\t\022\"\n\032viewer_" +
-      "5sstand_post_his_1h\030\021 \001(\t\022\037\n\027viewer_like" +
-      "_post_his_1h\030\022 \001(\t\022!\n\031viewer_follow_post" +
-      "_his_1h\030\023 \001(\t\022\"\n\032viewer_profile_post_his" +
-      "_1h\030\024 \001(\t\022#\n\033viewer_posinter_post_his_1h" +
-      "\030\025 \001(\t\022\"\n\032viewer_3sview_post_his_24h\030\036 \001" +
-      "(\t\022#\n\033viewer_5sstand_post_his_24h\030\037 \001(\t\022" +
-      " \n\030viewer_like_post_his_24h\030  \001(\t\022\"\n\032vie" +
-      "wer_follow_post_his_24h\030! \001(\t\022#\n\033viewer_" +
-      "profile_post_his_24h\030\" \001(\t\022$\n\034viewer_pos" +
-      "inter_post_his_24h\030# \001(\t\022\"\n\032viewer_like_" +
-      "author_his_24h\030( \001(\t\022$\n\034viewer_follow_au" +
-      "thor_his_24h\030) \001(\t\022%\n\035viewer_profile_aut" +
-      "hor_his_24h\030* \001(\t\"\211\005\n\016RecPostFeature\022\027\n\017" +
-      "post_exp_cnt_1h\030\n \001(\005\022\032\n\022post_3sview_cnt" +
-      "_1h\030\013 \001(\005\022\032\n\022post_8sview_cnt_1h\030\014 \001(\005\022\033\n" +
-      "\023post_12sview_cnt_1h\030\r \001(\005\022\033\n\023post_20svi" +
-      "ew_cnt_1h\030\016 \001(\005\022\033\n\023post_5sstand_cnt_1h\030\017" +
-      " \001(\005\022\034\n\024post_10sstand_cnt_1h\030\020 \001(\005\022\030\n\020po" +
-      "st_like_cnt_1h\030\021 \001(\005\022\032\n\022post_follow_cnt_" +
-      "1h\030\022 \001(\005\022\033\n\023post_profile_cnt_1h\030\023 \001(\005\022\034\n" +
-      "\024post_posinter_cnt_1h\030\024 \001(\005\022\030\n\020post_exp_" +
-      "cnt_24h\030\036 \001(\005\022\033\n\023post_3sview_cnt_24h\030\037 \001" +
-      "(\005\022\033\n\023post_8sview_cnt_24h\030  \001(\005\022\034\n\024post_" +
-      "12sview_cnt_24h\030! \001(\005\022\034\n\024post_20sview_cn" +
-      "t_24h\030\" \001(\005\022\034\n\024post_5sstand_cnt_24h\030# \001(" +
-      "\005\022\035\n\025post_10sstand_cnt_24h\030$ \001(\005\022\031\n\021post" +
-      "_like_cnt_24h\030% \001(\005\022\033\n\023post_follow_cnt_2" +
-      "4h\030& \001(\005\022\034\n\024post_profile_cnt_24h\030\' \001(\005\022\035" +
-      "\n\025post_posinter_cnt_24h\030( \001(\005\"\323\004\n\024RecUse" +
-      "rAuthorFeature\022\023\n\013expire_time\030\003 \001(\t\022\035\n\025u" +
-      "serauthor_exp_cnt_1h\030\n \001(\005\022 \n\030userauthor" +
-      "_3sview_cnt_1h\030\013 \001(\005\022 \n\030userauthor_8svie" +
-      "w_cnt_1h\030\014 \001(\005\022!\n\031userauthor_12sview_cnt" +
-      "_1h\030\r \001(\005\022!\n\031userauthor_20sview_cnt_1h\030\016" +
-      " \001(\005\022!\n\031userauthor_5sstand_cnt_1h\030\017 \001(\005\022" +
-      "\"\n\032userauthor_10sstand_cnt_1h\030\020 \001(\005\022\036\n\026u" +
-      "serauthor_like_cnt_1h\030\021 \001(\005\022\036\n\026userautho" +
-      "r_exp_cnt_24h\030\036 \001(\005\022!\n\031userauthor_3sview" +
-      "_cnt_24h\030\037 \001(\005\022!\n\031userauthor_8sview_cnt_" +
-      "24h\030  \001(\005\022\"\n\032userauthor_12sview_cnt_24h\030" +
-      "! \001(\005\022\"\n\032userauthor_20sview_cnt_24h\030\" \001(" +
-      "\005\022\"\n\032userauthor_5sstand_cnt_24h\030# \001(\005\022#\n" +
-      "\033userauthor_10sstand_cnt_24h\030$ \001(\005\022\037\n\027us" +
-      "erauthor_like_cnt_24h\030% \001(\005b\006proto3"
+      "gosh.entity\"\372\017\n\016RecUserFeature\022\025\n\rviewer" +
+      "_is_old\030\001 \001(\005\022\035\n\025viewer_exppost_cnt_1h\030\n" +
+      " \001(\005\022\037\n\027viewer_exp1_post_cnt_1h\030\013 \001(\005\022\037\n" +
+      "\027viewer_exp2_post_cnt_1h\030\014 \001(\005\022!\n\031viewer" +
+      "_3sview_post_cnt_1h\030\r \001(\005\022\"\n\032viewer_3svi" +
+      "ew1_post_cnt_1h\030\016 \001(\005\022\"\n\032viewer_3sview2_" +
+      "post_cnt_1h\030\017 \001(\005\022!\n\031viewer_3sview_post_" +
+      "his_1h\030\020 \001(\t\022\"\n\032viewer_5sstand_post_his_" +
+      "1h\030\021 \001(\t\022\037\n\027viewer_like_post_his_1h\030\022 \001(" +
+      "\t\022!\n\031viewer_follow_post_his_1h\030\023 \001(\t\022\"\n\032" +
+      "viewer_profile_post_his_1h\030\024 \001(\t\022#\n\033view" +
+      "er_posinter_post_his_1h\030\025 \001(\t\022\"\n\032viewer_" +
+      "3sview_post_his_24h\030\036 \001(\t\022#\n\033viewer_5sst" +
+      "and_post_his_24h\030\037 \001(\t\022 \n\030viewer_like_po" +
+      "st_his_24h\030  \001(\t\022\"\n\032viewer_follow_post_h" +
+      "is_24h\030! \001(\t\022#\n\033viewer_profile_post_his_" +
+      "24h\030\" \001(\t\022$\n\034viewer_posinter_post_his_24" +
+      "h\030# \001(\t\022\"\n\032viewer_like_author_his_24h\030( " +
+      "\001(\t\022$\n\034viewer_follow_author_his_24h\030) \001(" +
+      "\t\022%\n\035viewer_profile_author_his_24h\030* \001(\t" +
+      "\022\035\n\025viewer_active_days_7d\0302 \001(\005\022\032\n\022viewe" +
+      "r_view_cnt_7d\0303 \001(\005\022\037\n\027viewer_validview_" +
+      "cnt_7d\0304 \001(\005\022#\n\033viewer_complete_view_cnt" +
+      "_7d\0305 \001(\005\022\037\n\027viewer_view_duration_7d\0306 \001" +
+      "(\002\022\032\n\022viewer_like_cnt_7d\0307 \001(\005\022\035\n\025viewer" +
+      "_comment_cnt_7d\0308 \001(\005\022 \n\030viewer_validvie" +
+      "w_rate_7d\0309 \001(\002\022 \n\030user_deepview_postids" +
+      "_7d\030: \001(\t\022 \n\030user_interact_postids_7d\030; " +
+      "\001(\t\022\027\n\017user_gift_count\030< \001(\005\022$\n\034user_dai" +
+      "ly_watchlive_minutes\030= \001(\002\022\037\n\027prefer_pos" +
+      "_tag1_7d_top3\030F \001(\t\022\037\n\027prefer_pos_tag2_7" +
+      "d_top3\030G \001(\t\022\037\n\027prefer_pos_tag3_7d_top3\030" +
+      "H \001(\t\022\037\n\027prefer_pos_tag4_7d_top3\030I \001(\t\022\037" +
+      "\n\027prefer_pos_tag5_7d_top3\030J \001(\t\022\037\n\027prefe" +
+      "r_pos_tag6_7d_top3\030K \001(\t\022\037\n\027prefer_pos_t" +
+      "ag7_7d_top3\030L \001(\t\022 \n\030prefer_pos_ftag1_7d" +
+      "_top3\030M \001(\t\022 \n\030prefer_pos_ftag2_7d_top3\030" +
+      "N \001(\t\022 \n\030prefer_pos_ftag3_7d_top3\030O \001(\t\022" +
+      " \n\030prefer_pos_ftag4_7d_top3\030P \001(\t\022 \n\030pre" +
+      "fer_pos_ftag5_7d_top3\030Q \001(\t\022 \n\030prefer_po" +
+      "s_ftag6_7d_top3\030R \001(\t\022\037\n\027prefer_neg_tag1" +
+      "_7d_top3\030S \001(\t\022\037\n\027prefer_neg_tag2_7d_top" +
+      "3\030T \001(\t\022\037\n\027prefer_neg_tag3_7d_top3\030U \001(\t" +
+      "\022\037\n\027prefer_neg_tag4_7d_top3\030V \001(\t\022\037\n\027pre" +
+      "fer_neg_tag5_7d_top3\030W \001(\t\022\037\n\027prefer_neg" +
+      "_tag6_7d_top3\030X \001(\t\022\037\n\027prefer_neg_tag7_7" +
+      "d_top3\030Y \001(\t\022 \n\030prefer_neg_ftag1_7d_top3" +
+      "\030Z \001(\t\022 \n\030prefer_neg_ftag2_7d_top3\030[ \001(\t" +
+      "\022 \n\030prefer_neg_ftag3_7d_top3\030\\ \001(\t\022 \n\030pr" +
+      "efer_neg_ftag4_7d_top3\030] \001(\t\022 \n\030prefer_n" +
+      "eg_ftag5_7d_top3\030^ \001(\t\022 \n\030prefer_neg_fta" +
+      "g6_7d_top3\030_ \001(\t\"\302\013\n\016RecPostFeature\022\017\n\007p" +
+      "ost_id\030\001 \001(\004\022\027\n\017post_exp_cnt_1h\030\n \001(\005\022\032\n" +
+      "\022post_3sview_cnt_1h\030\013 \001(\005\022\032\n\022post_8sview" +
+      "_cnt_1h\030\014 \001(\005\022\033\n\023post_12sview_cnt_1h\030\r \001" +
+      "(\005\022\033\n\023post_20sview_cnt_1h\030\016 \001(\005\022\033\n\023post_" +
+      "5sstand_cnt_1h\030\017 \001(\005\022\034\n\024post_10sstand_cn" +
+      "t_1h\030\020 \001(\005\022\030\n\020post_like_cnt_1h\030\021 \001(\005\022\032\n\022" +
+      "post_follow_cnt_1h\030\022 \001(\005\022\033\n\023post_profile" +
+      "_cnt_1h\030\023 \001(\005\022\034\n\024post_posinter_cnt_1h\030\024 " +
+      "\001(\005\022\030\n\020post_exp_cnt_24h\030\036 \001(\005\022\033\n\023post_3s" +
+      "view_cnt_24h\030\037 \001(\005\022\033\n\023post_8sview_cnt_24" +
+      "h\030  \001(\005\022\034\n\024post_12sview_cnt_24h\030! \001(\005\022\034\n" +
+      "\024post_20sview_cnt_24h\030\" \001(\005\022\034\n\024post_5sst" +
+      "and_cnt_24h\030# \001(\005\022\035\n\025post_10sstand_cnt_2" +
+      "4h\030$ \001(\005\022\031\n\021post_like_cnt_24h\030% \001(\005\022\033\n\023p" +
+      "ost_follow_cnt_24h\030& \001(\005\022\034\n\024post_profile" +
+      "_cnt_24h\030\' \001(\005\022\035\n\025post_posinter_cnt_24h\030" +
+      "( \001(\005\022\030\n\020post_view_cnt_7d\030) \001(\005\022\035\n\025post_" +
+      "validview_cnt_7d\030* \001(\005\022 \n\030post_completev" +
+      "iew_cnt_7d\030+ \001(\005\022\035\n\025post_view_duration_7" +
+      "d\030, \001(\002\022\030\n\020post_like_cnt_7d\030- \001(\005\022\033\n\023pos" +
+      "t_comment_cnt_7d\030. \001(\005\022\017\n\007tag_ids\030/ \003(\005\022" +
+      "\'\n\037author_exp_distinct_post_cnt_7d\0300 \001(\005" +
+      "\022\036\n\026author_exp_post_cnt_7d\0301 \001(\005\022$\n\034auth" +
+      "or_validview_post_cnt_7d\0302 \001(\005\022$\n\034author" +
+      "_view_post_duration_7d\0303 \001(\002\022\032\n\022author_l" +
+      "ike_cnt_7d\0304 \001(\005\022\035\n\025author_comment_cnt_7" +
+      "d\0305 \001(\005\022\'\n\037author_completeview_post_cnt_" +
+      "7d\0306 \001(\005\022#\n\033author_view_avg_duration_7d\030" +
+      "7 \001(\002\022#\n\033author_inter_profile_cnt_7d\0308 \001" +
+      "(\005\022\034\n\024author_follow_cnt_7d\0309 \001(\005\022\034\n\024auth" +
+      "or_followers_cnt\030: \001(\005\022\036\n\026post_validview" +
+      "_rate_7d\030< \001(\002\022!\n\031post_completeview_rate" +
+      "_7d\030= \001(\002\022!\n\031post_avg_view_duration_7d\030>" +
+      " \001(\002\022\031\n\021post_like_rate_7d\030? \001(\002\022\034\n\024post_" +
+      "comment_rate_7d\030@ \001(\002\022\031\n\021post_ai_embeddi" +
+      "ng\030F \003(\002\022\024\n\014post_ai_tags\030G \001(\t\022\025\n\rpost_a" +
+      "sr_lang\030H \001(\t\"\227\021\n\024RecUserAuthorFeature\022\017" +
+      "\n\007user_id\030\001 \001(\004\022\021\n\tauthor_id\030\002 \001(\004\022\035\n\025us" +
+      "erauthor_exp_cnt_1h\030\n \001(\005\022 \n\030userauthor_" +
+      "3sview_cnt_1h\030\013 \001(\005\022 \n\030userauthor_8sview" +
+      "_cnt_1h\030\014 \001(\005\022!\n\031userauthor_12sview_cnt_" +
+      "1h\030\r \001(\005\022!\n\031userauthor_20sview_cnt_1h\030\016 " +
+      "\001(\005\022!\n\031userauthor_5sstand_cnt_1h\030\017 \001(\005\022\"" +
+      "\n\032userauthor_10sstand_cnt_1h\030\020 \001(\005\022\036\n\026us" +
+      "erauthor_like_cnt_1h\030\021 \001(\005\022\036\n\026userauthor" +
+      "_exp_cnt_24h\030\036 \001(\005\022!\n\031userauthor_3sview_" +
+      "cnt_24h\030\037 \001(\005\022!\n\031userauthor_8sview_cnt_2" +
+      "4h\030  \001(\005\022\"\n\032userauthor_12sview_cnt_24h\030!" +
+      " \001(\005\022\"\n\032userauthor_20sview_cnt_24h\030\" \001(\005" +
+      "\022\"\n\032userauthor_5sstand_cnt_24h\030# \001(\005\022#\n\033" +
+      "userauthor_10sstand_cnt_24h\030$ \001(\005\022\037\n\027use" +
+      "rauthor_like_cnt_24h\030% \001(\005\022\037\n\027user_autho" +
+      "r_view_cnt_7d\030( \001(\005\022$\n\034user_author_valid" +
+      "view_cnt_7d\030) \001(\002\022(\n user_author_compele" +
+      "teview_cnt_7d\030* \001(\005\022\037\n\027user_author_like_" +
+      "cnt_7d\030+ \001(\005\022\"\n\032user_author_comment_cnt_" +
+      "7d\030, \001(\005\022(\n user_author_avg_view_duratio" +
+      "n_7d\030- \001(\002\022&\n\036user_author_validview_tfid" +
+      "f_7d\030. \001(\002\022*\n\"user_author_compeleteview_" +
+      "tfidf_7d\030/ \001(\002\022(\n user_author_likecommen" +
+      "t_tfidf_7d\0300 \001(\002\022\032\n\022user_tag11_is_like\0302" +
+      " \001(\005\022\032\n\022user_tag11_is_play\0303 \001(\005\022\035\n\025user" +
+      "_tag11_is_comment\0304 \001(\005\022\032\n\022user_tag12_is" +
+      "_like\0305 \001(\005\022\032\n\022user_tag12_is_play\0306 \001(\005\022" +
+      "\035\n\025user_tag12_is_comment\0307 \001(\005\022\032\n\022user_t" +
+      "ag13_is_like\0308 \001(\005\022\032\n\022user_tag13_is_play" +
+      "\0309 \001(\005\022\035\n\025user_tag13_is_comment\030: \001(\005\022\032\n" +
+      "\022user_tag14_is_like\030; \001(\005\022\032\n\022user_tag14_" +
+      "is_play\030< \001(\005\022\035\n\025user_tag14_is_comment\030=" +
+      " \001(\005\022\032\n\022user_tag15_is_like\030> \001(\005\022\032\n\022user" +
+      "_tag15_is_play\030? \001(\005\022\035\n\025user_tag15_is_co" +
+      "mment\030@ \001(\005\022\032\n\022user_tag16_is_like\030A \001(\005\022" +
+      "\032\n\022user_tag16_is_play\030B \001(\005\022\035\n\025user_tag1" +
+      "6_is_comment\030C \001(\005\022\032\n\022user_tag17_is_like" +
+      "\030D \001(\005\022\032\n\022user_tag17_is_play\030E \001(\005\022\035\n\025us" +
+      "er_tag17_is_comment\030F \001(\005\022\033\n\023user_tag11_" +
+      "like_cnt\030G \001(\005\022\033\n\023user_tag11_play_cnt\030H " +
+      "\001(\005\022\036\n\026user_tag11_comment_cnt\030I \001(\005\022\033\n\023u" +
+      "ser_tag12_like_cnt\030J \001(\005\022\033\n\023user_tag12_p" +
+      "lay_cnt\030K \001(\005\022\036\n\026user_tag12_comment_cnt\030" +
+      "L \001(\005\022\033\n\023user_tag13_like_cnt\030M \001(\005\022\033\n\023us" +
+      "er_tag13_play_cnt\030N \001(\005\022\036\n\026user_tag13_co" +
+      "mment_cnt\030O \001(\005\022\033\n\023user_tag14_like_cnt\030P" +
+      " \001(\005\022\033\n\023user_tag14_play_cnt\030Q \001(\005\022\036\n\026use" +
+      "r_tag14_comment_cnt\030R \001(\005\022\033\n\023user_tag15_" +
+      "like_cnt\030S \001(\005\022\033\n\023user_tag15_play_cnt\030T " +
+      "\001(\005\022\036\n\026user_tag15_comment_cnt\030U \001(\005\022\033\n\023u" +
+      "ser_tag16_like_cnt\030V \001(\005\022\033\n\023user_tag16_p" +
+      "lay_cnt\030W \001(\005\022\036\n\026user_tag16_comment_cnt\030" +
+      "X \001(\005\022\033\n\023user_tag17_like_cnt\030Y \001(\005\022\033\n\023us" +
+      "er_tag17_play_cnt\030Z \001(\005\022\036\n\026user_tag17_co" +
+      "mment_cnt\030[ \001(\005\"\236\003\n\025LiveUserAnchorFeatur" +
+      "e\022\017\n\007user_id\030\001 \001(\004\022\021\n\tanchor_id\030\002 \001(\004\022\036\n" +
+      "\026user_anchor_exp_cnt_3h\030\n \001(\005\022!\n\031user_an" +
+      "chor_3squit_cnt_1h\030\013 \001(\005\022!\n\031user_anchor_" +
+      "6squit_cnt_1h\030\014 \001(\005\022\037\n\027user_anchor_like_" +
+      "cnt_3h\030\r \001(\005\022\"\n\032user_anchor_comment_cnt_" +
+      "3h\030\016 \001(\005\022!\n\031user_anchor_follow_cnt_3h\030\017 " +
+      "\001(\005\022 \n\030user_anchor_share_cnt_3h\030\020 \001(\005\022\037\n" +
+      "\027user_anchor_gift_cnt_3h\030\021 \001(\005\022\"\n\032user_a" +
+      "nchor_gift_amount_3h\030\022 \001(\005\022,\n$user_ancho" +
+      "r_negative_feedback_cnt_3h\030\023 \001(\005b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -8360,19 +22803,25 @@ public final class RecFeature {
     internal_static_com_gosh_entity_RecUserFeature_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_gosh_entity_RecUserFeature_descriptor,
-        new java.lang.String[] { "ViewerExppostCnt1H", "ViewerExp1PostCnt1H", "ViewerExp2PostCnt1H", "Viewer3SviewPostCnt1H", "Viewer3Sview1PostCnt1H", "Viewer3Sview2PostCnt1H", "Viewer3SviewPostHis1H", "Viewer5SstandPostHis1H", "ViewerLikePostHis1H", "ViewerFollowPostHis1H", "ViewerProfilePostHis1H", "ViewerPosinterPostHis1H", "Viewer3SviewPostHis24H", "Viewer5SstandPostHis24H", "ViewerLikePostHis24H", "ViewerFollowPostHis24H", "ViewerProfilePostHis24H", "ViewerPosinterPostHis24H", "ViewerLikeAuthorHis24H", "ViewerFollowAuthorHis24H", "ViewerProfileAuthorHis24H", });
+        new java.lang.String[] { "ViewerIsOld", "ViewerExppostCnt1H", "ViewerExp1PostCnt1H", "ViewerExp2PostCnt1H", "Viewer3SviewPostCnt1H", "Viewer3Sview1PostCnt1H", "Viewer3Sview2PostCnt1H", "Viewer3SviewPostHis1H", "Viewer5SstandPostHis1H", "ViewerLikePostHis1H", "ViewerFollowPostHis1H", "ViewerProfilePostHis1H", "ViewerPosinterPostHis1H", "Viewer3SviewPostHis24H", "Viewer5SstandPostHis24H", "ViewerLikePostHis24H", "ViewerFollowPostHis24H", "ViewerProfilePostHis24H", "ViewerPosinterPostHis24H", "ViewerLikeAuthorHis24H", "ViewerFollowAuthorHis24H", "ViewerProfileAuthorHis24H", "ViewerActiveDays7D", "ViewerViewCnt7D", "ViewerValidviewCnt7D", "ViewerCompleteViewCnt7D", "ViewerViewDuration7D", "ViewerLikeCnt7D", "ViewerCommentCnt7D", "ViewerValidviewRate7D", "UserDeepviewPostids7D", "UserInteractPostids7D", "UserGiftCount", "UserDailyWatchliveMinutes", "PreferPosTag17DTop3", "PreferPosTag27DTop3", "PreferPosTag37DTop3", "PreferPosTag47DTop3", "PreferPosTag57DTop3", "PreferPosTag67DTop3", "PreferPosTag77DTop3", "PreferPosFtag17DTop3", "PreferPosFtag27DTop3", "PreferPosFtag37DTop3", "PreferPosFtag47DTop3", "PreferPosFtag57DTop3", "PreferPosFtag67DTop3", "PreferNegTag17DTop3", "PreferNegTag27DTop3", "PreferNegTag37DTop3", "PreferNegTag47DTop3", "PreferNegTag57DTop3", "PreferNegTag67DTop3", "PreferNegTag77DTop3", "PreferNegFtag17DTop3", "PreferNegFtag27DTop3", "PreferNegFtag37DTop3", "PreferNegFtag47DTop3", "PreferNegFtag57DTop3", "PreferNegFtag67DTop3", });
     internal_static_com_gosh_entity_RecPostFeature_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_com_gosh_entity_RecPostFeature_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_gosh_entity_RecPostFeature_descriptor,
-        new java.lang.String[] { "PostExpCnt1H", "Post3SviewCnt1H", "Post8SviewCnt1H", "Post12SviewCnt1H", "Post20SviewCnt1H", "Post5SstandCnt1H", "Post10SstandCnt1H", "PostLikeCnt1H", "PostFollowCnt1H", "PostProfileCnt1H", "PostPosinterCnt1H", "PostExpCnt24H", "Post3SviewCnt24H", "Post8SviewCnt24H", "Post12SviewCnt24H", "Post20SviewCnt24H", "Post5SstandCnt24H", "Post10SstandCnt24H", "PostLikeCnt24H", "PostFollowCnt24H", "PostProfileCnt24H", "PostPosinterCnt24H", });
+        new java.lang.String[] { "PostId", "PostExpCnt1H", "Post3SviewCnt1H", "Post8SviewCnt1H", "Post12SviewCnt1H", "Post20SviewCnt1H", "Post5SstandCnt1H", "Post10SstandCnt1H", "PostLikeCnt1H", "PostFollowCnt1H", "PostProfileCnt1H", "PostPosinterCnt1H", "PostExpCnt24H", "Post3SviewCnt24H", "Post8SviewCnt24H", "Post12SviewCnt24H", "Post20SviewCnt24H", "Post5SstandCnt24H", "Post10SstandCnt24H", "PostLikeCnt24H", "PostFollowCnt24H", "PostProfileCnt24H", "PostPosinterCnt24H", "PostViewCnt7D", "PostValidviewCnt7D", "PostCompleteviewCnt7D", "PostViewDuration7D", "PostLikeCnt7D", "PostCommentCnt7D", "TagIds", "AuthorExpDistinctPostCnt7D", "AuthorExpPostCnt7D", "AuthorValidviewPostCnt7D", "AuthorViewPostDuration7D", "AuthorLikeCnt7D", "AuthorCommentCnt7D", "AuthorCompleteviewPostCnt7D", "AuthorViewAvgDuration7D", "AuthorInterProfileCnt7D", "AuthorFollowCnt7D", "AuthorFollowersCnt", "PostValidviewRate7D", "PostCompleteviewRate7D", "PostAvgViewDuration7D", "PostLikeRate7D", "PostCommentRate7D", "PostAiEmbedding", "PostAiTags", "PostAsrLang", });
     internal_static_com_gosh_entity_RecUserAuthorFeature_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_com_gosh_entity_RecUserAuthorFeature_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_gosh_entity_RecUserAuthorFeature_descriptor,
-        new java.lang.String[] { "ExpireTime", "UserauthorExpCnt1H", "Userauthor3SviewCnt1H", "Userauthor8SviewCnt1H", "Userauthor12SviewCnt1H", "Userauthor20SviewCnt1H", "Userauthor5SstandCnt1H", "Userauthor10SstandCnt1H", "UserauthorLikeCnt1H", "UserauthorExpCnt24H", "Userauthor3SviewCnt24H", "Userauthor8SviewCnt24H", "Userauthor12SviewCnt24H", "Userauthor20SviewCnt24H", "Userauthor5SstandCnt24H", "Userauthor10SstandCnt24H", "UserauthorLikeCnt24H", });
+        new java.lang.String[] { "UserId", "AuthorId", "UserauthorExpCnt1H", "Userauthor3SviewCnt1H", "Userauthor8SviewCnt1H", "Userauthor12SviewCnt1H", "Userauthor20SviewCnt1H", "Userauthor5SstandCnt1H", "Userauthor10SstandCnt1H", "UserauthorLikeCnt1H", "UserauthorExpCnt24H", "Userauthor3SviewCnt24H", "Userauthor8SviewCnt24H", "Userauthor12SviewCnt24H", "Userauthor20SviewCnt24H", "Userauthor5SstandCnt24H", "Userauthor10SstandCnt24H", "UserauthorLikeCnt24H", "UserAuthorViewCnt7D", "UserAuthorValidviewCnt7D", "UserAuthorCompeleteviewCnt7D", "UserAuthorLikeCnt7D", "UserAuthorCommentCnt7D", "UserAuthorAvgViewDuration7D", "UserAuthorValidviewTfidf7D", "UserAuthorCompeleteviewTfidf7D", "UserAuthorLikecommentTfidf7D", "UserTag11IsLike", "UserTag11IsPlay", "UserTag11IsComment", "UserTag12IsLike", "UserTag12IsPlay", "UserTag12IsComment", "UserTag13IsLike", "UserTag13IsPlay", "UserTag13IsComment", "UserTag14IsLike", "UserTag14IsPlay", "UserTag14IsComment", "UserTag15IsLike", "UserTag15IsPlay", "UserTag15IsComment", "UserTag16IsLike", "UserTag16IsPlay", "UserTag16IsComment", "UserTag17IsLike", "UserTag17IsPlay", "UserTag17IsComment", "UserTag11LikeCnt", "UserTag11PlayCnt", "UserTag11CommentCnt", "UserTag12LikeCnt", "UserTag12PlayCnt", "UserTag12CommentCnt", "UserTag13LikeCnt", "UserTag13PlayCnt", "UserTag13CommentCnt", "UserTag14LikeCnt", "UserTag14PlayCnt", "UserTag14CommentCnt", "UserTag15LikeCnt", "UserTag15PlayCnt", "UserTag15CommentCnt", "UserTag16LikeCnt", "UserTag16PlayCnt", "UserTag16CommentCnt", "UserTag17LikeCnt", "UserTag17PlayCnt", "UserTag17CommentCnt", });
+    internal_static_com_gosh_entity_LiveUserAnchorFeature_descriptor =
+      getDescriptor().getMessageTypes().get(3);
+    internal_static_com_gosh_entity_LiveUserAnchorFeature_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_com_gosh_entity_LiveUserAnchorFeature_descriptor,
+        new java.lang.String[] { "UserId", "AnchorId", "UserAnchorExpCnt3H", "UserAnchor3SquitCnt1H", "UserAnchor6SquitCnt1H", "UserAnchorLikeCnt3H", "UserAnchorCommentCnt3H", "UserAnchorFollowCnt3H", "UserAnchorShareCnt3H", "UserAnchorGiftCnt3H", "UserAnchorGiftAmount3H", "UserAnchorNegativeFeedbackCnt3H", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

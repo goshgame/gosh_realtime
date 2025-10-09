@@ -1,129 +1,317 @@
 syntax = "proto3";
 
+// v2.0
+
 package com.gosh.entity;
+// package feature;
+// option go_package = "github.com/goshgame/gosh_rec/biz/model/feature";
 
 
 // 用户侧特征
 // Redis Key: rec:user_feature:{user_id}:post1h, rec:user_feature:{user_id}:post24h
+//            rec:user_feature:{user_id}:offpic
 message RecUserFeature {
-    // 1小时窗口特征
-    // 曝光相关特征
-    int32 viewer_exppost_cnt_1h = 10;           // 用户最近1h曝光post数
-    int32 viewer_exp1_post_cnt_1h = 11;         // 用户最近1h曝光图片post数
-    int32 viewer_exp2_post_cnt_1h = 12;         // 用户最近1h曝光视频post数
-    
-    // 观看相关特征
-    int32 viewer_3sview_post_cnt_1h = 13;       // 用户最近1h观看3s以上post数
-    int32 viewer_3sview1_post_cnt_1h = 14;      // 用户最近1h观看3s以上图片post数
-    int32 viewer_3sview2_post_cnt_1h = 15;      // 用户最近1h观看3s以上视频post数
-    
-    // 历史记录特征 (1小时)
-    string viewer_3sview_post_his_1h = 16;      // 用户最近1h观看3s以上视频post列表带观看时长
-    string viewer_5sstand_post_his_1h = 17;     // 用户最近1h停留5s以上视频post列表带停留时长
-    string viewer_like_post_his_1h = 18;        // 用户最近1h点赞视频post列表
-    string viewer_follow_post_his_1h = 19;      // 用户最近1h点关注视频post列表
-    string viewer_profile_post_his_1h = 20;     // 用户最近1h点作者主页视频post列表
-    string viewer_posinter_post_his_1h = 21;    // 用户最近1h评论收藏分享视频post列表
-    
-    // 24小时窗口特征
-    // 历史记录特征 (24小时)
-    string viewer_3sview_post_his_24h = 30;     // 用户最近24h观看3s以上视频post列表带观看时长
-    string viewer_5sstand_post_his_24h = 31;    // 用户最近24h停留5s以上视频post列表带停留时长
-    string viewer_like_post_his_24h = 32;       // 用户最近24h点赞视频post列表
-    string viewer_follow_post_his_24h = 33;     // 用户最近24h点关注视频post列表
-    string viewer_profile_post_his_24h = 34;    // 用户最近24h点作者主页视频post列表
-    string viewer_posinter_post_his_24h = 35;   // 用户最近24h评论收藏分享视频post列表
-    
-    // 作者相关特征 (24小时)
-    string viewer_like_author_his_24h = 40;     // 用户最近24h点赞视频的作者列表
-    string viewer_follow_author_his_24h = 41;   // 用户最近24h关注视频的作者列表
-    string viewer_profile_author_his_24h = 42;  // 用户最近24h查看主页视频的作者列表
-    
+  // 用户状态特征
+  int32 viewer_is_old = 1;                  // 用户是否是老用户(前一天的用户表存在即为老用户）
+
+  // 1小时窗口特征
+  // 曝光相关特征
+  int32 viewer_exppost_cnt_1h = 10;           // 用户最近1h曝光post数
+  int32 viewer_exp1_post_cnt_1h = 11;         // 用户最近1h曝光图片post数
+  int32 viewer_exp2_post_cnt_1h = 12;         // 用户最近1h曝光视频post数
+
+  // 观看相关特征
+  int32 viewer_3sview_post_cnt_1h = 13;       // 用户最近1h观看3s以上post数
+  int32 viewer_3sview1_post_cnt_1h = 14;      // 用户最近1h观看3s以上图片post数
+  int32 viewer_3sview2_post_cnt_1h = 15;      // 用户最近1h观看3s以上视频post数
+
+  // 历史记录特征 (1小时)
+  string viewer_3sview_post_his_1h = 16;      // 用户最近1h观看3s以上视频post列表带观看时长
+  string viewer_5sstand_post_his_1h = 17;     // 用户最近1h停留5s以上视频post列表带停留时长
+  string viewer_like_post_his_1h = 18;        // 用户最近1h点赞视频post列表
+  string viewer_follow_post_his_1h = 19;      // 用户最近1h点关注视频post列表
+  string viewer_profile_post_his_1h = 20;     // 用户最近1h点作者主页视频post列表
+  string viewer_posinter_post_his_1h = 21;    // 用户最近1h评论收藏分享视频post列表
+
+  // 24小时窗口特征
+  // 历史记录特征 (24小时)
+  string viewer_3sview_post_his_24h = 30;     // 用户最近24h观看3s以上视频post列表带观看时长
+  string viewer_5sstand_post_his_24h = 31;    // 用户最近24h停留5s以上视频post列表带停留时长
+  string viewer_like_post_his_24h = 32;       // 用户最近24h点赞视频post列表
+  string viewer_follow_post_his_24h = 33;     // 用户最近24h点关注视频post列表
+  string viewer_profile_post_his_24h = 34;    // 用户最近24h点作者主页视频post列表
+  string viewer_posinter_post_his_24h = 35;   // 用户最近24h评论收藏分享视频post列表
+
+  // 作者相关特征 (24小时)
+  string viewer_like_author_his_24h = 40;     // 用户最近24h点赞视频的作者列表
+  string viewer_follow_author_his_24h = 41;   // 用户最近24h关注视频的作者列表
+  string viewer_profile_author_his_24h = 42;  // 用户最近24h查看主页视频的作者列表
+
+  // 7天特征
+  int32 viewer_active_days_7d = 50;      // 最近7天活跃天数
+  int32 viewer_view_cnt_7d = 51;         // 最近7天曝光item数
+  int32 viewer_validview_cnt_7d = 52;    // 最近7天有效观看次数
+  int32 viewer_complete_view_cnt_7d = 53; // 最近7天完整观看次数
+  float viewer_view_duration_7d = 54;    // 最近7天观看时长（秒）
+  int32 viewer_like_cnt_7d = 55;         // 最近7天点赞次数
+  int32 viewer_comment_cnt_7d = 56;      // 最近7天评论次数
+  float viewer_validview_rate_7d = 57;  // 最近7天有效观看率
+
+    // id列表
+  string user_deepview_postids_7d = 58; // 最近7天深度浏览itemid列表 todo：列表需要用 repeated @torre
+  string user_interact_postids_7d = 59; // 最近7天有正向交互的itemid列表
+
+  // 直播15天
+  int32 user_gift_count = 60;
+  float user_daily_watchlive_minutes =61;
+
+  // 正偏好特征v2
+  string prefer_pos_tag1_7d_top3 = 70;
+  string prefer_pos_tag2_7d_top3 = 71;
+  string prefer_pos_tag3_7d_top3 = 72;
+  string prefer_pos_tag4_7d_top3 = 73;
+  string prefer_pos_tag5_7d_top3 = 74;
+  string prefer_pos_tag6_7d_top3 = 75;
+  string prefer_pos_tag7_7d_top3 = 76;
+  string prefer_pos_ftag1_7d_top3 = 77;
+  string prefer_pos_ftag2_7d_top3 = 78;
+  string prefer_pos_ftag3_7d_top3 = 79;
+  string prefer_pos_ftag4_7d_top3 = 80;
+  string prefer_pos_ftag5_7d_top3 = 81;
+  string prefer_pos_ftag6_7d_top3 = 82;
+
+  // 负偏好特征v2
+  string prefer_neg_tag1_7d_top3 = 83;
+  string prefer_neg_tag2_7d_top3 = 84;
+  string prefer_neg_tag3_7d_top3 = 85;
+  string prefer_neg_tag4_7d_top3 = 86;
+  string prefer_neg_tag5_7d_top3 = 87;
+  string prefer_neg_tag6_7d_top3 = 88;
+  string prefer_neg_tag7_7d_top3 = 89;
+  string prefer_neg_ftag1_7d_top3 = 90;
+  string prefer_neg_ftag2_7d_top3 = 91;
+  string prefer_neg_ftag3_7d_top3 = 92;
+  string prefer_neg_ftag4_7d_top3 = 93;
+  string prefer_neg_ftag5_7d_top3 = 94;
+  string prefer_neg_ftag6_7d_top3 = 95;
+
 }
 
 // Item侧特征 (Post特征)
 // Redis Key: rec:item_feature:{post_id}:post1h, rec:item_feature:{post_id}:post24h
 message RecPostFeature {
-    // 1小时窗口特征
-    // 曝光特征
-    int32 post_exp_cnt_1h = 10;                 // post最近1h曝光次数
-    
-    // 观看特征 (1小时)
-    int32 post_3sview_cnt_1h = 11;              // post最近1h观看3s次数
-    int32 post_8sview_cnt_1h = 12;              // post最近1h观看8s次数
-    int32 post_12sview_cnt_1h = 13;             // post最近1h观看12s次数
-    int32 post_20sview_cnt_1h = 14;             // post最近1h观看20s次数
-    
-    // 停留特征 (1小时)
-    int32 post_5sstand_cnt_1h = 15;             // post最近1h停留5s次数
-    int32 post_10sstand_cnt_1h = 16;            // post最近1h停留10s次数
-    
-    // 互动特征 (1小时)
-    int32 post_like_cnt_1h = 17;                // post最近1h被点赞次数
-    int32 post_follow_cnt_1h = 18;              // post最近1h被关注次数
-    int32 post_profile_cnt_1h = 19;             // post最近1h被点主页次数
-    int32 post_posinter_cnt_1h = 20;            // post最近1h被评论收藏分享次数
-    
-    // 24小时窗口特征
-    // 曝光特征
-    int32 post_exp_cnt_24h = 30;                // post最近24h曝光次数
-    
-    // 观看特征 (24小时)
-    int32 post_3sview_cnt_24h = 31;             // post最近24h观看3s次数
-    int32 post_8sview_cnt_24h = 32;             // post最近24h观看8s次数
-    int32 post_12sview_cnt_24h = 33;            // post最近24h观看12s次数
-    int32 post_20sview_cnt_24h = 34;            // post最近24h观看20s次数
-    
-    // 停留特征 (24小时)
-    int32 post_5sstand_cnt_24h = 35;            // post最近24h停留5s次数
-    int32 post_10sstand_cnt_24h = 36;           // post最近24h停留10s次数
-    
-    // 互动特征 (24小时)
-    int32 post_like_cnt_24h = 37;               // post最近24h被点赞次数
-    int32 post_follow_cnt_24h = 38;             // post最近24h被关注次数
-    int32 post_profile_cnt_24h = 39;            // post最近24h被点主页次数
-    int32 post_posinter_cnt_24h = 40;           // post最近24h被评论收藏分享次数
-    
+  uint64 post_id = 1;                         // 作品ID（整数）
+  // 1小时窗口特征
+  // 曝光特征
+  int32 post_exp_cnt_1h = 10;                 // post最近1h曝光次数
+
+  // 观看特征 (1小时)
+  int32 post_3sview_cnt_1h = 11;              // post最近1h观看3s次数
+  int32 post_8sview_cnt_1h = 12;              // post最近1h观看8s次数
+  int32 post_12sview_cnt_1h = 13;             // post最近1h观看12s次数
+  int32 post_20sview_cnt_1h = 14;             // post最近1h观看20s次数
+
+  // 停留特征 (1小时)
+  int32 post_5sstand_cnt_1h = 15;             // post最近1h停留5s次数
+  int32 post_10sstand_cnt_1h = 16;            // post最近1h停留10s次数
+
+  // 互动特征 (1小时)
+  int32 post_like_cnt_1h = 17;                // post最近1h被点赞次数
+  int32 post_follow_cnt_1h = 18;              // post最近1h被关注次数
+  int32 post_profile_cnt_1h = 19;             // post最近1h被点主页次数
+  int32 post_posinter_cnt_1h = 20;            // post最近1h被评论收藏分享次数
+
+  // 24小时窗口特征
+  // 曝光特征
+  int32 post_exp_cnt_24h = 30;                // post最近24h曝光次数
+
+  // 观看特征 (24小时)
+  int32 post_3sview_cnt_24h = 31;             // post最近24h观看3s次数
+  int32 post_8sview_cnt_24h = 32;             // post最近24h观看8s次数
+  int32 post_12sview_cnt_24h = 33;            // post最近24h观看12s次数
+  int32 post_20sview_cnt_24h = 34;            // post最近24h观看20s次数
+
+  // 停留特征 (24小时)
+  int32 post_5sstand_cnt_24h = 35;            // post最近24h停留5s次数
+  int32 post_10sstand_cnt_24h = 36;           // post最近24h停留10s次数
+
+  // 互动特征 (24小时)
+  int32 post_like_cnt_24h = 37;               // post最近24h被点赞次数
+  int32 post_follow_cnt_24h = 38;             // post最近24h被关注次数
+  int32 post_profile_cnt_24h = 39;            // post最近24h被点主页次数
+  int32 post_posinter_cnt_24h = 40;           // post最近24h被评论收藏分享次数
+
+  // 7天互动指标
+  int32 post_view_cnt_7d = 41;                // 最近7天浏览次数
+  int32 post_validview_cnt_7d = 42;           // 最近7天有效观看次数
+  int32 post_completeview_cnt_7d = 43;        // 最近7天完播次数
+  float post_view_duration_7d = 44;           // 最近7天观看总时长（秒）
+  int32 post_like_cnt_7d = 45;                // 最近7天点赞次数
+  int32 post_comment_cnt_7d = 46;             // 最近7天评论次数
+
+  // 作者相关指标
+  repeated int32 tag_ids = 47;                // 作者标签ID列表
+  int32 author_exp_distinct_post_cnt_7d = 48; // 作者最近7天曝光作品数
+  int32 author_exp_post_cnt_7d = 49;          // 作者最近7天曝光次数
+  int32 author_validview_post_cnt_7d = 50;    // 作者最近7天有效观看次数
+  float author_view_post_duration_7d = 51;    // 作者最近7天观看时长（秒）
+  int32 author_like_cnt_7d = 52;              // 作者最近7天点赞次数
+  int32 author_comment_cnt_7d = 53;           // 作者最近7天评论次数
+
+  int32 author_completeview_post_cnt_7d = 54; // 作者最近7天完整观看次数
+  float author_view_avg_duration_7d = 55;     // 作者最近7天平均观看时长（秒）
+  int32 author_inter_profile_cnt_7d = 56;     // 作者主页最近7天post流被访问次数
+  int32 author_follow_cnt_7d = 57;            // 作者主页最近7天post流被关注次数
+  int32 author_followers_cnt = 58;            // 作者粉丝数
+
+  // 7天比率指标
+  float post_validview_rate_7d = 60;          // 最近7天有效观看率
+  float post_completeview_rate_7d = 61;       // 最近7天完整观看率（完播率）
+  float post_avg_view_duration_7d = 62;       // 最近7天平均每次观看时长（秒）
+  float post_like_rate_7d = 63;               // 最近7天点赞率
+  float post_comment_rate_7d = 64;            // 最近7天评论率
+
+
+  // embedding
+  repeated float post_ai_embedding = 70;                // item的embedding
+  string post_ai_tags = 71;                  // item的ai标签
+  string post_asr_lang = 72;                 // item的asr识别语言
+
 }
 
-// 用户作者交叉特征
-// Redis Key: rec:user_author_feature:{user_id}_{author_id}:post1h, rec:user_author_feature:{user_id}_{author_id}:post24h
+// 用户作者交叉特征,hset格式
+// Redis Key: rec:user_author_feature:{user_id}:post1h, rec:user_author_feature:{user_id}:post24h
 message RecUserAuthorFeature {
-    // 过期时间标识 (1h 或 24h)
-    string expire_time = 3;
-    
-    // 1小时窗口特征
+  uint64 user_id = 1;
+  uint64 author_id = 2;
+  // 过期时间标识 (1h 或 24h)
+//   string expire_time = 3;
+
+  // 1小时窗口特征
+  // 曝光特征
+  int32 userauthor_exp_cnt_1h = 10;           // 用户作者最近1h曝光次数
+
+  // 观看特征 (1小时)
+  int32 userauthor_3sview_cnt_1h = 11;        // 用户作者最近1h观看3s次数
+  int32 userauthor_8sview_cnt_1h = 12;        // 用户作者最近1h观看8s次数
+  int32 userauthor_12sview_cnt_1h = 13;       // 用户作者最近1h观看12s次数
+  int32 userauthor_20sview_cnt_1h = 14;       // 用户作者最近1h观看20s次数
+
+  // 停留特征 (1小时)
+  int32 userauthor_5sstand_cnt_1h = 15;       // 用户作者最近1h停留5s次数
+  int32 userauthor_10sstand_cnt_1h = 16;      // 用户作者最近1h停留10s次数
+
+  // 互动特征 (1小时)
+  int32 userauthor_like_cnt_1h = 17;          // 用户作者最近1h被点赞次数
+
+  // 24小时窗口特征
+  // 曝光特征
+  int32 userauthor_exp_cnt_24h = 30;          // 用户作者最近24h曝光次数
+
+  // 观看特征 (24小时)
+  int32 userauthor_3sview_cnt_24h = 31;       // 用户作者最近24h观看3s次数
+  int32 userauthor_8sview_cnt_24h = 32;       // 用户作者最近24h观看8s次数
+  int32 userauthor_12sview_cnt_24h = 33;      // 用户作者最近24h观看12s次数
+  int32 userauthor_20sview_cnt_24h = 34;      // 用户作者最近24h观看20s次数
+
+  // 停留特征 (24小时)
+  int32 userauthor_5sstand_cnt_24h = 35;      // 用户作者最近24h停留5s次数
+  int32 userauthor_10sstand_cnt_24h = 36;     // 用户作者最近24h停留10s次数
+
+  // 互动特征 (24小时)
+  int32 userauthor_like_cnt_24h = 37;         // 用户作者最近24h被点赞次数
+
+
+  // 7d特征
+  // 基础互动指标
+  int32 user_author_view_cnt_7d = 40;          // 用户对作者最近7天有效观看次数
+  float user_author_validview_cnt_7d = 41;     // 用户对作者最近7天观看时长（秒）
+  int32 user_author_compeleteview_cnt_7d = 42; // 用户对作者最近7天完整观看次数
+  int32 user_author_like_cnt_7d = 43;          // 用户对作者最近7天点赞次数
+  int32 user_author_comment_cnt_7d = 44;       // 用户对作者最近7天评论次数
+  float user_author_avg_view_duration_7d = 45; // 用户对作者最近7天平均每次曝光观看时长（秒）
+
+  // TF-IDF特征
+  float user_author_validview_tfidf_7d = 46;         // 用户对作者最近七天有效观看的TF-IDF值
+  float user_author_compeleteview_tfidf_7d = 47;     // 用户对作者最近七天完整观看的TF-IDF值
+  float user_author_likecomment_tfidf_7d = 48;       // 用户对作者最近七天点赞+评论的TF-IDF值
+
+
+  // 7d交叉v11+v12
+  int32 user_tag11_is_like = 50;         // 用户对内容11最近7是否喜欢
+  int32 user_tag11_is_play = 51;         // 用户对内容11最近7是否非常感兴趣
+  int32 user_tag11_is_comment = 52;         // 用户对内容11最近7是否评论
+  int32 user_tag12_is_like = 53;         // 用户对内容12最近7是否喜欢
+  int32 user_tag12_is_play = 54;         // 用户对内容12最近7是否非常感兴趣
+  int32 user_tag12_is_comment = 55;         // 用户对内容12最近7是否评论
+  int32 user_tag13_is_like = 56;         // 用户对内容13最近7是否喜欢
+  int32 user_tag13_is_play = 57;         // 用户对内容13最近7是否非常感兴趣
+  int32 user_tag13_is_comment = 58;         // 用户对内容13最近7是否评论
+  int32 user_tag14_is_like = 59;         // 用户对内容14最近7是否喜欢
+  int32 user_tag14_is_play = 60;         // 用户对内容14最近7是否非常感兴趣
+  int32 user_tag14_is_comment = 61;         // 用户对内容14最近7是否评论
+  int32 user_tag15_is_like = 62;         // 用户对内容15最近7是否喜欢
+  int32 user_tag15_is_play = 63;         // 用户对内容15最近7是否非常感兴趣
+  int32 user_tag15_is_comment = 64;         // 用户对内容15最近7是否评论
+  int32 user_tag16_is_like = 65;         // 用户对内容16最近7是否喜欢
+  int32 user_tag16_is_play = 66;         // 用户对内容16最近7是否非常感兴趣
+  int32 user_tag16_is_comment = 67;         // 用户对内容16最近7是否评论
+  int32 user_tag17_is_like = 68;         // 用户对内容17最近7是否喜欢
+  int32 user_tag17_is_play = 69;         // 用户对内容17最近7是否非常感兴趣
+  int32 user_tag17_is_comment = 70;         // 用户对内容17最近7是否评论
+  int32 user_tag11_like_cnt = 71;         // 用户对内容11最近7喜欢数
+  int32 user_tag11_play_cnt = 72;         // 用户对内容11最近7播放数
+  int32 user_tag11_comment_cnt = 73;         // 用户对内容11最近7评论数
+  int32 user_tag12_like_cnt = 74;         // 用户对内容12最近7喜欢数
+  int32 user_tag12_play_cnt = 75;         // 用户对内容12最近7播放数
+  int32 user_tag12_comment_cnt = 76;         // 用户对内容12最近7评论数
+  int32 user_tag13_like_cnt = 77;         // 用户对内容13最近7喜欢数
+  int32 user_tag13_play_cnt = 78;         // 用户对内容13最近7播放数
+  int32 user_tag13_comment_cnt = 79;         // 用户对内容13最近7评论数
+  int32 user_tag14_like_cnt = 80;         // 用户对内容14最近7喜欢数
+  int32 user_tag14_play_cnt = 81;         // 用户对内容14最近7播放数
+  int32 user_tag14_comment_cnt = 82;         // 用户对内容14最近7评论数
+  int32 user_tag15_like_cnt = 83;         // 用户对内容15最近7喜欢数
+  int32 user_tag15_play_cnt = 84;         // 用户对内容15最近7播放数
+  int32 user_tag15_comment_cnt = 85;         // 用户对内容15最近7评论数
+  int32 user_tag16_like_cnt = 86;         // 用户对内容16最近7喜欢数
+  int32 user_tag16_play_cnt = 87;         // 用户对内容16最近7播放数
+  int32 user_tag16_comment_cnt = 88;         // 用户对内容16最近7评论数
+  int32 user_tag17_like_cnt = 89;         // 用户对内容17最近7喜欢数
+  int32 user_tag17_play_cnt = 90;         // 用户对内容17最近7播放数
+  int32 user_tag17_comment_cnt = 91;         // 用户对内容17最近7评论数
+
+}
+
+
+// 直播用户主播交叉特征,hset格式
+// Redis Key: rec:user_anchor_feature:{user_id}:live3h
+message LiveUserAnchorFeature {
+    uint64 user_id = 1;
+    uint64 anchor_id = 2;
+  
+    // 3小时窗口特征
     // 曝光特征
-    int32 userauthor_exp_cnt_1h = 10;           // 用户作者最近1h曝光次数
+    int32 user_anchor_exp_cnt_3h = 10;           // 用户主播最近3h刷到次数
+  
+    // 停留特征 (3小时)
+    int32 user_anchor_3squit_cnt_1h = 11;        // 用户作者最近3h停留3s次数
+    int32 user_anchor_6squit_cnt_1h = 12;        // 用户作者最近3h停留6s次数
+
+    //点赞特征 (3小时)
+    int32 user_anchor_like_cnt_3h = 13;        // 用户作者最近3h点赞次数
+    //评论特征 (3小时)
+    int32 user_anchor_comment_cnt_3h = 14;        // 用户作者最近3h评论次数
+    //关注特征 (3小时)
+    int32 user_anchor_follow_cnt_3h = 15;        // 用户作者最近3h关注次数
+    //分享特征 (3小时)
+    int32 user_anchor_share_cnt_3h = 16;        // 用户作者最近3h分享次数
+    //送礼特征 (3小时)
+    int32 user_anchor_gift_cnt_3h = 17;        // 用户作者最近3h送礼次数
+    //送礼金额特征 (3小时)
+    int32 user_anchor_gift_amount_3h = 18;        // 用户作者最近3h送礼金额
+
+    // 负反馈特征
+    int32 user_anchor_negative_feedback_cnt_3h = 19;        // 用户作者最近3h负反馈次数(基于以上特征合成)
     
-    // 观看特征 (1小时)
-    int32 userauthor_3sview_cnt_1h = 11;        // 用户作者最近1h观看3s次数
-    int32 userauthor_8sview_cnt_1h = 12;        // 用户作者最近1h观看8s次数
-    int32 userauthor_12sview_cnt_1h = 13;       // 用户作者最近1h观看12s次数
-    int32 userauthor_20sview_cnt_1h = 14;       // 用户作者最近1h观看20s次数
-    
-    // 停留特征 (1小时)
-    int32 userauthor_5sstand_cnt_1h = 15;       // 用户作者最近1h停留5s次数
-    int32 userauthor_10sstand_cnt_1h = 16;      // 用户作者最近1h停留10s次数
-    
-    // 互动特征 (1小时)
-    int32 userauthor_like_cnt_1h = 17;          // 用户作者最近1h被点赞次数
-    
-    // 24小时窗口特征
-    // 曝光特征
-    int32 userauthor_exp_cnt_24h = 30;          // 用户作者最近24h曝光次数
-    
-    // 观看特征 (24小时)
-    int32 userauthor_3sview_cnt_24h = 31;       // 用户作者最近24h观看3s次数
-    int32 userauthor_8sview_cnt_24h = 32;       // 用户作者最近24h观看8s次数
-    int32 userauthor_12sview_cnt_24h = 33;      // 用户作者最近24h观看12s次数
-    int32 userauthor_20sview_cnt_24h = 34;      // 用户作者最近24h观看20s次数
-    
-    // 停留特征 (24小时)
-    int32 userauthor_5sstand_cnt_24h = 35;      // 用户作者最近24h停留5s次数
-    int32 userauthor_10sstand_cnt_24h = 36;     // 用户作者最近24h停留10s次数
-    
-    // 互动特征 (24小时)
-    int32 userauthor_like_cnt_24h = 37;         // 用户作者最近24h被点赞次数
-    
-    }
+}
