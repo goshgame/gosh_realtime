@@ -203,7 +203,6 @@ public class UserAuthorFeature24hJob {
                     .setUserauthor10SstandCnt24H(features.stand10sRecTokens.size())
                     // 24小时互动特征
                     .setUserauthorLikeCnt24H(features.likeRecTokens.size())
-                    .setExpireTime("24h")
                     .build()
                     .toByteArray();
 
