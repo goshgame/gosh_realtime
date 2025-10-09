@@ -33,6 +33,8 @@ public class LiveUserAnchorFeature15minJob {
     private static String SUFFIX = "}:live15min";
 
     public static void main(String[] args) throws Exception {
+        LOG.info("Starting LiveUserAnchorFeature15minJob - looking for advertise topic with event_type=3");
+        
         // 第一步：创建flink环境
         StreamExecutionEnvironment env = FlinkEnvUtil.createStreamExecutionEnvironment();
 
@@ -58,8 +60,8 @@ public class LiveUserAnchorFeature15minJob {
             .flatMap(new LiveEventParser())
             .name("Parse Live Quit Events");
 
-        // 第四步：按 uid 分组并进行 3 小时窗口（滑动 5 分钟）聚合
-        DataStream<UserAnchorFeature3hAggregation> aggregatedStream = eventStream
+        // 第四步：按 uid 分组并进行 15 分钟窗口（滑动 5 分钟）聚合
+        DataStream<UserAnchorFeatureAggregation> aggregatedStream = eventStream
             .keyBy(new KeySelector<LiveUserAnchorEvent, Long>() {
                 @Override
                 public Long getKey(LiveUserAnchorEvent value) throws Exception {
@@ -70,25 +72,50 @@ public class LiveUserAnchorFeature15minJob {
                 Time.minutes(15),
                 Time.seconds(15)
             ))
-            .aggregate(new UserAnchorFeature3hAggregator())
-            .name("User-Anchor Feature 3h Aggregation");
+            .aggregate(new UserAnchorFeatureAggregator())
+            .name("User-Anchor Feature Aggregation");
 
         // 第五步：转换为Protobuf并写入Redis（HashMap：key=uid，field=anchorId）
         DataStream<Tuple2<String, Map<String, byte[]>>> dataStream = aggregatedStream
             .filter(agg -> agg != null && agg.anchorFeatures != null && !agg.anchorFeatures.isEmpty())
-            .map(new MapFunction<UserAnchorFeature3hAggregation, Tuple2<String, Map<String, byte[]>>>() {
+            .map(new MapFunction<UserAnchorFeatureAggregation, Tuple2<String, Map<String, byte[]>>>() {
                 @Override
-                public Tuple2<String, Map<String, byte[]>> map(UserAnchorFeature3hAggregation agg) throws Exception {
+                public Tuple2<String, Map<String, byte[]>> map(UserAnchorFeatureAggregation agg) throws Exception {
                     String redisKey = PREFIX + agg.uid + SUFFIX;
                     return new Tuple2<>(redisKey, agg.anchorFeatures);
                 }
             })
             .name("Aggregation to Protobuf Bytes");
 
+        // 添加Redis写入前采样日志
+        dataStream
+            .process(new org.apache.flink.streaming.api.functions.ProcessFunction<Tuple2<String, Map<String, byte[]>>, Tuple2<String, Map<String, byte[]>>>() {
+                private transient int sampleCount = 0;
+                private transient long lastLogTime = 0;
+                
+                @Override
+                public void processElement(Tuple2<String, Map<String, byte[]>> value, Context ctx, Collector<Tuple2<String, Map<String, byte[]>>> out) throws Exception {
+                    long now = System.currentTimeMillis();
+                    if (now - lastLogTime > 60000) { // 每60秒采样一次
+                        lastLogTime = now;
+                        if (sampleCount < 3) {
+                            sampleCount++;
+                            LOG.info("[Redis Sample {}/3] About to write: key={}, fieldCount={}", 
+                                sampleCount, value.f0, value.f1 != null ? value.f1.size() : 0);
+                        }
+                    }
+                    out.collect(value);
+                }
+            })
+            .name("Redis Write Sampling");
+
         // 第六步：创建sink，Redis环境（TTL=10分钟，DEL_HMSET）
         RedisConfig redisConfig = RedisConfig.fromProperties(RedisUtil.loadProperties());
         redisConfig.setTtl(300);
         redisConfig.setCommand("DEL_HMSET");
+        LOG.info("Redis config: TTL={}, Command={}", 
+            redisConfig.getTtl(), redisConfig.getCommand());
+        
         RedisUtil.addRedisHashMapSink(
             dataStream,
             redisConfig,
@@ -96,6 +123,7 @@ public class LiveUserAnchorFeature15minJob {
             100
         );
 
+        LOG.info("Job configured, starting execution...");
         env.execute("Live User-Anchor Feature 15min Job");
     }
 
@@ -106,9 +134,10 @@ public class LiveUserAnchorFeature15minJob {
         public long watchTime;
     }
 
-    // 解析器：解析外层 JSON，提取 recommend_data.event_data 再解析内层 JSON
+        // 解析器：解析外层 JSON，提取 recommend_data.event_data 再解析内层 JSON
     public static class LiveEventParser implements FlatMapFunction<String, LiveUserAnchorEvent> {
         private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+        private static volatile long totalParsedEvents = 0;
 
         @Override
         public void flatMap(String value, Collector<LiveUserAnchorEvent> out) throws Exception {
@@ -137,6 +166,10 @@ public class LiveUserAnchorFeature15minJob {
                 evt.uid = uid;
                 evt.anchorId = anchorId;
                 evt.watchTime = watchTime;
+                totalParsedEvents++;
+                if (totalParsedEvents % 100 == 0) {
+                    LOG.info("Total parsed events so far: {}", totalParsedEvents);
+                }
                 out.collect(evt);
             } catch (Exception e) {
                 LOG.warn("Failed to parse advertise event: {}", value, e);
@@ -145,7 +178,7 @@ public class LiveUserAnchorFeature15minJob {
     }
 
     // 聚合器：统计每个 uid 对每个 anchor 的曝光、3s+进房、6s+进房与负反馈（派生）
-    public static class UserAnchorFeature3hAggregator implements AggregateFunction<LiveUserAnchorEvent, UserAnchorAccumulator, UserAnchorFeature3hAggregation> {
+    public static class UserAnchorFeatureAggregator implements AggregateFunction<LiveUserAnchorEvent, UserAnchorAccumulator, UserAnchorFeatureAggregation> {
         @Override
         public UserAnchorAccumulator createAccumulator() {
             return new UserAnchorAccumulator();
@@ -162,11 +195,11 @@ public class LiveUserAnchorFeature15minJob {
         }
 
         @Override
-        public UserAnchorFeature3hAggregation getResult(UserAnchorAccumulator acc) {
+        public UserAnchorFeatureAggregation getResult(UserAnchorAccumulator acc) {
             if (acc.anchorIdToCounts.isEmpty()) {
                 return null;
             }
-            UserAnchorFeature3hAggregation result = new UserAnchorFeature3hAggregation();
+            UserAnchorFeatureAggregation result = new UserAnchorFeatureAggregation();
             result.uid = acc.uid;
             result.anchorFeatures = new HashMap<>();
 
@@ -213,7 +246,7 @@ public class LiveUserAnchorFeature15minJob {
         public int watch6sPlusCount;
     }
 
-    public static class UserAnchorFeature3hAggregation {
+    public static class UserAnchorFeatureAggregation {
         public long uid;
         public Map<String, byte[]> anchorFeatures; // anchorId -> protobuf bytes
     }
