@@ -86,7 +86,7 @@ public class UserAuthorFeature1hJob {
             })
             .window(SlidingProcessingTimeWindows.of(
                 Time.hours(1), // 窗口大小1小时
-                Time.minutes(3) // 滑动间隔3分钟
+                Time.minutes(5) // 滑动间隔5分钟
             ))
             .aggregate(new UserAuthorFeature1hAggregator())
             .name("User-Author Feature 1h Aggregation");
