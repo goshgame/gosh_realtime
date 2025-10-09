@@ -21150,109 +21150,109 @@ public final class RecFeature {
 
     /**
      * <pre>
-     * 3小时窗口特征
+     * 15分钟窗口特征
      * 曝光特征
      * </pre>
      *
-     * <code>int32 user_anchor_exp_cnt_3h = 10;</code>
-     * @return The userAnchorExpCnt3h.
+     * <code>int32 user_anchor_exp_cnt_15min = 10;</code>
+     * @return The userAnchorExpCnt15min.
      */
-    int getUserAnchorExpCnt3H();
+    int getUserAnchorExpCnt15Min();
 
     /**
      * <pre>
-     * 停留特征 (3小时)
+     * 停留特征
      * </pre>
      *
-     * <code>int32 user_anchor_3squit_cnt_1h = 11;</code>
-     * @return The userAnchor3squitCnt1h.
+     * <code>int32 user_anchor_3squit_cnt_15min = 11;</code>
+     * @return The userAnchor3squitCnt15min.
      */
-    int getUserAnchor3SquitCnt1H();
+    int getUserAnchor3SquitCnt15Min();
 
     /**
      * <pre>
-     * 用户作者最近3h停留6s次数
+     * 用户作者最近15分钟停留6s次数
      * </pre>
      *
-     * <code>int32 user_anchor_6squit_cnt_1h = 12;</code>
-     * @return The userAnchor6squitCnt1h.
+     * <code>int32 user_anchor_6squit_cnt_15min = 12;</code>
+     * @return The userAnchor6squitCnt15min.
      */
-    int getUserAnchor6SquitCnt1H();
+    int getUserAnchor6SquitCnt15Min();
 
     /**
      * <pre>
-     *点赞特征 (3小时)
+     *点赞特征
      * </pre>
      *
-     * <code>int32 user_anchor_like_cnt_3h = 13;</code>
-     * @return The userAnchorLikeCnt3h.
+     * <code>int32 user_anchor_like_cnt_15min = 13;</code>
+     * @return The userAnchorLikeCnt15min.
      */
-    int getUserAnchorLikeCnt3H();
+    int getUserAnchorLikeCnt15Min();
 
     /**
      * <pre>
-     *评论特征 (3小时)
+     *评论特征
      * </pre>
      *
-     * <code>int32 user_anchor_comment_cnt_3h = 14;</code>
-     * @return The userAnchorCommentCnt3h.
+     * <code>int32 user_anchor_comment_cnt_15min = 14;</code>
+     * @return The userAnchorCommentCnt15min.
      */
-    int getUserAnchorCommentCnt3H();
+    int getUserAnchorCommentCnt15Min();
 
     /**
      * <pre>
-     *关注特征 (3小时)
+     *关注特征
      * </pre>
      *
-     * <code>int32 user_anchor_follow_cnt_3h = 15;</code>
-     * @return The userAnchorFollowCnt3h.
+     * <code>int32 user_anchor_follow_cnt_15min = 15;</code>
+     * @return The userAnchorFollowCnt15min.
      */
-    int getUserAnchorFollowCnt3H();
+    int getUserAnchorFollowCnt15Min();
 
     /**
      * <pre>
-     *分享特征 (3小时)
+     *分享特征
      * </pre>
      *
-     * <code>int32 user_anchor_share_cnt_3h = 16;</code>
-     * @return The userAnchorShareCnt3h.
+     * <code>int32 user_anchor_share_cnt_15min = 16;</code>
+     * @return The userAnchorShareCnt15min.
      */
-    int getUserAnchorShareCnt3H();
+    int getUserAnchorShareCnt15Min();
 
     /**
      * <pre>
-     *送礼特征 (3小时)
+     *送礼特征
      * </pre>
      *
-     * <code>int32 user_anchor_gift_cnt_3h = 17;</code>
-     * @return The userAnchorGiftCnt3h.
+     * <code>int32 user_anchor_gift_cnt_15min = 17;</code>
+     * @return The userAnchorGiftCnt15min.
      */
-    int getUserAnchorGiftCnt3H();
+    int getUserAnchorGiftCnt15Min();
 
     /**
      * <pre>
-     *送礼金额特征 (3小时)
+     *送礼金额特征
      * </pre>
      *
-     * <code>int32 user_anchor_gift_amount_3h = 18;</code>
-     * @return The userAnchorGiftAmount3h.
+     * <code>int32 user_anchor_gift_amount_15min = 18;</code>
+     * @return The userAnchorGiftAmount15min.
      */
-    int getUserAnchorGiftAmount3H();
+    int getUserAnchorGiftAmount15Min();
 
     /**
      * <pre>
      * 负反馈特征
      * </pre>
      *
-     * <code>int32 user_anchor_negative_feedback_cnt_3h = 19;</code>
-     * @return The userAnchorNegativeFeedbackCnt3h.
+     * <code>int32 user_anchor_negative_feedback_cnt_15min = 19;</code>
+     * @return The userAnchorNegativeFeedbackCnt15min.
      */
-    int getUserAnchorNegativeFeedbackCnt3H();
+    int getUserAnchorNegativeFeedbackCnt15Min();
   }
   /**
    * <pre>
    * 直播用户主播交叉特征,hset格式
-   * Redis Key: rec:user_anchor_feature:{user_id}:live3h
+   * Redis Key: rec:user_anchor_feature:{user_id}:live15min
    * </pre>
    *
    * Protobuf type {@code com.gosh.entity.LiveUserAnchorFeature}
@@ -21311,52 +21311,52 @@ public final class RecFeature {
             }
             case 80: {
 
-              userAnchorExpCnt3H_ = input.readInt32();
+              userAnchorExpCnt15Min_ = input.readInt32();
               break;
             }
             case 88: {
 
-              userAnchor3SquitCnt1H_ = input.readInt32();
+              userAnchor3SquitCnt15Min_ = input.readInt32();
               break;
             }
             case 96: {
 
-              userAnchor6SquitCnt1H_ = input.readInt32();
+              userAnchor6SquitCnt15Min_ = input.readInt32();
               break;
             }
             case 104: {
 
-              userAnchorLikeCnt3H_ = input.readInt32();
+              userAnchorLikeCnt15Min_ = input.readInt32();
               break;
             }
             case 112: {
 
-              userAnchorCommentCnt3H_ = input.readInt32();
+              userAnchorCommentCnt15Min_ = input.readInt32();
               break;
             }
             case 120: {
 
-              userAnchorFollowCnt3H_ = input.readInt32();
+              userAnchorFollowCnt15Min_ = input.readInt32();
               break;
             }
             case 128: {
 
-              userAnchorShareCnt3H_ = input.readInt32();
+              userAnchorShareCnt15Min_ = input.readInt32();
               break;
             }
             case 136: {
 
-              userAnchorGiftCnt3H_ = input.readInt32();
+              userAnchorGiftCnt15Min_ = input.readInt32();
               break;
             }
             case 144: {
 
-              userAnchorGiftAmount3H_ = input.readInt32();
+              userAnchorGiftAmount15Min_ = input.readInt32();
               break;
             }
             case 152: {
 
-              userAnchorNegativeFeedbackCnt3H_ = input.readInt32();
+              userAnchorNegativeFeedbackCnt15Min_ = input.readInt32();
               break;
             }
             default: {
@@ -21415,155 +21415,155 @@ public final class RecFeature {
       return anchorId_;
     }
 
-    public static final int USER_ANCHOR_EXP_CNT_3H_FIELD_NUMBER = 10;
-    private int userAnchorExpCnt3H_;
+    public static final int USER_ANCHOR_EXP_CNT_15MIN_FIELD_NUMBER = 10;
+    private int userAnchorExpCnt15Min_;
     /**
      * <pre>
-     * 3小时窗口特征
+     * 15分钟窗口特征
      * 曝光特征
      * </pre>
      *
-     * <code>int32 user_anchor_exp_cnt_3h = 10;</code>
-     * @return The userAnchorExpCnt3h.
+     * <code>int32 user_anchor_exp_cnt_15min = 10;</code>
+     * @return The userAnchorExpCnt15min.
      */
     @java.lang.Override
-    public int getUserAnchorExpCnt3H() {
-      return userAnchorExpCnt3H_;
+    public int getUserAnchorExpCnt15Min() {
+      return userAnchorExpCnt15Min_;
     }
 
-    public static final int USER_ANCHOR_3SQUIT_CNT_1H_FIELD_NUMBER = 11;
-    private int userAnchor3SquitCnt1H_;
+    public static final int USER_ANCHOR_3SQUIT_CNT_15MIN_FIELD_NUMBER = 11;
+    private int userAnchor3SquitCnt15Min_;
     /**
      * <pre>
-     * 停留特征 (3小时)
+     * 停留特征
      * </pre>
      *
-     * <code>int32 user_anchor_3squit_cnt_1h = 11;</code>
-     * @return The userAnchor3squitCnt1h.
+     * <code>int32 user_anchor_3squit_cnt_15min = 11;</code>
+     * @return The userAnchor3squitCnt15min.
      */
     @java.lang.Override
-    public int getUserAnchor3SquitCnt1H() {
-      return userAnchor3SquitCnt1H_;
+    public int getUserAnchor3SquitCnt15Min() {
+      return userAnchor3SquitCnt15Min_;
     }
 
-    public static final int USER_ANCHOR_6SQUIT_CNT_1H_FIELD_NUMBER = 12;
-    private int userAnchor6SquitCnt1H_;
+    public static final int USER_ANCHOR_6SQUIT_CNT_15MIN_FIELD_NUMBER = 12;
+    private int userAnchor6SquitCnt15Min_;
     /**
      * <pre>
-     * 用户作者最近3h停留6s次数
+     * 用户作者最近15分钟停留6s次数
      * </pre>
      *
-     * <code>int32 user_anchor_6squit_cnt_1h = 12;</code>
-     * @return The userAnchor6squitCnt1h.
+     * <code>int32 user_anchor_6squit_cnt_15min = 12;</code>
+     * @return The userAnchor6squitCnt15min.
      */
     @java.lang.Override
-    public int getUserAnchor6SquitCnt1H() {
-      return userAnchor6SquitCnt1H_;
+    public int getUserAnchor6SquitCnt15Min() {
+      return userAnchor6SquitCnt15Min_;
     }
 
-    public static final int USER_ANCHOR_LIKE_CNT_3H_FIELD_NUMBER = 13;
-    private int userAnchorLikeCnt3H_;
+    public static final int USER_ANCHOR_LIKE_CNT_15MIN_FIELD_NUMBER = 13;
+    private int userAnchorLikeCnt15Min_;
     /**
      * <pre>
-     *点赞特征 (3小时)
+     *点赞特征
      * </pre>
      *
-     * <code>int32 user_anchor_like_cnt_3h = 13;</code>
-     * @return The userAnchorLikeCnt3h.
+     * <code>int32 user_anchor_like_cnt_15min = 13;</code>
+     * @return The userAnchorLikeCnt15min.
      */
     @java.lang.Override
-    public int getUserAnchorLikeCnt3H() {
-      return userAnchorLikeCnt3H_;
+    public int getUserAnchorLikeCnt15Min() {
+      return userAnchorLikeCnt15Min_;
     }
 
-    public static final int USER_ANCHOR_COMMENT_CNT_3H_FIELD_NUMBER = 14;
-    private int userAnchorCommentCnt3H_;
+    public static final int USER_ANCHOR_COMMENT_CNT_15MIN_FIELD_NUMBER = 14;
+    private int userAnchorCommentCnt15Min_;
     /**
      * <pre>
-     *评论特征 (3小时)
+     *评论特征
      * </pre>
      *
-     * <code>int32 user_anchor_comment_cnt_3h = 14;</code>
-     * @return The userAnchorCommentCnt3h.
+     * <code>int32 user_anchor_comment_cnt_15min = 14;</code>
+     * @return The userAnchorCommentCnt15min.
      */
     @java.lang.Override
-    public int getUserAnchorCommentCnt3H() {
-      return userAnchorCommentCnt3H_;
+    public int getUserAnchorCommentCnt15Min() {
+      return userAnchorCommentCnt15Min_;
     }
 
-    public static final int USER_ANCHOR_FOLLOW_CNT_3H_FIELD_NUMBER = 15;
-    private int userAnchorFollowCnt3H_;
+    public static final int USER_ANCHOR_FOLLOW_CNT_15MIN_FIELD_NUMBER = 15;
+    private int userAnchorFollowCnt15Min_;
     /**
      * <pre>
-     *关注特征 (3小时)
+     *关注特征
      * </pre>
      *
-     * <code>int32 user_anchor_follow_cnt_3h = 15;</code>
-     * @return The userAnchorFollowCnt3h.
+     * <code>int32 user_anchor_follow_cnt_15min = 15;</code>
+     * @return The userAnchorFollowCnt15min.
      */
     @java.lang.Override
-    public int getUserAnchorFollowCnt3H() {
-      return userAnchorFollowCnt3H_;
+    public int getUserAnchorFollowCnt15Min() {
+      return userAnchorFollowCnt15Min_;
     }
 
-    public static final int USER_ANCHOR_SHARE_CNT_3H_FIELD_NUMBER = 16;
-    private int userAnchorShareCnt3H_;
+    public static final int USER_ANCHOR_SHARE_CNT_15MIN_FIELD_NUMBER = 16;
+    private int userAnchorShareCnt15Min_;
     /**
      * <pre>
-     *分享特征 (3小时)
+     *分享特征
      * </pre>
      *
-     * <code>int32 user_anchor_share_cnt_3h = 16;</code>
-     * @return The userAnchorShareCnt3h.
+     * <code>int32 user_anchor_share_cnt_15min = 16;</code>
+     * @return The userAnchorShareCnt15min.
      */
     @java.lang.Override
-    public int getUserAnchorShareCnt3H() {
-      return userAnchorShareCnt3H_;
+    public int getUserAnchorShareCnt15Min() {
+      return userAnchorShareCnt15Min_;
     }
 
-    public static final int USER_ANCHOR_GIFT_CNT_3H_FIELD_NUMBER = 17;
-    private int userAnchorGiftCnt3H_;
+    public static final int USER_ANCHOR_GIFT_CNT_15MIN_FIELD_NUMBER = 17;
+    private int userAnchorGiftCnt15Min_;
     /**
      * <pre>
-     *送礼特征 (3小时)
+     *送礼特征
      * </pre>
      *
-     * <code>int32 user_anchor_gift_cnt_3h = 17;</code>
-     * @return The userAnchorGiftCnt3h.
+     * <code>int32 user_anchor_gift_cnt_15min = 17;</code>
+     * @return The userAnchorGiftCnt15min.
      */
     @java.lang.Override
-    public int getUserAnchorGiftCnt3H() {
-      return userAnchorGiftCnt3H_;
+    public int getUserAnchorGiftCnt15Min() {
+      return userAnchorGiftCnt15Min_;
     }
 
-    public static final int USER_ANCHOR_GIFT_AMOUNT_3H_FIELD_NUMBER = 18;
-    private int userAnchorGiftAmount3H_;
+    public static final int USER_ANCHOR_GIFT_AMOUNT_15MIN_FIELD_NUMBER = 18;
+    private int userAnchorGiftAmount15Min_;
     /**
      * <pre>
-     *送礼金额特征 (3小时)
+     *送礼金额特征
      * </pre>
      *
-     * <code>int32 user_anchor_gift_amount_3h = 18;</code>
-     * @return The userAnchorGiftAmount3h.
+     * <code>int32 user_anchor_gift_amount_15min = 18;</code>
+     * @return The userAnchorGiftAmount15min.
      */
     @java.lang.Override
-    public int getUserAnchorGiftAmount3H() {
-      return userAnchorGiftAmount3H_;
+    public int getUserAnchorGiftAmount15Min() {
+      return userAnchorGiftAmount15Min_;
     }
 
-    public static final int USER_ANCHOR_NEGATIVE_FEEDBACK_CNT_3H_FIELD_NUMBER = 19;
-    private int userAnchorNegativeFeedbackCnt3H_;
+    public static final int USER_ANCHOR_NEGATIVE_FEEDBACK_CNT_15MIN_FIELD_NUMBER = 19;
+    private int userAnchorNegativeFeedbackCnt15Min_;
     /**
      * <pre>
      * 负反馈特征
      * </pre>
      *
-     * <code>int32 user_anchor_negative_feedback_cnt_3h = 19;</code>
-     * @return The userAnchorNegativeFeedbackCnt3h.
+     * <code>int32 user_anchor_negative_feedback_cnt_15min = 19;</code>
+     * @return The userAnchorNegativeFeedbackCnt15min.
      */
     @java.lang.Override
-    public int getUserAnchorNegativeFeedbackCnt3H() {
-      return userAnchorNegativeFeedbackCnt3H_;
+    public int getUserAnchorNegativeFeedbackCnt15Min() {
+      return userAnchorNegativeFeedbackCnt15Min_;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -21586,35 +21586,35 @@ public final class RecFeature {
       if (anchorId_ != 0L) {
         output.writeUInt64(2, anchorId_);
       }
-      if (userAnchorExpCnt3H_ != 0) {
-        output.writeInt32(10, userAnchorExpCnt3H_);
+      if (userAnchorExpCnt15Min_ != 0) {
+        output.writeInt32(10, userAnchorExpCnt15Min_);
       }
-      if (userAnchor3SquitCnt1H_ != 0) {
-        output.writeInt32(11, userAnchor3SquitCnt1H_);
+      if (userAnchor3SquitCnt15Min_ != 0) {
+        output.writeInt32(11, userAnchor3SquitCnt15Min_);
       }
-      if (userAnchor6SquitCnt1H_ != 0) {
-        output.writeInt32(12, userAnchor6SquitCnt1H_);
+      if (userAnchor6SquitCnt15Min_ != 0) {
+        output.writeInt32(12, userAnchor6SquitCnt15Min_);
       }
-      if (userAnchorLikeCnt3H_ != 0) {
-        output.writeInt32(13, userAnchorLikeCnt3H_);
+      if (userAnchorLikeCnt15Min_ != 0) {
+        output.writeInt32(13, userAnchorLikeCnt15Min_);
       }
-      if (userAnchorCommentCnt3H_ != 0) {
-        output.writeInt32(14, userAnchorCommentCnt3H_);
+      if (userAnchorCommentCnt15Min_ != 0) {
+        output.writeInt32(14, userAnchorCommentCnt15Min_);
       }
-      if (userAnchorFollowCnt3H_ != 0) {
-        output.writeInt32(15, userAnchorFollowCnt3H_);
+      if (userAnchorFollowCnt15Min_ != 0) {
+        output.writeInt32(15, userAnchorFollowCnt15Min_);
       }
-      if (userAnchorShareCnt3H_ != 0) {
-        output.writeInt32(16, userAnchorShareCnt3H_);
+      if (userAnchorShareCnt15Min_ != 0) {
+        output.writeInt32(16, userAnchorShareCnt15Min_);
       }
-      if (userAnchorGiftCnt3H_ != 0) {
-        output.writeInt32(17, userAnchorGiftCnt3H_);
+      if (userAnchorGiftCnt15Min_ != 0) {
+        output.writeInt32(17, userAnchorGiftCnt15Min_);
       }
-      if (userAnchorGiftAmount3H_ != 0) {
-        output.writeInt32(18, userAnchorGiftAmount3H_);
+      if (userAnchorGiftAmount15Min_ != 0) {
+        output.writeInt32(18, userAnchorGiftAmount15Min_);
       }
-      if (userAnchorNegativeFeedbackCnt3H_ != 0) {
-        output.writeInt32(19, userAnchorNegativeFeedbackCnt3H_);
+      if (userAnchorNegativeFeedbackCnt15Min_ != 0) {
+        output.writeInt32(19, userAnchorNegativeFeedbackCnt15Min_);
       }
       unknownFields.writeTo(output);
     }
@@ -21633,45 +21633,45 @@ public final class RecFeature {
         size += com.google.protobuf.CodedOutputStream
           .computeUInt64Size(2, anchorId_);
       }
-      if (userAnchorExpCnt3H_ != 0) {
+      if (userAnchorExpCnt15Min_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(10, userAnchorExpCnt3H_);
+          .computeInt32Size(10, userAnchorExpCnt15Min_);
       }
-      if (userAnchor3SquitCnt1H_ != 0) {
+      if (userAnchor3SquitCnt15Min_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(11, userAnchor3SquitCnt1H_);
+          .computeInt32Size(11, userAnchor3SquitCnt15Min_);
       }
-      if (userAnchor6SquitCnt1H_ != 0) {
+      if (userAnchor6SquitCnt15Min_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(12, userAnchor6SquitCnt1H_);
+          .computeInt32Size(12, userAnchor6SquitCnt15Min_);
       }
-      if (userAnchorLikeCnt3H_ != 0) {
+      if (userAnchorLikeCnt15Min_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(13, userAnchorLikeCnt3H_);
+          .computeInt32Size(13, userAnchorLikeCnt15Min_);
       }
-      if (userAnchorCommentCnt3H_ != 0) {
+      if (userAnchorCommentCnt15Min_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(14, userAnchorCommentCnt3H_);
+          .computeInt32Size(14, userAnchorCommentCnt15Min_);
       }
-      if (userAnchorFollowCnt3H_ != 0) {
+      if (userAnchorFollowCnt15Min_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(15, userAnchorFollowCnt3H_);
+          .computeInt32Size(15, userAnchorFollowCnt15Min_);
       }
-      if (userAnchorShareCnt3H_ != 0) {
+      if (userAnchorShareCnt15Min_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(16, userAnchorShareCnt3H_);
+          .computeInt32Size(16, userAnchorShareCnt15Min_);
       }
-      if (userAnchorGiftCnt3H_ != 0) {
+      if (userAnchorGiftCnt15Min_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(17, userAnchorGiftCnt3H_);
+          .computeInt32Size(17, userAnchorGiftCnt15Min_);
       }
-      if (userAnchorGiftAmount3H_ != 0) {
+      if (userAnchorGiftAmount15Min_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(18, userAnchorGiftAmount3H_);
+          .computeInt32Size(18, userAnchorGiftAmount15Min_);
       }
-      if (userAnchorNegativeFeedbackCnt3H_ != 0) {
+      if (userAnchorNegativeFeedbackCnt15Min_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(19, userAnchorNegativeFeedbackCnt3H_);
+          .computeInt32Size(19, userAnchorNegativeFeedbackCnt15Min_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -21692,26 +21692,26 @@ public final class RecFeature {
           != other.getUserId()) return false;
       if (getAnchorId()
           != other.getAnchorId()) return false;
-      if (getUserAnchorExpCnt3H()
-          != other.getUserAnchorExpCnt3H()) return false;
-      if (getUserAnchor3SquitCnt1H()
-          != other.getUserAnchor3SquitCnt1H()) return false;
-      if (getUserAnchor6SquitCnt1H()
-          != other.getUserAnchor6SquitCnt1H()) return false;
-      if (getUserAnchorLikeCnt3H()
-          != other.getUserAnchorLikeCnt3H()) return false;
-      if (getUserAnchorCommentCnt3H()
-          != other.getUserAnchorCommentCnt3H()) return false;
-      if (getUserAnchorFollowCnt3H()
-          != other.getUserAnchorFollowCnt3H()) return false;
-      if (getUserAnchorShareCnt3H()
-          != other.getUserAnchorShareCnt3H()) return false;
-      if (getUserAnchorGiftCnt3H()
-          != other.getUserAnchorGiftCnt3H()) return false;
-      if (getUserAnchorGiftAmount3H()
-          != other.getUserAnchorGiftAmount3H()) return false;
-      if (getUserAnchorNegativeFeedbackCnt3H()
-          != other.getUserAnchorNegativeFeedbackCnt3H()) return false;
+      if (getUserAnchorExpCnt15Min()
+          != other.getUserAnchorExpCnt15Min()) return false;
+      if (getUserAnchor3SquitCnt15Min()
+          != other.getUserAnchor3SquitCnt15Min()) return false;
+      if (getUserAnchor6SquitCnt15Min()
+          != other.getUserAnchor6SquitCnt15Min()) return false;
+      if (getUserAnchorLikeCnt15Min()
+          != other.getUserAnchorLikeCnt15Min()) return false;
+      if (getUserAnchorCommentCnt15Min()
+          != other.getUserAnchorCommentCnt15Min()) return false;
+      if (getUserAnchorFollowCnt15Min()
+          != other.getUserAnchorFollowCnt15Min()) return false;
+      if (getUserAnchorShareCnt15Min()
+          != other.getUserAnchorShareCnt15Min()) return false;
+      if (getUserAnchorGiftCnt15Min()
+          != other.getUserAnchorGiftCnt15Min()) return false;
+      if (getUserAnchorGiftAmount15Min()
+          != other.getUserAnchorGiftAmount15Min()) return false;
+      if (getUserAnchorNegativeFeedbackCnt15Min()
+          != other.getUserAnchorNegativeFeedbackCnt15Min()) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -21729,26 +21729,26 @@ public final class RecFeature {
       hash = (37 * hash) + ANCHOR_ID_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getAnchorId());
-      hash = (37 * hash) + USER_ANCHOR_EXP_CNT_3H_FIELD_NUMBER;
-      hash = (53 * hash) + getUserAnchorExpCnt3H();
-      hash = (37 * hash) + USER_ANCHOR_3SQUIT_CNT_1H_FIELD_NUMBER;
-      hash = (53 * hash) + getUserAnchor3SquitCnt1H();
-      hash = (37 * hash) + USER_ANCHOR_6SQUIT_CNT_1H_FIELD_NUMBER;
-      hash = (53 * hash) + getUserAnchor6SquitCnt1H();
-      hash = (37 * hash) + USER_ANCHOR_LIKE_CNT_3H_FIELD_NUMBER;
-      hash = (53 * hash) + getUserAnchorLikeCnt3H();
-      hash = (37 * hash) + USER_ANCHOR_COMMENT_CNT_3H_FIELD_NUMBER;
-      hash = (53 * hash) + getUserAnchorCommentCnt3H();
-      hash = (37 * hash) + USER_ANCHOR_FOLLOW_CNT_3H_FIELD_NUMBER;
-      hash = (53 * hash) + getUserAnchorFollowCnt3H();
-      hash = (37 * hash) + USER_ANCHOR_SHARE_CNT_3H_FIELD_NUMBER;
-      hash = (53 * hash) + getUserAnchorShareCnt3H();
-      hash = (37 * hash) + USER_ANCHOR_GIFT_CNT_3H_FIELD_NUMBER;
-      hash = (53 * hash) + getUserAnchorGiftCnt3H();
-      hash = (37 * hash) + USER_ANCHOR_GIFT_AMOUNT_3H_FIELD_NUMBER;
-      hash = (53 * hash) + getUserAnchorGiftAmount3H();
-      hash = (37 * hash) + USER_ANCHOR_NEGATIVE_FEEDBACK_CNT_3H_FIELD_NUMBER;
-      hash = (53 * hash) + getUserAnchorNegativeFeedbackCnt3H();
+      hash = (37 * hash) + USER_ANCHOR_EXP_CNT_15MIN_FIELD_NUMBER;
+      hash = (53 * hash) + getUserAnchorExpCnt15Min();
+      hash = (37 * hash) + USER_ANCHOR_3SQUIT_CNT_15MIN_FIELD_NUMBER;
+      hash = (53 * hash) + getUserAnchor3SquitCnt15Min();
+      hash = (37 * hash) + USER_ANCHOR_6SQUIT_CNT_15MIN_FIELD_NUMBER;
+      hash = (53 * hash) + getUserAnchor6SquitCnt15Min();
+      hash = (37 * hash) + USER_ANCHOR_LIKE_CNT_15MIN_FIELD_NUMBER;
+      hash = (53 * hash) + getUserAnchorLikeCnt15Min();
+      hash = (37 * hash) + USER_ANCHOR_COMMENT_CNT_15MIN_FIELD_NUMBER;
+      hash = (53 * hash) + getUserAnchorCommentCnt15Min();
+      hash = (37 * hash) + USER_ANCHOR_FOLLOW_CNT_15MIN_FIELD_NUMBER;
+      hash = (53 * hash) + getUserAnchorFollowCnt15Min();
+      hash = (37 * hash) + USER_ANCHOR_SHARE_CNT_15MIN_FIELD_NUMBER;
+      hash = (53 * hash) + getUserAnchorShareCnt15Min();
+      hash = (37 * hash) + USER_ANCHOR_GIFT_CNT_15MIN_FIELD_NUMBER;
+      hash = (53 * hash) + getUserAnchorGiftCnt15Min();
+      hash = (37 * hash) + USER_ANCHOR_GIFT_AMOUNT_15MIN_FIELD_NUMBER;
+      hash = (53 * hash) + getUserAnchorGiftAmount15Min();
+      hash = (37 * hash) + USER_ANCHOR_NEGATIVE_FEEDBACK_CNT_15MIN_FIELD_NUMBER;
+      hash = (53 * hash) + getUserAnchorNegativeFeedbackCnt15Min();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -21847,7 +21847,7 @@ public final class RecFeature {
     /**
      * <pre>
      * 直播用户主播交叉特征,hset格式
-     * Redis Key: rec:user_anchor_feature:{user_id}:live3h
+     * Redis Key: rec:user_anchor_feature:{user_id}:live15min
      * </pre>
      *
      * Protobuf type {@code com.gosh.entity.LiveUserAnchorFeature}
@@ -21891,25 +21891,25 @@ public final class RecFeature {
 
         anchorId_ = 0L;
 
-        userAnchorExpCnt3H_ = 0;
+        userAnchorExpCnt15Min_ = 0;
 
-        userAnchor3SquitCnt1H_ = 0;
+        userAnchor3SquitCnt15Min_ = 0;
 
-        userAnchor6SquitCnt1H_ = 0;
+        userAnchor6SquitCnt15Min_ = 0;
 
-        userAnchorLikeCnt3H_ = 0;
+        userAnchorLikeCnt15Min_ = 0;
 
-        userAnchorCommentCnt3H_ = 0;
+        userAnchorCommentCnt15Min_ = 0;
 
-        userAnchorFollowCnt3H_ = 0;
+        userAnchorFollowCnt15Min_ = 0;
 
-        userAnchorShareCnt3H_ = 0;
+        userAnchorShareCnt15Min_ = 0;
 
-        userAnchorGiftCnt3H_ = 0;
+        userAnchorGiftCnt15Min_ = 0;
 
-        userAnchorGiftAmount3H_ = 0;
+        userAnchorGiftAmount15Min_ = 0;
 
-        userAnchorNegativeFeedbackCnt3H_ = 0;
+        userAnchorNegativeFeedbackCnt15Min_ = 0;
 
         return this;
       }
@@ -21939,16 +21939,16 @@ public final class RecFeature {
         com.gosh.entity.RecFeature.LiveUserAnchorFeature result = new com.gosh.entity.RecFeature.LiveUserAnchorFeature(this);
         result.userId_ = userId_;
         result.anchorId_ = anchorId_;
-        result.userAnchorExpCnt3H_ = userAnchorExpCnt3H_;
-        result.userAnchor3SquitCnt1H_ = userAnchor3SquitCnt1H_;
-        result.userAnchor6SquitCnt1H_ = userAnchor6SquitCnt1H_;
-        result.userAnchorLikeCnt3H_ = userAnchorLikeCnt3H_;
-        result.userAnchorCommentCnt3H_ = userAnchorCommentCnt3H_;
-        result.userAnchorFollowCnt3H_ = userAnchorFollowCnt3H_;
-        result.userAnchorShareCnt3H_ = userAnchorShareCnt3H_;
-        result.userAnchorGiftCnt3H_ = userAnchorGiftCnt3H_;
-        result.userAnchorGiftAmount3H_ = userAnchorGiftAmount3H_;
-        result.userAnchorNegativeFeedbackCnt3H_ = userAnchorNegativeFeedbackCnt3H_;
+        result.userAnchorExpCnt15Min_ = userAnchorExpCnt15Min_;
+        result.userAnchor3SquitCnt15Min_ = userAnchor3SquitCnt15Min_;
+        result.userAnchor6SquitCnt15Min_ = userAnchor6SquitCnt15Min_;
+        result.userAnchorLikeCnt15Min_ = userAnchorLikeCnt15Min_;
+        result.userAnchorCommentCnt15Min_ = userAnchorCommentCnt15Min_;
+        result.userAnchorFollowCnt15Min_ = userAnchorFollowCnt15Min_;
+        result.userAnchorShareCnt15Min_ = userAnchorShareCnt15Min_;
+        result.userAnchorGiftCnt15Min_ = userAnchorGiftCnt15Min_;
+        result.userAnchorGiftAmount15Min_ = userAnchorGiftAmount15Min_;
+        result.userAnchorNegativeFeedbackCnt15Min_ = userAnchorNegativeFeedbackCnt15Min_;
         onBuilt();
         return result;
       }
@@ -22003,35 +22003,35 @@ public final class RecFeature {
         if (other.getAnchorId() != 0L) {
           setAnchorId(other.getAnchorId());
         }
-        if (other.getUserAnchorExpCnt3H() != 0) {
-          setUserAnchorExpCnt3H(other.getUserAnchorExpCnt3H());
+        if (other.getUserAnchorExpCnt15Min() != 0) {
+          setUserAnchorExpCnt15Min(other.getUserAnchorExpCnt15Min());
         }
-        if (other.getUserAnchor3SquitCnt1H() != 0) {
-          setUserAnchor3SquitCnt1H(other.getUserAnchor3SquitCnt1H());
+        if (other.getUserAnchor3SquitCnt15Min() != 0) {
+          setUserAnchor3SquitCnt15Min(other.getUserAnchor3SquitCnt15Min());
         }
-        if (other.getUserAnchor6SquitCnt1H() != 0) {
-          setUserAnchor6SquitCnt1H(other.getUserAnchor6SquitCnt1H());
+        if (other.getUserAnchor6SquitCnt15Min() != 0) {
+          setUserAnchor6SquitCnt15Min(other.getUserAnchor6SquitCnt15Min());
         }
-        if (other.getUserAnchorLikeCnt3H() != 0) {
-          setUserAnchorLikeCnt3H(other.getUserAnchorLikeCnt3H());
+        if (other.getUserAnchorLikeCnt15Min() != 0) {
+          setUserAnchorLikeCnt15Min(other.getUserAnchorLikeCnt15Min());
         }
-        if (other.getUserAnchorCommentCnt3H() != 0) {
-          setUserAnchorCommentCnt3H(other.getUserAnchorCommentCnt3H());
+        if (other.getUserAnchorCommentCnt15Min() != 0) {
+          setUserAnchorCommentCnt15Min(other.getUserAnchorCommentCnt15Min());
         }
-        if (other.getUserAnchorFollowCnt3H() != 0) {
-          setUserAnchorFollowCnt3H(other.getUserAnchorFollowCnt3H());
+        if (other.getUserAnchorFollowCnt15Min() != 0) {
+          setUserAnchorFollowCnt15Min(other.getUserAnchorFollowCnt15Min());
         }
-        if (other.getUserAnchorShareCnt3H() != 0) {
-          setUserAnchorShareCnt3H(other.getUserAnchorShareCnt3H());
+        if (other.getUserAnchorShareCnt15Min() != 0) {
+          setUserAnchorShareCnt15Min(other.getUserAnchorShareCnt15Min());
         }
-        if (other.getUserAnchorGiftCnt3H() != 0) {
-          setUserAnchorGiftCnt3H(other.getUserAnchorGiftCnt3H());
+        if (other.getUserAnchorGiftCnt15Min() != 0) {
+          setUserAnchorGiftCnt15Min(other.getUserAnchorGiftCnt15Min());
         }
-        if (other.getUserAnchorGiftAmount3H() != 0) {
-          setUserAnchorGiftAmount3H(other.getUserAnchorGiftAmount3H());
+        if (other.getUserAnchorGiftAmount15Min() != 0) {
+          setUserAnchorGiftAmount15Min(other.getUserAnchorGiftAmount15Min());
         }
-        if (other.getUserAnchorNegativeFeedbackCnt3H() != 0) {
-          setUserAnchorNegativeFeedbackCnt3H(other.getUserAnchorNegativeFeedbackCnt3H());
+        if (other.getUserAnchorNegativeFeedbackCnt15Min() != 0) {
+          setUserAnchorNegativeFeedbackCnt15Min(other.getUserAnchorNegativeFeedbackCnt15Min());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -22124,435 +22124,435 @@ public final class RecFeature {
         return this;
       }
 
-      private int userAnchorExpCnt3H_ ;
+      private int userAnchorExpCnt15Min_ ;
       /**
        * <pre>
-       * 3小时窗口特征
+       * 15分钟窗口特征
        * 曝光特征
        * </pre>
        *
-       * <code>int32 user_anchor_exp_cnt_3h = 10;</code>
-       * @return The userAnchorExpCnt3h.
+       * <code>int32 user_anchor_exp_cnt_15min = 10;</code>
+       * @return The userAnchorExpCnt15min.
        */
       @java.lang.Override
-      public int getUserAnchorExpCnt3H() {
-        return userAnchorExpCnt3H_;
+      public int getUserAnchorExpCnt15Min() {
+        return userAnchorExpCnt15Min_;
       }
       /**
        * <pre>
-       * 3小时窗口特征
+       * 15分钟窗口特征
        * 曝光特征
        * </pre>
        *
-       * <code>int32 user_anchor_exp_cnt_3h = 10;</code>
-       * @param value The userAnchorExpCnt3h to set.
+       * <code>int32 user_anchor_exp_cnt_15min = 10;</code>
+       * @param value The userAnchorExpCnt15min to set.
        * @return This builder for chaining.
        */
-      public Builder setUserAnchorExpCnt3H(int value) {
+      public Builder setUserAnchorExpCnt15Min(int value) {
         
-        userAnchorExpCnt3H_ = value;
+        userAnchorExpCnt15Min_ = value;
         onChanged();
         return this;
       }
       /**
        * <pre>
-       * 3小时窗口特征
+       * 15分钟窗口特征
        * 曝光特征
        * </pre>
        *
-       * <code>int32 user_anchor_exp_cnt_3h = 10;</code>
+       * <code>int32 user_anchor_exp_cnt_15min = 10;</code>
        * @return This builder for chaining.
        */
-      public Builder clearUserAnchorExpCnt3H() {
+      public Builder clearUserAnchorExpCnt15Min() {
         
-        userAnchorExpCnt3H_ = 0;
+        userAnchorExpCnt15Min_ = 0;
         onChanged();
         return this;
       }
 
-      private int userAnchor3SquitCnt1H_ ;
+      private int userAnchor3SquitCnt15Min_ ;
       /**
        * <pre>
-       * 停留特征 (3小时)
+       * 停留特征
        * </pre>
        *
-       * <code>int32 user_anchor_3squit_cnt_1h = 11;</code>
-       * @return The userAnchor3squitCnt1h.
+       * <code>int32 user_anchor_3squit_cnt_15min = 11;</code>
+       * @return The userAnchor3squitCnt15min.
        */
       @java.lang.Override
-      public int getUserAnchor3SquitCnt1H() {
-        return userAnchor3SquitCnt1H_;
+      public int getUserAnchor3SquitCnt15Min() {
+        return userAnchor3SquitCnt15Min_;
       }
       /**
        * <pre>
-       * 停留特征 (3小时)
+       * 停留特征
        * </pre>
        *
-       * <code>int32 user_anchor_3squit_cnt_1h = 11;</code>
-       * @param value The userAnchor3squitCnt1h to set.
+       * <code>int32 user_anchor_3squit_cnt_15min = 11;</code>
+       * @param value The userAnchor3squitCnt15min to set.
        * @return This builder for chaining.
        */
-      public Builder setUserAnchor3SquitCnt1H(int value) {
+      public Builder setUserAnchor3SquitCnt15Min(int value) {
         
-        userAnchor3SquitCnt1H_ = value;
+        userAnchor3SquitCnt15Min_ = value;
         onChanged();
         return this;
       }
       /**
        * <pre>
-       * 停留特征 (3小时)
+       * 停留特征
        * </pre>
        *
-       * <code>int32 user_anchor_3squit_cnt_1h = 11;</code>
+       * <code>int32 user_anchor_3squit_cnt_15min = 11;</code>
        * @return This builder for chaining.
        */
-      public Builder clearUserAnchor3SquitCnt1H() {
+      public Builder clearUserAnchor3SquitCnt15Min() {
         
-        userAnchor3SquitCnt1H_ = 0;
+        userAnchor3SquitCnt15Min_ = 0;
         onChanged();
         return this;
       }
 
-      private int userAnchor6SquitCnt1H_ ;
+      private int userAnchor6SquitCnt15Min_ ;
       /**
        * <pre>
-       * 用户作者最近3h停留6s次数
+       * 用户作者最近15分钟停留6s次数
        * </pre>
        *
-       * <code>int32 user_anchor_6squit_cnt_1h = 12;</code>
-       * @return The userAnchor6squitCnt1h.
+       * <code>int32 user_anchor_6squit_cnt_15min = 12;</code>
+       * @return The userAnchor6squitCnt15min.
        */
       @java.lang.Override
-      public int getUserAnchor6SquitCnt1H() {
-        return userAnchor6SquitCnt1H_;
+      public int getUserAnchor6SquitCnt15Min() {
+        return userAnchor6SquitCnt15Min_;
       }
       /**
        * <pre>
-       * 用户作者最近3h停留6s次数
+       * 用户作者最近15分钟停留6s次数
        * </pre>
        *
-       * <code>int32 user_anchor_6squit_cnt_1h = 12;</code>
-       * @param value The userAnchor6squitCnt1h to set.
+       * <code>int32 user_anchor_6squit_cnt_15min = 12;</code>
+       * @param value The userAnchor6squitCnt15min to set.
        * @return This builder for chaining.
        */
-      public Builder setUserAnchor6SquitCnt1H(int value) {
+      public Builder setUserAnchor6SquitCnt15Min(int value) {
         
-        userAnchor6SquitCnt1H_ = value;
+        userAnchor6SquitCnt15Min_ = value;
         onChanged();
         return this;
       }
       /**
        * <pre>
-       * 用户作者最近3h停留6s次数
+       * 用户作者最近15分钟停留6s次数
        * </pre>
        *
-       * <code>int32 user_anchor_6squit_cnt_1h = 12;</code>
+       * <code>int32 user_anchor_6squit_cnt_15min = 12;</code>
        * @return This builder for chaining.
        */
-      public Builder clearUserAnchor6SquitCnt1H() {
+      public Builder clearUserAnchor6SquitCnt15Min() {
         
-        userAnchor6SquitCnt1H_ = 0;
+        userAnchor6SquitCnt15Min_ = 0;
         onChanged();
         return this;
       }
 
-      private int userAnchorLikeCnt3H_ ;
+      private int userAnchorLikeCnt15Min_ ;
       /**
        * <pre>
-       *点赞特征 (3小时)
+       *点赞特征
        * </pre>
        *
-       * <code>int32 user_anchor_like_cnt_3h = 13;</code>
-       * @return The userAnchorLikeCnt3h.
+       * <code>int32 user_anchor_like_cnt_15min = 13;</code>
+       * @return The userAnchorLikeCnt15min.
        */
       @java.lang.Override
-      public int getUserAnchorLikeCnt3H() {
-        return userAnchorLikeCnt3H_;
+      public int getUserAnchorLikeCnt15Min() {
+        return userAnchorLikeCnt15Min_;
       }
       /**
        * <pre>
-       *点赞特征 (3小时)
+       *点赞特征
        * </pre>
        *
-       * <code>int32 user_anchor_like_cnt_3h = 13;</code>
-       * @param value The userAnchorLikeCnt3h to set.
+       * <code>int32 user_anchor_like_cnt_15min = 13;</code>
+       * @param value The userAnchorLikeCnt15min to set.
        * @return This builder for chaining.
        */
-      public Builder setUserAnchorLikeCnt3H(int value) {
+      public Builder setUserAnchorLikeCnt15Min(int value) {
         
-        userAnchorLikeCnt3H_ = value;
+        userAnchorLikeCnt15Min_ = value;
         onChanged();
         return this;
       }
       /**
        * <pre>
-       *点赞特征 (3小时)
+       *点赞特征
        * </pre>
        *
-       * <code>int32 user_anchor_like_cnt_3h = 13;</code>
+       * <code>int32 user_anchor_like_cnt_15min = 13;</code>
        * @return This builder for chaining.
        */
-      public Builder clearUserAnchorLikeCnt3H() {
+      public Builder clearUserAnchorLikeCnt15Min() {
         
-        userAnchorLikeCnt3H_ = 0;
+        userAnchorLikeCnt15Min_ = 0;
         onChanged();
         return this;
       }
 
-      private int userAnchorCommentCnt3H_ ;
+      private int userAnchorCommentCnt15Min_ ;
       /**
        * <pre>
-       *评论特征 (3小时)
+       *评论特征
        * </pre>
        *
-       * <code>int32 user_anchor_comment_cnt_3h = 14;</code>
-       * @return The userAnchorCommentCnt3h.
+       * <code>int32 user_anchor_comment_cnt_15min = 14;</code>
+       * @return The userAnchorCommentCnt15min.
        */
       @java.lang.Override
-      public int getUserAnchorCommentCnt3H() {
-        return userAnchorCommentCnt3H_;
+      public int getUserAnchorCommentCnt15Min() {
+        return userAnchorCommentCnt15Min_;
       }
       /**
        * <pre>
-       *评论特征 (3小时)
+       *评论特征
        * </pre>
        *
-       * <code>int32 user_anchor_comment_cnt_3h = 14;</code>
-       * @param value The userAnchorCommentCnt3h to set.
+       * <code>int32 user_anchor_comment_cnt_15min = 14;</code>
+       * @param value The userAnchorCommentCnt15min to set.
        * @return This builder for chaining.
        */
-      public Builder setUserAnchorCommentCnt3H(int value) {
+      public Builder setUserAnchorCommentCnt15Min(int value) {
         
-        userAnchorCommentCnt3H_ = value;
+        userAnchorCommentCnt15Min_ = value;
         onChanged();
         return this;
       }
       /**
        * <pre>
-       *评论特征 (3小时)
+       *评论特征
        * </pre>
        *
-       * <code>int32 user_anchor_comment_cnt_3h = 14;</code>
+       * <code>int32 user_anchor_comment_cnt_15min = 14;</code>
        * @return This builder for chaining.
        */
-      public Builder clearUserAnchorCommentCnt3H() {
+      public Builder clearUserAnchorCommentCnt15Min() {
         
-        userAnchorCommentCnt3H_ = 0;
+        userAnchorCommentCnt15Min_ = 0;
         onChanged();
         return this;
       }
 
-      private int userAnchorFollowCnt3H_ ;
+      private int userAnchorFollowCnt15Min_ ;
       /**
        * <pre>
-       *关注特征 (3小时)
+       *关注特征
        * </pre>
        *
-       * <code>int32 user_anchor_follow_cnt_3h = 15;</code>
-       * @return The userAnchorFollowCnt3h.
+       * <code>int32 user_anchor_follow_cnt_15min = 15;</code>
+       * @return The userAnchorFollowCnt15min.
        */
       @java.lang.Override
-      public int getUserAnchorFollowCnt3H() {
-        return userAnchorFollowCnt3H_;
+      public int getUserAnchorFollowCnt15Min() {
+        return userAnchorFollowCnt15Min_;
       }
       /**
        * <pre>
-       *关注特征 (3小时)
+       *关注特征
        * </pre>
        *
-       * <code>int32 user_anchor_follow_cnt_3h = 15;</code>
-       * @param value The userAnchorFollowCnt3h to set.
+       * <code>int32 user_anchor_follow_cnt_15min = 15;</code>
+       * @param value The userAnchorFollowCnt15min to set.
        * @return This builder for chaining.
        */
-      public Builder setUserAnchorFollowCnt3H(int value) {
+      public Builder setUserAnchorFollowCnt15Min(int value) {
         
-        userAnchorFollowCnt3H_ = value;
+        userAnchorFollowCnt15Min_ = value;
         onChanged();
         return this;
       }
       /**
        * <pre>
-       *关注特征 (3小时)
+       *关注特征
        * </pre>
        *
-       * <code>int32 user_anchor_follow_cnt_3h = 15;</code>
+       * <code>int32 user_anchor_follow_cnt_15min = 15;</code>
        * @return This builder for chaining.
        */
-      public Builder clearUserAnchorFollowCnt3H() {
+      public Builder clearUserAnchorFollowCnt15Min() {
         
-        userAnchorFollowCnt3H_ = 0;
+        userAnchorFollowCnt15Min_ = 0;
         onChanged();
         return this;
       }
 
-      private int userAnchorShareCnt3H_ ;
+      private int userAnchorShareCnt15Min_ ;
       /**
        * <pre>
-       *分享特征 (3小时)
+       *分享特征
        * </pre>
        *
-       * <code>int32 user_anchor_share_cnt_3h = 16;</code>
-       * @return The userAnchorShareCnt3h.
+       * <code>int32 user_anchor_share_cnt_15min = 16;</code>
+       * @return The userAnchorShareCnt15min.
        */
       @java.lang.Override
-      public int getUserAnchorShareCnt3H() {
-        return userAnchorShareCnt3H_;
+      public int getUserAnchorShareCnt15Min() {
+        return userAnchorShareCnt15Min_;
       }
       /**
        * <pre>
-       *分享特征 (3小时)
+       *分享特征
        * </pre>
        *
-       * <code>int32 user_anchor_share_cnt_3h = 16;</code>
-       * @param value The userAnchorShareCnt3h to set.
+       * <code>int32 user_anchor_share_cnt_15min = 16;</code>
+       * @param value The userAnchorShareCnt15min to set.
        * @return This builder for chaining.
        */
-      public Builder setUserAnchorShareCnt3H(int value) {
+      public Builder setUserAnchorShareCnt15Min(int value) {
         
-        userAnchorShareCnt3H_ = value;
+        userAnchorShareCnt15Min_ = value;
         onChanged();
         return this;
       }
       /**
        * <pre>
-       *分享特征 (3小时)
+       *分享特征
        * </pre>
        *
-       * <code>int32 user_anchor_share_cnt_3h = 16;</code>
+       * <code>int32 user_anchor_share_cnt_15min = 16;</code>
        * @return This builder for chaining.
        */
-      public Builder clearUserAnchorShareCnt3H() {
+      public Builder clearUserAnchorShareCnt15Min() {
         
-        userAnchorShareCnt3H_ = 0;
+        userAnchorShareCnt15Min_ = 0;
         onChanged();
         return this;
       }
 
-      private int userAnchorGiftCnt3H_ ;
+      private int userAnchorGiftCnt15Min_ ;
       /**
        * <pre>
-       *送礼特征 (3小时)
+       *送礼特征
        * </pre>
        *
-       * <code>int32 user_anchor_gift_cnt_3h = 17;</code>
-       * @return The userAnchorGiftCnt3h.
+       * <code>int32 user_anchor_gift_cnt_15min = 17;</code>
+       * @return The userAnchorGiftCnt15min.
        */
       @java.lang.Override
-      public int getUserAnchorGiftCnt3H() {
-        return userAnchorGiftCnt3H_;
+      public int getUserAnchorGiftCnt15Min() {
+        return userAnchorGiftCnt15Min_;
       }
       /**
        * <pre>
-       *送礼特征 (3小时)
+       *送礼特征
        * </pre>
        *
-       * <code>int32 user_anchor_gift_cnt_3h = 17;</code>
-       * @param value The userAnchorGiftCnt3h to set.
+       * <code>int32 user_anchor_gift_cnt_15min = 17;</code>
+       * @param value The userAnchorGiftCnt15min to set.
        * @return This builder for chaining.
        */
-      public Builder setUserAnchorGiftCnt3H(int value) {
+      public Builder setUserAnchorGiftCnt15Min(int value) {
         
-        userAnchorGiftCnt3H_ = value;
+        userAnchorGiftCnt15Min_ = value;
         onChanged();
         return this;
       }
       /**
        * <pre>
-       *送礼特征 (3小时)
+       *送礼特征
        * </pre>
        *
-       * <code>int32 user_anchor_gift_cnt_3h = 17;</code>
+       * <code>int32 user_anchor_gift_cnt_15min = 17;</code>
        * @return This builder for chaining.
        */
-      public Builder clearUserAnchorGiftCnt3H() {
+      public Builder clearUserAnchorGiftCnt15Min() {
         
-        userAnchorGiftCnt3H_ = 0;
+        userAnchorGiftCnt15Min_ = 0;
         onChanged();
         return this;
       }
 
-      private int userAnchorGiftAmount3H_ ;
+      private int userAnchorGiftAmount15Min_ ;
       /**
        * <pre>
-       *送礼金额特征 (3小时)
+       *送礼金额特征
        * </pre>
        *
-       * <code>int32 user_anchor_gift_amount_3h = 18;</code>
-       * @return The userAnchorGiftAmount3h.
+       * <code>int32 user_anchor_gift_amount_15min = 18;</code>
+       * @return The userAnchorGiftAmount15min.
        */
       @java.lang.Override
-      public int getUserAnchorGiftAmount3H() {
-        return userAnchorGiftAmount3H_;
+      public int getUserAnchorGiftAmount15Min() {
+        return userAnchorGiftAmount15Min_;
       }
       /**
        * <pre>
-       *送礼金额特征 (3小时)
+       *送礼金额特征
        * </pre>
        *
-       * <code>int32 user_anchor_gift_amount_3h = 18;</code>
-       * @param value The userAnchorGiftAmount3h to set.
+       * <code>int32 user_anchor_gift_amount_15min = 18;</code>
+       * @param value The userAnchorGiftAmount15min to set.
        * @return This builder for chaining.
        */
-      public Builder setUserAnchorGiftAmount3H(int value) {
+      public Builder setUserAnchorGiftAmount15Min(int value) {
         
-        userAnchorGiftAmount3H_ = value;
+        userAnchorGiftAmount15Min_ = value;
         onChanged();
         return this;
       }
       /**
        * <pre>
-       *送礼金额特征 (3小时)
+       *送礼金额特征
        * </pre>
        *
-       * <code>int32 user_anchor_gift_amount_3h = 18;</code>
+       * <code>int32 user_anchor_gift_amount_15min = 18;</code>
        * @return This builder for chaining.
        */
-      public Builder clearUserAnchorGiftAmount3H() {
+      public Builder clearUserAnchorGiftAmount15Min() {
         
-        userAnchorGiftAmount3H_ = 0;
+        userAnchorGiftAmount15Min_ = 0;
         onChanged();
         return this;
       }
 
-      private int userAnchorNegativeFeedbackCnt3H_ ;
+      private int userAnchorNegativeFeedbackCnt15Min_ ;
       /**
        * <pre>
        * 负反馈特征
        * </pre>
        *
-       * <code>int32 user_anchor_negative_feedback_cnt_3h = 19;</code>
-       * @return The userAnchorNegativeFeedbackCnt3h.
+       * <code>int32 user_anchor_negative_feedback_cnt_15min = 19;</code>
+       * @return The userAnchorNegativeFeedbackCnt15min.
        */
       @java.lang.Override
-      public int getUserAnchorNegativeFeedbackCnt3H() {
-        return userAnchorNegativeFeedbackCnt3H_;
-      }
-      /**
-       * <pre>
-       * 负反馈特征
-       * </pre>
-       *
-       * <code>int32 user_anchor_negative_feedback_cnt_3h = 19;</code>
-       * @param value The userAnchorNegativeFeedbackCnt3h to set.
-       * @return This builder for chaining.
-       */
-      public Builder setUserAnchorNegativeFeedbackCnt3H(int value) {
-        
-        userAnchorNegativeFeedbackCnt3H_ = value;
-        onChanged();
-        return this;
+      public int getUserAnchorNegativeFeedbackCnt15Min() {
+        return userAnchorNegativeFeedbackCnt15Min_;
       }
       /**
        * <pre>
        * 负反馈特征
        * </pre>
        *
-       * <code>int32 user_anchor_negative_feedback_cnt_3h = 19;</code>
+       * <code>int32 user_anchor_negative_feedback_cnt_15min = 19;</code>
+       * @param value The userAnchorNegativeFeedbackCnt15min to set.
        * @return This builder for chaining.
        */
-      public Builder clearUserAnchorNegativeFeedbackCnt3H() {
+      public Builder setUserAnchorNegativeFeedbackCnt15Min(int value) {
         
-        userAnchorNegativeFeedbackCnt3H_ = 0;
+        userAnchorNegativeFeedbackCnt15Min_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 负反馈特征
+       * </pre>
+       *
+       * <code>int32 user_anchor_negative_feedback_cnt_15min = 19;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserAnchorNegativeFeedbackCnt15Min() {
+        
+        userAnchorNegativeFeedbackCnt15Min_ = 0;
         onChanged();
         return this;
       }
@@ -22782,17 +22782,18 @@ public final class RecFeature {
       "lay_cnt\030W \001(\005\022\036\n\026user_tag16_comment_cnt\030" +
       "X \001(\005\022\033\n\023user_tag17_like_cnt\030Y \001(\005\022\033\n\023us" +
       "er_tag17_play_cnt\030Z \001(\005\022\036\n\026user_tag17_co" +
-      "mment_cnt\030[ \001(\005\"\236\003\n\025LiveUserAnchorFeatur" +
-      "e\022\017\n\007user_id\030\001 \001(\004\022\021\n\tanchor_id\030\002 \001(\004\022\036\n" +
-      "\026user_anchor_exp_cnt_3h\030\n \001(\005\022!\n\031user_an" +
-      "chor_3squit_cnt_1h\030\013 \001(\005\022!\n\031user_anchor_" +
-      "6squit_cnt_1h\030\014 \001(\005\022\037\n\027user_anchor_like_" +
-      "cnt_3h\030\r \001(\005\022\"\n\032user_anchor_comment_cnt_" +
-      "3h\030\016 \001(\005\022!\n\031user_anchor_follow_cnt_3h\030\017 " +
-      "\001(\005\022 \n\030user_anchor_share_cnt_3h\030\020 \001(\005\022\037\n" +
-      "\027user_anchor_gift_cnt_3h\030\021 \001(\005\022\"\n\032user_a" +
-      "nchor_gift_amount_3h\030\022 \001(\005\022,\n$user_ancho" +
-      "r_negative_feedback_cnt_3h\030\023 \001(\005b\006proto3"
+      "mment_cnt\030[ \001(\005\"\274\003\n\025LiveUserAnchorFeatur" +
+      "e\022\017\n\007user_id\030\001 \001(\004\022\021\n\tanchor_id\030\002 \001(\004\022!\n" +
+      "\031user_anchor_exp_cnt_15min\030\n \001(\005\022$\n\034user" +
+      "_anchor_3squit_cnt_15min\030\013 \001(\005\022$\n\034user_a" +
+      "nchor_6squit_cnt_15min\030\014 \001(\005\022\"\n\032user_anc" +
+      "hor_like_cnt_15min\030\r \001(\005\022%\n\035user_anchor_" +
+      "comment_cnt_15min\030\016 \001(\005\022$\n\034user_anchor_f" +
+      "ollow_cnt_15min\030\017 \001(\005\022#\n\033user_anchor_sha" +
+      "re_cnt_15min\030\020 \001(\005\022\"\n\032user_anchor_gift_c" +
+      "nt_15min\030\021 \001(\005\022%\n\035user_anchor_gift_amoun" +
+      "t_15min\030\022 \001(\005\022/\n\'user_anchor_negative_fe" +
+      "edback_cnt_15min\030\023 \001(\005b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -22821,7 +22822,7 @@ public final class RecFeature {
     internal_static_com_gosh_entity_LiveUserAnchorFeature_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_gosh_entity_LiveUserAnchorFeature_descriptor,
-        new java.lang.String[] { "UserId", "AnchorId", "UserAnchorExpCnt3H", "UserAnchor3SquitCnt1H", "UserAnchor6SquitCnt1H", "UserAnchorLikeCnt3H", "UserAnchorCommentCnt3H", "UserAnchorFollowCnt3H", "UserAnchorShareCnt3H", "UserAnchorGiftCnt3H", "UserAnchorGiftAmount3H", "UserAnchorNegativeFeedbackCnt3H", });
+        new java.lang.String[] { "UserId", "AnchorId", "UserAnchorExpCnt15Min", "UserAnchor3SquitCnt15Min", "UserAnchor6SquitCnt15Min", "UserAnchorLikeCnt15Min", "UserAnchorCommentCnt15Min", "UserAnchorFollowCnt15Min", "UserAnchorShareCnt15Min", "UserAnchorGiftCnt15Min", "UserAnchorGiftAmount15Min", "UserAnchorNegativeFeedbackCnt15Min", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

@@ -27,10 +27,10 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LiveUserAnchorFeature3hJob {
-    private static final Logger LOG = LoggerFactory.getLogger(LiveUserAnchorFeature3hJob.class);
+public class LiveUserAnchorFeature15minJob {
+    private static final Logger LOG = LoggerFactory.getLogger(LiveUserAnchorFeature15minJob.class);
     private static String PREFIX = "rec:user_anchor_feature:{";
-    private static String SUFFIX = "}:live3h";
+    private static String SUFFIX = "}:live15min";
 
     public static void main(String[] args) throws Exception {
         // 第一步：创建flink环境
@@ -58,7 +58,7 @@ public class LiveUserAnchorFeature3hJob {
             .flatMap(new LiveEventParser())
             .name("Parse Live Quit Events");
 
-        // 第四步：按 uid 分组并进行 3 小时窗口（滑动 10 分钟）聚合
+        // 第四步：按 uid 分组并进行 3 小时窗口（滑动 5 分钟）聚合
         DataStream<UserAnchorFeature3hAggregation> aggregatedStream = eventStream
             .keyBy(new KeySelector<LiveUserAnchorEvent, Long>() {
                 @Override
@@ -67,8 +67,8 @@ public class LiveUserAnchorFeature3hJob {
                 }
             })
             .window(SlidingProcessingTimeWindows.of(
-                Time.hours(3),
-                Time.minutes(10)
+                Time.minutes(15),
+                Time.seconds(15)
             ))
             .aggregate(new UserAnchorFeature3hAggregator())
             .name("User-Anchor Feature 3h Aggregation");
@@ -85,9 +85,9 @@ public class LiveUserAnchorFeature3hJob {
             })
             .name("Aggregation to Protobuf Bytes");
 
-        // 第六步：创建sink，Redis环境（TTL=30分钟，DEL_HMSET）
+        // 第六步：创建sink，Redis环境（TTL=10分钟，DEL_HMSET）
         RedisConfig redisConfig = RedisConfig.fromProperties(RedisUtil.loadProperties());
-        redisConfig.setTtl(1800);
+        redisConfig.setTtl(300);
         redisConfig.setCommand("DEL_HMSET");
         RedisUtil.addRedisHashMapSink(
             dataStream,
@@ -177,10 +177,10 @@ public class LiveUserAnchorFeature3hJob {
                 byte[] bytes = RecFeature.LiveUserAnchorFeature.newBuilder()
                     .setUserId(acc.uid)
                     .setAnchorId(anchorId)
-                    .setUserAnchorExpCnt3H(c.exposureCount)
-                    .setUserAnchor3SquitCnt1H(c.watch3sPlusCount)
-                    .setUserAnchor6SquitCnt1H(c.watch6sPlusCount)
-                    .setUserAnchorNegativeFeedbackCnt3H(negative)
+                    .setUserAnchorExpCnt15Min(c.exposureCount)
+                    .setUserAnchor3SquitCnt15Min(c.watch3sPlusCount)
+                    .setUserAnchor6SquitCnt15Min(c.watch6sPlusCount)
+                    .setUserAnchorNegativeFeedbackCnt15Min(negative)
                     .build()
                     .toByteArray();
                 result.anchorFeatures.put(String.valueOf(anchorId), bytes);

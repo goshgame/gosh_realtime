@@ -285,33 +285,33 @@ message RecUserAuthorFeature {
 
 
 // 直播用户主播交叉特征,hset格式
-// Redis Key: rec:user_anchor_feature:{user_id}:live3h
+// Redis Key: rec:user_anchor_feature:{user_id}:live15min
 message LiveUserAnchorFeature {
     uint64 user_id = 1;
     uint64 anchor_id = 2;
   
-    // 3小时窗口特征
+    // 15分钟窗口特征
     // 曝光特征
-    int32 user_anchor_exp_cnt_3h = 10;           // 用户主播最近3h刷到次数
+    int32 user_anchor_exp_cnt_15min = 10;           // 用户主播最近15分钟刷到次数
   
-    // 停留特征 (3小时)
-    int32 user_anchor_3squit_cnt_1h = 11;        // 用户作者最近3h停留3s次数
-    int32 user_anchor_6squit_cnt_1h = 12;        // 用户作者最近3h停留6s次数
+    // 停留特征
+    int32 user_anchor_3squit_cnt_15min = 11;        // 用户作者最近15分钟停留3s次数
+    int32 user_anchor_6squit_cnt_15min = 12;        // 用户作者最近15分钟停留6s次数
 
-    //点赞特征 (3小时)
-    int32 user_anchor_like_cnt_3h = 13;        // 用户作者最近3h点赞次数
-    //评论特征 (3小时)
-    int32 user_anchor_comment_cnt_3h = 14;        // 用户作者最近3h评论次数
-    //关注特征 (3小时)
-    int32 user_anchor_follow_cnt_3h = 15;        // 用户作者最近3h关注次数
-    //分享特征 (3小时)
-    int32 user_anchor_share_cnt_3h = 16;        // 用户作者最近3h分享次数
-    //送礼特征 (3小时)
-    int32 user_anchor_gift_cnt_3h = 17;        // 用户作者最近3h送礼次数
-    //送礼金额特征 (3小时)
-    int32 user_anchor_gift_amount_3h = 18;        // 用户作者最近3h送礼金额
+    //点赞特征
+    int32 user_anchor_like_cnt_15min = 13;        // 用户作者最近15分钟点赞次数
+    //评论特征
+    int32 user_anchor_comment_cnt_15min = 14;        // 用户作者最近15分钟评论次数
+    //关注特征
+    int32 user_anchor_follow_cnt_15min = 15;        // 用户作者最近15分钟关注次数
+    //分享特征
+    int32 user_anchor_share_cnt_15min = 16;        // 用户作者最近15分钟分享次数
+    //送礼特征
+    int32 user_anchor_gift_cnt_15min = 17;        // 用户作者最近15分钟送礼次数
+    //送礼金额特征
+    int32 user_anchor_gift_amount_15min = 18;        // 用户作者最近15分钟送礼金额
 
     // 负反馈特征
-    int32 user_anchor_negative_feedback_cnt_3h = 19;        // 用户作者最近3h负反馈次数(基于以上特征合成)
+    int32 user_anchor_negative_feedback_cnt_15min = 19;        // 用户作者最近15分钟负反馈次数(基于以上特征合成)
     
 }
