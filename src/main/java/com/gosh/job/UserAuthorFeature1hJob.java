@@ -86,7 +86,7 @@ public class UserAuthorFeature1hJob {
             })
             .window(SlidingProcessingTimeWindows.of(
                 Time.hours(1), // 窗口大小1小时
-                Time.minutes(3) // 滑动间隔3分钟
+                Time.minutes(5) // 滑动间隔5分钟
             ))
             .aggregate(new UserAuthorFeature1hAggregator())
             .name("User-Author Feature 1h Aggregation");
@@ -290,7 +290,6 @@ public class UserAuthorFeature1hJob {
                     .setUserauthor10SstandCnt1H(features.stand10sRecTokens.size())
                     // 1小时互动特征
                     .setUserauthorLikeCnt1H(features.likeRecTokens.size())
-                    .setExpireTime("1h")
                     .build()
                     .toByteArray();
 

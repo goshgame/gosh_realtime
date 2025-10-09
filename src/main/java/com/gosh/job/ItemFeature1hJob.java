@@ -103,9 +103,9 @@ public class ItemFeature1hJob {
             })
             .window(SlidingProcessingTimeWindows.of(
                 Time.hours(1), // 窗口大小1小时
-                Time.minutes(3) // 滑动间隔3分钟
+                Time.minutes(5) // 滑动间隔5分钟
             ))
-                .allowedLateness(Time.minutes(5))  //允许迟到5分钟的数据
+                .allowedLateness(Time.minutes(1))  //允许迟到1分钟的数据
                 .sideOutputLateData(LATE_DATA_TAG)
             .aggregate(new ItemFeature1hAggregator())
             .name("Item Feature 1h Aggregation");
