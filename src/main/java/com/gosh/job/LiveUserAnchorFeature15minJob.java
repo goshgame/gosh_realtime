@@ -111,7 +111,7 @@ public class LiveUserAnchorFeature15minJob {
 
         // 第六步：创建sink，Redis环境（TTL=10分钟，DEL_HMSET）
         RedisConfig redisConfig = RedisConfig.fromProperties(RedisUtil.loadProperties());
-        redisConfig.setTtl(300);
+        redisConfig.setTtl(3600 * 72);
         redisConfig.setCommand("DEL_HMSET");
         LOG.info("Redis config: TTL={}, Command={}", 
             redisConfig.getTtl(), redisConfig.getCommand());
