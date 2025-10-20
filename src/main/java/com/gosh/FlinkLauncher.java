@@ -1,13 +1,11 @@
 package com.gosh;
 
 import com.amazonaws.services.kinesisanalytics.runtime.KinesisAnalyticsRuntime;
-import com.gosh.job.DemoJob;
 import org.apache.flink.api.java.utils.ParameterTool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -23,7 +21,6 @@ public class FlinkLauncher {
 
         // 2. 获取要执行的Job类名（优先从命令行参数获取）
         String className = parameterTool.get(CLASS_NAME_PARAM);
-        System.out.println("命令行获取到的className参数: " + className);
 
         // 3. 如果命令行未指定，从AWS Kinesis配置中获取
         if (className == null || className.trim().isEmpty()) {
@@ -43,7 +40,6 @@ public class FlinkLauncher {
 
         // 5. 确保类名安全（限制在job包下，防止恶意类加载）
         String fullClassName = ensureSafeClassName(className);
-        System.out.println("即将执行的Job类: " + fullClassName);
 
         // 6. 准备传递给Job的参数（合并命令行参数和AWS配置）
         String[] jobArgs = prepareJobArguments(parameterTool);
@@ -84,9 +80,6 @@ public class FlinkLauncher {
     private static void executeJobClass(String className, String[] args) throws Exception {
         Class<?> jobClass = Class.forName(className);
         Method mainMethod = jobClass.getMethod("main", String[].class);
-
-        System.out.println("执行Job类: " + className);
-        System.out.println("传递的参数: " + Arrays.toString(args));
 
         // 调用main方法执行Job
         mainMethod.invoke(null, (Object) args);

@@ -3,11 +3,13 @@ package com.gosh.job;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.protobuf.InvalidProtocolBufferException;
 import com.gosh.config.RedisConfig;
 import com.gosh.entity.RecFeatureDemoOuterClass;
 import com.gosh.entity.UserLiveEvent;
+import com.gosh.monitor.BackpressureMonitor;
+import com.gosh.process.DataSkewProcessor;
 import com.gosh.util.FlinkEnvUtil;
+import com.gosh.util.FlinkMonitorUtil;
 import com.gosh.util.KafkaEnvUtil;
 import com.gosh.util.RedisUtil;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
@@ -39,6 +41,8 @@ import java.util.Set;
 import java.util.function.Function;
 
 public class DemoJob {
+    private static final String JOB_NAME = "Demo Job"; // 统一作业名称
+
     private static final Logger LOG = LoggerFactory.getLogger(DemoJob.class);
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private static String PREFIX = "rec:user_feature:";
@@ -89,18 +93,27 @@ public class DemoJob {
                                 })
                 );
         ;
-
         // 3.2 根据 uid 分组，并使用滑动窗口进行聚合
         //   窗口大小1小时，滑动间隔10分钟
         //   UserLiveAggregator 实现聚合逻辑
-        DataStream<UserLiveAggregation> aggregatedStream = parsedStream
+
+
+        // ===== 添加数据倾斜处理 =====
+        // 使用 DataSkewProcessor 处理可能的数据倾斜
+        DataStream<UserLiveEvent> balancedStream = DataSkewProcessor.handleDataSkew(
+                parsedStream,
+                UserLiveEvent::getUid,  // Key选择器：使用uid作为判断依据
+                4                       // 基础并行度（与解析算子保持一致）
+        );
+
+        DataStream<UserLiveAggregation> aggregatedStream = balancedStream
                 .keyBy(new KeySelector<UserLiveEvent, String>() {
                     @Override
                     public String getKey(UserLiveEvent value) throws Exception {
                         return value.getUid();
                     }
                 })
-                .windowAll(SlidingProcessingTimeWindows.of(Time.hours(1).toDuration(),Time.minutes(10).toDuration()))
+                .window(SlidingProcessingTimeWindows.of(Time.hours(1).toDuration(),Time.minutes(10).toDuration()))
                 .aggregate(new UserLiveAggregator())
                 .name("User Live Aggregation")
                 ;
@@ -128,6 +141,11 @@ public class DemoJob {
 //        // 确保keyExtractor是可序列化的（显式类或Flink的Function）
 //        Function<RecFeatureDemoOuterClass.RecFeature, String> keyExtractor = new UserKeyExtractor();
 
+        // 第五步：添加反压监控（在输出到Kafka前监控队列压力）
+        SingleOutputStreamOperator<Tuple2<String, byte[]>> outDataStream =
+                dataStream.map(new BackpressureMonitor(JOB_NAME,"filter-operator"))
+                        .name("z Monitor");
+
 
         // 第五步：创建sink，Redis环境
         // 5.1 加载Redis配置
@@ -135,13 +153,14 @@ public class DemoJob {
         // 5.2 添加Redis Sink
         //    支持异步和批量写入
         RedisUtil.addRedisSink(
-                dataStream,
+                outDataStream,
                 redisConfig,
                 false, // 异步写入
                 100
         );
-        //执行任务
-        env.execute("Flink Demo Job");
+
+        // 启动任务
+        FlinkMonitorUtil.executeWithMonitor(env,JOB_NAME);
     }
 
     /**
@@ -171,6 +190,7 @@ public class DemoJob {
             }
         }
     }
+
 
     /**
      * 用户直播事件聚合器
