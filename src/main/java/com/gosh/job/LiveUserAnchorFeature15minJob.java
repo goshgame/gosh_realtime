@@ -259,7 +259,14 @@ public class LiveUserAnchorFeature15minJob {
                 
                 long uid = data.path("uid").asLong(0);
                 long anchorId = data.path("anchor_id").asLong(0);
-                int scene = data.path("scene").asInt(0);
+                
+                // 提取 scene：不同事件字段名不同
+                int scene = 0;
+                if (EVENT_ENTER_LIVEROOM.equals(event) || EVENT_EXIT_LIVEROOM.equals(event)) {
+                    scene = data.path("from_scene").asInt(0);  // 进房/退房用 from_scene
+                } else {
+                    scene = data.path("scene").asInt(0);        // 曝光/浏览用 scene
+                }
                 
                 if (uid <= 0 || anchorId <= 0) {
                     return;
