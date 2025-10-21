@@ -38,7 +38,7 @@ public class LiveAnchorFeatureHotJob {
     private static final Logger LOG = LoggerFactory.getLogger(LiveAnchorFeatureHotJob.class);
     
     // Redis key前缀和后缀
-    private static final String PREFIX = "rec:user_author_feature:{";
+    private static final String PREFIX = "rec:anchor_feature:{";
     private static final String SUFFIX_5MIN = "}:live5min";
     private static final String SUFFIX_10MIN = "}:live10min";
     private static final String SUFFIX_15MIN = "}:live15min";
@@ -51,15 +51,23 @@ public class LiveAnchorFeatureHotJob {
     private static final String EVENT_LIVEROOM_FOLLOW = "liveroom_follow_anchor";
 
     public static void main(String[] args) throws Exception {
-        LOG.info("Starting LiveAnchorFeatureHotJob - processing event_type=1 for live room hot features");
+        LOG.info("========================================");
+        LOG.info("Starting LiveAnchorFeatureHotJob");
+        LOG.info("Processing event_type=1 for live room hot features");
+        LOG.info("Target events: enter_liveroom, exit_liveroom, liveroom_chat_message, liveroom_gift_send, liveroom_follow_anchor");
+        LOG.info("Windows: 5min/10min/15min, slide interval: 10s");
+        LOG.info("Redis key prefix: {}", PREFIX);
+        LOG.info("========================================");
         
         // 第一步：创建Flink环境
         StreamExecutionEnvironment env = FlinkEnvUtil.createStreamExecutionEnvironment();
+        LOG.info("Flink environment created");
 
         // 第二步：创建Kafka Source（topic=advertise）
         KafkaSource<String> inputTopic = KafkaEnvUtil.createKafkaSource(
             KafkaEnvUtil.loadProperties(), "advertise"
         );
+        LOG.info("Kafka source created for topic: advertise");
 
         // 第三步：使用KafkaSource创建DataStream
         DataStreamSource<String> kafkaSource = env.fromSource(
@@ -67,6 +75,7 @@ public class LiveAnchorFeatureHotJob {
             org.apache.flink.api.common.eventtime.WatermarkStrategy.noWatermarks(),
             "Kafka Source"
         );
+        LOG.info("Kafka data stream created");
 
         // 第四步：预过滤 - 只保留 event_type=1 的事件
         DataStream<String> filteredStream = kafkaSource
@@ -115,7 +124,26 @@ public class LiveAnchorFeatureHotJob {
                 Time.seconds(10)
             ))
             .aggregate(new AnchorHotFeatureAggregator(windowMinutes))
-            .name("Anchor Hot Feature Aggregation " + windowMinutes + "min");
+            .name("Anchor Hot Feature Aggregation " + windowMinutes + "min")
+            .process(new org.apache.flink.streaming.api.functions.ProcessFunction<AnchorHotFeatureAgg, AnchorHotFeatureAgg>() {
+                private transient long aggCount = 0;
+                private transient long lastLogTime = 0;
+                
+                @Override
+                public void processElement(AnchorHotFeatureAgg value, Context ctx, Collector<AnchorHotFeatureAgg> out) throws Exception {
+                    aggCount++;
+                    long now = System.currentTimeMillis();
+                    // 每100个窗口或每5分钟输出一次
+                    if (aggCount % 100 == 0 || now - lastLogTime > 300000) {
+                        lastLogTime = now;
+                        LOG.info("[Window Agg {}min] Total windows: {}, sample: anchorId={}, enter={}, quit={}, avgDuration={}s, giftCoin={}, giftUser={}, follow={}, chat={}", 
+                            windowMinutes, aggCount, value.anchorId, value.enterUserCount, value.quitUserCount, 
+                            value.avgQuitDuration, value.giftCoin, value.giftUserCount, value.followUserCount, value.chatUserCount);
+                    }
+                    out.collect(value);
+                }
+            })
+            .name("Agg Monitor " + windowMinutes + "min");
 
         // 转换为Protobuf并写入Redis
         DataStream<Tuple2<String, byte[]>> dataStream = aggregatedStream
@@ -130,31 +158,30 @@ public class LiveAnchorFeatureHotJob {
             })
             .name("Convert to Protobuf " + windowMinutes + "min");
 
-        // 添加Redis写入前采样日志
+        // 添加Redis写入监控日志
         dataStream
             .process(new org.apache.flink.streaming.api.functions.ProcessFunction<Tuple2<String, byte[]>, Tuple2<String, byte[]>>() {
-                private transient int sampleCount = 0;
+                private transient long writeCount = 0;
                 private transient long lastLogTime = 0;
                 
                 @Override
                 public void processElement(Tuple2<String, byte[]> value, Context ctx, Collector<Tuple2<String, byte[]>> out) throws Exception {
+                    writeCount++;
                     long now = System.currentTimeMillis();
-                    if (now - lastLogTime > 60000) { // 每60秒采样一次
+                    // 每5分钟输出一次统计
+                    if (now - lastLogTime > 300000) {
                         lastLogTime = now;
-                        if (sampleCount < 3) {
-                            sampleCount++;
-                            LOG.info("[Redis Sample {}/3][{}min] About to write: key={}, bytesSize={}", 
-                                sampleCount, windowMinutes, value.f0, value.f1 != null ? value.f1.length : 0);
-                        }
+                        LOG.info("[Redis Write {}min] Total writes: {}, latest key: {}, bytesSize: {}", 
+                            windowMinutes, writeCount, value.f0, value.f1 != null ? value.f1.length : 0);
                     }
                     out.collect(value);
                 }
             })
-            .name("Redis Write Sampling " + windowMinutes + "min");
+            .name("Redis Write Monitor " + windowMinutes + "min");
 
         // 创建Redis Sink（TTL=1小时）
         RedisConfig redisConfig = RedisConfig.fromProperties(RedisUtil.loadProperties());
-        redisConfig.setTtl(3600 * 1);
+        redisConfig.setTtl(300);
         redisConfig.setCommand("SET");
         LOG.info("Redis config for {}min window: TTL={}, Command={}", 
             windowMinutes, redisConfig.getTtl(), redisConfig.getCommand());
@@ -237,8 +264,14 @@ public class LiveAnchorFeatureHotJob {
             try {
                 JsonNode root = OBJECT_MAPPER.readTree(value);
                 
-                // 获取事件类型
-                JsonNode eventNode = root.path("event");
+                // 获取 user_event_log 对象
+                JsonNode userEventLog = root.path("user_event_log");
+                if (userEventLog.isMissingNode()) {
+                    return;
+                }
+                
+                // 获取事件类型（在 user_event_log.event 中）
+                JsonNode eventNode = userEventLog.path("event");
                 if (eventNode.isMissingNode() || !eventNode.isTextual()) {
                     return;
                 }
@@ -253,14 +286,14 @@ public class LiveAnchorFeatureHotJob {
                     return;
                 }
                 
-                // 获取 event_data 字段
-                JsonNode eventDataNode = root.path("event_data");
+                // 获取 event_data 字段（在 user_event_log.event_data 中）
+                JsonNode eventDataNode = userEventLog.path("event_data");
                 if (eventDataNode.isMissingNode() || !eventDataNode.isTextual()) {
                     return;
                 }
                 
                 String eventData = eventDataNode.asText();
-                if (eventData == null || eventData.isEmpty()) {
+                if (eventData == null || eventData.isEmpty() || "null".equals(eventData)) {
                     return;
                 }
                 
@@ -287,12 +320,12 @@ public class LiveAnchorFeatureHotJob {
                 
                 totalParsedEvents++;
                 if (totalParsedEvents % 10000 == 0) {
-                    LOG.info("Total parsed live events: {}", totalParsedEvents);
+                    LOG.info("[Parser] Total parsed events: {}", totalParsedEvents);
                 }
                 
                 out.collect(evt);
             } catch (Exception e) {
-                LOG.warn("Failed to parse live room event: {}", value, e);
+                // 静默处理异常
             }
         }
     }
