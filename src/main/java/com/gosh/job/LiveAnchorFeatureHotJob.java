@@ -77,45 +77,36 @@ public class LiveAnchorFeatureHotJob {
         );
         LOG.info("Kafka data stream created");
 
-        // 添加 Kafka 读取监控
-        kafkaSource
-            .process(new org.apache.flink.streaming.api.functions.ProcessFunction<String, String>() {
-                private transient long kafkaReadCount = 0;
-                private transient long lastLogTime = 0;
-                
-                @Override
-                public void processElement(String value, Context ctx, Collector<String> out) throws Exception {
-                    kafkaReadCount++;
-                    long now = System.currentTimeMillis();
-                    if (kafkaReadCount % 100 == 0 || now - lastLogTime > 10000) {
-                        lastLogTime = now;
-                        LOG.info("[Kafka Read] Total messages read: {}, sample: {}", kafkaReadCount, value.substring(0, Math.min(200, value.length())));
-                    }
-                    out.collect(value);
-                }
-            })
-            .name("Kafka Read Monitor");
-
         // 第四步：预过滤 - 只保留 event_type=1 的事件
         DataStream<String> filteredStream = kafkaSource
             .filter(EventFilterUtil.createFastEventTypeFilter(1))
             .name("Pre-filter Live Events (event_type=1)")
             .process(new org.apache.flink.streaming.api.functions.ProcessFunction<String, String>() {
-                private transient long filteredCount = 0;
-                private transient long lastLogTime = 0;
+                private transient long totalCount = 0;
+                private transient long matchCount = 0;
                 
                 @Override
                 public void processElement(String value, Context ctx, Collector<String> out) throws Exception {
-                    filteredCount++;
-                    long now = System.currentTimeMillis();
-                    if (filteredCount % 100 == 0 || now - lastLogTime > 10000) {
-                        lastLogTime = now;
-                        LOG.info("[After Filter] event_type=1 messages: {}, sample: {}", filteredCount, value.substring(0, Math.min(200, value.length())));
+                    totalCount++;
+                    
+                    // 简单字符串匹配，打印包含目标事件的原始数据
+                    if (value.contains("enter_liveroom") || value.contains("exit_liveroom") || 
+                        value.contains("liveroom_chat_message") || value.contains("liveroom_gift_send") || 
+                        value.contains("liveroom_follow_anchor")) {
+                        matchCount++;
+                        if (matchCount <= 10) {
+                            LOG.info("[String Match {}/10] Found target event in message, full data: {}", matchCount, value);
+                        }
                     }
+                    
+                    if (totalCount % 50000 == 0) {
+                        LOG.info("[Filter Summary] Processed {} messages, string matched: {}", totalCount, matchCount);
+                    }
+                    
                     out.collect(value);
                 }
             })
-            .name("Filter Monitor");
+            .name("Event String Matcher");
 
         // 第五步：解析事件（进房、退房、聊天、送礼、关注）
         SingleOutputStreamOperator<LiveRoomEvent> eventStream = filteredStream
@@ -325,9 +316,6 @@ public class LiveAnchorFeatureHotJob {
                 JsonNode userEventLog = root.path("user_event_log");
                 if (userEventLog.isMissingNode()) {
                     totalSkippedEvents++;
-                    if (totalSkippedEvents % 1000 == 0) {
-                        LOG.warn("[Parser] Skipped events (no user_event_log): {}, sample: {}", totalSkippedEvents, value.substring(0, Math.min(100, value.length())));
-                    }
                     return;
                 }
                 
@@ -335,9 +323,6 @@ public class LiveAnchorFeatureHotJob {
                 JsonNode eventNode = userEventLog.path("event");
                 if (eventNode.isMissingNode() || !eventNode.isTextual()) {
                     totalSkippedEvents++;
-                    if (totalSkippedEvents % 1000 == 0) {
-                        LOG.warn("[Parser] Skipped events (no event field): {}, sample: {}", totalSkippedEvents, value.substring(0, Math.min(100, value.length())));
-                    }
                     return;
                 }
                 String event = eventNode.asText();
@@ -349,9 +334,6 @@ public class LiveAnchorFeatureHotJob {
                     !EVENT_LIVEROOM_GIFT.equals(event) && 
                     !EVENT_LIVEROOM_FOLLOW.equals(event)) {
                     totalSkippedEvents++;
-                    if (totalSkippedEvents % 1000 == 0) {
-                        LOG.info("[Parser] Skipped events (other event types): {}, latest event type: {}", totalSkippedEvents, event);
-                    }
                     return;
                 }
                 
@@ -359,8 +341,9 @@ public class LiveAnchorFeatureHotJob {
                 JsonNode eventDataNode = userEventLog.path("event_data");
                 if (eventDataNode.isMissingNode() || !eventDataNode.isTextual()) {
                     totalSkippedEvents++;
-                    if (totalSkippedEvents % 1000 == 0) {
-                        LOG.warn("[Parser] Skipped events (no event_data): {}, event={}", totalSkippedEvents, event);
+                    if (totalSkippedEvents <= 3) {
+                        LOG.warn("[Parser Skip {}/3] No event_data field, event={}, raw: {}", 
+                            totalSkippedEvents, event, value.substring(0, Math.min(300, value.length())));
                     }
                     return;
                 }
@@ -368,8 +351,9 @@ public class LiveAnchorFeatureHotJob {
                 String eventData = eventDataNode.asText();
                 if (eventData == null || eventData.isEmpty() || "null".equals(eventData)) {
                     totalSkippedEvents++;
-                    if (totalSkippedEvents % 1000 == 0) {
-                        LOG.warn("[Parser] Skipped events (empty event_data): {}, event={}", totalSkippedEvents, event);
+                    if (totalSkippedEvents <= 3) {
+                        LOG.warn("[Parser Skip {}/3] Empty/null event_data, event={}, raw: {}", 
+                            totalSkippedEvents, event, value.substring(0, Math.min(300, value.length())));
                     }
                     return;
                 }
@@ -383,8 +367,9 @@ public class LiveAnchorFeatureHotJob {
                 
                 if (uid <= 0 || anchorId <= 0) {
                     totalSkippedEvents++;
-                    if (totalSkippedEvents % 1000 == 0) {
-                        LOG.warn("[Parser] Skipped events (invalid uid/anchorId): {}, uid={}, anchorId={}", totalSkippedEvents, uid, anchorId);
+                    if (totalSkippedEvents <= 3) {
+                        LOG.warn("[Parser Skip {}/3] Invalid uid/anchorId, event={}, uid={}, anchorId={}, eventData: {}", 
+                            totalSkippedEvents, event, uid, anchorId, eventData.substring(0, Math.min(200, eventData.length())));
                     }
                     return;
                 }
@@ -400,9 +385,9 @@ public class LiveAnchorFeatureHotJob {
                 }
                 
                 totalParsedEvents++;
-                if (totalParsedEvents % 1000 == 0) {
-                    LOG.info("[Parser] Successfully parsed: {}, failed: {}, skipped: {}, eventType: {}", 
-                        totalParsedEvents, totalFailedEvents, totalSkippedEvents, event);
+                if (totalParsedEvents <= 5 || totalParsedEvents % 1000 == 0) {
+                    LOG.info("[Parser Success {}/...] event={}, uid={}, anchorId={}, liveId={}, parsed={}, failed={}, skipped={}", 
+                        totalParsedEvents, event, uid, anchorId, liveId, totalParsedEvents, totalFailedEvents, totalSkippedEvents);
                 }
                 
                 out.collect(evt);
