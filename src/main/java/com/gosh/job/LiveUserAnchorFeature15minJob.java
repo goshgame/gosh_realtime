@@ -42,7 +42,7 @@ public class LiveUserAnchorFeature15minJob {
         LOG.info("Starting LiveUserAnchorFeature15minJob");
         LOG.info("Processing event_type=1 for user-anchor features");
         LOG.info("Target events: live_exposure, live_view, enter_liveroom, exit_liveroom");
-        LOG.info("Scene filter: 1, 3, 4, 5");
+        LOG.info("Scene filter: 1, 3, 5");
         LOG.info("========================================");
         
         // 第一步：创建flink环境
@@ -63,7 +63,53 @@ public class LiveUserAnchorFeature15minJob {
         // 3.0 预过滤 - 只保留 event_type=1 的事件
         DataStream<String> filteredStream = kafkaSource
             .filter(EventFilterUtil.createFastEventTypeFilter(1))
-            .name("Pre-filter Live Events (event_type=1)");
+            .name("Pre-filter Live Events (event_type=1)")
+            .process(new org.apache.flink.streaming.api.functions.ProcessFunction<String, String>() {
+                private transient long totalCount = 0;
+                private transient long exposureMatchCount = 0;
+                private transient long viewMatchCount = 0;
+                private transient long enterMatchCount = 0;
+                private transient long exitMatchCount = 0;
+                
+                @Override
+                public void processElement(String value, Context ctx, Collector<String> out) throws Exception {
+                    totalCount++;
+                    
+                    // 字符串匹配各种事件
+                    if (value.contains("live_exposure")) {
+                        exposureMatchCount++;
+                        if (exposureMatchCount <= 3) {
+                            LOG.info("[String Match Exposure {}/3] Full data: {}", exposureMatchCount, value);
+                        }
+                    }
+                    if (value.contains("live_view")) {
+                        viewMatchCount++;
+                        if (viewMatchCount <= 3) {
+                            LOG.info("[String Match View {}/3] Full data: {}", viewMatchCount, value);
+                        }
+                    }
+                    if (value.contains("enter_liveroom")) {
+                        enterMatchCount++;
+                        if (enterMatchCount <= 3) {
+                            LOG.info("[String Match Enter {}/3] Full data: {}", enterMatchCount, value);
+                        }
+                    }
+                    if (value.contains("exit_liveroom")) {
+                        exitMatchCount++;
+                        if (exitMatchCount <= 3) {
+                            LOG.info("[String Match Exit {}/3] Full data: {}", exitMatchCount, value);
+                        }
+                    }
+                    
+                    if (totalCount % 50000 == 0) {
+                        LOG.info("[String Match Summary] Total={}, Exposure={}, View={}, Enter={}, Exit={}", 
+                            totalCount, exposureMatchCount, viewMatchCount, enterMatchCount, exitMatchCount);
+                    }
+                    
+                    out.collect(value);
+                }
+            })
+            .name("Event String Matcher");
 
         // 3.1 解析 user_event_log 为 Live 用户-主播 事件
         SingleOutputStreamOperator<LiveUserAnchorEvent> eventStream = filteredStream
@@ -112,6 +158,20 @@ public class LiveUserAnchorFeature15minJob {
                             sampleCount++;
                             LOG.info("[Redis Sample {}/3] About to write: key={}, fieldCount={}", 
                                 sampleCount, value.f0, value.f1 != null ? value.f1.size() : 0);
+                            
+                            // 打印第一个field的protobuf解析结果
+                            if (value.f1 != null && !value.f1.isEmpty()) {
+                                Map.Entry<String, byte[]> firstEntry = value.f1.entrySet().iterator().next();
+                                try {
+                                    RecFeature.LiveUserAnchorFeature feature = RecFeature.LiveUserAnchorFeature.parseFrom(firstEntry.getValue());
+                                    LOG.info("[Redis Value Sample {}/3] anchorId={}, userId={}, expCnt={}, 3sQuit={}, 6sQuit={}, negative={}", 
+                                        sampleCount, firstEntry.getKey(), feature.getUserId(), 
+                                        feature.getUserAnchorExpCnt15Min(), feature.getUserAnchor3SquitCnt15Min(), 
+                                        feature.getUserAnchor6SquitCnt15Min(), feature.getUserAnchorNegativeFeedbackCnt15Min());
+                                } catch (Exception e) {
+                                    LOG.warn("[Redis Value Sample {}/3] Failed to parse protobuf: {}", sampleCount, e.getMessage());
+                                }
+                            }
                         }
                     }
                     out.collect(value);
@@ -119,9 +179,9 @@ public class LiveUserAnchorFeature15minJob {
             })
             .name("Redis Write Sampling");
 
-        // 第六步：创建sink，Redis环境（TTL=5分钟，DEL_HMSET）
+        // 第六步：创建sink，Redis环境（TTL=10分钟，DEL_HMSET）
         RedisConfig redisConfig = RedisConfig.fromProperties(RedisUtil.loadProperties());
-        redisConfig.setTtl(300);
+        redisConfig.setTtl(3600 * 72);
         redisConfig.setCommand("DEL_HMSET");
         LOG.info("Redis config: TTL={}, Command={}", 
             redisConfig.getTtl(), redisConfig.getCommand());
@@ -152,6 +212,10 @@ public class LiveUserAnchorFeature15minJob {
     public static class LiveEventParser implements FlatMapFunction<String, LiveUserAnchorEvent> {
         private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
         private static volatile long totalParsedEvents = 0;
+        private static volatile long exposureCount = 0;
+        private static volatile long viewCount = 0;
+        private static volatile long enterCount = 0;
+        private static volatile long exitCount = 0;
 
         @Override
         public void flatMap(String value, Collector<LiveUserAnchorEvent> out) throws Exception {
@@ -195,7 +259,14 @@ public class LiveUserAnchorFeature15minJob {
                 
                 long uid = data.path("uid").asLong(0);
                 long anchorId = data.path("anchor_id").asLong(0);
-                int scene = data.path("scene").asInt(0);
+                
+                // 提取 scene：不同事件字段名不同
+                int scene = 0;
+                if (EVENT_ENTER_LIVEROOM.equals(event) || EVENT_EXIT_LIVEROOM.equals(event)) {
+                    scene = data.path("from_scene").asInt(0);  // 进房/退房用 from_scene
+                } else {
+                    scene = data.path("scene").asInt(0);        // 曝光/浏览用 scene
+                }
                 
                 if (uid <= 0 || anchorId <= 0) {
                     return;
@@ -222,9 +293,39 @@ public class LiveUserAnchorFeature15minJob {
                     evt.watchDuration = data.path("stay_duration").asLong(0);
                 }
                 
+                // 统计各事件类型数量并打印样例
                 totalParsedEvents++;
+                String tokenPreview = evt.recToken.isEmpty() ? "" : evt.recToken.substring(0, Math.min(20, evt.recToken.length()));
+                
+                if (EVENT_LIVE_EXPOSURE.equals(event)) {
+                    exposureCount++;
+                    if (exposureCount <= 3) {
+                        LOG.info("[Parse Sample Exposure {}/3] uid={}, anchorId={}, scene={}, recToken={}", 
+                            exposureCount, uid, anchorId, scene, tokenPreview);
+                    }
+                } else if (EVENT_LIVE_VIEW.equals(event)) {
+                    viewCount++;
+                    if (viewCount <= 3) {
+                        LOG.info("[Parse Sample View {}/3] uid={}, anchorId={}, scene={}, watchDuration={}, recToken={}", 
+                            viewCount, uid, anchorId, scene, evt.watchDuration, tokenPreview);
+                    }
+                } else if (EVENT_ENTER_LIVEROOM.equals(event)) {
+                    enterCount++;
+                    if (enterCount <= 3) {
+                        LOG.info("[Parse Sample Enter {}/3] uid={}, anchorId={}, scene={}, recToken={}", 
+                            enterCount, uid, anchorId, scene, tokenPreview);
+                    }
+                } else if (EVENT_EXIT_LIVEROOM.equals(event)) {
+                    exitCount++;
+                    if (exitCount <= 3) {
+                        LOG.info("[Parse Sample Exit {}/3] uid={}, anchorId={}, scene={}, watchDuration={}, recToken={}", 
+                            exitCount, uid, anchorId, scene, evt.watchDuration, tokenPreview);
+                    }
+                }
+                
                 if (totalParsedEvents % 10000 == 0) {
-                    LOG.info("[Parser] Total parsed events: {}", totalParsedEvents);
+                    LOG.info("[Parser Summary] Total={}, Exposure={}, View={}, Enter={}, Exit={}", 
+                        totalParsedEvents, exposureCount, viewCount, enterCount, exitCount);
                 }
                 
                 out.collect(evt);
