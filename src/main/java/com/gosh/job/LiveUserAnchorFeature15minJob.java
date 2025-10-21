@@ -112,6 +112,20 @@ public class LiveUserAnchorFeature15minJob {
                             sampleCount++;
                             LOG.info("[Redis Sample {}/3] About to write: key={}, fieldCount={}", 
                                 sampleCount, value.f0, value.f1 != null ? value.f1.size() : 0);
+                            
+                            // 打印第一个field的protobuf解析结果
+                            if (value.f1 != null && !value.f1.isEmpty()) {
+                                Map.Entry<String, byte[]> firstEntry = value.f1.entrySet().iterator().next();
+                                try {
+                                    RecFeature.LiveUserAnchorFeature feature = RecFeature.LiveUserAnchorFeature.parseFrom(firstEntry.getValue());
+                                    LOG.info("[Redis Value Sample {}/3] anchorId={}, userId={}, expCnt={}, 3sQuit={}, 6sQuit={}, negative={}", 
+                                        sampleCount, firstEntry.getKey(), feature.getUserId(), 
+                                        feature.getUserAnchorExpCnt15Min(), feature.getUserAnchor3SquitCnt15Min(), 
+                                        feature.getUserAnchor6SquitCnt15Min(), feature.getUserAnchorNegativeFeedbackCnt15Min());
+                                } catch (Exception e) {
+                                    LOG.warn("[Redis Value Sample {}/3] Failed to parse protobuf: {}", sampleCount, e.getMessage());
+                                }
+                            }
                         }
                     }
                     out.collect(value);
@@ -152,6 +166,10 @@ public class LiveUserAnchorFeature15minJob {
     public static class LiveEventParser implements FlatMapFunction<String, LiveUserAnchorEvent> {
         private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
         private static volatile long totalParsedEvents = 0;
+        private static volatile long exposureCount = 0;
+        private static volatile long viewCount = 0;
+        private static volatile long enterCount = 0;
+        private static volatile long exitCount = 0;
 
         @Override
         public void flatMap(String value, Collector<LiveUserAnchorEvent> out) throws Exception {
@@ -222,9 +240,39 @@ public class LiveUserAnchorFeature15minJob {
                     evt.watchDuration = data.path("stay_duration").asLong(0);
                 }
                 
+                // 统计各事件类型数量并打印样例
                 totalParsedEvents++;
+                String tokenPreview = evt.recToken.isEmpty() ? "" : evt.recToken.substring(0, Math.min(20, evt.recToken.length()));
+                
+                if (EVENT_LIVE_EXPOSURE.equals(event)) {
+                    exposureCount++;
+                    if (exposureCount <= 3) {
+                        LOG.info("[Parse Sample Exposure {}/3] uid={}, anchorId={}, scene={}, recToken={}", 
+                            exposureCount, uid, anchorId, scene, tokenPreview);
+                    }
+                } else if (EVENT_LIVE_VIEW.equals(event)) {
+                    viewCount++;
+                    if (viewCount <= 3) {
+                        LOG.info("[Parse Sample View {}/3] uid={}, anchorId={}, scene={}, watchDuration={}, recToken={}", 
+                            viewCount, uid, anchorId, scene, evt.watchDuration, tokenPreview);
+                    }
+                } else if (EVENT_ENTER_LIVEROOM.equals(event)) {
+                    enterCount++;
+                    if (enterCount <= 3) {
+                        LOG.info("[Parse Sample Enter {}/3] uid={}, anchorId={}, scene={}, recToken={}", 
+                            enterCount, uid, anchorId, scene, tokenPreview);
+                    }
+                } else if (EVENT_EXIT_LIVEROOM.equals(event)) {
+                    exitCount++;
+                    if (exitCount <= 3) {
+                        LOG.info("[Parse Sample Exit {}/3] uid={}, anchorId={}, scene={}, watchDuration={}, recToken={}", 
+                            exitCount, uid, anchorId, scene, evt.watchDuration, tokenPreview);
+                    }
+                }
+                
                 if (totalParsedEvents % 10000 == 0) {
-                    LOG.info("[Parser] Total parsed events: {}", totalParsedEvents);
+                    LOG.info("[Parser Summary] Total={}, Exposure={}, View={}, Enter={}, Exit={}", 
+                        totalParsedEvents, exposureCount, viewCount, enterCount, exitCount);
                 }
                 
                 out.collect(evt);
