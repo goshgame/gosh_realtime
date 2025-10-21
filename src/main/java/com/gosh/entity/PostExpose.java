@@ -1,5 +1,6 @@
 package com.gosh.entity;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
@@ -12,6 +13,7 @@ public class PostExpose {
     private Long uid;
 
     @JsonProperty("UID")
+    @JsonAlias("uid")
     private Long UUID;
 
     @JsonProperty("list")
@@ -21,49 +23,84 @@ public class PostExpose {
     private Long createdAt;
 
     @JsonProperty("DID")
+    @JsonAlias("did") // 兼容小写did
     private String DID;
 
     @JsonProperty("APP")
+    @JsonAlias("app")
     private String APP;
 
     @JsonProperty("SMID")
+    @JsonAlias("smid")
     private String SMID;
 
     @JsonProperty("Version")
+    @JsonAlias("version")
     private String Version;
+
     @JsonProperty("Channel")
+    @JsonAlias("channel")
     private String Channel;
+
     @JsonProperty("Platform")
+    @JsonAlias("platform")
     private String Platform;
+
     @JsonProperty("Brand")
+    @JsonAlias("brand")
     private String Brand;
+
     @JsonProperty("OS")
+    @JsonAlias("os")
     private String OS;
+
     @JsonProperty("Model")
+    @JsonAlias("model")
     private String Model;
+
     @JsonProperty("Lang")
+    @JsonAlias("lang")
     private String Lang;
+
     @JsonProperty("Country")
+    @JsonAlias("country")
     private String Country;
+
     @JsonProperty("US")
+    @JsonAlias("us")
     private Integer US;
+
     @JsonProperty("Seq")
+    @JsonAlias("seq")
     private String Seq;
+
     @JsonProperty("Network")
+    @JsonAlias("network")
     private String Network;
+
     @JsonProperty("FeSystem")
+    @JsonAlias("fe_system")
     private Integer FeSystem;
 
     @JsonProperty("SubPartnerChannel")
+    @JsonAlias("sub_ch")
     private String subPartnerChannel;
 
     @JsonProperty("ClientIP")
+    @JsonAlias("client_ip")
     private String clientIP;
+
     @JsonProperty("ADID")
+    @JsonAlias("adid")
     private String ADID;
+
+
     @JsonProperty("GAID")
+    @JsonAlias("gaid")
     private String GAID;
+
     @JsonProperty("IDFA")
+    @JsonAlias("idfa")
     private String IDFA;
 
     // Getter和Setter方法

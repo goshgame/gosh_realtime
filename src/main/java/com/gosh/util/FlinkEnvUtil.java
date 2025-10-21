@@ -9,9 +9,6 @@ import org.apache.flink.contrib.streaming.state.RocksDBStateBackend;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
 import com.gosh.cons.CommonConstants;
 
 /**
@@ -21,43 +18,13 @@ import com.gosh.cons.CommonConstants;
 public class FlinkEnvUtil {
     private static final Logger LOG = LoggerFactory.getLogger(FlinkEnvUtil.class);
 
-
-    /**
-     * 从配置文件加载 Flink 配置
-     *
-     * @return Flink Configuration 对象
-     */
-    public static Configuration loadConfigurationFromProperties() {
-        Configuration configuration = new Configuration();
-
-        try (InputStream input = FlinkEnvUtil.class.getClassLoader().getResourceAsStream(CommonConstants.FLINK_DEFAULT_CONF)) {
-            if (input == null) {
-                throw new RuntimeException("无法找到配置文件: " + CommonConstants.FLINK_DEFAULT_CONF);
-            }
-
-            Properties props = new Properties();
-            props.load(input);
-
-            // 将 Properties 转换为 Flink Configuration
-            for (String key : props.stringPropertyNames()) {
-                configuration.setString(key, props.getProperty(key));
-            }
-
-        } catch (IOException e) {
-            throw new RuntimeException("加载配置文件失败: " + CommonConstants.FLINK_DEFAULT_CONF, e);
-        }
-
-        return configuration;
-    }
-
-
     /**
      * 创建并配置 StreamExecutionEnvironment (DataStream API)
      *
      * @return 配置好的 StreamExecutionEnvironment
      */
     public static StreamExecutionEnvironment createStreamExecutionEnvironment() {
-        Configuration configuration = loadConfigurationFromProperties();
+        Configuration configuration = ConfigurationUtil.loadConfigurationFromProperties(CommonConstants.FLINK_DEFAULT_CONF);
         LOG.info("参数：{}",configuration);
 
         // 创建执行环境
@@ -65,8 +32,6 @@ public class FlinkEnvUtil {
 
         // 应用配置
         env.configure(configuration, FlinkEnvUtil.class.getClassLoader());
-
-        // 设置状态后端 (Flink 1.20 中推荐使用配置方式，但也可以代码设置)
         try {
             String stateBackend = configuration.getString("state.backend", "hashmap");
             if ("rocksdb".equalsIgnoreCase(stateBackend)) {
@@ -76,10 +41,15 @@ public class FlinkEnvUtil {
                 env.setStateBackend(rocksDBStateBackend);
             }
         } catch (Exception e) {
-            System.err.println("设置状态后端失败: " + e.getMessage());
+            LOG.error("设置状态后端失败: {}", e.getMessage(), e);
         }
-
-        return env;
+        
+        // 使用默认配置创建监控实例并包装环境
+        String defaultJobName = "default-flink-job"; // 默认作业名称
+        String defaultOperatorName = "default-operator"; // 默认算子名称
+        
+        FlinkMonitorUtil monitorUtil = FlinkMonitorUtil.create(defaultJobName, defaultOperatorName);
+        return monitorUtil.wrapMonitorEnvironment(env);
     }
 
     /**
@@ -87,7 +57,7 @@ public class FlinkEnvUtil {
      * @return 配置好的 StreamTableEnvironment
      */
     public static StreamTableEnvironment createStreamTableEnvironment() {
-        Configuration configuration = loadConfigurationFromProperties();
+        Configuration configuration = ConfigurationUtil.loadConfigurationFromProperties(CommonConstants.FLINK_DEFAULT_CONF);
 
         // 创建流环境
         StreamExecutionEnvironment streamEnv = createStreamExecutionEnvironment();
@@ -106,7 +76,7 @@ public class FlinkEnvUtil {
      * @return 配置好的 TableEnvironment
      */
     public static TableEnvironment createBatchTableEnvironment() {
-        Configuration configuration = loadConfigurationFromProperties();
+        Configuration configuration = ConfigurationUtil.loadConfigurationFromProperties(CommonConstants.FLINK_DEFAULT_CONF);
 
         // 创建表环境设置
         EnvironmentSettings settings = EnvironmentSettings.newInstance()
@@ -128,7 +98,7 @@ public class FlinkEnvUtil {
      */
     public static StreamExecutionEnvironment createRemoteStreamExecutionEnvironment(
             String configPath, String host, int port, String... jarFiles) {
-        Configuration configuration = loadConfigurationFromProperties();
+        Configuration configuration = ConfigurationUtil.loadConfigurationFromProperties(CommonConstants.FLINK_DEFAULT_CONF);
 
         // 创建远程执行环境
         StreamExecutionEnvironment env = StreamExecutionEnvironment.createRemoteEnvironment(
@@ -138,7 +108,8 @@ public class FlinkEnvUtil {
     }
 
     public static void main(String[] args) {
-        StreamExecutionEnvironment streamExecutionEnvironment = FlinkEnvUtil.createStreamExecutionEnvironment();
-
+        // 创建默认的执行环境（带监控）
+        StreamExecutionEnvironment env = FlinkEnvUtil.createStreamExecutionEnvironment();
+        LOG.info("默认执行环境已创建");
     }
 }
