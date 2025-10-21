@@ -115,18 +115,27 @@ public class LiveAnchorFeatureHotJob {
             .process(new org.apache.flink.streaming.api.functions.ProcessFunction<LiveRoomEvent, LiveRoomEvent>() {
                 private transient long parsedCount = 0;
                 private transient long lastLogTime = 0;
-                private transient Map<String, Long> eventTypeCounter = new HashMap<>();
+                private transient Map<String, Long> eventTypeCounter;
+                
+                @Override
+                public void open(org.apache.flink.configuration.Configuration parameters) throws Exception {
+                    super.open(parameters);
+                    eventTypeCounter = new HashMap<>();
+                }
                 
                 @Override
                 public void processElement(LiveRoomEvent value, Context ctx, Collector<LiveRoomEvent> out) throws Exception {
                     parsedCount++;
+                    if (eventTypeCounter == null) {
+                        eventTypeCounter = new HashMap<>();
+                    }
                     eventTypeCounter.put(value.eventType, eventTypeCounter.getOrDefault(value.eventType, 0L) + 1);
                     
                     long now = System.currentTimeMillis();
-                    if (parsedCount % 100 == 0 || now - lastLogTime > 10000) {
+                    if (parsedCount <= 5 || parsedCount % 1000 == 0 || now - lastLogTime > 30000) {
                         lastLogTime = now;
-                        LOG.info("[After Parse] Total parsed: {}, eventTypes: {}, sample: uid={}, anchorId={}, event={}", 
-                            parsedCount, eventTypeCounter, value.uid, value.anchorId, value.eventType);
+                        LOG.info("[After Parse {}] Total parsed: {}, eventTypes: {}, sample: uid={}, anchorId={}, event={}", 
+                            parsedCount, parsedCount, eventTypeCounter, value.uid, value.anchorId, value.eventType);
                     }
                     out.collect(value);
                 }
