@@ -80,67 +80,12 @@ public class LiveAnchorFeatureHotJob {
         // 第四步：预过滤 - 只保留 event_type=1 的事件
         DataStream<String> filteredStream = kafkaSource
             .filter(EventFilterUtil.createFastEventTypeFilter(1))
-            .name("Pre-filter Live Events (event_type=1)")
-            .process(new org.apache.flink.streaming.api.functions.ProcessFunction<String, String>() {
-                private transient long totalCount = 0;
-                private transient long matchCount = 0;
-                
-                @Override
-                public void processElement(String value, Context ctx, Collector<String> out) throws Exception {
-                    totalCount++;
-                    
-                    // 简单字符串匹配，打印包含目标事件的原始数据
-                    if (value.contains("enter_liveroom") || value.contains("exit_liveroom") || 
-                        value.contains("liveroom_chat_message") || value.contains("liveroom_gift_send") || 
-                        value.contains("liveroom_follow_anchor")) {
-                        matchCount++;
-                        if (matchCount <= 10) {
-                            LOG.info("[String Match {}/10] Found target event in message, full data: {}", matchCount, value);
-                        }
-                    }
-                    
-                    if (totalCount % 50000 == 0) {
-                        LOG.info("[Filter Summary] Processed {} messages, string matched: {}", totalCount, matchCount);
-                    }
-                    
-                    out.collect(value);
-                }
-            })
-            .name("Event String Matcher");
+            .name("Pre-filter Live Events (event_type=1)");
 
         // 第五步：解析事件（进房、退房、聊天、送礼、关注）
         SingleOutputStreamOperator<LiveRoomEvent> eventStream = filteredStream
             .flatMap(new LiveRoomEventParser())
-            .name("Parse Live Room Events")
-            .process(new org.apache.flink.streaming.api.functions.ProcessFunction<LiveRoomEvent, LiveRoomEvent>() {
-                private transient long parsedCount = 0;
-                private transient long lastLogTime = 0;
-                private transient Map<String, Long> eventTypeCounter;
-                
-                @Override
-                public void open(org.apache.flink.configuration.Configuration parameters) throws Exception {
-                    super.open(parameters);
-                    eventTypeCounter = new HashMap<>();
-                }
-                
-                @Override
-                public void processElement(LiveRoomEvent value, Context ctx, Collector<LiveRoomEvent> out) throws Exception {
-                    parsedCount++;
-                    if (eventTypeCounter == null) {
-                        eventTypeCounter = new HashMap<>();
-                    }
-                    eventTypeCounter.put(value.eventType, eventTypeCounter.getOrDefault(value.eventType, 0L) + 1);
-                    
-                    long now = System.currentTimeMillis();
-                    if (parsedCount <= 5 || parsedCount % 1000 == 0 || now - lastLogTime > 30000) {
-                        lastLogTime = now;
-                        LOG.info("[After Parse {}] Total parsed: {}, eventTypes: {}, sample: uid={}, anchorId={}, event={}", 
-                            parsedCount, parsedCount, eventTypeCounter, value.uid, value.anchorId, value.eventType);
-                    }
-                    out.collect(value);
-                }
-            })
-            .name("Parse Monitor");
+            .name("Parse Live Room Events");
 
         // 第六步：为3个时间窗口创建数据流并写入Redis
         
@@ -188,11 +133,12 @@ public class LiveAnchorFeatureHotJob {
                 public void processElement(AnchorHotFeatureAgg value, Context ctx, Collector<AnchorHotFeatureAgg> out) throws Exception {
                     aggCount++;
                     long now = System.currentTimeMillis();
-                    if (aggCount % 10 == 0 || now - lastLogTime > 30000) {
+                    // 每100个窗口或每5分钟输出一次
+                    if (aggCount % 100 == 0 || now - lastLogTime > 300000) {
                         lastLogTime = now;
-                        LOG.info("[Window Agg {}min] Total windows: {}, anchorId={}, enter={}, quit={}, gift={}, follow={}, chat={}", 
+                        LOG.info("[Window Agg {}min] Total windows: {}, sample: anchorId={}, enter={}, quit={}, avgDuration={}s, giftCoin={}, giftUser={}, follow={}, chat={}", 
                             windowMinutes, aggCount, value.anchorId, value.enterUserCount, value.quitUserCount, 
-                            value.giftUserCount, value.followUserCount, value.chatUserCount);
+                            value.avgQuitDuration, value.giftCoin, value.giftUserCount, value.followUserCount, value.chatUserCount);
                     }
                     out.collect(value);
                 }
@@ -212,27 +158,26 @@ public class LiveAnchorFeatureHotJob {
             })
             .name("Convert to Protobuf " + windowMinutes + "min");
 
-        // 添加Redis写入前采样日志
+        // 添加Redis写入监控日志
         dataStream
             .process(new org.apache.flink.streaming.api.functions.ProcessFunction<Tuple2<String, byte[]>, Tuple2<String, byte[]>>() {
-                private transient int sampleCount = 0;
+                private transient long writeCount = 0;
                 private transient long lastLogTime = 0;
                 
                 @Override
                 public void processElement(Tuple2<String, byte[]> value, Context ctx, Collector<Tuple2<String, byte[]>> out) throws Exception {
+                    writeCount++;
                     long now = System.currentTimeMillis();
-                    if (now - lastLogTime > 60000) { // 每60秒采样一次
+                    // 每5分钟输出一次统计
+                    if (now - lastLogTime > 300000) {
                         lastLogTime = now;
-                        if (sampleCount < 3) {
-                            sampleCount++;
-                            LOG.info("[Redis Sample {}/3][{}min] About to write: key={}, bytesSize={}", 
-                                sampleCount, windowMinutes, value.f0, value.f1 != null ? value.f1.length : 0);
-                        }
+                        LOG.info("[Redis Write {}min] Total writes: {}, latest key: {}, bytesSize: {}", 
+                            windowMinutes, writeCount, value.f0, value.f1 != null ? value.f1.length : 0);
                     }
                     out.collect(value);
                 }
             })
-            .name("Redis Write Sampling " + windowMinutes + "min");
+            .name("Redis Write Monitor " + windowMinutes + "min");
 
         // 创建Redis Sink（TTL=1小时）
         RedisConfig redisConfig = RedisConfig.fromProperties(RedisUtil.loadProperties());
@@ -313,8 +258,6 @@ public class LiveAnchorFeatureHotJob {
     public static class LiveRoomEventParser implements FlatMapFunction<String, LiveRoomEvent> {
         private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
         private static volatile long totalParsedEvents = 0;
-        private static volatile long totalFailedEvents = 0;
-        private static volatile long totalSkippedEvents = 0;
 
         @Override
         public void flatMap(String value, Collector<LiveRoomEvent> out) throws Exception {
@@ -324,14 +267,12 @@ public class LiveAnchorFeatureHotJob {
                 // 获取 user_event_log 对象
                 JsonNode userEventLog = root.path("user_event_log");
                 if (userEventLog.isMissingNode()) {
-                    totalSkippedEvents++;
                     return;
                 }
                 
                 // 获取事件类型（在 user_event_log.event 中）
                 JsonNode eventNode = userEventLog.path("event");
                 if (eventNode.isMissingNode() || !eventNode.isTextual()) {
-                    totalSkippedEvents++;
                     return;
                 }
                 String event = eventNode.asText();
@@ -342,28 +283,17 @@ public class LiveAnchorFeatureHotJob {
                     !EVENT_LIVEROOM_CHAT.equals(event) && 
                     !EVENT_LIVEROOM_GIFT.equals(event) && 
                     !EVENT_LIVEROOM_FOLLOW.equals(event)) {
-                    totalSkippedEvents++;
                     return;
                 }
                 
                 // 获取 event_data 字段（在 user_event_log.event_data 中）
                 JsonNode eventDataNode = userEventLog.path("event_data");
                 if (eventDataNode.isMissingNode() || !eventDataNode.isTextual()) {
-                    totalSkippedEvents++;
-                    if (totalSkippedEvents <= 3) {
-                        LOG.warn("[Parser Skip {}/3] No event_data field, event={}, raw: {}", 
-                            totalSkippedEvents, event, value.substring(0, Math.min(300, value.length())));
-                    }
                     return;
                 }
                 
                 String eventData = eventDataNode.asText();
                 if (eventData == null || eventData.isEmpty() || "null".equals(eventData)) {
-                    totalSkippedEvents++;
-                    if (totalSkippedEvents <= 3) {
-                        LOG.warn("[Parser Skip {}/3] Empty/null event_data, event={}, raw: {}", 
-                            totalSkippedEvents, event, value.substring(0, Math.min(300, value.length())));
-                    }
                     return;
                 }
                 
@@ -375,11 +305,6 @@ public class LiveAnchorFeatureHotJob {
                 long anchorId = data.path("anchor_id").asLong(0);
                 
                 if (uid <= 0 || anchorId <= 0) {
-                    totalSkippedEvents++;
-                    if (totalSkippedEvents <= 3) {
-                        LOG.warn("[Parser Skip {}/3] Invalid uid/anchorId, event={}, uid={}, anchorId={}, eventData: {}", 
-                            totalSkippedEvents, event, uid, anchorId, eventData.substring(0, Math.min(200, eventData.length())));
-                    }
                     return;
                 }
                 
@@ -394,18 +319,13 @@ public class LiveAnchorFeatureHotJob {
                 }
                 
                 totalParsedEvents++;
-                if (totalParsedEvents <= 5 || totalParsedEvents % 1000 == 0) {
-                    LOG.info("[Parser Success {}/...] event={}, uid={}, anchorId={}, liveId={}, parsed={}, failed={}, skipped={}", 
-                        totalParsedEvents, event, uid, anchorId, liveId, totalParsedEvents, totalFailedEvents, totalSkippedEvents);
+                if (totalParsedEvents % 10000 == 0) {
+                    LOG.info("[Parser] Total parsed events: {}", totalParsedEvents);
                 }
                 
                 out.collect(evt);
             } catch (Exception e) {
-                totalFailedEvents++;
-                if (totalFailedEvents % 100 == 0) {
-                    LOG.warn("[Parser] Failed events: {}, error: {}, sample: {}", 
-                        totalFailedEvents, e.getMessage(), value.substring(0, Math.min(100, value.length())));
-                }
+                // 静默处理异常
             }
         }
     }
