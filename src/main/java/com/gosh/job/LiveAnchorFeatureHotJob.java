@@ -321,8 +321,18 @@ public class LiveAnchorFeatureHotJob {
             try {
                 JsonNode root = OBJECT_MAPPER.readTree(value);
                 
-                // 获取事件类型
-                JsonNode eventNode = root.path("event");
+                // 获取 user_event_log 对象
+                JsonNode userEventLog = root.path("user_event_log");
+                if (userEventLog.isMissingNode()) {
+                    totalSkippedEvents++;
+                    if (totalSkippedEvents % 1000 == 0) {
+                        LOG.warn("[Parser] Skipped events (no user_event_log): {}, sample: {}", totalSkippedEvents, value.substring(0, Math.min(100, value.length())));
+                    }
+                    return;
+                }
+                
+                // 获取事件类型（在 user_event_log.event 中）
+                JsonNode eventNode = userEventLog.path("event");
                 if (eventNode.isMissingNode() || !eventNode.isTextual()) {
                     totalSkippedEvents++;
                     if (totalSkippedEvents % 1000 == 0) {
@@ -345,16 +355,22 @@ public class LiveAnchorFeatureHotJob {
                     return;
                 }
                 
-                // 获取 event_data 字段
-                JsonNode eventDataNode = root.path("event_data");
+                // 获取 event_data 字段（在 user_event_log.event_data 中）
+                JsonNode eventDataNode = userEventLog.path("event_data");
                 if (eventDataNode.isMissingNode() || !eventDataNode.isTextual()) {
                     totalSkippedEvents++;
+                    if (totalSkippedEvents % 1000 == 0) {
+                        LOG.warn("[Parser] Skipped events (no event_data): {}, event={}", totalSkippedEvents, event);
+                    }
                     return;
                 }
                 
                 String eventData = eventDataNode.asText();
-                if (eventData == null || eventData.isEmpty()) {
+                if (eventData == null || eventData.isEmpty() || "null".equals(eventData)) {
                     totalSkippedEvents++;
+                    if (totalSkippedEvents % 1000 == 0) {
+                        LOG.warn("[Parser] Skipped events (empty event_data): {}, event={}", totalSkippedEvents, event);
+                    }
                     return;
                 }
                 
