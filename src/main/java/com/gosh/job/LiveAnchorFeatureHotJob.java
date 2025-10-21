@@ -38,7 +38,7 @@ public class LiveAnchorFeatureHotJob {
     private static final Logger LOG = LoggerFactory.getLogger(LiveAnchorFeatureHotJob.class);
     
     // Redis key前缀和后缀
-    private static final String PREFIX = "rec:user_author_feature:{";
+    private static final String PREFIX = "rec:anchor_feature:{";
     private static final String SUFFIX_5MIN = "}:live5min";
     private static final String SUFFIX_10MIN = "}:live10min";
     private static final String SUFFIX_15MIN = "}:live15min";
@@ -51,15 +51,23 @@ public class LiveAnchorFeatureHotJob {
     private static final String EVENT_LIVEROOM_FOLLOW = "liveroom_follow_anchor";
 
     public static void main(String[] args) throws Exception {
-        LOG.info("Starting LiveAnchorFeatureHotJob - processing event_type=1 for live room hot features");
+        LOG.info("========================================");
+        LOG.info("Starting LiveAnchorFeatureHotJob");
+        LOG.info("Processing event_type=1 for live room hot features");
+        LOG.info("Target events: enter_liveroom, exit_liveroom, liveroom_chat_message, liveroom_gift_send, liveroom_follow_anchor");
+        LOG.info("Windows: 5min/10min/15min, slide interval: 10s");
+        LOG.info("Redis key prefix: {}", PREFIX);
+        LOG.info("========================================");
         
         // 第一步：创建Flink环境
         StreamExecutionEnvironment env = FlinkEnvUtil.createStreamExecutionEnvironment();
+        LOG.info("Flink environment created");
 
         // 第二步：创建Kafka Source（topic=advertise）
         KafkaSource<String> inputTopic = KafkaEnvUtil.createKafkaSource(
             KafkaEnvUtil.loadProperties(), "advertise"
         );
+        LOG.info("Kafka source created for topic: advertise");
 
         // 第三步：使用KafkaSource创建DataStream
         DataStreamSource<String> kafkaSource = env.fromSource(
@@ -67,16 +75,72 @@ public class LiveAnchorFeatureHotJob {
             org.apache.flink.api.common.eventtime.WatermarkStrategy.noWatermarks(),
             "Kafka Source"
         );
+        LOG.info("Kafka data stream created");
+
+        // 添加 Kafka 读取监控
+        kafkaSource
+            .process(new org.apache.flink.streaming.api.functions.ProcessFunction<String, String>() {
+                private transient long kafkaReadCount = 0;
+                private transient long lastLogTime = 0;
+                
+                @Override
+                public void processElement(String value, Context ctx, Collector<String> out) throws Exception {
+                    kafkaReadCount++;
+                    long now = System.currentTimeMillis();
+                    if (kafkaReadCount % 100 == 0 || now - lastLogTime > 10000) {
+                        lastLogTime = now;
+                        LOG.info("[Kafka Read] Total messages read: {}, sample: {}", kafkaReadCount, value.substring(0, Math.min(200, value.length())));
+                    }
+                    out.collect(value);
+                }
+            })
+            .name("Kafka Read Monitor");
 
         // 第四步：预过滤 - 只保留 event_type=1 的事件
         DataStream<String> filteredStream = kafkaSource
             .filter(EventFilterUtil.createFastEventTypeFilter(1))
-            .name("Pre-filter Live Events (event_type=1)");
+            .name("Pre-filter Live Events (event_type=1)")
+            .process(new org.apache.flink.streaming.api.functions.ProcessFunction<String, String>() {
+                private transient long filteredCount = 0;
+                private transient long lastLogTime = 0;
+                
+                @Override
+                public void processElement(String value, Context ctx, Collector<String> out) throws Exception {
+                    filteredCount++;
+                    long now = System.currentTimeMillis();
+                    if (filteredCount % 100 == 0 || now - lastLogTime > 10000) {
+                        lastLogTime = now;
+                        LOG.info("[After Filter] event_type=1 messages: {}, sample: {}", filteredCount, value.substring(0, Math.min(200, value.length())));
+                    }
+                    out.collect(value);
+                }
+            })
+            .name("Filter Monitor");
 
         // 第五步：解析事件（进房、退房、聊天、送礼、关注）
         SingleOutputStreamOperator<LiveRoomEvent> eventStream = filteredStream
             .flatMap(new LiveRoomEventParser())
-            .name("Parse Live Room Events");
+            .name("Parse Live Room Events")
+            .process(new org.apache.flink.streaming.api.functions.ProcessFunction<LiveRoomEvent, LiveRoomEvent>() {
+                private transient long parsedCount = 0;
+                private transient long lastLogTime = 0;
+                private transient Map<String, Long> eventTypeCounter = new HashMap<>();
+                
+                @Override
+                public void processElement(LiveRoomEvent value, Context ctx, Collector<LiveRoomEvent> out) throws Exception {
+                    parsedCount++;
+                    eventTypeCounter.put(value.eventType, eventTypeCounter.getOrDefault(value.eventType, 0L) + 1);
+                    
+                    long now = System.currentTimeMillis();
+                    if (parsedCount % 100 == 0 || now - lastLogTime > 10000) {
+                        lastLogTime = now;
+                        LOG.info("[After Parse] Total parsed: {}, eventTypes: {}, sample: uid={}, anchorId={}, event={}", 
+                            parsedCount, eventTypeCounter, value.uid, value.anchorId, value.eventType);
+                    }
+                    out.collect(value);
+                }
+            })
+            .name("Parse Monitor");
 
         // 第六步：为3个时间窗口创建数据流并写入Redis
         
@@ -115,7 +179,25 @@ public class LiveAnchorFeatureHotJob {
                 Time.seconds(10)
             ))
             .aggregate(new AnchorHotFeatureAggregator(windowMinutes))
-            .name("Anchor Hot Feature Aggregation " + windowMinutes + "min");
+            .name("Anchor Hot Feature Aggregation " + windowMinutes + "min")
+            .process(new org.apache.flink.streaming.api.functions.ProcessFunction<AnchorHotFeatureAgg, AnchorHotFeatureAgg>() {
+                private transient long aggCount = 0;
+                private transient long lastLogTime = 0;
+                
+                @Override
+                public void processElement(AnchorHotFeatureAgg value, Context ctx, Collector<AnchorHotFeatureAgg> out) throws Exception {
+                    aggCount++;
+                    long now = System.currentTimeMillis();
+                    if (aggCount % 10 == 0 || now - lastLogTime > 30000) {
+                        lastLogTime = now;
+                        LOG.info("[Window Agg {}min] Total windows: {}, anchorId={}, enter={}, quit={}, gift={}, follow={}, chat={}", 
+                            windowMinutes, aggCount, value.anchorId, value.enterUserCount, value.quitUserCount, 
+                            value.giftUserCount, value.followUserCount, value.chatUserCount);
+                    }
+                    out.collect(value);
+                }
+            })
+            .name("Agg Monitor " + windowMinutes + "min");
 
         // 转换为Protobuf并写入Redis
         DataStream<Tuple2<String, byte[]>> dataStream = aggregatedStream
@@ -231,6 +313,8 @@ public class LiveAnchorFeatureHotJob {
     public static class LiveRoomEventParser implements FlatMapFunction<String, LiveRoomEvent> {
         private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
         private static volatile long totalParsedEvents = 0;
+        private static volatile long totalFailedEvents = 0;
+        private static volatile long totalSkippedEvents = 0;
 
         @Override
         public void flatMap(String value, Collector<LiveRoomEvent> out) throws Exception {
@@ -240,6 +324,10 @@ public class LiveAnchorFeatureHotJob {
                 // 获取事件类型
                 JsonNode eventNode = root.path("event");
                 if (eventNode.isMissingNode() || !eventNode.isTextual()) {
+                    totalSkippedEvents++;
+                    if (totalSkippedEvents % 1000 == 0) {
+                        LOG.warn("[Parser] Skipped events (no event field): {}, sample: {}", totalSkippedEvents, value.substring(0, Math.min(100, value.length())));
+                    }
                     return;
                 }
                 String event = eventNode.asText();
@@ -250,17 +338,23 @@ public class LiveAnchorFeatureHotJob {
                     !EVENT_LIVEROOM_CHAT.equals(event) && 
                     !EVENT_LIVEROOM_GIFT.equals(event) && 
                     !EVENT_LIVEROOM_FOLLOW.equals(event)) {
+                    totalSkippedEvents++;
+                    if (totalSkippedEvents % 1000 == 0) {
+                        LOG.info("[Parser] Skipped events (other event types): {}, latest event type: {}", totalSkippedEvents, event);
+                    }
                     return;
                 }
                 
                 // 获取 event_data 字段
                 JsonNode eventDataNode = root.path("event_data");
                 if (eventDataNode.isMissingNode() || !eventDataNode.isTextual()) {
+                    totalSkippedEvents++;
                     return;
                 }
                 
                 String eventData = eventDataNode.asText();
                 if (eventData == null || eventData.isEmpty()) {
+                    totalSkippedEvents++;
                     return;
                 }
                 
@@ -272,6 +366,10 @@ public class LiveAnchorFeatureHotJob {
                 long anchorId = data.path("anchor_id").asLong(0);
                 
                 if (uid <= 0 || anchorId <= 0) {
+                    totalSkippedEvents++;
+                    if (totalSkippedEvents % 1000 == 0) {
+                        LOG.warn("[Parser] Skipped events (invalid uid/anchorId): {}, uid={}, anchorId={}", totalSkippedEvents, uid, anchorId);
+                    }
                     return;
                 }
                 
@@ -286,13 +384,18 @@ public class LiveAnchorFeatureHotJob {
                 }
                 
                 totalParsedEvents++;
-                if (totalParsedEvents % 10000 == 0) {
-                    LOG.info("Total parsed live events: {}", totalParsedEvents);
+                if (totalParsedEvents % 1000 == 0) {
+                    LOG.info("[Parser] Successfully parsed: {}, failed: {}, skipped: {}, eventType: {}", 
+                        totalParsedEvents, totalFailedEvents, totalSkippedEvents, event);
                 }
                 
                 out.collect(evt);
             } catch (Exception e) {
-                LOG.warn("Failed to parse live room event: {}", value, e);
+                totalFailedEvents++;
+                if (totalFailedEvents % 100 == 0) {
+                    LOG.warn("[Parser] Failed events: {}, error: {}, sample: {}", 
+                        totalFailedEvents, e.getMessage(), value.substring(0, Math.min(100, value.length())));
+                }
             }
         }
     }
