@@ -42,7 +42,7 @@ public class LiveUserAnchorFeature15minJob {
         LOG.info("Starting LiveUserAnchorFeature15minJob");
         LOG.info("Processing event_type=1 for user-anchor features");
         LOG.info("Target events: live_exposure, live_view, enter_liveroom, exit_liveroom");
-        LOG.info("Scene filter: 1, 3, 5");
+        LOG.info("Scene filter: 1, 3, 4, 5");
         LOG.info("========================================");
         
         // 第一步：创建flink环境
@@ -119,7 +119,7 @@ public class LiveUserAnchorFeature15minJob {
             })
             .name("Redis Write Sampling");
 
-        // 第六步：创建sink，Redis环境（TTL=10分钟，DEL_HMSET）
+        // 第六步：创建sink，Redis环境（TTL=5分钟，DEL_HMSET）
         RedisConfig redisConfig = RedisConfig.fromProperties(RedisUtil.loadProperties());
         redisConfig.setTtl(300);
         redisConfig.setCommand("DEL_HMSET");
