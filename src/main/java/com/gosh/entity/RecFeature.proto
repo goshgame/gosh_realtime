@@ -315,3 +315,36 @@ message LiveUserAnchorFeature {
     int32 user_anchor_negative_feedback_cnt_15min = 19;        // 用户作者最近15分钟负反馈次数(基于以上特征合成)
     
 }
+
+// 直播主播特征（主播维度）- 包含热度等特征
+// Redis Key: rec:user_author_feature:{anchor_id}:live5min/live10min/live15min
+message RecLiveAnchorFeature {
+    uint64 anchor_id = 1;
+    
+    // 5分钟窗口特征
+    int32 live_enter_usernum_5min = 10;             // 最近5分钟进房人数（uid去重）
+    int32 live_quit_usernum_5min = 11;              // 最近5分钟退房人数（uid去重）
+    int32 live_quit_avg_duration_5min = 12;         // 最近5分钟退房次均停留时长（秒）
+    int32 live_anchor_gift_coin_5min = 13;          // 最近5分钟主播收礼金额
+    int32 live_anchor_gift_usernum_5min = 14;       // 最近5分钟主播收礼人数（uid去重）
+    int32 live_anchor_follow_usernum_5min = 15;     // 最近5分钟主播关注人数（uid去重）
+    int32 live_anchor_chat_usernum_5min = 16;       // 最近5分钟主播聊天人数（uid去重）
+    
+    // 10分钟窗口特征
+    int32 live_enter_usernum_10min = 20;            // 最近10分钟进房人数（uid去重）
+    int32 live_quit_usernum_10min = 21;             // 最近10分钟退房人数（uid去重）
+    int32 live_quit_avg_duration_10min = 22;        // 最近10分钟退房次均停留时长（秒）
+    int32 live_anchor_gift_coin_10min = 23;         // 最近10分钟主播收礼金额
+    int32 live_anchor_gift_usernum_10min = 24;      // 最近10分钟主播收礼人数（uid去重）
+    int32 live_anchor_follow_usernum_10min = 25;    // 最近10分钟主播关注人数（uid去重）
+    int32 live_anchor_chat_usernum_10min = 26;      // 最近10分钟主播聊天人数（uid去重）
+    
+    // 15分钟窗口特征
+    int32 live_enter_usernum_15min = 30;            // 最近15分钟进房人数（uid去重）
+    int32 live_quit_usernum_15min = 31;             // 最近15分钟退房人数（uid去重）
+    int32 live_quit_avg_duration_15min = 32;        // 最近15分钟退房次均停留时长（秒）
+    int32 live_anchor_gift_coin_15min = 33;         // 最近15分钟主播收礼金额
+    int32 live_anchor_gift_usernum_15min = 34;      // 最近15分钟主播收礼人数（uid去重）
+    int32 live_anchor_follow_usernum_15min = 35;    // 最近15分钟主播关注人数（uid去重）
+    int32 live_anchor_chat_usernum_15min = 36;      // 最近15分钟主播聊天人数（uid去重）
+}
