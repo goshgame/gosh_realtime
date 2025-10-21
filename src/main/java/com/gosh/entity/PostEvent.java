@@ -2,8 +2,6 @@ package com.gosh.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.time.Instant;
-
 /**
  * 顶层事件实体类，对应完整的JSON数据结构
  * {
@@ -40,6 +38,38 @@ import java.time.Instant;
  *         "ADID": "6f6b93dafc54da2c8c7e54232cd6257d",
  *         "GAID": "66e647f1-da29-479b-8d41-d4d527e7f853",
  *         "IDFA": ""
+ *     }
+ * }
+ *
+ * --  变更后数据
+ * {
+ *     "event_type": 16,
+ *     "post_expose": {
+ *         "uid": 12986951,
+ *         "list": [
+ *             {
+ *                 "post_id": "289037330000013196",
+ *                 "exposed_pos": 2,
+ *                 "expo_time": 1760602650,
+ *                 "rec_token": "bf462526-f917-446d-aa0b-8e44b013952c"
+ *             }
+ *         ],
+ *         "created_at": 1760602651,
+ *         "did": "ce516ac4e9e86f27",
+ *         "app": "hotya",
+ *         "smid": "20250928194851347b00641999c7996a61bda45dfb634d01c1f053aa3c6155",
+ *         "version": "3.4.3",
+ *         "channel": "hotya",
+ *         "platform": "android",
+ *         "brand": "motorola",
+ *         "os": "Android 14",
+ *         "model": "moto g85 5G",
+ *         "lang": "hi-Latn",
+ *         "country": "in",
+ *         "network": "mobile",
+ *         "client_ip": "223.228.63.189",
+ *         "adid": "2a05c7b67f5799b3296ebc41aa6ee3ec",
+ *         "gaid": "cd17752a-0b41-4293-8c3e-c05dfae42131"
  *     }
  * }
  */

@@ -1,10 +1,8 @@
 package com.gosh.job;
 
-import java.time.Instant;
-import java.util.Date;
-
 import com.gosh.entity.*;
 import com.gosh.util.FlinkEnvUtil;
+import com.gosh.util.FlinkMonitorUtil;
 import com.gosh.util.KafkaEnvUtil;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.functions.FilterFunction;
@@ -19,12 +17,13 @@ import org.apache.flink.util.Collector;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import shaded.parquet.org.apache.thrift.protocol.TJSONProtocol;
 
 import java.time.Duration;
 
 public class PostPoseParseJob {
     private static final Logger LOG = LoggerFactory.getLogger(PostPoseParseJob.class);
+    private static final String JOB_NAME = "Kafka Post Event Processing Job"; // 统一作业名称
+
     public static void main(String[] args) throws Exception {
 
         // 第一步：创建flink环境
@@ -42,6 +41,7 @@ public class PostPoseParseJob {
                 "Kafka Source"
         );
 
+        // 第四步：处理逻辑
         // 创建Jackson ObjectMapper用于JSON处理
         ObjectMapper objectMapper = new ObjectMapper();
         // 解析JSON为PostEvent实体，并筛选出event_type=16的数据
@@ -135,11 +135,18 @@ public class PostPoseParseJob {
                 })
                 .filter(jsonString -> jsonString != null); // 过滤掉转换失败的记录
 
+        // 第五步：添加反压监控（在输出到Kafka前监控队列压力）
+        //DataStream<String> monitoredStream = outputJson
+                //.map(new BackpressureMonitor(JOB_NAME,"filter-operator")) // 引入反压监控器
+       //         .name("Monitor");
 
         KafkaSink<String> kafkaSink = KafkaEnvUtil.createKafkaSink(KafkaEnvUtil.loadProperties(), "post_parse");
         outputJson.sinkTo(kafkaSink);
 
+        // 第六步：使用监控工具类执行作业（替代原生execute方法）
+        FlinkMonitorUtil.executeWithMonitor(env,JOB_NAME);
+
         // 执行Flink作业
-        env.execute("Kafka Post Event Processing Job");
+        //env.execute("Kafka Post Event Processing Job");
     }
 }

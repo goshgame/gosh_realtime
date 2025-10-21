@@ -4,10 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gosh.config.RedisConfig;
 import com.gosh.entity.RecFeature;
-import com.gosh.util.EventFilterUtil;
-import com.gosh.util.FlinkEnvUtil;
-import com.gosh.util.KafkaEnvUtil;
-import com.gosh.util.RedisUtil;
+import com.gosh.util.*;
 import org.apache.flink.api.common.functions.AggregateFunction;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.functions.MapFunction;
@@ -99,7 +96,9 @@ public class LiveAnchorFeatureHotJob {
         processWindowAndSinkToRedis(env, eventStream, 15, SUFFIX_15MIN);
 
         LOG.info("Job configured with 3 time windows (5/10/15 min), starting execution...");
-        env.execute("Live Anchor Hot Feature Job");
+//        env.execute("Live Anchor Hot Feature Job");
+        String JOB_NAME = "Live Anchor Hot Feature Job";
+        FlinkMonitorUtil.executeWithMonitor(env,JOB_NAME);
     }
 
     /**
@@ -181,7 +180,7 @@ public class LiveAnchorFeatureHotJob {
 
         // 创建Redis Sink（TTL=1小时）
         RedisConfig redisConfig = RedisConfig.fromProperties(RedisUtil.loadProperties());
-        redisConfig.setTtl(3600 * 1);
+        redisConfig.setTtl(300);
         redisConfig.setCommand("SET");
         LOG.info("Redis config for {}min window: TTL={}, Command={}", 
             windowMinutes, redisConfig.getTtl(), redisConfig.getCommand());

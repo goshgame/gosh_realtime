@@ -3,8 +3,6 @@ package com.gosh.entity;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.time.Instant;
-import java.util.Date;
 
 /**
  * 调整后的解析后Post事件实体类，完全匹配目标JSON格式

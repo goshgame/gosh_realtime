@@ -17,15 +17,20 @@ import com.gosh.cons.CommonConstants;
 /**
  * MySQL 多数据源工具类（带线程池和异步处理）
  * 支持加载多个MySQL数据源配置并提供连接池和异步操作能力
+ * 重构为支持多实例，以适应多作业场景
  */
 public class MySQLUtil {
     private static final Logger LOG = LoggerFactory.getLogger(MySQLUtil.class);
     private static final String MYSQL_CONFIG_PREFIX = "mysql.";
     private static final Pattern CONFIG_PATTERN = Pattern.compile("mysql\\.([^.]+)\\.(.+)");
-    private static volatile Map<String, MySQLConfig> mysqlConfigs;
-    static volatile Map<String, ExecutorService> executorServices;
-    private static final int ASYNC_TIMEOUT = 5000; // 异步操作超时时间(ms)
-    private static final int ASYNC_CAPACITY = 100; // 异步队列容量
+    
+    // 实例变量，每个实例独立管理配置和线程池
+    private final Map<String, MySQLConfig> mysqlConfigs;
+    private final Map<String, ExecutorService> executorServices;
+    
+    // 静态单例，保持向后兼容性
+    private static volatile MySQLUtil instance;
+    private static final Object INSTANCE_LOCK = new Object();
 
 
 
@@ -83,24 +88,47 @@ public class MySQLUtil {
     }
 
     /**
-     * 初始化配置和线程池
+     * 私有构造函数，创建新的MySQLUtil实例
      */
-    static void initialize() {
-        if (mysqlConfigs == null) {
-            synchronized (MySQLUtil.class) {
-                if (mysqlConfigs == null) {
-                    loadMySQLConfigs();
-                    initExecutors();
+    private MySQLUtil() {
+        this.mysqlConfigs = new HashMap<>();
+        this.executorServices = new HashMap<>();
+        loadMySQLConfigs();
+        initExecutors();
+    }
+    
+    /**
+     * 获取静态单例实例（保持向后兼容性）
+     */
+    private static MySQLUtil getInstance() {
+        if (instance == null) {
+            synchronized (INSTANCE_LOCK) {
+                if (instance == null) {
+                    instance = new MySQLUtil();
                 }
             }
         }
+        return instance;
+    }
+    
+    /**
+     * 创建新的MySQLUtil实例（多作业场景使用）
+     */
+    public static MySQLUtil createNewInstance() {
+        return new MySQLUtil();
+    }
+    
+    /**
+     * 静态初始化方法（保持向后兼容性）
+     */
+    private static void initialize() {
+        getInstance();
     }
 
     /**
-     * 从配置文件加载所有MySQL数据源配置
+     * 从配置文件加载所有MySQL数据源配置（实例方法）
      */
-    static void loadMySQLConfigs() {
-        mysqlConfigs = new HashMap<>();
+    private void loadMySQLConfigs() {
         Properties props = new Properties();
 
         try (InputStream input = MySQLUtil.class.getClassLoader()
@@ -178,10 +206,9 @@ public class MySQLUtil {
     }
 
     /**
-     * 初始化线程池
+     * 初始化线程池（实例方法）
      */
-    private static void initExecutors() {
-        executorServices = new HashMap<>(mysqlConfigs.size());
+    private void initExecutors() {
         for (MySQLConfig config : mysqlConfigs.values()) {
             ThreadPoolExecutor executor = new ThreadPoolExecutor(
                     config.getCorePoolSize(),
@@ -210,23 +237,38 @@ public class MySQLUtil {
     }
 
     /**
-     * 获取数据库连接
+     * 获取数据库连接（静态方法，保持向后兼容性）
      */
     public static Connection getConnection(String dsName) throws SQLException, ClassNotFoundException {
-        initialize();
-        MySQLConfig config = getConfig(dsName);
+        return getInstance().getConnectionInternal(dsName);
+    }
+    
+    /**
+     * 获取数据库连接（实例方法）
+     */
+    public Connection getConnectionInternal(String dsName) throws SQLException, ClassNotFoundException {
+        MySQLConfig config = getConfigInternal(dsName);
         Class.forName(config.getDriverClass());
         return DriverManager.getConnection(config.getUrl(), config.getUsername(), config.getPassword());
     }
 
     /**
-     * 异步执行数据库操作
+     * 异步执行数据库操作（静态方法，保持向后兼容性）
      * @param dsName 数据源名称
      * @param task 数据库任务
      * @return 异步结果
      */
     public static <T> CompletableFuture<T> executeAsync(String dsName, Supplier<T> task) {
-        initialize();
+        return getInstance().executeAsyncInternal(dsName, task);
+    }
+    
+    /**
+     * 异步执行数据库操作（实例方法）
+     * @param dsName 数据源名称
+     * @param task 数据库任务
+     * @return 异步结果
+     */
+    public <T> CompletableFuture<T> executeAsyncInternal(String dsName, Supplier<T> task) {
         ExecutorService executor = executorServices.get(dsName);
         if (executor == null) {
             return CompletableFuture.failedFuture(new IllegalArgumentException("未找到数据源线程池: " + dsName));
@@ -239,18 +281,30 @@ public class MySQLUtil {
     }
 
     /**
-     * 获取所有MySQL数据源配置
+     * 获取所有MySQL数据源配置（静态方法，保持向后兼容性）
      */
     public static Map<String, MySQLConfig> getAllConfigs() {
-        initialize();
+        return getInstance().getAllConfigsInternal();
+    }
+    
+    /**
+     * 获取所有MySQL数据源配置（实例方法）
+     */
+    public Map<String, MySQLConfig> getAllConfigsInternal() {
         return Collections.unmodifiableMap(mysqlConfigs);
     }
 
     /**
-     * 根据名称获取指定数据源配置
+     * 根据名称获取指定数据源配置（静态方法，保持向后兼容性）
      */
     public static MySQLConfig getConfig(String dsName) {
-        initialize();
+        return getInstance().getConfigInternal(dsName);
+    }
+    
+    /**
+     * 根据名称获取指定数据源配置（实例方法）
+     */
+    public MySQLConfig getConfigInternal(String dsName) {
         MySQLConfig config = mysqlConfigs.get(dsName);
         if (config == null) {
             throw new IllegalArgumentException("未找到数据源配置: " + dsName);
@@ -259,10 +313,16 @@ public class MySQLUtil {
     }
 
     /**
-     * 获取默认数据源配置
+     * 获取默认数据源配置（静态方法，保持向后兼容性）
      */
     public static MySQLConfig getDefaultConfig() {
-        initialize();
+        return getInstance().getDefaultConfigInternal();
+    }
+    
+    /**
+     * 获取默认数据源配置（实例方法）
+     */
+    public MySQLConfig getDefaultConfigInternal() {
         if (mysqlConfigs.isEmpty()) {
             throw new RuntimeException("未配置任何MySQL数据源");
         }
@@ -270,9 +330,21 @@ public class MySQLUtil {
     }
 
     /**
-     * 关闭所有线程池
+     * 关闭所有线程池（静态方法，关闭单例实例的资源）
      */
     public static void shutdown() {
+        if (instance != null) {
+            instance.shutdownInternal();
+            synchronized (INSTANCE_LOCK) {
+                instance = null;
+            }
+        }
+    }
+    
+    /**
+     * 关闭当前实例的所有线程池（实例方法）
+     */
+    public void shutdownInternal() {
         if (executorServices != null) {
             for (Map.Entry<String, ExecutorService> entry : executorServices.entrySet()) {
                 entry.getValue().shutdown();
@@ -285,6 +357,7 @@ public class MySQLUtil {
                 }
                 LOG.info("已关闭数据源[{}]的线程池", entry.getKey());
             }
+            executorServices.clear();
         }
     }
 

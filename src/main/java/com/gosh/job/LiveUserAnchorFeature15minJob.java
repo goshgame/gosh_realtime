@@ -1,13 +1,11 @@
 package com.gosh.job;
 
+import com.clearspring.analytics.stream.cardinality.HyperLogLog;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gosh.config.RedisConfig;
 import com.gosh.entity.RecFeature;
-import com.gosh.util.EventFilterUtil;
-import com.gosh.util.FlinkEnvUtil;
-import com.gosh.util.KafkaEnvUtil;
-import com.gosh.util.RedisUtil;
+import com.gosh.util.*;
 import org.apache.flink.api.common.functions.AggregateFunction;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.functions.MapFunction;
@@ -29,11 +27,23 @@ import java.util.Map;
 
 public class LiveUserAnchorFeature15minJob {
     private static final Logger LOG = LoggerFactory.getLogger(LiveUserAnchorFeature15minJob.class);
-    private static String PREFIX = "rec:user_anchor_feature:{";
-    private static String SUFFIX = "}:live15min";
+    private static final String PREFIX = "rec:user_anchor_feature:{";
+    private static final String SUFFIX = "}:live15min";
+    private static final int HLL_LOG2M = 14; // HyperLogLog精度参数
+    
+    // 事件类型常量
+    private static final String EVENT_LIVE_EXPOSURE = "live_exposure";
+    private static final String EVENT_LIVE_VIEW = "live_view";
+    private static final String EVENT_ENTER_LIVEROOM = "enter_liveroom";
+    private static final String EVENT_EXIT_LIVEROOM = "exit_liveroom";
 
     public static void main(String[] args) throws Exception {
-        LOG.info("Starting LiveUserAnchorFeature15minJob - looking for advertise topic with event_type=3");
+        LOG.info("========================================");
+        LOG.info("Starting LiveUserAnchorFeature15minJob");
+        LOG.info("Processing event_type=1 for user-anchor features");
+        LOG.info("Target events: live_exposure, live_view, enter_liveroom, exit_liveroom");
+        LOG.info("Scene filter: 1, 3, 5");
+        LOG.info("========================================");
         
         // 第一步：创建flink环境
         StreamExecutionEnvironment env = FlinkEnvUtil.createStreamExecutionEnvironment();
@@ -50,17 +60,17 @@ public class LiveUserAnchorFeature15minJob {
             "Kafka Source"
         );
 
-        // 3.0 预过滤 - 只保留 event_type=3 的事件
+        // 3.0 预过滤 - 只保留 event_type=1 的事件
         DataStream<String> filteredStream = kafkaSource
-            .filter(EventFilterUtil.createFastEventTypeFilter(3))
-            .name("Pre-filter Advertise Events");
+            .filter(EventFilterUtil.createFastEventTypeFilter(1))
+            .name("Pre-filter Live Events (event_type=1)");
 
-        // 3.1 解析 recommend_data.event_data（JSON 字符串）为 Live 用户-主播 事件
+        // 3.1 解析 user_event_log 为 Live 用户-主播 事件
         SingleOutputStreamOperator<LiveUserAnchorEvent> eventStream = filteredStream
             .flatMap(new LiveEventParser())
-            .name("Parse Live Quit Events");
+            .name("Parse Live User-Anchor Events");
 
-        // 第四步：按 uid 分组并进行 15 分钟窗口（滑动 5 分钟）聚合
+        // 第四步：按 uid 分组并进行 15 分钟窗口（滑动 5 秒钟）聚合
         DataStream<UserAnchorFeatureAggregation> aggregatedStream = eventStream
             .keyBy(new KeySelector<LiveUserAnchorEvent, Long>() {
                 @Override
@@ -70,7 +80,7 @@ public class LiveUserAnchorFeature15minJob {
             })
             .window(SlidingProcessingTimeWindows.of(
                 Time.minutes(15),
-                Time.seconds(15)
+                Time.seconds(5)
             ))
             .aggregate(new UserAnchorFeatureAggregator())
             .name("User-Anchor Feature Aggregation");
@@ -124,17 +134,21 @@ public class LiveUserAnchorFeature15minJob {
         );
 
         LOG.info("Job configured, starting execution...");
-        env.execute("Live User-Anchor Feature 15min Job");
+        String JOB_NAME = "Live User-Anchor Feature 15min Job";
+        FlinkMonitorUtil.executeWithMonitor(env, JOB_NAME);
     }
 
-    // 输入事件：从 advertise.recommend_data.event_data 解析
+    // 输入事件：从 user_event_log.event_data 解析
     public static class LiveUserAnchorEvent {
         public long uid;
         public long anchorId;
-        public long watchTime;
+        public String eventType;
+        public String recToken;
+        public long watchDuration;  // 观看时长（浏览和退房事件的stay_duration）
+        public int scene;
     }
 
-        // 解析器：解析外层 JSON，提取 recommend_data.event_data 再解析内层 JSON
+    // 解析器：解析 user_event_log.event 和 user_event_log.event_data
     public static class LiveEventParser implements FlatMapFunction<String, LiveUserAnchorEvent> {
         private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
         private static volatile long totalParsedEvents = 0;
@@ -143,41 +157,84 @@ public class LiveUserAnchorFeature15minJob {
         public void flatMap(String value, Collector<LiveUserAnchorEvent> out) throws Exception {
             try {
                 JsonNode root = OBJECT_MAPPER.readTree(value);
-                JsonNode recommend = root.path("recommend_data");
-                if (recommend.isMissingNode()) {
+                
+                // 获取 user_event_log 对象
+                JsonNode userEventLog = root.path("user_event_log");
+                if (userEventLog.isMissingNode()) {
                     return;
                 }
-                JsonNode eventDataNode = recommend.path("event_data");
+                
+                // 获取事件类型（在 user_event_log.event 中）
+                JsonNode eventNode = userEventLog.path("event");
+                if (eventNode.isMissingNode() || !eventNode.isTextual()) {
+                    return;
+                }
+                String event = eventNode.asText();
+                
+                // 只处理4种事件
+                if (!EVENT_LIVE_EXPOSURE.equals(event) && 
+                    !EVENT_LIVE_VIEW.equals(event) && 
+                    !EVENT_ENTER_LIVEROOM.equals(event) && 
+                    !EVENT_EXIT_LIVEROOM.equals(event)) {
+                    return;
+                }
+                
+                // 获取 event_data 字段（在 user_event_log.event_data 中）
+                JsonNode eventDataNode = userEventLog.path("event_data");
                 if (eventDataNode.isMissingNode() || !eventDataNode.isTextual()) {
                     return;
                 }
+                
                 String eventData = eventDataNode.asText();
-                if (eventData == null || eventData.isEmpty()) {
+                if (eventData == null || eventData.isEmpty() || "null".equals(eventData)) {
                     return;
                 }
-                JsonNode liveQuit = OBJECT_MAPPER.readTree(eventData);
-                long uid = liveQuit.path("uid").asLong(0);
-                long anchorId = liveQuit.path("anchor_id").asLong(0);
-                long watchTime = liveQuit.path("watch_time").asLong(0);
+                
+                // 解析 event_data 的JSON内容
+                JsonNode data = OBJECT_MAPPER.readTree(eventData);
+                
+                long uid = data.path("uid").asLong(0);
+                long anchorId = data.path("anchor_id").asLong(0);
+                int scene = data.path("scene").asInt(0);
+                
                 if (uid <= 0 || anchorId <= 0) {
                     return;
                 }
+                
+                // 过滤 scene：只保留 1, 3, 4, 5
+                if (scene != 1 && scene != 3 && scene != 4 && scene != 5) {
+                    return;
+                }
+                
                 LiveUserAnchorEvent evt = new LiveUserAnchorEvent();
                 evt.uid = uid;
                 evt.anchorId = anchorId;
-                evt.watchTime = watchTime;
-                totalParsedEvents++;
-                if (totalParsedEvents % 100 == 0) {
-                    LOG.info("Total parsed events so far: {}", totalParsedEvents);
+                evt.eventType = event;
+                evt.scene = scene;
+                
+                // 提取 rec_token（曝光事件用于去重）
+                evt.recToken = data.path("rec_token").asText("");
+                
+                // 提取观看时长（浏览和退房事件）
+                if (EVENT_LIVE_VIEW.equals(event)) {
+                    evt.watchDuration = data.path("watch_duration").asLong(0);
+                } else if (EVENT_EXIT_LIVEROOM.equals(event)) {
+                    evt.watchDuration = data.path("stay_duration").asLong(0);
                 }
+                
+                totalParsedEvents++;
+                if (totalParsedEvents % 10000 == 0) {
+                    LOG.info("[Parser] Total parsed events: {}", totalParsedEvents);
+                }
+                
                 out.collect(evt);
             } catch (Exception e) {
-                LOG.warn("Failed to parse advertise event: {}", value, e);
+                // 静默处理异常
             }
         }
     }
 
-    // 聚合器：统计每个 uid 对每个 anchor 的曝光、3s+进房、6s+进房与负反馈（派生）
+    // 聚合器：统计每个 uid 对每个 anchor 的特征
     public static class UserAnchorFeatureAggregator implements AggregateFunction<LiveUserAnchorEvent, UserAnchorAccumulator, UserAnchorFeatureAggregation> {
         @Override
         public UserAnchorAccumulator createAccumulator() {
@@ -187,10 +244,29 @@ public class LiveUserAnchorFeature15minJob {
         @Override
         public UserAnchorAccumulator add(LiveUserAnchorEvent event, UserAnchorAccumulator acc) {
             acc.uid = event.uid;
-            Counts counts = acc.anchorIdToCounts.computeIfAbsent(event.anchorId, k -> new Counts());
-            counts.exposureCount += 1;
-            if (event.watchTime >= 3) counts.watch3sPlusCount += 1;
-            if (event.watchTime >= 6) counts.watch6sPlusCount += 1;
+            AnchorFeatureCounts counts = acc.anchorIdToCounts.computeIfAbsent(event.anchorId, k -> new AnchorFeatureCounts());
+            
+            // 曝光次数：使用 HyperLogLog 对 rec_token 去重
+            if (EVENT_LIVE_EXPOSURE.equals(event.eventType) && !event.recToken.isEmpty()) {
+                counts.exposureHLL.offer(event.recToken);
+            }
+            
+            // 3s+观看次数：进房事件计数
+            if (EVENT_ENTER_LIVEROOM.equals(event.eventType)) {
+                counts.watch3sPlusCount += 1;
+            }
+            
+            // 6s+观看次数：浏览/退房事件且时长>=6s，使用 HyperLogLog 对 rec_token 去重
+            if ((EVENT_LIVE_VIEW.equals(event.eventType) || EVENT_EXIT_LIVEROOM.equals(event.eventType)) 
+                && event.watchDuration >= 6 && !event.recToken.isEmpty()) {
+                counts.watch6sPlusHLL.offer(event.recToken);
+            }
+            
+            // 观看时长：浏览和退房事件的 stay_duration 求和
+            if (EVENT_LIVE_VIEW.equals(event.eventType) || EVENT_EXIT_LIVEROOM.equals(event.eventType)) {
+                counts.totalWatchDuration += event.watchDuration;
+            }
+            
             return acc;
         }
 
@@ -203,16 +279,25 @@ public class LiveUserAnchorFeature15minJob {
             result.uid = acc.uid;
             result.anchorFeatures = new HashMap<>();
 
-            for (Map.Entry<Long, Counts> e : acc.anchorIdToCounts.entrySet()) {
+            for (Map.Entry<Long, AnchorFeatureCounts> e : acc.anchorIdToCounts.entrySet()) {
                 long anchorId = e.getKey();
-                Counts c = e.getValue();
-                int negative = Math.max(0, c.exposureCount - c.watch6sPlusCount);
+                AnchorFeatureCounts c = e.getValue();
+                
+                // 从 HyperLogLog 获取去重后的曝光次数
+                int exposureCount = (int) c.exposureHLL.cardinality();
+                
+                // 从 HyperLogLog 获取去重后的 6s+ 观看次数
+                int watch6sPlusCount = (int) c.watch6sPlusHLL.cardinality();
+                
+                // 负反馈次数 = 曝光次数 - 6s+观看次数
+                int negative = Math.max(0, exposureCount - watch6sPlusCount);
+                
                 byte[] bytes = RecFeature.LiveUserAnchorFeature.newBuilder()
                     .setUserId(acc.uid)
                     .setAnchorId(anchorId)
-                    .setUserAnchorExpCnt15Min(c.exposureCount)
+                    .setUserAnchorExpCnt15Min(exposureCount)
                     .setUserAnchor3SquitCnt15Min(c.watch3sPlusCount)
-                    .setUserAnchor6SquitCnt15Min(c.watch6sPlusCount)
+                    .setUserAnchor6SquitCnt15Min(watch6sPlusCount)
                     .setUserAnchorNegativeFeedbackCnt15Min(negative)
                     .build()
                     .toByteArray();
@@ -223,27 +308,35 @@ public class LiveUserAnchorFeature15minJob {
 
         @Override
         public UserAnchorAccumulator merge(UserAnchorAccumulator a, UserAnchorAccumulator b) {
-            UserAnchorAccumulator merged = a;
-            for (Map.Entry<Long, Counts> e : b.anchorIdToCounts.entrySet()) {
-                Counts target = merged.anchorIdToCounts.computeIfAbsent(e.getKey(), k -> new Counts());
-                Counts src = e.getValue();
-                target.exposureCount += src.exposureCount;
+            for (Map.Entry<Long, AnchorFeatureCounts> e : b.anchorIdToCounts.entrySet()) {
+                AnchorFeatureCounts target = a.anchorIdToCounts.computeIfAbsent(e.getKey(), k -> new AnchorFeatureCounts());
+                AnchorFeatureCounts src = e.getValue();
+                
+                // 合并 HyperLogLog
+                try {
+                    target.exposureHLL = (HyperLogLog) target.exposureHLL.merge(src.exposureHLL);
+                    target.watch6sPlusHLL = (HyperLogLog) target.watch6sPlusHLL.merge(src.watch6sPlusHLL);
+                } catch (Exception ex) {
+                    // 合并失败，保持原值
+                }
+                
                 target.watch3sPlusCount += src.watch3sPlusCount;
-                target.watch6sPlusCount += src.watch6sPlusCount;
+                target.totalWatchDuration += src.totalWatchDuration;
             }
-            return merged;
+            return a;
         }
     }
 
     public static class UserAnchorAccumulator {
         public long uid;
-        public Map<Long, Counts> anchorIdToCounts = new HashMap<>();
+        public Map<Long, AnchorFeatureCounts> anchorIdToCounts = new HashMap<>();
     }
 
-    public static class Counts {
-        public int exposureCount;
-        public int watch3sPlusCount;
-        public int watch6sPlusCount;
+    public static class AnchorFeatureCounts {
+        public HyperLogLog exposureHLL = new HyperLogLog(HLL_LOG2M);     // 曝光次数（rec_token去重）
+        public int watch3sPlusCount = 0;                                  // 3s+观看次数（进房）
+        public HyperLogLog watch6sPlusHLL = new HyperLogLog(HLL_LOG2M);  // 6s+观看次数（rec_token去重）
+        public long totalWatchDuration = 0;                               // 总观看时长
     }
 
     public static class UserAnchorFeatureAggregation {

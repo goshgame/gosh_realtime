@@ -1,7 +1,6 @@
 package com.gosh.config;
 
 import com.google.protobuf.Message;
-import com.google.protobuf.Parser;
 import io.lettuce.core.api.sync.RedisCommands;
 import io.lettuce.core.cluster.api.sync.RedisAdvancedClusterCommands;
 import org.apache.flink.api.java.tuple.Tuple2;
@@ -13,7 +12,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.util.Properties;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.Map;
