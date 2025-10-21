@@ -63,7 +63,53 @@ public class LiveUserAnchorFeature15minJob {
         // 3.0 预过滤 - 只保留 event_type=1 的事件
         DataStream<String> filteredStream = kafkaSource
             .filter(EventFilterUtil.createFastEventTypeFilter(1))
-            .name("Pre-filter Live Events (event_type=1)");
+            .name("Pre-filter Live Events (event_type=1)")
+            .process(new org.apache.flink.streaming.api.functions.ProcessFunction<String, String>() {
+                private transient long totalCount = 0;
+                private transient long exposureMatchCount = 0;
+                private transient long viewMatchCount = 0;
+                private transient long enterMatchCount = 0;
+                private transient long exitMatchCount = 0;
+                
+                @Override
+                public void processElement(String value, Context ctx, Collector<String> out) throws Exception {
+                    totalCount++;
+                    
+                    // 字符串匹配各种事件
+                    if (value.contains("live_exposure")) {
+                        exposureMatchCount++;
+                        if (exposureMatchCount <= 3) {
+                            LOG.info("[String Match Exposure {}/3] Full data: {}", exposureMatchCount, value);
+                        }
+                    }
+                    if (value.contains("live_view")) {
+                        viewMatchCount++;
+                        if (viewMatchCount <= 3) {
+                            LOG.info("[String Match View {}/3] Full data: {}", viewMatchCount, value);
+                        }
+                    }
+                    if (value.contains("enter_liveroom")) {
+                        enterMatchCount++;
+                        if (enterMatchCount <= 3) {
+                            LOG.info("[String Match Enter {}/3] Full data: {}", enterMatchCount, value);
+                        }
+                    }
+                    if (value.contains("exit_liveroom")) {
+                        exitMatchCount++;
+                        if (exitMatchCount <= 3) {
+                            LOG.info("[String Match Exit {}/3] Full data: {}", exitMatchCount, value);
+                        }
+                    }
+                    
+                    if (totalCount % 50000 == 0) {
+                        LOG.info("[String Match Summary] Total={}, Exposure={}, View={}, Enter={}, Exit={}", 
+                            totalCount, exposureMatchCount, viewMatchCount, enterMatchCount, exitMatchCount);
+                    }
+                    
+                    out.collect(value);
+                }
+            })
+            .name("Event String Matcher");
 
         // 3.1 解析 user_event_log 为 Live 用户-主播 事件
         SingleOutputStreamOperator<LiveUserAnchorEvent> eventStream = filteredStream
