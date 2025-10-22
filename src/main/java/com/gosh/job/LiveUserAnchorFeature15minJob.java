@@ -126,7 +126,7 @@ public class LiveUserAnchorFeature15minJob {
             })
             .window(SlidingProcessingTimeWindows.of(
                 Time.minutes(15),
-                Time.seconds(5)
+                Time.seconds(15)
             ))
             .aggregate(new UserAnchorFeatureAggregator())
             .name("User-Anchor Feature Aggregation");
