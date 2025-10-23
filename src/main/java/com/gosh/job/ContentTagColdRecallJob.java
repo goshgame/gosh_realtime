@@ -71,10 +71,9 @@ public class ContentTagColdRecallJob {
                 .flatMap(new PostTagsToPostInfoMapper())
                 .name("Post-Tag to Post-Info Transform");
 
-        // 3.2 获取redis数据，同时将打标事件解析到的数据进行合并，重新写入redis
-
-
-
+        // 无需本步骤：3.2 获取redis数据，同时将打标事件解析到的数据进行合并，重新写入redis
+        // 因为这个操作的窗口是24h，无需读取再合并写入；
+        // 同时来数据的时候，会根据其做时间上的判断；最后在rec线上程序使用时，跟合法的冷启post做交集即可
 
         // 按标签分组并聚合
         DataStream<TagPosts24hAggregation> aggregatedStream = postInfoStream
