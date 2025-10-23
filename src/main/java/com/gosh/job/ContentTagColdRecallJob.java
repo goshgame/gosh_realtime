@@ -8,7 +8,9 @@ import com.gosh.util.EventFilterUtil;
 import com.gosh.util.FlinkEnvUtil;
 import com.gosh.util.KafkaEnvUtil;
 import com.gosh.util.RedisUtil;
+import com.gosh.job.AiTagParseCommon.*;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+import org.apache.flink.api.common.functions.AggregateFunction;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.java.functions.KeySelector;
 import org.apache.flink.api.java.tuple.Tuple2;
@@ -24,6 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
+import java.util.Objects;
 
 public class ContentTagColdRecallJob {
     private static final Logger LOG = LoggerFactory.getLogger(ContentTagColdRecallJob.class);
@@ -32,6 +35,8 @@ public class ContentTagColdRecallJob {
     private static final String SUFFIX = "}:tag_cold_start";
     private static final String kafkaTopic = "rec";
     private static final int keepEventType = 11;
+    // 每个窗口内每个tag的最大事件数限制
+    private static final int MAX_EVENTS_PER_WINDOW = 1000;
 
 
     public static void main(String[] args) throws Exception {
@@ -57,14 +62,14 @@ public class ContentTagColdRecallJob {
                 .name("Pre-filter Events");
 
         // 3.1 解析打标事件 (event_type=11)
-        SingleOutputStreamOperator<AiTagParseCommon.PostTagEvent> postTagStream = filteredStream
-                .flatMap(new AiTagParseCommon.PostTagEventParser())
+        SingleOutputStreamOperator<PostTagsEvent> postTagStream = filteredStream
+                .flatMap(new PostTagsEventParser())
                 .name("Parse ai-tag Events");
 
-        // 3.2 将打标事件转换为倒排索引事件
-        DataStream<AiTagParseCommon.TagPostEvent> tagPostStream = postTagStream
-                .flatMap(new AiTagParseCommon.PostToTagMapper())
-                .name("Post-Tag to Tag-Posts Transform");
+        // 3.2 将打标事件转换为基本信息单元事件
+        DataStream<PostInfoEvent> postInfoStream = postTagStream
+                .flatMap(new PostTagsToPostInfoMapper())
+                .name("Post-Tag to Post-Info Transform");
 
         // 3.2 获取redis数据，同时将打标事件解析到的数据进行合并，重新写入redis
 
@@ -73,10 +78,10 @@ public class ContentTagColdRecallJob {
 
         // 替换 ContentTagColdRecallJob.java 中的 3.2 步骤注释部分为以下代码:
         // 按标签分组并聚合
-        DataStream<AiTagParseCommon.TagPostsAggregation> aggregatedStream = tagPostStream
-                .keyBy(new KeySelector<AiTagParseCommon.TagPostEvent, String>() {
+        DataStream<TagPosts24hAggregation> aggregatedStream = postInfoStream
+                .keyBy(new KeySelector<PostInfoEvent, String>() {
                     @Override
-                    public String getKey(AiTagParseCommon.TagPostEvent value) throws Exception {
+                    public String getKey(PostInfoEvent value) throws Exception {
                         // 获取第一个标签作为key
                         if (value.tag != null && !value.tag.isEmpty()) {
                             return value.tag;
@@ -85,37 +90,38 @@ public class ContentTagColdRecallJob {
                     }
                 })
                 .window(SlidingProcessingTimeWindows.of(Time.hours(1), Time.minutes(10)))
-                .aggregate(new AiTagParseCommon.TagPostsAggregator())
+                .aggregate(new TagPosts24hAggregator())
                 .name("Aggregate Posts by Tag");
 
         // 转换为Redis写入格式
-        DataStream<Tuple2<String, byte[]>> redisStream = aggregatedStream
-                .map(new MapFunction<AiTagParseCommon.TagPostsAggregation, Tuple2<String, byte[]>>() {
+        DataStream<Tuple2<String, byte[]>> dataStream = aggregatedStream
+                .map(new MapFunction<TagPosts24hAggregation, Tuple2<String, byte[]>>() {
                     @Override
-                    public Tuple2<String, byte[]> map(AiTagParseCommon.TagPostsAggregation agg) throws Exception {
-                        String redisKey = PREFIX + agg.tagId + SUFFIX;
+                    public Tuple2<String, byte[]> map(TagPosts24hAggregation agg) throws Exception {
+                        // 构建Redis key
+                        String redisKey = PREFIX + agg.tag + SUFFIX;
 
-                        // 构建Protobuf对象
-                        RecFeature.RecTagPostsFeature.Builder builder = RecFeature.RecTagPostsFeature.newBuilder();
-                        builder.addAllPostIds(agg.postIds);
+                        // 构建Protobuf
+                        byte[] value = RecFeature.RecUserFeature.newBuilder()
+                                // 24小时历史记录特征
+                                .setTagPostInfoHis24H(agg.viewer3sviewPostHis24h)
+                                .build()
+                                .toByteArray();
 
-                        byte[] value = builder.build().toByteArray();
                         return new Tuple2<>(redisKey, value);
                     }
                 })
-                .name("Convert to Redis Format");
+                .name("Aggregation to Protobuf Bytes");
 
         // 创建Redis sink
         RedisConfig redisConfig = RedisConfig.fromProperties(RedisUtil.loadProperties());
         redisConfig.setTtl(86400); // 设置1天TTL
         RedisUtil.addRedisSink(
-                redisStream,
+                dataStream,
                 redisConfig,
                 true,   // 异步写入
                 100     // 批量大小
         );
-
-
 
 
         // 执行任务
@@ -123,6 +129,75 @@ public class ContentTagColdRecallJob {
     }
 
 
+
+    /**
+     * tag-post 24小时聚合器
+     */
+    public static class TagPosts24hAggregator implements AggregateFunction<AiTagParseCommon.PostInfoEvent, AiTagParseCommon.TagPostsAccumulator, ContentTagColdRecallJob.TagPosts24hAggregation> {
+        @Override
+        public AiTagParseCommon.TagPostsAccumulator createAccumulator() {
+            AiTagParseCommon.TagPostsAccumulator acc = new AiTagParseCommon.TagPostsAccumulator();
+            acc.totalEventCount = 0;
+            return acc;
+        }
+
+        @Override
+        public AiTagParseCommon.TagPostsAccumulator add(AiTagParseCommon.PostInfoEvent event, AiTagParseCommon.TagPostsAccumulator accumulator) {
+            // 先设置tag，确保能写入Redis
+            accumulator.tag = event.tag;
+
+            if (accumulator.totalEventCount >= MAX_EVENTS_PER_WINDOW) {
+                // 如果超过限制，标记超限状态，不再更新
+                if (!accumulator.exceededLimit) {
+                    accumulator.exceededLimit = true;
+                }
+                return accumulator;
+            }
+            accumulator.totalEventCount++;
+            return AiTagParseCommon.addEventToAccumulator(event, accumulator);
+        }
+
+        @Override
+        public ContentTagColdRecallJob.TagPosts24hAggregation getResult(AiTagParseCommon.TagPostsAccumulator accumulator) {
+            ContentTagColdRecallJob.TagPosts24hAggregation result = new ContentTagColdRecallJob.TagPosts24hAggregation();
+            // 设置tag，确保下游Redis key正确
+            result.tag = accumulator.tag;
+            if (Objects.equals(result.tag, "")) {
+                LOG.warn("UserFeature24hAggregation tag is empty, check upstream event parsing and keyBy logic");
+            }
+
+            // 检查是否超限，如果是则打印日志
+            if (accumulator.exceededLimit) {
+                LOG.warn("User {} exceeded event limit ({}). Final event count: {}.",
+                        accumulator.tag, MAX_EVENTS_PER_WINDOW, accumulator.totalEventCount);
+            }
+
+            // 24小时历史记录特征 - 构建字符串格式
+            result.PostCreatedAtHis24h = AiTagParseCommon.buildPostCreatedAtString(accumulator.postInfos, 10);
+            result.updateTime = System.currentTimeMillis();
+            return result;
+        }
+
+        @Override
+        public AiTagParseCommon.TagPostsAccumulator merge(AiTagParseCommon.TagPostsAccumulator a, AiTagParseCommon.TagPostsAccumulator b) {
+            AiTagParseCommon.TagPostsAccumulator merged = AiTagParseCommon.mergeAccumulators(a, b);
+            merged.totalEventCount = a.totalEventCount + b.totalEventCount;
+            return merged;
+        }
+    }
+
+    /**
+     * 用户特征24小时聚合结果
+     */
+    public static class TagPosts24hAggregation {
+        public String tag;
+
+        // 24小时历史记录特征
+        public String PostCreatedAtHis24h;
+
+        public long updateTime;
+
+    }
 
 
 

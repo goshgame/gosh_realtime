@@ -20,30 +20,46 @@ public class AiTagParseCommon {
     /**
      * Post打标事件
      */
-    public static class PostTagEvent {
+    public static class PostTagsEvent {
         public long postId;
-        public List<String> contentTagsList;
-        public Set<String> contentTagsSet;
+        public Set<String> contentTagsSet = new HashSet<>();
         public long createdAt;
     }
 
     /**
-     * Post倒排索引事件
+     * Post基本信息单元事件
      */
-    public static class TagPostEvent {
-        public String tag;
-        public Set<Long> postIds;
-        // public Map<String, Set<Long>> tag2PostIds;
+    public static class PostInfoEvent {
+        public long postId;
+        public String tag; 
+        public long createdAt;
     }
+
+    /**
+     * Tag-posts倒排索引累加器
+     */
+    public static class TagPostsAccumulator {
+        public String tag;
+        // 事件总数计数器
+        public int totalEventCount = 0;
+        // 是否超过事件限制的标记
+        public boolean exceededLimit = false;
+        // post_id -> created_at
+        public Map<Long, Long> postInfos = new HashMap<>();
+    }
+
+
+
+
 
 
     // ==================== 解析器 ====================
     /**
      * 打标事件解析器
      */
-    public static class PostTagEventParser implements FlatMapFunction<String, AiTagParseCommon.PostTagEvent> {
+    public static class PostTagsEventParser implements FlatMapFunction<String, AiTagParseCommon.PostTagsEvent> {
         @Override
-        public void flatMap(String value, Collector<AiTagParseCommon.PostTagEvent> out) throws Exception {
+        public void flatMap(String value, Collector<AiTagParseCommon.PostTagsEvent> out) throws Exception {
             if (value == null || value.isEmpty()) {
                 return;
             }
@@ -100,22 +116,19 @@ public class AiTagParseCommon {
                     return;
                 }
 
-                List<String> contentTagsList = new ArrayList<>();
                 Set<String> contentTagSet = new HashSet<>();
                 for(JsonNode node : contentTagNode) {
-                    contentTagsList.add(node.asText());
                     contentTagSet.add(node.asText());
                 }
 
-                if (contentTagsList.isEmpty()) {
+                if (contentTagSet.isEmpty()) {
                     return;
                 }
 
                 // 创建并输出事件
-                PostTagEvent event = new PostTagEvent();
+                PostTagsEvent event = new PostTagsEvent();
                 event.postId = postId;
                 event.contentTagsSet = contentTagSet;
-                event.contentTagsList = contentTagsList;
                 event.createdAt = createdAt;
                 out.collect(event);
 
@@ -129,67 +142,54 @@ public class AiTagParseCommon {
     // ==================== 事件转换器 ====================
 
     /**
-     * 将打标事件转换为倒排索引事件
+     * 将打标事件转换为基本信息单元事件
      */
-    public static class PostToTagMapper implements FlatMapFunction<AiTagParseCommon.PostTagEvent, AiTagParseCommon.TagPostEvent> {
+    public static class PostTagsToPostInfoMapper implements FlatMapFunction<AiTagParseCommon.PostTagsEvent, AiTagParseCommon.PostInfoEvent> {
         @Override
-        public void flatMap(AiTagParseCommon.PostTagEvent postEvent, Collector<AiTagParseCommon.TagPostEvent> out) throws Exception {
-            TagPostEvent tagPostEvent = new TagPostEvent();
-            for (String tag : postEvent.contentTagsList) {
-                tagPostEvent.tag = tag;
-                tagPostEvent.postIds.add(postEvent.postId);
+        public void flatMap(AiTagParseCommon.PostTagsEvent postEvent, Collector<AiTagParseCommon.PostInfoEvent> out) throws Exception {
+            for (String tag : postEvent.contentTagsSet) {
+                PostInfoEvent postInfoEvent = new PostInfoEvent();
+                postInfoEvent.tag = tag;
+                postInfoEvent.createdAt = postEvent.createdAt;
+                postInfoEvent.postId = postEvent.postId;
+                out.collect(postInfoEvent);
             }
-            out.collect(tagPostEvent);
         }
     }
 
     // ==================== 聚合逻辑 ====================
 
-    // 在 AiTagParseCommon.java 中添加以下类和方法
-
     /**
      * 标签内容聚合结果
      */
-    public static class TagPostsAggregation {
-        public String tagId;
-        public Set<Long> postIds = new HashSet<>();
 
-        public TagPostsAggregation() {}
-
+    public static TagPostsAccumulator addEventToAccumulator(PostInfoEvent event, TagPostsAccumulator accumulator) {
+        accumulator.tag = event.tag;
+        accumulator.postInfos.put(event.postId, event.createdAt);
+        return accumulator;
     }
 
+    public static TagPostsAccumulator mergeAccumulators(TagPostsAccumulator a, TagPostsAccumulator b) {
+        // 合并post_id -> created_at map，取最小值
+        for (Map.Entry<Long, Long> entry : b.postInfos.entrySet()) {
+            a.postInfos.merge(entry.getKey(), entry.getValue(), Long::min);
+        }
+        return a;
+    }
+
+
+    // ==================== 工具函数 ====================
     /**
-     * 标签内容聚合器
+     * 构建post和createdAt历史字符串 格式: "123|5,234|10"
      */
-    public static class TagPostsAggregator implements AggregateFunction<TagPostEvent, TagPostsAggregation, TagPostsAggregation> {
-        @Override
-        public TagPostsAggregation createAccumulator() {
-            return new TagPostsAggregation();
-        }
-
-        @Override
-        public TagPostsAggregation add(AiTagParseCommon.TagPostEvent event, TagPostsAggregation accumulator) {
-            if (event.tag != null) {
-                accumulator.postIds.addAll(event.postIds);
-            }
-            return accumulator;
-        }
-
-        @Override
-        public TagPostsAggregation getResult(TagPostsAggregation accumulator) {
-            return accumulator;
-        }
-
-        @Override
-        public TagPostsAggregation merge(TagPostsAggregation a, TagPostsAggregation b) {
-            if (a.tagId == null && b.tagId != null) {
-                a.tagId = b.tagId;
-            }
-            a.postIds.addAll(b.postIds);
-            return a;
-        }
+    public static String buildPostCreatedAtString(Map<Long, Long> postInfos, int limit) {
+        return postInfos.entrySet().stream()
+                .sorted(Map.Entry.<Long, Long>comparingByValue().reversed())
+                .limit(limit)
+                .map(entry -> entry.getKey() + "|" + entry.getValue())
+                .reduce((a, b) -> a + "," + b)
+                .orElse("");
     }
-
 
 
 }
