@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+// v2.0
+
+package com.gosh.entity;
+// package recall;
+// option go_package = "github.com/goshgame/gosh_rec/biz/model/recall";
+
+
+// 用户侧特征
+// Redis Key:rec:post:{tag}:tag_cold_start
+
+message PostItem {
+  int64 post_id = 1;
+  float score = 2;
+}
+
+message PostItemList {
+  repeated PostItem items = 1;
+}
+
+message PostTagColdFeature {
+  string tag = 1;
+  string tag_post_info_24h = 2;
+}
+
+
+
+

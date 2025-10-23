@@ -3,7 +3,7 @@ package com.gosh.job;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gosh.config.RedisConfig;
-import com.gosh.entity.RecFeature;
+import com.gosh.entity.RecTagColdFeature;
 import com.gosh.util.EventFilterUtil;
 import com.gosh.util.FlinkEnvUtil;
 import com.gosh.util.KafkaEnvUtil;
@@ -76,7 +76,6 @@ public class ContentTagColdRecallJob {
 
 
 
-        // 替换 ContentTagColdRecallJob.java 中的 3.2 步骤注释部分为以下代码:
         // 按标签分组并聚合
         DataStream<TagPosts24hAggregation> aggregatedStream = postInfoStream
                 .keyBy(new KeySelector<PostInfoEvent, String>() {
@@ -89,7 +88,10 @@ public class ContentTagColdRecallJob {
                         return "";
                     }
                 })
-                .window(SlidingProcessingTimeWindows.of(Time.hours(1), Time.minutes(10)))
+                .window(SlidingProcessingTimeWindows.of(
+                        Time.hours(24), // 窗口大小24小时
+                        Time.minutes(30)  // 滑动间隔半小时
+                ))
                 .aggregate(new TagPosts24hAggregator())
                 .name("Aggregate Posts by Tag");
 
@@ -102,9 +104,9 @@ public class ContentTagColdRecallJob {
                         String redisKey = PREFIX + agg.tag + SUFFIX;
 
                         // 构建Protobuf
-                        byte[] value = RecFeature.RecUserFeature.newBuilder()
+                        byte[] value = RecTagColdFeature.PostTagColdFeature.newBuilder()
                                 // 24小时历史记录特征
-                                .setTagPostInfoHis24H(agg.viewer3sviewPostHis24h)
+                                .setTagPostInfo24H(agg.postCreatedAtHis24h)
                                 .build()
                                 .toByteArray();
 
@@ -129,20 +131,19 @@ public class ContentTagColdRecallJob {
     }
 
 
-
     /**
      * tag-post 24小时聚合器
      */
-    public static class TagPosts24hAggregator implements AggregateFunction<AiTagParseCommon.PostInfoEvent, AiTagParseCommon.TagPostsAccumulator, ContentTagColdRecallJob.TagPosts24hAggregation> {
+    public static class TagPosts24hAggregator implements AggregateFunction<PostInfoEvent, TagPostsAccumulator, TagPosts24hAggregation> {
         @Override
-        public AiTagParseCommon.TagPostsAccumulator createAccumulator() {
-            AiTagParseCommon.TagPostsAccumulator acc = new AiTagParseCommon.TagPostsAccumulator();
+        public TagPostsAccumulator createAccumulator() {
+            TagPostsAccumulator acc = new TagPostsAccumulator();
             acc.totalEventCount = 0;
             return acc;
         }
 
         @Override
-        public AiTagParseCommon.TagPostsAccumulator add(AiTagParseCommon.PostInfoEvent event, AiTagParseCommon.TagPostsAccumulator accumulator) {
+        public TagPostsAccumulator add(PostInfoEvent event, TagPostsAccumulator accumulator) {
             // 先设置tag，确保能写入Redis
             accumulator.tag = event.tag;
 
@@ -158,8 +159,8 @@ public class ContentTagColdRecallJob {
         }
 
         @Override
-        public ContentTagColdRecallJob.TagPosts24hAggregation getResult(AiTagParseCommon.TagPostsAccumulator accumulator) {
-            ContentTagColdRecallJob.TagPosts24hAggregation result = new ContentTagColdRecallJob.TagPosts24hAggregation();
+        public TagPosts24hAggregation getResult(TagPostsAccumulator accumulator) {
+            TagPosts24hAggregation result = new TagPosts24hAggregation();
             // 设置tag，确保下游Redis key正确
             result.tag = accumulator.tag;
             if (Objects.equals(result.tag, "")) {
@@ -173,41 +174,31 @@ public class ContentTagColdRecallJob {
             }
 
             // 24小时历史记录特征 - 构建字符串格式
-            result.PostCreatedAtHis24h = AiTagParseCommon.buildPostCreatedAtString(accumulator.postInfos, 10);
+            result.postCreatedAtHis24h = AiTagParseCommon.buildPostCreatedAtString(accumulator.postInfos, 10);
             result.updateTime = System.currentTimeMillis();
             return result;
         }
 
         @Override
-        public AiTagParseCommon.TagPostsAccumulator merge(AiTagParseCommon.TagPostsAccumulator a, AiTagParseCommon.TagPostsAccumulator b) {
-            AiTagParseCommon.TagPostsAccumulator merged = AiTagParseCommon.mergeAccumulators(a, b);
+        public TagPostsAccumulator merge(TagPostsAccumulator a, TagPostsAccumulator b) {
+            TagPostsAccumulator merged = AiTagParseCommon.mergeAccumulators(a, b);
             merged.totalEventCount = a.totalEventCount + b.totalEventCount;
             return merged;
         }
     }
 
     /**
-     * 用户特征24小时聚合结果
+     * Tag-Post 24小时聚合结果
      */
     public static class TagPosts24hAggregation {
         public String tag;
 
         // 24小时历史记录特征
-        public String PostCreatedAtHis24h;
+        public String postCreatedAtHis24h;
 
         public long updateTime;
 
     }
-
-
-
-
-
-
-
-
-
-
 
 
 }
