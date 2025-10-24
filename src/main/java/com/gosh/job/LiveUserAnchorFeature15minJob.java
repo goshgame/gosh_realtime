@@ -30,6 +30,8 @@ public class LiveUserAnchorFeature15minJob {
     private static final String PREFIX = "rec:user_anchor_feature:{";
     private static final String SUFFIX = "}:live15min";
     private static final int HLL_LOG2M = 14; // HyperLogLog精度参数
+    // 每个窗口内每个用户的最大事件数限制
+    private static final int MAX_EVENTS_PER_WINDOW = 200;
     
     // 事件类型常量
     private static final String EVENT_LIVE_EXPOSURE = "live_exposure";
@@ -63,53 +65,7 @@ public class LiveUserAnchorFeature15minJob {
         // 3.0 预过滤 - 只保留 event_type=1 的事件
         DataStream<String> filteredStream = kafkaSource
             .filter(EventFilterUtil.createFastEventTypeFilter(1))
-            .name("Pre-filter Live Events (event_type=1)")
-            .process(new org.apache.flink.streaming.api.functions.ProcessFunction<String, String>() {
-                private transient long totalCount = 0;
-                private transient long exposureMatchCount = 0;
-                private transient long viewMatchCount = 0;
-                private transient long enterMatchCount = 0;
-                private transient long exitMatchCount = 0;
-                
-                @Override
-                public void processElement(String value, Context ctx, Collector<String> out) throws Exception {
-                    totalCount++;
-                    
-                    // 字符串匹配各种事件
-                    if (value.contains("live_exposure")) {
-                        exposureMatchCount++;
-                        if (exposureMatchCount <= 3) {
-                            LOG.info("[String Match Exposure {}/3] Full data: {}", exposureMatchCount, value);
-                        }
-                    }
-                    if (value.contains("live_view")) {
-                        viewMatchCount++;
-                        if (viewMatchCount <= 3) {
-                            LOG.info("[String Match View {}/3] Full data: {}", viewMatchCount, value);
-                        }
-                    }
-                    if (value.contains("enter_liveroom")) {
-                        enterMatchCount++;
-                        if (enterMatchCount <= 3) {
-                            LOG.info("[String Match Enter {}/3] Full data: {}", enterMatchCount, value);
-                        }
-                    }
-                    if (value.contains("exit_liveroom")) {
-                        exitMatchCount++;
-                        if (exitMatchCount <= 3) {
-                            LOG.info("[String Match Exit {}/3] Full data: {}", exitMatchCount, value);
-                        }
-                    }
-                    
-                    if (totalCount % 50000 == 0) {
-                        LOG.info("[String Match Summary] Total={}, Exposure={}, View={}, Enter={}, Exit={}", 
-                            totalCount, exposureMatchCount, viewMatchCount, enterMatchCount, exitMatchCount);
-                    }
-                    
-                    out.collect(value);
-                }
-            })
-            .name("Event String Matcher");
+            .name("Pre-filter Live Events (event_type=1)");
 
         // 3.1 解析 user_event_log 为 Live 用户-主播 事件
         SingleOutputStreamOperator<LiveUserAnchorEvent> eventStream = filteredStream
@@ -142,42 +98,6 @@ public class LiveUserAnchorFeature15minJob {
                 }
             })
             .name("Aggregation to Protobuf Bytes");
-
-        // 添加Redis写入前采样日志
-        dataStream
-            .process(new org.apache.flink.streaming.api.functions.ProcessFunction<Tuple2<String, Map<String, byte[]>>, Tuple2<String, Map<String, byte[]>>>() {
-                private transient int sampleCount = 0;
-                private transient long lastLogTime = 0;
-                
-                @Override
-                public void processElement(Tuple2<String, Map<String, byte[]>> value, Context ctx, Collector<Tuple2<String, Map<String, byte[]>>> out) throws Exception {
-                    long now = System.currentTimeMillis();
-                    if (now - lastLogTime > 60000) { // 每60秒采样一次
-                        lastLogTime = now;
-                        if (sampleCount < 3) {
-                            sampleCount++;
-                            LOG.info("[Redis Sample {}/3] About to write: key={}, fieldCount={}", 
-                                sampleCount, value.f0, value.f1 != null ? value.f1.size() : 0);
-                            
-                            // 打印第一个field的protobuf解析结果
-                            if (value.f1 != null && !value.f1.isEmpty()) {
-                                Map.Entry<String, byte[]> firstEntry = value.f1.entrySet().iterator().next();
-                                try {
-                                    RecFeature.LiveUserAnchorFeature feature = RecFeature.LiveUserAnchorFeature.parseFrom(firstEntry.getValue());
-                                    LOG.info("[Redis Value Sample {}/3] anchorId={}, userId={}, expCnt={}, 3sQuit={}, 6sQuit={}, negative={}", 
-                                        sampleCount, firstEntry.getKey(), feature.getUserId(), 
-                                        feature.getUserAnchorExpCnt15Min(), feature.getUserAnchor3SquitCnt15Min(), 
-                                        feature.getUserAnchor6SquitCnt15Min(), feature.getUserAnchorNegativeFeedbackCnt15Min());
-                                } catch (Exception e) {
-                                    LOG.warn("[Redis Value Sample {}/3] Failed to parse protobuf: {}", sampleCount, e.getMessage());
-                                }
-                            }
-                        }
-                    }
-                    out.collect(value);
-                }
-            })
-            .name("Redis Write Sampling");
 
         // 第六步：创建sink，Redis环境（TTL=20分钟，DEL_HMSET）
         RedisConfig redisConfig = RedisConfig.fromProperties(RedisUtil.loadProperties());
@@ -344,7 +264,14 @@ public class LiveUserAnchorFeature15minJob {
 
         @Override
         public UserAnchorAccumulator add(LiveUserAnchorEvent event, UserAnchorAccumulator acc) {
+            // 先设置用户ID，确保即使跳过也能写入Redis
             acc.uid = event.uid;
+            
+            if (acc.totalEventCount >= MAX_EVENTS_PER_WINDOW) {
+                // 如果超过限制，跳过该事件，但不影响现有数据的写入
+                return acc;
+            }
+            
             AnchorFeatureCounts counts = acc.anchorIdToCounts.computeIfAbsent(event.anchorId, k -> new AnchorFeatureCounts());
             
             // 曝光次数：使用 HyperLogLog 对 rec_token 去重
@@ -368,6 +295,7 @@ public class LiveUserAnchorFeature15minJob {
                 counts.totalWatchDuration += event.watchDuration;
             }
             
+            acc.totalEventCount++;
             return acc;
         }
 
@@ -409,6 +337,9 @@ public class LiveUserAnchorFeature15minJob {
 
         @Override
         public UserAnchorAccumulator merge(UserAnchorAccumulator a, UserAnchorAccumulator b) {
+            // 合并事件计数
+            a.totalEventCount += b.totalEventCount;
+            
             for (Map.Entry<Long, AnchorFeatureCounts> e : b.anchorIdToCounts.entrySet()) {
                 AnchorFeatureCounts target = a.anchorIdToCounts.computeIfAbsent(e.getKey(), k -> new AnchorFeatureCounts());
                 AnchorFeatureCounts src = e.getValue();
@@ -430,6 +361,7 @@ public class LiveUserAnchorFeature15minJob {
 
     public static class UserAnchorAccumulator {
         public long uid;
+        public int totalEventCount = 0;
         public Map<Long, AnchorFeatureCounts> anchorIdToCounts = new HashMap<>();
     }
 
