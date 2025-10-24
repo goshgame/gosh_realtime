@@ -118,179 +118,369 @@ public class RedisSink<T> extends RichSinkFunction<T> {
 
     private void executeSingleCommand(String command, String key, String field, byte[] valueBytes, Map<String, byte[]> valueMap) {
         try {
-            switch (command) {
-                case "SET":
-                    if (valueBytes == null) {
-                        LOG.error("Value is required for SET command");
-                        return;
+            if (async) {
+                // 异步执行模式
+                pendingOperations.incrementAndGet();
+                
+                // 使用通用的executeAsync方法，因为特定类型的命令接口没有expire和del方法
+                connectionManager.executeAsync(cmd -> {
+                    switch (command) {
+                        case "SET":
+                            if (valueBytes == null) {
+                                throw new IllegalArgumentException("Value is required for SET command");
+                            }
+                            LOG.debug("Async SET to Redis - key: {}", key);
+                            cmd.set(key, new Tuple2<>("", valueBytes));
+                            if (config.getTtl() > 0) {
+                                cmd.expire(key, config.getTtl());
+                            }
+                            break;
+                        case "HSET":
+                            if (field == null || valueBytes == null) {
+                                throw new IllegalArgumentException("Field and value are required for HSET command");
+                            }
+                            LOG.debug("Async HSET to Redis - key: {}, field: {}", key, field);
+                            cmd.hset(key, field, new Tuple2<>("", valueBytes));
+                            if (config.getTtl() > 0) {
+                                cmd.expire(key, config.getTtl());
+                            }
+                            break;
+                        case "DEL_HSET":
+                            if (field == null || valueBytes == null) {
+                                throw new IllegalArgumentException("Field and value are required for DEL_HSET command");
+                            }
+                            LOG.debug("Async DEL then HSET to Redis - key: {}, field: {}", key, field);
+                            cmd.del(key);
+                            cmd.hset(key, field, new Tuple2<>("", valueBytes));
+                            if (config.getTtl() > 0) {
+                                cmd.expire(key, config.getTtl());
+                            }
+                            break;
+                        case "DEL_HMSET":
+                            if (valueMap == null || valueMap.isEmpty()) {
+                                throw new IllegalArgumentException("Value map is required for DEL_HMSET command");
+                            }
+                            LOG.debug("Async DEL then HMSET to Redis - key: {}, fields: {}", key, valueMap.size());
+                            cmd.del(key);
+                            Map<String, Tuple2<String, byte[]>> wrappedMap = new HashMap<>();
+                            for (Map.Entry<String, byte[]> entry : valueMap.entrySet()) {
+                                wrappedMap.put(entry.getKey(), new Tuple2<>("", entry.getValue()));
+                            }
+                            cmd.hmset(key, wrappedMap);
+                            if (config.getTtl() > 0) {
+                                cmd.expire(key, config.getTtl());
+                            }
+                            break;
+                        case "LPUSH":
+                        case "RPUSH":
+                            if (valueBytes == null) {
+                                throw new IllegalArgumentException("Value is required for " + command + " command");
+                            }
+                            LOG.debug("Async {} to Redis - key: {}", command, key);
+                            Tuple2<String, byte[]> tuple = new Tuple2<>("", valueBytes);
+                            if (command.equals("LPUSH")) {
+                                cmd.lpush(key, tuple);
+                            } else {
+                                cmd.rpush(key, tuple);
+                            }
+                            if (config.getTtl() > 0) {
+                                cmd.expire(key, config.getTtl());
+                            }
+                            break;
+                        case "SADD":
+                            if (valueBytes == null) {
+                                throw new IllegalArgumentException("Value is required for SADD command");
+                            }
+                            LOG.debug("Async SADD to Redis - key: {}", key);
+                            cmd.sadd(key, new Tuple2<>("", valueBytes));
+                            if (config.getTtl() > 0) {
+                                cmd.expire(key, config.getTtl());
+                            }
+                            break;
+                        default:
+                            throw new UnsupportedOperationException("Unsupported Redis command: " + command);
                     }
-                    LOG.debug("SET to Redis - key: {}", key);
-                    redisCommands.set(key, new Tuple2<>("", valueBytes));
-                    if (config.getTtl() > 0) {
-                        redisCommands.expire(key, config.getTtl());
+                    return null;
+                }).whenComplete((result, ex) -> {
+                    pendingOperations.decrementAndGet();
+                    if (ex != null) {
+                        LOG.error("Async {} command failed: {}", command, ex.getMessage(), ex);
                     }
-                    break;
-                case "HSET":
-                    if (field == null || valueBytes == null) {
-                        LOG.error("Field and value are required for HSET command");
-                        return;
-                    }
-                    LOG.debug("HSET to Redis - key: {}, field: {}", key, field);
-                    redisCommands.hset(key, field, new Tuple2<>("", valueBytes));
-                    if (config.getTtl() > 0) {
-                        redisCommands.expire(key, config.getTtl());
-                    }
-                    break;
-                case "DEL_HSET":
-                    if (field == null || valueBytes == null) {
-                        LOG.error("Field and value are required for DEL_HSET command");
-                        return;
-                    }
-                    LOG.debug("DEL then HSET to Redis - key: {}, field: {}", key, field);
-                    redisCommands.del(key);
-                    redisCommands.hset(key, field, new Tuple2<>("", valueBytes));
-                    if (config.getTtl() > 0) {
-                        redisCommands.expire(key, config.getTtl());
-                    }
-                    break;
-                case "DEL_HMSET":
-                    if (valueMap == null || valueMap.isEmpty()) {
-                        LOG.error("Value map is required for DEL_HMSET command");
-                        return;
-                    }
-                    LOG.debug("DEL then HMSET to Redis - key: {}, fields: {}", key, valueMap.size());
-                    redisCommands.del(key);
-                    Map<String, Tuple2<String, byte[]>> wrappedMap = new HashMap<>();
-                    for (Map.Entry<String, byte[]> entry : valueMap.entrySet()) {
-                        wrappedMap.put(entry.getKey(), new Tuple2<>("", entry.getValue()));
-                    }
-                    redisCommands.hmset(key, wrappedMap);
-                    if (config.getTtl() > 0) {
-                        redisCommands.expire(key, config.getTtl());
-                    }
-                    break;
-                case "LPUSH":
-                case "RPUSH":
-                    if (valueBytes == null) {
-                        LOG.error("Value is required for " + command + " command");
-                        return;
-                    }
-                    LOG.debug("{} to Redis - key: {}", command, key);
-                    Tuple2<String, byte[]> tuple = new Tuple2<>("", valueBytes);
-                    if (command.equals("LPUSH")) {
-                        redisCommands.lpush(key, tuple);
-                    } else {
-                        redisCommands.rpush(key, tuple);
-                    }
-                    if (config.getTtl() > 0) {
-                        redisCommands.expire(key, config.getTtl());
-                    }
-                    break;
-                case "SADD":
-                    if (valueBytes == null) {
-                        LOG.error("Value is required for SADD command");
-                        return;
-                    }
-                    LOG.debug("SADD to Redis - key: {}", key);
-                    redisCommands.sadd(key, new Tuple2<>("", valueBytes));
-                    if (config.getTtl() > 0) {
-                        redisCommands.expire(key, config.getTtl());
-                    }
-                    break;
-                default:
-                    LOG.error("Unsupported Redis command: {}", command);
+                });
+            } else {
+                // 同步执行模式
+                switch (command) {
+                    case "SET":
+                        if (valueBytes == null) {
+                            LOG.error("Value is required for SET command");
+                            return;
+                        }
+                        LOG.debug("SET to Redis - key: {}", key);
+                        redisCommands.set(key, new Tuple2<>("", valueBytes));
+                        if (config.getTtl() > 0) {
+                            redisCommands.expire(key, config.getTtl());
+                        }
+                        break;
+                    case "HSET":
+                        if (field == null || valueBytes == null) {
+                            LOG.error("Field and value are required for HSET command");
+                            return;
+                        }
+                        LOG.debug("HSET to Redis - key: {}, field: {}", key, field);
+                        redisCommands.hset(key, field, new Tuple2<>("", valueBytes));
+                        if (config.getTtl() > 0) {
+                            redisCommands.expire(key, config.getTtl());
+                        }
+                        break;
+                    case "DEL_HSET":
+                        if (field == null || valueBytes == null) {
+                            LOG.error("Field and value are required for DEL_HSET command");
+                            return;
+                        }
+                        LOG.debug("DEL then HSET to Redis - key: {}, field: {}", key, field);
+                        redisCommands.del(key);
+                        redisCommands.hset(key, field, new Tuple2<>("", valueBytes));
+                        if (config.getTtl() > 0) {
+                            redisCommands.expire(key, config.getTtl());
+                        }
+                        break;
+                    case "DEL_HMSET":
+                        if (valueMap == null || valueMap.isEmpty()) {
+                            LOG.error("Value map is required for DEL_HMSET command");
+                            return;
+                        }
+                        LOG.debug("DEL then HMSET to Redis - key: {}, fields: {}", key, valueMap.size());
+                        redisCommands.del(key);
+                        Map<String, Tuple2<String, byte[]>> wrappedMap = new HashMap<>();
+                        for (Map.Entry<String, byte[]> entry : valueMap.entrySet()) {
+                            wrappedMap.put(entry.getKey(), new Tuple2<>("", entry.getValue()));
+                        }
+                        redisCommands.hmset(key, wrappedMap);
+                        if (config.getTtl() > 0) {
+                            redisCommands.expire(key, config.getTtl());
+                        }
+                        break;
+                    case "LPUSH":
+                    case "RPUSH":
+                        if (valueBytes == null) {
+                            LOG.error("Value is required for " + command + " command");
+                            return;
+                        }
+                        LOG.debug("{} to Redis - key: {}", command, key);
+                        Tuple2<String, byte[]> tuple = new Tuple2<>("", valueBytes);
+                        if (command.equals("LPUSH")) {
+                            redisCommands.lpush(key, tuple);
+                        } else {
+                            redisCommands.rpush(key, tuple);
+                        }
+                        if (config.getTtl() > 0) {
+                            redisCommands.expire(key, config.getTtl());
+                        }
+                        break;
+                    case "SADD":
+                        if (valueBytes == null) {
+                            LOG.error("Value is required for SADD command");
+                            return;
+                        }
+                        LOG.debug("SADD to Redis - key: {}", key);
+                        redisCommands.sadd(key, new Tuple2<>("", valueBytes));
+                        if (config.getTtl() > 0) {
+                            redisCommands.expire(key, config.getTtl());
+                        }
+                        break;
+                    default:
+                        LOG.error("Unsupported Redis command: {}", command);
+                }
             }
         } catch (Exception e) {
             LOG.error("Failed to execute Redis command: " + command, e);
+            if (async) {
+                pendingOperations.decrementAndGet();
+            }
         }
     }
 
     private void executeClusterCommand(String command, String key, String field, byte[] valueBytes, Map<String, byte[]> valueMap) {
         try {
-            switch (command) {
-                case "SET":
-                    if (valueBytes == null) {
-                        LOG.error("Value is required for SET command");
-                        return;
+            if (async) {
+                // 异步执行模式
+                pendingOperations.incrementAndGet();
+                
+                // 统一使用executeClusterAsync方法，它支持所有需要的命令
+                connectionManager.executeClusterAsync(cmd -> {
+                    switch (command) {
+                        case "SET":
+                            if (valueBytes == null) {
+                                throw new IllegalArgumentException("Value is required for SET command");
+                            }
+                            LOG.debug("Async SET to Redis Cluster - key: {}", key);
+                            cmd.set(key, new Tuple2<>("", valueBytes));
+                            if (config.getTtl() > 0) {
+                                cmd.expire(key, config.getTtl());
+                            }
+                            break;
+                        case "HSET":
+                            if (field == null || valueBytes == null) {
+                                throw new IllegalArgumentException("Field and value are required for HSET command");
+                            }
+                            LOG.debug("Async HSET to Redis Cluster - key: {}, field: {}", key, field);
+                            cmd.hset(key, field, new Tuple2<>("", valueBytes));
+                            if (config.getTtl() > 0) {
+                                cmd.expire(key, config.getTtl());
+                            }
+                            break;
+                        case "DEL_HSET":
+                            if (field == null || valueBytes == null) {
+                                throw new IllegalArgumentException("Field and value are required for DEL_HSET command");
+                            }
+                            LOG.debug("Async DEL then HSET to Redis Cluster - key: {}, field: {}", key, field);
+                            cmd.del(key);
+                            cmd.hset(key, field, new Tuple2<>("", valueBytes));
+                            if (config.getTtl() > 0) {
+                                cmd.expire(key, config.getTtl());
+                            }
+                            break;
+                        case "DEL_HMSET":
+                            if (valueMap == null || valueMap.isEmpty()) {
+                                throw new IllegalArgumentException("Value map is required for DEL_HMSET command");
+                            }
+                            LOG.debug("Async DEL then HMSET to Redis Cluster - key: {}, fields: {}", key, valueMap.size());
+                            cmd.del(key);
+                            Map<String, Tuple2<String, byte[]>> wrappedMap = new HashMap<>();
+                            for (Map.Entry<String, byte[]> entry : valueMap.entrySet()) {
+                                wrappedMap.put(entry.getKey(), new Tuple2<>("", entry.getValue()));
+                            }
+                            cmd.hmset(key, wrappedMap);
+                            if (config.getTtl() > 0) {
+                                cmd.expire(key, config.getTtl());
+                            }
+                            break;
+                        case "LPUSH":
+                        case "RPUSH":
+                            if (valueBytes == null) {
+                                throw new IllegalArgumentException("Value is required for " + command + " command");
+                            }
+                            LOG.debug("Async {} to Redis Cluster - key: {}", command, key);
+                            Tuple2<String, byte[]> tuple = new Tuple2<>("", valueBytes);
+                            if (command.equals("LPUSH")) {
+                                cmd.lpush(key, tuple);
+                            } else {
+                                cmd.rpush(key, tuple);
+                            }
+                            if (config.getTtl() > 0) {
+                                cmd.expire(key, config.getTtl());
+                            }
+                            break;
+                        case "SADD":
+                            if (valueBytes == null) {
+                                throw new IllegalArgumentException("Value is required for SADD command");
+                            }
+                            LOG.debug("Async SADD to Redis Cluster - key: {}", key);
+                            cmd.sadd(key, new Tuple2<>("", valueBytes));
+                            if (config.getTtl() > 0) {
+                                cmd.expire(key, config.getTtl());
+                            }
+                            break;
+                        default:
+                            throw new UnsupportedOperationException("Unsupported Redis command: " + command);
                     }
-                    LOG.debug("SET to Redis Cluster - key: {}", key);
-                    redisClusterCommands.set(key, new Tuple2<>("", valueBytes));
-                    if (config.getTtl() > 0) {
-                        redisClusterCommands.expire(key, config.getTtl());
+                    return null;
+                }).whenComplete((result, ex) -> {
+                    pendingOperations.decrementAndGet();
+                    if (ex != null) {
+                        LOG.error("Async {} command failed: {}", command, ex.getMessage(), ex);
                     }
-                    break;
-                case "HSET":
-                    if (field == null || valueBytes == null) {
-                        LOG.error("Field and value are required for HSET command");
-                        return;
-                    }
-                    LOG.debug("HSET to Redis Cluster - key: {}, field: {}", key, field);
-                    redisClusterCommands.hset(key, field, new Tuple2<>("", valueBytes));
-                    if (config.getTtl() > 0) {
-                        redisClusterCommands.expire(key, config.getTtl());
-                    }
-                    break;
-                case "DEL_HSET":
-                    if (field == null || valueBytes == null) {
-                        LOG.error("Field and value are required for DEL_HSET command");
-                        return;
-                    }
-                    LOG.debug("DEL then HSET to Redis Cluster - key: {}, field: {}", key, field);
-                    redisClusterCommands.del(key);
-                    redisClusterCommands.hset(key, field, new Tuple2<>("", valueBytes));
-                    if (config.getTtl() > 0) {
-                        redisClusterCommands.expire(key, config.getTtl());
-                    }
-                    break;
-                case "DEL_HMSET":
-                    if (valueMap == null || valueMap.isEmpty()) {
-                        LOG.error("Value map is required for DEL_HMSET command");
-                        return;
-                    }
-                    LOG.debug("DEL then HMSET to Redis Cluster - key: {}, fields: {}", key, valueMap.size());
-                    redisClusterCommands.del(key);
-                    Map<String, Tuple2<String, byte[]>> wrappedMap = new HashMap<>();
-                    for (Map.Entry<String, byte[]> entry : valueMap.entrySet()) {
-                        wrappedMap.put(entry.getKey(), new Tuple2<>("", entry.getValue()));
-                    }
-                    redisClusterCommands.hmset(key, wrappedMap);
-                    if (config.getTtl() > 0) {
-                        redisClusterCommands.expire(key, config.getTtl());
-                    }
-                    break;
-                case "LPUSH":
-                case "RPUSH":
-                    if (valueBytes == null) {
-                        LOG.error("Value is required for " + command + " command");
-                        return;
-                    }
-                    LOG.debug("{} to Redis Cluster - key: {}", command, key);
-                    Tuple2<String, byte[]> tuple = new Tuple2<>("", valueBytes);
-                    if (command.equals("LPUSH")) {
-                        redisClusterCommands.lpush(key, tuple);
-                    } else {
-                        redisClusterCommands.rpush(key, tuple);
-                    }
-                    if (config.getTtl() > 0) {
-                        redisClusterCommands.expire(key, config.getTtl());
-                    }
-                    break;
-                case "SADD":
-                    if (valueBytes == null) {
-                        LOG.error("Value is required for SADD command");
-                        return;
-                    }
-                    LOG.debug("SADD to Redis Cluster - key: {}", key);
-                    redisClusterCommands.sadd(key, new Tuple2<>("", valueBytes));
-                    if (config.getTtl() > 0) {
-                        redisClusterCommands.expire(key, config.getTtl());
-                    }
-                    break;
-                default:
-                    LOG.error("Unsupported Redis command: {}", command);
+                });
+            } else {
+                // 同步执行模式
+                switch (command) {
+                    case "SET":
+                        if (valueBytes == null) {
+                            LOG.error("Value is required for SET command");
+                            return;
+                        }
+                        LOG.debug("SET to Redis Cluster - key: {}", key);
+                        redisClusterCommands.set(key, new Tuple2<>("", valueBytes));
+                        if (config.getTtl() > 0) {
+                            redisClusterCommands.expire(key, config.getTtl());
+                        }
+                        break;
+                    case "HSET":
+                        if (field == null || valueBytes == null) {
+                            LOG.error("Field and value are required for HSET command");
+                            return;
+                        }
+                        LOG.debug("HSET to Redis Cluster - key: {}, field: {}", key, field);
+                        redisClusterCommands.hset(key, field, new Tuple2<>("", valueBytes));
+                        if (config.getTtl() > 0) {
+                            redisClusterCommands.expire(key, config.getTtl());
+                        }
+                        break;
+                    case "DEL_HSET":
+                        if (field == null || valueBytes == null) {
+                            LOG.error("Field and value are required for DEL_HSET command");
+                            return;
+                        }
+                        LOG.debug("DEL then HSET to Redis Cluster - key: {}, field: {}", key, field);
+                        redisClusterCommands.del(key);
+                        redisClusterCommands.hset(key, field, new Tuple2<>("", valueBytes));
+                        if (config.getTtl() > 0) {
+                            redisClusterCommands.expire(key, config.getTtl());
+                        }
+                        break;
+                    case "DEL_HMSET":
+                        if (valueMap == null || valueMap.isEmpty()) {
+                            LOG.error("Value map is required for DEL_HMSET command");
+                            return;
+                        }
+                        LOG.debug("DEL then HMSET to Redis Cluster - key: {}, fields: {}", key, valueMap.size());
+                        redisClusterCommands.del(key);
+                        Map<String, Tuple2<String, byte[]>> wrappedMap = new HashMap<>();
+                        for (Map.Entry<String, byte[]> entry : valueMap.entrySet()) {
+                            wrappedMap.put(entry.getKey(), new Tuple2<>("", entry.getValue()));
+                        }
+                        redisClusterCommands.hmset(key, wrappedMap);
+                        if (config.getTtl() > 0) {
+                            redisClusterCommands.expire(key, config.getTtl());
+                        }
+                        break;
+                    case "LPUSH":
+                    case "RPUSH":
+                        if (valueBytes == null) {
+                            LOG.error("Value is required for " + command + " command");
+                            return;
+                        }
+                        LOG.debug("{} to Redis Cluster - key: {}", command, key);
+                        Tuple2<String, byte[]> tuple = new Tuple2<>("", valueBytes);
+                        if (command.equals("LPUSH")) {
+                            redisClusterCommands.lpush(key, tuple);
+                        } else {
+                            redisClusterCommands.rpush(key, tuple);
+                        }
+                        if (config.getTtl() > 0) {
+                            redisClusterCommands.expire(key, config.getTtl());
+                        }
+                        break;
+                    case "SADD":
+                        if (valueBytes == null) {
+                            LOG.error("Value is required for SADD command");
+                            return;
+                        }
+                        LOG.debug("SADD to Redis Cluster - key: {}", key);
+                        redisClusterCommands.sadd(key, new Tuple2<>("", valueBytes));
+                        if (config.getTtl() > 0) {
+                            redisClusterCommands.expire(key, config.getTtl());
+                        }
+                        break;
+                    default:
+                        LOG.error("Unsupported Redis command: {}", command);
+                }
             }
         } catch (Exception e) {
             LOG.error("Failed to execute Redis Cluster command: " + command, e);
+            if (async) {
+                pendingOperations.decrementAndGet();
+            }
         }
     }
 
