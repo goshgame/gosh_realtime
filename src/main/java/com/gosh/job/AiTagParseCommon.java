@@ -15,6 +15,8 @@ public class AiTagParseCommon {
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private static final int aiTagEventType = 11;
     private static final int durationLimitFromCreatedAt = 2 * 24 * 60 * 60 * 1000;  // 2天
+    private static final int accessLevelLow = 10;
+    private static final int accessLevelHigh = 30;
 
     // ==================== 数据结构定义 ====================
     /**
@@ -23,7 +25,9 @@ public class AiTagParseCommon {
     public static class PostTagsEvent {
         public long postId;
         public Set<String> contentTagsSet = new HashSet<>();
+        public int accessLevel;
         public long createdAt;
+        public long updatedAt;
     }
 
     /**
@@ -31,8 +35,10 @@ public class AiTagParseCommon {
      */
     public static class PostInfoEvent {
         public long postId;
-        public String tag; 
+        public String tag;
+        public int accessLevel;
         public long createdAt;
+        public long updatedAt;
     }
 
     /**
@@ -94,8 +100,14 @@ public class AiTagParseCommon {
                 }
 
                 long createdAt = aiPostTagNode.path("created_at").asLong(0);
-                long duration = System.currentTimeMillis() - createdAt;
-                if (createdAt <= 0 || duration > durationLimitFromCreatedAt) {
+                long updatedAt = aiPostTagNode.path("updated_at").asLong(0);
+                long duration = System.currentTimeMillis() - updatedAt;
+                if (updatedAt <= 0 || duration > durationLimitFromCreatedAt) {
+                    return;
+                }
+
+                int accessLevel = aiPostTagNode.path("access_level").asInt(0);
+                if (accessLevel < accessLevelLow || accessLevel > accessLevelHigh) {
                     return;
                 }
 
@@ -112,13 +124,36 @@ public class AiTagParseCommon {
 
                 // 解析content字段
                 JsonNode contentTagNode = aiTagsNode.path("content");
-                if (contentTagNode.isMissingNode() || !contentTagNode.isArray()) {
+                if (contentTagNode.isMissingNode()) {
                     return;
                 }
 
                 Set<String> contentTagSet = new HashSet<>();
-                for(JsonNode node : contentTagNode) {
-                    contentTagSet.add(node.asText());
+                // 处理 content 字段可能的不同格式
+                if (contentTagNode.isObject()) {
+                    // 单个 key-value 格式: {"key": "value"}
+                    Iterator<Map.Entry<String, JsonNode>> fields = contentTagNode.fields();
+                    while (fields.hasNext()) {
+                        Map.Entry<String, JsonNode> field = fields.next();
+                        contentTagSet.add(field.getKey());
+                    }
+                } else if (contentTagNode.isArray()) {
+                    // 多个 key-value 组成的 list 格式: [{"key1": "value1"}, {"key2": "value2"}]
+                    for (JsonNode item : contentTagNode) {
+                        if (item.isObject()) {
+                            Iterator<Map.Entry<String, JsonNode>> fields = item.fields();
+                            while (fields.hasNext()) {
+                                Map.Entry<String, JsonNode> field = fields.next();
+                                contentTagSet.add(field.getKey());
+                            }
+                        } else if (item.isTextual()) {
+                            // 如果是纯文本标签
+                            contentTagSet.add(item.asText());
+                        }
+                    }
+                } else if (contentTagNode.isTextual()) {
+                    // 纯文本格式
+                    contentTagSet.add(contentTagNode.asText());
                 }
 
                 if (contentTagSet.isEmpty()) {
@@ -130,6 +165,8 @@ public class AiTagParseCommon {
                 event.postId = postId;
                 event.contentTagsSet = contentTagSet;
                 event.createdAt = createdAt;
+                event.updatedAt = updatedAt;
+                event.accessLevel = accessLevel;
                 out.collect(event);
 
             } catch (Exception e) {
@@ -151,6 +188,8 @@ public class AiTagParseCommon {
                 PostInfoEvent postInfoEvent = new PostInfoEvent();
                 postInfoEvent.tag = tag;
                 postInfoEvent.createdAt = postEvent.createdAt;
+                postInfoEvent.updatedAt = postEvent.updatedAt;
+                postInfoEvent.accessLevel = postEvent.accessLevel;
                 postInfoEvent.postId = postEvent.postId;
                 out.collect(postInfoEvent);
             }
@@ -162,15 +201,14 @@ public class AiTagParseCommon {
     /**
      * 标签内容聚合结果
      */
-
     public static TagPostsAccumulator addEventToAccumulator(PostInfoEvent event, TagPostsAccumulator accumulator) {
         accumulator.tag = event.tag;
-        accumulator.postInfos.put(event.postId, event.createdAt);
+        accumulator.postInfos.put(event.postId, event.updatedAt);
         return accumulator;
     }
 
     public static TagPostsAccumulator mergeAccumulators(TagPostsAccumulator a, TagPostsAccumulator b) {
-        // 合并post_id -> created_at map，取最小值
+        // 合并post_id -> updated_at map，取最小值
         for (Map.Entry<Long, Long> entry : b.postInfos.entrySet()) {
             a.postInfos.merge(entry.getKey(), entry.getValue(), Long::min);
         }

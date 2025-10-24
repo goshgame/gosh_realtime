@@ -89,7 +89,7 @@ public class ContentTagColdRecallJob {
                 })
                 .window(SlidingProcessingTimeWindows.of(
                         Time.hours(24), // 窗口大小24小时
-                        Time.minutes(30)  // 滑动间隔半小时
+                        Time.minutes(10)  // 滑动间隔10minute
                 ))
                 .aggregate(new TagPosts24hAggregator())
                 .name("Aggregate Posts by Tag");
@@ -126,7 +126,7 @@ public class ContentTagColdRecallJob {
 
 
         // 执行任务
-        env.execute("Item Feature 24h Job");
+        env.execute("ContentTagColdRecallJob 24h");
     }
 
 
@@ -163,12 +163,12 @@ public class ContentTagColdRecallJob {
             // 设置tag，确保下游Redis key正确
             result.tag = accumulator.tag;
             if (Objects.equals(result.tag, "")) {
-                LOG.warn("UserFeature24hAggregation tag is empty, check upstream event parsing and keyBy logic");
+                LOG.warn("ContentTagCold24hAggregation tag is empty, check upstream event parsing and keyBy logic");
             }
 
             // 检查是否超限，如果是则打印日志
             if (accumulator.exceededLimit) {
-                LOG.warn("User {} exceeded event limit ({}). Final event count: {}.",
+                LOG.warn("Tag {} exceeded event limit ({}). Final event count: {}.",
                         accumulator.tag, MAX_EVENTS_PER_WINDOW, accumulator.totalEventCount);
             }
 
