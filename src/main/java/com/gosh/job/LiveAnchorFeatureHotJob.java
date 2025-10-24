@@ -1,5 +1,6 @@
 package com.gosh.job;
 
+import com.clearspring.analytics.stream.cardinality.HyperLogLog;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gosh.config.RedisConfig;
@@ -33,6 +34,7 @@ import java.util.*;
  */
 public class LiveAnchorFeatureHotJob {
     private static final Logger LOG = LoggerFactory.getLogger(LiveAnchorFeatureHotJob.class);
+    private static final int HLL_LOG2M = 15; // HyperLogLog精度参数
     
     // Redis key前缀和后缀
     private static final String PREFIX = "rec:anchor_feature:{";
@@ -120,29 +122,10 @@ public class LiveAnchorFeatureHotJob {
             })
             .window(SlidingProcessingTimeWindows.of(
                 Time.minutes(windowMinutes),
-                Time.seconds(10)
+                Time.seconds(30)
             ))
             .aggregate(new AnchorHotFeatureAggregator(windowMinutes))
-            .name("Anchor Hot Feature Aggregation " + windowMinutes + "min")
-            .process(new org.apache.flink.streaming.api.functions.ProcessFunction<AnchorHotFeatureAgg, AnchorHotFeatureAgg>() {
-                private transient long aggCount = 0;
-                private transient long lastLogTime = 0;
-                
-                @Override
-                public void processElement(AnchorHotFeatureAgg value, Context ctx, Collector<AnchorHotFeatureAgg> out) throws Exception {
-                    aggCount++;
-                    long now = System.currentTimeMillis();
-                    // 每100个窗口或每5分钟输出一次
-                    if (aggCount % 100 == 0 || now - lastLogTime > 300000) {
-                        lastLogTime = now;
-                        LOG.info("[Window Agg {}min] Total windows: {}, sample: anchorId={}, enter={}, quit={}, avgDuration={}s, giftCoin={}, giftUser={}, follow={}, chat={}", 
-                            windowMinutes, aggCount, value.anchorId, value.enterUserCount, value.quitUserCount, 
-                            value.avgQuitDuration, value.giftCoin, value.giftUserCount, value.followUserCount, value.chatUserCount);
-                    }
-                    out.collect(value);
-                }
-            })
-            .name("Agg Monitor " + windowMinutes + "min");
+            .name("Anchor Hot Feature Aggregation " + windowMinutes + "min");
 
         // 转换为Protobuf并写入Redis
         DataStream<Tuple2<String, byte[]>> dataStream = aggregatedStream
@@ -157,30 +140,9 @@ public class LiveAnchorFeatureHotJob {
             })
             .name("Convert to Protobuf " + windowMinutes + "min");
 
-        // 添加Redis写入监控日志
-        dataStream
-            .process(new org.apache.flink.streaming.api.functions.ProcessFunction<Tuple2<String, byte[]>, Tuple2<String, byte[]>>() {
-                private transient long writeCount = 0;
-                private transient long lastLogTime = 0;
-                
-                @Override
-                public void processElement(Tuple2<String, byte[]> value, Context ctx, Collector<Tuple2<String, byte[]>> out) throws Exception {
-                    writeCount++;
-                    long now = System.currentTimeMillis();
-                    // 每5分钟输出一次统计
-                    if (now - lastLogTime > 300000) {
-                        lastLogTime = now;
-                        LOG.info("[Redis Write {}min] Total writes: {}, latest key: {}, bytesSize: {}", 
-                            windowMinutes, writeCount, value.f0, value.f1 != null ? value.f1.length : 0);
-                    }
-                    out.collect(value);
-                }
-            })
-            .name("Redis Write Monitor " + windowMinutes + "min");
-
         // 创建Redis Sink（TTL=1小时）
         RedisConfig redisConfig = RedisConfig.fromProperties(RedisUtil.loadProperties());
-        redisConfig.setTtl(300);
+        redisConfig.setTtl(120);
         redisConfig.setCommand("SET");
         LOG.info("Redis config for {}min window: TTL={}, Command={}", 
             windowMinutes, redisConfig.getTtl(), redisConfig.getCommand());
@@ -333,10 +295,9 @@ public class LiveAnchorFeatureHotJob {
      * 主播热度特征聚合器
      */
     public static class AnchorHotFeatureAggregator implements AggregateFunction<LiveRoomEvent, AnchorHotAccumulator, AnchorHotFeatureAgg> {
-        private final int windowMinutes;
         
         public AnchorHotFeatureAggregator(int windowMinutes) {
-            this.windowMinutes = windowMinutes;
+            // windowMinutes用于外部命名，内部不需要保存
         }
         
         @Override
@@ -348,35 +309,27 @@ public class LiveAnchorFeatureHotJob {
         public AnchorHotAccumulator add(LiveRoomEvent event, AnchorHotAccumulator acc) {
             acc.anchorId = event.anchorId;
             
-            // 进房事件：记录uid以便与其他事件关联
+            // 进房事件
             if (EVENT_ENTER_LIVEROOM.equals(event.eventType)) {
-                acc.enterUids.add(event.uid);
+                acc.enterUidsHLL.offer(event.uid);
             }
-            // 退房事件：需要与进房事件关联（只用uid）
+            // 退房事件
             else if (EVENT_EXIT_LIVEROOM.equals(event.eventType)) {
-                if (acc.enterUids.contains(event.uid)) {
-                    acc.quitUids.add(event.uid);
-                    acc.quitDurations.add(event.stayDuration);
-                }
+                acc.quitUidsHLL.offer(event.uid);
+                acc.quitDurations.add(event.stayDuration);
             }
-            // 送礼事件：需要与进房事件关联（只用uid）
+            // 送礼事件
             else if (EVENT_LIVEROOM_GIFT.equals(event.eventType)) {
-                if (acc.enterUids.contains(event.uid)) {
-                    acc.giftUids.add(event.uid);
-                    acc.totalGiftCoin += (event.giftPrice * event.giftCount);
-                }
+                acc.giftUidsHLL.offer(event.uid);
+                acc.totalGiftCoin += (event.giftPrice * event.giftCount);
             }
-            // 关注事件：需要与进房事件关联（只用uid）
+            // 关注事件
             else if (EVENT_LIVEROOM_FOLLOW.equals(event.eventType)) {
-                if (acc.enterUids.contains(event.uid)) {
-                    acc.followUids.add(event.uid);
-                }
+                acc.followUidsHLL.offer(event.uid);
             }
-            // 聊天事件：需要与进房事件关联（只用uid）
+            // 聊天事件
             else if (EVENT_LIVEROOM_CHAT.equals(event.eventType)) {
-                if (acc.enterUids.contains(event.uid)) {
-                    acc.chatUids.add(event.uid);
-                }
+                acc.chatUidsHLL.offer(event.uid);
             }
             
             return acc;
@@ -386,11 +339,11 @@ public class LiveAnchorFeatureHotJob {
         public AnchorHotFeatureAgg getResult(AnchorHotAccumulator acc) {
             AnchorHotFeatureAgg result = new AnchorHotFeatureAgg();
             result.anchorId = acc.anchorId;
-            result.enterUserCount = acc.enterUids.size();
-            result.quitUserCount = acc.quitUids.size();
-            result.giftUserCount = acc.giftUids.size();
-            result.followUserCount = acc.followUids.size();
-            result.chatUserCount = acc.chatUids.size();
+            result.enterUserCount = (int) acc.enterUidsHLL.cardinality();
+            result.quitUserCount = (int) acc.quitUidsHLL.cardinality();
+            result.giftUserCount = (int) acc.giftUidsHLL.cardinality();
+            result.followUserCount = (int) acc.followUidsHLL.cardinality();
+            result.chatUserCount = (int) acc.chatUidsHLL.cardinality();
             result.giftCoin = acc.totalGiftCoin;
             
             // 计算退房次均停留时长
@@ -409,12 +362,18 @@ public class LiveAnchorFeatureHotJob {
 
         @Override
         public AnchorHotAccumulator merge(AnchorHotAccumulator a, AnchorHotAccumulator b) {
-            a.enterUids.addAll(b.enterUids);
-            a.quitUids.addAll(b.quitUids);
+            // 合并 HyperLogLog
+            try {
+                a.enterUidsHLL = (HyperLogLog) a.enterUidsHLL.merge(b.enterUidsHLL);
+                a.quitUidsHLL = (HyperLogLog) a.quitUidsHLL.merge(b.quitUidsHLL);
+                a.giftUidsHLL = (HyperLogLog) a.giftUidsHLL.merge(b.giftUidsHLL);
+                a.followUidsHLL = (HyperLogLog) a.followUidsHLL.merge(b.followUidsHLL);
+                a.chatUidsHLL = (HyperLogLog) a.chatUidsHLL.merge(b.chatUidsHLL);
+            } catch (Exception ex) {
+                // 合并失败，保持原值
+            }
+            
             a.quitDurations.addAll(b.quitDurations);
-            a.giftUids.addAll(b.giftUids);
-            a.followUids.addAll(b.followUids);
-            a.chatUids.addAll(b.chatUids);
             a.totalGiftCoin += b.totalGiftCoin;
             return a;
         }
@@ -425,13 +384,13 @@ public class LiveAnchorFeatureHotJob {
      */
     public static class AnchorHotAccumulator {
         public long anchorId;
-        public Set<Long> enterUids = new HashSet<>();          // 进房用户uid集合（用于关联其他事件）
-        public Set<Long> quitUids = new HashSet<>();           // 退房用户uid集合
-        public List<Long> quitDurations = new ArrayList<>();   // 退房停留时长列表
-        public Set<Long> giftUids = new HashSet<>();           // 送礼用户uid集合
-        public Set<Long> followUids = new HashSet<>();         // 关注用户uid集合
-        public Set<Long> chatUids = new HashSet<>();           // 聊天用户uid集合
-        public int totalGiftCoin = 0;                          // 总礼物金额
+        public HyperLogLog enterUidsHLL = new HyperLogLog(HLL_LOG2M);    // 进房用户uid去重
+        public HyperLogLog quitUidsHLL = new HyperLogLog(HLL_LOG2M);     // 退房用户uid去重
+        public List<Long> quitDurations = new ArrayList<>();             // 退房停留时长列表
+        public HyperLogLog giftUidsHLL = new HyperLogLog(HLL_LOG2M);     // 送礼用户uid去重
+        public HyperLogLog followUidsHLL = new HyperLogLog(HLL_LOG2M);   // 关注用户uid去重
+        public HyperLogLog chatUidsHLL = new HyperLogLog(HLL_LOG2M);     // 聊天用户uid去重
+        public int totalGiftCoin = 0;                                    // 总礼物金额
     }
 
     /**
