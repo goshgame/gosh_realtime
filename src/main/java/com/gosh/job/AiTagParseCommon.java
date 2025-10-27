@@ -76,9 +76,9 @@ public class AiTagParseCommon {
 
                 // 检查event_type
                 if (!rootNode.has("event_type")) {
-                    if(isDebug) {
-                        LOG.warn("event_type is missing");
-                    }
+                    //if(isDebug) {
+                    //    LOG.warn("event_type is missing");
+                    //}
                     return;
                 }
 
@@ -87,27 +87,27 @@ public class AiTagParseCommon {
                 //    LOG.info("event_type: {}", eventType);
                 //}
                 if (eventType != aiTagEventType) {
-                    if(isDebug) {
-                        LOG.warn("event_type is not equal {}", aiTagEventType);
-                    }
+                    //if(isDebug) {
+                    //    LOG.warn("event_type is not equal {}", aiTagEventType);
+                    //}
                     return;
                 }
 
                 // 检查ai_post_tag_event字段
                 JsonNode aiPostTagNode = rootNode.path("ai_post_tag_event");
                 if (aiPostTagNode.isMissingNode()) {
-                    if(isDebug) {
-                        LOG.warn("ai_post_tag_event is missing");
-                    }
+                    //if(isDebug) {
+                    //    LOG.warn("ai_post_tag_event is missing");
+                    //}
                     return;
                 }
 
                 // 解析post_id和created_at
                 JsonNode postIdNode = aiPostTagNode.path("post_id");
                 if (postIdNode.isMissingNode()) {
-                    if(isDebug) {
-                        LOG.warn("post_id is missing");
-                    }
+                    //if(isDebug) {
+                    //    LOG.warn("post_id is missing");
+                    //}
                     return;
                 }
                 long postId = postIdNode.asLong();
@@ -115,9 +115,9 @@ public class AiTagParseCommon {
                 //    LOG.info("post_id: {}", postId);
                 //}
                 if (postId <= 0) {
-                    if(isDebug) {
-                        LOG.warn("post_id: {} is invalid", postId);
-                    }
+                    //if(isDebug) {
+                    //    LOG.warn("post_id: {} is invalid", postId);
+                    //}
                     return;
                 }
 
@@ -128,48 +128,48 @@ public class AiTagParseCommon {
                 //}
                 //long duration = System.currentTimeMillis() - updatedAt * 1000;  // 单位转换
                 long duration = System.currentTimeMillis() - createdAt * 1000;  // 单位转换，先用created_at,因为updated_at很多为0
-                //if (createdAt <= 0 || duration > durationLimitFromCreatedAt) {
-                //    if(isDebug) {
-                //        LOG.warn("invalid time. post_id: {}, created_at: {}, updated_at: {} , duration: {}, " +
-                //                "durationLimitFromCreatedAt: {}", postId, createdAt, updatedAt, duration, durationLimitFromCreatedAt);
-                //    }
-                //    return;
-                //}
+                if (createdAt <= 0 || duration > durationLimitFromCreatedAt) {
+                   if(isDebug) {
+                       LOG.warn("invalid time. post_id: {}, created_at: {}, updated_at: {} , duration: {}, " +
+                               "durationLimitFromCreatedAt: {}", postId, createdAt, updatedAt, duration, durationLimitFromCreatedAt);
+                   }
+                   return;
+                }
 
                 int accessLevel = aiPostTagNode.path("access_level").asInt(0);
                 //if(isDebug) {
                 //    LOG.info("post_id: {}, access_level: {}", postId, accessLevel);
                 //}
                 if (accessLevel < accessLevelLow || accessLevel > accessLevelHigh) {
-                    if(isDebug) {
-                        LOG.warn("post_id: {}, access_level: {} is invalid.", postId, accessLevel);
-                    }
+                    //if(isDebug) {
+                    //    LOG.warn("post_id: {}, access_level: {} is invalid.", postId, accessLevel);
+                    //}
                     return;
                 }
 
                 // 解析tags字段
                 JsonNode aiTagResultNode = aiPostTagNode.path("results");
                 if (aiTagResultNode.isMissingNode()) {
-                    if(isDebug) {
-                        LOG.warn("post_id: {}, results is missing", postId);
-                    }
+                    //if(isDebug) {
+                    //    LOG.warn("post_id: {}, results is missing", postId);
+                    //}
                     return;
                 }
 
                 JsonNode aiTagsNode = aiTagResultNode.path("tags");
                 if (aiTagsNode.isMissingNode()) {
-                    if(isDebug) {
-                        LOG.warn("post_id: {}, tags is missing", postId);
-                    }
+                    //if(isDebug) {
+                    //    LOG.warn("post_id: {}, tags is missing", postId);
+                    //}
                     return;
                 }
 
                 // 解析content字段
                 JsonNode contentTagNode = aiTagsNode.path("content");
                 if (contentTagNode.isMissingNode()) {
-                    if(isDebug) {
-                        LOG.warn("post_id: {}, content is missing", postId);
-                    }
+                    //if(isDebug) {
+                    //    LOG.warn("post_id: {}, content is missing", postId);
+                    //}
                     return;
                 }
 
@@ -181,9 +181,9 @@ public class AiTagParseCommon {
                     while (fields.hasNext()) {
                         Map.Entry<String, JsonNode> field = fields.next();
                         contentTagSet.add(field.getKey());
-                        if(isDebug) {
-                            LOG.info("post_id: {}, contentTag: {}", postId, field.getKey());
-                        }
+                        //if(isDebug) {
+                        //    LOG.info("post_id: {}, contentTag: {}", postId, field.getKey());
+                        //}
                     }
                 } else if (contentTagNode.isArray()) {
                     // 多个 key-value 组成的 list 格式: [{"key1": "value1"}, {"key2": "value2"}]
@@ -193,9 +193,9 @@ public class AiTagParseCommon {
                             while (fields.hasNext()) {
                                 Map.Entry<String, JsonNode> field = fields.next();
                                 contentTagSet.add(field.getKey());
-                                if(isDebug) {
-                                    LOG.info("post_id: {}, contentTag: {}", postId, field.getKey());
-                                }
+                                //if(isDebug) {
+                                //    LOG.info("post_id: {}, contentTag: {}", postId, field.getKey());
+                                //}
                             }
                         } else if (item.isTextual()) {
                             // 如果是纯文本标签
@@ -208,9 +208,9 @@ public class AiTagParseCommon {
                 }
 
                 if (contentTagSet.isEmpty()) {
-                    if(isDebug) {
-                        LOG.warn("post_id: {}, contentTagSet is empty", postId);
-                    }
+                    //if(isDebug) {
+                    //    LOG.warn("post_id: {}, contentTagSet is empty", postId);
+                    //}
                     return;
                 }
 

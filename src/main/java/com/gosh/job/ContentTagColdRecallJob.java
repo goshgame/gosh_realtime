@@ -189,9 +189,9 @@ public class ContentTagColdRecallJob {
                 .name("Aggregation to Protobuf Bytes");
 
         // 创建Redis sink
-        if(isDebug) {
-            LOG.info("[ContentTagColdRecallJob] create redis sink.");
-        }
+        // if(isDebug) {
+        //    LOG.info("[ContentTagColdRecallJob] create redis sink.");
+        // }
         RedisConfig redisConfig = RedisConfig.fromProperties(RedisUtil.loadProperties());
         redisConfig.setTtl(86400); // 设置1天TTL
         RedisUtil.addRedisSink(
@@ -201,9 +201,9 @@ public class ContentTagColdRecallJob {
                 100     // 批量大小
         );
 
-        if(isDebug) {
-            LOG.info("[ContentTagColdRecallJob] execute job.");
-        }
+        // if(isDebug) {
+        //    LOG.info("[ContentTagColdRecallJob] execute job.");
+        // }
         // 执行任务
         env.execute("ContentTagColdRecallJob 24h");
     }
