@@ -1,6 +1,5 @@
 package com.gosh.config;
 
-import com.google.protobuf.Message;
 import io.lettuce.core.api.sync.RedisCommands;
 import io.lettuce.core.cluster.api.sync.RedisAdvancedClusterCommands;
 import org.apache.flink.api.java.tuple.Tuple2;
@@ -11,18 +10,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
-import java.util.Properties;
+import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Function;
-import java.util.Map;
-import java.util.HashMap;
 
 /**
  * Flink Redis Sink 增强版（支持通用protobuf解析）
  * 支持异步操作、批量操作和动态protobuf类型
  * 支持 DEL 和 HSET 操作
  */
-public class RedisSink<T> extends RichSinkFunction<T> {
+public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
     private static final Logger LOG = LoggerFactory.getLogger(RedisSink.class);
 
     private final RedisConfig config;
@@ -32,12 +32,20 @@ public class RedisSink<T> extends RichSinkFunction<T> {
     private transient RedisAdvancedClusterCommands<String, Tuple2<String, byte[]>> redisClusterCommands;
     private transient AtomicInteger pendingOperations;
     private transient RedisConnectionManager connectionManager;
-    private transient boolean isClusterMode;
+    private boolean isClusterMode;
+    private transient Map<String, Map<String, Map<String, byte[]>>> batchBuffer; // command -> key -> field -> value
+    private transient Map<String, List<byte[]>> listBatchBuffer; // 用于LPUSH/RPUSH的缓冲区：key -> values
+    private transient Map<String, byte[]> stringBatchBuffer; // 用于SET的缓冲区：key -> value
+    private transient Map<String, List<byte[]>> setBatchBuffer; // 用于SADD的缓冲区：key -> values
+    private transient AtomicInteger batchCount; // 批处理计数器
+    private int maxPendingOperations;
 
     public RedisSink(RedisConfig config, boolean async, int batchSize) {
         this.config = config;
         this.async = async;
         this.batchSize = batchSize;
+        // 最大并发操作数，可根据系统性能调整
+        this.maxPendingOperations = 100;
     }
 
     public RedisSink(Properties props) {
@@ -56,6 +64,12 @@ public class RedisSink<T> extends RichSinkFunction<T> {
             this.redisCommands = connectionManager.getRedisCommands();
         }
         this.pendingOperations = new AtomicInteger(0);
+        // 初始化批处理缓冲区
+        this.batchBuffer = new ConcurrentHashMap<>();   // 用于HSET/DEL_HMSET等哈希命令
+        this.listBatchBuffer = new ConcurrentHashMap<>(); // 用于LPUSH/RPUSH等列表命令
+        this.stringBatchBuffer = new ConcurrentHashMap<>(); // 用于SET等字符串命令
+        this.setBatchBuffer = new ConcurrentHashMap<>(); // 用于SADD等集合命令
+        this.batchCount = new AtomicInteger(0);
 
         LOG.info("Redis Sink opened with config: {}, async: {}, batchSize: {}", config, async, batchSize);
     }
@@ -109,102 +123,536 @@ public class RedisSink<T> extends RichSinkFunction<T> {
         }
 
         String command = config.getCommand().toUpperCase();
-        if (isClusterMode) {
-            executeClusterCommand(command, key, field, valueBytes, valueMap);
+        // if (isClusterMode) {
+        //     executeClusterCommand(command, key, field, valueBytes, valueMap);
+        // } else {
+        //     executeSingleCommand(command, key, field, valueBytes, valueMap);
+        // }
+        // 将数据加入缓冲区
+        boolean added = isBatchBuffer(command, key, field, valueBytes, valueMap);
+        if (added) {
+            batchCount.incrementAndGet();
+            // 达到批处理大小则触发刷盘，同时确保pending操作数不超过最大值
+            if (batchCount.get() >= batchSize && pendingOperations.get() < maxPendingOperations) {
+                flushBatch();
+            }
         } else {
-            executeSingleCommand(command, key, field, valueBytes, valueMap);
+            // 不支持批量处理的命令直接执行
+            if (isClusterMode) {
+                executeClusterCommand(command, key, field, valueBytes, valueMap);
+            } else {
+                executeSingleCommand(command, key, field, valueBytes, valueMap);
+            }
         }
     }
+
+    /**
+     * 将数据添加到对应类型的缓冲区
+     * @return 是否成功加入缓冲区（仅支持批量的命令返回true）
+     */
+    private boolean isBatchBuffer(String command, String key, String field, byte[] valueBytes, Map<String, byte[]> valueMap) {
+        switch (command) {
+            case "HSET":
+            case "DEL_HSET":
+                if (field == null || valueBytes == null) {
+                    LOG.error("Field and value are required for {} batch command", command);
+                    return false;
+                }
+                // 初始化命令级缓冲区
+                batchBuffer.computeIfAbsent(command, k -> new ConcurrentHashMap<>());
+                // 初始化key级缓冲区
+                Map<String, Map<String, byte[]>> keyBuffer = batchBuffer.get(command);
+                keyBuffer.computeIfAbsent(key, k -> new ConcurrentHashMap<>());
+                // 添加field-value
+                keyBuffer.get(key).put(field, valueBytes);
+                return true;
+
+            case "DEL_HMSET":
+                if (valueMap == null || valueMap.isEmpty()) {
+                    LOG.error("Value map is required for DEL_HMSET batch command");
+                    return false;
+                }
+                batchBuffer.computeIfAbsent(command, k -> new ConcurrentHashMap<>());
+                Map<String, Map<String, byte[]>> delHmsetBuffer = batchBuffer.get(command);
+                delHmsetBuffer.put(key, valueMap); // 直接覆盖（DEL后全量设置）
+                return true;
+
+            case "SET":
+                if (valueBytes == null) {
+                    LOG.error("Value is required for SET batch command");
+                    return false;
+                }
+                stringBatchBuffer.put(key, valueBytes);
+                return true;
+
+            case "LPUSH":
+            case "RPUSH":
+                if (valueBytes == null) {
+                    LOG.error("Value is required for {} batch command", command);
+                    return false;
+                }
+                // 使用CopyOnWriteArrayList确保线程安全
+                listBatchBuffer.computeIfAbsent(key, k -> new CopyOnWriteArrayList<>()).add(valueBytes);
+                return true;
+                
+            case "SADD":
+                if (valueBytes == null) {
+                    LOG.error("Value is required for SADD batch command");
+                    return false;
+                }
+                // 使用CopyOnWriteArrayList确保线程安全
+                setBatchBuffer.computeIfAbsent(key, k -> new CopyOnWriteArrayList<>()).add(valueBytes);
+                return true;
+
+            default:
+                LOG.warn("Unsupported batch command: {}", command);
+                return false;
+        }
+    }
+
+    /**
+     * 刷新缓冲区数据到Redis
+     */
+    private void flushBatch() {
+        if (batchCount.get() == 0) {
+            return;
+        }
+
+        LOG.debug("Flushing batch data, total count: {}", batchCount.get());
+        try {
+            if (async) {
+                int currentOps = pendingOperations.incrementAndGet();
+                LOG.info("开始异步批处理写入，当前未完成操作数: {}", currentOps);
+                // 异步批量写入（带重试）
+                connectionManager.executeWithRetry(this::doAsyncBatchWrite, 3)
+                        .orTimeout(30, TimeUnit.SECONDS)
+                        .whenComplete((result, ex) -> {
+                            int remainingOps = pendingOperations.decrementAndGet();
+                                LOG.info("异步批处理完成，剩余未完成操作数: {}", remainingOps);
+                                if (ex != null) {
+                                LOG.error("Async batch write failed, will retry later", ex);
+                                // 记录未完成操作的数量以便调试
+                                LOG.error("当前未完成操作数: {}", pendingOperations.get());
+                                // 失败时不清空缓冲区，以便后续重试
+                            } else {
+                                clearBatchBuffers(); // 成功后清空缓冲区
+                                LOG.info("异步批处理成功完成，清空缓冲区");
+                            }
+                        });
+            } else {
+                // 同步批量写入
+                doSyncBatchWrite();
+                clearBatchBuffers(); // 成功后清空缓冲区
+            }
+        } catch (Exception e) {
+            LOG.error("Failed to flush batch data", e);
+            if (async) {
+                pendingOperations.decrementAndGet();
+            }
+            // 异常情况下不清空缓冲区，以便后续重试
+        }
+    }
+
+    /**
+     * 同步执行批量写入
+     */
+    private void doSyncBatchWrite() {
+        // 处理哈希类型命令（HSET/DEL_HSET/DEL_HMSET）
+        for (Map.Entry<String, Map<String, Map<String, byte[]>>> commandEntry : batchBuffer.entrySet()) {
+            String command = commandEntry.getKey();
+            Map<String, Map<String, byte[]>> keyBuffer = commandEntry.getValue();
+
+            for (Map.Entry<String, Map<String, byte[]>> keyEntry : keyBuffer.entrySet()) {
+                String key = keyEntry.getKey();
+                Map<String, byte[]> fieldValues = keyEntry.getValue();
+
+                // 转换为Lettuce需要的Tuple2格式
+                Map<String, Tuple2<String, byte[]>> wrappedMap = new HashMap<>();
+                fieldValues.forEach((k, v) -> wrappedMap.put(k, new Tuple2<>("", v)));
+
+                if (isClusterMode) {
+                    // 处理DEL_HSET和DEL_HMSET的删除逻辑
+                    if (("DEL_HSET".equals(command) || "DEL_HMSET".equals(command)) && config.getTtl() <= 0) {
+                        redisClusterCommands.del(key);
+                    }
+                    redisClusterCommands.hmset(key, wrappedMap);
+                    if (config.getTtl() > 0) {
+                        redisClusterCommands.expire(key, config.getTtl());
+                    }
+                } else {
+                    // 处理DEL_HSET和DEL_HMSET的删除逻辑
+                    if (("DEL_HSET".equals(command) || "DEL_HMSET".equals(command)) && config.getTtl() <= 0) {
+                        redisCommands.del(key);
+                    }
+                    redisCommands.hmset(key, wrappedMap);
+                    if (config.getTtl() > 0) {
+                        redisCommands.expire(key, config.getTtl());
+                    }
+                }
+                LOG.debug("Synced batch {}: key={}, fields={}", command, key, fieldValues.size());
+            }
+        }
+
+        // 处理字符串命令（SET）
+        if (!stringBatchBuffer.isEmpty()) {
+            Map<String, Tuple2<String, byte[]>> wrappedStrings = new HashMap<>();
+            stringBatchBuffer.forEach((k, v) -> wrappedStrings.put(k, new Tuple2<>("", v)));
+
+            if (isClusterMode) {
+                redisClusterCommands.mset(wrappedStrings);
+                // 批量设置过期时间
+                stringBatchBuffer.keySet().forEach(key -> {
+                    if (config.getTtl() > 0) {
+                        redisClusterCommands.expire(key, config.getTtl());
+                    }
+                });
+            } else {
+                redisCommands.mset(wrappedStrings);
+                stringBatchBuffer.keySet().forEach(key -> {
+                    if (config.getTtl() > 0) {
+                        redisCommands.expire(key, config.getTtl());
+                    }
+                });
+            }
+            LOG.debug("Synced batch SET: keys={}", stringBatchBuffer.size());
+        }
+
+        // 处理列表命令（LPUSH/RPUSH）
+        String currentCommand = config.getCommand().toUpperCase();
+        if ((currentCommand.equals("LPUSH") || currentCommand.equals("RPUSH")) && !listBatchBuffer.isEmpty()) {
+            for (Map.Entry<String, List<byte[]>> entry : listBatchBuffer.entrySet()) {
+                String key = entry.getKey();
+                List<byte[]> values = entry.getValue();
+                Tuple2<String, byte[]>[] tupleValues = values.stream()
+                        .map(v -> new Tuple2<>("", v))
+                        .toArray(Tuple2[]::new);
+
+                if (isClusterMode) {
+                    if (currentCommand.equals("LPUSH")) {
+                        redisClusterCommands.lpush(key, tupleValues);
+                    } else {
+                        redisClusterCommands.rpush(key, tupleValues);
+                    }
+                    if (config.getTtl() > 0) {
+                        redisClusterCommands.expire(key, config.getTtl());
+                    }
+                } else {
+                    if (currentCommand.equals("LPUSH")) {
+                        redisCommands.lpush(key, tupleValues);
+                    } else {
+                        redisCommands.rpush(key, tupleValues);
+                    }
+                    if (config.getTtl() > 0) {
+                        redisCommands.expire(key, config.getTtl());
+                    }
+                }
+                LOG.debug("Synced batch {}: key={}, elements={}", currentCommand, key, values.size());
+            }
+        }
+        
+        // 处理集合命令（SADD）
+        if (currentCommand.equals("SADD") && !setBatchBuffer.isEmpty()) {
+            for (Map.Entry<String, List<byte[]>> entry : setBatchBuffer.entrySet()) {
+                String key = entry.getKey();
+                List<byte[]> values = entry.getValue();
+                Tuple2<String, byte[]>[] tupleValues = values.stream()
+                        .map(v -> new Tuple2<>("", v))
+                        .toArray(Tuple2[]::new);
+
+                if (isClusterMode) {
+                    redisClusterCommands.sadd(key, tupleValues);
+                    if (config.getTtl() > 0) {
+                        redisClusterCommands.expire(key, config.getTtl());
+                    }
+                } else {
+                    redisCommands.sadd(key, tupleValues);
+                    if (config.getTtl() > 0) {
+                        redisCommands.expire(key, config.getTtl());
+                    }
+                }
+                LOG.debug("Synced batch SADD: key={}, elements={}", key, values.size());
+            }
+        }
+    }
+
+    /**
+     * 异步执行批量写入
+     */
+    private CompletableFuture<Void> doAsyncBatchWrite() {
+        List<CompletableFuture<Void>> futures = new ArrayList<>();
+
+        // 处理哈希类型命令（HSET/DEL_HSET/DEL_HMSET）
+        for (Map.Entry<String, Map<String, Map<String, byte[]>>> commandEntry : batchBuffer.entrySet()) {
+            String command = commandEntry.getKey();
+            Map<String, Map<String, byte[]>> keyBuffer = commandEntry.getValue();
+
+            for (Map.Entry<String, Map<String, byte[]>> keyEntry : keyBuffer.entrySet()) {
+                String key = keyEntry.getKey();
+                Map<String, byte[]> fieldValues = keyEntry.getValue();
+                Map<String, Tuple2<String, byte[]>> wrappedMap = new HashMap<>();
+                fieldValues.forEach((k, v) -> wrappedMap.put(k, new Tuple2<>("", v)));
+
+                // 保存当前变量的副本，避免lambda表达式中的闭包问题
+                final String cmd = command;
+                final String currentKey = key;
+                final Map<String, Tuple2<String, byte[]>> finalWrappedMap = wrappedMap;
+                
+                // 创建异步任务并添加到列表
+                CompletableFuture<Void> future;
+                if (isClusterMode) {
+                    future = connectionManager.executeClusterAsync(clusterCmd -> {
+                        // 处理DEL_HSET和DEL_HMSET的删除逻辑
+                        if (("DEL_HSET".equals(cmd) || "DEL_HMSET".equals(cmd)) && config.getTtl() <= 0) {
+                            clusterCmd.del(currentKey);
+                        }
+                        clusterCmd.hmset(currentKey, finalWrappedMap);
+                        if (config.getTtl() > 0) {
+                            clusterCmd.expire(currentKey, config.getTtl());
+                        }
+                        LOG.warn("Async batch {} to Redis Cluster - key: {}, fields: {}", cmd, currentKey, fieldValues.size());
+                        return null;
+                    });
+                } else {
+                    future = connectionManager.executeAsync(cmdObj -> {
+                        // 处理DEL_HSET和DEL_HMSET的删除逻辑
+                        if (("DEL_HSET".equals(cmd) || "DEL_HMSET".equals(cmd)) && config.getTtl() <= 0) {
+                            cmdObj.del(currentKey);
+                        }
+                        cmdObj.hmset(currentKey, finalWrappedMap);
+                        if (config.getTtl() > 0) {
+                            cmdObj.expire(currentKey, config.getTtl());
+                        }
+                        LOG.warn("Async batch {} to Redis - key: {}, fields: {}", cmd, currentKey, fieldValues.size());
+                        return null;
+                    });
+                }
+                futures.add(future);
+            }
+        }
+
+        // 处理字符串命令（SET）
+        if (!stringBatchBuffer.isEmpty()) {
+            Map<String, Tuple2<String, byte[]>> wrappedStrings = new HashMap<>();
+            stringBatchBuffer.forEach((k, v) -> wrappedStrings.put(k, new Tuple2<>("", v)));
+
+            CompletableFuture<Void> future;
+            if (isClusterMode) {
+                future = connectionManager.executeClusterAsync(cmd -> {
+                    cmd.mset(wrappedStrings);
+                    wrappedStrings.keySet().forEach(key -> {
+                        if (config.getTtl() > 0) {
+                            cmd.expire(key, config.getTtl());
+                        }
+                    });
+                    LOG.warn("Async batch SET to Redis Cluster - keys: {}", wrappedStrings.size());
+                    return null;
+                });
+            } else {
+                future = connectionManager.executeAsync(cmd -> {
+                    cmd.mset(wrappedStrings);
+                    wrappedStrings.keySet().forEach(key -> {
+                        if (config.getTtl() > 0) {
+                            cmd.expire(key, config.getTtl());
+                        }
+                    });
+                    LOG.warn("Async batch SET to Redis - keys: {}", wrappedStrings.size());
+                    return null;
+                });
+            }
+            futures.add(future);
+        }
+
+        // 处理列表命令（LPUSH/RPUSH）
+        String currentCommand = config.getCommand().toUpperCase();
+        if ((currentCommand.equals("LPUSH") || currentCommand.equals("RPUSH")) && !listBatchBuffer.isEmpty()) {
+            for (Map.Entry<String, List<byte[]>> entry : listBatchBuffer.entrySet()) {
+                String key = entry.getKey();
+                List<byte[]> values = entry.getValue();
+                Tuple2<String, byte[]>[] tupleValues = values.stream()
+                        .map(v -> new Tuple2<>("", v))
+                        .toArray(Tuple2[]::new);
+
+                CompletableFuture<Void> future;
+                if (isClusterMode) {
+                    future = connectionManager.executeClusterAsync(cmd -> {
+                        if (currentCommand.equals("LPUSH")) {
+                            cmd.lpush(key, tupleValues);
+                        } else {
+                            cmd.rpush(key, tupleValues);
+                        }
+                        if (config.getTtl() > 0) {
+                            cmd.expire(key, config.getTtl());
+                        }
+                        LOG.warn("Async batch {} to Redis Cluster - key: {}, elements: {}", currentCommand, key, values.size());
+                        return null;
+                    });
+                } else {
+                    future = connectionManager.executeAsync(cmd -> {
+                        if (currentCommand.equals("LPUSH")) {
+                            cmd.lpush(key, tupleValues);
+                        } else {
+                            cmd.rpush(key, tupleValues);
+                        }
+                        if (config.getTtl() > 0) {
+                            cmd.expire(key, config.getTtl());
+                        }
+                        LOG.warn("Async batch {} to Redis - key: {}, elements: {}", currentCommand, key, values.size());
+                        return null;
+                    });
+                }
+                futures.add(future);
+            }
+        }
+        
+        // 处理集合命令（SADD）
+        if (currentCommand.equals("SADD") && !setBatchBuffer.isEmpty()) {
+            for (Map.Entry<String, List<byte[]>> entry : setBatchBuffer.entrySet()) {
+                String key = entry.getKey();
+                List<byte[]> values = entry.getValue();
+                Tuple2<String, byte[]>[] tupleValues = values.stream()
+                        .map(v -> new Tuple2<>("", v))
+                        .toArray(Tuple2[]::new);
+
+                CompletableFuture<Void> future;
+                if (isClusterMode) {
+                    future = connectionManager.executeClusterAsync(cmd -> {
+                        cmd.sadd(key, tupleValues);
+                        if (config.getTtl() > 0) {
+                            cmd.expire(key, config.getTtl());
+                        }
+                        LOG.warn("Async batch SADD to Redis Cluster - key: {}, elements: {}", key, values.size());
+                        return null;
+                    });
+                } else {
+                    future = connectionManager.executeAsync(cmd -> {
+                        cmd.sadd(key, tupleValues);
+                        if (config.getTtl() > 0) {
+                            cmd.expire(key, config.getTtl());
+                        }
+                        LOG.warn("Async batch SADD to Redis - key: {}, elements: {}", key, values.size());
+                        return null;
+                    });
+                }
+                futures.add(future);
+            }
+        }
+
+        // 使用CompletableFuture.allOf并行执行所有异步操作
+        return CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
+    }
+
+    /**
+     * 清空所有缓冲区并重置计数
+     */
+    private void clearBatchBuffers() {
+        batchBuffer.clear();
+        listBatchBuffer.clear();
+        stringBatchBuffer.clear();
+        setBatchBuffer.clear();
+        batchCount.set(0);
+    }
+    
+
 
     private void executeSingleCommand(String command, String key, String field, byte[] valueBytes, Map<String, byte[]> valueMap) {
         try {
             if (async) {
-                // 异步执行模式
+                // 异步执行模式 - 使用重试机制
                 pendingOperations.incrementAndGet();
-                
-                // 使用通用的executeAsync方法，因为特定类型的命令接口没有expire和del方法
-                connectionManager.executeAsync(cmd -> {
-                    switch (command) {
-                        case "SET":
-                            if (valueBytes == null) {
-                                throw new IllegalArgumentException("Value is required for SET command");
+                connectionManager.executeWithRetry(
+                    () -> {
+                        // 使用通用的executeAsync方法
+                        return connectionManager.executeAsync(cmd -> {
+                            switch (command) {
+                                case "SET":
+                                    if (valueBytes == null) {
+                                        throw new IllegalArgumentException("Value is required for SET command");
+                                    }
+                                    LOG.debug("Async SET to Redis - key: {}", key);
+                                    cmd.set(key, new Tuple2<>("", valueBytes));
+                                    if (config.getTtl() > 0) {
+                                        cmd.expire(key, config.getTtl());
+                                    }
+                                    break;
+                                case "HSET":
+                                    if (field == null || valueBytes == null) {
+                                        throw new IllegalArgumentException("Field and value are required for HSET command");
+                                    }
+                                    LOG.debug("Async HSET to Redis - key: {}, field: {}", key, field);
+                                    cmd.hset(key, field, new Tuple2<>("", valueBytes));
+                                    if (config.getTtl() > 0) {
+                                        cmd.expire(key, config.getTtl());
+                                    }
+                                    break;
+                                case "DEL_HSET":
+                                    if (field == null || valueBytes == null) {
+                                        throw new IllegalArgumentException("Field and value are required for DEL_HSET command");
+                                    }
+                                    LOG.debug("Async DEL then HSET to Redis - key: {}, field: {}", key, field);
+                                    // 优化：如果TTL大于0，可以考虑使用HSET代替DEL+HSET，利用TTL自动过期
+                                    if (config.getTtl() <= 0) {
+                                        cmd.del(key);
+                                    }
+                                    cmd.hset(key, field, new Tuple2<>("", valueBytes));
+                                    if (config.getTtl() > 0) {
+                                        cmd.expire(key, config.getTtl());
+                                    }
+                                    break;
+                                case "DEL_HMSET":
+                                    if (valueMap == null || valueMap.isEmpty()) {
+                                        throw new IllegalArgumentException("Value map is required for DEL_HMSET command");
+                                    }
+                                    LOG.debug("Async DEL then HMSET to Redis - key: {}, fields: {}", key, valueMap.size());
+                                    // 优化：如果TTL大于0，可以考虑使用HMSET代替DEL+HMSET，利用TTL自动过期
+                                    if (config.getTtl() <= 0) {
+                                        cmd.del(key);
+                                    }
+                                    Map<String, Tuple2<String, byte[]>> wrappedMap = new HashMap<>();
+                                    for (Map.Entry<String, byte[]> entry : valueMap.entrySet()) {
+                                        wrappedMap.put(entry.getKey(), new Tuple2<>("", entry.getValue()));
+                                    }
+                                    cmd.hmset(key, wrappedMap);
+                                    if (config.getTtl() > 0) {
+                                        cmd.expire(key, config.getTtl());
+                                    }
+                                    break;
+                                case "LPUSH":
+                                case "RPUSH":
+                                    if (valueBytes == null) {
+                                        throw new IllegalArgumentException("Value is required for " + command + " command");
+                                    }
+                                    LOG.debug("Async {} to Redis - key: {}", command, key);
+                                    Tuple2<String, byte[]> tuple = new Tuple2<>("", valueBytes);
+                                    if (command.equals("LPUSH")) {
+                                        cmd.lpush(key, tuple);
+                                    } else {
+                                        cmd.rpush(key, tuple);
+                                    }
+                                    if (config.getTtl() > 0) {
+                                        cmd.expire(key, config.getTtl());
+                                    }
+                                    break;
+                                case "SADD":
+                                    if (valueBytes == null) {
+                                        throw new IllegalArgumentException("Value is required for SADD command");
+                                    }
+                                    LOG.debug("Async SADD to Redis - key: {}", key);
+                                    cmd.sadd(key, new Tuple2<>("", valueBytes));
+                                    if (config.getTtl() > 0) {
+                                        cmd.expire(key, config.getTtl());
+                                    }
+                                    break;
+                                default:
+                                    throw new UnsupportedOperationException("Unsupported Redis command: " + command);
                             }
-                            LOG.debug("Async SET to Redis - key: {}", key);
-                            cmd.set(key, new Tuple2<>("", valueBytes));
-                            if (config.getTtl() > 0) {
-                                cmd.expire(key, config.getTtl());
-                            }
-                            break;
-                        case "HSET":
-                            if (field == null || valueBytes == null) {
-                                throw new IllegalArgumentException("Field and value are required for HSET command");
-                            }
-                            LOG.debug("Async HSET to Redis - key: {}, field: {}", key, field);
-                            cmd.hset(key, field, new Tuple2<>("", valueBytes));
-                            if (config.getTtl() > 0) {
-                                cmd.expire(key, config.getTtl());
-                            }
-                            break;
-                        case "DEL_HSET":
-                            if (field == null || valueBytes == null) {
-                                throw new IllegalArgumentException("Field and value are required for DEL_HSET command");
-                            }
-                            LOG.debug("Async DEL then HSET to Redis - key: {}, field: {}", key, field);
-                            cmd.del(key);
-                            cmd.hset(key, field, new Tuple2<>("", valueBytes));
-                            if (config.getTtl() > 0) {
-                                cmd.expire(key, config.getTtl());
-                            }
-                            break;
-                        case "DEL_HMSET":
-                            if (valueMap == null || valueMap.isEmpty()) {
-                                throw new IllegalArgumentException("Value map is required for DEL_HMSET command");
-                            }
-                            LOG.debug("Async DEL then HMSET to Redis - key: {}, fields: {}", key, valueMap.size());
-                            cmd.del(key);
-                            Map<String, Tuple2<String, byte[]>> wrappedMap = new HashMap<>();
-                            for (Map.Entry<String, byte[]> entry : valueMap.entrySet()) {
-                                wrappedMap.put(entry.getKey(), new Tuple2<>("", entry.getValue()));
-                            }
-                            cmd.hmset(key, wrappedMap);
-                            if (config.getTtl() > 0) {
-                                cmd.expire(key, config.getTtl());
-                            }
-                            break;
-                        case "LPUSH":
-                        case "RPUSH":
-                            if (valueBytes == null) {
-                                throw new IllegalArgumentException("Value is required for " + command + " command");
-                            }
-                            LOG.debug("Async {} to Redis - key: {}", command, key);
-                            Tuple2<String, byte[]> tuple = new Tuple2<>("", valueBytes);
-                            if (command.equals("LPUSH")) {
-                                cmd.lpush(key, tuple);
-                            } else {
-                                cmd.rpush(key, tuple);
-                            }
-                            if (config.getTtl() > 0) {
-                                cmd.expire(key, config.getTtl());
-                            }
-                            break;
-                        case "SADD":
-                            if (valueBytes == null) {
-                                throw new IllegalArgumentException("Value is required for SADD command");
-                            }
-                            LOG.debug("Async SADD to Redis - key: {}", key);
-                            cmd.sadd(key, new Tuple2<>("", valueBytes));
-                            if (config.getTtl() > 0) {
-                                cmd.expire(key, config.getTtl());
-                            }
-                            break;
-                        default:
-                            throw new UnsupportedOperationException("Unsupported Redis command: " + command);
-                    }
-                    return null;
-                }).whenComplete((result, ex) -> {
+                            return null;
+                        });
+                    },
+                    3 // 最多重试3次
+                ).whenComplete((result, ex) -> {
                     pendingOperations.decrementAndGet();
                     if (ex != null) {
-                        LOG.error("Async {} command failed: {}", command, ex.getMessage(), ex);
+                        LOG.error("Async {} command failed after retries: {}", command, ex.getMessage(), ex);
                     }
                 });
             } else {
@@ -303,92 +751,102 @@ public class RedisSink<T> extends RichSinkFunction<T> {
     private void executeClusterCommand(String command, String key, String field, byte[] valueBytes, Map<String, byte[]> valueMap) {
         try {
             if (async) {
-                // 异步执行模式
+                // 异步执行模式 - 使用重试机制
                 pendingOperations.incrementAndGet();
-                
-                // 统一使用executeClusterAsync方法，它支持所有需要的命令
-                connectionManager.executeClusterAsync(cmd -> {
-                    switch (command) {
-                        case "SET":
-                            if (valueBytes == null) {
-                                throw new IllegalArgumentException("Value is required for SET command");
+                connectionManager.executeWithRetry(
+                    () -> {
+                        // 统一使用executeClusterAsync方法
+                        return connectionManager.executeClusterAsync(cmd -> {
+                            switch (command) {
+                                case "SET":
+                                    if (valueBytes == null) {
+                                        throw new IllegalArgumentException("Value is required for SET command");
+                                    }
+                                    LOG.debug("Async SET to Redis Cluster - key: {}", key);
+                                    cmd.set(key, new Tuple2<>("", valueBytes));
+                                    if (config.getTtl() > 0) {
+                                        cmd.expire(key, config.getTtl());
+                                    }
+                                    break;
+                                case "HSET":
+                                    if (field == null || valueBytes == null) {
+                                        throw new IllegalArgumentException("Field and value are required for HSET command");
+                                    }
+                                    LOG.debug("Async HSET to Redis Cluster - key: {}, field: {}", key, field);
+                                    cmd.hset(key, field, new Tuple2<>("", valueBytes));
+                                    if (config.getTtl() > 0) {
+                                        cmd.expire(key, config.getTtl());
+                                    }
+                                    break;
+                                case "DEL_HSET":
+                                    if (field == null || valueBytes == null) {
+                                        throw new IllegalArgumentException("Field and value are required for DEL_HSET command");
+                                    }
+                                    LOG.debug("Async DEL then HSET to Redis Cluster - key: {}, field: {}", key, field);
+                                    // 优化：如果TTL大于0，可以考虑使用HSET代替DEL+HSET
+                                    if (config.getTtl() <= 0) {
+                                        cmd.del(key);
+                                    }
+                                    cmd.hset(key, field, new Tuple2<>("", valueBytes));
+                                    if (config.getTtl() > 0) {
+                                        cmd.expire(key, config.getTtl());
+                                    }
+                                    break;
+                                case "DEL_HMSET":
+                                    if (valueMap == null || valueMap.isEmpty()) {
+                                        throw new IllegalArgumentException("Value map is required for DEL_HMSET command");
+                                    }
+                                    LOG.debug("Async DEL then HMSET to Redis Cluster - key: {}, fields: {}", key, valueMap.size());
+                                    // 优化：如果TTL大于0，可以考虑使用HMSET代替DEL+HMSET
+                                    if (config.getTtl() <= 0) {
+                                        cmd.del(key);
+                                    }
+                                    Map<String, Tuple2<String, byte[]>> wrappedMap = new HashMap<>();
+                                    for (Map.Entry<String, byte[]> entry : valueMap.entrySet()) {
+                                        wrappedMap.put(entry.getKey(), new Tuple2<>("", entry.getValue()));
+                                    }
+                                    cmd.hmset(key, wrappedMap);
+                                    if (config.getTtl() > 0) {
+                                        cmd.expire(key, config.getTtl());
+                                    }
+                                    break;
+                                case "LPUSH":
+                                case "RPUSH":
+                                    if (valueBytes == null) {
+                                        throw new IllegalArgumentException("Value is required for " + command + " command");
+                                    }
+                                    LOG.debug("Async {} to Redis Cluster - key: {}", command, key);
+                                    Tuple2<String, byte[]> tuple = new Tuple2<>("", valueBytes);
+                                    if (command.equals("LPUSH")) {
+                                        cmd.lpush(key, tuple);
+                                    } else {
+                                        cmd.rpush(key, tuple);
+                                    }
+                                    if (config.getTtl() > 0) {
+                                        cmd.expire(key, config.getTtl());
+                                    }
+                                    break;
+                                case "SADD":
+                                    if (valueBytes == null) {
+                                        throw new IllegalArgumentException("Value is required for SADD command");
+                                    }
+                                    LOG.debug("Async SADD to Redis Cluster - key: {}", key);
+                                    cmd.sadd(key, new Tuple2<>("", valueBytes));
+                                    if (config.getTtl() > 0) {
+                                        cmd.expire(key, config.getTtl());
+                                    }
+                                    break;
+                                default:
+                                    throw new UnsupportedOperationException("Unsupported Redis command: " + command);
                             }
-                            LOG.debug("Async SET to Redis Cluster - key: {}", key);
-                            cmd.set(key, new Tuple2<>("", valueBytes));
-                            if (config.getTtl() > 0) {
-                                cmd.expire(key, config.getTtl());
-                            }
-                            break;
-                        case "HSET":
-                            if (field == null || valueBytes == null) {
-                                throw new IllegalArgumentException("Field and value are required for HSET command");
-                            }
-                            LOG.debug("Async HSET to Redis Cluster - key: {}, field: {}", key, field);
-                            cmd.hset(key, field, new Tuple2<>("", valueBytes));
-                            if (config.getTtl() > 0) {
-                                cmd.expire(key, config.getTtl());
-                            }
-                            break;
-                        case "DEL_HSET":
-                            if (field == null || valueBytes == null) {
-                                throw new IllegalArgumentException("Field and value are required for DEL_HSET command");
-                            }
-                            LOG.debug("Async DEL then HSET to Redis Cluster - key: {}, field: {}", key, field);
-                            cmd.del(key);
-                            cmd.hset(key, field, new Tuple2<>("", valueBytes));
-                            if (config.getTtl() > 0) {
-                                cmd.expire(key, config.getTtl());
-                            }
-                            break;
-                        case "DEL_HMSET":
-                            if (valueMap == null || valueMap.isEmpty()) {
-                                throw new IllegalArgumentException("Value map is required for DEL_HMSET command");
-                            }
-                            LOG.debug("Async DEL then HMSET to Redis Cluster - key: {}, fields: {}", key, valueMap.size());
-                            cmd.del(key);
-                            Map<String, Tuple2<String, byte[]>> wrappedMap = new HashMap<>();
-                            for (Map.Entry<String, byte[]> entry : valueMap.entrySet()) {
-                                wrappedMap.put(entry.getKey(), new Tuple2<>("", entry.getValue()));
-                            }
-                            cmd.hmset(key, wrappedMap);
-                            if (config.getTtl() > 0) {
-                                cmd.expire(key, config.getTtl());
-                            }
-                            break;
-                        case "LPUSH":
-                        case "RPUSH":
-                            if (valueBytes == null) {
-                                throw new IllegalArgumentException("Value is required for " + command + " command");
-                            }
-                            LOG.debug("Async {} to Redis Cluster - key: {}", command, key);
-                            Tuple2<String, byte[]> tuple = new Tuple2<>("", valueBytes);
-                            if (command.equals("LPUSH")) {
-                                cmd.lpush(key, tuple);
-                            } else {
-                                cmd.rpush(key, tuple);
-                            }
-                            if (config.getTtl() > 0) {
-                                cmd.expire(key, config.getTtl());
-                            }
-                            break;
-                        case "SADD":
-                            if (valueBytes == null) {
-                                throw new IllegalArgumentException("Value is required for SADD command");
-                            }
-                            LOG.debug("Async SADD to Redis Cluster - key: {}", key);
-                            cmd.sadd(key, new Tuple2<>("", valueBytes));
-                            if (config.getTtl() > 0) {
-                                cmd.expire(key, config.getTtl());
-                            }
-                            break;
-                        default:
-                            throw new UnsupportedOperationException("Unsupported Redis command: " + command);
-                    }
-                    return null;
-                }).whenComplete((result, ex) -> {
+                            return null;
+                        });
+                    },
+                    3 // 最多重试3次
+                ).whenComplete((result, ex) -> {
                     pendingOperations.decrementAndGet();
                     if (ex != null) {
-                        LOG.error("Async {} command failed: {}", command, ex.getMessage(), ex);
+                        LOG.error("Async {} command failed after retries: {}", command, ex.getMessage(), ex);
                     }
                 });
             } else {
@@ -486,28 +944,37 @@ public class RedisSink<T> extends RichSinkFunction<T> {
 
     @Override
     public void close() throws Exception {
+        // 关闭前刷新批处理缓冲区中剩余的数据
+        if (batchCount.get() > 0) {
+            LOG.info("关闭前刷新剩余的 {} 条批处理数据", batchCount.get());
+            // 同步刷新剩余数据
+            doSyncBatchWrite();
+            clearBatchBuffers();
+        }
+        
+        // 等待所有异步操作完成
         if (pendingOperations.get() > 0) {
             LOG.info("等待 {} 个未完成的操作完成...", pendingOperations.get());
-            long timeout = 30000;
+            long timeout = 60000; // 增加超时时间到60秒
             long interval = 100;
             long waited = 0;
             while (pendingOperations.get() > 0 && waited < timeout) {
+                LOG.info("等待异步操作完成，当前未完成数: {}, 已等待: {}ms, 超时阈值: {}ms",
+                        pendingOperations.get(), waited, timeout);
                 Thread.sleep(interval);
                 waited += interval;
             }
+            if (pendingOperations.get() > 0) {
+                LOG.warn("仍有 {} 个操作未完成，强制关闭", pendingOperations.get());
+            }
         }
+        
+        // 连接管理器的关闭由Flink框架自动处理
+        
+        LOG.info("Redis Sink closed");
 
         super.close();
         connectionManager.shutdown();
         LOG.info("Redis Sink closed");
-    }
-
-    private static class DefaultFieldExtractor<M extends Message> implements Function<M, String>, Serializable {
-        private static final long serialVersionUID = 1L;
-
-        @Override
-        public String apply(M m) {
-            return String.valueOf(m.hashCode());
-        }
     }
 }

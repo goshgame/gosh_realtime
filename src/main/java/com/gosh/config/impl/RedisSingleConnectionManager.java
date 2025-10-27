@@ -15,6 +15,8 @@ import io.netty.util.Timer;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.Serializable;
 import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.*;
@@ -22,7 +24,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public class RedisSingleConnectionManager implements RedisConnectionManager {
+public class RedisSingleConnectionManager implements RedisConnectionManager, Serializable {
     private static final Logger LOG = LoggerFactory.getLogger(RedisSingleConnectionManager.class);
     private static final ClientResources CLIENT_RESOURCES;
     
@@ -35,11 +37,11 @@ public class RedisSingleConnectionManager implements RedisConnectionManager {
     }
 
     private final RedisConfig config;
-    private final RedisClient redisClient;
-    private final ExecutorService threadPool;
-    private final Timer sharedTimer;
+    private transient final RedisClient redisClient;
+    private transient final ExecutorService threadPool;
+    private transient final Timer sharedTimer;
     private final String connectionKey;
-    private StatefulRedisConnection<String, Tuple2<String, byte[]>> connection;
+    private transient StatefulRedisConnection<String, Tuple2<String, byte[]>> connection;
 
     public RedisSingleConnectionManager(RedisConfig config) {
         this.config = config;
