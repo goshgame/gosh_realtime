@@ -45,19 +45,29 @@ public class ContentTagColdRecallJob {
     private static final int keepEventType = 11;
     // 每个窗口内每个tag的最大事件数限制
     private static final int MAX_EVENTS_PER_WINDOW = 1000;
+    private static final boolean isDebug = true;
 
 
     public static void main(String[] args) throws Exception {
         // 第一步：创建flink环境
+        if(isDebug) {
+            LOG.info("[ContentTagColdRecallJob] create flink env.");
+        }
         StreamExecutionEnvironment env = FlinkEnvUtil.createStreamExecutionEnvironment();
-//        env.setParallelism(1);
+        //env.setParallelism(1);
 
         // 第二步：创建Source，Kafka环境
+        if(isDebug) {
+            LOG.info("[ContentTagColdRecallJob] create kafka env.");
+        }
         KafkaSource<String> inputTopic = KafkaEnvUtil.createKafkaSource(
                 KafkaEnvUtil.loadProperties(), kafkaTopic
         );
 
         // 第三步：使用KafkaSource创建DataStream
+        if(isDebug) {
+            LOG.info("[ContentTagColdRecallJob] read/get data from kafka source.");
+        }
         DataStreamSource<String> kafkaSource = env.fromSource(
                 inputTopic,
                 WatermarkStrategy.forBoundedOutOfOrderness(Duration.ofSeconds(5)),
@@ -65,16 +75,25 @@ public class ContentTagColdRecallJob {
         );
 
         // 3.0 预过滤 - 只保留我们需要的事件类型
+        if(isDebug) {
+            LOG.info("[ContentTagColdRecallJob] filtered unnecessary event_type.");
+        }
         DataStream<String> filteredStream = kafkaSource
                 .filter(EventFilterUtil.createFastEventTypeFilter(keepEventType))
                 .name("Pre-filter Events");
 
         // 3.1 解析打标事件 (event_type=11)
+        if(isDebug) {
+            LOG.info("[ContentTagColdRecallJob] PostTagsEventParser: parse info with valid event_type.");
+        }
         SingleOutputStreamOperator<PostTagsEvent> postTagStream = filteredStream
                 .flatMap(new PostTagsEventParser())
                 .name("Parse ai-tag Events");
 
         // 3.2 将打标事件转换为基本信息单元事件
+        if(isDebug) {
+            LOG.info("[ContentTagColdRecallJob] PostTagsToPostInfoMapper: transform info basic info..");
+        }
         DataStream<PostInfoEvent> postInfoStream = postTagStream
                 .flatMap(new PostTagsToPostInfoMapper())
                 .name("Post-Tag to Post-Info Transform");
@@ -84,6 +103,9 @@ public class ContentTagColdRecallJob {
         // 同时来数据的时候，会根据其做时间上的判断；最后在rec线上程序使用时，跟合法的冷启post做交集即可
 
         // 按标签分组并聚合
+        if(isDebug) {
+            LOG.info("[ContentTagColdRecallJob] TagPosts24hAggregator: aggregate by tag.");
+        }
         DataStream<TagPosts24hAggregation> aggregatedStream = postInfoStream
                 .keyBy(new KeySelector<PostInfoEvent, String>() {
                     @Override
@@ -103,6 +125,9 @@ public class ContentTagColdRecallJob {
                 .name("Aggregate Posts by Tag");
 
         // 打印聚合结果用于调试（采样）
+        if(isDebug) {
+            LOG.info("[ContentTagColdRecallJob] print aggregated result for debugging.");
+        }
         aggregatedStream
             .process(new ProcessFunction<TagPosts24hAggregation, TagPosts24hAggregation>() {
                 private static final long SAMPLE_INTERVAL = 60000; // 采样间隔1分钟
@@ -138,6 +163,9 @@ public class ContentTagColdRecallJob {
 
 
         // 转换为Protobuf并写入Redis
+        if(isDebug) {
+            LOG.info("[ContentTagColdRecallJob] write to redis.");
+        }
         DataStream<Tuple2<String, byte[]>> dataStream = aggregatedStream
                 .map(new MapFunction<TagPosts24hAggregation, Tuple2<String, byte[]>>() {
                     @Override
@@ -158,6 +186,9 @@ public class ContentTagColdRecallJob {
                 .name("Aggregation to Protobuf Bytes");
 
         // 创建Redis sink
+        if(isDebug) {
+            LOG.info("[ContentTagColdRecallJob] create redis sink.");
+        }
         RedisConfig redisConfig = RedisConfig.fromProperties(RedisUtil.loadProperties());
         redisConfig.setTtl(86400); // 设置1天TTL
         RedisUtil.addRedisSink(
@@ -167,7 +198,9 @@ public class ContentTagColdRecallJob {
                 100     // 批量大小
         );
 
-
+        if(isDebug) {
+            LOG.info("[ContentTagColdRecallJob] execute job.");
+        }
         // 执行任务
         env.execute("ContentTagColdRecallJob 24h");
     }
