@@ -17,6 +17,7 @@ public class AiTagParseCommon {
     private static final int durationLimitFromCreatedAt = 2 * 24 * 60 * 60 * 1000;  // 2天
     private static final int accessLevelLow = 10;
     private static final int accessLevelHigh = 30;
+    private static final boolean isDebug = true;
 
     // ==================== 数据结构定义 ====================
     /**
@@ -72,27 +73,42 @@ public class AiTagParseCommon {
 
                 // 检查event_type
                 if (!rootNode.has("event_type")) {
+                    if(isDebug) {
+                        LOG.warn("PostTagsEventParser: event_type is missing");
+                    }
                     return;
                 }
 
                 int eventType = rootNode.get("event_type").asInt();
                 if (eventType != aiTagEventType) {
+                    if(isDebug) {
+                        LOG.warn("PostTagsEventParser: event_type is not equal {}", aiTagEventType);
+                    }
                     return;
                 }
 
                 // 检查ai_post_tag_event字段
                 JsonNode aiPostTagNode = rootNode.path("ai_post_tag_event");
                 if (aiPostTagNode.isMissingNode()) {
+                    if(isDebug) {
+                        LOG.warn("PostTagsEventParser: ai_post_tag_event is missing");
+                    }
                     return;
                 }
 
                 // 解析post_id和created_at
                 JsonNode postIdNode = aiPostTagNode.path("post_id");
                 if (postIdNode.isMissingNode()) {
+                    if(isDebug) {
+                        LOG.warn("PostTagsEventParser: post_id is missing");
+                    }
                     return;
                 }
                 long postId = postIdNode.asLong();
                 if (postId <= 0) {
+                    if(isDebug) {
+                        LOG.warn("PostTagsEventParser: post_id is invalid");
+                    }
                     return;
                 }
 
@@ -100,28 +116,43 @@ public class AiTagParseCommon {
                 long updatedAt = aiPostTagNode.path("updated_at").asLong(0);
                 long duration = System.currentTimeMillis() - updatedAt;
                 if (updatedAt <= 0 || duration > durationLimitFromCreatedAt) {
+                    if(isDebug) {
+                        LOG.warn("PostTagsEventParser: updated_at is invalid");
+                    }
                     return;
                 }
 
                 int accessLevel = aiPostTagNode.path("access_level").asInt(0);
                 if (accessLevel < accessLevelLow || accessLevel > accessLevelHigh) {
+                    if(isDebug) {
+                        LOG.warn("PostTagsEventParser: access_level is invalid");
+                    }
                     return;
                 }
 
                 // 解析tags字段
                 JsonNode aiTagResultNode = aiPostTagNode.path("results");
                 if (aiTagResultNode.isMissingNode()) {
+                    if(isDebug) {
+                        LOG.warn("PostTagsEventParser: results is missing");
+                    }
                     return;
                 }
 
                 JsonNode aiTagsNode = aiTagResultNode.path("tags");
                 if (aiTagsNode.isMissingNode()) {
+                    if(isDebug) {
+                        LOG.warn("PostTagsEventParser: tags is missing");
+                    }
                     return;
                 }
 
                 // 解析content字段
                 JsonNode contentTagNode = aiTagsNode.path("content");
                 if (contentTagNode.isMissingNode()) {
+                    if(isDebug) {
+                        LOG.warn("PostTagsEventParser: content is missing");
+                    }
                     return;
                 }
 
@@ -189,6 +220,11 @@ public class AiTagParseCommon {
                 postInfoEvent.accessLevel = postEvent.accessLevel;
                 postInfoEvent.postId = postEvent.postId;
                 out.collect(postInfoEvent);
+
+                if(isDebug) {
+                    LOG.info("[PostTagsToPostInfoMapper] tag={}, postId={}, createdAt={}, updatedAt={}, accessLevel={}",
+                        tag, postEvent.postId, postEvent.createdAt, postEvent.updatedAt, postEvent.accessLevel);
+                }
             }
         }
     }

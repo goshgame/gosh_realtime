@@ -28,6 +28,14 @@ import org.slf4j.LoggerFactory;
 import java.time.Duration;
 import java.util.Objects;
 
+// test used
+import org.apache.flink.configuration.Configuration;
+import org.apache.flink.streaming.api.functions.ProcessFunction;
+import org.apache.flink.util.Collector;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+
 public class ContentTagColdRecallJob {
     private static final Logger LOG = LoggerFactory.getLogger(ContentTagColdRecallJob.class);
     private static final ObjectMapper objectMapper = new ObjectMapper();
@@ -94,7 +102,42 @@ public class ContentTagColdRecallJob {
                 .aggregate(new TagPosts24hAggregator())
                 .name("Aggregate Posts by Tag");
 
-        // 转换为Redis写入格式
+        // 打印聚合结果用于调试（采样）
+        aggregatedStream
+            .process(new ProcessFunction<TagPosts24hAggregation, TagPosts24hAggregation>() {
+                private static final long SAMPLE_INTERVAL = 60000; // 采样间隔1分钟
+                private static final int SAMPLE_COUNT = 3; // 每次采样3条
+                private transient long lastSampleTime;
+                private transient int sampleCount;
+
+                @Override
+                public void open(Configuration parameters) throws Exception {
+                    lastSampleTime = 0;
+                    sampleCount = 0;
+                }
+
+                @Override
+                public void processElement(TagPosts24hAggregation value, Context ctx, Collector<TagPosts24hAggregation> out) throws Exception {
+                    long now = System.currentTimeMillis();
+                    if (now - lastSampleTime > SAMPLE_INTERVAL) {
+                        lastSampleTime = now - (now % SAMPLE_INTERVAL);
+                        sampleCount = 0;
+                    }
+                    if (sampleCount < SAMPLE_COUNT) {
+                        sampleCount++;
+                        LOG.info("[Sample {}/{}] uid {} at {}: postCreatedAtHis24h={}",
+                            sampleCount,
+                            SAMPLE_COUNT,
+                            value.tag,
+                            new SimpleDateFormat("HH:mm:ss").format(new Date()),
+                            value.postCreatedAtHis24h);
+                    }
+                }
+            })
+            .name("Debug Sampling");
+
+
+        // 转换为Protobuf并写入Redis
         DataStream<Tuple2<String, byte[]>> dataStream = aggregatedStream
                 .map(new MapFunction<TagPosts24hAggregation, Tuple2<String, byte[]>>() {
                     @Override
