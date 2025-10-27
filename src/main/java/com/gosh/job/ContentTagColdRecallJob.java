@@ -150,7 +150,7 @@ public class ContentTagColdRecallJob {
                     }
                     if (sampleCount < SAMPLE_COUNT) {
                         sampleCount++;
-                        LOG.info("[Sample {}/{}] uid {} at {}: postCreatedAtHis24h={}",
+                        LOG.info("[Sample {}/{}] tag {} at {}: postCreatedAtHis24h={}",
                             sampleCount,
                             SAMPLE_COUNT,
                             value.tag,
@@ -172,6 +172,9 @@ public class ContentTagColdRecallJob {
                     public Tuple2<String, byte[]> map(TagPosts24hAggregation agg) throws Exception {
                         // 构建Redis key
                         String redisKey = PREFIX + agg.tag + SUFFIX;
+                        if(isDebug) {
+                            LOG.info("[ContentTagColdRecallJob] write to redis: {}", redisKey);
+                        }
 
                         // 构建Protobuf
                         byte[] value = RecTagColdFeature.PostTagColdFeature.newBuilder()
