@@ -126,10 +126,11 @@ public class AiTagParseCommon {
                 if(isDebug) {
                     LOG.info("PostTagsEventParser: created_at: {}, updated_at: {}", createdAt, updatedAt);
                 }
-                long duration = System.currentTimeMillis() - updatedAt * 1000;  // 单位转换
-                if (updatedAt <= 0 || duration > durationLimitFromCreatedAt) {
+                //long duration = System.currentTimeMillis() - updatedAt * 1000;  // 单位转换
+                long duration = System.currentTimeMillis() - createdAt * 1000;  // 单位转换，先用created_at,因为updated_at很多为0
+                if (createdAt <= 0 || duration > durationLimitFromCreatedAt) {
                     if(isDebug) {
-                        LOG.warn("PostTagsEventParser: updated_at is invalid. updatedAt: {}, duration: {}, " +
+                        LOG.warn("PostTagsEventParser: created_at is invalid. created_at: {}, duration: {}, " +
                                 "durationLimitFromCreatedAt: {}", updatedAt, duration, durationLimitFromCreatedAt);
                     }
                     return;
