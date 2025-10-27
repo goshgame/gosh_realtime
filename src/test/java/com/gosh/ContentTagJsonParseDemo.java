@@ -158,7 +158,10 @@ public class ContentTagJsonParseDemo {
 
             long createdAt = aiPostTagNode.path("created_at").asLong(0);
             long updatedAt = aiPostTagNode.path("updated_at").asLong(0);
-            long duration = System.currentTimeMillis() - updatedAt;
+            long duration = System.currentTimeMillis() - updatedAt * 1000;
+            System.out.println("createdAt: " + createdAt);
+            System.out.println("updatedAt: " + updatedAt);
+            System.out.println("duration: " + duration);
             //if (updatedAt <= 0 || duration > durationLimitFromCreatedAt) {
             //    System.out.println("updated_at is invalid");
             //    return;
