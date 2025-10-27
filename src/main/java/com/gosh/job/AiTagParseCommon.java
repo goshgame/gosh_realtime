@@ -121,17 +121,16 @@ public class AiTagParseCommon {
                     return;
                 }
 
-                long createdAt = aiPostTagNode.path("created_at").asLong(0);
-                long updatedAt = aiPostTagNode.path("updated_at").asLong(0);
+                long createdAt = aiPostTagNode.path("created_at").asLong(0); // 使用created_at，因为updated_at在rec中没有获取
+                // long updatedAt = aiPostTagNode.path("updated_at").asLong(0);
                 //if(isDebug) {
-                //    LOG.info("post_id: {}, created_at: {}, updated_at: {}", postId, createdAt, updatedAt);
+                //    LOG.info("post_id: {}, created_at: {}", postId, createdAt);
                 //}
-                //long duration = System.currentTimeMillis() - updatedAt * 1000;  // 单位转换
-                long duration = System.currentTimeMillis() - createdAt * 1000;  // 单位转换，先用created_at,因为updated_at很多为0
+                long duration = System.currentTimeMillis() - createdAt * 1000;  // 单位转换
                 if (createdAt <= 0 || duration > durationLimitFromCreatedAt) {
                    if(isDebug) {
-                       LOG.warn("invalid time. post_id: {}, created_at: {}, updated_at: {} , duration: {}, " +
-                               "durationLimitFromCreatedAt: {}", postId, createdAt, updatedAt, duration, durationLimitFromCreatedAt);
+                       LOG.warn("invalid time. post_id: {}, created_at: {}, duration: {}, " +
+                               "durationLimitFromCreatedAt: {}", postId, createdAt, duration, durationLimitFromCreatedAt);
                    }
                    return;
                 }
@@ -219,7 +218,7 @@ public class AiTagParseCommon {
                 event.postId = postId;
                 event.contentTagsSet = contentTagSet;
                 event.createdAt = createdAt;
-                event.updatedAt = updatedAt;
+                event.updatedAt = createdAt;
                 event.accessLevel = accessLevel;
                 out.collect(event);
 

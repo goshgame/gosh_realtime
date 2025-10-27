@@ -45,7 +45,7 @@ public class ContentTagColdRecallJob {
     private static final int keepEventType = 11;
     // 每个窗口内每个tag的最大事件数限制
     private static final int MAX_EVENTS_PER_WINDOW = 1000;
-    private static final boolean isDebug = true;
+    private static final boolean isDebug = false;
 
 
     public static void main(String[] args) throws Exception {
