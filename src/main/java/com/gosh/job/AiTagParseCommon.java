@@ -123,15 +123,19 @@ public class AiTagParseCommon {
 
                 long createdAt = aiPostTagNode.path("created_at").asLong(0); // 使用created_at，因为updated_at在rec中没有获取
                 // long updatedAt = aiPostTagNode.path("updated_at").asLong(0);
-                //if(isDebug) {
-                //    LOG.info("post_id: {}, created_at: {}", postId, createdAt);
-                //}
+                if(isDebug) {
+                   // LOG.info("post_id: {}, created_at: {}", postId, createdAt);
+                    long thresh = System.currentTimeMillis() / 1000 - 86400 * 2;
+                    if (createdAt >= thresh) {
+                        LOG.info("post_id: {}, created_at: {}, >= thresh: {}", postId, createdAt, thresh);
+                    }
+                }
                 long duration = System.currentTimeMillis() - createdAt * 1000;  // 单位转换
                 if (createdAt <= 0 || duration > durationLimitFromCreatedAt) {
-                   if(isDebug) {
-                       LOG.warn("invalid time. post_id: {}, created_at: {}, duration: {}, " +
-                               "durationLimitFromCreatedAt: {}", postId, createdAt, duration, durationLimitFromCreatedAt);
-                   }
+                   // if(isDebug) {
+                   //     LOG.warn("invalid time. post_id: {}, created_at: {}, duration: {}, " +
+                   //             "durationLimitFromCreatedAt: {}", postId, createdAt, duration, durationLimitFromCreatedAt);
+                   // }
                    return;
                 }
 
