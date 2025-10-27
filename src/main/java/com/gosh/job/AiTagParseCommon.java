@@ -117,7 +117,8 @@ public class AiTagParseCommon {
                 long duration = System.currentTimeMillis() - updatedAt;
                 if (updatedAt <= 0 || duration > durationLimitFromCreatedAt) {
                     if(isDebug) {
-                        LOG.warn("PostTagsEventParser: updated_at is invalid");
+                        LOG.warn("PostTagsEventParser: updated_at is invalid. updatedAt: {}, duration: {}, " +
+                                "durationLimitFromCreatedAt: {}", updatedAt, duration, durationLimitFromCreatedAt);
                     }
                     return;
                 }
