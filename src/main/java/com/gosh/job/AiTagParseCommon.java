@@ -128,13 +128,13 @@ public class AiTagParseCommon {
                 //}
                 //long duration = System.currentTimeMillis() - updatedAt * 1000;  // 单位转换
                 long duration = System.currentTimeMillis() - createdAt * 1000;  // 单位转换，先用created_at,因为updated_at很多为0
-                if (createdAt <= 0 || duration > durationLimitFromCreatedAt) {
-                    if(isDebug) {
-                        LOG.warn("post_id: {}, created_at: {} is invalid, duration: {}, " +
-                                "durationLimitFromCreatedAt: {}", postId, updatedAt, duration, durationLimitFromCreatedAt);
-                    }
-                    return;
-                }
+                //if (createdAt <= 0 || duration > durationLimitFromCreatedAt) {
+                //    if(isDebug) {
+                //        LOG.warn("invalid time. post_id: {}, created_at: {}, updated_at: {} , duration: {}, " +
+                //                "durationLimitFromCreatedAt: {}", postId, createdAt, updatedAt, duration, durationLimitFromCreatedAt);
+                //    }
+                //    return;
+                //}
 
                 int accessLevel = aiPostTagNode.path("access_level").asInt(0);
                 //if(isDebug) {
