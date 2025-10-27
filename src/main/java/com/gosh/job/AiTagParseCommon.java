@@ -69,6 +69,9 @@ public class AiTagParseCommon {
             }
 
             try {
+                if(isDebug) {
+                    LOG.info("PostTagsEventParser: value: {}", value);
+                }
                 JsonNode rootNode = objectMapper.readTree(value);
 
                 // 检查event_type
@@ -177,6 +180,9 @@ public class AiTagParseCommon {
                     while (fields.hasNext()) {
                         Map.Entry<String, JsonNode> field = fields.next();
                         contentTagSet.add(field.getKey());
+                        if(isDebug) {
+                            LOG.info("PostTagsEventParser: contentTag: {}", field.getKey());
+                        }
                     }
                 } else if (contentTagNode.isArray()) {
                     // 多个 key-value 组成的 list 格式: [{"key1": "value1"}, {"key2": "value2"}]
@@ -186,18 +192,30 @@ public class AiTagParseCommon {
                             while (fields.hasNext()) {
                                 Map.Entry<String, JsonNode> field = fields.next();
                                 contentTagSet.add(field.getKey());
+                                if(isDebug) {
+                                    LOG.info("PostTagsEventParser: contentTag: {}", field.getKey());
+                                }
                             }
                         } else if (item.isTextual()) {
                             // 如果是纯文本标签
                             contentTagSet.add(item.asText());
+                            if(isDebug) {
+                                LOG.info("PostTagsEventParser: contentTag: {}", item.asText());
+                            }
                         }
                     }
                 } else if (contentTagNode.isTextual()) {
                     // 纯文本格式
                     contentTagSet.add(contentTagNode.asText());
+                    if(isDebug) {
+                        LOG.info("PostTagsEventParser: contentTag: {}", contentTagNode.asText());
+                    }
                 }
 
                 if (contentTagSet.isEmpty()) {
+                    if(isDebug) {
+                        LOG.warn("PostTagsEventParser: contentTagSet is empty");
+                    }
                     return;
                 }
 
