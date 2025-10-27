@@ -119,7 +119,7 @@ public class ContentTagColdRecallJob {
                 })
                 .window(SlidingProcessingTimeWindows.of(
                         Time.hours(24), // 窗口大小24小时
-                        Time.minutes(10)  // 滑动间隔10minute
+                        Time.minutes(2)  // 滑动间隔10minute
                 ))
                 .aggregate(new TagPosts24hAggregator())
                 .name("Aggregate Posts by Tag");
