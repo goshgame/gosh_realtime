@@ -56,16 +56,13 @@ public class AiTagParseCommon {
 
 
 
-
-
-
     // ==================== 解析器 ====================
     /**
      * 打标事件解析器
      */
-    public static class PostTagsEventParser implements FlatMapFunction<String, AiTagParseCommon.PostTagsEvent> {
+    public static class PostTagsEventParser implements FlatMapFunction<String, PostTagsEvent> {
         @Override
-        public void flatMap(String value, Collector<AiTagParseCommon.PostTagsEvent> out) throws Exception {
+        public void flatMap(String value, Collector<PostTagsEvent> out) throws Exception {
             if (value == null || value.isEmpty()) {
                 return;
             }
@@ -181,9 +178,9 @@ public class AiTagParseCommon {
     /**
      * 将打标事件转换为基本信息单元事件
      */
-    public static class PostTagsToPostInfoMapper implements FlatMapFunction<AiTagParseCommon.PostTagsEvent, AiTagParseCommon.PostInfoEvent> {
+    public static class PostTagsToPostInfoMapper implements FlatMapFunction<PostTagsEvent, PostInfoEvent> {
         @Override
-        public void flatMap(AiTagParseCommon.PostTagsEvent postEvent, Collector<AiTagParseCommon.PostInfoEvent> out) throws Exception {
+        public void flatMap(PostTagsEvent postEvent, Collector<PostInfoEvent> out) throws Exception {
             for (String tag : postEvent.contentTagsSet) {
                 PostInfoEvent postInfoEvent = new PostInfoEvent();
                 postInfoEvent.tag = tag;
