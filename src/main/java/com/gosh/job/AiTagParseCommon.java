@@ -80,6 +80,9 @@ public class AiTagParseCommon {
                 }
 
                 int eventType = rootNode.get("event_type").asInt();
+                if(isDebug) {
+                    LOG.info("PostTagsEventParser: event_type: {}", eventType);
+                }
                 if (eventType != aiTagEventType) {
                     if(isDebug) {
                         LOG.warn("PostTagsEventParser: event_type is not equal {}", aiTagEventType);
@@ -105,6 +108,9 @@ public class AiTagParseCommon {
                     return;
                 }
                 long postId = postIdNode.asLong();
+                if(isDebug) {
+                    LOG.info("PostTagsEventParser: post_id: {}", postId);
+                }
                 if (postId <= 0) {
                     if(isDebug) {
                         LOG.warn("PostTagsEventParser: post_id is invalid");
@@ -114,7 +120,10 @@ public class AiTagParseCommon {
 
                 long createdAt = aiPostTagNode.path("created_at").asLong(0);
                 long updatedAt = aiPostTagNode.path("updated_at").asLong(0);
-                long duration = System.currentTimeMillis() - updatedAt;
+                if(isDebug) {
+                    LOG.info("PostTagsEventParser: created_at: {}, updated_at: {}", createdAt, updatedAt);
+                }
+                long duration = System.currentTimeMillis() - updatedAt * 1000;  // 单位转换
                 if (updatedAt <= 0 || duration > durationLimitFromCreatedAt) {
                     if(isDebug) {
                         LOG.warn("PostTagsEventParser: updated_at is invalid. updatedAt: {}, duration: {}, " +
@@ -124,9 +133,12 @@ public class AiTagParseCommon {
                 }
 
                 int accessLevel = aiPostTagNode.path("access_level").asInt(0);
+                if(isDebug) {
+                    LOG.info("PostTagsEventParser: access_level: {}", accessLevel);
+                }
                 if (accessLevel < accessLevelLow || accessLevel > accessLevelHigh) {
                     if(isDebug) {
-                        LOG.warn("PostTagsEventParser: access_level is invalid");
+                        LOG.warn("PostTagsEventParser: access_level: {} is invalid.", accessLevel);
                     }
                     return;
                 }
