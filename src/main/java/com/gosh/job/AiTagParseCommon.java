@@ -17,7 +17,7 @@ public class AiTagParseCommon {
     private static final int durationLimitFromCreatedAt = 2 * 24 * 60 * 60 * 1000;  // 2天
     private static final int accessLevelLow = 10;
     private static final int accessLevelHigh = 30;
-    private static final boolean isDebug = true;
+    private static final boolean isDebug = false;
 
     // ==================== 数据结构定义 ====================
     /**
@@ -123,13 +123,13 @@ public class AiTagParseCommon {
 
                 long createdAt = aiPostTagNode.path("created_at").asLong(0); // 使用created_at，因为updated_at在rec中没有获取
                 // long updatedAt = aiPostTagNode.path("updated_at").asLong(0);
-                if(isDebug) {
-                   // LOG.info("post_id: {}, created_at: {}", postId, createdAt);
-                    long thresh = System.currentTimeMillis() / 1000 - 86400 * 2;
-                    if (createdAt >= thresh) {
-                        LOG.info("post_id: {}, created_at: {}, >= thresh: {}", postId, createdAt, thresh);
-                    }
-                }
+                // if(isDebug) {
+                //    LOG.info("post_id: {}, created_at: {}", postId, createdAt);
+                //     long thresh = System.currentTimeMillis() / 1000 - 86400 * 2;
+                //     if (createdAt >= thresh) {
+                //         LOG.info("post_id: {}, created_at: {}, >= thresh: {}", postId, createdAt, thresh);
+                //     }
+                // }
                 long duration = System.currentTimeMillis() - createdAt * 1000;  // 单位转换
                 if (createdAt <= 0 || duration > durationLimitFromCreatedAt) {
                    // if(isDebug) {
@@ -250,10 +250,10 @@ public class AiTagParseCommon {
                 postInfoEvent.postId = postEvent.postId;
                 out.collect(postInfoEvent);
 
-                if(isDebug) {
-                    LOG.info("[PostTagsToPostInfoMapper] tag={}, postId={}, createdAt={}, updatedAt={}, accessLevel={}",
-                        tag, postEvent.postId, postEvent.createdAt, postEvent.updatedAt, postEvent.accessLevel);
-                }
+                // if(isDebug) {
+                //     LOG.info("[PostTagsToPostInfoMapper] tag={}, postId={}, createdAt={}, updatedAt={}, accessLevel={}",
+                //         tag, postEvent.postId, postEvent.createdAt, postEvent.updatedAt, postEvent.accessLevel);
+                // }
             }
         }
     }
