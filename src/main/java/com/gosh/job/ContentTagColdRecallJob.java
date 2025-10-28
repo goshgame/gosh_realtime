@@ -46,6 +46,8 @@ public class ContentTagColdRecallJob {
     // 每个窗口内每个tag的最大事件数限制
     private static final int MAX_EVENTS_PER_WINDOW = 1000;
     private static final int MAX_LEN_PER_TAG = 300;
+    private static final int WINDOW_SIZE = 24;  // 窗口大小24h
+    private static final int SLIDING_WINDOW_SIZE = 10;  // 滑动窗口大小10min
     private static final boolean isDebug = false;
 
 
@@ -119,8 +121,8 @@ public class ContentTagColdRecallJob {
                     }
                 })
                 .window(SlidingProcessingTimeWindows.of(
-                        Time.hours(24), // 窗口大小24小时
-                        Time.minutes(2)  // 滑动间隔10minute
+                        Time.hours(WINDOW_SIZE), // 窗口大小24小时
+                        Time.minutes(SLIDING_WINDOW_SIZE)  // 滑动间隔10minute
                 ))
                 .aggregate(new TagPosts24hAggregator())
                 .name("Aggregate Posts by Tag");
