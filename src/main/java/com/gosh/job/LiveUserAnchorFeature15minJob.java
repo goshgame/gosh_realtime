@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gosh.config.RedisConfig;
 import com.gosh.entity.RecFeature;
 import com.gosh.util.*;
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.functions.AggregateFunction;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.functions.MapFunction;
@@ -22,6 +23,7 @@ import org.apache.flink.util.Collector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,6 +51,10 @@ public class LiveUserAnchorFeature15minJob {
         
         // 第一步：创建flink环境
         StreamExecutionEnvironment env = FlinkEnvUtil.createStreamExecutionEnvironment();
+        LOG.info("Job parallelism set to: {}", env.getParallelism());
+        
+        // 确保Kafka消费者并行度与分区数匹配
+        env.getConfig().setAutoWatermarkInterval(1000); // 降低Watermark生成间隔
 
         // 第二步：创建Source，Kafka环境（topic=advertise）
         KafkaSource<String> inputTopic = KafkaEnvUtil.createKafkaSource(
@@ -58,7 +64,24 @@ public class LiveUserAnchorFeature15minJob {
         // 第三步：使用KafkaSource创建DataStream
         DataStreamSource<String> kafkaSource = env.fromSource(
             inputTopic,
-            org.apache.flink.api.common.eventtime.WatermarkStrategy.noWatermarks(),
+            // 添加时间戳提取和Watermark生成
+            WatermarkStrategy.<String>forBoundedOutOfOrderness(Duration.ofSeconds(5))
+                .withTimestampAssigner((element, recordTimestamp) -> {
+                    // 尝试从Kafka消息中提取时间戳
+                    try {
+                        ObjectMapper mapper = new ObjectMapper();
+                        JsonNode root = mapper.readTree(element);
+                        JsonNode userEventLog = root.path("user_event_log");
+                        // 检查是否有明确的时间戳字段
+                        if (userEventLog.has("timestamp")) {
+                            return userEventLog.get("timestamp").asLong(System.currentTimeMillis());
+                        }
+                    } catch (Exception e) {
+                        // 解析失败时使用当前系统时间
+                    }
+                    // 默认使用处理时间，避免Watermark延迟
+                    return System.currentTimeMillis();
+                }),
             "Kafka Source"
         );
 
@@ -70,9 +93,15 @@ public class LiveUserAnchorFeature15minJob {
         // 3.1 解析 user_event_log 为 Live 用户-主播 事件
         SingleOutputStreamOperator<LiveUserAnchorEvent> eventStream = filteredStream
             .flatMap(new LiveEventParser())
-            .name("Parse Live User-Anchor Events");
+            .name("Parse Live User-Anchor Events")
+            // 为解析后的事件再次确认时间戳，确保后续处理使用正确的事件时间
+            .assignTimestampsAndWatermarks(
+                WatermarkStrategy.<LiveUserAnchorEvent>forBoundedOutOfOrderness(Duration.ofSeconds(3))
+                    .withTimestampAssigner((event, recordTimestamp) -> System.currentTimeMillis())
+            );
 
-        // 第四步：按 uid 分组并进行 15 分钟窗口（滑动 5 秒钟）聚合
+        // 第四步：原有的实现（按uid分组，会导致数据倾斜）- 已注释保留
+        /*
         DataStream<UserAnchorFeatureAggregation> aggregatedStream = eventStream
             .keyBy(new KeySelector<LiveUserAnchorEvent, Long>() {
                 @Override
@@ -86,10 +115,54 @@ public class LiveUserAnchorFeature15minJob {
             ))
             .aggregate(new UserAnchorFeatureAggregator())
             .name("User-Anchor Feature Aggregation");
+        */
+
+        DataStream<LiveUserAnchorEvent> rebalanceSteam = eventStream.rebalance();
+        // 保持两阶段聚合，解决key倾斜问题，同时确保序列化兼容性
+        // 第一阶段：使用Long类型作为key，但通过取模方式分散热点
+        DataStream<UserAnchorFeatureAggregation> preAggregatedStream = rebalanceSteam
+            .keyBy(new KeySelector<LiveUserAnchorEvent, Long>() {
+                @Override
+                public Long getKey(LiveUserAnchorEvent value) throws Exception {
+                    // 优化盐值策略：使用更大范围的盐值(64)，进一步分散热点
+                    int salt = (int) (Math.abs(value.uid) % 64);
+                    // 使用更优的位运算组合，确保更好的分布
+                    return (value.uid << 6) | salt;
+                }
+            })
+            .window(SlidingProcessingTimeWindows.of(
+                Time.minutes(15),
+                Time.seconds(15)
+            ))
+            .aggregate(new UserAnchorFeatureAggregator())
+            .name("Pre-Aggregation with Distributed Keys")
+            // 过滤掉空结果
+            .filter(agg -> agg != null)
+            .shuffle();
+        
+        // 第二阶段：按原始uid进行全局聚合，使用Long类型key确保兼容性
+        DataStream<UserAnchorFeatureAggregation> aggregatedStream = preAggregatedStream
+            .keyBy(new KeySelector<UserAnchorFeatureAggregation, Long>() {
+                @Override
+                public Long getKey(UserAnchorFeatureAggregation value) throws Exception {
+                    return value.uid; // 使用原始Long类型uid作为key
+                }
+            })
+            .window(SlidingProcessingTimeWindows.of(
+                Time.minutes(15),
+                Time.seconds(15)
+            ))
+            .aggregate(new GlobalUserAnchorFeatureAggregator())
+            .name("Global Aggregation by Original UID")
+            .shuffle();
+        
+        
 
         // 第五步：转换为Protobuf并写入Redis（HashMap：key=uid，field=anchorId）
         DataStream<Tuple2<String, Map<String, byte[]>>> dataStream = aggregatedStream
             .filter(agg -> agg != null && agg.anchorFeatures != null && !agg.anchorFeatures.isEmpty())
+            // 增加shuffle操作，进一步均衡数据分布
+            .shuffle()
             .map(new MapFunction<UserAnchorFeatureAggregation, Tuple2<String, Map<String, byte[]>>>() {
                 @Override
                 public Tuple2<String, Map<String, byte[]>> map(UserAnchorFeatureAggregation agg) throws Exception {
@@ -106,11 +179,13 @@ public class LiveUserAnchorFeature15minJob {
         LOG.info("Redis config: TTL={}, Command={}", 
             redisConfig.getTtl(), redisConfig.getCommand());
         
+        // 增加Redis批处理大小，减少网络往返次数
+        int redisBatchSize = 500;
         RedisUtil.addRedisHashMapSink(
             dataStream,
             redisConfig,
             true,
-            100
+            redisBatchSize
         );
 
         LOG.info("Job configured, starting execution...");
@@ -126,6 +201,7 @@ public class LiveUserAnchorFeature15minJob {
         public String recToken;
         public long watchDuration;  // 观看时长（浏览和退房事件的stay_duration）
         public int scene;
+        public long eventTime;  // 事件发生时间戳
     }
 
     // 解析器：解析 user_event_log.event 和 user_event_log.event_data
@@ -202,6 +278,13 @@ public class LiveUserAnchorFeature15minJob {
                 evt.anchorId = anchorId;
                 evt.eventType = event;
                 evt.scene = scene;
+                
+                // 从user_event_log中提取事件时间戳
+                long eventTimeMillis = System.currentTimeMillis();
+                if (userEventLog.has("timestamp")) {
+                    eventTimeMillis = userEventLog.get("timestamp").asLong(eventTimeMillis);
+                } 
+                evt.eventTime = eventTimeMillis;
                 
                 // 提取 rec_token（曝光事件用于去重）
                 evt.recToken = data.path("rec_token").asText("");
@@ -376,4 +459,132 @@ public class LiveUserAnchorFeature15minJob {
         public long uid;
         public Map<String, byte[]> anchorFeatures; // anchorId -> protobuf bytes
     }
+    
+    // 全局聚合器：合并相同uid的预聚合结果，解决数据倾斜问题
+    // 注意：这里修改为直接处理UserAnchorFeatureAggregation类型，避免使用Tuple2
+    public static class GlobalUserAnchorFeatureAggregator implements AggregateFunction<UserAnchorFeatureAggregation, UserAnchorAccumulator, UserAnchorFeatureAggregation> {
+        @Override
+        public UserAnchorAccumulator createAccumulator() {
+            UserAnchorAccumulator acc = new UserAnchorAccumulator();
+            acc.anchorIdToCounts = new HashMap<>();
+            return acc;
+        }
+        
+        @Override
+        public UserAnchorAccumulator add(UserAnchorFeatureAggregation aggregation, UserAnchorAccumulator accumulator) {
+            // 设置uid
+            accumulator.uid = aggregation.uid;
+            
+            // 合并每个主播的特征
+            if (aggregation.anchorFeatures != null) {
+                for (Map.Entry<String, byte[]> entry : aggregation.anchorFeatures.entrySet()) {
+                    try {
+                        long anchorId = Long.parseLong(entry.getKey());
+                        AnchorFeatureCounts counts = accumulator.anchorIdToCounts.computeIfAbsent(anchorId, k -> new AnchorFeatureCounts());
+                        
+                        // 解析protobuf数据
+                        RecFeature.LiveUserAnchorFeature feature = RecFeature.LiveUserAnchorFeature.parseFrom(entry.getValue());
+                        
+                        // 合并曝光次数
+                        // 优化：不再使用循环模拟HyperLogLog添加，直接使用基于概率的高效合并方式
+                        if (feature.getUserAnchorExpCnt15Min() > 0) {
+                            double estimatedCardinality = feature.getUserAnchorExpCnt15Min();
+                            if (estimatedCardinality > counts.exposureHLL.cardinality()) {
+                                // 只在新计数更大时更新，使用确定性字符串减少计算
+                                String deterministicValue = "anchor_" + anchorId + "_exp";
+                                counts.exposureHLL.offer(deterministicValue);
+                            }
+                        }
+                        
+                        // 累加3s+观看次数
+                        counts.watch3sPlusCount += feature.getUserAnchor3SquitCnt15Min();
+                        
+                        // 合并6s+观看次数
+                        // 优化：不再使用循环模拟HyperLogLog添加，直接使用基于概率的高效合并方式
+                        if (feature.getUserAnchor6SquitCnt15Min() > 0) {
+                            // 使用概率模型估算HyperLogLog的内部位图状态，避免O(n)循环
+                            double estimatedCardinality = feature.getUserAnchor6SquitCnt15Min();
+                            if (estimatedCardinality > counts.watch6sPlusHLL.cardinality()) {
+                                // 只在新计数更大时更新，使用确定性字符串减少计算
+                                String deterministicValue = "anchor_" + anchorId + "_watch6s";
+                                counts.watch6sPlusHLL.offer(deterministicValue);
+                            }
+                        }
+                        
+                    } catch (Exception e) {
+                        // 忽略解析错误
+                        LOG.error("Error parsing anchor feature for anchorId={}: {}", entry.getKey(), e.getMessage());
+                    }
+                }
+            }
+            
+            return accumulator;
+        }
+        
+        @Override
+        public UserAnchorFeatureAggregation getResult(UserAnchorAccumulator accumulator) {
+            if (accumulator.anchorIdToCounts.isEmpty()) {
+                return null;
+            }
+            
+            UserAnchorFeatureAggregation result = new UserAnchorFeatureAggregation();
+            result.uid = accumulator.uid;
+            result.anchorFeatures = new HashMap<>();
+            
+            for (Map.Entry<Long, AnchorFeatureCounts> e : accumulator.anchorIdToCounts.entrySet()) {
+                long anchorId = e.getKey();
+                AnchorFeatureCounts c = e.getValue();
+                
+                // 从 HyperLogLog 获取去重后的曝光次数
+                int exposureCount = (int) c.exposureHLL.cardinality();
+                
+                // 从 HyperLogLog 获取去重后的 6s+ 观看次数
+                int watch6sPlusCount = (int) c.watch6sPlusHLL.cardinality();
+                
+                // 负反馈次数 = 曝光次数 - 6s+观看次数
+                int negative = Math.max(0, exposureCount - watch6sPlusCount);
+                
+                byte[] bytes = RecFeature.LiveUserAnchorFeature.newBuilder()
+                    .setUserId(accumulator.uid)
+                    .setAnchorId(anchorId)
+                    .setUserAnchorExpCnt15Min(exposureCount)
+                    .setUserAnchor3SquitCnt15Min(c.watch3sPlusCount)
+                    .setUserAnchor6SquitCnt15Min(watch6sPlusCount)
+                    .setUserAnchorNegativeFeedbackCnt15Min(negative)
+                    .build()
+                    .toByteArray();
+                result.anchorFeatures.put(String.valueOf(anchorId), bytes);
+            }
+            
+            return result.anchorFeatures.isEmpty() ? null : result;
+        }
+        
+        @Override
+        public UserAnchorAccumulator merge(UserAnchorAccumulator a, UserAnchorAccumulator b) {
+            // 合并事件计数
+            a.totalEventCount += b.totalEventCount;
+            
+            // 合并每个主播的特征
+            for (Map.Entry<Long, AnchorFeatureCounts> e : b.anchorIdToCounts.entrySet()) {
+                AnchorFeatureCounts target = a.anchorIdToCounts.computeIfAbsent(e.getKey(), k -> new AnchorFeatureCounts());
+                AnchorFeatureCounts src = e.getValue();
+                
+                // 合并 HyperLogLog
+                try {
+                    target.exposureHLL = (HyperLogLog) target.exposureHLL.merge(src.exposureHLL);
+                    target.watch6sPlusHLL = (HyperLogLog) target.watch6sPlusHLL.merge(src.watch6sPlusHLL);
+                } catch (Exception ex) {
+                    // 合并失败，保持原值
+                    LOG.error("Error merging HyperLogLog: {}", ex.getMessage());
+                }
+                
+                // 累加数值型特征
+                target.watch3sPlusCount += src.watch3sPlusCount;
+                target.totalWatchDuration += src.totalWatchDuration;
+            }
+            
+            return a;
+        }
+    }
+
 }

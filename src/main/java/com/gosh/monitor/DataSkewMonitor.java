@@ -59,7 +59,7 @@ public class DataSkewMonitor {
      * 启动倾斜监控调度任务
      */
     public void startSkewMonitor() {
-        LOG.info("启动数据倾斜监控，检查间隔: {}ms，倾斜阈值比例: {}x，最小计数阈值: {}",
+        LOG.warn("启动数据倾斜监控，检查间隔: {}ms，倾斜阈值比例: {}x，最小计数阈值: {}",
                 SKEW_CHECK_INTERVAL_MS, SKEW_THRESHOLD_RATIO, SKEW_MIN_COUNT_THRESHOLD);
         if (monitorTask != null && !monitorTask.isCancelled()) {
             monitorTask.cancel(true);
@@ -78,7 +78,7 @@ public class DataSkewMonitor {
         System.out.println("checkDataSkew --> ");
         try {
             if (keyCountMap.isEmpty()) {
-                LOG.debug("无Key计数数据，跳过倾斜检查");
+                LOG.warn("无Key计数数据，跳过倾斜检查");
                 return;
             }
             ConcurrentHashMap<String, Long> tempMap = new ConcurrentHashMap<>(keyCountMap);
@@ -103,7 +103,7 @@ public class DataSkewMonitor {
                 long totalCount = keyCounts.values().stream().mapToLong(v -> v).sum();
                 int keyCount = keyCounts.size();
                 if (keyCount == 0 || totalCount < SKEW_MIN_COUNT_THRESHOLD) {
-                    LOG.debug("算子[{}]数据量不足（总计数: {}，Key数量: {}），跳过倾斜检查",
+                    LOG.warn("算子[{}]数据量不足（总计数: {}，Key数量: {}），跳过倾斜检查",
                             operatorName, totalCount, keyCount);
                     continue;
                 }
