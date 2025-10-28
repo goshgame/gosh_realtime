@@ -162,6 +162,17 @@ public class ContentTagJsonParseDemo {
             System.out.println("createdAt: " + createdAt);
             System.out.println("updatedAt: " + updatedAt);
             System.out.println("duration: " + duration);
+            System.out.println("duration2: " + duration / (1000 * 60 * 60 * 24));
+
+            // simple test
+            long createdAtTmp = 1761580800;
+            long durationTmp = System.currentTimeMillis() - createdAtTmp * 1000;  // 单位转换
+            System.out.println("created_at: " + createdAtTmp);
+            System.out.println("duration: " + durationTmp);
+            System.out.println("duration2: " + durationTmp / (1000 * 60 * 60 * 24));
+            System.out.println("duration3: " + durationTmp / (1000 * 60 * 60));
+
+
             //if (updatedAt <= 0 || duration > durationLimitFromCreatedAt) {
             //    System.out.println("updated_at is invalid");
             //    return;
