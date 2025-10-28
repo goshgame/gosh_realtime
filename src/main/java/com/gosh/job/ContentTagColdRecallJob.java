@@ -45,6 +45,7 @@ public class ContentTagColdRecallJob {
     private static final int keepEventType = 11;
     // 每个窗口内每个tag的最大事件数限制
     private static final int MAX_EVENTS_PER_WINDOW = 1000;
+    private static final int MAX_LEN_PER_TAG = 300;
     private static final boolean isDebug = false;
 
 
@@ -125,41 +126,43 @@ public class ContentTagColdRecallJob {
                 .name("Aggregate Posts by Tag");
 
         // 打印聚合结果用于调试（采样）
-        if(isDebug) {
-            LOG.info("[ContentTagColdRecallJob] print aggregated result for debugging.");
-        }
-        aggregatedStream
-            .process(new ProcessFunction<TagPosts24hAggregation, TagPosts24hAggregation>() {
-                private static final long SAMPLE_INTERVAL = 60000; // 采样间隔1分钟
-                private static final int SAMPLE_COUNT = 3; // 每次采样3条
-                private transient long lastSampleTime;
-                private transient int sampleCount;
-
-                @Override
-                public void open(Configuration parameters) throws Exception {
-                    lastSampleTime = 0;
-                    sampleCount = 0;
-                }
-
-                @Override
-                public void processElement(TagPosts24hAggregation value, Context ctx, Collector<TagPosts24hAggregation> out) throws Exception {
-                    long now = System.currentTimeMillis();
-                    if (now - lastSampleTime > SAMPLE_INTERVAL) {
-                        lastSampleTime = now - (now % SAMPLE_INTERVAL);
-                        sampleCount = 0;
-                    }
-                    if (sampleCount < SAMPLE_COUNT) {
-                        sampleCount++;
-                        LOG.info("[Sample {}/{}] tag {} at {}: postCreatedAtHis24h={}",
-                            sampleCount,
-                            SAMPLE_COUNT,
-                            value.tag,
-                            new SimpleDateFormat("HH:mm:ss").format(new Date()),
-                            value.postCreatedAtHis24h);
-                    }
-                }
-            })
-            .name("Debug Sampling");
+        // ====================================================================================
+        // if(isDebug) {
+        //     LOG.info("[ContentTagColdRecallJob] print aggregated result for debugging.");
+        // }
+        // aggregatedStream
+        //     .process(new ProcessFunction<TagPosts24hAggregation, TagPosts24hAggregation>() {
+        //         private static final long SAMPLE_INTERVAL = 60000; // 采样间隔1分钟
+        //         private static final int SAMPLE_COUNT = 3; // 每次采样3条
+        //         private transient long lastSampleTime;
+        //         private transient int sampleCount;
+        //
+        //         @Override
+        //         public void open(Configuration parameters) throws Exception {
+        //             lastSampleTime = 0;
+        //             sampleCount = 0;
+        //         }
+        //
+        //         @Override
+        //         public void processElement(TagPosts24hAggregation value, Context ctx, Collector<TagPosts24hAggregation> out) throws Exception {
+        //             long now = System.currentTimeMillis();
+        //             if (now - lastSampleTime > SAMPLE_INTERVAL) {
+        //                 lastSampleTime = now - (now % SAMPLE_INTERVAL);
+        //                 sampleCount = 0;
+        //             }
+        //             if (sampleCount < SAMPLE_COUNT) {
+        //                 sampleCount++;
+        //                 LOG.info("[Sample {}/{}] tag {} at {}: postCreatedAtHis24h={}",
+        //                     sampleCount,
+        //                     SAMPLE_COUNT,
+        //                     value.tag,
+        //                     new SimpleDateFormat("HH:mm:ss").format(new Date()),
+        //                     value.postCreatedAtHis24h);
+        //             }
+        //         }
+        //     })
+        //     .name("Debug Sampling");
+        // ====================================================================================
 
 
         // 转换为Protobuf并写入Redis
@@ -252,7 +255,7 @@ public class ContentTagColdRecallJob {
             }
 
             // 24小时历史记录特征 - 构建字符串格式
-            result.postCreatedAtHis24h = AiTagParseCommon.buildPostCreatedAtString(accumulator.postInfos, 10);
+            result.postCreatedAtHis24h = AiTagParseCommon.buildPostCreatedAtString(accumulator.postInfos, MAX_LEN_PER_TAG);
             result.updateTime = System.currentTimeMillis();
             return result;
         }
