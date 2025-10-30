@@ -14,7 +14,8 @@ public class AiTagParseCommon {
     private static final Logger LOG = LoggerFactory.getLogger(AiTagParseCommon.class);
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private static final int aiTagEventType = 11;
-    private static final int durationLimitFromCreatedAt = 2 * 24 * 60 * 60 * 1000;  // 2天
+    // private static final int durationLimitFromCreatedAt = 2 * 24 * 60 * 60 * 1000;  // 2天
+    private static final int durationLimitFromCreatedAt = 24 * 60 * 60 * 1000;  // 1天
     private static final int accessLevelLow = 10;
     private static final int accessLevelHigh = 30;
     private static final boolean isDebug = false;

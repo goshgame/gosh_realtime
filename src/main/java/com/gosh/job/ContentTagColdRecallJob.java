@@ -44,9 +44,9 @@ public class ContentTagColdRecallJob {
     private static final String kafkaTopic = "rec";
     private static final int keepEventType = 11;
     // 每个窗口内每个tag的最大事件数限制
-    private static final int MAX_EVENTS_PER_WINDOW = 1000;
-    private static final int MAX_LEN_PER_TAG = 300;
-    private static final int WINDOW_SIZE = 24;  // 窗口大小24h
+    private static final int MAX_EVENTS_PER_WINDOW = 2000;
+    private static final int MAX_LEN_PER_TAG = 500;
+    private static final int WINDOW_SIZE = 12;  // 窗口大小12h
     private static final int SLIDING_WINDOW_SIZE = 10;  // 滑动窗口大小10min
     private static final boolean isDebug = false;
 
