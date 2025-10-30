@@ -121,7 +121,7 @@ public class AiTagParseCommon {
                     return;
                 }
 
-                long createdAt = aiPostTagNode.path("created_at").asLong(0); // 使用created_at，因为updated_at在rec中没有获取
+                long createdAt = aiPostTagNode.path("access_level_time").asLong(0); // 使用access_level_time，审核时间，而非创建时间
                 // long updatedAt = aiPostTagNode.path("updated_at").asLong(0);
                 // if(isDebug) {
                 //    LOG.info("post_id: {}, created_at: {}", postId, createdAt);
