@@ -292,6 +292,7 @@ public class ContentTagColdRecallJob {
             long currentTime = System.currentTimeMillis();
             long cutoffTime = currentTime - WINDOW_SIZE * 60 * 60 * 1000L;
             // 移除过期数据，减少删除的次数
+            // 后续可以注释下面这句的判断，因为flink是每个窗口执行一次，不是实时在聚合
             if (accumulator.postInfos.size() > MAX_EVENTS_PER_WINDOW) {
                 accumulator.postInfos.entrySet().removeIf(entry -> entry.getValue() < cutoffTime);
             }
