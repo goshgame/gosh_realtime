@@ -26,7 +26,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
-import java.util.Objects;
+import java.util.Optional;
+import java.util.*;
 
 // test used
 import org.apache.flink.configuration.Configuration;
@@ -44,8 +45,8 @@ public class ContentTagColdRecallJob {
     private static final String kafkaTopic = "rec";
     private static final int keepEventType = 11;
     // 每个窗口内每个tag的最大事件数限制
-    private static final int MAX_EVENTS_PER_WINDOW = 2000;
-    private static final int MAX_LEN_PER_TAG = 500;
+    private static final int MAX_EVENTS_PER_WINDOW = 500;
+    private static final int MAX_LEN_PER_TAG = 300;
     private static final int WINDOW_SIZE = 12;  // 窗口大小12h
     private static final int SLIDING_WINDOW_SIZE = 10;  // 滑动窗口大小10min
     private static final boolean isDebug = false;
@@ -121,7 +122,7 @@ public class ContentTagColdRecallJob {
                     }
                 })
                 .window(SlidingProcessingTimeWindows.of(
-                        Time.hours(WINDOW_SIZE), // 窗口大小24小时
+                        Time.hours(WINDOW_SIZE), // 窗口大小12小时
                         Time.minutes(SLIDING_WINDOW_SIZE)  // 滑动间隔10minute
                 ))
                 .aggregate(new TagPosts24hAggregator())
@@ -217,6 +218,63 @@ public class ContentTagColdRecallJob {
     /**
      * tag-post 24小时聚合器
      */
+    // public static class TagPosts24hAggregator implements AggregateFunction<PostInfoEvent, TagPostsAccumulator, TagPosts24hAggregation> {
+    //     @Override
+    //     public TagPostsAccumulator createAccumulator() {
+    //         TagPostsAccumulator acc = new TagPostsAccumulator();
+    //         acc.totalEventCount = 0;
+    //         return acc;
+    //     }
+    //
+    //     @Override
+    //     public TagPostsAccumulator add(PostInfoEvent event, TagPostsAccumulator accumulator) {
+    //         // 先设置tag，确保能写入Redis
+    //         accumulator.tag = event.tag;
+    //
+    //         if (accumulator.totalEventCount >= MAX_EVENTS_PER_WINDOW) {
+    //             // 如果超过限制，标记超限状态，不再更新
+    //             if (!accumulator.exceededLimit) {
+    //                 accumulator.exceededLimit = true;
+    //             }
+    //             return accumulator;
+    //         }
+    //         accumulator.totalEventCount++;
+    //         return AiTagParseCommon.addEventToAccumulator(event, accumulator);
+    //     }
+    //
+    //
+    //     @Override
+    //     public TagPosts24hAggregation getResult(TagPostsAccumulator accumulator) {
+    //         TagPosts24hAggregation result = new TagPosts24hAggregation();
+    //         // 设置tag，确保下游Redis key正确
+    //         result.tag = accumulator.tag;
+    //         if (Objects.equals(result.tag, "")) {
+    //             LOG.warn("ContentTagCold24hAggregation tag is empty, check upstream event parsing and keyBy logic");
+    //         }
+    //
+    //         // 检查是否超限，如果是则打印日志
+    //         if (accumulator.exceededLimit) {
+    //             LOG.warn("Tag {} exceeded event limit ({}). Final event count: {}.",
+    //                     accumulator.tag, MAX_EVENTS_PER_WINDOW, accumulator.totalEventCount);
+    //         }
+    //
+    //         // 24小时历史记录特征 - 构建字符串格式
+    //         result.postCreatedAtHis24h = AiTagParseCommon.buildPostCreatedAtString(accumulator.postInfos, MAX_LEN_PER_TAG);
+    //         result.updateTime = System.currentTimeMillis();
+    //         return result;
+    //     }
+    //
+    //     @Override
+    //     public TagPostsAccumulator merge(TagPostsAccumulator a, TagPostsAccumulator b) {
+    //         TagPostsAccumulator merged = AiTagParseCommon.mergeAccumulators(a, b);
+    //         merged.totalEventCount = a.totalEventCount + b.totalEventCount;
+    //         return merged;
+    //     }
+    // }
+
+    /**
+     * tag-post 24小时聚合器 - 修改版
+     */
     public static class TagPosts24hAggregator implements AggregateFunction<PostInfoEvent, TagPostsAccumulator, TagPosts24hAggregation> {
         @Override
         public TagPostsAccumulator createAccumulator() {
@@ -230,16 +288,34 @@ public class ContentTagColdRecallJob {
             // 先设置tag，确保能写入Redis
             accumulator.tag = event.tag;
 
-            if (accumulator.totalEventCount >= MAX_EVENTS_PER_WINDOW) {
-                // 如果超过限制，标记超限状态，不再更新
-                if (!accumulator.exceededLimit) {
-                    accumulator.exceededLimit = true;
-                }
-                return accumulator;
+            // 清理过期数据（超过12小时的数据）
+            long currentTime = System.currentTimeMillis();
+            long cutoffTime = currentTime - WINDOW_SIZE * 60 * 60 * 1000L;
+            // 移除过期数据，减少删除的次数
+            if (accumulator.postInfos.size() > MAX_EVENTS_PER_WINDOW) {
+                accumulator.postInfos.entrySet().removeIf(entry -> entry.getValue() < cutoffTime);
             }
-            accumulator.totalEventCount++;
-            return AiTagParseCommon.addEventToAccumulator(event, accumulator);
+
+            // 添加新事件
+            accumulator.postInfos.put(event.postId, event.updatedAt);
+
+            // 如果超过最大事件数限制，移除最旧的事件
+            if (accumulator.postInfos.size() > MAX_EVENTS_PER_WINDOW) {
+                // 找到最旧的条目并移除
+                Optional<Map.Entry<Long, Long>> oldestEntry = accumulator.postInfos
+                        .entrySet()
+                        .stream()
+                        .min(Map.Entry.comparingByValue());
+
+                if (oldestEntry.isPresent()) {
+                    accumulator.postInfos.remove(oldestEntry.get().getKey());
+                }
+            }
+
+            accumulator.totalEventCount = accumulator.postInfos.size();
+            return accumulator;
         }
+
 
         @Override
         public TagPosts24hAggregation getResult(TagPostsAccumulator accumulator) {
@@ -248,12 +324,6 @@ public class ContentTagColdRecallJob {
             result.tag = accumulator.tag;
             if (Objects.equals(result.tag, "")) {
                 LOG.warn("ContentTagCold24hAggregation tag is empty, check upstream event parsing and keyBy logic");
-            }
-
-            // 检查是否超限，如果是则打印日志
-            if (accumulator.exceededLimit) {
-                LOG.warn("Tag {} exceeded event limit ({}). Final event count: {}.",
-                        accumulator.tag, MAX_EVENTS_PER_WINDOW, accumulator.totalEventCount);
             }
 
             // 24小时历史记录特征 - 构建字符串格式
@@ -265,10 +335,11 @@ public class ContentTagColdRecallJob {
         @Override
         public TagPostsAccumulator merge(TagPostsAccumulator a, TagPostsAccumulator b) {
             TagPostsAccumulator merged = AiTagParseCommon.mergeAccumulators(a, b);
-            merged.totalEventCount = a.totalEventCount + b.totalEventCount;
+            merged.totalEventCount = merged.postInfos.size();
             return merged;
         }
     }
+
 
     /**
      * Tag-Post 24小时聚合结果
