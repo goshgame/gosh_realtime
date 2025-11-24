@@ -122,6 +122,18 @@ public class UserFeatureRealtimeNegativeFeedbacks {
                             builder.addFeedbackTags(tagBuilder.build());
                         }
 
+                        if (queue.authorIds != null) {
+                            for (Long authorId : queue.authorIds) {
+                                if (authorId == null || authorId <= 0) {
+                                    continue;
+                                }
+                                RecFeature.FeedbackAuthorId.Builder authorBuilder = RecFeature.FeedbackAuthorId.newBuilder();
+                                authorBuilder.setAuthorId(authorId);
+                                authorBuilder.setWeight(TAG_WEIGHT);
+                                builder.addFeedbackAuthorIds(authorBuilder.build());
+                            }
+                        }
+
                         byte[] value = builder.build().toByteArray();
                         return new Tuple2<>(redisKey, value);
                     }
@@ -148,6 +160,7 @@ public class UserFeatureRealtimeNegativeFeedbacks {
     public static class NegativeFeedbackEvent {
         public long uid;
         public long postId;
+        public long authorId;
         public long timestamp;
     }
 
@@ -157,6 +170,7 @@ public class UserFeatureRealtimeNegativeFeedbacks {
     public static class UserNegativeTagQueue {
         public long uid;
         public List<String> tags; // 最多5个标签，按时间顺序（FIFO）
+        public List<Long> authorIds; // 最近5个负反馈作者列表
     }
 
     /**
@@ -176,6 +190,7 @@ public class UserFeatureRealtimeNegativeFeedbacks {
                     NegativeFeedbackEvent event = new NegativeFeedbackEvent();
                     event.uid = viewEvent.uid;
                     event.postId = info.postId;
+                    event.authorId = info.author;
                     event.timestamp = viewEvent.createdAt * 1000; // 转换为毫秒
                     out.collect(event);
                 }
@@ -218,8 +233,10 @@ public class UserFeatureRealtimeNegativeFeedbacks {
                             Iterable<NegativeFeedbackEvent> elements,
                             Collector<UserNegativeTagQueue> out) throws Exception {
 
-            // 读取用户现有的负反馈标签队列（从 Redis）
-            LinkedHashSet<String> existingTags = readExistingTagsFromRedis(uid);
+            // 读取用户现有的负反馈标签/作者队列（从 Redis）
+            ExistingFeedbackState existingState = readExistingFeedbackFromRedis(uid);
+            LinkedHashSet<String> existingTags = existingState.tags;
+            LinkedHashSet<Long> existingAuthorIds = existingState.authorIds;
 
             // 处理窗口内的所有负反馈事件
             List<CompletableFuture<String>> tagFutures = new ArrayList<>();
@@ -230,6 +247,12 @@ public class UserFeatureRealtimeNegativeFeedbacks {
                 // 异步从 Redis 获取视频标签
                 CompletableFuture<String> tagFuture = getPostTagFromRedis(event.postId);
                 tagFutures.add(tagFuture);
+
+                if (event.authorId > 0) {
+                    existingAuthorIds.remove(event.authorId);
+                    existingAuthorIds.add(event.authorId);
+                    trimAuthorQueue(existingAuthorIds);
+                }
             }
 
             // 等待所有标签获取完成
@@ -256,20 +279,33 @@ public class UserFeatureRealtimeNegativeFeedbacks {
                 }
             }
 
-            // 如果标签队列有更新，输出结果
-            if (!existingTags.isEmpty()) {
+            // 如果标签/作者队列有更新，输出结果
+            if (!existingTags.isEmpty() || !existingAuthorIds.isEmpty()) {
                 UserNegativeTagQueue queue = new UserNegativeTagQueue();
                 queue.uid = uid;
                 queue.tags = new ArrayList<>(existingTags);
+                queue.authorIds = new ArrayList<>(existingAuthorIds);
                 out.collect(queue);
             }
         }
 
+        private void trimAuthorQueue(LinkedHashSet<Long> authorIds) {
+            while (authorIds.size() > MAX_NEGATIVE_TAGS) {
+                Iterator<Long> iterator = authorIds.iterator();
+                if (iterator.hasNext()) {
+                    iterator.next();
+                    iterator.remove();
+                } else {
+                    break;
+                }
+            }
+        }
+
         /**
-         * 从 Redis 读取用户现有的负反馈标签队列
+         * 从 Redis 读取用户现有的负反馈标签/作者队列
          */
-        private LinkedHashSet<String> readExistingTagsFromRedis(long uid) {
-            LinkedHashSet<String> tags = new LinkedHashSet<>();
+        private ExistingFeedbackState readExistingFeedbackFromRedis(long uid) {
+            ExistingFeedbackState state = new ExistingFeedbackState();
             try {
                 String redisKey = PREFIX + uid + SUFFIX;
 
@@ -284,25 +320,20 @@ public class UserFeatureRealtimeNegativeFeedbacks {
                 if (tuple != null && tuple.f1 != null && tuple.f1.length > 0) {
                     // 解析 Protobuf
                     RecFeature.RecUserFeature feature = RecFeature.RecUserFeature.parseFrom(tuple.f1);
-                    // 注意：需要等 Protobuf 重新编译后，getFeedbackTagsList() 方法才会存在
-                    // 暂时使用反射或直接访问字段
-                    try {
-                        java.lang.reflect.Method method = feature.getClass().getMethod("getFeedbackTagsList");
-                        @SuppressWarnings("unchecked")
-                        java.util.List<RecFeature.FeedbackTag> feedbackTags =
-                                (java.util.List<RecFeature.FeedbackTag>) method.invoke(feature);
-                        for (RecFeature.FeedbackTag feedbackTag : feedbackTags) {
-                            tags.add(feedbackTag.getTag());
+                    for (RecFeature.FeedbackTag feedbackTag : feature.getFeedbackTagsList()) {
+                        state.tags.add(feedbackTag.getTag());
+                    }
+                    for (RecFeature.FeedbackAuthorId feedbackAuthorId : feature.getFeedbackAuthorIdsList()) {
+                        if (feedbackAuthorId.getAuthorId() > 0) {
+                            state.authorIds.add(feedbackAuthorId.getAuthorId());
                         }
-                    } catch (Exception e) {
-                        LOG.warn("Failed to get feedback tags list, may need to recompile Protobuf: {}", e.getMessage());
                     }
                 }
             } catch (Exception e) {
                 // 如果读取失败，返回空队列（可能是首次写入）
                 LOG.debug("Failed to read existing tags from Redis for uid {}: {}", uid, e.getMessage());
             }
-            return tags;
+            return state;
         }
 
         /**
@@ -336,6 +367,11 @@ public class UserFeatureRealtimeNegativeFeedbacks {
                     }
             );
         }
+    }
+
+    private static class ExistingFeedbackState {
+        private final LinkedHashSet<String> tags = new LinkedHashSet<>();
+        private final LinkedHashSet<Long> authorIds = new LinkedHashSet<>();
     }
 }
 

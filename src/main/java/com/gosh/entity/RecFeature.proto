@@ -97,6 +97,7 @@ message RecUserFeature {
 
   // 负反馈
   repeated FeedbackTag FeedbackTags = 96;
+  repeated FeedbackAuthorId FeedbackAuthorIds = 97;
 
 
 }
@@ -185,6 +186,11 @@ message RecPostFeature {
 
 message FeedbackTag{
   string tag = 1;
+  float weight = 2;
+}
+
+message FeedbackAuthorId{
+  uint64 author_id = 1;
   float weight = 2;
 }
 
