@@ -95,6 +95,10 @@ message RecUserFeature {
   string prefer_neg_ftag5_7d_top3 = 94;
   string prefer_neg_ftag6_7d_top3 = 95;
 
+  // 负反馈
+  repeated FeedbackTag FeedbackTags = 96;
+
+
 }
 
 // Item侧特征 (Post特征)
@@ -177,6 +181,11 @@ message RecPostFeature {
   string post_ai_tags = 71;                  // item的ai标签
   string post_asr_lang = 72;                 // item的asr识别语言
 
+}
+
+message FeedbackTag{
+  string tag = 1;
+  float weight = 2;
 }
 
 // 用户作者交叉特征,hset格式
