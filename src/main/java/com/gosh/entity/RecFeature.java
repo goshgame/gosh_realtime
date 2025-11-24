@@ -14984,10 +14984,10 @@ public final class RecFeature {
         getTagBytes();
 
     /**
-     * <code>fixed32 weight = 2;</code>
+     * <code>float weight = 2;</code>
      * @return The weight.
      */
-    int getWeight();
+    float getWeight();
   }
   /**
    * Protobuf type {@code com.gosh.entity.FeedbackTag}
@@ -15043,7 +15043,7 @@ public final class RecFeature {
             }
             case 21: {
 
-              weight_ = input.readFixed32();
+              weight_ = input.readFloat();
               break;
             }
             default: {
@@ -15119,13 +15119,13 @@ public final class RecFeature {
     }
 
     public static final int WEIGHT_FIELD_NUMBER = 2;
-    private int weight_;
+    private float weight_;
     /**
-     * <code>fixed32 weight = 2;</code>
+     * <code>float weight = 2;</code>
      * @return The weight.
      */
     @java.lang.Override
-    public int getWeight() {
+    public float getWeight() {
       return weight_;
     }
 
@@ -15146,8 +15146,8 @@ public final class RecFeature {
       if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(tag_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, tag_);
       }
-      if (weight_ != 0) {
-        output.writeFixed32(2, weight_);
+      if (java.lang.Float.floatToRawIntBits(weight_) != 0) {
+        output.writeFloat(2, weight_);
       }
       unknownFields.writeTo(output);
     }
@@ -15161,9 +15161,9 @@ public final class RecFeature {
       if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(tag_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, tag_);
       }
-      if (weight_ != 0) {
+      if (java.lang.Float.floatToRawIntBits(weight_) != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeFixed32Size(2, weight_);
+          .computeFloatSize(2, weight_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -15182,8 +15182,9 @@ public final class RecFeature {
 
       if (!getTag()
           .equals(other.getTag())) return false;
-      if (getWeight()
-          != other.getWeight()) return false;
+      if (java.lang.Float.floatToIntBits(getWeight())
+          != java.lang.Float.floatToIntBits(
+              other.getWeight())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -15198,7 +15199,8 @@ public final class RecFeature {
       hash = (37 * hash) + TAG_FIELD_NUMBER;
       hash = (53 * hash) + getTag().hashCode();
       hash = (37 * hash) + WEIGHT_FIELD_NUMBER;
-      hash = (53 * hash) + getWeight();
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getWeight());
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -15334,7 +15336,7 @@ public final class RecFeature {
         super.clear();
         tag_ = "";
 
-        weight_ = 0;
+        weight_ = 0F;
 
         return this;
       }
@@ -15416,7 +15418,7 @@ public final class RecFeature {
           tag_ = other.tag_;
           onChanged();
         }
-        if (other.getWeight() != 0) {
+        if (other.getWeight() != 0F) {
           setWeight(other.getWeight());
         }
         this.mergeUnknownFields(other.unknownFields);
@@ -15524,33 +15526,33 @@ public final class RecFeature {
         return this;
       }
 
-      private int weight_ ;
+      private float weight_ ;
       /**
-       * <code>fixed32 weight = 2;</code>
+       * <code>float weight = 2;</code>
        * @return The weight.
        */
       @java.lang.Override
-      public int getWeight() {
+      public float getWeight() {
         return weight_;
       }
       /**
-       * <code>fixed32 weight = 2;</code>
+       * <code>float weight = 2;</code>
        * @param value The weight to set.
        * @return This builder for chaining.
        */
-      public Builder setWeight(int value) {
+      public Builder setWeight(float value) {
         
         weight_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>fixed32 weight = 2;</code>
+       * <code>float weight = 2;</code>
        * @return This builder for chaining.
        */
       public Builder clearWeight() {
         
-        weight_ = 0;
+        weight_ = 0F;
         onChanged();
         return this;
       }
@@ -26257,7 +26259,7 @@ public final class RecFeature {
       "\001(\002\022\034\n\024post_comment_rate_7d\030@ \001(\002\022\031\n\021pos" +
       "t_ai_embedding\030F \003(\002\022\024\n\014post_ai_tags\030G \001" +
       "(\t\022\025\n\rpost_asr_lang\030H \001(\t\"*\n\013FeedbackTag" +
-      "\022\013\n\003tag\030\001 \001(\t\022\016\n\006weight\030\002 \001(\007\"\227\021\n\024RecUse" +
+      "\022\013\n\003tag\030\001 \001(\t\022\016\n\006weight\030\002 \001(\002\"\227\021\n\024RecUse" +
       "rAuthorFeature\022\017\n\007user_id\030\001 \001(\004\022\021\n\tautho" +
       "r_id\030\002 \001(\004\022\035\n\025userauthor_exp_cnt_1h\030\n \001(" +
       "\005\022 \n\030userauthor_3sview_cnt_1h\030\013 \001(\005\022 \n\030u" +

@@ -185,7 +185,7 @@ message RecPostFeature {
 
 message FeedbackTag{
   string tag = 1;
-  fixed32 weight = 2;
+  float weight = 2;
 }
 
 // 用户作者交叉特征,hset格式

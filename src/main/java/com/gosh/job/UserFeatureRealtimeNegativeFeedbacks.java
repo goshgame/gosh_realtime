@@ -118,7 +118,7 @@ public class UserFeatureRealtimeNegativeFeedbacks {
                         for (String tag : queue.tags) {
                             RecFeature.FeedbackTag.Builder tagBuilder = RecFeature.FeedbackTag.newBuilder();
                             tagBuilder.setTag(tag);
-                            tagBuilder.setWeight((int)(TAG_WEIGHT * 1000)); // fixed32 需要整数，0.1 * 1000 = 100
+                            tagBuilder.setWeight(TAG_WEIGHT); // float 类型，直接使用 0.1
                             builder.addFeedbackTags(tagBuilder.build());
                         }
 
@@ -308,8 +308,8 @@ public class UserFeatureRealtimeNegativeFeedbacks {
         /**
          * 从 Redis 获取视频标签
          * Redis Key: rec_post:{post_id}:aitag
-         * Value 格式: "age#youngadult,gender#male,..."
-         * 返回第一个逗号分隔的元素
+         * Value 格式: "age#youngadult,gender#male,object#human,content#news,quality#high,..."
+         * 返回包含 "content" 字符串的第一个标签（如 "content#news"）
          */
         private CompletableFuture<String> getPostTagFromRedis(long postId) {
             String redisKey = "rec_post:" + postId + ":aitag";
@@ -322,12 +322,13 @@ public class UserFeatureRealtimeNegativeFeedbacks {
                             // 将字节数组转换为字符串
                             String value = new String(tuple.f1, java.nio.charset.StandardCharsets.UTF_8);
                             if (!value.isEmpty()) {
-                                // 取第一个逗号分隔的元素
-                                int commaIndex = value.indexOf(',');
-                                if (commaIndex > 0) {
-                                    return value.substring(0, commaIndex);
-                                } else {
-                                    return value;
+                                // 按逗号分割标签
+                                String[] tags = value.split(",");
+                                // 查找第一个包含 "content" 的标签
+                                for (String tag : tags) {
+                                    if (tag != null && tag.contains("content")) {
+                                        return tag.trim();
+                                    }
                                 }
                             }
                         }
