@@ -30,6 +30,7 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.Date;
+import java.util.List;
 
 public class UserFeature1hJob {
     private static final Logger LOG = LoggerFactory.getLogger(UserFeature1hJob.class);
@@ -187,12 +188,12 @@ public class UserFeature1hJob {
                         .setViewer3Sview1PostCnt1H(agg.viewer3sview1PostCnt1h)
                         .setViewer3Sview2PostCnt1H(agg.viewer3sview2PostCnt1h)
                         // 1小时历史记录特征
-                        .setViewer3SviewPostHis1H(agg.viewer3sviewPostHis1h)
-                        .setViewer5SstandPostHis1H(agg.viewer5sstandPostHis1h)
-                        .setViewerLikePostHis1H(agg.viewerLikePostHis1h)
-                        .setViewerFollowPostHis1H(agg.viewerFollowPostHis1h)
-                        .setViewerProfilePostHis1H(agg.viewerProfilePostHis1h)
-                        .setViewerPosinterPostHis1H(agg.viewerPosinterPostHis1h)
+                        .addAllViewer3SviewPostHis1H(agg.viewer3sviewPostHis1h)
+                        .addAllViewer5SstandPostHis1H(agg.viewer5sstandPostHis1h)
+                        .addAllViewerLikePostHis1H(agg.viewerLikePostHis1h)
+                        .addAllViewerFollowPostHis1H(agg.viewerFollowPostHis1h)
+                        .addAllViewerProfilePostHis1H(agg.viewerProfilePostHis1h)
+                        .addAllViewerPosinterPostHis1H(agg.viewerPosinterPostHis1h)
                         .build();
 
                     byte[] value = feature.toByteArray();
@@ -313,12 +314,12 @@ public class UserFeature1hJob {
             result.viewer3sview2PostCnt1h = accumulator.view3s2PostIds.size();
             
             // 历史记录特征 - 构建字符串格式
-            result.viewer3sviewPostHis1h = UserFeatureCommon.buildPostHistoryString(accumulator.view3sPostDetails, 10);
-            result.viewer5sstandPostHis1h = UserFeatureCommon.buildPostHistoryString(accumulator.stand5sPostDetails, 10);
-            result.viewerLikePostHis1h = UserFeatureCommon.buildPostListString(accumulator.likePostIds, 10);
-            result.viewerFollowPostHis1h = UserFeatureCommon.buildPostListString(accumulator.followPostIds, 10);
-            result.viewerProfilePostHis1h = UserFeatureCommon.buildPostListString(accumulator.profilePostIds, 10);
-            result.viewerPosinterPostHis1h = UserFeatureCommon.buildPostListString(accumulator.posinterPostIds, 10);
+            result.viewer3sviewPostHis1h = UserFeatureCommon.buildPostHistoryList(accumulator.view3sPostDetails, 10);
+            result.viewer5sstandPostHis1h = UserFeatureCommon.buildPostHistoryList(accumulator.stand5sPostDetails, 10);
+            result.viewerLikePostHis1h = UserFeatureCommon.buildPostIdList(accumulator.likePostIds, 10);
+            result.viewerFollowPostHis1h = UserFeatureCommon.buildPostIdList(accumulator.followPostIds, 10);
+            result.viewerProfilePostHis1h = UserFeatureCommon.buildPostIdList(accumulator.profilePostIds, 10);
+            result.viewerPosinterPostHis1h = UserFeatureCommon.buildPostIdList(accumulator.posinterPostIds, 10);
             
             result.updateTime = System.currentTimeMillis();
             
@@ -346,12 +347,12 @@ public class UserFeature1hJob {
         public int viewer3sview2PostCnt1h;
         
         // 历史记录
-        public String viewer3sviewPostHis1h;
-        public String viewer5sstandPostHis1h;
-        public String viewerLikePostHis1h;
-        public String viewerFollowPostHis1h;
-        public String viewerProfilePostHis1h;
-        public String viewerPosinterPostHis1h;
+        public List<RecFeature.IdScore> viewer3sviewPostHis1h;
+        public List<RecFeature.IdScore> viewer5sstandPostHis1h;
+        public List<Long> viewerLikePostHis1h;
+        public List<Long> viewerFollowPostHis1h;
+        public List<Long> viewerProfilePostHis1h;
+        public List<Long> viewerPosinterPostHis1h;
         
         public long updateTime;
 

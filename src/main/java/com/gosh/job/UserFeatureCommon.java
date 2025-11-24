@@ -2,12 +2,14 @@ package com.gosh.job;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gosh.entity.RecFeature;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.util.Collector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 用户特征处理的通用数据结构和工具函数
@@ -488,36 +490,44 @@ public class UserFeatureCommon {
     // ==================== 工具函数 ====================
 
     /**
-     * 构建带时长的post历史字符串 格式: "123|5,234|10"
+     * 根据历史详情构建 IdScore 列表（按时长倒序，限制数量）
      */
-    public static String buildPostHistoryString(Map<Long, Float> postDetails, int limit) {
+    public static List<RecFeature.IdScore> buildPostHistoryList(Map<Long, Float> postDetails, int limit) {
         return postDetails.entrySet().stream()
             .sorted(Map.Entry.<Long, Float>comparingByValue().reversed())
             .limit(limit)
-            .map(entry -> entry.getKey() + "|" + entry.getValue().intValue())
-            .reduce((a, b) -> a + "," + b)
-            .orElse("");
+            .map(entry -> RecFeature.IdScore.newBuilder()
+                .setId(entry.getKey())
+                .setScore(entry.getValue())
+                .build())
+            .collect(Collectors.toList());
     }
 
     /**
-     * 构建post列表字符串 格式: "123,234"
+     * 构建 postId 列表，默认使用插入顺序
      */
-    public static String buildPostListString(Set<Long> postIds, int limit) {
+    public static List<Long> buildPostIdList(Set<Long> postIds, int limit) {
         return postIds.stream()
             .limit(limit)
-            .map(String::valueOf)
-            .reduce((a, b) -> a + "," + b)
-            .orElse("");
+            .collect(Collectors.toList());
     }
 
     /**
-     * 构建作者列表字符串 格式: "123,234"
+     * 构建作者ID列表，超过 int32 范围的 ID 会被丢弃并记录日志
      */
-    public static String buildAuthorListString(Set<Long> authorIds, int limit) {
-        return authorIds.stream()
-            .limit(limit)
-            .map(String::valueOf)
-            .reduce((a, b) -> a + "," + b)
-            .orElse("");
+    public static List<Integer> buildAuthorIdList(Set<Long> authorIds, int limit) {
+        List<Integer> result = new ArrayList<>();
+        authorIds.stream()
+            .limit(limit * 2L) // 预取更多，防止丢弃后数量不足
+            .forEach(id -> {
+                if (id > Integer.MAX_VALUE || id < Integer.MIN_VALUE) {
+                    LOG.warn("Author id {} exceeds int32 range and will be skipped", id);
+                    return;
+                }
+                if (result.size() < limit) {
+                    result.add((int) id.longValue());
+                }
+            });
+        return result;
     }
 }
