@@ -386,7 +386,7 @@ public class UserFeatureRealtimeNegativeFeedbacks {
          * 从 Redis 获取视频标签
          */
         private CompletableFuture<String> getPostTagFromRedis(long postId) {
-            String redisKey = "rec_post:" + postId + ":aitag";
+            String redisKey = "rec_post:{" + postId + "}:aitag";
 
             return redisConnectionManager.executeStringAsync(
                     commands -> {
