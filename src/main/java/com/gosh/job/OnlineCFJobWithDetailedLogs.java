@@ -54,7 +54,7 @@ import java.util.stream.Collectors;
 @SuppressWarnings("unused")
 public class OnlineCFJobWithDetailedLogs {
 
-    private static final Logger LOG = LoggerFactory.getLogger(OnlineCFJob.class);
+    private static final Logger LOG = LoggerFactory.getLogger(OnlineCFJobWithDetailedLogs.class);
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     public static void main(String[] args) throws Exception {
@@ -933,7 +933,8 @@ public class OnlineCFJobWithDetailedLogs {
     // Helper classes - 添加调试信息
     // ------------------------------------------------------------------------
 
-    private static class UserHistoryParser {
+    private static class UserHistoryParser implements java.io.Serializable {
+        private static final long serialVersionUID = 1L;
 
         private final OnlineCFConfig config;
 
@@ -1273,6 +1274,8 @@ public class OnlineCFJobWithDetailedLogs {
     // ------------------------------------------------------------------------
 
     static class OnlineCFConfig implements java.io.Serializable {
+        private static final long serialVersionUID = 1L;
+
         // ... 配置内容保持不变 ...
         // Kafka配置
         private static final String KAFKA_GROUP_ID = "gosh-onlinecf";
