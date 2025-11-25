@@ -43,8 +43,8 @@ public class UserFeatureRFNFTest {
     // 标签权重（统一为 0.1）
     private static final float TAG_WEIGHT = 0.1f;
 
-    // Redis TTL（10分钟，单位：秒）
-    private static final int REDIS_TTL = 10 * 60;
+    // Redis TTL（6小时，单位：秒）
+    private static final int REDIS_TTL = 6 * 3600;
 
     // Kafka Group ID
     private static final String KAFKA_GROUP_ID = "gosh-negative-feedbacks";
@@ -541,30 +541,45 @@ public class UserFeatureRFNFTest {
         }
 
         /**
-         * 获取视频标签：直接使用默认标签集合，从中提取 content 标签
+         * 获取视频标签：直接使用默认标签集合，从中提取优先级标签
          */
         private CompletableFuture<String> getPostTagFromRedis(long postId) {
             System.out.println("获取视频标签 - 使用默认标签集合 (PostID: " + postId + ")");
-            return CompletableFuture.completedFuture(extractContentTag(DEFAULT_POST_TAGS));
+            return CompletableFuture.completedFuture(selectPrioritizedTag(DEFAULT_POST_TAGS));
         }
 
         /**
-         * 从传入的标签字符串中提取第一个包含 content 的标签
+         * 优先返回包含 "restricted#explicit" 的标签，若不存在则返回第一个包含 "content" 的标签
          */
-        private String extractContentTag(String tagString) {
+        private String selectPrioritizedTag(String tagString) {
             if (tagString == null || tagString.isEmpty()) {
                 return null;
             }
             String[] tags = tagString.split(",");
             System.out.println("分割标签数量: " + tags.length);
+            String contentCandidate = null;
             for (String tag : tags) {
-                if (tag != null && tag.contains("content")) {
-                    String result = tag.trim();
-                    System.out.println("找到content标签: " + result);
-                    return result;
+                if (tag == null) {
+                    continue;
+                }
+                String trimmed = tag.trim();
+                if (trimmed.isEmpty()) {
+                    continue;
+                }
+                if (trimmed.contains("restricted#explicit")) {
+                    System.out.println("优先选择restricted标签: " + trimmed);
+                    return trimmed;
+                }
+                if (contentCandidate == null && trimmed.contains("content")) {
+                    contentCandidate = trimmed;
+                    System.out.println("记录content候选标签: " + trimmed);
                 }
             }
-            System.out.println("标签字符串中未包含content，返回第一个标签作为兜底");
+            if (contentCandidate != null) {
+                System.out.println("返回content候选标签: " + contentCandidate);
+                return contentCandidate;
+            }
+            System.out.println("未匹配到restricted或content标签，返回第一个标签作为兜底");
             return tags.length > 0 ? tags[0].trim() : null;
         }
     }

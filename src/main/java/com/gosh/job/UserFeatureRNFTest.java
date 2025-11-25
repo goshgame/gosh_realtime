@@ -44,8 +44,8 @@ public class UserFeatureRNFTest {
     // 标签权重（统一为 0.1）
     private static final float TAG_WEIGHT = 0.1f;
 
-    // Redis TTL（24小时，单位：秒）
-    private static final int REDIS_TTL = 24 * 3600;
+    // Redis TTL（6小时，单位：秒）
+    private static final int REDIS_TTL = 6 * 3600;
 
     // Kafka Group ID
     private static final String KAFKA_GROUP_ID = "gosh-negative-feedbacks";
@@ -554,18 +554,12 @@ public class UserFeatureRNFTest {
                                 System.out.println("Redis返回值: " + value);
 
                                 if (!value.isEmpty()) {
-                                    // 按逗号分割标签
-                                    String[] tags = value.split(",");
-                                    System.out.println("分割标签数量: " + tags.length);
-
-                                    // 查找第一个包含 "content" 的标签
-                                    for (String tag : tags) {
-                                        if (tag != null && tag.contains("content")) {
-                                            System.out.println("找到content标签: " + tag.trim());
-                                            return tag.trim();
-                                        }
+                                    String selectedTag = selectPrioritizedTag(value);
+                                    if (selectedTag != null) {
+                                        System.out.println("选择标签: " + selectedTag);
+                                        return selectedTag;
                                     }
-                                    System.out.println("未找到包含content的标签");
+                                    System.out.println("未找到符合条件的标签，返回null");
                                 } else {
                                     System.out.println("Redis返回空值");
                                 }
@@ -578,6 +572,33 @@ public class UserFeatureRNFTest {
                         return null;
                     }
             );
+        }
+
+        /**
+         * 优先返回包含 "restricted#explicit" 的标签，若不存在则返回第一个包含 "content" 的标签
+         */
+        private String selectPrioritizedTag(String rawValue) {
+            String[] tags = rawValue.split(",");
+            System.out.println("分割标签数量: " + tags.length);
+            String contentCandidate = null;
+            for (String tag : tags) {
+                if (tag == null) {
+                    continue;
+                }
+                String trimmed = tag.trim();
+                if (trimmed.isEmpty()) {
+                    continue;
+                }
+                if (trimmed.contains("restricted#explicit")) {
+                    System.out.println("优先选择restricted标签: " + trimmed);
+                    return trimmed;
+                }
+                if (contentCandidate == null && trimmed.contains("content")) {
+                    contentCandidate = trimmed;
+                    System.out.println("记录content候选标签: " + trimmed);
+                }
+            }
+            return contentCandidate;
         }
     }
 
