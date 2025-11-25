@@ -1,6 +1,5 @@
 package com.gosh.job;
 
-import com.clearspring.analytics.stream.cardinality.HyperLogLog;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gosh.config.RedisConfig;
@@ -31,9 +30,8 @@ public class LiveUserAnchorFeature15minJob {
     private static final Logger LOG = LoggerFactory.getLogger(LiveUserAnchorFeature15minJob.class);
     private static final String PREFIX = "rec:user_anchor_feature:{";
     private static final String SUFFIX = "}:live15min";
-    private static final int HLL_LOG2M = 14; // HyperLogLog精度参数
     // 每个窗口内每个用户的最大事件数限制
-    private static final int MAX_EVENTS_PER_WINDOW = 200;
+    private static final int MAX_EVENTS_PER_WINDOW = 500;
     
     // 事件类型常量
     private static final String EVENT_LIVE_EXPOSURE = "live_exposure";
@@ -196,7 +194,6 @@ public class LiveUserAnchorFeature15minJob {
         public long uid;
         public long anchorId;
         public String eventType;
-        public String recToken;
         public long watchDuration;  // 观看时长（浏览和退房事件的stay_duration）
         public int scene;
         public long eventTime;  // 事件发生时间戳
@@ -205,11 +202,11 @@ public class LiveUserAnchorFeature15minJob {
     // 解析器：解析 user_event_log.event 和 user_event_log.event_data
     public static class LiveEventParser implements FlatMapFunction<String, LiveUserAnchorEvent> {
         private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-        private static volatile long totalParsedEvents = 0;
-        private static volatile long exposureCount = 0;
-        private static volatile long viewCount = 0;
-        private static volatile long enterCount = 0;
-        private static volatile long exitCount = 0;
+        // private static volatile long totalParsedEvents = 0;
+        // private static volatile long exposureCount = 0;
+        // private static volatile long viewCount = 0;
+        // private static volatile long enterCount = 0;
+        // private static volatile long exitCount = 0;
 
         @Override
         public void flatMap(String value, Collector<LiveUserAnchorEvent> out) throws Exception {
@@ -284,9 +281,6 @@ public class LiveUserAnchorFeature15minJob {
                 } 
                 evt.eventTime = eventTimeMillis;
                 
-                // 提取 rec_token（曝光事件用于去重）
-                evt.recToken = data.path("rec_token").asText("");
-                
                 // 提取观看时长（浏览和退房事件）
                 if (EVENT_LIVE_VIEW.equals(event)) {
                     evt.watchDuration = data.path("watch_duration").asLong(0);
@@ -295,39 +289,37 @@ public class LiveUserAnchorFeature15minJob {
                 }
                 
                 // 统计各事件类型数量并打印样例
-                totalParsedEvents++;
-                String tokenPreview = evt.recToken.isEmpty() ? "" : evt.recToken.substring(0, Math.min(20, evt.recToken.length()));
+                // totalParsedEvents++;
+                // if (EVENT_LIVE_EXPOSURE.equals(event)) {
+                //     exposureCount++;
+                //     if (exposureCount <= 3) {
+                //         LOG.info("[Parse Sample Exposure {}/3] uid={}, anchorId={}, scene={}", 
+                //             exposureCount, uid, anchorId, scene);
+                //     }
+                // } else if (EVENT_LIVE_VIEW.equals(event)) {
+                //     viewCount++;
+                //     if (viewCount <= 3) {
+                //         LOG.info("[Parse Sample View {}/3] uid={}, anchorId={}, scene={}, watchDuration={}", 
+                //             viewCount, uid, anchorId, scene, evt.watchDuration);
+                //     }
+                // } else if (EVENT_ENTER_LIVEROOM.equals(event)) {
+                //     enterCount++;
+                //     if (enterCount <= 3) {
+                //         LOG.info("[Parse Sample Enter {}/3] uid={}, anchorId={}, scene={}", 
+                //             enterCount, uid, anchorId, scene);
+                //     }
+                // } else if (EVENT_EXIT_LIVEROOM.equals(event)) {
+                //     exitCount++;
+                //     if (exitCount <= 3) {
+                //         LOG.info("[Parse Sample Exit {}/3] uid={}, anchorId={}, scene={}, watchDuration={}", 
+                //             exitCount, uid, anchorId, scene, evt.watchDuration);
+                //     }
+                // }
                 
-                if (EVENT_LIVE_EXPOSURE.equals(event)) {
-                    exposureCount++;
-                    if (exposureCount <= 3) {
-                        LOG.info("[Parse Sample Exposure {}/3] uid={}, anchorId={}, scene={}, recToken={}", 
-                            exposureCount, uid, anchorId, scene, tokenPreview);
-                    }
-                } else if (EVENT_LIVE_VIEW.equals(event)) {
-                    viewCount++;
-                    if (viewCount <= 3) {
-                        LOG.info("[Parse Sample View {}/3] uid={}, anchorId={}, scene={}, watchDuration={}, recToken={}", 
-                            viewCount, uid, anchorId, scene, evt.watchDuration, tokenPreview);
-                    }
-                } else if (EVENT_ENTER_LIVEROOM.equals(event)) {
-                    enterCount++;
-                    if (enterCount <= 3) {
-                        LOG.info("[Parse Sample Enter {}/3] uid={}, anchorId={}, scene={}, recToken={}", 
-                            enterCount, uid, anchorId, scene, tokenPreview);
-                    }
-                } else if (EVENT_EXIT_LIVEROOM.equals(event)) {
-                    exitCount++;
-                    if (exitCount <= 3) {
-                        LOG.info("[Parse Sample Exit {}/3] uid={}, anchorId={}, scene={}, watchDuration={}, recToken={}", 
-                            exitCount, uid, anchorId, scene, evt.watchDuration, tokenPreview);
-                    }
-                }
-                
-                if (totalParsedEvents % 10000 == 0) {
-                    LOG.info("[Parser Summary] Total={}, Exposure={}, View={}, Enter={}, Exit={}", 
-                        totalParsedEvents, exposureCount, viewCount, enterCount, exitCount);
-                }
+                // if (totalParsedEvents % 10000 == 0) {
+                //     LOG.info("[Parser Summary] Total={}, Exposure={}, View={}, Enter={}, Exit={}", 
+                //         totalParsedEvents, exposureCount, viewCount, enterCount, exitCount);
+                // }
                 
                 out.collect(evt);
             } catch (Exception e) {
@@ -355,9 +347,9 @@ public class LiveUserAnchorFeature15minJob {
             
             AnchorFeatureCounts counts = acc.anchorIdToCounts.computeIfAbsent(event.anchorId, k -> new AnchorFeatureCounts());
             
-            // 曝光次数：使用 HyperLogLog 对 rec_token 去重
-            if (EVENT_LIVE_EXPOSURE.equals(event.eventType) && !event.recToken.isEmpty()) {
-                counts.exposureHLL.offer(event.recToken);
+            // 曝光次数：直接累加事件
+            if (EVENT_LIVE_EXPOSURE.equals(event.eventType)) {
+                counts.exposureCount++;
             }
             
             // 3s+观看次数：进房事件计数
@@ -365,10 +357,10 @@ public class LiveUserAnchorFeature15minJob {
                 counts.watch3sPlusCount += 1;
             }
             
-            // 6s+观看次数：浏览/退房事件且时长>=6s，使用 HyperLogLog 对 rec_token 去重
+            // 6s+观看次数：浏览/退房事件且时长>=6s
             if ((EVENT_LIVE_VIEW.equals(event.eventType) || EVENT_EXIT_LIVEROOM.equals(event.eventType)) 
-                && event.watchDuration >= 6 && !event.recToken.isEmpty()) {
-                counts.watch6sPlusHLL.offer(event.recToken);
+                && event.watchDuration >= 6) {
+                counts.watch6sPlusCount++;
             }
             
             // 观看时长：浏览和退房事件的 stay_duration 求和
@@ -393,11 +385,8 @@ public class LiveUserAnchorFeature15minJob {
                 long anchorId = e.getKey();
                 AnchorFeatureCounts c = e.getValue();
                 
-                // 从 HyperLogLog 获取去重后的曝光次数
-                int exposureCount = (int) c.exposureHLL.cardinality();
-                
-                // 从 HyperLogLog 获取去重后的 6s+ 观看次数
-                int watch6sPlusCount = (int) c.watch6sPlusHLL.cardinality();
+                int exposureCount = c.exposureCount;
+                int watch6sPlusCount = c.watch6sPlusCount;
                 
                 // 负反馈次数 = 曝光次数 - 6s+观看次数
                 int negative = Math.max(0, exposureCount - watch6sPlusCount);
@@ -425,15 +414,9 @@ public class LiveUserAnchorFeature15minJob {
                 AnchorFeatureCounts target = a.anchorIdToCounts.computeIfAbsent(e.getKey(), k -> new AnchorFeatureCounts());
                 AnchorFeatureCounts src = e.getValue();
                 
-                // 合并 HyperLogLog
-                try {
-                    target.exposureHLL = (HyperLogLog) target.exposureHLL.merge(src.exposureHLL);
-                    target.watch6sPlusHLL = (HyperLogLog) target.watch6sPlusHLL.merge(src.watch6sPlusHLL);
-                } catch (Exception ex) {
-                    // 合并失败，保持原值
-                }
-                
+                target.exposureCount += src.exposureCount;
                 target.watch3sPlusCount += src.watch3sPlusCount;
+                target.watch6sPlusCount += src.watch6sPlusCount;
                 target.totalWatchDuration += src.totalWatchDuration;
             }
             return a;
@@ -447,10 +430,10 @@ public class LiveUserAnchorFeature15minJob {
     }
 
     public static class AnchorFeatureCounts {
-        public HyperLogLog exposureHLL = new HyperLogLog(HLL_LOG2M);     // 曝光次数（rec_token去重）
-        public int watch3sPlusCount = 0;                                  // 3s+观看次数（进房）
-        public HyperLogLog watch6sPlusHLL = new HyperLogLog(HLL_LOG2M);  // 6s+观看次数（rec_token去重）
-        public long totalWatchDuration = 0;                               // 总观看时长
+        public int exposureCount = 0;               // 曝光次数
+        public int watch3sPlusCount = 0;            // 3s+观看次数（进房）
+        public int watch6sPlusCount = 0;            // 6s+观看次数
+        public long totalWatchDuration = 0;         // 总观看时长
     }
 
     public static class UserAnchorFeatureAggregation {
@@ -483,31 +466,9 @@ public class LiveUserAnchorFeature15minJob {
                         // 解析protobuf数据
                         RecFeature.LiveUserAnchorFeature feature = RecFeature.LiveUserAnchorFeature.parseFrom(entry.getValue());
                         
-                        // 合并曝光次数
-                        // 优化：不再使用循环模拟HyperLogLog添加，直接使用基于概率的高效合并方式
-                        if (feature.getUserAnchorExpCnt15Min() > 0) {
-                            double estimatedCardinality = feature.getUserAnchorExpCnt15Min();
-                            if (estimatedCardinality > counts.exposureHLL.cardinality()) {
-                                // 只在新计数更大时更新，使用确定性字符串减少计算
-                                String deterministicValue = "anchor_" + anchorId + "_exp";
-                                counts.exposureHLL.offer(deterministicValue);
-                            }
-                        }
-                        
-                        // 累加3s+观看次数
+                        counts.exposureCount += feature.getUserAnchorExpCnt15Min();
                         counts.watch3sPlusCount += feature.getUserAnchor3SquitCnt15Min();
-                        
-                        // 合并6s+观看次数
-                        // 优化：不再使用循环模拟HyperLogLog添加，直接使用基于概率的高效合并方式
-                        if (feature.getUserAnchor6SquitCnt15Min() > 0) {
-                            // 使用概率模型估算HyperLogLog的内部位图状态，避免O(n)循环
-                            double estimatedCardinality = feature.getUserAnchor6SquitCnt15Min();
-                            if (estimatedCardinality > counts.watch6sPlusHLL.cardinality()) {
-                                // 只在新计数更大时更新，使用确定性字符串减少计算
-                                String deterministicValue = "anchor_" + anchorId + "_watch6s";
-                                counts.watch6sPlusHLL.offer(deterministicValue);
-                            }
-                        }
+                        counts.watch6sPlusCount += feature.getUserAnchor6SquitCnt15Min();
                         
                     } catch (Exception e) {
                         // 忽略解析错误
@@ -533,11 +494,8 @@ public class LiveUserAnchorFeature15minJob {
                 long anchorId = e.getKey();
                 AnchorFeatureCounts c = e.getValue();
                 
-                // 从 HyperLogLog 获取去重后的曝光次数
-                int exposureCount = (int) c.exposureHLL.cardinality();
-                
-                // 从 HyperLogLog 获取去重后的 6s+ 观看次数
-                int watch6sPlusCount = (int) c.watch6sPlusHLL.cardinality();
+                int exposureCount = c.exposureCount;
+                int watch6sPlusCount = c.watch6sPlusCount;
                 
                 // 负反馈次数 = 曝光次数 - 6s+观看次数
                 int negative = Math.max(0, exposureCount - watch6sPlusCount);
@@ -567,17 +525,9 @@ public class LiveUserAnchorFeature15minJob {
                 AnchorFeatureCounts target = a.anchorIdToCounts.computeIfAbsent(e.getKey(), k -> new AnchorFeatureCounts());
                 AnchorFeatureCounts src = e.getValue();
                 
-                // 合并 HyperLogLog
-                try {
-                    target.exposureHLL = (HyperLogLog) target.exposureHLL.merge(src.exposureHLL);
-                    target.watch6sPlusHLL = (HyperLogLog) target.watch6sPlusHLL.merge(src.watch6sPlusHLL);
-                } catch (Exception ex) {
-                    // 合并失败，保持原值
-                    LOG.error("Error merging HyperLogLog: {}", ex.getMessage());
-                }
-                
-                // 累加数值型特征
+                target.exposureCount += src.exposureCount;
                 target.watch3sPlusCount += src.watch3sPlusCount;
+                target.watch6sPlusCount += src.watch6sPlusCount;
                 target.totalWatchDuration += src.totalWatchDuration;
             }
             
