@@ -300,10 +300,11 @@ public class OnlineCFJobWithDetailedLogs {
                         return a;
                     })
                     .name("left-item-aggregate")
-                    .map(value -> {
+                    .map((MapFunction<Tuple2<Long, List<Tuple2<Long, Long>>>, Tuple2<Long, List<Tuple2<Long, Long>>>>) value -> {
                         System.out.println("聚合结果 - Left: " + value.f0 + ", Right数量: " + value.f1.size());
                         return value;
                     })
+                    .returns(Types.TUPLE(Types.LONG, Types.LIST(Types.TUPLE(Types.LONG, Types.LONG))))
                     .name("debug-left-aggregated");
 
             System.out.println("16. 设置TopK Redis Sink...");
