@@ -150,7 +150,7 @@ public class LiveUserAnchorFeature15minJob {
             })
             .window(SlidingProcessingTimeWindows.of(
                 Time.minutes(15),
-                Time.seconds(15)
+                Time.seconds(30)
             ))
             .aggregate(new GlobalUserAnchorFeatureAggregator())
             .name("Global Aggregation by Original UID")
