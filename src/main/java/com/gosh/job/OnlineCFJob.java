@@ -642,12 +642,12 @@ public class OnlineCFJob {
             try {
                 RecFeature.RecUserFeature feature = RecFeature.RecUserFeature.parseFrom(payload);
                 List<ItemHistory> result = new ArrayList<>();
-                mergeHistory(result, feature.getViewer3SviewPostHis24H(), 1.0);
-                mergeHistory(result, feature.getViewer5SstandPostHis24H(), 1.0);
-                mergeHistory(result, feature.getViewerLikePostHis24H(), 1.2);
-                mergeHistory(result, feature.getViewerFollowPostHis24H(), 1.3);
-                mergeHistory(result, feature.getViewerProfilePostHis24H(), 0.8);
-                mergeHistory(result, feature.getViewerPosinterPostHis24H(), 1.1);
+                mergeHistoryWithScores(result, feature.getViewer3SviewPostHis24HList(), 1.0);
+                mergeHistoryWithScores(result, feature.getViewer5SstandPostHis24HList(), 1.0);
+                mergeHistoryFromIds(result, feature.getViewerLikePostHis24HList(), 1.2);
+                mergeHistoryFromIds(result, feature.getViewerFollowPostHis24HList(), 1.3);
+                mergeHistoryFromIds(result, feature.getViewerProfilePostHis24HList(), 0.8);
+                mergeHistoryFromIds(result, feature.getViewerPosinterPostHis24HList(), 1.1);
                 return limitAndFilter(result);
             } catch (Exception protoError) {
                 String raw = new String(payload, StandardCharsets.UTF_8);
@@ -655,7 +655,40 @@ public class OnlineCFJob {
             }
         }
 
-        private void mergeHistory(List<ItemHistory> target, String raw, double baseWeight) {
+        private void mergeHistoryWithScores(List<ItemHistory> target, List<RecFeature.IdScore> entries, double baseWeight) {
+            if (entries == null || entries.isEmpty()) {
+                return;
+            }
+            for (RecFeature.IdScore entry : entries) {
+                long itemId = entry.getId();
+                if (itemId <= 0) {
+                    continue;
+                }
+                ItemHistory history = new ItemHistory();
+                history.itemId = itemId;
+                history.timestamp = System.currentTimeMillis();
+                history.weight = baseWeight;
+                target.add(history);
+            }
+        }
+
+        private void mergeHistoryFromIds(List<ItemHistory> target, List<Long> ids, double baseWeight) {
+            if (ids == null || ids.isEmpty()) {
+                return;
+            }
+            for (Long id : ids) {
+                if (id == null || id <= 0) {
+                    continue;
+                }
+                ItemHistory history = new ItemHistory();
+                history.itemId = id;
+                history.timestamp = System.currentTimeMillis();
+                history.weight = baseWeight;
+                target.add(history);
+            }
+        }
+
+        private void mergeHistoryFromString(List<ItemHistory> target, String raw, double baseWeight) {
             if (StringUtils.isBlank(raw)) {
                 return;
             }
@@ -670,16 +703,9 @@ public class OnlineCFJob {
                 if (itemId <= 0) {
                     continue;
                 }
-                long ts = System.currentTimeMillis();
-                if (parts.length > 1) {
-                    long candidate = NumberUtils.toLong(parts[1], 0L);
-                    if (candidate > 1000000L) {
-                        ts = TimeUnit.SECONDS.toMillis(candidate);
-                    }
-                }
                 ItemHistory history = new ItemHistory();
                 history.itemId = itemId;
-                history.timestamp = ts;
+                history.timestamp = System.currentTimeMillis();
                 history.weight = baseWeight;
                 target.add(history);
             }
@@ -710,7 +736,7 @@ public class OnlineCFJob {
             } catch (IOException ignore) {
                 // fall back to simple parsing
             }
-            mergeHistory(result, raw, 1.0);
+            mergeHistoryFromString(result, raw, 1.0);
             return limitAndFilter(result);
         }
 

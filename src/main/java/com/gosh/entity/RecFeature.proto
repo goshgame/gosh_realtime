@@ -13,6 +13,7 @@ package com.gosh.entity;
 message RecUserFeature {
   // 用户状态特征
   int32 viewer_is_old = 1;                  // 用户是否是老用户(前一天的用户表存在即为老用户）
+  int32 viewer_register_days = 2;           // 用户注册天数
 
   // 1小时窗口特征
   // 曝光相关特征
@@ -26,26 +27,26 @@ message RecUserFeature {
   int32 viewer_3sview2_post_cnt_1h = 15;      // 用户最近1h观看3s以上视频post数
 
   // 历史记录特征 (1小时)
-  string viewer_3sview_post_his_1h = 16;      // 用户最近1h观看3s以上视频post列表带观看时长
-  string viewer_5sstand_post_his_1h = 17;     // 用户最近1h停留5s以上视频post列表带停留时长
-  string viewer_like_post_his_1h = 18;        // 用户最近1h点赞视频post列表
-  string viewer_follow_post_his_1h = 19;      // 用户最近1h点关注视频post列表
-  string viewer_profile_post_his_1h = 20;     // 用户最近1h点作者主页视频post列表
-  string viewer_posinter_post_his_1h = 21;    // 用户最近1h评论收藏分享视频post列表
+  repeated IdScore viewer_3sview_post_his_1h = 16;      // 用户最近1h观看3s以上视频post列表带观看时长
+  repeated IdScore viewer_5sstand_post_his_1h = 17;     // 用户最近1h停留5s以上视频post列表带停留时长
+  repeated int64 viewer_like_post_his_1h = 18;        // 用户最近1h点赞视频post列表
+  repeated int64 viewer_follow_post_his_1h = 19;      // 用户最近1h点关注视频post列表
+  repeated int64 viewer_profile_post_his_1h = 20;     // 用户最近1h点作者主页视频post列表
+  repeated int64 viewer_posinter_post_his_1h = 21;    // 用户最近1h评论收藏分享视频post列表
 
   // 24小时窗口特征
   // 历史记录特征 (24小时)
-  string viewer_3sview_post_his_24h = 30;     // 用户最近24h观看3s以上视频post列表带观看时长
-  string viewer_5sstand_post_his_24h = 31;    // 用户最近24h停留5s以上视频post列表带停留时长
-  string viewer_like_post_his_24h = 32;       // 用户最近24h点赞视频post列表
-  string viewer_follow_post_his_24h = 33;     // 用户最近24h点关注视频post列表
-  string viewer_profile_post_his_24h = 34;    // 用户最近24h点作者主页视频post列表
-  string viewer_posinter_post_his_24h = 35;   // 用户最近24h评论收藏分享视频post列表
+  repeated IdScore  viewer_3sview_post_his_24h = 30;     // 用户最近24h观看3s以上视频post列表带观看时长
+  repeated IdScore  viewer_5sstand_post_his_24h = 31;    // 用户最近24h停留5s以上视频post列表带停留时长
+  repeated int64 viewer_like_post_his_24h = 32;       // 用户最近24h点赞视频post列表
+  repeated int64 viewer_follow_post_his_24h = 33;     // 用户最近24h点关注视频post列表
+  repeated int64 viewer_profile_post_his_24h = 34;    // 用户最近24h点作者主页视频post列表
+  repeated int64 viewer_posinter_post_his_24h = 35;   // 用户最近24h评论收藏分享视频post列表
 
   // 作者相关特征 (24小时)
-  string viewer_like_author_his_24h = 40;     // 用户最近24h点赞视频的作者列表
-  string viewer_follow_author_his_24h = 41;   // 用户最近24h关注视频的作者列表
-  string viewer_profile_author_his_24h = 42;  // 用户最近24h查看主页视频的作者列表
+  repeated int32 viewer_like_author_his_24h = 40;     // 用户最近24h点赞视频的作者列表
+  repeated int32 viewer_follow_author_his_24h = 41;   // 用户最近24h关注视频的作者列表
+  repeated int32 viewer_profile_author_his_24h = 42;  // 用户最近24h查看主页视频的作者列表
 
   // 7天特征
   int32 viewer_active_days_7d = 50;      // 最近7天活跃天数
@@ -57,13 +58,16 @@ message RecUserFeature {
   int32 viewer_comment_cnt_7d = 56;      // 最近7天评论次数
   float viewer_validview_rate_7d = 57;  // 最近7天有效观看率
 
-    // id列表
-  string user_deepview_postids_7d = 58; // 最近7天深度浏览itemid列表 todo：列表需要用 repeated @torre
-  string user_interact_postids_7d = 59; // 最近7天有正向交互的itemid列表
+  // id列表
+  repeated int64 user_deepview_postids_7d = 58; // 最近7天深度浏览itemid列表
+  repeated int64 user_interact_postids_7d = 59; // 最近7天有正向交互的itemid列表
 
   // 直播15天
   int32 user_gift_count = 60;
   float user_daily_watchlive_minutes =61;
+
+  // 直播其他
+  repeated uint64 user_live_follow_prefer_anchor_ids = 62;
 
   // 正偏好特征v2
   string prefer_pos_tag1_7d_top3 = 70;
@@ -94,12 +98,21 @@ message RecUserFeature {
   string prefer_neg_ftag4_7d_top3 = 93;
   string prefer_neg_ftag5_7d_top3 = 94;
   string prefer_neg_ftag6_7d_top3 = 95;
+  // 负反馈标签队列（最近5个）
+  repeated FeedbackTag feedback_tags = 96;
+  repeated FeedbackAuthorId feedback_author_ids = 97;
+}
 
-  // 负反馈
-  repeated FeedbackTag FeedbackTags = 96;
-  repeated FeedbackAuthorId FeedbackAuthorIds = 97;
+// 负反馈标签
+message FeedbackTag {
+  string tag = 1;        // 标签内容，如 "age#youngadult"
+  float weight = 2;      // 权重，统一为 0.1
+}
 
-
+// 负反馈作者
+message FeedbackAuthorId {
+  uint64 author_id = 1;
+  float weight = 2;
 }
 
 // Item侧特征 (Post特征)
@@ -184,23 +197,11 @@ message RecPostFeature {
 
 }
 
-message FeedbackTag{
-  string tag = 1;
-  float weight = 2;
-}
-
-message FeedbackAuthorId{
-  uint64 author_id = 1;
-  float weight = 2;
-}
-
 // 用户作者交叉特征,hset格式
 // Redis Key: rec:user_author_feature:{user_id}:post1h, rec:user_author_feature:{user_id}:post24h
 message RecUserAuthorFeature {
   uint64 user_id = 1;
   uint64 author_id = 2;
-  // 过期时间标识 (1h 或 24h)
-//   string expire_time = 3;
 
   // 1小时窗口特征
   // 曝光特征
@@ -300,66 +301,110 @@ message RecUserAuthorFeature {
 
 
 // 直播用户主播交叉特征,hset格式
-// Redis Key: rec:user_anchor_feature:{user_id}:live15min
+// Redis Key: rec:user_anchor_feature:{user_id}:live15min;rec:user_anchor_feature:{user_id}:live7d
 message LiveUserAnchorFeature {
-    uint64 user_id = 1;
-    uint64 anchor_id = 2;
-  
-    // 15分钟窗口特征
-    // 曝光特征
-    int32 user_anchor_exp_cnt_15min = 10;           // 用户主播最近15分钟刷到次数
-  
-    // 停留特征
-    int32 user_anchor_3squit_cnt_15min = 11;        // 用户作者最近15分钟停留3s次数
-    int32 user_anchor_6squit_cnt_15min = 12;        // 用户作者最近15分钟停留6s次数
+  uint64 user_id = 1;
+  uint64 anchor_id = 2;
 
-    //点赞特征
-    int32 user_anchor_like_cnt_15min = 13;        // 用户作者最近15分钟点赞次数
-    //评论特征
-    int32 user_anchor_comment_cnt_15min = 14;        // 用户作者最近15分钟评论次数
-    //关注特征
-    int32 user_anchor_follow_cnt_15min = 15;        // 用户作者最近15分钟关注次数
-    //分享特征
-    int32 user_anchor_share_cnt_15min = 16;        // 用户作者最近15分钟分享次数
-    //送礼特征
-    int32 user_anchor_gift_cnt_15min = 17;        // 用户作者最近15分钟送礼次数
-    //送礼金额特征
-    int32 user_anchor_gift_amount_15min = 18;        // 用户作者最近15分钟送礼金额
+  // 15分钟窗口特征
+  // 曝光特征
+  int32 user_anchor_exp_cnt_15min = 10;           // 用户主播最近15分钟刷到次数
 
-    // 负反馈特征
-    int32 user_anchor_negative_feedback_cnt_15min = 19;        // 用户作者最近15分钟负反馈次数(基于以上特征合成)
-    
+  // 停留特征
+  int32 user_anchor_3squit_cnt_15min = 11;        // 用户作者最近15分钟停留3s次数
+  int32 user_anchor_6squit_cnt_15min = 12;        // 用户作者最近15分钟停留6s次数
+
+  //点赞特征
+  int32 user_anchor_like_cnt_15min = 13;        // 用户作者最近15分钟点赞次数
+  //评论特征
+  int32 user_anchor_comment_cnt_15min = 14;        // 用户作者最近15分钟评论次数
+  //关注特征
+  int32 user_anchor_follow_cnt_15min = 15;        // 用户作者最近15分钟关注次数
+  //分享特征
+  int32 user_anchor_share_cnt_15min = 16;        // 用户作者最近15分钟分享次数
+  //送礼特征
+  int32 user_anchor_gift_cnt_15min = 17;        // 用户作者最近15分钟送礼次数
+  //送礼金额特征
+  int32 user_anchor_gift_amount_15min = 18;        // 用户作者最近15分钟送礼金额
+
+  // 负反馈特征
+  int32 user_anchor_negative_feedback_cnt_15min = 19;        // 用户作者最近15分钟负反馈次数(基于以上特征合成)
+
+  // 7天窗口特征
+  int32 user_anchor_enter_cnt_7d = 20;                        // 用户主播7天进房次数
+  int32 user_anchor_quit_cnt_7d = 21;                         // 用户主播7天退房次数
+  int32 user_anchor_stay_gt10s_cnt_7d = 22;                   // 用户主播7天停留超10s次数
+  int32 user_anchor_stay_gt30s_cnt_7d = 23;                   // 用户主播7天停留超30s次数
+  float user_anchor_avg_view_duration_7d = 24;                // 用户主播7天次均预览时长
+  int32 user_anchor_positive_feedback_cnt_7d = 25;            // 用户主播7天正反馈次数（关注or送礼or公聊or分享）
+  int32 user_anchor_negative_feedback_cnt_7d = 26;            // 用户主播7天负反馈次数（拉黑or举报）
+  int32 user_anchor_active_enter_cnt_7d = 27;                 // 用户主播7天主动进房次数(点击or10s进房)
+
 }
 
 // 直播主播特征（主播维度）- 包含热度等特征
-// Redis Key: rec:user_author_feature:{anchor_id}:live5min/live10min/live15min
+// Redis Key: rec:live_anchor_feature:{anchor_id}:live5min/live10min/live15min;rec:live_anchor_feature:{anchor_id}:live7d
 message RecLiveAnchorFeature {
-    uint64 anchor_id = 1;
-    
-    // 5分钟窗口特征
-    int32 live_enter_usernum_5min = 10;             // 最近5分钟进房人数（uid去重）
-    int32 live_quit_usernum_5min = 11;              // 最近5分钟退房人数（uid去重）
-    int32 live_quit_avg_duration_5min = 12;         // 最近5分钟退房次均停留时长（秒）
-    int32 live_anchor_gift_coin_5min = 13;          // 最近5分钟主播收礼金额
-    int32 live_anchor_gift_usernum_5min = 14;       // 最近5分钟主播收礼人数（uid去重）
-    int32 live_anchor_follow_usernum_5min = 15;     // 最近5分钟主播关注人数（uid去重）
-    int32 live_anchor_chat_usernum_5min = 16;       // 最近5分钟主播聊天人数（uid去重）
-    
-    // 10分钟窗口特征
-    int32 live_enter_usernum_10min = 20;            // 最近10分钟进房人数（uid去重）
-    int32 live_quit_usernum_10min = 21;             // 最近10分钟退房人数（uid去重）
-    int32 live_quit_avg_duration_10min = 22;        // 最近10分钟退房次均停留时长（秒）
-    int32 live_anchor_gift_coin_10min = 23;         // 最近10分钟主播收礼金额
-    int32 live_anchor_gift_usernum_10min = 24;      // 最近10分钟主播收礼人数（uid去重）
-    int32 live_anchor_follow_usernum_10min = 25;    // 最近10分钟主播关注人数（uid去重）
-    int32 live_anchor_chat_usernum_10min = 26;      // 最近10分钟主播聊天人数（uid去重）
-    
-    // 15分钟窗口特征
-    int32 live_enter_usernum_15min = 30;            // 最近15分钟进房人数（uid去重）
-    int32 live_quit_usernum_15min = 31;             // 最近15分钟退房人数（uid去重）
-    int32 live_quit_avg_duration_15min = 32;        // 最近15分钟退房次均停留时长（秒）
-    int32 live_anchor_gift_coin_15min = 33;         // 最近15分钟主播收礼金额
-    int32 live_anchor_gift_usernum_15min = 34;      // 最近15分钟主播收礼人数（uid去重）
-    int32 live_anchor_follow_usernum_15min = 35;    // 最近15分钟主播关注人数（uid去重）
-    int32 live_anchor_chat_usernum_15min = 36;      // 最近15分钟主播聊天人数（uid去重）
+  uint64 anchor_id = 1;
+
+  // 5分钟窗口特征
+  int32 live_enter_usernum_5min = 10;             // 最近5分钟进房人数（uid去重）
+  int32 live_quit_usernum_5min = 11;              // 最近5分钟退房人数（uid去重）
+  int32 live_quit_avg_duration_5min = 12;         // 最近5分钟退房次均停留时长（秒）
+  int32 live_anchor_gift_coin_5min = 13;          // 最近5分钟主播收礼金额
+  int32 live_anchor_gift_usernum_5min = 14;       // 最近5分钟主播收礼人数（uid去重）
+  int32 live_anchor_follow_usernum_5min = 15;     // 最近5分钟主播关注人数（uid去重）
+  int32 live_anchor_chat_usernum_5min = 16;       // 最近5分钟主播聊天人数（uid去重）
+
+  // 10分钟窗口特征
+  int32 live_enter_usernum_10min = 20;            // 最近10分钟进房人数（uid去重）
+  int32 live_quit_usernum_10min = 21;             // 最近10分钟退房人数（uid去重）
+  int32 live_quit_avg_duration_10min = 22;        // 最近10分钟退房次均停留时长（秒）
+  int32 live_anchor_gift_coin_10min = 23;         // 最近10分钟主播收礼金额
+  int32 live_anchor_gift_usernum_10min = 24;      // 最近10分钟主播收礼人数（uid去重）
+  int32 live_anchor_follow_usernum_10min = 25;    // 最近10分钟主播关注人数（uid去重）
+  int32 live_anchor_chat_usernum_10min = 26;      // 最近10分钟主播聊天人数（uid去重）
+
+  // 15分钟窗口特征
+  int32 live_enter_usernum_15min = 30;            // 最近15分钟进房人数（uid去重）
+  int32 live_quit_usernum_15min = 31;             // 最近15分钟退房人数（uid去重）
+  int32 live_quit_avg_duration_15min = 32;        // 最近15分钟退房次均停留时长（秒）
+  int32 live_anchor_gift_coin_15min = 33;         // 最近15分钟主播收礼金额
+  int32 live_anchor_gift_usernum_15min = 34;      // 最近15分钟主播收礼人数（uid去重）
+  int32 live_anchor_follow_usernum_15min = 35;    // 最近15分钟主播关注人数（uid去重）
+  int32 live_anchor_chat_usernum_15min = 36;      // 最近15分钟主播聊天人数（uid去重）
+
+  // 7天窗口特征
+  int32 anchor_enter_cnt_7d = 40;                  // 7天进房次数
+  int32 anchor_quit_cnt_7d = 41;                   // 7天退房次数
+  int32 anchor_stay_gt3s_cnt_7d = 42;              // 7天停留超3s次数
+  int32 anchor_stay_gt10s_cnt_7d = 43;             // 7天停留超10s次数
+  int32 anchor_stay_gt30s_cnt_7d = 44;             // 7天停留超30s次数
+  float anchor_avg_view_duration_7d = 45;          // 7天次均预览时长
+  int32 anchor_follow_cnt_7d = 46;                 // 7天关注数
+  int32 anchor_positive_feedback_cnt_7d = 47;      // 7天正反馈次数（关注or送礼or公聊or分享）
+  int32 anchor_negative_feedback_cnt_7d = 48;      // 7天负反馈次数（拉黑or举报）
+  int32 anchor_live_scene_exposure_cnt_7d = 49;    // 7天live场景曝光次数
+  int32 anchor_foru_scene_exposure_cnt_7d = 50;    // 7天foru场景曝光次数
+  int32 anchor_live_scene_enter_cnt_7d = 51;       // 7天live场景进房次数
+  int32 anchor_foru_scene_enter_cnt_7d = 52;       // 7天foru场景进房次数
+  int32 anchor_gift_cnt_7d =53;                    // 7天主播收礼数
+}
+
+// 直播用户特征（用户维度）- 包含用户直播行为历史
+// Redis Key: rec:live_user_feature:{user_id}:live7d
+message RecLiveUserFeature {
+  uint64 user_id = 1;
+
+  // 7天窗口特征 - 主播列表相关
+  repeated IdScore  user_stay_gt10s_anchor_list = 10;          // 用户7天停留超10s的主播id列表及停留时长，格式：anchor_id|duration,anchor_id|duration
+  repeated int32  user_active_enter_anchor_list = 11;        // 用户7天主动进房的主播列表，逗号分隔
+  repeated int32  user_positive_feedback_anchor_list = 12;   // 用户7天正反馈的主播列表，逗号分隔
+}
+
+
+// 专门用于储存用户喜欢的postid或主播id及得分
+message IdScore {
+  int64 id =1;
+  float score =2;
 }

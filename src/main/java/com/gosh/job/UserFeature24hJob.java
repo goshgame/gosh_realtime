@@ -30,6 +30,7 @@ import org.apache.flink.streaming.api.functions.ProcessFunction;
 import org.apache.flink.util.Collector;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class UserFeature24hJob {
     private static final Logger LOG = LoggerFactory.getLogger(UserFeature24hJob.class);
@@ -150,16 +151,16 @@ public class UserFeature24hJob {
                     // 构建Protobuf
                     byte[] value = RecFeature.RecUserFeature.newBuilder()
                         // 24小时历史记录特征
-                        .setViewer3SviewPostHis24H(agg.viewer3sviewPostHis24h)
-                        .setViewer5SstandPostHis24H(agg.viewer5sstandPostHis24h)
-                        .setViewerLikePostHis24H(agg.viewerLikePostHis24h)
-                        .setViewerFollowPostHis24H(agg.viewerFollowPostHis24h)
-                        .setViewerProfilePostHis24H(agg.viewerProfilePostHis24h)
-                        .setViewerPosinterPostHis24H(agg.viewerPosinterPostHis24h)
+                        .addAllViewer3SviewPostHis24H(agg.viewer3sviewPostHis24h)
+                        .addAllViewer5SstandPostHis24H(agg.viewer5sstandPostHis24h)
+                        .addAllViewerLikePostHis24H(agg.viewerLikePostHis24h)
+                        .addAllViewerFollowPostHis24H(agg.viewerFollowPostHis24h)
+                        .addAllViewerProfilePostHis24H(agg.viewerProfilePostHis24h)
+                        .addAllViewerPosinterPostHis24H(agg.viewerPosinterPostHis24h)
                         // 作者相关特征 (24小时)
-                        .setViewerLikeAuthorHis24H(agg.viewerLikeAuthorHis24h)
-                        .setViewerFollowAuthorHis24H(agg.viewerFollowAuthorHis24h)
-                        .setViewerProfileAuthorHis24H(agg.viewerProfileAuthorHis24h)
+                        .addAllViewerLikeAuthorHis24H(agg.viewerLikeAuthorHis24h)
+                        .addAllViewerFollowAuthorHis24H(agg.viewerFollowAuthorHis24h)
+                        .addAllViewerProfileAuthorHis24H(agg.viewerProfileAuthorHis24h)
                         .build()
                         .toByteArray();
                     
@@ -225,17 +226,17 @@ public class UserFeature24hJob {
             }
             
             // 24小时历史记录特征 - 构建字符串格式
-            result.viewer3sviewPostHis24h = UserFeatureCommon.buildPostHistoryString(accumulator.view3sPostDetails, 10);
-            result.viewer5sstandPostHis24h = UserFeatureCommon.buildPostHistoryString(accumulator.stand5sPostDetails, 10);
-            result.viewerLikePostHis24h = UserFeatureCommon.buildPostListString(accumulator.likePostIds, 10);
-            result.viewerFollowPostHis24h = UserFeatureCommon.buildPostListString(accumulator.followPostIds, 10);
-            result.viewerProfilePostHis24h = UserFeatureCommon.buildPostListString(accumulator.profilePostIds, 10);
-            result.viewerPosinterPostHis24h = UserFeatureCommon.buildPostListString(accumulator.posinterPostIds, 10);
+            result.viewer3sviewPostHis24h = UserFeatureCommon.buildPostHistoryList(accumulator.view3sPostDetails, 10);
+            result.viewer5sstandPostHis24h = UserFeatureCommon.buildPostHistoryList(accumulator.stand5sPostDetails, 10);
+            result.viewerLikePostHis24h = UserFeatureCommon.buildPostIdList(accumulator.likePostIds, 10);
+            result.viewerFollowPostHis24h = UserFeatureCommon.buildPostIdList(accumulator.followPostIds, 10);
+            result.viewerProfilePostHis24h = UserFeatureCommon.buildPostIdList(accumulator.profilePostIds, 10);
+            result.viewerPosinterPostHis24h = UserFeatureCommon.buildPostIdList(accumulator.posinterPostIds, 10);
             
             // 作者相关特征 (24小时)
-            result.viewerLikeAuthorHis24h = UserFeatureCommon.buildAuthorListString(accumulator.likeAuthors, 10);
-            result.viewerFollowAuthorHis24h = UserFeatureCommon.buildAuthorListString(accumulator.followAuthors, 10);
-            result.viewerProfileAuthorHis24h = UserFeatureCommon.buildAuthorListString(accumulator.profileAuthors, 10);
+            result.viewerLikeAuthorHis24h = UserFeatureCommon.buildAuthorIdList(accumulator.likeAuthors, 10);
+            result.viewerFollowAuthorHis24h = UserFeatureCommon.buildAuthorIdList(accumulator.followAuthors, 10);
+            result.viewerProfileAuthorHis24h = UserFeatureCommon.buildAuthorIdList(accumulator.profileAuthors, 10);
             
             result.updateTime = System.currentTimeMillis();
             
@@ -258,17 +259,17 @@ public class UserFeature24hJob {
         public long uid;
         
         // 24小时历史记录特征
-        public String viewer3sviewPostHis24h;
-        public String viewer5sstandPostHis24h;
-        public String viewerLikePostHis24h;
-        public String viewerFollowPostHis24h;
-        public String viewerProfilePostHis24h;
-        public String viewerPosinterPostHis24h;
+        public List<RecFeature.IdScore> viewer3sviewPostHis24h;
+        public List<RecFeature.IdScore> viewer5sstandPostHis24h;
+        public List<Long> viewerLikePostHis24h;
+        public List<Long> viewerFollowPostHis24h;
+        public List<Long> viewerProfilePostHis24h;
+        public List<Long> viewerPosinterPostHis24h;
         
         // 作者相关特征 (24小时)
-        public String viewerLikeAuthorHis24h;
-        public String viewerFollowAuthorHis24h;
-        public String viewerProfileAuthorHis24h;
+        public List<Integer> viewerLikeAuthorHis24h;
+        public List<Integer> viewerFollowAuthorHis24h;
+        public List<Integer> viewerProfileAuthorHis24h;
         
         public long updateTime;
 

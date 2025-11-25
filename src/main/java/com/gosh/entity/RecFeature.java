@@ -30,6 +30,16 @@ public final class RecFeature {
 
     /**
      * <pre>
+     * 用户注册天数
+     * </pre>
+     *
+     * <code>int32 viewer_register_days = 2;</code>
+     * @return The viewerRegisterDays.
+     */
+    int getViewerRegisterDays();
+
+    /**
+     * <pre>
      * 1小时窗口特征
      * 曝光相关特征
      * </pre>
@@ -94,120 +104,204 @@ public final class RecFeature {
      * 历史记录特征 (1小时)
      * </pre>
      *
-     * <code>string viewer_3sview_post_his_1h = 16;</code>
-     * @return The viewer3sviewPostHis1h.
+     * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_1h = 16;</code>
      */
-    java.lang.String getViewer3SviewPostHis1H();
+    java.util.List<com.gosh.entity.RecFeature.IdScore> 
+        getViewer3SviewPostHis1HList();
     /**
      * <pre>
      * 历史记录特征 (1小时)
      * </pre>
      *
-     * <code>string viewer_3sview_post_his_1h = 16;</code>
-     * @return The bytes for viewer3sviewPostHis1h.
+     * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_1h = 16;</code>
      */
-    com.google.protobuf.ByteString
-        getViewer3SviewPostHis1HBytes();
+    com.gosh.entity.RecFeature.IdScore getViewer3SviewPostHis1H(int index);
+    /**
+     * <pre>
+     * 历史记录特征 (1小时)
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_1h = 16;</code>
+     */
+    int getViewer3SviewPostHis1HCount();
+    /**
+     * <pre>
+     * 历史记录特征 (1小时)
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_1h = 16;</code>
+     */
+    java.util.List<? extends com.gosh.entity.RecFeature.IdScoreOrBuilder> 
+        getViewer3SviewPostHis1HOrBuilderList();
+    /**
+     * <pre>
+     * 历史记录特征 (1小时)
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_1h = 16;</code>
+     */
+    com.gosh.entity.RecFeature.IdScoreOrBuilder getViewer3SviewPostHis1HOrBuilder(
+        int index);
 
     /**
      * <pre>
      * 用户最近1h停留5s以上视频post列表带停留时长
      * </pre>
      *
-     * <code>string viewer_5sstand_post_his_1h = 17;</code>
-     * @return The viewer5sstandPostHis1h.
+     * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_1h = 17;</code>
      */
-    java.lang.String getViewer5SstandPostHis1H();
+    java.util.List<com.gosh.entity.RecFeature.IdScore> 
+        getViewer5SstandPostHis1HList();
     /**
      * <pre>
      * 用户最近1h停留5s以上视频post列表带停留时长
      * </pre>
      *
-     * <code>string viewer_5sstand_post_his_1h = 17;</code>
-     * @return The bytes for viewer5sstandPostHis1h.
+     * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_1h = 17;</code>
      */
-    com.google.protobuf.ByteString
-        getViewer5SstandPostHis1HBytes();
+    com.gosh.entity.RecFeature.IdScore getViewer5SstandPostHis1H(int index);
+    /**
+     * <pre>
+     * 用户最近1h停留5s以上视频post列表带停留时长
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_1h = 17;</code>
+     */
+    int getViewer5SstandPostHis1HCount();
+    /**
+     * <pre>
+     * 用户最近1h停留5s以上视频post列表带停留时长
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_1h = 17;</code>
+     */
+    java.util.List<? extends com.gosh.entity.RecFeature.IdScoreOrBuilder> 
+        getViewer5SstandPostHis1HOrBuilderList();
+    /**
+     * <pre>
+     * 用户最近1h停留5s以上视频post列表带停留时长
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_1h = 17;</code>
+     */
+    com.gosh.entity.RecFeature.IdScoreOrBuilder getViewer5SstandPostHis1HOrBuilder(
+        int index);
 
     /**
      * <pre>
      * 用户最近1h点赞视频post列表
      * </pre>
      *
-     * <code>string viewer_like_post_his_1h = 18;</code>
-     * @return The viewerLikePostHis1h.
+     * <code>repeated int64 viewer_like_post_his_1h = 18;</code>
+     * @return A list containing the viewerLikePostHis1h.
      */
-    java.lang.String getViewerLikePostHis1H();
+    java.util.List<java.lang.Long> getViewerLikePostHis1HList();
     /**
      * <pre>
      * 用户最近1h点赞视频post列表
      * </pre>
      *
-     * <code>string viewer_like_post_his_1h = 18;</code>
-     * @return The bytes for viewerLikePostHis1h.
+     * <code>repeated int64 viewer_like_post_his_1h = 18;</code>
+     * @return The count of viewerLikePostHis1h.
      */
-    com.google.protobuf.ByteString
-        getViewerLikePostHis1HBytes();
+    int getViewerLikePostHis1HCount();
+    /**
+     * <pre>
+     * 用户最近1h点赞视频post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_like_post_his_1h = 18;</code>
+     * @param index The index of the element to return.
+     * @return The viewerLikePostHis1h at the given index.
+     */
+    long getViewerLikePostHis1H(int index);
 
     /**
      * <pre>
      * 用户最近1h点关注视频post列表
      * </pre>
      *
-     * <code>string viewer_follow_post_his_1h = 19;</code>
-     * @return The viewerFollowPostHis1h.
+     * <code>repeated int64 viewer_follow_post_his_1h = 19;</code>
+     * @return A list containing the viewerFollowPostHis1h.
      */
-    java.lang.String getViewerFollowPostHis1H();
+    java.util.List<java.lang.Long> getViewerFollowPostHis1HList();
     /**
      * <pre>
      * 用户最近1h点关注视频post列表
      * </pre>
      *
-     * <code>string viewer_follow_post_his_1h = 19;</code>
-     * @return The bytes for viewerFollowPostHis1h.
+     * <code>repeated int64 viewer_follow_post_his_1h = 19;</code>
+     * @return The count of viewerFollowPostHis1h.
      */
-    com.google.protobuf.ByteString
-        getViewerFollowPostHis1HBytes();
+    int getViewerFollowPostHis1HCount();
+    /**
+     * <pre>
+     * 用户最近1h点关注视频post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_follow_post_his_1h = 19;</code>
+     * @param index The index of the element to return.
+     * @return The viewerFollowPostHis1h at the given index.
+     */
+    long getViewerFollowPostHis1H(int index);
 
     /**
      * <pre>
      * 用户最近1h点作者主页视频post列表
      * </pre>
      *
-     * <code>string viewer_profile_post_his_1h = 20;</code>
-     * @return The viewerProfilePostHis1h.
+     * <code>repeated int64 viewer_profile_post_his_1h = 20;</code>
+     * @return A list containing the viewerProfilePostHis1h.
      */
-    java.lang.String getViewerProfilePostHis1H();
+    java.util.List<java.lang.Long> getViewerProfilePostHis1HList();
     /**
      * <pre>
      * 用户最近1h点作者主页视频post列表
      * </pre>
      *
-     * <code>string viewer_profile_post_his_1h = 20;</code>
-     * @return The bytes for viewerProfilePostHis1h.
+     * <code>repeated int64 viewer_profile_post_his_1h = 20;</code>
+     * @return The count of viewerProfilePostHis1h.
      */
-    com.google.protobuf.ByteString
-        getViewerProfilePostHis1HBytes();
+    int getViewerProfilePostHis1HCount();
+    /**
+     * <pre>
+     * 用户最近1h点作者主页视频post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_profile_post_his_1h = 20;</code>
+     * @param index The index of the element to return.
+     * @return The viewerProfilePostHis1h at the given index.
+     */
+    long getViewerProfilePostHis1H(int index);
 
     /**
      * <pre>
      * 用户最近1h评论收藏分享视频post列表
      * </pre>
      *
-     * <code>string viewer_posinter_post_his_1h = 21;</code>
-     * @return The viewerPosinterPostHis1h.
+     * <code>repeated int64 viewer_posinter_post_his_1h = 21;</code>
+     * @return A list containing the viewerPosinterPostHis1h.
      */
-    java.lang.String getViewerPosinterPostHis1H();
+    java.util.List<java.lang.Long> getViewerPosinterPostHis1HList();
     /**
      * <pre>
      * 用户最近1h评论收藏分享视频post列表
      * </pre>
      *
-     * <code>string viewer_posinter_post_his_1h = 21;</code>
-     * @return The bytes for viewerPosinterPostHis1h.
+     * <code>repeated int64 viewer_posinter_post_his_1h = 21;</code>
+     * @return The count of viewerPosinterPostHis1h.
      */
-    com.google.protobuf.ByteString
-        getViewerPosinterPostHis1HBytes();
+    int getViewerPosinterPostHis1HCount();
+    /**
+     * <pre>
+     * 用户最近1h评论收藏分享视频post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_posinter_post_his_1h = 21;</code>
+     * @param index The index of the element to return.
+     * @return The viewerPosinterPostHis1h at the given index.
+     */
+    long getViewerPosinterPostHis1H(int index);
 
     /**
      * <pre>
@@ -215,181 +309,295 @@ public final class RecFeature {
      * 历史记录特征 (24小时)
      * </pre>
      *
-     * <code>string viewer_3sview_post_his_24h = 30;</code>
-     * @return The viewer3sviewPostHis24h.
+     * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_24h = 30;</code>
      */
-    java.lang.String getViewer3SviewPostHis24H();
+    java.util.List<com.gosh.entity.RecFeature.IdScore> 
+        getViewer3SviewPostHis24HList();
     /**
      * <pre>
      * 24小时窗口特征
      * 历史记录特征 (24小时)
      * </pre>
      *
-     * <code>string viewer_3sview_post_his_24h = 30;</code>
-     * @return The bytes for viewer3sviewPostHis24h.
+     * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_24h = 30;</code>
      */
-    com.google.protobuf.ByteString
-        getViewer3SviewPostHis24HBytes();
+    com.gosh.entity.RecFeature.IdScore getViewer3SviewPostHis24H(int index);
+    /**
+     * <pre>
+     * 24小时窗口特征
+     * 历史记录特征 (24小时)
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_24h = 30;</code>
+     */
+    int getViewer3SviewPostHis24HCount();
+    /**
+     * <pre>
+     * 24小时窗口特征
+     * 历史记录特征 (24小时)
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_24h = 30;</code>
+     */
+    java.util.List<? extends com.gosh.entity.RecFeature.IdScoreOrBuilder> 
+        getViewer3SviewPostHis24HOrBuilderList();
+    /**
+     * <pre>
+     * 24小时窗口特征
+     * 历史记录特征 (24小时)
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_24h = 30;</code>
+     */
+    com.gosh.entity.RecFeature.IdScoreOrBuilder getViewer3SviewPostHis24HOrBuilder(
+        int index);
 
     /**
      * <pre>
      * 用户最近24h停留5s以上视频post列表带停留时长
      * </pre>
      *
-     * <code>string viewer_5sstand_post_his_24h = 31;</code>
-     * @return The viewer5sstandPostHis24h.
+     * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_24h = 31;</code>
      */
-    java.lang.String getViewer5SstandPostHis24H();
+    java.util.List<com.gosh.entity.RecFeature.IdScore> 
+        getViewer5SstandPostHis24HList();
     /**
      * <pre>
      * 用户最近24h停留5s以上视频post列表带停留时长
      * </pre>
      *
-     * <code>string viewer_5sstand_post_his_24h = 31;</code>
-     * @return The bytes for viewer5sstandPostHis24h.
+     * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_24h = 31;</code>
      */
-    com.google.protobuf.ByteString
-        getViewer5SstandPostHis24HBytes();
+    com.gosh.entity.RecFeature.IdScore getViewer5SstandPostHis24H(int index);
+    /**
+     * <pre>
+     * 用户最近24h停留5s以上视频post列表带停留时长
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_24h = 31;</code>
+     */
+    int getViewer5SstandPostHis24HCount();
+    /**
+     * <pre>
+     * 用户最近24h停留5s以上视频post列表带停留时长
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_24h = 31;</code>
+     */
+    java.util.List<? extends com.gosh.entity.RecFeature.IdScoreOrBuilder> 
+        getViewer5SstandPostHis24HOrBuilderList();
+    /**
+     * <pre>
+     * 用户最近24h停留5s以上视频post列表带停留时长
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_24h = 31;</code>
+     */
+    com.gosh.entity.RecFeature.IdScoreOrBuilder getViewer5SstandPostHis24HOrBuilder(
+        int index);
 
     /**
      * <pre>
      * 用户最近24h点赞视频post列表
      * </pre>
      *
-     * <code>string viewer_like_post_his_24h = 32;</code>
-     * @return The viewerLikePostHis24h.
+     * <code>repeated int64 viewer_like_post_his_24h = 32;</code>
+     * @return A list containing the viewerLikePostHis24h.
      */
-    java.lang.String getViewerLikePostHis24H();
+    java.util.List<java.lang.Long> getViewerLikePostHis24HList();
     /**
      * <pre>
      * 用户最近24h点赞视频post列表
      * </pre>
      *
-     * <code>string viewer_like_post_his_24h = 32;</code>
-     * @return The bytes for viewerLikePostHis24h.
+     * <code>repeated int64 viewer_like_post_his_24h = 32;</code>
+     * @return The count of viewerLikePostHis24h.
      */
-    com.google.protobuf.ByteString
-        getViewerLikePostHis24HBytes();
+    int getViewerLikePostHis24HCount();
+    /**
+     * <pre>
+     * 用户最近24h点赞视频post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_like_post_his_24h = 32;</code>
+     * @param index The index of the element to return.
+     * @return The viewerLikePostHis24h at the given index.
+     */
+    long getViewerLikePostHis24H(int index);
 
     /**
      * <pre>
      * 用户最近24h点关注视频post列表
      * </pre>
      *
-     * <code>string viewer_follow_post_his_24h = 33;</code>
-     * @return The viewerFollowPostHis24h.
+     * <code>repeated int64 viewer_follow_post_his_24h = 33;</code>
+     * @return A list containing the viewerFollowPostHis24h.
      */
-    java.lang.String getViewerFollowPostHis24H();
+    java.util.List<java.lang.Long> getViewerFollowPostHis24HList();
     /**
      * <pre>
      * 用户最近24h点关注视频post列表
      * </pre>
      *
-     * <code>string viewer_follow_post_his_24h = 33;</code>
-     * @return The bytes for viewerFollowPostHis24h.
+     * <code>repeated int64 viewer_follow_post_his_24h = 33;</code>
+     * @return The count of viewerFollowPostHis24h.
      */
-    com.google.protobuf.ByteString
-        getViewerFollowPostHis24HBytes();
+    int getViewerFollowPostHis24HCount();
+    /**
+     * <pre>
+     * 用户最近24h点关注视频post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_follow_post_his_24h = 33;</code>
+     * @param index The index of the element to return.
+     * @return The viewerFollowPostHis24h at the given index.
+     */
+    long getViewerFollowPostHis24H(int index);
 
     /**
      * <pre>
      * 用户最近24h点作者主页视频post列表
      * </pre>
      *
-     * <code>string viewer_profile_post_his_24h = 34;</code>
-     * @return The viewerProfilePostHis24h.
+     * <code>repeated int64 viewer_profile_post_his_24h = 34;</code>
+     * @return A list containing the viewerProfilePostHis24h.
      */
-    java.lang.String getViewerProfilePostHis24H();
+    java.util.List<java.lang.Long> getViewerProfilePostHis24HList();
     /**
      * <pre>
      * 用户最近24h点作者主页视频post列表
      * </pre>
      *
-     * <code>string viewer_profile_post_his_24h = 34;</code>
-     * @return The bytes for viewerProfilePostHis24h.
+     * <code>repeated int64 viewer_profile_post_his_24h = 34;</code>
+     * @return The count of viewerProfilePostHis24h.
      */
-    com.google.protobuf.ByteString
-        getViewerProfilePostHis24HBytes();
+    int getViewerProfilePostHis24HCount();
+    /**
+     * <pre>
+     * 用户最近24h点作者主页视频post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_profile_post_his_24h = 34;</code>
+     * @param index The index of the element to return.
+     * @return The viewerProfilePostHis24h at the given index.
+     */
+    long getViewerProfilePostHis24H(int index);
 
     /**
      * <pre>
      * 用户最近24h评论收藏分享视频post列表
      * </pre>
      *
-     * <code>string viewer_posinter_post_his_24h = 35;</code>
-     * @return The viewerPosinterPostHis24h.
+     * <code>repeated int64 viewer_posinter_post_his_24h = 35;</code>
+     * @return A list containing the viewerPosinterPostHis24h.
      */
-    java.lang.String getViewerPosinterPostHis24H();
+    java.util.List<java.lang.Long> getViewerPosinterPostHis24HList();
     /**
      * <pre>
      * 用户最近24h评论收藏分享视频post列表
      * </pre>
      *
-     * <code>string viewer_posinter_post_his_24h = 35;</code>
-     * @return The bytes for viewerPosinterPostHis24h.
+     * <code>repeated int64 viewer_posinter_post_his_24h = 35;</code>
+     * @return The count of viewerPosinterPostHis24h.
      */
-    com.google.protobuf.ByteString
-        getViewerPosinterPostHis24HBytes();
+    int getViewerPosinterPostHis24HCount();
+    /**
+     * <pre>
+     * 用户最近24h评论收藏分享视频post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_posinter_post_his_24h = 35;</code>
+     * @param index The index of the element to return.
+     * @return The viewerPosinterPostHis24h at the given index.
+     */
+    long getViewerPosinterPostHis24H(int index);
 
     /**
      * <pre>
      * 作者相关特征 (24小时)
      * </pre>
      *
-     * <code>string viewer_like_author_his_24h = 40;</code>
-     * @return The viewerLikeAuthorHis24h.
+     * <code>repeated int32 viewer_like_author_his_24h = 40;</code>
+     * @return A list containing the viewerLikeAuthorHis24h.
      */
-    java.lang.String getViewerLikeAuthorHis24H();
+    java.util.List<java.lang.Integer> getViewerLikeAuthorHis24HList();
     /**
      * <pre>
      * 作者相关特征 (24小时)
      * </pre>
      *
-     * <code>string viewer_like_author_his_24h = 40;</code>
-     * @return The bytes for viewerLikeAuthorHis24h.
+     * <code>repeated int32 viewer_like_author_his_24h = 40;</code>
+     * @return The count of viewerLikeAuthorHis24h.
      */
-    com.google.protobuf.ByteString
-        getViewerLikeAuthorHis24HBytes();
+    int getViewerLikeAuthorHis24HCount();
+    /**
+     * <pre>
+     * 作者相关特征 (24小时)
+     * </pre>
+     *
+     * <code>repeated int32 viewer_like_author_his_24h = 40;</code>
+     * @param index The index of the element to return.
+     * @return The viewerLikeAuthorHis24h at the given index.
+     */
+    int getViewerLikeAuthorHis24H(int index);
 
     /**
      * <pre>
      * 用户最近24h关注视频的作者列表
      * </pre>
      *
-     * <code>string viewer_follow_author_his_24h = 41;</code>
-     * @return The viewerFollowAuthorHis24h.
+     * <code>repeated int32 viewer_follow_author_his_24h = 41;</code>
+     * @return A list containing the viewerFollowAuthorHis24h.
      */
-    java.lang.String getViewerFollowAuthorHis24H();
+    java.util.List<java.lang.Integer> getViewerFollowAuthorHis24HList();
     /**
      * <pre>
      * 用户最近24h关注视频的作者列表
      * </pre>
      *
-     * <code>string viewer_follow_author_his_24h = 41;</code>
-     * @return The bytes for viewerFollowAuthorHis24h.
+     * <code>repeated int32 viewer_follow_author_his_24h = 41;</code>
+     * @return The count of viewerFollowAuthorHis24h.
      */
-    com.google.protobuf.ByteString
-        getViewerFollowAuthorHis24HBytes();
+    int getViewerFollowAuthorHis24HCount();
+    /**
+     * <pre>
+     * 用户最近24h关注视频的作者列表
+     * </pre>
+     *
+     * <code>repeated int32 viewer_follow_author_his_24h = 41;</code>
+     * @param index The index of the element to return.
+     * @return The viewerFollowAuthorHis24h at the given index.
+     */
+    int getViewerFollowAuthorHis24H(int index);
 
     /**
      * <pre>
      * 用户最近24h查看主页视频的作者列表
      * </pre>
      *
-     * <code>string viewer_profile_author_his_24h = 42;</code>
-     * @return The viewerProfileAuthorHis24h.
+     * <code>repeated int32 viewer_profile_author_his_24h = 42;</code>
+     * @return A list containing the viewerProfileAuthorHis24h.
      */
-    java.lang.String getViewerProfileAuthorHis24H();
+    java.util.List<java.lang.Integer> getViewerProfileAuthorHis24HList();
     /**
      * <pre>
      * 用户最近24h查看主页视频的作者列表
      * </pre>
      *
-     * <code>string viewer_profile_author_his_24h = 42;</code>
-     * @return The bytes for viewerProfileAuthorHis24h.
+     * <code>repeated int32 viewer_profile_author_his_24h = 42;</code>
+     * @return The count of viewerProfileAuthorHis24h.
      */
-    com.google.protobuf.ByteString
-        getViewerProfileAuthorHis24HBytes();
+    int getViewerProfileAuthorHis24HCount();
+    /**
+     * <pre>
+     * 用户最近24h查看主页视频的作者列表
+     * </pre>
+     *
+     * <code>repeated int32 viewer_profile_author_his_24h = 42;</code>
+     * @param index The index of the element to return.
+     * @return The viewerProfileAuthorHis24h at the given index.
+     */
+    int getViewerProfileAuthorHis24H(int index);
 
     /**
      * <pre>
@@ -476,40 +684,58 @@ public final class RecFeature {
      * id列表
      * </pre>
      *
-     * <code>string user_deepview_postids_7d = 58;</code>
-     * @return The userDeepviewPostids7d.
+     * <code>repeated int64 user_deepview_postids_7d = 58;</code>
+     * @return A list containing the userDeepviewPostids7d.
      */
-    java.lang.String getUserDeepviewPostids7D();
+    java.util.List<java.lang.Long> getUserDeepviewPostids7DList();
     /**
      * <pre>
      * id列表
      * </pre>
      *
-     * <code>string user_deepview_postids_7d = 58;</code>
-     * @return The bytes for userDeepviewPostids7d.
+     * <code>repeated int64 user_deepview_postids_7d = 58;</code>
+     * @return The count of userDeepviewPostids7d.
      */
-    com.google.protobuf.ByteString
-        getUserDeepviewPostids7DBytes();
+    int getUserDeepviewPostids7DCount();
+    /**
+     * <pre>
+     * id列表
+     * </pre>
+     *
+     * <code>repeated int64 user_deepview_postids_7d = 58;</code>
+     * @param index The index of the element to return.
+     * @return The userDeepviewPostids7d at the given index.
+     */
+    long getUserDeepviewPostids7D(int index);
 
     /**
      * <pre>
      * 最近7天有正向交互的itemid列表
      * </pre>
      *
-     * <code>string user_interact_postids_7d = 59;</code>
-     * @return The userInteractPostids7d.
+     * <code>repeated int64 user_interact_postids_7d = 59;</code>
+     * @return A list containing the userInteractPostids7d.
      */
-    java.lang.String getUserInteractPostids7D();
+    java.util.List<java.lang.Long> getUserInteractPostids7DList();
     /**
      * <pre>
      * 最近7天有正向交互的itemid列表
      * </pre>
      *
-     * <code>string user_interact_postids_7d = 59;</code>
-     * @return The bytes for userInteractPostids7d.
+     * <code>repeated int64 user_interact_postids_7d = 59;</code>
+     * @return The count of userInteractPostids7d.
      */
-    com.google.protobuf.ByteString
-        getUserInteractPostids7DBytes();
+    int getUserInteractPostids7DCount();
+    /**
+     * <pre>
+     * 最近7天有正向交互的itemid列表
+     * </pre>
+     *
+     * <code>repeated int64 user_interact_postids_7d = 59;</code>
+     * @param index The index of the element to return.
+     * @return The userInteractPostids7d at the given index.
+     */
+    long getUserInteractPostids7D(int index);
 
     /**
      * <pre>
@@ -526,6 +752,35 @@ public final class RecFeature {
      * @return The userDailyWatchliveMinutes.
      */
     float getUserDailyWatchliveMinutes();
+
+    /**
+     * <pre>
+     * 直播其他
+     * </pre>
+     *
+     * <code>repeated uint64 user_live_follow_prefer_anchor_ids = 62;</code>
+     * @return A list containing the userLiveFollowPreferAnchorIds.
+     */
+    java.util.List<java.lang.Long> getUserLiveFollowPreferAnchorIdsList();
+    /**
+     * <pre>
+     * 直播其他
+     * </pre>
+     *
+     * <code>repeated uint64 user_live_follow_prefer_anchor_ids = 62;</code>
+     * @return The count of userLiveFollowPreferAnchorIds.
+     */
+    int getUserLiveFollowPreferAnchorIdsCount();
+    /**
+     * <pre>
+     * 直播其他
+     * </pre>
+     *
+     * <code>repeated uint64 user_live_follow_prefer_anchor_ids = 62;</code>
+     * @param index The index of the element to return.
+     * @return The userLiveFollowPreferAnchorIds at the given index.
+     */
+    long getUserLiveFollowPreferAnchorIds(int index);
 
     /**
      * <pre>
@@ -857,68 +1112,68 @@ public final class RecFeature {
 
     /**
      * <pre>
-     * 负反馈
+     * 负反馈标签队列（最近5个）
      * </pre>
      *
-     * <code>repeated .com.gosh.entity.FeedbackTag FeedbackTags = 96;</code>
+     * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
      */
     java.util.List<com.gosh.entity.RecFeature.FeedbackTag> 
         getFeedbackTagsList();
     /**
      * <pre>
-     * 负反馈
+     * 负反馈标签队列（最近5个）
      * </pre>
      *
-     * <code>repeated .com.gosh.entity.FeedbackTag FeedbackTags = 96;</code>
+     * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
      */
     com.gosh.entity.RecFeature.FeedbackTag getFeedbackTags(int index);
     /**
      * <pre>
-     * 负反馈
+     * 负反馈标签队列（最近5个）
      * </pre>
      *
-     * <code>repeated .com.gosh.entity.FeedbackTag FeedbackTags = 96;</code>
+     * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
      */
     int getFeedbackTagsCount();
     /**
      * <pre>
-     * 负反馈
+     * 负反馈标签队列（最近5个）
      * </pre>
      *
-     * <code>repeated .com.gosh.entity.FeedbackTag FeedbackTags = 96;</code>
+     * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
      */
     java.util.List<? extends com.gosh.entity.RecFeature.FeedbackTagOrBuilder> 
         getFeedbackTagsOrBuilderList();
     /**
      * <pre>
-     * 负反馈
+     * 负反馈标签队列（最近5个）
      * </pre>
      *
-     * <code>repeated .com.gosh.entity.FeedbackTag FeedbackTags = 96;</code>
+     * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
      */
     com.gosh.entity.RecFeature.FeedbackTagOrBuilder getFeedbackTagsOrBuilder(
         int index);
 
     /**
-     * <code>repeated .com.gosh.entity.FeedbackAuthorId FeedbackAuthorIds = 97;</code>
+     * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
      */
     java.util.List<com.gosh.entity.RecFeature.FeedbackAuthorId> 
         getFeedbackAuthorIdsList();
     /**
-     * <code>repeated .com.gosh.entity.FeedbackAuthorId FeedbackAuthorIds = 97;</code>
+     * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
      */
     com.gosh.entity.RecFeature.FeedbackAuthorId getFeedbackAuthorIds(int index);
     /**
-     * <code>repeated .com.gosh.entity.FeedbackAuthorId FeedbackAuthorIds = 97;</code>
+     * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
      */
     int getFeedbackAuthorIdsCount();
     /**
-     * <code>repeated .com.gosh.entity.FeedbackAuthorId FeedbackAuthorIds = 97;</code>
+     * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
      */
     java.util.List<? extends com.gosh.entity.RecFeature.FeedbackAuthorIdOrBuilder> 
         getFeedbackAuthorIdsOrBuilderList();
     /**
-     * <code>repeated .com.gosh.entity.FeedbackAuthorId FeedbackAuthorIds = 97;</code>
+     * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
      */
     com.gosh.entity.RecFeature.FeedbackAuthorIdOrBuilder getFeedbackAuthorIdsOrBuilder(
         int index);
@@ -942,23 +1197,24 @@ public final class RecFeature {
       super(builder);
     }
     private RecUserFeature() {
-      viewer3SviewPostHis1H_ = "";
-      viewer5SstandPostHis1H_ = "";
-      viewerLikePostHis1H_ = "";
-      viewerFollowPostHis1H_ = "";
-      viewerProfilePostHis1H_ = "";
-      viewerPosinterPostHis1H_ = "";
-      viewer3SviewPostHis24H_ = "";
-      viewer5SstandPostHis24H_ = "";
-      viewerLikePostHis24H_ = "";
-      viewerFollowPostHis24H_ = "";
-      viewerProfilePostHis24H_ = "";
-      viewerPosinterPostHis24H_ = "";
-      viewerLikeAuthorHis24H_ = "";
-      viewerFollowAuthorHis24H_ = "";
-      viewerProfileAuthorHis24H_ = "";
-      userDeepviewPostids7D_ = "";
-      userInteractPostids7D_ = "";
+      viewer3SviewPostHis1H_ = java.util.Collections.emptyList();
+      viewer5SstandPostHis1H_ = java.util.Collections.emptyList();
+      viewerLikePostHis1H_ = emptyLongList();
+      viewerFollowPostHis1H_ = emptyLongList();
+      viewerProfilePostHis1H_ = emptyLongList();
+      viewerPosinterPostHis1H_ = emptyLongList();
+      viewer3SviewPostHis24H_ = java.util.Collections.emptyList();
+      viewer5SstandPostHis24H_ = java.util.Collections.emptyList();
+      viewerLikePostHis24H_ = emptyLongList();
+      viewerFollowPostHis24H_ = emptyLongList();
+      viewerProfilePostHis24H_ = emptyLongList();
+      viewerPosinterPostHis24H_ = emptyLongList();
+      viewerLikeAuthorHis24H_ = emptyIntList();
+      viewerFollowAuthorHis24H_ = emptyIntList();
+      viewerProfileAuthorHis24H_ = emptyIntList();
+      userDeepviewPostids7D_ = emptyLongList();
+      userInteractPostids7D_ = emptyLongList();
+      userLiveFollowPreferAnchorIds_ = emptyLongList();
       preferPosTag17DTop3_ = "";
       preferPosTag27DTop3_ = "";
       preferPosTag37DTop3_ = "";
@@ -1025,6 +1281,11 @@ public final class RecFeature {
               viewerIsOld_ = input.readInt32();
               break;
             }
+            case 16: {
+
+              viewerRegisterDays_ = input.readInt32();
+              break;
+            }
             case 80: {
 
               viewerExppostCnt1H_ = input.readInt32();
@@ -1056,93 +1317,270 @@ public final class RecFeature {
               break;
             }
             case 130: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              viewer3SviewPostHis1H_ = s;
+              if (!((mutable_bitField0_ & 0x00000001) != 0)) {
+                viewer3SviewPostHis1H_ = new java.util.ArrayList<com.gosh.entity.RecFeature.IdScore>();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              viewer3SviewPostHis1H_.add(
+                  input.readMessage(com.gosh.entity.RecFeature.IdScore.parser(), extensionRegistry));
               break;
             }
             case 138: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              viewer5SstandPostHis1H_ = s;
+              if (!((mutable_bitField0_ & 0x00000002) != 0)) {
+                viewer5SstandPostHis1H_ = new java.util.ArrayList<com.gosh.entity.RecFeature.IdScore>();
+                mutable_bitField0_ |= 0x00000002;
+              }
+              viewer5SstandPostHis1H_.add(
+                  input.readMessage(com.gosh.entity.RecFeature.IdScore.parser(), extensionRegistry));
+              break;
+            }
+            case 144: {
+              if (!((mutable_bitField0_ & 0x00000004) != 0)) {
+                viewerLikePostHis1H_ = newLongList();
+                mutable_bitField0_ |= 0x00000004;
+              }
+              viewerLikePostHis1H_.addLong(input.readInt64());
               break;
             }
             case 146: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              viewerLikePostHis1H_ = s;
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField0_ & 0x00000004) != 0) && input.getBytesUntilLimit() > 0) {
+                viewerLikePostHis1H_ = newLongList();
+                mutable_bitField0_ |= 0x00000004;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                viewerLikePostHis1H_.addLong(input.readInt64());
+              }
+              input.popLimit(limit);
+              break;
+            }
+            case 152: {
+              if (!((mutable_bitField0_ & 0x00000008) != 0)) {
+                viewerFollowPostHis1H_ = newLongList();
+                mutable_bitField0_ |= 0x00000008;
+              }
+              viewerFollowPostHis1H_.addLong(input.readInt64());
               break;
             }
             case 154: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              viewerFollowPostHis1H_ = s;
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField0_ & 0x00000008) != 0) && input.getBytesUntilLimit() > 0) {
+                viewerFollowPostHis1H_ = newLongList();
+                mutable_bitField0_ |= 0x00000008;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                viewerFollowPostHis1H_.addLong(input.readInt64());
+              }
+              input.popLimit(limit);
+              break;
+            }
+            case 160: {
+              if (!((mutable_bitField0_ & 0x00000010) != 0)) {
+                viewerProfilePostHis1H_ = newLongList();
+                mutable_bitField0_ |= 0x00000010;
+              }
+              viewerProfilePostHis1H_.addLong(input.readInt64());
               break;
             }
             case 162: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              viewerProfilePostHis1H_ = s;
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField0_ & 0x00000010) != 0) && input.getBytesUntilLimit() > 0) {
+                viewerProfilePostHis1H_ = newLongList();
+                mutable_bitField0_ |= 0x00000010;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                viewerProfilePostHis1H_.addLong(input.readInt64());
+              }
+              input.popLimit(limit);
+              break;
+            }
+            case 168: {
+              if (!((mutable_bitField0_ & 0x00000020) != 0)) {
+                viewerPosinterPostHis1H_ = newLongList();
+                mutable_bitField0_ |= 0x00000020;
+              }
+              viewerPosinterPostHis1H_.addLong(input.readInt64());
               break;
             }
             case 170: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              viewerPosinterPostHis1H_ = s;
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField0_ & 0x00000020) != 0) && input.getBytesUntilLimit() > 0) {
+                viewerPosinterPostHis1H_ = newLongList();
+                mutable_bitField0_ |= 0x00000020;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                viewerPosinterPostHis1H_.addLong(input.readInt64());
+              }
+              input.popLimit(limit);
               break;
             }
             case 242: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              viewer3SviewPostHis24H_ = s;
+              if (!((mutable_bitField0_ & 0x00000040) != 0)) {
+                viewer3SviewPostHis24H_ = new java.util.ArrayList<com.gosh.entity.RecFeature.IdScore>();
+                mutable_bitField0_ |= 0x00000040;
+              }
+              viewer3SviewPostHis24H_.add(
+                  input.readMessage(com.gosh.entity.RecFeature.IdScore.parser(), extensionRegistry));
               break;
             }
             case 250: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              viewer5SstandPostHis24H_ = s;
+              if (!((mutable_bitField0_ & 0x00000080) != 0)) {
+                viewer5SstandPostHis24H_ = new java.util.ArrayList<com.gosh.entity.RecFeature.IdScore>();
+                mutable_bitField0_ |= 0x00000080;
+              }
+              viewer5SstandPostHis24H_.add(
+                  input.readMessage(com.gosh.entity.RecFeature.IdScore.parser(), extensionRegistry));
+              break;
+            }
+            case 256: {
+              if (!((mutable_bitField0_ & 0x00000100) != 0)) {
+                viewerLikePostHis24H_ = newLongList();
+                mutable_bitField0_ |= 0x00000100;
+              }
+              viewerLikePostHis24H_.addLong(input.readInt64());
               break;
             }
             case 258: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              viewerLikePostHis24H_ = s;
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField0_ & 0x00000100) != 0) && input.getBytesUntilLimit() > 0) {
+                viewerLikePostHis24H_ = newLongList();
+                mutable_bitField0_ |= 0x00000100;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                viewerLikePostHis24H_.addLong(input.readInt64());
+              }
+              input.popLimit(limit);
+              break;
+            }
+            case 264: {
+              if (!((mutable_bitField0_ & 0x00000200) != 0)) {
+                viewerFollowPostHis24H_ = newLongList();
+                mutable_bitField0_ |= 0x00000200;
+              }
+              viewerFollowPostHis24H_.addLong(input.readInt64());
               break;
             }
             case 266: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              viewerFollowPostHis24H_ = s;
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField0_ & 0x00000200) != 0) && input.getBytesUntilLimit() > 0) {
+                viewerFollowPostHis24H_ = newLongList();
+                mutable_bitField0_ |= 0x00000200;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                viewerFollowPostHis24H_.addLong(input.readInt64());
+              }
+              input.popLimit(limit);
+              break;
+            }
+            case 272: {
+              if (!((mutable_bitField0_ & 0x00000400) != 0)) {
+                viewerProfilePostHis24H_ = newLongList();
+                mutable_bitField0_ |= 0x00000400;
+              }
+              viewerProfilePostHis24H_.addLong(input.readInt64());
               break;
             }
             case 274: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              viewerProfilePostHis24H_ = s;
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField0_ & 0x00000400) != 0) && input.getBytesUntilLimit() > 0) {
+                viewerProfilePostHis24H_ = newLongList();
+                mutable_bitField0_ |= 0x00000400;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                viewerProfilePostHis24H_.addLong(input.readInt64());
+              }
+              input.popLimit(limit);
+              break;
+            }
+            case 280: {
+              if (!((mutable_bitField0_ & 0x00000800) != 0)) {
+                viewerPosinterPostHis24H_ = newLongList();
+                mutable_bitField0_ |= 0x00000800;
+              }
+              viewerPosinterPostHis24H_.addLong(input.readInt64());
               break;
             }
             case 282: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              viewerPosinterPostHis24H_ = s;
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField0_ & 0x00000800) != 0) && input.getBytesUntilLimit() > 0) {
+                viewerPosinterPostHis24H_ = newLongList();
+                mutable_bitField0_ |= 0x00000800;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                viewerPosinterPostHis24H_.addLong(input.readInt64());
+              }
+              input.popLimit(limit);
+              break;
+            }
+            case 320: {
+              if (!((mutable_bitField0_ & 0x00001000) != 0)) {
+                viewerLikeAuthorHis24H_ = newIntList();
+                mutable_bitField0_ |= 0x00001000;
+              }
+              viewerLikeAuthorHis24H_.addInt(input.readInt32());
               break;
             }
             case 322: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              viewerLikeAuthorHis24H_ = s;
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField0_ & 0x00001000) != 0) && input.getBytesUntilLimit() > 0) {
+                viewerLikeAuthorHis24H_ = newIntList();
+                mutable_bitField0_ |= 0x00001000;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                viewerLikeAuthorHis24H_.addInt(input.readInt32());
+              }
+              input.popLimit(limit);
+              break;
+            }
+            case 328: {
+              if (!((mutable_bitField0_ & 0x00002000) != 0)) {
+                viewerFollowAuthorHis24H_ = newIntList();
+                mutable_bitField0_ |= 0x00002000;
+              }
+              viewerFollowAuthorHis24H_.addInt(input.readInt32());
               break;
             }
             case 330: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              viewerFollowAuthorHis24H_ = s;
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField0_ & 0x00002000) != 0) && input.getBytesUntilLimit() > 0) {
+                viewerFollowAuthorHis24H_ = newIntList();
+                mutable_bitField0_ |= 0x00002000;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                viewerFollowAuthorHis24H_.addInt(input.readInt32());
+              }
+              input.popLimit(limit);
+              break;
+            }
+            case 336: {
+              if (!((mutable_bitField0_ & 0x00004000) != 0)) {
+                viewerProfileAuthorHis24H_ = newIntList();
+                mutable_bitField0_ |= 0x00004000;
+              }
+              viewerProfileAuthorHis24H_.addInt(input.readInt32());
               break;
             }
             case 338: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              viewerProfileAuthorHis24H_ = s;
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField0_ & 0x00004000) != 0) && input.getBytesUntilLimit() > 0) {
+                viewerProfileAuthorHis24H_ = newIntList();
+                mutable_bitField0_ |= 0x00004000;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                viewerProfileAuthorHis24H_.addInt(input.readInt32());
+              }
+              input.popLimit(limit);
               break;
             }
             case 400: {
@@ -1185,16 +1623,46 @@ public final class RecFeature {
               viewerValidviewRate7D_ = input.readFloat();
               break;
             }
+            case 464: {
+              if (!((mutable_bitField0_ & 0x00008000) != 0)) {
+                userDeepviewPostids7D_ = newLongList();
+                mutable_bitField0_ |= 0x00008000;
+              }
+              userDeepviewPostids7D_.addLong(input.readInt64());
+              break;
+            }
             case 466: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              userDeepviewPostids7D_ = s;
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField0_ & 0x00008000) != 0) && input.getBytesUntilLimit() > 0) {
+                userDeepviewPostids7D_ = newLongList();
+                mutable_bitField0_ |= 0x00008000;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                userDeepviewPostids7D_.addLong(input.readInt64());
+              }
+              input.popLimit(limit);
+              break;
+            }
+            case 472: {
+              if (!((mutable_bitField0_ & 0x00010000) != 0)) {
+                userInteractPostids7D_ = newLongList();
+                mutable_bitField0_ |= 0x00010000;
+              }
+              userInteractPostids7D_.addLong(input.readInt64());
               break;
             }
             case 474: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              userInteractPostids7D_ = s;
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField0_ & 0x00010000) != 0) && input.getBytesUntilLimit() > 0) {
+                userInteractPostids7D_ = newLongList();
+                mutable_bitField0_ |= 0x00010000;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                userInteractPostids7D_.addLong(input.readInt64());
+              }
+              input.popLimit(limit);
               break;
             }
             case 480: {
@@ -1205,6 +1673,27 @@ public final class RecFeature {
             case 493: {
 
               userDailyWatchliveMinutes_ = input.readFloat();
+              break;
+            }
+            case 496: {
+              if (!((mutable_bitField0_ & 0x00020000) != 0)) {
+                userLiveFollowPreferAnchorIds_ = newLongList();
+                mutable_bitField0_ |= 0x00020000;
+              }
+              userLiveFollowPreferAnchorIds_.addLong(input.readUInt64());
+              break;
+            }
+            case 498: {
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField0_ & 0x00020000) != 0) && input.getBytesUntilLimit() > 0) {
+                userLiveFollowPreferAnchorIds_ = newLongList();
+                mutable_bitField0_ |= 0x00020000;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                userLiveFollowPreferAnchorIds_.addLong(input.readUInt64());
+              }
+              input.popLimit(limit);
               break;
             }
             case 562: {
@@ -1364,18 +1853,18 @@ public final class RecFeature {
               break;
             }
             case 770: {
-              if (!((mutable_bitField0_ & 0x00000001) != 0)) {
+              if (!((mutable_bitField0_ & 0x00040000) != 0)) {
                 feedbackTags_ = new java.util.ArrayList<com.gosh.entity.RecFeature.FeedbackTag>();
-                mutable_bitField0_ |= 0x00000001;
+                mutable_bitField0_ |= 0x00040000;
               }
               feedbackTags_.add(
                   input.readMessage(com.gosh.entity.RecFeature.FeedbackTag.parser(), extensionRegistry));
               break;
             }
             case 778: {
-              if (!((mutable_bitField0_ & 0x00000002) != 0)) {
+              if (!((mutable_bitField0_ & 0x00080000) != 0)) {
                 feedbackAuthorIds_ = new java.util.ArrayList<com.gosh.entity.RecFeature.FeedbackAuthorId>();
-                mutable_bitField0_ |= 0x00000002;
+                mutable_bitField0_ |= 0x00080000;
               }
               feedbackAuthorIds_.add(
                   input.readMessage(com.gosh.entity.RecFeature.FeedbackAuthorId.parser(), extensionRegistry));
@@ -1399,9 +1888,63 @@ public final class RecFeature {
             e).setUnfinishedMessage(this);
       } finally {
         if (((mutable_bitField0_ & 0x00000001) != 0)) {
-          feedbackTags_ = java.util.Collections.unmodifiableList(feedbackTags_);
+          viewer3SviewPostHis1H_ = java.util.Collections.unmodifiableList(viewer3SviewPostHis1H_);
         }
         if (((mutable_bitField0_ & 0x00000002) != 0)) {
+          viewer5SstandPostHis1H_ = java.util.Collections.unmodifiableList(viewer5SstandPostHis1H_);
+        }
+        if (((mutable_bitField0_ & 0x00000004) != 0)) {
+          viewerLikePostHis1H_.makeImmutable(); // C
+        }
+        if (((mutable_bitField0_ & 0x00000008) != 0)) {
+          viewerFollowPostHis1H_.makeImmutable(); // C
+        }
+        if (((mutable_bitField0_ & 0x00000010) != 0)) {
+          viewerProfilePostHis1H_.makeImmutable(); // C
+        }
+        if (((mutable_bitField0_ & 0x00000020) != 0)) {
+          viewerPosinterPostHis1H_.makeImmutable(); // C
+        }
+        if (((mutable_bitField0_ & 0x00000040) != 0)) {
+          viewer3SviewPostHis24H_ = java.util.Collections.unmodifiableList(viewer3SviewPostHis24H_);
+        }
+        if (((mutable_bitField0_ & 0x00000080) != 0)) {
+          viewer5SstandPostHis24H_ = java.util.Collections.unmodifiableList(viewer5SstandPostHis24H_);
+        }
+        if (((mutable_bitField0_ & 0x00000100) != 0)) {
+          viewerLikePostHis24H_.makeImmutable(); // C
+        }
+        if (((mutable_bitField0_ & 0x00000200) != 0)) {
+          viewerFollowPostHis24H_.makeImmutable(); // C
+        }
+        if (((mutable_bitField0_ & 0x00000400) != 0)) {
+          viewerProfilePostHis24H_.makeImmutable(); // C
+        }
+        if (((mutable_bitField0_ & 0x00000800) != 0)) {
+          viewerPosinterPostHis24H_.makeImmutable(); // C
+        }
+        if (((mutable_bitField0_ & 0x00001000) != 0)) {
+          viewerLikeAuthorHis24H_.makeImmutable(); // C
+        }
+        if (((mutable_bitField0_ & 0x00002000) != 0)) {
+          viewerFollowAuthorHis24H_.makeImmutable(); // C
+        }
+        if (((mutable_bitField0_ & 0x00004000) != 0)) {
+          viewerProfileAuthorHis24H_.makeImmutable(); // C
+        }
+        if (((mutable_bitField0_ & 0x00008000) != 0)) {
+          userDeepviewPostids7D_.makeImmutable(); // C
+        }
+        if (((mutable_bitField0_ & 0x00010000) != 0)) {
+          userInteractPostids7D_.makeImmutable(); // C
+        }
+        if (((mutable_bitField0_ & 0x00020000) != 0)) {
+          userLiveFollowPreferAnchorIds_.makeImmutable(); // C
+        }
+        if (((mutable_bitField0_ & 0x00040000) != 0)) {
+          feedbackTags_ = java.util.Collections.unmodifiableList(feedbackTags_);
+        }
+        if (((mutable_bitField0_ & 0x00080000) != 0)) {
           feedbackAuthorIds_ = java.util.Collections.unmodifiableList(feedbackAuthorIds_);
         }
         this.unknownFields = unknownFields.build();
@@ -1434,6 +1977,21 @@ public final class RecFeature {
     @java.lang.Override
     public int getViewerIsOld() {
       return viewerIsOld_;
+    }
+
+    public static final int VIEWER_REGISTER_DAYS_FIELD_NUMBER = 2;
+    private int viewerRegisterDays_;
+    /**
+     * <pre>
+     * 用户注册天数
+     * </pre>
+     *
+     * <code>int32 viewer_register_days = 2;</code>
+     * @return The viewerRegisterDays.
+     */
+    @java.lang.Override
+    public int getViewerRegisterDays() {
+      return viewerRegisterDays_;
     }
 
     public static final int VIEWER_EXPPOST_CNT_1H_FIELD_NUMBER = 10;
@@ -1528,304 +2086,298 @@ public final class RecFeature {
     }
 
     public static final int VIEWER_3SVIEW_POST_HIS_1H_FIELD_NUMBER = 16;
-    private volatile java.lang.Object viewer3SviewPostHis1H_;
+    private java.util.List<com.gosh.entity.RecFeature.IdScore> viewer3SviewPostHis1H_;
     /**
      * <pre>
      * 历史记录特征 (1小时)
      * </pre>
      *
-     * <code>string viewer_3sview_post_his_1h = 16;</code>
-     * @return The viewer3sviewPostHis1h.
+     * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_1h = 16;</code>
      */
     @java.lang.Override
-    public java.lang.String getViewer3SviewPostHis1H() {
-      java.lang.Object ref = viewer3SviewPostHis1H_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        viewer3SviewPostHis1H_ = s;
-        return s;
-      }
+    public java.util.List<com.gosh.entity.RecFeature.IdScore> getViewer3SviewPostHis1HList() {
+      return viewer3SviewPostHis1H_;
     }
     /**
      * <pre>
      * 历史记录特征 (1小时)
      * </pre>
      *
-     * <code>string viewer_3sview_post_his_1h = 16;</code>
-     * @return The bytes for viewer3sviewPostHis1h.
+     * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_1h = 16;</code>
      */
     @java.lang.Override
-    public com.google.protobuf.ByteString
-        getViewer3SviewPostHis1HBytes() {
-      java.lang.Object ref = viewer3SviewPostHis1H_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        viewer3SviewPostHis1H_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+    public java.util.List<? extends com.gosh.entity.RecFeature.IdScoreOrBuilder> 
+        getViewer3SviewPostHis1HOrBuilderList() {
+      return viewer3SviewPostHis1H_;
+    }
+    /**
+     * <pre>
+     * 历史记录特征 (1小时)
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_1h = 16;</code>
+     */
+    @java.lang.Override
+    public int getViewer3SviewPostHis1HCount() {
+      return viewer3SviewPostHis1H_.size();
+    }
+    /**
+     * <pre>
+     * 历史记录特征 (1小时)
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_1h = 16;</code>
+     */
+    @java.lang.Override
+    public com.gosh.entity.RecFeature.IdScore getViewer3SviewPostHis1H(int index) {
+      return viewer3SviewPostHis1H_.get(index);
+    }
+    /**
+     * <pre>
+     * 历史记录特征 (1小时)
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_1h = 16;</code>
+     */
+    @java.lang.Override
+    public com.gosh.entity.RecFeature.IdScoreOrBuilder getViewer3SviewPostHis1HOrBuilder(
+        int index) {
+      return viewer3SviewPostHis1H_.get(index);
     }
 
     public static final int VIEWER_5SSTAND_POST_HIS_1H_FIELD_NUMBER = 17;
-    private volatile java.lang.Object viewer5SstandPostHis1H_;
+    private java.util.List<com.gosh.entity.RecFeature.IdScore> viewer5SstandPostHis1H_;
     /**
      * <pre>
      * 用户最近1h停留5s以上视频post列表带停留时长
      * </pre>
      *
-     * <code>string viewer_5sstand_post_his_1h = 17;</code>
-     * @return The viewer5sstandPostHis1h.
+     * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_1h = 17;</code>
      */
     @java.lang.Override
-    public java.lang.String getViewer5SstandPostHis1H() {
-      java.lang.Object ref = viewer5SstandPostHis1H_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        viewer5SstandPostHis1H_ = s;
-        return s;
-      }
+    public java.util.List<com.gosh.entity.RecFeature.IdScore> getViewer5SstandPostHis1HList() {
+      return viewer5SstandPostHis1H_;
     }
     /**
      * <pre>
      * 用户最近1h停留5s以上视频post列表带停留时长
      * </pre>
      *
-     * <code>string viewer_5sstand_post_his_1h = 17;</code>
-     * @return The bytes for viewer5sstandPostHis1h.
+     * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_1h = 17;</code>
      */
     @java.lang.Override
-    public com.google.protobuf.ByteString
-        getViewer5SstandPostHis1HBytes() {
-      java.lang.Object ref = viewer5SstandPostHis1H_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        viewer5SstandPostHis1H_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+    public java.util.List<? extends com.gosh.entity.RecFeature.IdScoreOrBuilder> 
+        getViewer5SstandPostHis1HOrBuilderList() {
+      return viewer5SstandPostHis1H_;
+    }
+    /**
+     * <pre>
+     * 用户最近1h停留5s以上视频post列表带停留时长
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_1h = 17;</code>
+     */
+    @java.lang.Override
+    public int getViewer5SstandPostHis1HCount() {
+      return viewer5SstandPostHis1H_.size();
+    }
+    /**
+     * <pre>
+     * 用户最近1h停留5s以上视频post列表带停留时长
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_1h = 17;</code>
+     */
+    @java.lang.Override
+    public com.gosh.entity.RecFeature.IdScore getViewer5SstandPostHis1H(int index) {
+      return viewer5SstandPostHis1H_.get(index);
+    }
+    /**
+     * <pre>
+     * 用户最近1h停留5s以上视频post列表带停留时长
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_1h = 17;</code>
+     */
+    @java.lang.Override
+    public com.gosh.entity.RecFeature.IdScoreOrBuilder getViewer5SstandPostHis1HOrBuilder(
+        int index) {
+      return viewer5SstandPostHis1H_.get(index);
     }
 
     public static final int VIEWER_LIKE_POST_HIS_1H_FIELD_NUMBER = 18;
-    private volatile java.lang.Object viewerLikePostHis1H_;
+    private com.google.protobuf.Internal.LongList viewerLikePostHis1H_;
     /**
      * <pre>
      * 用户最近1h点赞视频post列表
      * </pre>
      *
-     * <code>string viewer_like_post_his_1h = 18;</code>
-     * @return The viewerLikePostHis1h.
+     * <code>repeated int64 viewer_like_post_his_1h = 18;</code>
+     * @return A list containing the viewerLikePostHis1h.
      */
     @java.lang.Override
-    public java.lang.String getViewerLikePostHis1H() {
-      java.lang.Object ref = viewerLikePostHis1H_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        viewerLikePostHis1H_ = s;
-        return s;
-      }
+    public java.util.List<java.lang.Long>
+        getViewerLikePostHis1HList() {
+      return viewerLikePostHis1H_;
     }
     /**
      * <pre>
      * 用户最近1h点赞视频post列表
      * </pre>
      *
-     * <code>string viewer_like_post_his_1h = 18;</code>
-     * @return The bytes for viewerLikePostHis1h.
+     * <code>repeated int64 viewer_like_post_his_1h = 18;</code>
+     * @return The count of viewerLikePostHis1h.
      */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getViewerLikePostHis1HBytes() {
-      java.lang.Object ref = viewerLikePostHis1H_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        viewerLikePostHis1H_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+    public int getViewerLikePostHis1HCount() {
+      return viewerLikePostHis1H_.size();
     }
+    /**
+     * <pre>
+     * 用户最近1h点赞视频post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_like_post_his_1h = 18;</code>
+     * @param index The index of the element to return.
+     * @return The viewerLikePostHis1h at the given index.
+     */
+    public long getViewerLikePostHis1H(int index) {
+      return viewerLikePostHis1H_.getLong(index);
+    }
+    private int viewerLikePostHis1HMemoizedSerializedSize = -1;
 
     public static final int VIEWER_FOLLOW_POST_HIS_1H_FIELD_NUMBER = 19;
-    private volatile java.lang.Object viewerFollowPostHis1H_;
+    private com.google.protobuf.Internal.LongList viewerFollowPostHis1H_;
     /**
      * <pre>
      * 用户最近1h点关注视频post列表
      * </pre>
      *
-     * <code>string viewer_follow_post_his_1h = 19;</code>
-     * @return The viewerFollowPostHis1h.
+     * <code>repeated int64 viewer_follow_post_his_1h = 19;</code>
+     * @return A list containing the viewerFollowPostHis1h.
      */
     @java.lang.Override
-    public java.lang.String getViewerFollowPostHis1H() {
-      java.lang.Object ref = viewerFollowPostHis1H_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        viewerFollowPostHis1H_ = s;
-        return s;
-      }
+    public java.util.List<java.lang.Long>
+        getViewerFollowPostHis1HList() {
+      return viewerFollowPostHis1H_;
     }
     /**
      * <pre>
      * 用户最近1h点关注视频post列表
      * </pre>
      *
-     * <code>string viewer_follow_post_his_1h = 19;</code>
-     * @return The bytes for viewerFollowPostHis1h.
+     * <code>repeated int64 viewer_follow_post_his_1h = 19;</code>
+     * @return The count of viewerFollowPostHis1h.
      */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getViewerFollowPostHis1HBytes() {
-      java.lang.Object ref = viewerFollowPostHis1H_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        viewerFollowPostHis1H_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+    public int getViewerFollowPostHis1HCount() {
+      return viewerFollowPostHis1H_.size();
     }
+    /**
+     * <pre>
+     * 用户最近1h点关注视频post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_follow_post_his_1h = 19;</code>
+     * @param index The index of the element to return.
+     * @return The viewerFollowPostHis1h at the given index.
+     */
+    public long getViewerFollowPostHis1H(int index) {
+      return viewerFollowPostHis1H_.getLong(index);
+    }
+    private int viewerFollowPostHis1HMemoizedSerializedSize = -1;
 
     public static final int VIEWER_PROFILE_POST_HIS_1H_FIELD_NUMBER = 20;
-    private volatile java.lang.Object viewerProfilePostHis1H_;
+    private com.google.protobuf.Internal.LongList viewerProfilePostHis1H_;
     /**
      * <pre>
      * 用户最近1h点作者主页视频post列表
      * </pre>
      *
-     * <code>string viewer_profile_post_his_1h = 20;</code>
-     * @return The viewerProfilePostHis1h.
+     * <code>repeated int64 viewer_profile_post_his_1h = 20;</code>
+     * @return A list containing the viewerProfilePostHis1h.
      */
     @java.lang.Override
-    public java.lang.String getViewerProfilePostHis1H() {
-      java.lang.Object ref = viewerProfilePostHis1H_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        viewerProfilePostHis1H_ = s;
-        return s;
-      }
+    public java.util.List<java.lang.Long>
+        getViewerProfilePostHis1HList() {
+      return viewerProfilePostHis1H_;
     }
     /**
      * <pre>
      * 用户最近1h点作者主页视频post列表
      * </pre>
      *
-     * <code>string viewer_profile_post_his_1h = 20;</code>
-     * @return The bytes for viewerProfilePostHis1h.
+     * <code>repeated int64 viewer_profile_post_his_1h = 20;</code>
+     * @return The count of viewerProfilePostHis1h.
      */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getViewerProfilePostHis1HBytes() {
-      java.lang.Object ref = viewerProfilePostHis1H_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        viewerProfilePostHis1H_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+    public int getViewerProfilePostHis1HCount() {
+      return viewerProfilePostHis1H_.size();
     }
+    /**
+     * <pre>
+     * 用户最近1h点作者主页视频post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_profile_post_his_1h = 20;</code>
+     * @param index The index of the element to return.
+     * @return The viewerProfilePostHis1h at the given index.
+     */
+    public long getViewerProfilePostHis1H(int index) {
+      return viewerProfilePostHis1H_.getLong(index);
+    }
+    private int viewerProfilePostHis1HMemoizedSerializedSize = -1;
 
     public static final int VIEWER_POSINTER_POST_HIS_1H_FIELD_NUMBER = 21;
-    private volatile java.lang.Object viewerPosinterPostHis1H_;
+    private com.google.protobuf.Internal.LongList viewerPosinterPostHis1H_;
     /**
      * <pre>
      * 用户最近1h评论收藏分享视频post列表
      * </pre>
      *
-     * <code>string viewer_posinter_post_his_1h = 21;</code>
-     * @return The viewerPosinterPostHis1h.
+     * <code>repeated int64 viewer_posinter_post_his_1h = 21;</code>
+     * @return A list containing the viewerPosinterPostHis1h.
      */
     @java.lang.Override
-    public java.lang.String getViewerPosinterPostHis1H() {
-      java.lang.Object ref = viewerPosinterPostHis1H_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        viewerPosinterPostHis1H_ = s;
-        return s;
-      }
+    public java.util.List<java.lang.Long>
+        getViewerPosinterPostHis1HList() {
+      return viewerPosinterPostHis1H_;
     }
     /**
      * <pre>
      * 用户最近1h评论收藏分享视频post列表
      * </pre>
      *
-     * <code>string viewer_posinter_post_his_1h = 21;</code>
-     * @return The bytes for viewerPosinterPostHis1h.
+     * <code>repeated int64 viewer_posinter_post_his_1h = 21;</code>
+     * @return The count of viewerPosinterPostHis1h.
      */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getViewerPosinterPostHis1HBytes() {
-      java.lang.Object ref = viewerPosinterPostHis1H_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        viewerPosinterPostHis1H_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+    public int getViewerPosinterPostHis1HCount() {
+      return viewerPosinterPostHis1H_.size();
     }
+    /**
+     * <pre>
+     * 用户最近1h评论收藏分享视频post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_posinter_post_his_1h = 21;</code>
+     * @param index The index of the element to return.
+     * @return The viewerPosinterPostHis1h at the given index.
+     */
+    public long getViewerPosinterPostHis1H(int index) {
+      return viewerPosinterPostHis1H_.getLong(index);
+    }
+    private int viewerPosinterPostHis1HMemoizedSerializedSize = -1;
 
     public static final int VIEWER_3SVIEW_POST_HIS_24H_FIELD_NUMBER = 30;
-    private volatile java.lang.Object viewer3SviewPostHis24H_;
+    private java.util.List<com.gosh.entity.RecFeature.IdScore> viewer3SviewPostHis24H_;
     /**
      * <pre>
      * 24小时窗口特征
      * 历史记录特征 (24小时)
      * </pre>
      *
-     * <code>string viewer_3sview_post_his_24h = 30;</code>
-     * @return The viewer3sviewPostHis24h.
+     * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_24h = 30;</code>
      */
     @java.lang.Override
-    public java.lang.String getViewer3SviewPostHis24H() {
-      java.lang.Object ref = viewer3SviewPostHis24H_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        viewer3SviewPostHis24H_ = s;
-        return s;
-      }
+    public java.util.List<com.gosh.entity.RecFeature.IdScore> getViewer3SviewPostHis24HList() {
+      return viewer3SviewPostHis24H_;
     }
     /**
      * <pre>
@@ -1833,391 +2385,390 @@ public final class RecFeature {
      * 历史记录特征 (24小时)
      * </pre>
      *
-     * <code>string viewer_3sview_post_his_24h = 30;</code>
-     * @return The bytes for viewer3sviewPostHis24h.
+     * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_24h = 30;</code>
      */
     @java.lang.Override
-    public com.google.protobuf.ByteString
-        getViewer3SviewPostHis24HBytes() {
-      java.lang.Object ref = viewer3SviewPostHis24H_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        viewer3SviewPostHis24H_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+    public java.util.List<? extends com.gosh.entity.RecFeature.IdScoreOrBuilder> 
+        getViewer3SviewPostHis24HOrBuilderList() {
+      return viewer3SviewPostHis24H_;
+    }
+    /**
+     * <pre>
+     * 24小时窗口特征
+     * 历史记录特征 (24小时)
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_24h = 30;</code>
+     */
+    @java.lang.Override
+    public int getViewer3SviewPostHis24HCount() {
+      return viewer3SviewPostHis24H_.size();
+    }
+    /**
+     * <pre>
+     * 24小时窗口特征
+     * 历史记录特征 (24小时)
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_24h = 30;</code>
+     */
+    @java.lang.Override
+    public com.gosh.entity.RecFeature.IdScore getViewer3SviewPostHis24H(int index) {
+      return viewer3SviewPostHis24H_.get(index);
+    }
+    /**
+     * <pre>
+     * 24小时窗口特征
+     * 历史记录特征 (24小时)
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_24h = 30;</code>
+     */
+    @java.lang.Override
+    public com.gosh.entity.RecFeature.IdScoreOrBuilder getViewer3SviewPostHis24HOrBuilder(
+        int index) {
+      return viewer3SviewPostHis24H_.get(index);
     }
 
     public static final int VIEWER_5SSTAND_POST_HIS_24H_FIELD_NUMBER = 31;
-    private volatile java.lang.Object viewer5SstandPostHis24H_;
+    private java.util.List<com.gosh.entity.RecFeature.IdScore> viewer5SstandPostHis24H_;
     /**
      * <pre>
      * 用户最近24h停留5s以上视频post列表带停留时长
      * </pre>
      *
-     * <code>string viewer_5sstand_post_his_24h = 31;</code>
-     * @return The viewer5sstandPostHis24h.
+     * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_24h = 31;</code>
      */
     @java.lang.Override
-    public java.lang.String getViewer5SstandPostHis24H() {
-      java.lang.Object ref = viewer5SstandPostHis24H_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        viewer5SstandPostHis24H_ = s;
-        return s;
-      }
+    public java.util.List<com.gosh.entity.RecFeature.IdScore> getViewer5SstandPostHis24HList() {
+      return viewer5SstandPostHis24H_;
     }
     /**
      * <pre>
      * 用户最近24h停留5s以上视频post列表带停留时长
      * </pre>
      *
-     * <code>string viewer_5sstand_post_his_24h = 31;</code>
-     * @return The bytes for viewer5sstandPostHis24h.
+     * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_24h = 31;</code>
      */
     @java.lang.Override
-    public com.google.protobuf.ByteString
-        getViewer5SstandPostHis24HBytes() {
-      java.lang.Object ref = viewer5SstandPostHis24H_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        viewer5SstandPostHis24H_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+    public java.util.List<? extends com.gosh.entity.RecFeature.IdScoreOrBuilder> 
+        getViewer5SstandPostHis24HOrBuilderList() {
+      return viewer5SstandPostHis24H_;
+    }
+    /**
+     * <pre>
+     * 用户最近24h停留5s以上视频post列表带停留时长
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_24h = 31;</code>
+     */
+    @java.lang.Override
+    public int getViewer5SstandPostHis24HCount() {
+      return viewer5SstandPostHis24H_.size();
+    }
+    /**
+     * <pre>
+     * 用户最近24h停留5s以上视频post列表带停留时长
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_24h = 31;</code>
+     */
+    @java.lang.Override
+    public com.gosh.entity.RecFeature.IdScore getViewer5SstandPostHis24H(int index) {
+      return viewer5SstandPostHis24H_.get(index);
+    }
+    /**
+     * <pre>
+     * 用户最近24h停留5s以上视频post列表带停留时长
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_24h = 31;</code>
+     */
+    @java.lang.Override
+    public com.gosh.entity.RecFeature.IdScoreOrBuilder getViewer5SstandPostHis24HOrBuilder(
+        int index) {
+      return viewer5SstandPostHis24H_.get(index);
     }
 
     public static final int VIEWER_LIKE_POST_HIS_24H_FIELD_NUMBER = 32;
-    private volatile java.lang.Object viewerLikePostHis24H_;
+    private com.google.protobuf.Internal.LongList viewerLikePostHis24H_;
     /**
      * <pre>
      * 用户最近24h点赞视频post列表
      * </pre>
      *
-     * <code>string viewer_like_post_his_24h = 32;</code>
-     * @return The viewerLikePostHis24h.
+     * <code>repeated int64 viewer_like_post_his_24h = 32;</code>
+     * @return A list containing the viewerLikePostHis24h.
      */
     @java.lang.Override
-    public java.lang.String getViewerLikePostHis24H() {
-      java.lang.Object ref = viewerLikePostHis24H_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        viewerLikePostHis24H_ = s;
-        return s;
-      }
+    public java.util.List<java.lang.Long>
+        getViewerLikePostHis24HList() {
+      return viewerLikePostHis24H_;
     }
     /**
      * <pre>
      * 用户最近24h点赞视频post列表
      * </pre>
      *
-     * <code>string viewer_like_post_his_24h = 32;</code>
-     * @return The bytes for viewerLikePostHis24h.
+     * <code>repeated int64 viewer_like_post_his_24h = 32;</code>
+     * @return The count of viewerLikePostHis24h.
      */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getViewerLikePostHis24HBytes() {
-      java.lang.Object ref = viewerLikePostHis24H_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        viewerLikePostHis24H_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+    public int getViewerLikePostHis24HCount() {
+      return viewerLikePostHis24H_.size();
     }
+    /**
+     * <pre>
+     * 用户最近24h点赞视频post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_like_post_his_24h = 32;</code>
+     * @param index The index of the element to return.
+     * @return The viewerLikePostHis24h at the given index.
+     */
+    public long getViewerLikePostHis24H(int index) {
+      return viewerLikePostHis24H_.getLong(index);
+    }
+    private int viewerLikePostHis24HMemoizedSerializedSize = -1;
 
     public static final int VIEWER_FOLLOW_POST_HIS_24H_FIELD_NUMBER = 33;
-    private volatile java.lang.Object viewerFollowPostHis24H_;
+    private com.google.protobuf.Internal.LongList viewerFollowPostHis24H_;
     /**
      * <pre>
      * 用户最近24h点关注视频post列表
      * </pre>
      *
-     * <code>string viewer_follow_post_his_24h = 33;</code>
-     * @return The viewerFollowPostHis24h.
+     * <code>repeated int64 viewer_follow_post_his_24h = 33;</code>
+     * @return A list containing the viewerFollowPostHis24h.
      */
     @java.lang.Override
-    public java.lang.String getViewerFollowPostHis24H() {
-      java.lang.Object ref = viewerFollowPostHis24H_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        viewerFollowPostHis24H_ = s;
-        return s;
-      }
+    public java.util.List<java.lang.Long>
+        getViewerFollowPostHis24HList() {
+      return viewerFollowPostHis24H_;
     }
     /**
      * <pre>
      * 用户最近24h点关注视频post列表
      * </pre>
      *
-     * <code>string viewer_follow_post_his_24h = 33;</code>
-     * @return The bytes for viewerFollowPostHis24h.
+     * <code>repeated int64 viewer_follow_post_his_24h = 33;</code>
+     * @return The count of viewerFollowPostHis24h.
      */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getViewerFollowPostHis24HBytes() {
-      java.lang.Object ref = viewerFollowPostHis24H_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        viewerFollowPostHis24H_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+    public int getViewerFollowPostHis24HCount() {
+      return viewerFollowPostHis24H_.size();
     }
+    /**
+     * <pre>
+     * 用户最近24h点关注视频post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_follow_post_his_24h = 33;</code>
+     * @param index The index of the element to return.
+     * @return The viewerFollowPostHis24h at the given index.
+     */
+    public long getViewerFollowPostHis24H(int index) {
+      return viewerFollowPostHis24H_.getLong(index);
+    }
+    private int viewerFollowPostHis24HMemoizedSerializedSize = -1;
 
     public static final int VIEWER_PROFILE_POST_HIS_24H_FIELD_NUMBER = 34;
-    private volatile java.lang.Object viewerProfilePostHis24H_;
+    private com.google.protobuf.Internal.LongList viewerProfilePostHis24H_;
     /**
      * <pre>
      * 用户最近24h点作者主页视频post列表
      * </pre>
      *
-     * <code>string viewer_profile_post_his_24h = 34;</code>
-     * @return The viewerProfilePostHis24h.
+     * <code>repeated int64 viewer_profile_post_his_24h = 34;</code>
+     * @return A list containing the viewerProfilePostHis24h.
      */
     @java.lang.Override
-    public java.lang.String getViewerProfilePostHis24H() {
-      java.lang.Object ref = viewerProfilePostHis24H_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        viewerProfilePostHis24H_ = s;
-        return s;
-      }
+    public java.util.List<java.lang.Long>
+        getViewerProfilePostHis24HList() {
+      return viewerProfilePostHis24H_;
     }
     /**
      * <pre>
      * 用户最近24h点作者主页视频post列表
      * </pre>
      *
-     * <code>string viewer_profile_post_his_24h = 34;</code>
-     * @return The bytes for viewerProfilePostHis24h.
+     * <code>repeated int64 viewer_profile_post_his_24h = 34;</code>
+     * @return The count of viewerProfilePostHis24h.
      */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getViewerProfilePostHis24HBytes() {
-      java.lang.Object ref = viewerProfilePostHis24H_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        viewerProfilePostHis24H_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+    public int getViewerProfilePostHis24HCount() {
+      return viewerProfilePostHis24H_.size();
     }
+    /**
+     * <pre>
+     * 用户最近24h点作者主页视频post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_profile_post_his_24h = 34;</code>
+     * @param index The index of the element to return.
+     * @return The viewerProfilePostHis24h at the given index.
+     */
+    public long getViewerProfilePostHis24H(int index) {
+      return viewerProfilePostHis24H_.getLong(index);
+    }
+    private int viewerProfilePostHis24HMemoizedSerializedSize = -1;
 
     public static final int VIEWER_POSINTER_POST_HIS_24H_FIELD_NUMBER = 35;
-    private volatile java.lang.Object viewerPosinterPostHis24H_;
+    private com.google.protobuf.Internal.LongList viewerPosinterPostHis24H_;
     /**
      * <pre>
      * 用户最近24h评论收藏分享视频post列表
      * </pre>
      *
-     * <code>string viewer_posinter_post_his_24h = 35;</code>
-     * @return The viewerPosinterPostHis24h.
+     * <code>repeated int64 viewer_posinter_post_his_24h = 35;</code>
+     * @return A list containing the viewerPosinterPostHis24h.
      */
     @java.lang.Override
-    public java.lang.String getViewerPosinterPostHis24H() {
-      java.lang.Object ref = viewerPosinterPostHis24H_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        viewerPosinterPostHis24H_ = s;
-        return s;
-      }
+    public java.util.List<java.lang.Long>
+        getViewerPosinterPostHis24HList() {
+      return viewerPosinterPostHis24H_;
     }
     /**
      * <pre>
      * 用户最近24h评论收藏分享视频post列表
      * </pre>
      *
-     * <code>string viewer_posinter_post_his_24h = 35;</code>
-     * @return The bytes for viewerPosinterPostHis24h.
+     * <code>repeated int64 viewer_posinter_post_his_24h = 35;</code>
+     * @return The count of viewerPosinterPostHis24h.
      */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getViewerPosinterPostHis24HBytes() {
-      java.lang.Object ref = viewerPosinterPostHis24H_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        viewerPosinterPostHis24H_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+    public int getViewerPosinterPostHis24HCount() {
+      return viewerPosinterPostHis24H_.size();
     }
+    /**
+     * <pre>
+     * 用户最近24h评论收藏分享视频post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_posinter_post_his_24h = 35;</code>
+     * @param index The index of the element to return.
+     * @return The viewerPosinterPostHis24h at the given index.
+     */
+    public long getViewerPosinterPostHis24H(int index) {
+      return viewerPosinterPostHis24H_.getLong(index);
+    }
+    private int viewerPosinterPostHis24HMemoizedSerializedSize = -1;
 
     public static final int VIEWER_LIKE_AUTHOR_HIS_24H_FIELD_NUMBER = 40;
-    private volatile java.lang.Object viewerLikeAuthorHis24H_;
+    private com.google.protobuf.Internal.IntList viewerLikeAuthorHis24H_;
     /**
      * <pre>
      * 作者相关特征 (24小时)
      * </pre>
      *
-     * <code>string viewer_like_author_his_24h = 40;</code>
-     * @return The viewerLikeAuthorHis24h.
+     * <code>repeated int32 viewer_like_author_his_24h = 40;</code>
+     * @return A list containing the viewerLikeAuthorHis24h.
      */
     @java.lang.Override
-    public java.lang.String getViewerLikeAuthorHis24H() {
-      java.lang.Object ref = viewerLikeAuthorHis24H_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        viewerLikeAuthorHis24H_ = s;
-        return s;
-      }
+    public java.util.List<java.lang.Integer>
+        getViewerLikeAuthorHis24HList() {
+      return viewerLikeAuthorHis24H_;
     }
     /**
      * <pre>
      * 作者相关特征 (24小时)
      * </pre>
      *
-     * <code>string viewer_like_author_his_24h = 40;</code>
-     * @return The bytes for viewerLikeAuthorHis24h.
+     * <code>repeated int32 viewer_like_author_his_24h = 40;</code>
+     * @return The count of viewerLikeAuthorHis24h.
      */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getViewerLikeAuthorHis24HBytes() {
-      java.lang.Object ref = viewerLikeAuthorHis24H_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        viewerLikeAuthorHis24H_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+    public int getViewerLikeAuthorHis24HCount() {
+      return viewerLikeAuthorHis24H_.size();
     }
+    /**
+     * <pre>
+     * 作者相关特征 (24小时)
+     * </pre>
+     *
+     * <code>repeated int32 viewer_like_author_his_24h = 40;</code>
+     * @param index The index of the element to return.
+     * @return The viewerLikeAuthorHis24h at the given index.
+     */
+    public int getViewerLikeAuthorHis24H(int index) {
+      return viewerLikeAuthorHis24H_.getInt(index);
+    }
+    private int viewerLikeAuthorHis24HMemoizedSerializedSize = -1;
 
     public static final int VIEWER_FOLLOW_AUTHOR_HIS_24H_FIELD_NUMBER = 41;
-    private volatile java.lang.Object viewerFollowAuthorHis24H_;
+    private com.google.protobuf.Internal.IntList viewerFollowAuthorHis24H_;
     /**
      * <pre>
      * 用户最近24h关注视频的作者列表
      * </pre>
      *
-     * <code>string viewer_follow_author_his_24h = 41;</code>
-     * @return The viewerFollowAuthorHis24h.
+     * <code>repeated int32 viewer_follow_author_his_24h = 41;</code>
+     * @return A list containing the viewerFollowAuthorHis24h.
      */
     @java.lang.Override
-    public java.lang.String getViewerFollowAuthorHis24H() {
-      java.lang.Object ref = viewerFollowAuthorHis24H_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        viewerFollowAuthorHis24H_ = s;
-        return s;
-      }
+    public java.util.List<java.lang.Integer>
+        getViewerFollowAuthorHis24HList() {
+      return viewerFollowAuthorHis24H_;
     }
     /**
      * <pre>
      * 用户最近24h关注视频的作者列表
      * </pre>
      *
-     * <code>string viewer_follow_author_his_24h = 41;</code>
-     * @return The bytes for viewerFollowAuthorHis24h.
+     * <code>repeated int32 viewer_follow_author_his_24h = 41;</code>
+     * @return The count of viewerFollowAuthorHis24h.
      */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getViewerFollowAuthorHis24HBytes() {
-      java.lang.Object ref = viewerFollowAuthorHis24H_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        viewerFollowAuthorHis24H_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+    public int getViewerFollowAuthorHis24HCount() {
+      return viewerFollowAuthorHis24H_.size();
     }
+    /**
+     * <pre>
+     * 用户最近24h关注视频的作者列表
+     * </pre>
+     *
+     * <code>repeated int32 viewer_follow_author_his_24h = 41;</code>
+     * @param index The index of the element to return.
+     * @return The viewerFollowAuthorHis24h at the given index.
+     */
+    public int getViewerFollowAuthorHis24H(int index) {
+      return viewerFollowAuthorHis24H_.getInt(index);
+    }
+    private int viewerFollowAuthorHis24HMemoizedSerializedSize = -1;
 
     public static final int VIEWER_PROFILE_AUTHOR_HIS_24H_FIELD_NUMBER = 42;
-    private volatile java.lang.Object viewerProfileAuthorHis24H_;
+    private com.google.protobuf.Internal.IntList viewerProfileAuthorHis24H_;
     /**
      * <pre>
      * 用户最近24h查看主页视频的作者列表
      * </pre>
      *
-     * <code>string viewer_profile_author_his_24h = 42;</code>
-     * @return The viewerProfileAuthorHis24h.
+     * <code>repeated int32 viewer_profile_author_his_24h = 42;</code>
+     * @return A list containing the viewerProfileAuthorHis24h.
      */
     @java.lang.Override
-    public java.lang.String getViewerProfileAuthorHis24H() {
-      java.lang.Object ref = viewerProfileAuthorHis24H_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        viewerProfileAuthorHis24H_ = s;
-        return s;
-      }
+    public java.util.List<java.lang.Integer>
+        getViewerProfileAuthorHis24HList() {
+      return viewerProfileAuthorHis24H_;
     }
     /**
      * <pre>
      * 用户最近24h查看主页视频的作者列表
      * </pre>
      *
-     * <code>string viewer_profile_author_his_24h = 42;</code>
-     * @return The bytes for viewerProfileAuthorHis24h.
+     * <code>repeated int32 viewer_profile_author_his_24h = 42;</code>
+     * @return The count of viewerProfileAuthorHis24h.
      */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getViewerProfileAuthorHis24HBytes() {
-      java.lang.Object ref = viewerProfileAuthorHis24H_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        viewerProfileAuthorHis24H_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+    public int getViewerProfileAuthorHis24HCount() {
+      return viewerProfileAuthorHis24H_.size();
     }
+    /**
+     * <pre>
+     * 用户最近24h查看主页视频的作者列表
+     * </pre>
+     *
+     * <code>repeated int32 viewer_profile_author_his_24h = 42;</code>
+     * @param index The index of the element to return.
+     * @return The viewerProfileAuthorHis24h at the given index.
+     */
+    public int getViewerProfileAuthorHis24H(int index) {
+      return viewerProfileAuthorHis24H_.getInt(index);
+    }
+    private int viewerProfileAuthorHis24HMemoizedSerializedSize = -1;
 
     public static final int VIEWER_ACTIVE_DAYS_7D_FIELD_NUMBER = 50;
     private int viewerActiveDays7D_;
@@ -2340,96 +2891,84 @@ public final class RecFeature {
     }
 
     public static final int USER_DEEPVIEW_POSTIDS_7D_FIELD_NUMBER = 58;
-    private volatile java.lang.Object userDeepviewPostids7D_;
+    private com.google.protobuf.Internal.LongList userDeepviewPostids7D_;
     /**
      * <pre>
      * id列表
      * </pre>
      *
-     * <code>string user_deepview_postids_7d = 58;</code>
-     * @return The userDeepviewPostids7d.
+     * <code>repeated int64 user_deepview_postids_7d = 58;</code>
+     * @return A list containing the userDeepviewPostids7d.
      */
     @java.lang.Override
-    public java.lang.String getUserDeepviewPostids7D() {
-      java.lang.Object ref = userDeepviewPostids7D_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        userDeepviewPostids7D_ = s;
-        return s;
-      }
+    public java.util.List<java.lang.Long>
+        getUserDeepviewPostids7DList() {
+      return userDeepviewPostids7D_;
     }
     /**
      * <pre>
      * id列表
      * </pre>
      *
-     * <code>string user_deepview_postids_7d = 58;</code>
-     * @return The bytes for userDeepviewPostids7d.
+     * <code>repeated int64 user_deepview_postids_7d = 58;</code>
+     * @return The count of userDeepviewPostids7d.
      */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getUserDeepviewPostids7DBytes() {
-      java.lang.Object ref = userDeepviewPostids7D_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        userDeepviewPostids7D_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+    public int getUserDeepviewPostids7DCount() {
+      return userDeepviewPostids7D_.size();
     }
+    /**
+     * <pre>
+     * id列表
+     * </pre>
+     *
+     * <code>repeated int64 user_deepview_postids_7d = 58;</code>
+     * @param index The index of the element to return.
+     * @return The userDeepviewPostids7d at the given index.
+     */
+    public long getUserDeepviewPostids7D(int index) {
+      return userDeepviewPostids7D_.getLong(index);
+    }
+    private int userDeepviewPostids7DMemoizedSerializedSize = -1;
 
     public static final int USER_INTERACT_POSTIDS_7D_FIELD_NUMBER = 59;
-    private volatile java.lang.Object userInteractPostids7D_;
+    private com.google.protobuf.Internal.LongList userInteractPostids7D_;
     /**
      * <pre>
      * 最近7天有正向交互的itemid列表
      * </pre>
      *
-     * <code>string user_interact_postids_7d = 59;</code>
-     * @return The userInteractPostids7d.
+     * <code>repeated int64 user_interact_postids_7d = 59;</code>
+     * @return A list containing the userInteractPostids7d.
      */
     @java.lang.Override
-    public java.lang.String getUserInteractPostids7D() {
-      java.lang.Object ref = userInteractPostids7D_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        userInteractPostids7D_ = s;
-        return s;
-      }
+    public java.util.List<java.lang.Long>
+        getUserInteractPostids7DList() {
+      return userInteractPostids7D_;
     }
     /**
      * <pre>
      * 最近7天有正向交互的itemid列表
      * </pre>
      *
-     * <code>string user_interact_postids_7d = 59;</code>
-     * @return The bytes for userInteractPostids7d.
+     * <code>repeated int64 user_interact_postids_7d = 59;</code>
+     * @return The count of userInteractPostids7d.
      */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getUserInteractPostids7DBytes() {
-      java.lang.Object ref = userInteractPostids7D_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        userInteractPostids7D_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+    public int getUserInteractPostids7DCount() {
+      return userInteractPostids7D_.size();
     }
+    /**
+     * <pre>
+     * 最近7天有正向交互的itemid列表
+     * </pre>
+     *
+     * <code>repeated int64 user_interact_postids_7d = 59;</code>
+     * @param index The index of the element to return.
+     * @return The userInteractPostids7d at the given index.
+     */
+    public long getUserInteractPostids7D(int index) {
+      return userInteractPostids7D_.getLong(index);
+    }
+    private int userInteractPostids7DMemoizedSerializedSize = -1;
 
     public static final int USER_GIFT_COUNT_FIELD_NUMBER = 60;
     private int userGiftCount_;
@@ -2456,6 +2995,46 @@ public final class RecFeature {
     public float getUserDailyWatchliveMinutes() {
       return userDailyWatchliveMinutes_;
     }
+
+    public static final int USER_LIVE_FOLLOW_PREFER_ANCHOR_IDS_FIELD_NUMBER = 62;
+    private com.google.protobuf.Internal.LongList userLiveFollowPreferAnchorIds_;
+    /**
+     * <pre>
+     * 直播其他
+     * </pre>
+     *
+     * <code>repeated uint64 user_live_follow_prefer_anchor_ids = 62;</code>
+     * @return A list containing the userLiveFollowPreferAnchorIds.
+     */
+    @java.lang.Override
+    public java.util.List<java.lang.Long>
+        getUserLiveFollowPreferAnchorIdsList() {
+      return userLiveFollowPreferAnchorIds_;
+    }
+    /**
+     * <pre>
+     * 直播其他
+     * </pre>
+     *
+     * <code>repeated uint64 user_live_follow_prefer_anchor_ids = 62;</code>
+     * @return The count of userLiveFollowPreferAnchorIds.
+     */
+    public int getUserLiveFollowPreferAnchorIdsCount() {
+      return userLiveFollowPreferAnchorIds_.size();
+    }
+    /**
+     * <pre>
+     * 直播其他
+     * </pre>
+     *
+     * <code>repeated uint64 user_live_follow_prefer_anchor_ids = 62;</code>
+     * @param index The index of the element to return.
+     * @return The userLiveFollowPreferAnchorIds at the given index.
+     */
+    public long getUserLiveFollowPreferAnchorIds(int index) {
+      return userLiveFollowPreferAnchorIds_.getLong(index);
+    }
+    private int userLiveFollowPreferAnchorIdsMemoizedSerializedSize = -1;
 
     public static final int PREFER_POS_TAG1_7D_TOP3_FIELD_NUMBER = 70;
     private volatile java.lang.Object preferPosTag17DTop3_;
@@ -3461,14 +4040,14 @@ public final class RecFeature {
       }
     }
 
-    public static final int FEEDBACKTAGS_FIELD_NUMBER = 96;
+    public static final int FEEDBACK_TAGS_FIELD_NUMBER = 96;
     private java.util.List<com.gosh.entity.RecFeature.FeedbackTag> feedbackTags_;
     /**
      * <pre>
-     * 负反馈
+     * 负反馈标签队列（最近5个）
      * </pre>
      *
-     * <code>repeated .com.gosh.entity.FeedbackTag FeedbackTags = 96;</code>
+     * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
      */
     @java.lang.Override
     public java.util.List<com.gosh.entity.RecFeature.FeedbackTag> getFeedbackTagsList() {
@@ -3476,10 +4055,10 @@ public final class RecFeature {
     }
     /**
      * <pre>
-     * 负反馈
+     * 负反馈标签队列（最近5个）
      * </pre>
      *
-     * <code>repeated .com.gosh.entity.FeedbackTag FeedbackTags = 96;</code>
+     * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
      */
     @java.lang.Override
     public java.util.List<? extends com.gosh.entity.RecFeature.FeedbackTagOrBuilder> 
@@ -3488,10 +4067,10 @@ public final class RecFeature {
     }
     /**
      * <pre>
-     * 负反馈
+     * 负反馈标签队列（最近5个）
      * </pre>
      *
-     * <code>repeated .com.gosh.entity.FeedbackTag FeedbackTags = 96;</code>
+     * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
      */
     @java.lang.Override
     public int getFeedbackTagsCount() {
@@ -3499,10 +4078,10 @@ public final class RecFeature {
     }
     /**
      * <pre>
-     * 负反馈
+     * 负反馈标签队列（最近5个）
      * </pre>
      *
-     * <code>repeated .com.gosh.entity.FeedbackTag FeedbackTags = 96;</code>
+     * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
      */
     @java.lang.Override
     public com.gosh.entity.RecFeature.FeedbackTag getFeedbackTags(int index) {
@@ -3510,10 +4089,10 @@ public final class RecFeature {
     }
     /**
      * <pre>
-     * 负反馈
+     * 负反馈标签队列（最近5个）
      * </pre>
      *
-     * <code>repeated .com.gosh.entity.FeedbackTag FeedbackTags = 96;</code>
+     * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
      */
     @java.lang.Override
     public com.gosh.entity.RecFeature.FeedbackTagOrBuilder getFeedbackTagsOrBuilder(
@@ -3521,17 +4100,17 @@ public final class RecFeature {
       return feedbackTags_.get(index);
     }
 
-    public static final int FEEDBACKAUTHORIDS_FIELD_NUMBER = 97;
+    public static final int FEEDBACK_AUTHOR_IDS_FIELD_NUMBER = 97;
     private java.util.List<com.gosh.entity.RecFeature.FeedbackAuthorId> feedbackAuthorIds_;
     /**
-     * <code>repeated .com.gosh.entity.FeedbackAuthorId FeedbackAuthorIds = 97;</code>
+     * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
      */
     @java.lang.Override
     public java.util.List<com.gosh.entity.RecFeature.FeedbackAuthorId> getFeedbackAuthorIdsList() {
       return feedbackAuthorIds_;
     }
     /**
-     * <code>repeated .com.gosh.entity.FeedbackAuthorId FeedbackAuthorIds = 97;</code>
+     * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
      */
     @java.lang.Override
     public java.util.List<? extends com.gosh.entity.RecFeature.FeedbackAuthorIdOrBuilder> 
@@ -3539,21 +4118,21 @@ public final class RecFeature {
       return feedbackAuthorIds_;
     }
     /**
-     * <code>repeated .com.gosh.entity.FeedbackAuthorId FeedbackAuthorIds = 97;</code>
+     * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
      */
     @java.lang.Override
     public int getFeedbackAuthorIdsCount() {
       return feedbackAuthorIds_.size();
     }
     /**
-     * <code>repeated .com.gosh.entity.FeedbackAuthorId FeedbackAuthorIds = 97;</code>
+     * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
      */
     @java.lang.Override
     public com.gosh.entity.RecFeature.FeedbackAuthorId getFeedbackAuthorIds(int index) {
       return feedbackAuthorIds_.get(index);
     }
     /**
-     * <code>repeated .com.gosh.entity.FeedbackAuthorId FeedbackAuthorIds = 97;</code>
+     * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
      */
     @java.lang.Override
     public com.gosh.entity.RecFeature.FeedbackAuthorIdOrBuilder getFeedbackAuthorIdsOrBuilder(
@@ -3575,8 +4154,12 @@ public final class RecFeature {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
+      getSerializedSize();
       if (viewerIsOld_ != 0) {
         output.writeInt32(1, viewerIsOld_);
+      }
+      if (viewerRegisterDays_ != 0) {
+        output.writeInt32(2, viewerRegisterDays_);
       }
       if (viewerExppostCnt1H_ != 0) {
         output.writeInt32(10, viewerExppostCnt1H_);
@@ -3596,50 +4179,94 @@ public final class RecFeature {
       if (viewer3Sview2PostCnt1H_ != 0) {
         output.writeInt32(15, viewer3Sview2PostCnt1H_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(viewer3SviewPostHis1H_)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 16, viewer3SviewPostHis1H_);
+      for (int i = 0; i < viewer3SviewPostHis1H_.size(); i++) {
+        output.writeMessage(16, viewer3SviewPostHis1H_.get(i));
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(viewer5SstandPostHis1H_)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 17, viewer5SstandPostHis1H_);
+      for (int i = 0; i < viewer5SstandPostHis1H_.size(); i++) {
+        output.writeMessage(17, viewer5SstandPostHis1H_.get(i));
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(viewerLikePostHis1H_)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 18, viewerLikePostHis1H_);
+      if (getViewerLikePostHis1HList().size() > 0) {
+        output.writeUInt32NoTag(146);
+        output.writeUInt32NoTag(viewerLikePostHis1HMemoizedSerializedSize);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(viewerFollowPostHis1H_)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 19, viewerFollowPostHis1H_);
+      for (int i = 0; i < viewerLikePostHis1H_.size(); i++) {
+        output.writeInt64NoTag(viewerLikePostHis1H_.getLong(i));
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(viewerProfilePostHis1H_)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 20, viewerProfilePostHis1H_);
+      if (getViewerFollowPostHis1HList().size() > 0) {
+        output.writeUInt32NoTag(154);
+        output.writeUInt32NoTag(viewerFollowPostHis1HMemoizedSerializedSize);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(viewerPosinterPostHis1H_)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 21, viewerPosinterPostHis1H_);
+      for (int i = 0; i < viewerFollowPostHis1H_.size(); i++) {
+        output.writeInt64NoTag(viewerFollowPostHis1H_.getLong(i));
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(viewer3SviewPostHis24H_)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 30, viewer3SviewPostHis24H_);
+      if (getViewerProfilePostHis1HList().size() > 0) {
+        output.writeUInt32NoTag(162);
+        output.writeUInt32NoTag(viewerProfilePostHis1HMemoizedSerializedSize);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(viewer5SstandPostHis24H_)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 31, viewer5SstandPostHis24H_);
+      for (int i = 0; i < viewerProfilePostHis1H_.size(); i++) {
+        output.writeInt64NoTag(viewerProfilePostHis1H_.getLong(i));
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(viewerLikePostHis24H_)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 32, viewerLikePostHis24H_);
+      if (getViewerPosinterPostHis1HList().size() > 0) {
+        output.writeUInt32NoTag(170);
+        output.writeUInt32NoTag(viewerPosinterPostHis1HMemoizedSerializedSize);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(viewerFollowPostHis24H_)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 33, viewerFollowPostHis24H_);
+      for (int i = 0; i < viewerPosinterPostHis1H_.size(); i++) {
+        output.writeInt64NoTag(viewerPosinterPostHis1H_.getLong(i));
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(viewerProfilePostHis24H_)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 34, viewerProfilePostHis24H_);
+      for (int i = 0; i < viewer3SviewPostHis24H_.size(); i++) {
+        output.writeMessage(30, viewer3SviewPostHis24H_.get(i));
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(viewerPosinterPostHis24H_)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 35, viewerPosinterPostHis24H_);
+      for (int i = 0; i < viewer5SstandPostHis24H_.size(); i++) {
+        output.writeMessage(31, viewer5SstandPostHis24H_.get(i));
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(viewerLikeAuthorHis24H_)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 40, viewerLikeAuthorHis24H_);
+      if (getViewerLikePostHis24HList().size() > 0) {
+        output.writeUInt32NoTag(258);
+        output.writeUInt32NoTag(viewerLikePostHis24HMemoizedSerializedSize);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(viewerFollowAuthorHis24H_)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 41, viewerFollowAuthorHis24H_);
+      for (int i = 0; i < viewerLikePostHis24H_.size(); i++) {
+        output.writeInt64NoTag(viewerLikePostHis24H_.getLong(i));
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(viewerProfileAuthorHis24H_)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 42, viewerProfileAuthorHis24H_);
+      if (getViewerFollowPostHis24HList().size() > 0) {
+        output.writeUInt32NoTag(266);
+        output.writeUInt32NoTag(viewerFollowPostHis24HMemoizedSerializedSize);
+      }
+      for (int i = 0; i < viewerFollowPostHis24H_.size(); i++) {
+        output.writeInt64NoTag(viewerFollowPostHis24H_.getLong(i));
+      }
+      if (getViewerProfilePostHis24HList().size() > 0) {
+        output.writeUInt32NoTag(274);
+        output.writeUInt32NoTag(viewerProfilePostHis24HMemoizedSerializedSize);
+      }
+      for (int i = 0; i < viewerProfilePostHis24H_.size(); i++) {
+        output.writeInt64NoTag(viewerProfilePostHis24H_.getLong(i));
+      }
+      if (getViewerPosinterPostHis24HList().size() > 0) {
+        output.writeUInt32NoTag(282);
+        output.writeUInt32NoTag(viewerPosinterPostHis24HMemoizedSerializedSize);
+      }
+      for (int i = 0; i < viewerPosinterPostHis24H_.size(); i++) {
+        output.writeInt64NoTag(viewerPosinterPostHis24H_.getLong(i));
+      }
+      if (getViewerLikeAuthorHis24HList().size() > 0) {
+        output.writeUInt32NoTag(322);
+        output.writeUInt32NoTag(viewerLikeAuthorHis24HMemoizedSerializedSize);
+      }
+      for (int i = 0; i < viewerLikeAuthorHis24H_.size(); i++) {
+        output.writeInt32NoTag(viewerLikeAuthorHis24H_.getInt(i));
+      }
+      if (getViewerFollowAuthorHis24HList().size() > 0) {
+        output.writeUInt32NoTag(330);
+        output.writeUInt32NoTag(viewerFollowAuthorHis24HMemoizedSerializedSize);
+      }
+      for (int i = 0; i < viewerFollowAuthorHis24H_.size(); i++) {
+        output.writeInt32NoTag(viewerFollowAuthorHis24H_.getInt(i));
+      }
+      if (getViewerProfileAuthorHis24HList().size() > 0) {
+        output.writeUInt32NoTag(338);
+        output.writeUInt32NoTag(viewerProfileAuthorHis24HMemoizedSerializedSize);
+      }
+      for (int i = 0; i < viewerProfileAuthorHis24H_.size(); i++) {
+        output.writeInt32NoTag(viewerProfileAuthorHis24H_.getInt(i));
       }
       if (viewerActiveDays7D_ != 0) {
         output.writeInt32(50, viewerActiveDays7D_);
@@ -3665,17 +4292,32 @@ public final class RecFeature {
       if (java.lang.Float.floatToRawIntBits(viewerValidviewRate7D_) != 0) {
         output.writeFloat(57, viewerValidviewRate7D_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(userDeepviewPostids7D_)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 58, userDeepviewPostids7D_);
+      if (getUserDeepviewPostids7DList().size() > 0) {
+        output.writeUInt32NoTag(466);
+        output.writeUInt32NoTag(userDeepviewPostids7DMemoizedSerializedSize);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(userInteractPostids7D_)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 59, userInteractPostids7D_);
+      for (int i = 0; i < userDeepviewPostids7D_.size(); i++) {
+        output.writeInt64NoTag(userDeepviewPostids7D_.getLong(i));
+      }
+      if (getUserInteractPostids7DList().size() > 0) {
+        output.writeUInt32NoTag(474);
+        output.writeUInt32NoTag(userInteractPostids7DMemoizedSerializedSize);
+      }
+      for (int i = 0; i < userInteractPostids7D_.size(); i++) {
+        output.writeInt64NoTag(userInteractPostids7D_.getLong(i));
       }
       if (userGiftCount_ != 0) {
         output.writeInt32(60, userGiftCount_);
       }
       if (java.lang.Float.floatToRawIntBits(userDailyWatchliveMinutes_) != 0) {
         output.writeFloat(61, userDailyWatchliveMinutes_);
+      }
+      if (getUserLiveFollowPreferAnchorIdsList().size() > 0) {
+        output.writeUInt32NoTag(498);
+        output.writeUInt32NoTag(userLiveFollowPreferAnchorIdsMemoizedSerializedSize);
+      }
+      for (int i = 0; i < userLiveFollowPreferAnchorIds_.size(); i++) {
+        output.writeUInt64NoTag(userLiveFollowPreferAnchorIds_.getLong(i));
       }
       if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferPosTag17DTop3_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 70, preferPosTag17DTop3_);
@@ -3774,6 +4416,10 @@ public final class RecFeature {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(1, viewerIsOld_);
       }
+      if (viewerRegisterDays_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(2, viewerRegisterDays_);
+      }
       if (viewerExppostCnt1H_ != 0) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(10, viewerExppostCnt1H_);
@@ -3798,50 +4444,175 @@ public final class RecFeature {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(15, viewer3Sview2PostCnt1H_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(viewer3SviewPostHis1H_)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(16, viewer3SviewPostHis1H_);
+      for (int i = 0; i < viewer3SviewPostHis1H_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(16, viewer3SviewPostHis1H_.get(i));
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(viewer5SstandPostHis1H_)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(17, viewer5SstandPostHis1H_);
+      for (int i = 0; i < viewer5SstandPostHis1H_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(17, viewer5SstandPostHis1H_.get(i));
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(viewerLikePostHis1H_)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(18, viewerLikePostHis1H_);
+      {
+        int dataSize = 0;
+        for (int i = 0; i < viewerLikePostHis1H_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeInt64SizeNoTag(viewerLikePostHis1H_.getLong(i));
+        }
+        size += dataSize;
+        if (!getViewerLikePostHis1HList().isEmpty()) {
+          size += 2;
+          size += com.google.protobuf.CodedOutputStream
+              .computeInt32SizeNoTag(dataSize);
+        }
+        viewerLikePostHis1HMemoizedSerializedSize = dataSize;
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(viewerFollowPostHis1H_)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(19, viewerFollowPostHis1H_);
+      {
+        int dataSize = 0;
+        for (int i = 0; i < viewerFollowPostHis1H_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeInt64SizeNoTag(viewerFollowPostHis1H_.getLong(i));
+        }
+        size += dataSize;
+        if (!getViewerFollowPostHis1HList().isEmpty()) {
+          size += 2;
+          size += com.google.protobuf.CodedOutputStream
+              .computeInt32SizeNoTag(dataSize);
+        }
+        viewerFollowPostHis1HMemoizedSerializedSize = dataSize;
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(viewerProfilePostHis1H_)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(20, viewerProfilePostHis1H_);
+      {
+        int dataSize = 0;
+        for (int i = 0; i < viewerProfilePostHis1H_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeInt64SizeNoTag(viewerProfilePostHis1H_.getLong(i));
+        }
+        size += dataSize;
+        if (!getViewerProfilePostHis1HList().isEmpty()) {
+          size += 2;
+          size += com.google.protobuf.CodedOutputStream
+              .computeInt32SizeNoTag(dataSize);
+        }
+        viewerProfilePostHis1HMemoizedSerializedSize = dataSize;
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(viewerPosinterPostHis1H_)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(21, viewerPosinterPostHis1H_);
+      {
+        int dataSize = 0;
+        for (int i = 0; i < viewerPosinterPostHis1H_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeInt64SizeNoTag(viewerPosinterPostHis1H_.getLong(i));
+        }
+        size += dataSize;
+        if (!getViewerPosinterPostHis1HList().isEmpty()) {
+          size += 2;
+          size += com.google.protobuf.CodedOutputStream
+              .computeInt32SizeNoTag(dataSize);
+        }
+        viewerPosinterPostHis1HMemoizedSerializedSize = dataSize;
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(viewer3SviewPostHis24H_)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(30, viewer3SviewPostHis24H_);
+      for (int i = 0; i < viewer3SviewPostHis24H_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(30, viewer3SviewPostHis24H_.get(i));
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(viewer5SstandPostHis24H_)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(31, viewer5SstandPostHis24H_);
+      for (int i = 0; i < viewer5SstandPostHis24H_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(31, viewer5SstandPostHis24H_.get(i));
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(viewerLikePostHis24H_)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(32, viewerLikePostHis24H_);
+      {
+        int dataSize = 0;
+        for (int i = 0; i < viewerLikePostHis24H_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeInt64SizeNoTag(viewerLikePostHis24H_.getLong(i));
+        }
+        size += dataSize;
+        if (!getViewerLikePostHis24HList().isEmpty()) {
+          size += 2;
+          size += com.google.protobuf.CodedOutputStream
+              .computeInt32SizeNoTag(dataSize);
+        }
+        viewerLikePostHis24HMemoizedSerializedSize = dataSize;
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(viewerFollowPostHis24H_)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(33, viewerFollowPostHis24H_);
+      {
+        int dataSize = 0;
+        for (int i = 0; i < viewerFollowPostHis24H_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeInt64SizeNoTag(viewerFollowPostHis24H_.getLong(i));
+        }
+        size += dataSize;
+        if (!getViewerFollowPostHis24HList().isEmpty()) {
+          size += 2;
+          size += com.google.protobuf.CodedOutputStream
+              .computeInt32SizeNoTag(dataSize);
+        }
+        viewerFollowPostHis24HMemoizedSerializedSize = dataSize;
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(viewerProfilePostHis24H_)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(34, viewerProfilePostHis24H_);
+      {
+        int dataSize = 0;
+        for (int i = 0; i < viewerProfilePostHis24H_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeInt64SizeNoTag(viewerProfilePostHis24H_.getLong(i));
+        }
+        size += dataSize;
+        if (!getViewerProfilePostHis24HList().isEmpty()) {
+          size += 2;
+          size += com.google.protobuf.CodedOutputStream
+              .computeInt32SizeNoTag(dataSize);
+        }
+        viewerProfilePostHis24HMemoizedSerializedSize = dataSize;
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(viewerPosinterPostHis24H_)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(35, viewerPosinterPostHis24H_);
+      {
+        int dataSize = 0;
+        for (int i = 0; i < viewerPosinterPostHis24H_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeInt64SizeNoTag(viewerPosinterPostHis24H_.getLong(i));
+        }
+        size += dataSize;
+        if (!getViewerPosinterPostHis24HList().isEmpty()) {
+          size += 2;
+          size += com.google.protobuf.CodedOutputStream
+              .computeInt32SizeNoTag(dataSize);
+        }
+        viewerPosinterPostHis24HMemoizedSerializedSize = dataSize;
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(viewerLikeAuthorHis24H_)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(40, viewerLikeAuthorHis24H_);
+      {
+        int dataSize = 0;
+        for (int i = 0; i < viewerLikeAuthorHis24H_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeInt32SizeNoTag(viewerLikeAuthorHis24H_.getInt(i));
+        }
+        size += dataSize;
+        if (!getViewerLikeAuthorHis24HList().isEmpty()) {
+          size += 2;
+          size += com.google.protobuf.CodedOutputStream
+              .computeInt32SizeNoTag(dataSize);
+        }
+        viewerLikeAuthorHis24HMemoizedSerializedSize = dataSize;
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(viewerFollowAuthorHis24H_)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(41, viewerFollowAuthorHis24H_);
+      {
+        int dataSize = 0;
+        for (int i = 0; i < viewerFollowAuthorHis24H_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeInt32SizeNoTag(viewerFollowAuthorHis24H_.getInt(i));
+        }
+        size += dataSize;
+        if (!getViewerFollowAuthorHis24HList().isEmpty()) {
+          size += 2;
+          size += com.google.protobuf.CodedOutputStream
+              .computeInt32SizeNoTag(dataSize);
+        }
+        viewerFollowAuthorHis24HMemoizedSerializedSize = dataSize;
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(viewerProfileAuthorHis24H_)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(42, viewerProfileAuthorHis24H_);
+      {
+        int dataSize = 0;
+        for (int i = 0; i < viewerProfileAuthorHis24H_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeInt32SizeNoTag(viewerProfileAuthorHis24H_.getInt(i));
+        }
+        size += dataSize;
+        if (!getViewerProfileAuthorHis24HList().isEmpty()) {
+          size += 2;
+          size += com.google.protobuf.CodedOutputStream
+              .computeInt32SizeNoTag(dataSize);
+        }
+        viewerProfileAuthorHis24HMemoizedSerializedSize = dataSize;
       }
       if (viewerActiveDays7D_ != 0) {
         size += com.google.protobuf.CodedOutputStream
@@ -3875,11 +4646,33 @@ public final class RecFeature {
         size += com.google.protobuf.CodedOutputStream
           .computeFloatSize(57, viewerValidviewRate7D_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(userDeepviewPostids7D_)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(58, userDeepviewPostids7D_);
+      {
+        int dataSize = 0;
+        for (int i = 0; i < userDeepviewPostids7D_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeInt64SizeNoTag(userDeepviewPostids7D_.getLong(i));
+        }
+        size += dataSize;
+        if (!getUserDeepviewPostids7DList().isEmpty()) {
+          size += 2;
+          size += com.google.protobuf.CodedOutputStream
+              .computeInt32SizeNoTag(dataSize);
+        }
+        userDeepviewPostids7DMemoizedSerializedSize = dataSize;
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(userInteractPostids7D_)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(59, userInteractPostids7D_);
+      {
+        int dataSize = 0;
+        for (int i = 0; i < userInteractPostids7D_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeInt64SizeNoTag(userInteractPostids7D_.getLong(i));
+        }
+        size += dataSize;
+        if (!getUserInteractPostids7DList().isEmpty()) {
+          size += 2;
+          size += com.google.protobuf.CodedOutputStream
+              .computeInt32SizeNoTag(dataSize);
+        }
+        userInteractPostids7DMemoizedSerializedSize = dataSize;
       }
       if (userGiftCount_ != 0) {
         size += com.google.protobuf.CodedOutputStream
@@ -3888,6 +4681,20 @@ public final class RecFeature {
       if (java.lang.Float.floatToRawIntBits(userDailyWatchliveMinutes_) != 0) {
         size += com.google.protobuf.CodedOutputStream
           .computeFloatSize(61, userDailyWatchliveMinutes_);
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < userLiveFollowPreferAnchorIds_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeUInt64SizeNoTag(userLiveFollowPreferAnchorIds_.getLong(i));
+        }
+        size += dataSize;
+        if (!getUserLiveFollowPreferAnchorIdsList().isEmpty()) {
+          size += 2;
+          size += com.google.protobuf.CodedOutputStream
+              .computeInt32SizeNoTag(dataSize);
+        }
+        userLiveFollowPreferAnchorIdsMemoizedSerializedSize = dataSize;
       }
       if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferPosTag17DTop3_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(70, preferPosTag17DTop3_);
@@ -3992,6 +4799,8 @@ public final class RecFeature {
 
       if (getViewerIsOld()
           != other.getViewerIsOld()) return false;
+      if (getViewerRegisterDays()
+          != other.getViewerRegisterDays()) return false;
       if (getViewerExppostCnt1H()
           != other.getViewerExppostCnt1H()) return false;
       if (getViewerExp1PostCnt1H()
@@ -4004,36 +4813,36 @@ public final class RecFeature {
           != other.getViewer3Sview1PostCnt1H()) return false;
       if (getViewer3Sview2PostCnt1H()
           != other.getViewer3Sview2PostCnt1H()) return false;
-      if (!getViewer3SviewPostHis1H()
-          .equals(other.getViewer3SviewPostHis1H())) return false;
-      if (!getViewer5SstandPostHis1H()
-          .equals(other.getViewer5SstandPostHis1H())) return false;
-      if (!getViewerLikePostHis1H()
-          .equals(other.getViewerLikePostHis1H())) return false;
-      if (!getViewerFollowPostHis1H()
-          .equals(other.getViewerFollowPostHis1H())) return false;
-      if (!getViewerProfilePostHis1H()
-          .equals(other.getViewerProfilePostHis1H())) return false;
-      if (!getViewerPosinterPostHis1H()
-          .equals(other.getViewerPosinterPostHis1H())) return false;
-      if (!getViewer3SviewPostHis24H()
-          .equals(other.getViewer3SviewPostHis24H())) return false;
-      if (!getViewer5SstandPostHis24H()
-          .equals(other.getViewer5SstandPostHis24H())) return false;
-      if (!getViewerLikePostHis24H()
-          .equals(other.getViewerLikePostHis24H())) return false;
-      if (!getViewerFollowPostHis24H()
-          .equals(other.getViewerFollowPostHis24H())) return false;
-      if (!getViewerProfilePostHis24H()
-          .equals(other.getViewerProfilePostHis24H())) return false;
-      if (!getViewerPosinterPostHis24H()
-          .equals(other.getViewerPosinterPostHis24H())) return false;
-      if (!getViewerLikeAuthorHis24H()
-          .equals(other.getViewerLikeAuthorHis24H())) return false;
-      if (!getViewerFollowAuthorHis24H()
-          .equals(other.getViewerFollowAuthorHis24H())) return false;
-      if (!getViewerProfileAuthorHis24H()
-          .equals(other.getViewerProfileAuthorHis24H())) return false;
+      if (!getViewer3SviewPostHis1HList()
+          .equals(other.getViewer3SviewPostHis1HList())) return false;
+      if (!getViewer5SstandPostHis1HList()
+          .equals(other.getViewer5SstandPostHis1HList())) return false;
+      if (!getViewerLikePostHis1HList()
+          .equals(other.getViewerLikePostHis1HList())) return false;
+      if (!getViewerFollowPostHis1HList()
+          .equals(other.getViewerFollowPostHis1HList())) return false;
+      if (!getViewerProfilePostHis1HList()
+          .equals(other.getViewerProfilePostHis1HList())) return false;
+      if (!getViewerPosinterPostHis1HList()
+          .equals(other.getViewerPosinterPostHis1HList())) return false;
+      if (!getViewer3SviewPostHis24HList()
+          .equals(other.getViewer3SviewPostHis24HList())) return false;
+      if (!getViewer5SstandPostHis24HList()
+          .equals(other.getViewer5SstandPostHis24HList())) return false;
+      if (!getViewerLikePostHis24HList()
+          .equals(other.getViewerLikePostHis24HList())) return false;
+      if (!getViewerFollowPostHis24HList()
+          .equals(other.getViewerFollowPostHis24HList())) return false;
+      if (!getViewerProfilePostHis24HList()
+          .equals(other.getViewerProfilePostHis24HList())) return false;
+      if (!getViewerPosinterPostHis24HList()
+          .equals(other.getViewerPosinterPostHis24HList())) return false;
+      if (!getViewerLikeAuthorHis24HList()
+          .equals(other.getViewerLikeAuthorHis24HList())) return false;
+      if (!getViewerFollowAuthorHis24HList()
+          .equals(other.getViewerFollowAuthorHis24HList())) return false;
+      if (!getViewerProfileAuthorHis24HList()
+          .equals(other.getViewerProfileAuthorHis24HList())) return false;
       if (getViewerActiveDays7D()
           != other.getViewerActiveDays7D()) return false;
       if (getViewerViewCnt7D()
@@ -4052,15 +4861,17 @@ public final class RecFeature {
       if (java.lang.Float.floatToIntBits(getViewerValidviewRate7D())
           != java.lang.Float.floatToIntBits(
               other.getViewerValidviewRate7D())) return false;
-      if (!getUserDeepviewPostids7D()
-          .equals(other.getUserDeepviewPostids7D())) return false;
-      if (!getUserInteractPostids7D()
-          .equals(other.getUserInteractPostids7D())) return false;
+      if (!getUserDeepviewPostids7DList()
+          .equals(other.getUserDeepviewPostids7DList())) return false;
+      if (!getUserInteractPostids7DList()
+          .equals(other.getUserInteractPostids7DList())) return false;
       if (getUserGiftCount()
           != other.getUserGiftCount()) return false;
       if (java.lang.Float.floatToIntBits(getUserDailyWatchliveMinutes())
           != java.lang.Float.floatToIntBits(
               other.getUserDailyWatchliveMinutes())) return false;
+      if (!getUserLiveFollowPreferAnchorIdsList()
+          .equals(other.getUserLiveFollowPreferAnchorIdsList())) return false;
       if (!getPreferPosTag17DTop3()
           .equals(other.getPreferPosTag17DTop3())) return false;
       if (!getPreferPosTag27DTop3()
@@ -4130,6 +4941,8 @@ public final class RecFeature {
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + VIEWER_IS_OLD_FIELD_NUMBER;
       hash = (53 * hash) + getViewerIsOld();
+      hash = (37 * hash) + VIEWER_REGISTER_DAYS_FIELD_NUMBER;
+      hash = (53 * hash) + getViewerRegisterDays();
       hash = (37 * hash) + VIEWER_EXPPOST_CNT_1H_FIELD_NUMBER;
       hash = (53 * hash) + getViewerExppostCnt1H();
       hash = (37 * hash) + VIEWER_EXP1_POST_CNT_1H_FIELD_NUMBER;
@@ -4142,36 +4955,66 @@ public final class RecFeature {
       hash = (53 * hash) + getViewer3Sview1PostCnt1H();
       hash = (37 * hash) + VIEWER_3SVIEW2_POST_CNT_1H_FIELD_NUMBER;
       hash = (53 * hash) + getViewer3Sview2PostCnt1H();
-      hash = (37 * hash) + VIEWER_3SVIEW_POST_HIS_1H_FIELD_NUMBER;
-      hash = (53 * hash) + getViewer3SviewPostHis1H().hashCode();
-      hash = (37 * hash) + VIEWER_5SSTAND_POST_HIS_1H_FIELD_NUMBER;
-      hash = (53 * hash) + getViewer5SstandPostHis1H().hashCode();
-      hash = (37 * hash) + VIEWER_LIKE_POST_HIS_1H_FIELD_NUMBER;
-      hash = (53 * hash) + getViewerLikePostHis1H().hashCode();
-      hash = (37 * hash) + VIEWER_FOLLOW_POST_HIS_1H_FIELD_NUMBER;
-      hash = (53 * hash) + getViewerFollowPostHis1H().hashCode();
-      hash = (37 * hash) + VIEWER_PROFILE_POST_HIS_1H_FIELD_NUMBER;
-      hash = (53 * hash) + getViewerProfilePostHis1H().hashCode();
-      hash = (37 * hash) + VIEWER_POSINTER_POST_HIS_1H_FIELD_NUMBER;
-      hash = (53 * hash) + getViewerPosinterPostHis1H().hashCode();
-      hash = (37 * hash) + VIEWER_3SVIEW_POST_HIS_24H_FIELD_NUMBER;
-      hash = (53 * hash) + getViewer3SviewPostHis24H().hashCode();
-      hash = (37 * hash) + VIEWER_5SSTAND_POST_HIS_24H_FIELD_NUMBER;
-      hash = (53 * hash) + getViewer5SstandPostHis24H().hashCode();
-      hash = (37 * hash) + VIEWER_LIKE_POST_HIS_24H_FIELD_NUMBER;
-      hash = (53 * hash) + getViewerLikePostHis24H().hashCode();
-      hash = (37 * hash) + VIEWER_FOLLOW_POST_HIS_24H_FIELD_NUMBER;
-      hash = (53 * hash) + getViewerFollowPostHis24H().hashCode();
-      hash = (37 * hash) + VIEWER_PROFILE_POST_HIS_24H_FIELD_NUMBER;
-      hash = (53 * hash) + getViewerProfilePostHis24H().hashCode();
-      hash = (37 * hash) + VIEWER_POSINTER_POST_HIS_24H_FIELD_NUMBER;
-      hash = (53 * hash) + getViewerPosinterPostHis24H().hashCode();
-      hash = (37 * hash) + VIEWER_LIKE_AUTHOR_HIS_24H_FIELD_NUMBER;
-      hash = (53 * hash) + getViewerLikeAuthorHis24H().hashCode();
-      hash = (37 * hash) + VIEWER_FOLLOW_AUTHOR_HIS_24H_FIELD_NUMBER;
-      hash = (53 * hash) + getViewerFollowAuthorHis24H().hashCode();
-      hash = (37 * hash) + VIEWER_PROFILE_AUTHOR_HIS_24H_FIELD_NUMBER;
-      hash = (53 * hash) + getViewerProfileAuthorHis24H().hashCode();
+      if (getViewer3SviewPostHis1HCount() > 0) {
+        hash = (37 * hash) + VIEWER_3SVIEW_POST_HIS_1H_FIELD_NUMBER;
+        hash = (53 * hash) + getViewer3SviewPostHis1HList().hashCode();
+      }
+      if (getViewer5SstandPostHis1HCount() > 0) {
+        hash = (37 * hash) + VIEWER_5SSTAND_POST_HIS_1H_FIELD_NUMBER;
+        hash = (53 * hash) + getViewer5SstandPostHis1HList().hashCode();
+      }
+      if (getViewerLikePostHis1HCount() > 0) {
+        hash = (37 * hash) + VIEWER_LIKE_POST_HIS_1H_FIELD_NUMBER;
+        hash = (53 * hash) + getViewerLikePostHis1HList().hashCode();
+      }
+      if (getViewerFollowPostHis1HCount() > 0) {
+        hash = (37 * hash) + VIEWER_FOLLOW_POST_HIS_1H_FIELD_NUMBER;
+        hash = (53 * hash) + getViewerFollowPostHis1HList().hashCode();
+      }
+      if (getViewerProfilePostHis1HCount() > 0) {
+        hash = (37 * hash) + VIEWER_PROFILE_POST_HIS_1H_FIELD_NUMBER;
+        hash = (53 * hash) + getViewerProfilePostHis1HList().hashCode();
+      }
+      if (getViewerPosinterPostHis1HCount() > 0) {
+        hash = (37 * hash) + VIEWER_POSINTER_POST_HIS_1H_FIELD_NUMBER;
+        hash = (53 * hash) + getViewerPosinterPostHis1HList().hashCode();
+      }
+      if (getViewer3SviewPostHis24HCount() > 0) {
+        hash = (37 * hash) + VIEWER_3SVIEW_POST_HIS_24H_FIELD_NUMBER;
+        hash = (53 * hash) + getViewer3SviewPostHis24HList().hashCode();
+      }
+      if (getViewer5SstandPostHis24HCount() > 0) {
+        hash = (37 * hash) + VIEWER_5SSTAND_POST_HIS_24H_FIELD_NUMBER;
+        hash = (53 * hash) + getViewer5SstandPostHis24HList().hashCode();
+      }
+      if (getViewerLikePostHis24HCount() > 0) {
+        hash = (37 * hash) + VIEWER_LIKE_POST_HIS_24H_FIELD_NUMBER;
+        hash = (53 * hash) + getViewerLikePostHis24HList().hashCode();
+      }
+      if (getViewerFollowPostHis24HCount() > 0) {
+        hash = (37 * hash) + VIEWER_FOLLOW_POST_HIS_24H_FIELD_NUMBER;
+        hash = (53 * hash) + getViewerFollowPostHis24HList().hashCode();
+      }
+      if (getViewerProfilePostHis24HCount() > 0) {
+        hash = (37 * hash) + VIEWER_PROFILE_POST_HIS_24H_FIELD_NUMBER;
+        hash = (53 * hash) + getViewerProfilePostHis24HList().hashCode();
+      }
+      if (getViewerPosinterPostHis24HCount() > 0) {
+        hash = (37 * hash) + VIEWER_POSINTER_POST_HIS_24H_FIELD_NUMBER;
+        hash = (53 * hash) + getViewerPosinterPostHis24HList().hashCode();
+      }
+      if (getViewerLikeAuthorHis24HCount() > 0) {
+        hash = (37 * hash) + VIEWER_LIKE_AUTHOR_HIS_24H_FIELD_NUMBER;
+        hash = (53 * hash) + getViewerLikeAuthorHis24HList().hashCode();
+      }
+      if (getViewerFollowAuthorHis24HCount() > 0) {
+        hash = (37 * hash) + VIEWER_FOLLOW_AUTHOR_HIS_24H_FIELD_NUMBER;
+        hash = (53 * hash) + getViewerFollowAuthorHis24HList().hashCode();
+      }
+      if (getViewerProfileAuthorHis24HCount() > 0) {
+        hash = (37 * hash) + VIEWER_PROFILE_AUTHOR_HIS_24H_FIELD_NUMBER;
+        hash = (53 * hash) + getViewerProfileAuthorHis24HList().hashCode();
+      }
       hash = (37 * hash) + VIEWER_ACTIVE_DAYS_7D_FIELD_NUMBER;
       hash = (53 * hash) + getViewerActiveDays7D();
       hash = (37 * hash) + VIEWER_VIEW_CNT_7D_FIELD_NUMBER;
@@ -4190,15 +5033,23 @@ public final class RecFeature {
       hash = (37 * hash) + VIEWER_VALIDVIEW_RATE_7D_FIELD_NUMBER;
       hash = (53 * hash) + java.lang.Float.floatToIntBits(
           getViewerValidviewRate7D());
-      hash = (37 * hash) + USER_DEEPVIEW_POSTIDS_7D_FIELD_NUMBER;
-      hash = (53 * hash) + getUserDeepviewPostids7D().hashCode();
-      hash = (37 * hash) + USER_INTERACT_POSTIDS_7D_FIELD_NUMBER;
-      hash = (53 * hash) + getUserInteractPostids7D().hashCode();
+      if (getUserDeepviewPostids7DCount() > 0) {
+        hash = (37 * hash) + USER_DEEPVIEW_POSTIDS_7D_FIELD_NUMBER;
+        hash = (53 * hash) + getUserDeepviewPostids7DList().hashCode();
+      }
+      if (getUserInteractPostids7DCount() > 0) {
+        hash = (37 * hash) + USER_INTERACT_POSTIDS_7D_FIELD_NUMBER;
+        hash = (53 * hash) + getUserInteractPostids7DList().hashCode();
+      }
       hash = (37 * hash) + USER_GIFT_COUNT_FIELD_NUMBER;
       hash = (53 * hash) + getUserGiftCount();
       hash = (37 * hash) + USER_DAILY_WATCHLIVE_MINUTES_FIELD_NUMBER;
       hash = (53 * hash) + java.lang.Float.floatToIntBits(
           getUserDailyWatchliveMinutes());
+      if (getUserLiveFollowPreferAnchorIdsCount() > 0) {
+        hash = (37 * hash) + USER_LIVE_FOLLOW_PREFER_ANCHOR_IDS_FIELD_NUMBER;
+        hash = (53 * hash) + getUserLiveFollowPreferAnchorIdsList().hashCode();
+      }
       hash = (37 * hash) + PREFER_POS_TAG1_7D_TOP3_FIELD_NUMBER;
       hash = (53 * hash) + getPreferPosTag17DTop3().hashCode();
       hash = (37 * hash) + PREFER_POS_TAG2_7D_TOP3_FIELD_NUMBER;
@@ -4252,11 +5103,11 @@ public final class RecFeature {
       hash = (37 * hash) + PREFER_NEG_FTAG6_7D_TOP3_FIELD_NUMBER;
       hash = (53 * hash) + getPreferNegFtag67DTop3().hashCode();
       if (getFeedbackTagsCount() > 0) {
-        hash = (37 * hash) + FEEDBACKTAGS_FIELD_NUMBER;
+        hash = (37 * hash) + FEEDBACK_TAGS_FIELD_NUMBER;
         hash = (53 * hash) + getFeedbackTagsList().hashCode();
       }
       if (getFeedbackAuthorIdsCount() > 0) {
-        hash = (37 * hash) + FEEDBACKAUTHORIDS_FIELD_NUMBER;
+        hash = (37 * hash) + FEEDBACK_AUTHOR_IDS_FIELD_NUMBER;
         hash = (53 * hash) + getFeedbackAuthorIdsList().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
@@ -4393,6 +5244,10 @@ public final class RecFeature {
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessageV3
                 .alwaysUseFieldBuilders) {
+          getViewer3SviewPostHis1HFieldBuilder();
+          getViewer5SstandPostHis1HFieldBuilder();
+          getViewer3SviewPostHis24HFieldBuilder();
+          getViewer5SstandPostHis24HFieldBuilder();
           getFeedbackTagsFieldBuilder();
           getFeedbackAuthorIdsFieldBuilder();
         }
@@ -4401,6 +5256,8 @@ public final class RecFeature {
       public Builder clear() {
         super.clear();
         viewerIsOld_ = 0;
+
+        viewerRegisterDays_ = 0;
 
         viewerExppostCnt1H_ = 0;
 
@@ -4414,36 +5271,52 @@ public final class RecFeature {
 
         viewer3Sview2PostCnt1H_ = 0;
 
-        viewer3SviewPostHis1H_ = "";
-
-        viewer5SstandPostHis1H_ = "";
-
-        viewerLikePostHis1H_ = "";
-
-        viewerFollowPostHis1H_ = "";
-
-        viewerProfilePostHis1H_ = "";
-
-        viewerPosinterPostHis1H_ = "";
-
-        viewer3SviewPostHis24H_ = "";
-
-        viewer5SstandPostHis24H_ = "";
-
-        viewerLikePostHis24H_ = "";
-
-        viewerFollowPostHis24H_ = "";
-
-        viewerProfilePostHis24H_ = "";
-
-        viewerPosinterPostHis24H_ = "";
-
-        viewerLikeAuthorHis24H_ = "";
-
-        viewerFollowAuthorHis24H_ = "";
-
-        viewerProfileAuthorHis24H_ = "";
-
+        if (viewer3SviewPostHis1HBuilder_ == null) {
+          viewer3SviewPostHis1H_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+        } else {
+          viewer3SviewPostHis1HBuilder_.clear();
+        }
+        if (viewer5SstandPostHis1HBuilder_ == null) {
+          viewer5SstandPostHis1H_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000002);
+        } else {
+          viewer5SstandPostHis1HBuilder_.clear();
+        }
+        viewerLikePostHis1H_ = emptyLongList();
+        bitField0_ = (bitField0_ & ~0x00000004);
+        viewerFollowPostHis1H_ = emptyLongList();
+        bitField0_ = (bitField0_ & ~0x00000008);
+        viewerProfilePostHis1H_ = emptyLongList();
+        bitField0_ = (bitField0_ & ~0x00000010);
+        viewerPosinterPostHis1H_ = emptyLongList();
+        bitField0_ = (bitField0_ & ~0x00000020);
+        if (viewer3SviewPostHis24HBuilder_ == null) {
+          viewer3SviewPostHis24H_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000040);
+        } else {
+          viewer3SviewPostHis24HBuilder_.clear();
+        }
+        if (viewer5SstandPostHis24HBuilder_ == null) {
+          viewer5SstandPostHis24H_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000080);
+        } else {
+          viewer5SstandPostHis24HBuilder_.clear();
+        }
+        viewerLikePostHis24H_ = emptyLongList();
+        bitField0_ = (bitField0_ & ~0x00000100);
+        viewerFollowPostHis24H_ = emptyLongList();
+        bitField0_ = (bitField0_ & ~0x00000200);
+        viewerProfilePostHis24H_ = emptyLongList();
+        bitField0_ = (bitField0_ & ~0x00000400);
+        viewerPosinterPostHis24H_ = emptyLongList();
+        bitField0_ = (bitField0_ & ~0x00000800);
+        viewerLikeAuthorHis24H_ = emptyIntList();
+        bitField0_ = (bitField0_ & ~0x00001000);
+        viewerFollowAuthorHis24H_ = emptyIntList();
+        bitField0_ = (bitField0_ & ~0x00002000);
+        viewerProfileAuthorHis24H_ = emptyIntList();
+        bitField0_ = (bitField0_ & ~0x00004000);
         viewerActiveDays7D_ = 0;
 
         viewerViewCnt7D_ = 0;
@@ -4460,14 +5333,16 @@ public final class RecFeature {
 
         viewerValidviewRate7D_ = 0F;
 
-        userDeepviewPostids7D_ = "";
-
-        userInteractPostids7D_ = "";
-
+        userDeepviewPostids7D_ = emptyLongList();
+        bitField0_ = (bitField0_ & ~0x00008000);
+        userInteractPostids7D_ = emptyLongList();
+        bitField0_ = (bitField0_ & ~0x00010000);
         userGiftCount_ = 0;
 
         userDailyWatchliveMinutes_ = 0F;
 
+        userLiveFollowPreferAnchorIds_ = emptyLongList();
+        bitField0_ = (bitField0_ & ~0x00020000);
         preferPosTag17DTop3_ = "";
 
         preferPosTag27DTop3_ = "";
@@ -4522,13 +5397,13 @@ public final class RecFeature {
 
         if (feedbackTagsBuilder_ == null) {
           feedbackTags_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000001);
+          bitField0_ = (bitField0_ & ~0x00040000);
         } else {
           feedbackTagsBuilder_.clear();
         }
         if (feedbackAuthorIdsBuilder_ == null) {
           feedbackAuthorIds_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000002);
+          bitField0_ = (bitField0_ & ~0x00080000);
         } else {
           feedbackAuthorIdsBuilder_.clear();
         }
@@ -4560,26 +5435,103 @@ public final class RecFeature {
         com.gosh.entity.RecFeature.RecUserFeature result = new com.gosh.entity.RecFeature.RecUserFeature(this);
         int from_bitField0_ = bitField0_;
         result.viewerIsOld_ = viewerIsOld_;
+        result.viewerRegisterDays_ = viewerRegisterDays_;
         result.viewerExppostCnt1H_ = viewerExppostCnt1H_;
         result.viewerExp1PostCnt1H_ = viewerExp1PostCnt1H_;
         result.viewerExp2PostCnt1H_ = viewerExp2PostCnt1H_;
         result.viewer3SviewPostCnt1H_ = viewer3SviewPostCnt1H_;
         result.viewer3Sview1PostCnt1H_ = viewer3Sview1PostCnt1H_;
         result.viewer3Sview2PostCnt1H_ = viewer3Sview2PostCnt1H_;
-        result.viewer3SviewPostHis1H_ = viewer3SviewPostHis1H_;
-        result.viewer5SstandPostHis1H_ = viewer5SstandPostHis1H_;
+        if (viewer3SviewPostHis1HBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) != 0)) {
+            viewer3SviewPostHis1H_ = java.util.Collections.unmodifiableList(viewer3SviewPostHis1H_);
+            bitField0_ = (bitField0_ & ~0x00000001);
+          }
+          result.viewer3SviewPostHis1H_ = viewer3SviewPostHis1H_;
+        } else {
+          result.viewer3SviewPostHis1H_ = viewer3SviewPostHis1HBuilder_.build();
+        }
+        if (viewer5SstandPostHis1HBuilder_ == null) {
+          if (((bitField0_ & 0x00000002) != 0)) {
+            viewer5SstandPostHis1H_ = java.util.Collections.unmodifiableList(viewer5SstandPostHis1H_);
+            bitField0_ = (bitField0_ & ~0x00000002);
+          }
+          result.viewer5SstandPostHis1H_ = viewer5SstandPostHis1H_;
+        } else {
+          result.viewer5SstandPostHis1H_ = viewer5SstandPostHis1HBuilder_.build();
+        }
+        if (((bitField0_ & 0x00000004) != 0)) {
+          viewerLikePostHis1H_.makeImmutable();
+          bitField0_ = (bitField0_ & ~0x00000004);
+        }
         result.viewerLikePostHis1H_ = viewerLikePostHis1H_;
+        if (((bitField0_ & 0x00000008) != 0)) {
+          viewerFollowPostHis1H_.makeImmutable();
+          bitField0_ = (bitField0_ & ~0x00000008);
+        }
         result.viewerFollowPostHis1H_ = viewerFollowPostHis1H_;
+        if (((bitField0_ & 0x00000010) != 0)) {
+          viewerProfilePostHis1H_.makeImmutable();
+          bitField0_ = (bitField0_ & ~0x00000010);
+        }
         result.viewerProfilePostHis1H_ = viewerProfilePostHis1H_;
+        if (((bitField0_ & 0x00000020) != 0)) {
+          viewerPosinterPostHis1H_.makeImmutable();
+          bitField0_ = (bitField0_ & ~0x00000020);
+        }
         result.viewerPosinterPostHis1H_ = viewerPosinterPostHis1H_;
-        result.viewer3SviewPostHis24H_ = viewer3SviewPostHis24H_;
-        result.viewer5SstandPostHis24H_ = viewer5SstandPostHis24H_;
+        if (viewer3SviewPostHis24HBuilder_ == null) {
+          if (((bitField0_ & 0x00000040) != 0)) {
+            viewer3SviewPostHis24H_ = java.util.Collections.unmodifiableList(viewer3SviewPostHis24H_);
+            bitField0_ = (bitField0_ & ~0x00000040);
+          }
+          result.viewer3SviewPostHis24H_ = viewer3SviewPostHis24H_;
+        } else {
+          result.viewer3SviewPostHis24H_ = viewer3SviewPostHis24HBuilder_.build();
+        }
+        if (viewer5SstandPostHis24HBuilder_ == null) {
+          if (((bitField0_ & 0x00000080) != 0)) {
+            viewer5SstandPostHis24H_ = java.util.Collections.unmodifiableList(viewer5SstandPostHis24H_);
+            bitField0_ = (bitField0_ & ~0x00000080);
+          }
+          result.viewer5SstandPostHis24H_ = viewer5SstandPostHis24H_;
+        } else {
+          result.viewer5SstandPostHis24H_ = viewer5SstandPostHis24HBuilder_.build();
+        }
+        if (((bitField0_ & 0x00000100) != 0)) {
+          viewerLikePostHis24H_.makeImmutable();
+          bitField0_ = (bitField0_ & ~0x00000100);
+        }
         result.viewerLikePostHis24H_ = viewerLikePostHis24H_;
+        if (((bitField0_ & 0x00000200) != 0)) {
+          viewerFollowPostHis24H_.makeImmutable();
+          bitField0_ = (bitField0_ & ~0x00000200);
+        }
         result.viewerFollowPostHis24H_ = viewerFollowPostHis24H_;
+        if (((bitField0_ & 0x00000400) != 0)) {
+          viewerProfilePostHis24H_.makeImmutable();
+          bitField0_ = (bitField0_ & ~0x00000400);
+        }
         result.viewerProfilePostHis24H_ = viewerProfilePostHis24H_;
+        if (((bitField0_ & 0x00000800) != 0)) {
+          viewerPosinterPostHis24H_.makeImmutable();
+          bitField0_ = (bitField0_ & ~0x00000800);
+        }
         result.viewerPosinterPostHis24H_ = viewerPosinterPostHis24H_;
+        if (((bitField0_ & 0x00001000) != 0)) {
+          viewerLikeAuthorHis24H_.makeImmutable();
+          bitField0_ = (bitField0_ & ~0x00001000);
+        }
         result.viewerLikeAuthorHis24H_ = viewerLikeAuthorHis24H_;
+        if (((bitField0_ & 0x00002000) != 0)) {
+          viewerFollowAuthorHis24H_.makeImmutable();
+          bitField0_ = (bitField0_ & ~0x00002000);
+        }
         result.viewerFollowAuthorHis24H_ = viewerFollowAuthorHis24H_;
+        if (((bitField0_ & 0x00004000) != 0)) {
+          viewerProfileAuthorHis24H_.makeImmutable();
+          bitField0_ = (bitField0_ & ~0x00004000);
+        }
         result.viewerProfileAuthorHis24H_ = viewerProfileAuthorHis24H_;
         result.viewerActiveDays7D_ = viewerActiveDays7D_;
         result.viewerViewCnt7D_ = viewerViewCnt7D_;
@@ -4589,10 +5541,23 @@ public final class RecFeature {
         result.viewerLikeCnt7D_ = viewerLikeCnt7D_;
         result.viewerCommentCnt7D_ = viewerCommentCnt7D_;
         result.viewerValidviewRate7D_ = viewerValidviewRate7D_;
+        if (((bitField0_ & 0x00008000) != 0)) {
+          userDeepviewPostids7D_.makeImmutable();
+          bitField0_ = (bitField0_ & ~0x00008000);
+        }
         result.userDeepviewPostids7D_ = userDeepviewPostids7D_;
+        if (((bitField0_ & 0x00010000) != 0)) {
+          userInteractPostids7D_.makeImmutable();
+          bitField0_ = (bitField0_ & ~0x00010000);
+        }
         result.userInteractPostids7D_ = userInteractPostids7D_;
         result.userGiftCount_ = userGiftCount_;
         result.userDailyWatchliveMinutes_ = userDailyWatchliveMinutes_;
+        if (((bitField0_ & 0x00020000) != 0)) {
+          userLiveFollowPreferAnchorIds_.makeImmutable();
+          bitField0_ = (bitField0_ & ~0x00020000);
+        }
+        result.userLiveFollowPreferAnchorIds_ = userLiveFollowPreferAnchorIds_;
         result.preferPosTag17DTop3_ = preferPosTag17DTop3_;
         result.preferPosTag27DTop3_ = preferPosTag27DTop3_;
         result.preferPosTag37DTop3_ = preferPosTag37DTop3_;
@@ -4620,18 +5585,18 @@ public final class RecFeature {
         result.preferNegFtag57DTop3_ = preferNegFtag57DTop3_;
         result.preferNegFtag67DTop3_ = preferNegFtag67DTop3_;
         if (feedbackTagsBuilder_ == null) {
-          if (((bitField0_ & 0x00000001) != 0)) {
+          if (((bitField0_ & 0x00040000) != 0)) {
             feedbackTags_ = java.util.Collections.unmodifiableList(feedbackTags_);
-            bitField0_ = (bitField0_ & ~0x00000001);
+            bitField0_ = (bitField0_ & ~0x00040000);
           }
           result.feedbackTags_ = feedbackTags_;
         } else {
           result.feedbackTags_ = feedbackTagsBuilder_.build();
         }
         if (feedbackAuthorIdsBuilder_ == null) {
-          if (((bitField0_ & 0x00000002) != 0)) {
+          if (((bitField0_ & 0x00080000) != 0)) {
             feedbackAuthorIds_ = java.util.Collections.unmodifiableList(feedbackAuthorIds_);
-            bitField0_ = (bitField0_ & ~0x00000002);
+            bitField0_ = (bitField0_ & ~0x00080000);
           }
           result.feedbackAuthorIds_ = feedbackAuthorIds_;
         } else {
@@ -4688,6 +5653,9 @@ public final class RecFeature {
         if (other.getViewerIsOld() != 0) {
           setViewerIsOld(other.getViewerIsOld());
         }
+        if (other.getViewerRegisterDays() != 0) {
+          setViewerRegisterDays(other.getViewerRegisterDays());
+        }
         if (other.getViewerExppostCnt1H() != 0) {
           setViewerExppostCnt1H(other.getViewerExppostCnt1H());
         }
@@ -4706,64 +5674,218 @@ public final class RecFeature {
         if (other.getViewer3Sview2PostCnt1H() != 0) {
           setViewer3Sview2PostCnt1H(other.getViewer3Sview2PostCnt1H());
         }
-        if (!other.getViewer3SviewPostHis1H().isEmpty()) {
-          viewer3SviewPostHis1H_ = other.viewer3SviewPostHis1H_;
+        if (viewer3SviewPostHis1HBuilder_ == null) {
+          if (!other.viewer3SviewPostHis1H_.isEmpty()) {
+            if (viewer3SviewPostHis1H_.isEmpty()) {
+              viewer3SviewPostHis1H_ = other.viewer3SviewPostHis1H_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+            } else {
+              ensureViewer3SviewPostHis1HIsMutable();
+              viewer3SviewPostHis1H_.addAll(other.viewer3SviewPostHis1H_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.viewer3SviewPostHis1H_.isEmpty()) {
+            if (viewer3SviewPostHis1HBuilder_.isEmpty()) {
+              viewer3SviewPostHis1HBuilder_.dispose();
+              viewer3SviewPostHis1HBuilder_ = null;
+              viewer3SviewPostHis1H_ = other.viewer3SviewPostHis1H_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+              viewer3SviewPostHis1HBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getViewer3SviewPostHis1HFieldBuilder() : null;
+            } else {
+              viewer3SviewPostHis1HBuilder_.addAllMessages(other.viewer3SviewPostHis1H_);
+            }
+          }
+        }
+        if (viewer5SstandPostHis1HBuilder_ == null) {
+          if (!other.viewer5SstandPostHis1H_.isEmpty()) {
+            if (viewer5SstandPostHis1H_.isEmpty()) {
+              viewer5SstandPostHis1H_ = other.viewer5SstandPostHis1H_;
+              bitField0_ = (bitField0_ & ~0x00000002);
+            } else {
+              ensureViewer5SstandPostHis1HIsMutable();
+              viewer5SstandPostHis1H_.addAll(other.viewer5SstandPostHis1H_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.viewer5SstandPostHis1H_.isEmpty()) {
+            if (viewer5SstandPostHis1HBuilder_.isEmpty()) {
+              viewer5SstandPostHis1HBuilder_.dispose();
+              viewer5SstandPostHis1HBuilder_ = null;
+              viewer5SstandPostHis1H_ = other.viewer5SstandPostHis1H_;
+              bitField0_ = (bitField0_ & ~0x00000002);
+              viewer5SstandPostHis1HBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getViewer5SstandPostHis1HFieldBuilder() : null;
+            } else {
+              viewer5SstandPostHis1HBuilder_.addAllMessages(other.viewer5SstandPostHis1H_);
+            }
+          }
+        }
+        if (!other.viewerLikePostHis1H_.isEmpty()) {
+          if (viewerLikePostHis1H_.isEmpty()) {
+            viewerLikePostHis1H_ = other.viewerLikePostHis1H_;
+            bitField0_ = (bitField0_ & ~0x00000004);
+          } else {
+            ensureViewerLikePostHis1HIsMutable();
+            viewerLikePostHis1H_.addAll(other.viewerLikePostHis1H_);
+          }
           onChanged();
         }
-        if (!other.getViewer5SstandPostHis1H().isEmpty()) {
-          viewer5SstandPostHis1H_ = other.viewer5SstandPostHis1H_;
+        if (!other.viewerFollowPostHis1H_.isEmpty()) {
+          if (viewerFollowPostHis1H_.isEmpty()) {
+            viewerFollowPostHis1H_ = other.viewerFollowPostHis1H_;
+            bitField0_ = (bitField0_ & ~0x00000008);
+          } else {
+            ensureViewerFollowPostHis1HIsMutable();
+            viewerFollowPostHis1H_.addAll(other.viewerFollowPostHis1H_);
+          }
           onChanged();
         }
-        if (!other.getViewerLikePostHis1H().isEmpty()) {
-          viewerLikePostHis1H_ = other.viewerLikePostHis1H_;
+        if (!other.viewerProfilePostHis1H_.isEmpty()) {
+          if (viewerProfilePostHis1H_.isEmpty()) {
+            viewerProfilePostHis1H_ = other.viewerProfilePostHis1H_;
+            bitField0_ = (bitField0_ & ~0x00000010);
+          } else {
+            ensureViewerProfilePostHis1HIsMutable();
+            viewerProfilePostHis1H_.addAll(other.viewerProfilePostHis1H_);
+          }
           onChanged();
         }
-        if (!other.getViewerFollowPostHis1H().isEmpty()) {
-          viewerFollowPostHis1H_ = other.viewerFollowPostHis1H_;
+        if (!other.viewerPosinterPostHis1H_.isEmpty()) {
+          if (viewerPosinterPostHis1H_.isEmpty()) {
+            viewerPosinterPostHis1H_ = other.viewerPosinterPostHis1H_;
+            bitField0_ = (bitField0_ & ~0x00000020);
+          } else {
+            ensureViewerPosinterPostHis1HIsMutable();
+            viewerPosinterPostHis1H_.addAll(other.viewerPosinterPostHis1H_);
+          }
           onChanged();
         }
-        if (!other.getViewerProfilePostHis1H().isEmpty()) {
-          viewerProfilePostHis1H_ = other.viewerProfilePostHis1H_;
+        if (viewer3SviewPostHis24HBuilder_ == null) {
+          if (!other.viewer3SviewPostHis24H_.isEmpty()) {
+            if (viewer3SviewPostHis24H_.isEmpty()) {
+              viewer3SviewPostHis24H_ = other.viewer3SviewPostHis24H_;
+              bitField0_ = (bitField0_ & ~0x00000040);
+            } else {
+              ensureViewer3SviewPostHis24HIsMutable();
+              viewer3SviewPostHis24H_.addAll(other.viewer3SviewPostHis24H_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.viewer3SviewPostHis24H_.isEmpty()) {
+            if (viewer3SviewPostHis24HBuilder_.isEmpty()) {
+              viewer3SviewPostHis24HBuilder_.dispose();
+              viewer3SviewPostHis24HBuilder_ = null;
+              viewer3SviewPostHis24H_ = other.viewer3SviewPostHis24H_;
+              bitField0_ = (bitField0_ & ~0x00000040);
+              viewer3SviewPostHis24HBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getViewer3SviewPostHis24HFieldBuilder() : null;
+            } else {
+              viewer3SviewPostHis24HBuilder_.addAllMessages(other.viewer3SviewPostHis24H_);
+            }
+          }
+        }
+        if (viewer5SstandPostHis24HBuilder_ == null) {
+          if (!other.viewer5SstandPostHis24H_.isEmpty()) {
+            if (viewer5SstandPostHis24H_.isEmpty()) {
+              viewer5SstandPostHis24H_ = other.viewer5SstandPostHis24H_;
+              bitField0_ = (bitField0_ & ~0x00000080);
+            } else {
+              ensureViewer5SstandPostHis24HIsMutable();
+              viewer5SstandPostHis24H_.addAll(other.viewer5SstandPostHis24H_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.viewer5SstandPostHis24H_.isEmpty()) {
+            if (viewer5SstandPostHis24HBuilder_.isEmpty()) {
+              viewer5SstandPostHis24HBuilder_.dispose();
+              viewer5SstandPostHis24HBuilder_ = null;
+              viewer5SstandPostHis24H_ = other.viewer5SstandPostHis24H_;
+              bitField0_ = (bitField0_ & ~0x00000080);
+              viewer5SstandPostHis24HBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getViewer5SstandPostHis24HFieldBuilder() : null;
+            } else {
+              viewer5SstandPostHis24HBuilder_.addAllMessages(other.viewer5SstandPostHis24H_);
+            }
+          }
+        }
+        if (!other.viewerLikePostHis24H_.isEmpty()) {
+          if (viewerLikePostHis24H_.isEmpty()) {
+            viewerLikePostHis24H_ = other.viewerLikePostHis24H_;
+            bitField0_ = (bitField0_ & ~0x00000100);
+          } else {
+            ensureViewerLikePostHis24HIsMutable();
+            viewerLikePostHis24H_.addAll(other.viewerLikePostHis24H_);
+          }
           onChanged();
         }
-        if (!other.getViewerPosinterPostHis1H().isEmpty()) {
-          viewerPosinterPostHis1H_ = other.viewerPosinterPostHis1H_;
+        if (!other.viewerFollowPostHis24H_.isEmpty()) {
+          if (viewerFollowPostHis24H_.isEmpty()) {
+            viewerFollowPostHis24H_ = other.viewerFollowPostHis24H_;
+            bitField0_ = (bitField0_ & ~0x00000200);
+          } else {
+            ensureViewerFollowPostHis24HIsMutable();
+            viewerFollowPostHis24H_.addAll(other.viewerFollowPostHis24H_);
+          }
           onChanged();
         }
-        if (!other.getViewer3SviewPostHis24H().isEmpty()) {
-          viewer3SviewPostHis24H_ = other.viewer3SviewPostHis24H_;
+        if (!other.viewerProfilePostHis24H_.isEmpty()) {
+          if (viewerProfilePostHis24H_.isEmpty()) {
+            viewerProfilePostHis24H_ = other.viewerProfilePostHis24H_;
+            bitField0_ = (bitField0_ & ~0x00000400);
+          } else {
+            ensureViewerProfilePostHis24HIsMutable();
+            viewerProfilePostHis24H_.addAll(other.viewerProfilePostHis24H_);
+          }
           onChanged();
         }
-        if (!other.getViewer5SstandPostHis24H().isEmpty()) {
-          viewer5SstandPostHis24H_ = other.viewer5SstandPostHis24H_;
+        if (!other.viewerPosinterPostHis24H_.isEmpty()) {
+          if (viewerPosinterPostHis24H_.isEmpty()) {
+            viewerPosinterPostHis24H_ = other.viewerPosinterPostHis24H_;
+            bitField0_ = (bitField0_ & ~0x00000800);
+          } else {
+            ensureViewerPosinterPostHis24HIsMutable();
+            viewerPosinterPostHis24H_.addAll(other.viewerPosinterPostHis24H_);
+          }
           onChanged();
         }
-        if (!other.getViewerLikePostHis24H().isEmpty()) {
-          viewerLikePostHis24H_ = other.viewerLikePostHis24H_;
+        if (!other.viewerLikeAuthorHis24H_.isEmpty()) {
+          if (viewerLikeAuthorHis24H_.isEmpty()) {
+            viewerLikeAuthorHis24H_ = other.viewerLikeAuthorHis24H_;
+            bitField0_ = (bitField0_ & ~0x00001000);
+          } else {
+            ensureViewerLikeAuthorHis24HIsMutable();
+            viewerLikeAuthorHis24H_.addAll(other.viewerLikeAuthorHis24H_);
+          }
           onChanged();
         }
-        if (!other.getViewerFollowPostHis24H().isEmpty()) {
-          viewerFollowPostHis24H_ = other.viewerFollowPostHis24H_;
+        if (!other.viewerFollowAuthorHis24H_.isEmpty()) {
+          if (viewerFollowAuthorHis24H_.isEmpty()) {
+            viewerFollowAuthorHis24H_ = other.viewerFollowAuthorHis24H_;
+            bitField0_ = (bitField0_ & ~0x00002000);
+          } else {
+            ensureViewerFollowAuthorHis24HIsMutable();
+            viewerFollowAuthorHis24H_.addAll(other.viewerFollowAuthorHis24H_);
+          }
           onChanged();
         }
-        if (!other.getViewerProfilePostHis24H().isEmpty()) {
-          viewerProfilePostHis24H_ = other.viewerProfilePostHis24H_;
-          onChanged();
-        }
-        if (!other.getViewerPosinterPostHis24H().isEmpty()) {
-          viewerPosinterPostHis24H_ = other.viewerPosinterPostHis24H_;
-          onChanged();
-        }
-        if (!other.getViewerLikeAuthorHis24H().isEmpty()) {
-          viewerLikeAuthorHis24H_ = other.viewerLikeAuthorHis24H_;
-          onChanged();
-        }
-        if (!other.getViewerFollowAuthorHis24H().isEmpty()) {
-          viewerFollowAuthorHis24H_ = other.viewerFollowAuthorHis24H_;
-          onChanged();
-        }
-        if (!other.getViewerProfileAuthorHis24H().isEmpty()) {
-          viewerProfileAuthorHis24H_ = other.viewerProfileAuthorHis24H_;
+        if (!other.viewerProfileAuthorHis24H_.isEmpty()) {
+          if (viewerProfileAuthorHis24H_.isEmpty()) {
+            viewerProfileAuthorHis24H_ = other.viewerProfileAuthorHis24H_;
+            bitField0_ = (bitField0_ & ~0x00004000);
+          } else {
+            ensureViewerProfileAuthorHis24HIsMutable();
+            viewerProfileAuthorHis24H_.addAll(other.viewerProfileAuthorHis24H_);
+          }
           onChanged();
         }
         if (other.getViewerActiveDays7D() != 0) {
@@ -4790,12 +5912,24 @@ public final class RecFeature {
         if (other.getViewerValidviewRate7D() != 0F) {
           setViewerValidviewRate7D(other.getViewerValidviewRate7D());
         }
-        if (!other.getUserDeepviewPostids7D().isEmpty()) {
-          userDeepviewPostids7D_ = other.userDeepviewPostids7D_;
+        if (!other.userDeepviewPostids7D_.isEmpty()) {
+          if (userDeepviewPostids7D_.isEmpty()) {
+            userDeepviewPostids7D_ = other.userDeepviewPostids7D_;
+            bitField0_ = (bitField0_ & ~0x00008000);
+          } else {
+            ensureUserDeepviewPostids7DIsMutable();
+            userDeepviewPostids7D_.addAll(other.userDeepviewPostids7D_);
+          }
           onChanged();
         }
-        if (!other.getUserInteractPostids7D().isEmpty()) {
-          userInteractPostids7D_ = other.userInteractPostids7D_;
+        if (!other.userInteractPostids7D_.isEmpty()) {
+          if (userInteractPostids7D_.isEmpty()) {
+            userInteractPostids7D_ = other.userInteractPostids7D_;
+            bitField0_ = (bitField0_ & ~0x00010000);
+          } else {
+            ensureUserInteractPostids7DIsMutable();
+            userInteractPostids7D_.addAll(other.userInteractPostids7D_);
+          }
           onChanged();
         }
         if (other.getUserGiftCount() != 0) {
@@ -4803,6 +5937,16 @@ public final class RecFeature {
         }
         if (other.getUserDailyWatchliveMinutes() != 0F) {
           setUserDailyWatchliveMinutes(other.getUserDailyWatchliveMinutes());
+        }
+        if (!other.userLiveFollowPreferAnchorIds_.isEmpty()) {
+          if (userLiveFollowPreferAnchorIds_.isEmpty()) {
+            userLiveFollowPreferAnchorIds_ = other.userLiveFollowPreferAnchorIds_;
+            bitField0_ = (bitField0_ & ~0x00020000);
+          } else {
+            ensureUserLiveFollowPreferAnchorIdsIsMutable();
+            userLiveFollowPreferAnchorIds_.addAll(other.userLiveFollowPreferAnchorIds_);
+          }
+          onChanged();
         }
         if (!other.getPreferPosTag17DTop3().isEmpty()) {
           preferPosTag17DTop3_ = other.preferPosTag17DTop3_;
@@ -4912,7 +6056,7 @@ public final class RecFeature {
           if (!other.feedbackTags_.isEmpty()) {
             if (feedbackTags_.isEmpty()) {
               feedbackTags_ = other.feedbackTags_;
-              bitField0_ = (bitField0_ & ~0x00000001);
+              bitField0_ = (bitField0_ & ~0x00040000);
             } else {
               ensureFeedbackTagsIsMutable();
               feedbackTags_.addAll(other.feedbackTags_);
@@ -4925,7 +6069,7 @@ public final class RecFeature {
               feedbackTagsBuilder_.dispose();
               feedbackTagsBuilder_ = null;
               feedbackTags_ = other.feedbackTags_;
-              bitField0_ = (bitField0_ & ~0x00000001);
+              bitField0_ = (bitField0_ & ~0x00040000);
               feedbackTagsBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                    getFeedbackTagsFieldBuilder() : null;
@@ -4938,7 +6082,7 @@ public final class RecFeature {
           if (!other.feedbackAuthorIds_.isEmpty()) {
             if (feedbackAuthorIds_.isEmpty()) {
               feedbackAuthorIds_ = other.feedbackAuthorIds_;
-              bitField0_ = (bitField0_ & ~0x00000002);
+              bitField0_ = (bitField0_ & ~0x00080000);
             } else {
               ensureFeedbackAuthorIdsIsMutable();
               feedbackAuthorIds_.addAll(other.feedbackAuthorIds_);
@@ -4951,7 +6095,7 @@ public final class RecFeature {
               feedbackAuthorIdsBuilder_.dispose();
               feedbackAuthorIdsBuilder_ = null;
               feedbackAuthorIds_ = other.feedbackAuthorIds_;
-              bitField0_ = (bitField0_ & ~0x00000002);
+              bitField0_ = (bitField0_ & ~0x00080000);
               feedbackAuthorIdsBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                    getFeedbackAuthorIdsFieldBuilder() : null;
@@ -5029,6 +6173,49 @@ public final class RecFeature {
       public Builder clearViewerIsOld() {
         
         viewerIsOld_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int viewerRegisterDays_ ;
+      /**
+       * <pre>
+       * 用户注册天数
+       * </pre>
+       *
+       * <code>int32 viewer_register_days = 2;</code>
+       * @return The viewerRegisterDays.
+       */
+      @java.lang.Override
+      public int getViewerRegisterDays() {
+        return viewerRegisterDays_;
+      }
+      /**
+       * <pre>
+       * 用户注册天数
+       * </pre>
+       *
+       * <code>int32 viewer_register_days = 2;</code>
+       * @param value The viewerRegisterDays to set.
+       * @return This builder for chaining.
+       */
+      public Builder setViewerRegisterDays(int value) {
+        
+        viewerRegisterDays_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户注册天数
+       * </pre>
+       *
+       * <code>int32 viewer_register_days = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearViewerRegisterDays() {
+        
+        viewerRegisterDays_ = 0;
         onChanged();
         return this;
       }
@@ -5294,25 +6481,30 @@ public final class RecFeature {
         return this;
       }
 
-      private java.lang.Object viewer3SviewPostHis1H_ = "";
+      private java.util.List<com.gosh.entity.RecFeature.IdScore> viewer3SviewPostHis1H_ =
+        java.util.Collections.emptyList();
+      private void ensureViewer3SviewPostHis1HIsMutable() {
+        if (!((bitField0_ & 0x00000001) != 0)) {
+          viewer3SviewPostHis1H_ = new java.util.ArrayList<com.gosh.entity.RecFeature.IdScore>(viewer3SviewPostHis1H_);
+          bitField0_ |= 0x00000001;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          com.gosh.entity.RecFeature.IdScore, com.gosh.entity.RecFeature.IdScore.Builder, com.gosh.entity.RecFeature.IdScoreOrBuilder> viewer3SviewPostHis1HBuilder_;
+
       /**
        * <pre>
        * 历史记录特征 (1小时)
        * </pre>
        *
-       * <code>string viewer_3sview_post_his_1h = 16;</code>
-       * @return The viewer3sviewPostHis1h.
+       * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_1h = 16;</code>
        */
-      public java.lang.String getViewer3SviewPostHis1H() {
-        java.lang.Object ref = viewer3SviewPostHis1H_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          viewer3SviewPostHis1H_ = s;
-          return s;
+      public java.util.List<com.gosh.entity.RecFeature.IdScore> getViewer3SviewPostHis1HList() {
+        if (viewer3SviewPostHis1HBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(viewer3SviewPostHis1H_);
         } else {
-          return (java.lang.String) ref;
+          return viewer3SviewPostHis1HBuilder_.getMessageList();
         }
       }
       /**
@@ -5320,20 +6512,13 @@ public final class RecFeature {
        * 历史记录特征 (1小时)
        * </pre>
        *
-       * <code>string viewer_3sview_post_his_1h = 16;</code>
-       * @return The bytes for viewer3sviewPostHis1h.
+       * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_1h = 16;</code>
        */
-      public com.google.protobuf.ByteString
-          getViewer3SviewPostHis1HBytes() {
-        java.lang.Object ref = viewer3SviewPostHis1H_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          viewer3SviewPostHis1H_ = b;
-          return b;
+      public int getViewer3SviewPostHis1HCount() {
+        if (viewer3SviewPostHis1HBuilder_ == null) {
+          return viewer3SviewPostHis1H_.size();
         } else {
-          return (com.google.protobuf.ByteString) ref;
+          return viewer3SviewPostHis1HBuilder_.getCount();
         }
       }
       /**
@@ -5341,18 +6526,34 @@ public final class RecFeature {
        * 历史记录特征 (1小时)
        * </pre>
        *
-       * <code>string viewer_3sview_post_his_1h = 16;</code>
-       * @param value The viewer3sviewPostHis1h to set.
-       * @return This builder for chaining.
+       * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_1h = 16;</code>
+       */
+      public com.gosh.entity.RecFeature.IdScore getViewer3SviewPostHis1H(int index) {
+        if (viewer3SviewPostHis1HBuilder_ == null) {
+          return viewer3SviewPostHis1H_.get(index);
+        } else {
+          return viewer3SviewPostHis1HBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <pre>
+       * 历史记录特征 (1小时)
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_1h = 16;</code>
        */
       public Builder setViewer3SviewPostHis1H(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        viewer3SviewPostHis1H_ = value;
-        onChanged();
+          int index, com.gosh.entity.RecFeature.IdScore value) {
+        if (viewer3SviewPostHis1HBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureViewer3SviewPostHis1HIsMutable();
+          viewer3SviewPostHis1H_.set(index, value);
+          onChanged();
+        } else {
+          viewer3SviewPostHis1HBuilder_.setMessage(index, value);
+        }
         return this;
       }
       /**
@@ -5360,13 +6561,130 @@ public final class RecFeature {
        * 历史记录特征 (1小时)
        * </pre>
        *
-       * <code>string viewer_3sview_post_his_1h = 16;</code>
-       * @return This builder for chaining.
+       * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_1h = 16;</code>
+       */
+      public Builder setViewer3SviewPostHis1H(
+          int index, com.gosh.entity.RecFeature.IdScore.Builder builderForValue) {
+        if (viewer3SviewPostHis1HBuilder_ == null) {
+          ensureViewer3SviewPostHis1HIsMutable();
+          viewer3SviewPostHis1H_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          viewer3SviewPostHis1HBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 历史记录特征 (1小时)
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_1h = 16;</code>
+       */
+      public Builder addViewer3SviewPostHis1H(com.gosh.entity.RecFeature.IdScore value) {
+        if (viewer3SviewPostHis1HBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureViewer3SviewPostHis1HIsMutable();
+          viewer3SviewPostHis1H_.add(value);
+          onChanged();
+        } else {
+          viewer3SviewPostHis1HBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 历史记录特征 (1小时)
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_1h = 16;</code>
+       */
+      public Builder addViewer3SviewPostHis1H(
+          int index, com.gosh.entity.RecFeature.IdScore value) {
+        if (viewer3SviewPostHis1HBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureViewer3SviewPostHis1HIsMutable();
+          viewer3SviewPostHis1H_.add(index, value);
+          onChanged();
+        } else {
+          viewer3SviewPostHis1HBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 历史记录特征 (1小时)
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_1h = 16;</code>
+       */
+      public Builder addViewer3SviewPostHis1H(
+          com.gosh.entity.RecFeature.IdScore.Builder builderForValue) {
+        if (viewer3SviewPostHis1HBuilder_ == null) {
+          ensureViewer3SviewPostHis1HIsMutable();
+          viewer3SviewPostHis1H_.add(builderForValue.build());
+          onChanged();
+        } else {
+          viewer3SviewPostHis1HBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 历史记录特征 (1小时)
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_1h = 16;</code>
+       */
+      public Builder addViewer3SviewPostHis1H(
+          int index, com.gosh.entity.RecFeature.IdScore.Builder builderForValue) {
+        if (viewer3SviewPostHis1HBuilder_ == null) {
+          ensureViewer3SviewPostHis1HIsMutable();
+          viewer3SviewPostHis1H_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          viewer3SviewPostHis1HBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 历史记录特征 (1小时)
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_1h = 16;</code>
+       */
+      public Builder addAllViewer3SviewPostHis1H(
+          java.lang.Iterable<? extends com.gosh.entity.RecFeature.IdScore> values) {
+        if (viewer3SviewPostHis1HBuilder_ == null) {
+          ensureViewer3SviewPostHis1HIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, viewer3SviewPostHis1H_);
+          onChanged();
+        } else {
+          viewer3SviewPostHis1HBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 历史记录特征 (1小时)
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_1h = 16;</code>
        */
       public Builder clearViewer3SviewPostHis1H() {
-        
-        viewer3SviewPostHis1H_ = getDefaultInstance().getViewer3SviewPostHis1H();
-        onChanged();
+        if (viewer3SviewPostHis1HBuilder_ == null) {
+          viewer3SviewPostHis1H_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+          onChanged();
+        } else {
+          viewer3SviewPostHis1HBuilder_.clear();
+        }
         return this;
       }
       /**
@@ -5374,41 +6692,131 @@ public final class RecFeature {
        * 历史记录特征 (1小时)
        * </pre>
        *
-       * <code>string viewer_3sview_post_his_1h = 16;</code>
-       * @param value The bytes for viewer3sviewPostHis1h to set.
-       * @return This builder for chaining.
+       * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_1h = 16;</code>
        */
-      public Builder setViewer3SviewPostHis1HBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        viewer3SviewPostHis1H_ = value;
-        onChanged();
+      public Builder removeViewer3SviewPostHis1H(int index) {
+        if (viewer3SviewPostHis1HBuilder_ == null) {
+          ensureViewer3SviewPostHis1HIsMutable();
+          viewer3SviewPostHis1H_.remove(index);
+          onChanged();
+        } else {
+          viewer3SviewPostHis1HBuilder_.remove(index);
+        }
         return this;
       }
+      /**
+       * <pre>
+       * 历史记录特征 (1小时)
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_1h = 16;</code>
+       */
+      public com.gosh.entity.RecFeature.IdScore.Builder getViewer3SviewPostHis1HBuilder(
+          int index) {
+        return getViewer3SviewPostHis1HFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <pre>
+       * 历史记录特征 (1小时)
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_1h = 16;</code>
+       */
+      public com.gosh.entity.RecFeature.IdScoreOrBuilder getViewer3SviewPostHis1HOrBuilder(
+          int index) {
+        if (viewer3SviewPostHis1HBuilder_ == null) {
+          return viewer3SviewPostHis1H_.get(index);  } else {
+          return viewer3SviewPostHis1HBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <pre>
+       * 历史记录特征 (1小时)
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_1h = 16;</code>
+       */
+      public java.util.List<? extends com.gosh.entity.RecFeature.IdScoreOrBuilder> 
+           getViewer3SviewPostHis1HOrBuilderList() {
+        if (viewer3SviewPostHis1HBuilder_ != null) {
+          return viewer3SviewPostHis1HBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(viewer3SviewPostHis1H_);
+        }
+      }
+      /**
+       * <pre>
+       * 历史记录特征 (1小时)
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_1h = 16;</code>
+       */
+      public com.gosh.entity.RecFeature.IdScore.Builder addViewer3SviewPostHis1HBuilder() {
+        return getViewer3SviewPostHis1HFieldBuilder().addBuilder(
+            com.gosh.entity.RecFeature.IdScore.getDefaultInstance());
+      }
+      /**
+       * <pre>
+       * 历史记录特征 (1小时)
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_1h = 16;</code>
+       */
+      public com.gosh.entity.RecFeature.IdScore.Builder addViewer3SviewPostHis1HBuilder(
+          int index) {
+        return getViewer3SviewPostHis1HFieldBuilder().addBuilder(
+            index, com.gosh.entity.RecFeature.IdScore.getDefaultInstance());
+      }
+      /**
+       * <pre>
+       * 历史记录特征 (1小时)
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_1h = 16;</code>
+       */
+      public java.util.List<com.gosh.entity.RecFeature.IdScore.Builder> 
+           getViewer3SviewPostHis1HBuilderList() {
+        return getViewer3SviewPostHis1HFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          com.gosh.entity.RecFeature.IdScore, com.gosh.entity.RecFeature.IdScore.Builder, com.gosh.entity.RecFeature.IdScoreOrBuilder> 
+          getViewer3SviewPostHis1HFieldBuilder() {
+        if (viewer3SviewPostHis1HBuilder_ == null) {
+          viewer3SviewPostHis1HBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+              com.gosh.entity.RecFeature.IdScore, com.gosh.entity.RecFeature.IdScore.Builder, com.gosh.entity.RecFeature.IdScoreOrBuilder>(
+                  viewer3SviewPostHis1H_,
+                  ((bitField0_ & 0x00000001) != 0),
+                  getParentForChildren(),
+                  isClean());
+          viewer3SviewPostHis1H_ = null;
+        }
+        return viewer3SviewPostHis1HBuilder_;
+      }
 
-      private java.lang.Object viewer5SstandPostHis1H_ = "";
+      private java.util.List<com.gosh.entity.RecFeature.IdScore> viewer5SstandPostHis1H_ =
+        java.util.Collections.emptyList();
+      private void ensureViewer5SstandPostHis1HIsMutable() {
+        if (!((bitField0_ & 0x00000002) != 0)) {
+          viewer5SstandPostHis1H_ = new java.util.ArrayList<com.gosh.entity.RecFeature.IdScore>(viewer5SstandPostHis1H_);
+          bitField0_ |= 0x00000002;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          com.gosh.entity.RecFeature.IdScore, com.gosh.entity.RecFeature.IdScore.Builder, com.gosh.entity.RecFeature.IdScoreOrBuilder> viewer5SstandPostHis1HBuilder_;
+
       /**
        * <pre>
        * 用户最近1h停留5s以上视频post列表带停留时长
        * </pre>
        *
-       * <code>string viewer_5sstand_post_his_1h = 17;</code>
-       * @return The viewer5sstandPostHis1h.
+       * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_1h = 17;</code>
        */
-      public java.lang.String getViewer5SstandPostHis1H() {
-        java.lang.Object ref = viewer5SstandPostHis1H_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          viewer5SstandPostHis1H_ = s;
-          return s;
+      public java.util.List<com.gosh.entity.RecFeature.IdScore> getViewer5SstandPostHis1HList() {
+        if (viewer5SstandPostHis1HBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(viewer5SstandPostHis1H_);
         } else {
-          return (java.lang.String) ref;
+          return viewer5SstandPostHis1HBuilder_.getMessageList();
         }
       }
       /**
@@ -5416,20 +6824,13 @@ public final class RecFeature {
        * 用户最近1h停留5s以上视频post列表带停留时长
        * </pre>
        *
-       * <code>string viewer_5sstand_post_his_1h = 17;</code>
-       * @return The bytes for viewer5sstandPostHis1h.
+       * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_1h = 17;</code>
        */
-      public com.google.protobuf.ByteString
-          getViewer5SstandPostHis1HBytes() {
-        java.lang.Object ref = viewer5SstandPostHis1H_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          viewer5SstandPostHis1H_ = b;
-          return b;
+      public int getViewer5SstandPostHis1HCount() {
+        if (viewer5SstandPostHis1HBuilder_ == null) {
+          return viewer5SstandPostHis1H_.size();
         } else {
-          return (com.google.protobuf.ByteString) ref;
+          return viewer5SstandPostHis1HBuilder_.getCount();
         }
       }
       /**
@@ -5437,18 +6838,34 @@ public final class RecFeature {
        * 用户最近1h停留5s以上视频post列表带停留时长
        * </pre>
        *
-       * <code>string viewer_5sstand_post_his_1h = 17;</code>
-       * @param value The viewer5sstandPostHis1h to set.
-       * @return This builder for chaining.
+       * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_1h = 17;</code>
+       */
+      public com.gosh.entity.RecFeature.IdScore getViewer5SstandPostHis1H(int index) {
+        if (viewer5SstandPostHis1HBuilder_ == null) {
+          return viewer5SstandPostHis1H_.get(index);
+        } else {
+          return viewer5SstandPostHis1HBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <pre>
+       * 用户最近1h停留5s以上视频post列表带停留时长
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_1h = 17;</code>
        */
       public Builder setViewer5SstandPostHis1H(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        viewer5SstandPostHis1H_ = value;
-        onChanged();
+          int index, com.gosh.entity.RecFeature.IdScore value) {
+        if (viewer5SstandPostHis1HBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureViewer5SstandPostHis1HIsMutable();
+          viewer5SstandPostHis1H_.set(index, value);
+          onChanged();
+        } else {
+          viewer5SstandPostHis1HBuilder_.setMessage(index, value);
+        }
         return this;
       }
       /**
@@ -5456,13 +6873,130 @@ public final class RecFeature {
        * 用户最近1h停留5s以上视频post列表带停留时长
        * </pre>
        *
-       * <code>string viewer_5sstand_post_his_1h = 17;</code>
-       * @return This builder for chaining.
+       * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_1h = 17;</code>
+       */
+      public Builder setViewer5SstandPostHis1H(
+          int index, com.gosh.entity.RecFeature.IdScore.Builder builderForValue) {
+        if (viewer5SstandPostHis1HBuilder_ == null) {
+          ensureViewer5SstandPostHis1HIsMutable();
+          viewer5SstandPostHis1H_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          viewer5SstandPostHis1HBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近1h停留5s以上视频post列表带停留时长
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_1h = 17;</code>
+       */
+      public Builder addViewer5SstandPostHis1H(com.gosh.entity.RecFeature.IdScore value) {
+        if (viewer5SstandPostHis1HBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureViewer5SstandPostHis1HIsMutable();
+          viewer5SstandPostHis1H_.add(value);
+          onChanged();
+        } else {
+          viewer5SstandPostHis1HBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近1h停留5s以上视频post列表带停留时长
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_1h = 17;</code>
+       */
+      public Builder addViewer5SstandPostHis1H(
+          int index, com.gosh.entity.RecFeature.IdScore value) {
+        if (viewer5SstandPostHis1HBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureViewer5SstandPostHis1HIsMutable();
+          viewer5SstandPostHis1H_.add(index, value);
+          onChanged();
+        } else {
+          viewer5SstandPostHis1HBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近1h停留5s以上视频post列表带停留时长
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_1h = 17;</code>
+       */
+      public Builder addViewer5SstandPostHis1H(
+          com.gosh.entity.RecFeature.IdScore.Builder builderForValue) {
+        if (viewer5SstandPostHis1HBuilder_ == null) {
+          ensureViewer5SstandPostHis1HIsMutable();
+          viewer5SstandPostHis1H_.add(builderForValue.build());
+          onChanged();
+        } else {
+          viewer5SstandPostHis1HBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近1h停留5s以上视频post列表带停留时长
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_1h = 17;</code>
+       */
+      public Builder addViewer5SstandPostHis1H(
+          int index, com.gosh.entity.RecFeature.IdScore.Builder builderForValue) {
+        if (viewer5SstandPostHis1HBuilder_ == null) {
+          ensureViewer5SstandPostHis1HIsMutable();
+          viewer5SstandPostHis1H_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          viewer5SstandPostHis1HBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近1h停留5s以上视频post列表带停留时长
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_1h = 17;</code>
+       */
+      public Builder addAllViewer5SstandPostHis1H(
+          java.lang.Iterable<? extends com.gosh.entity.RecFeature.IdScore> values) {
+        if (viewer5SstandPostHis1HBuilder_ == null) {
+          ensureViewer5SstandPostHis1HIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, viewer5SstandPostHis1H_);
+          onChanged();
+        } else {
+          viewer5SstandPostHis1HBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近1h停留5s以上视频post列表带停留时长
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_1h = 17;</code>
        */
       public Builder clearViewer5SstandPostHis1H() {
-        
-        viewer5SstandPostHis1H_ = getDefaultInstance().getViewer5SstandPostHis1H();
-        onChanged();
+        if (viewer5SstandPostHis1HBuilder_ == null) {
+          viewer5SstandPostHis1H_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000002);
+          onChanged();
+        } else {
+          viewer5SstandPostHis1HBuilder_.clear();
+        }
         return this;
       }
       /**
@@ -5470,80 +7004,164 @@ public final class RecFeature {
        * 用户最近1h停留5s以上视频post列表带停留时长
        * </pre>
        *
-       * <code>string viewer_5sstand_post_his_1h = 17;</code>
-       * @param value The bytes for viewer5sstandPostHis1h to set.
-       * @return This builder for chaining.
+       * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_1h = 17;</code>
        */
-      public Builder setViewer5SstandPostHis1HBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        viewer5SstandPostHis1H_ = value;
-        onChanged();
+      public Builder removeViewer5SstandPostHis1H(int index) {
+        if (viewer5SstandPostHis1HBuilder_ == null) {
+          ensureViewer5SstandPostHis1HIsMutable();
+          viewer5SstandPostHis1H_.remove(index);
+          onChanged();
+        } else {
+          viewer5SstandPostHis1HBuilder_.remove(index);
+        }
         return this;
       }
+      /**
+       * <pre>
+       * 用户最近1h停留5s以上视频post列表带停留时长
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_1h = 17;</code>
+       */
+      public com.gosh.entity.RecFeature.IdScore.Builder getViewer5SstandPostHis1HBuilder(
+          int index) {
+        return getViewer5SstandPostHis1HFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <pre>
+       * 用户最近1h停留5s以上视频post列表带停留时长
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_1h = 17;</code>
+       */
+      public com.gosh.entity.RecFeature.IdScoreOrBuilder getViewer5SstandPostHis1HOrBuilder(
+          int index) {
+        if (viewer5SstandPostHis1HBuilder_ == null) {
+          return viewer5SstandPostHis1H_.get(index);  } else {
+          return viewer5SstandPostHis1HBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <pre>
+       * 用户最近1h停留5s以上视频post列表带停留时长
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_1h = 17;</code>
+       */
+      public java.util.List<? extends com.gosh.entity.RecFeature.IdScoreOrBuilder> 
+           getViewer5SstandPostHis1HOrBuilderList() {
+        if (viewer5SstandPostHis1HBuilder_ != null) {
+          return viewer5SstandPostHis1HBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(viewer5SstandPostHis1H_);
+        }
+      }
+      /**
+       * <pre>
+       * 用户最近1h停留5s以上视频post列表带停留时长
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_1h = 17;</code>
+       */
+      public com.gosh.entity.RecFeature.IdScore.Builder addViewer5SstandPostHis1HBuilder() {
+        return getViewer5SstandPostHis1HFieldBuilder().addBuilder(
+            com.gosh.entity.RecFeature.IdScore.getDefaultInstance());
+      }
+      /**
+       * <pre>
+       * 用户最近1h停留5s以上视频post列表带停留时长
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_1h = 17;</code>
+       */
+      public com.gosh.entity.RecFeature.IdScore.Builder addViewer5SstandPostHis1HBuilder(
+          int index) {
+        return getViewer5SstandPostHis1HFieldBuilder().addBuilder(
+            index, com.gosh.entity.RecFeature.IdScore.getDefaultInstance());
+      }
+      /**
+       * <pre>
+       * 用户最近1h停留5s以上视频post列表带停留时长
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_1h = 17;</code>
+       */
+      public java.util.List<com.gosh.entity.RecFeature.IdScore.Builder> 
+           getViewer5SstandPostHis1HBuilderList() {
+        return getViewer5SstandPostHis1HFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          com.gosh.entity.RecFeature.IdScore, com.gosh.entity.RecFeature.IdScore.Builder, com.gosh.entity.RecFeature.IdScoreOrBuilder> 
+          getViewer5SstandPostHis1HFieldBuilder() {
+        if (viewer5SstandPostHis1HBuilder_ == null) {
+          viewer5SstandPostHis1HBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+              com.gosh.entity.RecFeature.IdScore, com.gosh.entity.RecFeature.IdScore.Builder, com.gosh.entity.RecFeature.IdScoreOrBuilder>(
+                  viewer5SstandPostHis1H_,
+                  ((bitField0_ & 0x00000002) != 0),
+                  getParentForChildren(),
+                  isClean());
+          viewer5SstandPostHis1H_ = null;
+        }
+        return viewer5SstandPostHis1HBuilder_;
+      }
 
-      private java.lang.Object viewerLikePostHis1H_ = "";
-      /**
-       * <pre>
-       * 用户最近1h点赞视频post列表
-       * </pre>
-       *
-       * <code>string viewer_like_post_his_1h = 18;</code>
-       * @return The viewerLikePostHis1h.
-       */
-      public java.lang.String getViewerLikePostHis1H() {
-        java.lang.Object ref = viewerLikePostHis1H_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          viewerLikePostHis1H_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
+      private com.google.protobuf.Internal.LongList viewerLikePostHis1H_ = emptyLongList();
+      private void ensureViewerLikePostHis1HIsMutable() {
+        if (!((bitField0_ & 0x00000004) != 0)) {
+          viewerLikePostHis1H_ = mutableCopy(viewerLikePostHis1H_);
+          bitField0_ |= 0x00000004;
+         }
       }
       /**
        * <pre>
        * 用户最近1h点赞视频post列表
        * </pre>
        *
-       * <code>string viewer_like_post_his_1h = 18;</code>
-       * @return The bytes for viewerLikePostHis1h.
+       * <code>repeated int64 viewer_like_post_his_1h = 18;</code>
+       * @return A list containing the viewerLikePostHis1h.
        */
-      public com.google.protobuf.ByteString
-          getViewerLikePostHis1HBytes() {
-        java.lang.Object ref = viewerLikePostHis1H_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          viewerLikePostHis1H_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
+      public java.util.List<java.lang.Long>
+          getViewerLikePostHis1HList() {
+        return ((bitField0_ & 0x00000004) != 0) ?
+                 java.util.Collections.unmodifiableList(viewerLikePostHis1H_) : viewerLikePostHis1H_;
       }
       /**
        * <pre>
        * 用户最近1h点赞视频post列表
        * </pre>
        *
-       * <code>string viewer_like_post_his_1h = 18;</code>
+       * <code>repeated int64 viewer_like_post_his_1h = 18;</code>
+       * @return The count of viewerLikePostHis1h.
+       */
+      public int getViewerLikePostHis1HCount() {
+        return viewerLikePostHis1H_.size();
+      }
+      /**
+       * <pre>
+       * 用户最近1h点赞视频post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_like_post_his_1h = 18;</code>
+       * @param index The index of the element to return.
+       * @return The viewerLikePostHis1h at the given index.
+       */
+      public long getViewerLikePostHis1H(int index) {
+        return viewerLikePostHis1H_.getLong(index);
+      }
+      /**
+       * <pre>
+       * 用户最近1h点赞视频post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_like_post_his_1h = 18;</code>
+       * @param index The index to set the value at.
        * @param value The viewerLikePostHis1h to set.
        * @return This builder for chaining.
        */
       public Builder setViewerLikePostHis1H(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        viewerLikePostHis1H_ = value;
+          int index, long value) {
+        ensureViewerLikePostHis1HIsMutable();
+        viewerLikePostHis1H_.setLong(index, value);
         onChanged();
         return this;
       }
@@ -5552,94 +7170,105 @@ public final class RecFeature {
        * 用户最近1h点赞视频post列表
        * </pre>
        *
-       * <code>string viewer_like_post_his_1h = 18;</code>
+       * <code>repeated int64 viewer_like_post_his_1h = 18;</code>
+       * @param value The viewerLikePostHis1h to add.
+       * @return This builder for chaining.
+       */
+      public Builder addViewerLikePostHis1H(long value) {
+        ensureViewerLikePostHis1HIsMutable();
+        viewerLikePostHis1H_.addLong(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近1h点赞视频post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_like_post_his_1h = 18;</code>
+       * @param values The viewerLikePostHis1h to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAllViewerLikePostHis1H(
+          java.lang.Iterable<? extends java.lang.Long> values) {
+        ensureViewerLikePostHis1HIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, viewerLikePostHis1H_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近1h点赞视频post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_like_post_his_1h = 18;</code>
        * @return This builder for chaining.
        */
       public Builder clearViewerLikePostHis1H() {
-        
-        viewerLikePostHis1H_ = getDefaultInstance().getViewerLikePostHis1H();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 用户最近1h点赞视频post列表
-       * </pre>
-       *
-       * <code>string viewer_like_post_his_1h = 18;</code>
-       * @param value The bytes for viewerLikePostHis1h to set.
-       * @return This builder for chaining.
-       */
-      public Builder setViewerLikePostHis1HBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        viewerLikePostHis1H_ = value;
+        viewerLikePostHis1H_ = emptyLongList();
+        bitField0_ = (bitField0_ & ~0x00000004);
         onChanged();
         return this;
       }
 
-      private java.lang.Object viewerFollowPostHis1H_ = "";
-      /**
-       * <pre>
-       * 用户最近1h点关注视频post列表
-       * </pre>
-       *
-       * <code>string viewer_follow_post_his_1h = 19;</code>
-       * @return The viewerFollowPostHis1h.
-       */
-      public java.lang.String getViewerFollowPostHis1H() {
-        java.lang.Object ref = viewerFollowPostHis1H_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          viewerFollowPostHis1H_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
+      private com.google.protobuf.Internal.LongList viewerFollowPostHis1H_ = emptyLongList();
+      private void ensureViewerFollowPostHis1HIsMutable() {
+        if (!((bitField0_ & 0x00000008) != 0)) {
+          viewerFollowPostHis1H_ = mutableCopy(viewerFollowPostHis1H_);
+          bitField0_ |= 0x00000008;
+         }
       }
       /**
        * <pre>
        * 用户最近1h点关注视频post列表
        * </pre>
        *
-       * <code>string viewer_follow_post_his_1h = 19;</code>
-       * @return The bytes for viewerFollowPostHis1h.
+       * <code>repeated int64 viewer_follow_post_his_1h = 19;</code>
+       * @return A list containing the viewerFollowPostHis1h.
        */
-      public com.google.protobuf.ByteString
-          getViewerFollowPostHis1HBytes() {
-        java.lang.Object ref = viewerFollowPostHis1H_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          viewerFollowPostHis1H_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
+      public java.util.List<java.lang.Long>
+          getViewerFollowPostHis1HList() {
+        return ((bitField0_ & 0x00000008) != 0) ?
+                 java.util.Collections.unmodifiableList(viewerFollowPostHis1H_) : viewerFollowPostHis1H_;
       }
       /**
        * <pre>
        * 用户最近1h点关注视频post列表
        * </pre>
        *
-       * <code>string viewer_follow_post_his_1h = 19;</code>
+       * <code>repeated int64 viewer_follow_post_his_1h = 19;</code>
+       * @return The count of viewerFollowPostHis1h.
+       */
+      public int getViewerFollowPostHis1HCount() {
+        return viewerFollowPostHis1H_.size();
+      }
+      /**
+       * <pre>
+       * 用户最近1h点关注视频post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_follow_post_his_1h = 19;</code>
+       * @param index The index of the element to return.
+       * @return The viewerFollowPostHis1h at the given index.
+       */
+      public long getViewerFollowPostHis1H(int index) {
+        return viewerFollowPostHis1H_.getLong(index);
+      }
+      /**
+       * <pre>
+       * 用户最近1h点关注视频post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_follow_post_his_1h = 19;</code>
+       * @param index The index to set the value at.
        * @param value The viewerFollowPostHis1h to set.
        * @return This builder for chaining.
        */
       public Builder setViewerFollowPostHis1H(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        viewerFollowPostHis1H_ = value;
+          int index, long value) {
+        ensureViewerFollowPostHis1HIsMutable();
+        viewerFollowPostHis1H_.setLong(index, value);
         onChanged();
         return this;
       }
@@ -5648,94 +7277,105 @@ public final class RecFeature {
        * 用户最近1h点关注视频post列表
        * </pre>
        *
-       * <code>string viewer_follow_post_his_1h = 19;</code>
+       * <code>repeated int64 viewer_follow_post_his_1h = 19;</code>
+       * @param value The viewerFollowPostHis1h to add.
+       * @return This builder for chaining.
+       */
+      public Builder addViewerFollowPostHis1H(long value) {
+        ensureViewerFollowPostHis1HIsMutable();
+        viewerFollowPostHis1H_.addLong(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近1h点关注视频post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_follow_post_his_1h = 19;</code>
+       * @param values The viewerFollowPostHis1h to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAllViewerFollowPostHis1H(
+          java.lang.Iterable<? extends java.lang.Long> values) {
+        ensureViewerFollowPostHis1HIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, viewerFollowPostHis1H_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近1h点关注视频post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_follow_post_his_1h = 19;</code>
        * @return This builder for chaining.
        */
       public Builder clearViewerFollowPostHis1H() {
-        
-        viewerFollowPostHis1H_ = getDefaultInstance().getViewerFollowPostHis1H();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 用户最近1h点关注视频post列表
-       * </pre>
-       *
-       * <code>string viewer_follow_post_his_1h = 19;</code>
-       * @param value The bytes for viewerFollowPostHis1h to set.
-       * @return This builder for chaining.
-       */
-      public Builder setViewerFollowPostHis1HBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        viewerFollowPostHis1H_ = value;
+        viewerFollowPostHis1H_ = emptyLongList();
+        bitField0_ = (bitField0_ & ~0x00000008);
         onChanged();
         return this;
       }
 
-      private java.lang.Object viewerProfilePostHis1H_ = "";
-      /**
-       * <pre>
-       * 用户最近1h点作者主页视频post列表
-       * </pre>
-       *
-       * <code>string viewer_profile_post_his_1h = 20;</code>
-       * @return The viewerProfilePostHis1h.
-       */
-      public java.lang.String getViewerProfilePostHis1H() {
-        java.lang.Object ref = viewerProfilePostHis1H_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          viewerProfilePostHis1H_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
+      private com.google.protobuf.Internal.LongList viewerProfilePostHis1H_ = emptyLongList();
+      private void ensureViewerProfilePostHis1HIsMutable() {
+        if (!((bitField0_ & 0x00000010) != 0)) {
+          viewerProfilePostHis1H_ = mutableCopy(viewerProfilePostHis1H_);
+          bitField0_ |= 0x00000010;
+         }
       }
       /**
        * <pre>
        * 用户最近1h点作者主页视频post列表
        * </pre>
        *
-       * <code>string viewer_profile_post_his_1h = 20;</code>
-       * @return The bytes for viewerProfilePostHis1h.
+       * <code>repeated int64 viewer_profile_post_his_1h = 20;</code>
+       * @return A list containing the viewerProfilePostHis1h.
        */
-      public com.google.protobuf.ByteString
-          getViewerProfilePostHis1HBytes() {
-        java.lang.Object ref = viewerProfilePostHis1H_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          viewerProfilePostHis1H_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
+      public java.util.List<java.lang.Long>
+          getViewerProfilePostHis1HList() {
+        return ((bitField0_ & 0x00000010) != 0) ?
+                 java.util.Collections.unmodifiableList(viewerProfilePostHis1H_) : viewerProfilePostHis1H_;
       }
       /**
        * <pre>
        * 用户最近1h点作者主页视频post列表
        * </pre>
        *
-       * <code>string viewer_profile_post_his_1h = 20;</code>
+       * <code>repeated int64 viewer_profile_post_his_1h = 20;</code>
+       * @return The count of viewerProfilePostHis1h.
+       */
+      public int getViewerProfilePostHis1HCount() {
+        return viewerProfilePostHis1H_.size();
+      }
+      /**
+       * <pre>
+       * 用户最近1h点作者主页视频post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_profile_post_his_1h = 20;</code>
+       * @param index The index of the element to return.
+       * @return The viewerProfilePostHis1h at the given index.
+       */
+      public long getViewerProfilePostHis1H(int index) {
+        return viewerProfilePostHis1H_.getLong(index);
+      }
+      /**
+       * <pre>
+       * 用户最近1h点作者主页视频post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_profile_post_his_1h = 20;</code>
+       * @param index The index to set the value at.
        * @param value The viewerProfilePostHis1h to set.
        * @return This builder for chaining.
        */
       public Builder setViewerProfilePostHis1H(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        viewerProfilePostHis1H_ = value;
+          int index, long value) {
+        ensureViewerProfilePostHis1HIsMutable();
+        viewerProfilePostHis1H_.setLong(index, value);
         onChanged();
         return this;
       }
@@ -5744,94 +7384,105 @@ public final class RecFeature {
        * 用户最近1h点作者主页视频post列表
        * </pre>
        *
-       * <code>string viewer_profile_post_his_1h = 20;</code>
+       * <code>repeated int64 viewer_profile_post_his_1h = 20;</code>
+       * @param value The viewerProfilePostHis1h to add.
+       * @return This builder for chaining.
+       */
+      public Builder addViewerProfilePostHis1H(long value) {
+        ensureViewerProfilePostHis1HIsMutable();
+        viewerProfilePostHis1H_.addLong(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近1h点作者主页视频post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_profile_post_his_1h = 20;</code>
+       * @param values The viewerProfilePostHis1h to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAllViewerProfilePostHis1H(
+          java.lang.Iterable<? extends java.lang.Long> values) {
+        ensureViewerProfilePostHis1HIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, viewerProfilePostHis1H_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近1h点作者主页视频post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_profile_post_his_1h = 20;</code>
        * @return This builder for chaining.
        */
       public Builder clearViewerProfilePostHis1H() {
-        
-        viewerProfilePostHis1H_ = getDefaultInstance().getViewerProfilePostHis1H();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 用户最近1h点作者主页视频post列表
-       * </pre>
-       *
-       * <code>string viewer_profile_post_his_1h = 20;</code>
-       * @param value The bytes for viewerProfilePostHis1h to set.
-       * @return This builder for chaining.
-       */
-      public Builder setViewerProfilePostHis1HBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        viewerProfilePostHis1H_ = value;
+        viewerProfilePostHis1H_ = emptyLongList();
+        bitField0_ = (bitField0_ & ~0x00000010);
         onChanged();
         return this;
       }
 
-      private java.lang.Object viewerPosinterPostHis1H_ = "";
-      /**
-       * <pre>
-       * 用户最近1h评论收藏分享视频post列表
-       * </pre>
-       *
-       * <code>string viewer_posinter_post_his_1h = 21;</code>
-       * @return The viewerPosinterPostHis1h.
-       */
-      public java.lang.String getViewerPosinterPostHis1H() {
-        java.lang.Object ref = viewerPosinterPostHis1H_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          viewerPosinterPostHis1H_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
+      private com.google.protobuf.Internal.LongList viewerPosinterPostHis1H_ = emptyLongList();
+      private void ensureViewerPosinterPostHis1HIsMutable() {
+        if (!((bitField0_ & 0x00000020) != 0)) {
+          viewerPosinterPostHis1H_ = mutableCopy(viewerPosinterPostHis1H_);
+          bitField0_ |= 0x00000020;
+         }
       }
       /**
        * <pre>
        * 用户最近1h评论收藏分享视频post列表
        * </pre>
        *
-       * <code>string viewer_posinter_post_his_1h = 21;</code>
-       * @return The bytes for viewerPosinterPostHis1h.
+       * <code>repeated int64 viewer_posinter_post_his_1h = 21;</code>
+       * @return A list containing the viewerPosinterPostHis1h.
        */
-      public com.google.protobuf.ByteString
-          getViewerPosinterPostHis1HBytes() {
-        java.lang.Object ref = viewerPosinterPostHis1H_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          viewerPosinterPostHis1H_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
+      public java.util.List<java.lang.Long>
+          getViewerPosinterPostHis1HList() {
+        return ((bitField0_ & 0x00000020) != 0) ?
+                 java.util.Collections.unmodifiableList(viewerPosinterPostHis1H_) : viewerPosinterPostHis1H_;
       }
       /**
        * <pre>
        * 用户最近1h评论收藏分享视频post列表
        * </pre>
        *
-       * <code>string viewer_posinter_post_his_1h = 21;</code>
+       * <code>repeated int64 viewer_posinter_post_his_1h = 21;</code>
+       * @return The count of viewerPosinterPostHis1h.
+       */
+      public int getViewerPosinterPostHis1HCount() {
+        return viewerPosinterPostHis1H_.size();
+      }
+      /**
+       * <pre>
+       * 用户最近1h评论收藏分享视频post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_posinter_post_his_1h = 21;</code>
+       * @param index The index of the element to return.
+       * @return The viewerPosinterPostHis1h at the given index.
+       */
+      public long getViewerPosinterPostHis1H(int index) {
+        return viewerPosinterPostHis1H_.getLong(index);
+      }
+      /**
+       * <pre>
+       * 用户最近1h评论收藏分享视频post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_posinter_post_his_1h = 21;</code>
+       * @param index The index to set the value at.
        * @param value The viewerPosinterPostHis1h to set.
        * @return This builder for chaining.
        */
       public Builder setViewerPosinterPostHis1H(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        viewerPosinterPostHis1H_ = value;
+          int index, long value) {
+        ensureViewerPosinterPostHis1HIsMutable();
+        viewerPosinterPostHis1H_.setLong(index, value);
         onChanged();
         return this;
       }
@@ -5840,56 +7491,73 @@ public final class RecFeature {
        * 用户最近1h评论收藏分享视频post列表
        * </pre>
        *
-       * <code>string viewer_posinter_post_his_1h = 21;</code>
+       * <code>repeated int64 viewer_posinter_post_his_1h = 21;</code>
+       * @param value The viewerPosinterPostHis1h to add.
+       * @return This builder for chaining.
+       */
+      public Builder addViewerPosinterPostHis1H(long value) {
+        ensureViewerPosinterPostHis1HIsMutable();
+        viewerPosinterPostHis1H_.addLong(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近1h评论收藏分享视频post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_posinter_post_his_1h = 21;</code>
+       * @param values The viewerPosinterPostHis1h to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAllViewerPosinterPostHis1H(
+          java.lang.Iterable<? extends java.lang.Long> values) {
+        ensureViewerPosinterPostHis1HIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, viewerPosinterPostHis1H_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近1h评论收藏分享视频post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_posinter_post_his_1h = 21;</code>
        * @return This builder for chaining.
        */
       public Builder clearViewerPosinterPostHis1H() {
-        
-        viewerPosinterPostHis1H_ = getDefaultInstance().getViewerPosinterPostHis1H();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 用户最近1h评论收藏分享视频post列表
-       * </pre>
-       *
-       * <code>string viewer_posinter_post_his_1h = 21;</code>
-       * @param value The bytes for viewerPosinterPostHis1h to set.
-       * @return This builder for chaining.
-       */
-      public Builder setViewerPosinterPostHis1HBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        viewerPosinterPostHis1H_ = value;
+        viewerPosinterPostHis1H_ = emptyLongList();
+        bitField0_ = (bitField0_ & ~0x00000020);
         onChanged();
         return this;
       }
 
-      private java.lang.Object viewer3SviewPostHis24H_ = "";
+      private java.util.List<com.gosh.entity.RecFeature.IdScore> viewer3SviewPostHis24H_ =
+        java.util.Collections.emptyList();
+      private void ensureViewer3SviewPostHis24HIsMutable() {
+        if (!((bitField0_ & 0x00000040) != 0)) {
+          viewer3SviewPostHis24H_ = new java.util.ArrayList<com.gosh.entity.RecFeature.IdScore>(viewer3SviewPostHis24H_);
+          bitField0_ |= 0x00000040;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          com.gosh.entity.RecFeature.IdScore, com.gosh.entity.RecFeature.IdScore.Builder, com.gosh.entity.RecFeature.IdScoreOrBuilder> viewer3SviewPostHis24HBuilder_;
+
       /**
        * <pre>
        * 24小时窗口特征
        * 历史记录特征 (24小时)
        * </pre>
        *
-       * <code>string viewer_3sview_post_his_24h = 30;</code>
-       * @return The viewer3sviewPostHis24h.
+       * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_24h = 30;</code>
        */
-      public java.lang.String getViewer3SviewPostHis24H() {
-        java.lang.Object ref = viewer3SviewPostHis24H_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          viewer3SviewPostHis24H_ = s;
-          return s;
+      public java.util.List<com.gosh.entity.RecFeature.IdScore> getViewer3SviewPostHis24HList() {
+        if (viewer3SviewPostHis24HBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(viewer3SviewPostHis24H_);
         } else {
-          return (java.lang.String) ref;
+          return viewer3SviewPostHis24HBuilder_.getMessageList();
         }
       }
       /**
@@ -5898,20 +7566,13 @@ public final class RecFeature {
        * 历史记录特征 (24小时)
        * </pre>
        *
-       * <code>string viewer_3sview_post_his_24h = 30;</code>
-       * @return The bytes for viewer3sviewPostHis24h.
+       * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_24h = 30;</code>
        */
-      public com.google.protobuf.ByteString
-          getViewer3SviewPostHis24HBytes() {
-        java.lang.Object ref = viewer3SviewPostHis24H_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          viewer3SviewPostHis24H_ = b;
-          return b;
+      public int getViewer3SviewPostHis24HCount() {
+        if (viewer3SviewPostHis24HBuilder_ == null) {
+          return viewer3SviewPostHis24H_.size();
         } else {
-          return (com.google.protobuf.ByteString) ref;
+          return viewer3SviewPostHis24HBuilder_.getCount();
         }
       }
       /**
@@ -5920,18 +7581,35 @@ public final class RecFeature {
        * 历史记录特征 (24小时)
        * </pre>
        *
-       * <code>string viewer_3sview_post_his_24h = 30;</code>
-       * @param value The viewer3sviewPostHis24h to set.
-       * @return This builder for chaining.
+       * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_24h = 30;</code>
+       */
+      public com.gosh.entity.RecFeature.IdScore getViewer3SviewPostHis24H(int index) {
+        if (viewer3SviewPostHis24HBuilder_ == null) {
+          return viewer3SviewPostHis24H_.get(index);
+        } else {
+          return viewer3SviewPostHis24HBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <pre>
+       * 24小时窗口特征
+       * 历史记录特征 (24小时)
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_24h = 30;</code>
        */
       public Builder setViewer3SviewPostHis24H(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        viewer3SviewPostHis24H_ = value;
-        onChanged();
+          int index, com.gosh.entity.RecFeature.IdScore value) {
+        if (viewer3SviewPostHis24HBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureViewer3SviewPostHis24HIsMutable();
+          viewer3SviewPostHis24H_.set(index, value);
+          onChanged();
+        } else {
+          viewer3SviewPostHis24HBuilder_.setMessage(index, value);
+        }
         return this;
       }
       /**
@@ -5940,13 +7618,136 @@ public final class RecFeature {
        * 历史记录特征 (24小时)
        * </pre>
        *
-       * <code>string viewer_3sview_post_his_24h = 30;</code>
-       * @return This builder for chaining.
+       * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_24h = 30;</code>
+       */
+      public Builder setViewer3SviewPostHis24H(
+          int index, com.gosh.entity.RecFeature.IdScore.Builder builderForValue) {
+        if (viewer3SviewPostHis24HBuilder_ == null) {
+          ensureViewer3SviewPostHis24HIsMutable();
+          viewer3SviewPostHis24H_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          viewer3SviewPostHis24HBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 24小时窗口特征
+       * 历史记录特征 (24小时)
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_24h = 30;</code>
+       */
+      public Builder addViewer3SviewPostHis24H(com.gosh.entity.RecFeature.IdScore value) {
+        if (viewer3SviewPostHis24HBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureViewer3SviewPostHis24HIsMutable();
+          viewer3SviewPostHis24H_.add(value);
+          onChanged();
+        } else {
+          viewer3SviewPostHis24HBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 24小时窗口特征
+       * 历史记录特征 (24小时)
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_24h = 30;</code>
+       */
+      public Builder addViewer3SviewPostHis24H(
+          int index, com.gosh.entity.RecFeature.IdScore value) {
+        if (viewer3SviewPostHis24HBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureViewer3SviewPostHis24HIsMutable();
+          viewer3SviewPostHis24H_.add(index, value);
+          onChanged();
+        } else {
+          viewer3SviewPostHis24HBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 24小时窗口特征
+       * 历史记录特征 (24小时)
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_24h = 30;</code>
+       */
+      public Builder addViewer3SviewPostHis24H(
+          com.gosh.entity.RecFeature.IdScore.Builder builderForValue) {
+        if (viewer3SviewPostHis24HBuilder_ == null) {
+          ensureViewer3SviewPostHis24HIsMutable();
+          viewer3SviewPostHis24H_.add(builderForValue.build());
+          onChanged();
+        } else {
+          viewer3SviewPostHis24HBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 24小时窗口特征
+       * 历史记录特征 (24小时)
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_24h = 30;</code>
+       */
+      public Builder addViewer3SviewPostHis24H(
+          int index, com.gosh.entity.RecFeature.IdScore.Builder builderForValue) {
+        if (viewer3SviewPostHis24HBuilder_ == null) {
+          ensureViewer3SviewPostHis24HIsMutable();
+          viewer3SviewPostHis24H_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          viewer3SviewPostHis24HBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 24小时窗口特征
+       * 历史记录特征 (24小时)
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_24h = 30;</code>
+       */
+      public Builder addAllViewer3SviewPostHis24H(
+          java.lang.Iterable<? extends com.gosh.entity.RecFeature.IdScore> values) {
+        if (viewer3SviewPostHis24HBuilder_ == null) {
+          ensureViewer3SviewPostHis24HIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, viewer3SviewPostHis24H_);
+          onChanged();
+        } else {
+          viewer3SviewPostHis24HBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 24小时窗口特征
+       * 历史记录特征 (24小时)
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_24h = 30;</code>
        */
       public Builder clearViewer3SviewPostHis24H() {
-        
-        viewer3SviewPostHis24H_ = getDefaultInstance().getViewer3SviewPostHis24H();
-        onChanged();
+        if (viewer3SviewPostHis24HBuilder_ == null) {
+          viewer3SviewPostHis24H_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000040);
+          onChanged();
+        } else {
+          viewer3SviewPostHis24HBuilder_.clear();
+        }
         return this;
       }
       /**
@@ -5955,41 +7756,137 @@ public final class RecFeature {
        * 历史记录特征 (24小时)
        * </pre>
        *
-       * <code>string viewer_3sview_post_his_24h = 30;</code>
-       * @param value The bytes for viewer3sviewPostHis24h to set.
-       * @return This builder for chaining.
+       * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_24h = 30;</code>
        */
-      public Builder setViewer3SviewPostHis24HBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        viewer3SviewPostHis24H_ = value;
-        onChanged();
+      public Builder removeViewer3SviewPostHis24H(int index) {
+        if (viewer3SviewPostHis24HBuilder_ == null) {
+          ensureViewer3SviewPostHis24HIsMutable();
+          viewer3SviewPostHis24H_.remove(index);
+          onChanged();
+        } else {
+          viewer3SviewPostHis24HBuilder_.remove(index);
+        }
         return this;
       }
+      /**
+       * <pre>
+       * 24小时窗口特征
+       * 历史记录特征 (24小时)
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_24h = 30;</code>
+       */
+      public com.gosh.entity.RecFeature.IdScore.Builder getViewer3SviewPostHis24HBuilder(
+          int index) {
+        return getViewer3SviewPostHis24HFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <pre>
+       * 24小时窗口特征
+       * 历史记录特征 (24小时)
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_24h = 30;</code>
+       */
+      public com.gosh.entity.RecFeature.IdScoreOrBuilder getViewer3SviewPostHis24HOrBuilder(
+          int index) {
+        if (viewer3SviewPostHis24HBuilder_ == null) {
+          return viewer3SviewPostHis24H_.get(index);  } else {
+          return viewer3SviewPostHis24HBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <pre>
+       * 24小时窗口特征
+       * 历史记录特征 (24小时)
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_24h = 30;</code>
+       */
+      public java.util.List<? extends com.gosh.entity.RecFeature.IdScoreOrBuilder> 
+           getViewer3SviewPostHis24HOrBuilderList() {
+        if (viewer3SviewPostHis24HBuilder_ != null) {
+          return viewer3SviewPostHis24HBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(viewer3SviewPostHis24H_);
+        }
+      }
+      /**
+       * <pre>
+       * 24小时窗口特征
+       * 历史记录特征 (24小时)
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_24h = 30;</code>
+       */
+      public com.gosh.entity.RecFeature.IdScore.Builder addViewer3SviewPostHis24HBuilder() {
+        return getViewer3SviewPostHis24HFieldBuilder().addBuilder(
+            com.gosh.entity.RecFeature.IdScore.getDefaultInstance());
+      }
+      /**
+       * <pre>
+       * 24小时窗口特征
+       * 历史记录特征 (24小时)
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_24h = 30;</code>
+       */
+      public com.gosh.entity.RecFeature.IdScore.Builder addViewer3SviewPostHis24HBuilder(
+          int index) {
+        return getViewer3SviewPostHis24HFieldBuilder().addBuilder(
+            index, com.gosh.entity.RecFeature.IdScore.getDefaultInstance());
+      }
+      /**
+       * <pre>
+       * 24小时窗口特征
+       * 历史记录特征 (24小时)
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_24h = 30;</code>
+       */
+      public java.util.List<com.gosh.entity.RecFeature.IdScore.Builder> 
+           getViewer3SviewPostHis24HBuilderList() {
+        return getViewer3SviewPostHis24HFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          com.gosh.entity.RecFeature.IdScore, com.gosh.entity.RecFeature.IdScore.Builder, com.gosh.entity.RecFeature.IdScoreOrBuilder> 
+          getViewer3SviewPostHis24HFieldBuilder() {
+        if (viewer3SviewPostHis24HBuilder_ == null) {
+          viewer3SviewPostHis24HBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+              com.gosh.entity.RecFeature.IdScore, com.gosh.entity.RecFeature.IdScore.Builder, com.gosh.entity.RecFeature.IdScoreOrBuilder>(
+                  viewer3SviewPostHis24H_,
+                  ((bitField0_ & 0x00000040) != 0),
+                  getParentForChildren(),
+                  isClean());
+          viewer3SviewPostHis24H_ = null;
+        }
+        return viewer3SviewPostHis24HBuilder_;
+      }
 
-      private java.lang.Object viewer5SstandPostHis24H_ = "";
+      private java.util.List<com.gosh.entity.RecFeature.IdScore> viewer5SstandPostHis24H_ =
+        java.util.Collections.emptyList();
+      private void ensureViewer5SstandPostHis24HIsMutable() {
+        if (!((bitField0_ & 0x00000080) != 0)) {
+          viewer5SstandPostHis24H_ = new java.util.ArrayList<com.gosh.entity.RecFeature.IdScore>(viewer5SstandPostHis24H_);
+          bitField0_ |= 0x00000080;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          com.gosh.entity.RecFeature.IdScore, com.gosh.entity.RecFeature.IdScore.Builder, com.gosh.entity.RecFeature.IdScoreOrBuilder> viewer5SstandPostHis24HBuilder_;
+
       /**
        * <pre>
        * 用户最近24h停留5s以上视频post列表带停留时长
        * </pre>
        *
-       * <code>string viewer_5sstand_post_his_24h = 31;</code>
-       * @return The viewer5sstandPostHis24h.
+       * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_24h = 31;</code>
        */
-      public java.lang.String getViewer5SstandPostHis24H() {
-        java.lang.Object ref = viewer5SstandPostHis24H_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          viewer5SstandPostHis24H_ = s;
-          return s;
+      public java.util.List<com.gosh.entity.RecFeature.IdScore> getViewer5SstandPostHis24HList() {
+        if (viewer5SstandPostHis24HBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(viewer5SstandPostHis24H_);
         } else {
-          return (java.lang.String) ref;
+          return viewer5SstandPostHis24HBuilder_.getMessageList();
         }
       }
       /**
@@ -5997,20 +7894,13 @@ public final class RecFeature {
        * 用户最近24h停留5s以上视频post列表带停留时长
        * </pre>
        *
-       * <code>string viewer_5sstand_post_his_24h = 31;</code>
-       * @return The bytes for viewer5sstandPostHis24h.
+       * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_24h = 31;</code>
        */
-      public com.google.protobuf.ByteString
-          getViewer5SstandPostHis24HBytes() {
-        java.lang.Object ref = viewer5SstandPostHis24H_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          viewer5SstandPostHis24H_ = b;
-          return b;
+      public int getViewer5SstandPostHis24HCount() {
+        if (viewer5SstandPostHis24HBuilder_ == null) {
+          return viewer5SstandPostHis24H_.size();
         } else {
-          return (com.google.protobuf.ByteString) ref;
+          return viewer5SstandPostHis24HBuilder_.getCount();
         }
       }
       /**
@@ -6018,18 +7908,34 @@ public final class RecFeature {
        * 用户最近24h停留5s以上视频post列表带停留时长
        * </pre>
        *
-       * <code>string viewer_5sstand_post_his_24h = 31;</code>
-       * @param value The viewer5sstandPostHis24h to set.
-       * @return This builder for chaining.
+       * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_24h = 31;</code>
+       */
+      public com.gosh.entity.RecFeature.IdScore getViewer5SstandPostHis24H(int index) {
+        if (viewer5SstandPostHis24HBuilder_ == null) {
+          return viewer5SstandPostHis24H_.get(index);
+        } else {
+          return viewer5SstandPostHis24HBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <pre>
+       * 用户最近24h停留5s以上视频post列表带停留时长
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_24h = 31;</code>
        */
       public Builder setViewer5SstandPostHis24H(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        viewer5SstandPostHis24H_ = value;
-        onChanged();
+          int index, com.gosh.entity.RecFeature.IdScore value) {
+        if (viewer5SstandPostHis24HBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureViewer5SstandPostHis24HIsMutable();
+          viewer5SstandPostHis24H_.set(index, value);
+          onChanged();
+        } else {
+          viewer5SstandPostHis24HBuilder_.setMessage(index, value);
+        }
         return this;
       }
       /**
@@ -6037,13 +7943,130 @@ public final class RecFeature {
        * 用户最近24h停留5s以上视频post列表带停留时长
        * </pre>
        *
-       * <code>string viewer_5sstand_post_his_24h = 31;</code>
-       * @return This builder for chaining.
+       * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_24h = 31;</code>
+       */
+      public Builder setViewer5SstandPostHis24H(
+          int index, com.gosh.entity.RecFeature.IdScore.Builder builderForValue) {
+        if (viewer5SstandPostHis24HBuilder_ == null) {
+          ensureViewer5SstandPostHis24HIsMutable();
+          viewer5SstandPostHis24H_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          viewer5SstandPostHis24HBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近24h停留5s以上视频post列表带停留时长
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_24h = 31;</code>
+       */
+      public Builder addViewer5SstandPostHis24H(com.gosh.entity.RecFeature.IdScore value) {
+        if (viewer5SstandPostHis24HBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureViewer5SstandPostHis24HIsMutable();
+          viewer5SstandPostHis24H_.add(value);
+          onChanged();
+        } else {
+          viewer5SstandPostHis24HBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近24h停留5s以上视频post列表带停留时长
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_24h = 31;</code>
+       */
+      public Builder addViewer5SstandPostHis24H(
+          int index, com.gosh.entity.RecFeature.IdScore value) {
+        if (viewer5SstandPostHis24HBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureViewer5SstandPostHis24HIsMutable();
+          viewer5SstandPostHis24H_.add(index, value);
+          onChanged();
+        } else {
+          viewer5SstandPostHis24HBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近24h停留5s以上视频post列表带停留时长
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_24h = 31;</code>
+       */
+      public Builder addViewer5SstandPostHis24H(
+          com.gosh.entity.RecFeature.IdScore.Builder builderForValue) {
+        if (viewer5SstandPostHis24HBuilder_ == null) {
+          ensureViewer5SstandPostHis24HIsMutable();
+          viewer5SstandPostHis24H_.add(builderForValue.build());
+          onChanged();
+        } else {
+          viewer5SstandPostHis24HBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近24h停留5s以上视频post列表带停留时长
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_24h = 31;</code>
+       */
+      public Builder addViewer5SstandPostHis24H(
+          int index, com.gosh.entity.RecFeature.IdScore.Builder builderForValue) {
+        if (viewer5SstandPostHis24HBuilder_ == null) {
+          ensureViewer5SstandPostHis24HIsMutable();
+          viewer5SstandPostHis24H_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          viewer5SstandPostHis24HBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近24h停留5s以上视频post列表带停留时长
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_24h = 31;</code>
+       */
+      public Builder addAllViewer5SstandPostHis24H(
+          java.lang.Iterable<? extends com.gosh.entity.RecFeature.IdScore> values) {
+        if (viewer5SstandPostHis24HBuilder_ == null) {
+          ensureViewer5SstandPostHis24HIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, viewer5SstandPostHis24H_);
+          onChanged();
+        } else {
+          viewer5SstandPostHis24HBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近24h停留5s以上视频post列表带停留时长
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_24h = 31;</code>
        */
       public Builder clearViewer5SstandPostHis24H() {
-        
-        viewer5SstandPostHis24H_ = getDefaultInstance().getViewer5SstandPostHis24H();
-        onChanged();
+        if (viewer5SstandPostHis24HBuilder_ == null) {
+          viewer5SstandPostHis24H_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000080);
+          onChanged();
+        } else {
+          viewer5SstandPostHis24HBuilder_.clear();
+        }
         return this;
       }
       /**
@@ -6051,80 +8074,164 @@ public final class RecFeature {
        * 用户最近24h停留5s以上视频post列表带停留时长
        * </pre>
        *
-       * <code>string viewer_5sstand_post_his_24h = 31;</code>
-       * @param value The bytes for viewer5sstandPostHis24h to set.
-       * @return This builder for chaining.
+       * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_24h = 31;</code>
        */
-      public Builder setViewer5SstandPostHis24HBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        viewer5SstandPostHis24H_ = value;
-        onChanged();
+      public Builder removeViewer5SstandPostHis24H(int index) {
+        if (viewer5SstandPostHis24HBuilder_ == null) {
+          ensureViewer5SstandPostHis24HIsMutable();
+          viewer5SstandPostHis24H_.remove(index);
+          onChanged();
+        } else {
+          viewer5SstandPostHis24HBuilder_.remove(index);
+        }
         return this;
       }
+      /**
+       * <pre>
+       * 用户最近24h停留5s以上视频post列表带停留时长
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_24h = 31;</code>
+       */
+      public com.gosh.entity.RecFeature.IdScore.Builder getViewer5SstandPostHis24HBuilder(
+          int index) {
+        return getViewer5SstandPostHis24HFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <pre>
+       * 用户最近24h停留5s以上视频post列表带停留时长
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_24h = 31;</code>
+       */
+      public com.gosh.entity.RecFeature.IdScoreOrBuilder getViewer5SstandPostHis24HOrBuilder(
+          int index) {
+        if (viewer5SstandPostHis24HBuilder_ == null) {
+          return viewer5SstandPostHis24H_.get(index);  } else {
+          return viewer5SstandPostHis24HBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <pre>
+       * 用户最近24h停留5s以上视频post列表带停留时长
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_24h = 31;</code>
+       */
+      public java.util.List<? extends com.gosh.entity.RecFeature.IdScoreOrBuilder> 
+           getViewer5SstandPostHis24HOrBuilderList() {
+        if (viewer5SstandPostHis24HBuilder_ != null) {
+          return viewer5SstandPostHis24HBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(viewer5SstandPostHis24H_);
+        }
+      }
+      /**
+       * <pre>
+       * 用户最近24h停留5s以上视频post列表带停留时长
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_24h = 31;</code>
+       */
+      public com.gosh.entity.RecFeature.IdScore.Builder addViewer5SstandPostHis24HBuilder() {
+        return getViewer5SstandPostHis24HFieldBuilder().addBuilder(
+            com.gosh.entity.RecFeature.IdScore.getDefaultInstance());
+      }
+      /**
+       * <pre>
+       * 用户最近24h停留5s以上视频post列表带停留时长
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_24h = 31;</code>
+       */
+      public com.gosh.entity.RecFeature.IdScore.Builder addViewer5SstandPostHis24HBuilder(
+          int index) {
+        return getViewer5SstandPostHis24HFieldBuilder().addBuilder(
+            index, com.gosh.entity.RecFeature.IdScore.getDefaultInstance());
+      }
+      /**
+       * <pre>
+       * 用户最近24h停留5s以上视频post列表带停留时长
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_24h = 31;</code>
+       */
+      public java.util.List<com.gosh.entity.RecFeature.IdScore.Builder> 
+           getViewer5SstandPostHis24HBuilderList() {
+        return getViewer5SstandPostHis24HFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          com.gosh.entity.RecFeature.IdScore, com.gosh.entity.RecFeature.IdScore.Builder, com.gosh.entity.RecFeature.IdScoreOrBuilder> 
+          getViewer5SstandPostHis24HFieldBuilder() {
+        if (viewer5SstandPostHis24HBuilder_ == null) {
+          viewer5SstandPostHis24HBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+              com.gosh.entity.RecFeature.IdScore, com.gosh.entity.RecFeature.IdScore.Builder, com.gosh.entity.RecFeature.IdScoreOrBuilder>(
+                  viewer5SstandPostHis24H_,
+                  ((bitField0_ & 0x00000080) != 0),
+                  getParentForChildren(),
+                  isClean());
+          viewer5SstandPostHis24H_ = null;
+        }
+        return viewer5SstandPostHis24HBuilder_;
+      }
 
-      private java.lang.Object viewerLikePostHis24H_ = "";
-      /**
-       * <pre>
-       * 用户最近24h点赞视频post列表
-       * </pre>
-       *
-       * <code>string viewer_like_post_his_24h = 32;</code>
-       * @return The viewerLikePostHis24h.
-       */
-      public java.lang.String getViewerLikePostHis24H() {
-        java.lang.Object ref = viewerLikePostHis24H_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          viewerLikePostHis24H_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
+      private com.google.protobuf.Internal.LongList viewerLikePostHis24H_ = emptyLongList();
+      private void ensureViewerLikePostHis24HIsMutable() {
+        if (!((bitField0_ & 0x00000100) != 0)) {
+          viewerLikePostHis24H_ = mutableCopy(viewerLikePostHis24H_);
+          bitField0_ |= 0x00000100;
+         }
       }
       /**
        * <pre>
        * 用户最近24h点赞视频post列表
        * </pre>
        *
-       * <code>string viewer_like_post_his_24h = 32;</code>
-       * @return The bytes for viewerLikePostHis24h.
+       * <code>repeated int64 viewer_like_post_his_24h = 32;</code>
+       * @return A list containing the viewerLikePostHis24h.
        */
-      public com.google.protobuf.ByteString
-          getViewerLikePostHis24HBytes() {
-        java.lang.Object ref = viewerLikePostHis24H_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          viewerLikePostHis24H_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
+      public java.util.List<java.lang.Long>
+          getViewerLikePostHis24HList() {
+        return ((bitField0_ & 0x00000100) != 0) ?
+                 java.util.Collections.unmodifiableList(viewerLikePostHis24H_) : viewerLikePostHis24H_;
       }
       /**
        * <pre>
        * 用户最近24h点赞视频post列表
        * </pre>
        *
-       * <code>string viewer_like_post_his_24h = 32;</code>
+       * <code>repeated int64 viewer_like_post_his_24h = 32;</code>
+       * @return The count of viewerLikePostHis24h.
+       */
+      public int getViewerLikePostHis24HCount() {
+        return viewerLikePostHis24H_.size();
+      }
+      /**
+       * <pre>
+       * 用户最近24h点赞视频post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_like_post_his_24h = 32;</code>
+       * @param index The index of the element to return.
+       * @return The viewerLikePostHis24h at the given index.
+       */
+      public long getViewerLikePostHis24H(int index) {
+        return viewerLikePostHis24H_.getLong(index);
+      }
+      /**
+       * <pre>
+       * 用户最近24h点赞视频post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_like_post_his_24h = 32;</code>
+       * @param index The index to set the value at.
        * @param value The viewerLikePostHis24h to set.
        * @return This builder for chaining.
        */
       public Builder setViewerLikePostHis24H(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        viewerLikePostHis24H_ = value;
+          int index, long value) {
+        ensureViewerLikePostHis24HIsMutable();
+        viewerLikePostHis24H_.setLong(index, value);
         onChanged();
         return this;
       }
@@ -6133,94 +8240,105 @@ public final class RecFeature {
        * 用户最近24h点赞视频post列表
        * </pre>
        *
-       * <code>string viewer_like_post_his_24h = 32;</code>
+       * <code>repeated int64 viewer_like_post_his_24h = 32;</code>
+       * @param value The viewerLikePostHis24h to add.
+       * @return This builder for chaining.
+       */
+      public Builder addViewerLikePostHis24H(long value) {
+        ensureViewerLikePostHis24HIsMutable();
+        viewerLikePostHis24H_.addLong(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近24h点赞视频post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_like_post_his_24h = 32;</code>
+       * @param values The viewerLikePostHis24h to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAllViewerLikePostHis24H(
+          java.lang.Iterable<? extends java.lang.Long> values) {
+        ensureViewerLikePostHis24HIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, viewerLikePostHis24H_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近24h点赞视频post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_like_post_his_24h = 32;</code>
        * @return This builder for chaining.
        */
       public Builder clearViewerLikePostHis24H() {
-        
-        viewerLikePostHis24H_ = getDefaultInstance().getViewerLikePostHis24H();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 用户最近24h点赞视频post列表
-       * </pre>
-       *
-       * <code>string viewer_like_post_his_24h = 32;</code>
-       * @param value The bytes for viewerLikePostHis24h to set.
-       * @return This builder for chaining.
-       */
-      public Builder setViewerLikePostHis24HBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        viewerLikePostHis24H_ = value;
+        viewerLikePostHis24H_ = emptyLongList();
+        bitField0_ = (bitField0_ & ~0x00000100);
         onChanged();
         return this;
       }
 
-      private java.lang.Object viewerFollowPostHis24H_ = "";
-      /**
-       * <pre>
-       * 用户最近24h点关注视频post列表
-       * </pre>
-       *
-       * <code>string viewer_follow_post_his_24h = 33;</code>
-       * @return The viewerFollowPostHis24h.
-       */
-      public java.lang.String getViewerFollowPostHis24H() {
-        java.lang.Object ref = viewerFollowPostHis24H_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          viewerFollowPostHis24H_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
+      private com.google.protobuf.Internal.LongList viewerFollowPostHis24H_ = emptyLongList();
+      private void ensureViewerFollowPostHis24HIsMutable() {
+        if (!((bitField0_ & 0x00000200) != 0)) {
+          viewerFollowPostHis24H_ = mutableCopy(viewerFollowPostHis24H_);
+          bitField0_ |= 0x00000200;
+         }
       }
       /**
        * <pre>
        * 用户最近24h点关注视频post列表
        * </pre>
        *
-       * <code>string viewer_follow_post_his_24h = 33;</code>
-       * @return The bytes for viewerFollowPostHis24h.
+       * <code>repeated int64 viewer_follow_post_his_24h = 33;</code>
+       * @return A list containing the viewerFollowPostHis24h.
        */
-      public com.google.protobuf.ByteString
-          getViewerFollowPostHis24HBytes() {
-        java.lang.Object ref = viewerFollowPostHis24H_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          viewerFollowPostHis24H_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
+      public java.util.List<java.lang.Long>
+          getViewerFollowPostHis24HList() {
+        return ((bitField0_ & 0x00000200) != 0) ?
+                 java.util.Collections.unmodifiableList(viewerFollowPostHis24H_) : viewerFollowPostHis24H_;
       }
       /**
        * <pre>
        * 用户最近24h点关注视频post列表
        * </pre>
        *
-       * <code>string viewer_follow_post_his_24h = 33;</code>
+       * <code>repeated int64 viewer_follow_post_his_24h = 33;</code>
+       * @return The count of viewerFollowPostHis24h.
+       */
+      public int getViewerFollowPostHis24HCount() {
+        return viewerFollowPostHis24H_.size();
+      }
+      /**
+       * <pre>
+       * 用户最近24h点关注视频post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_follow_post_his_24h = 33;</code>
+       * @param index The index of the element to return.
+       * @return The viewerFollowPostHis24h at the given index.
+       */
+      public long getViewerFollowPostHis24H(int index) {
+        return viewerFollowPostHis24H_.getLong(index);
+      }
+      /**
+       * <pre>
+       * 用户最近24h点关注视频post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_follow_post_his_24h = 33;</code>
+       * @param index The index to set the value at.
        * @param value The viewerFollowPostHis24h to set.
        * @return This builder for chaining.
        */
       public Builder setViewerFollowPostHis24H(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        viewerFollowPostHis24H_ = value;
+          int index, long value) {
+        ensureViewerFollowPostHis24HIsMutable();
+        viewerFollowPostHis24H_.setLong(index, value);
         onChanged();
         return this;
       }
@@ -6229,94 +8347,105 @@ public final class RecFeature {
        * 用户最近24h点关注视频post列表
        * </pre>
        *
-       * <code>string viewer_follow_post_his_24h = 33;</code>
+       * <code>repeated int64 viewer_follow_post_his_24h = 33;</code>
+       * @param value The viewerFollowPostHis24h to add.
+       * @return This builder for chaining.
+       */
+      public Builder addViewerFollowPostHis24H(long value) {
+        ensureViewerFollowPostHis24HIsMutable();
+        viewerFollowPostHis24H_.addLong(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近24h点关注视频post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_follow_post_his_24h = 33;</code>
+       * @param values The viewerFollowPostHis24h to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAllViewerFollowPostHis24H(
+          java.lang.Iterable<? extends java.lang.Long> values) {
+        ensureViewerFollowPostHis24HIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, viewerFollowPostHis24H_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近24h点关注视频post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_follow_post_his_24h = 33;</code>
        * @return This builder for chaining.
        */
       public Builder clearViewerFollowPostHis24H() {
-        
-        viewerFollowPostHis24H_ = getDefaultInstance().getViewerFollowPostHis24H();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 用户最近24h点关注视频post列表
-       * </pre>
-       *
-       * <code>string viewer_follow_post_his_24h = 33;</code>
-       * @param value The bytes for viewerFollowPostHis24h to set.
-       * @return This builder for chaining.
-       */
-      public Builder setViewerFollowPostHis24HBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        viewerFollowPostHis24H_ = value;
+        viewerFollowPostHis24H_ = emptyLongList();
+        bitField0_ = (bitField0_ & ~0x00000200);
         onChanged();
         return this;
       }
 
-      private java.lang.Object viewerProfilePostHis24H_ = "";
-      /**
-       * <pre>
-       * 用户最近24h点作者主页视频post列表
-       * </pre>
-       *
-       * <code>string viewer_profile_post_his_24h = 34;</code>
-       * @return The viewerProfilePostHis24h.
-       */
-      public java.lang.String getViewerProfilePostHis24H() {
-        java.lang.Object ref = viewerProfilePostHis24H_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          viewerProfilePostHis24H_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
+      private com.google.protobuf.Internal.LongList viewerProfilePostHis24H_ = emptyLongList();
+      private void ensureViewerProfilePostHis24HIsMutable() {
+        if (!((bitField0_ & 0x00000400) != 0)) {
+          viewerProfilePostHis24H_ = mutableCopy(viewerProfilePostHis24H_);
+          bitField0_ |= 0x00000400;
+         }
       }
       /**
        * <pre>
        * 用户最近24h点作者主页视频post列表
        * </pre>
        *
-       * <code>string viewer_profile_post_his_24h = 34;</code>
-       * @return The bytes for viewerProfilePostHis24h.
+       * <code>repeated int64 viewer_profile_post_his_24h = 34;</code>
+       * @return A list containing the viewerProfilePostHis24h.
        */
-      public com.google.protobuf.ByteString
-          getViewerProfilePostHis24HBytes() {
-        java.lang.Object ref = viewerProfilePostHis24H_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          viewerProfilePostHis24H_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
+      public java.util.List<java.lang.Long>
+          getViewerProfilePostHis24HList() {
+        return ((bitField0_ & 0x00000400) != 0) ?
+                 java.util.Collections.unmodifiableList(viewerProfilePostHis24H_) : viewerProfilePostHis24H_;
       }
       /**
        * <pre>
        * 用户最近24h点作者主页视频post列表
        * </pre>
        *
-       * <code>string viewer_profile_post_his_24h = 34;</code>
+       * <code>repeated int64 viewer_profile_post_his_24h = 34;</code>
+       * @return The count of viewerProfilePostHis24h.
+       */
+      public int getViewerProfilePostHis24HCount() {
+        return viewerProfilePostHis24H_.size();
+      }
+      /**
+       * <pre>
+       * 用户最近24h点作者主页视频post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_profile_post_his_24h = 34;</code>
+       * @param index The index of the element to return.
+       * @return The viewerProfilePostHis24h at the given index.
+       */
+      public long getViewerProfilePostHis24H(int index) {
+        return viewerProfilePostHis24H_.getLong(index);
+      }
+      /**
+       * <pre>
+       * 用户最近24h点作者主页视频post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_profile_post_his_24h = 34;</code>
+       * @param index The index to set the value at.
        * @param value The viewerProfilePostHis24h to set.
        * @return This builder for chaining.
        */
       public Builder setViewerProfilePostHis24H(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        viewerProfilePostHis24H_ = value;
+          int index, long value) {
+        ensureViewerProfilePostHis24HIsMutable();
+        viewerProfilePostHis24H_.setLong(index, value);
         onChanged();
         return this;
       }
@@ -6325,94 +8454,105 @@ public final class RecFeature {
        * 用户最近24h点作者主页视频post列表
        * </pre>
        *
-       * <code>string viewer_profile_post_his_24h = 34;</code>
+       * <code>repeated int64 viewer_profile_post_his_24h = 34;</code>
+       * @param value The viewerProfilePostHis24h to add.
+       * @return This builder for chaining.
+       */
+      public Builder addViewerProfilePostHis24H(long value) {
+        ensureViewerProfilePostHis24HIsMutable();
+        viewerProfilePostHis24H_.addLong(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近24h点作者主页视频post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_profile_post_his_24h = 34;</code>
+       * @param values The viewerProfilePostHis24h to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAllViewerProfilePostHis24H(
+          java.lang.Iterable<? extends java.lang.Long> values) {
+        ensureViewerProfilePostHis24HIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, viewerProfilePostHis24H_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近24h点作者主页视频post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_profile_post_his_24h = 34;</code>
        * @return This builder for chaining.
        */
       public Builder clearViewerProfilePostHis24H() {
-        
-        viewerProfilePostHis24H_ = getDefaultInstance().getViewerProfilePostHis24H();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 用户最近24h点作者主页视频post列表
-       * </pre>
-       *
-       * <code>string viewer_profile_post_his_24h = 34;</code>
-       * @param value The bytes for viewerProfilePostHis24h to set.
-       * @return This builder for chaining.
-       */
-      public Builder setViewerProfilePostHis24HBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        viewerProfilePostHis24H_ = value;
+        viewerProfilePostHis24H_ = emptyLongList();
+        bitField0_ = (bitField0_ & ~0x00000400);
         onChanged();
         return this;
       }
 
-      private java.lang.Object viewerPosinterPostHis24H_ = "";
-      /**
-       * <pre>
-       * 用户最近24h评论收藏分享视频post列表
-       * </pre>
-       *
-       * <code>string viewer_posinter_post_his_24h = 35;</code>
-       * @return The viewerPosinterPostHis24h.
-       */
-      public java.lang.String getViewerPosinterPostHis24H() {
-        java.lang.Object ref = viewerPosinterPostHis24H_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          viewerPosinterPostHis24H_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
+      private com.google.protobuf.Internal.LongList viewerPosinterPostHis24H_ = emptyLongList();
+      private void ensureViewerPosinterPostHis24HIsMutable() {
+        if (!((bitField0_ & 0x00000800) != 0)) {
+          viewerPosinterPostHis24H_ = mutableCopy(viewerPosinterPostHis24H_);
+          bitField0_ |= 0x00000800;
+         }
       }
       /**
        * <pre>
        * 用户最近24h评论收藏分享视频post列表
        * </pre>
        *
-       * <code>string viewer_posinter_post_his_24h = 35;</code>
-       * @return The bytes for viewerPosinterPostHis24h.
+       * <code>repeated int64 viewer_posinter_post_his_24h = 35;</code>
+       * @return A list containing the viewerPosinterPostHis24h.
        */
-      public com.google.protobuf.ByteString
-          getViewerPosinterPostHis24HBytes() {
-        java.lang.Object ref = viewerPosinterPostHis24H_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          viewerPosinterPostHis24H_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
+      public java.util.List<java.lang.Long>
+          getViewerPosinterPostHis24HList() {
+        return ((bitField0_ & 0x00000800) != 0) ?
+                 java.util.Collections.unmodifiableList(viewerPosinterPostHis24H_) : viewerPosinterPostHis24H_;
       }
       /**
        * <pre>
        * 用户最近24h评论收藏分享视频post列表
        * </pre>
        *
-       * <code>string viewer_posinter_post_his_24h = 35;</code>
+       * <code>repeated int64 viewer_posinter_post_his_24h = 35;</code>
+       * @return The count of viewerPosinterPostHis24h.
+       */
+      public int getViewerPosinterPostHis24HCount() {
+        return viewerPosinterPostHis24H_.size();
+      }
+      /**
+       * <pre>
+       * 用户最近24h评论收藏分享视频post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_posinter_post_his_24h = 35;</code>
+       * @param index The index of the element to return.
+       * @return The viewerPosinterPostHis24h at the given index.
+       */
+      public long getViewerPosinterPostHis24H(int index) {
+        return viewerPosinterPostHis24H_.getLong(index);
+      }
+      /**
+       * <pre>
+       * 用户最近24h评论收藏分享视频post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_posinter_post_his_24h = 35;</code>
+       * @param index The index to set the value at.
        * @param value The viewerPosinterPostHis24h to set.
        * @return This builder for chaining.
        */
       public Builder setViewerPosinterPostHis24H(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        viewerPosinterPostHis24H_ = value;
+          int index, long value) {
+        ensureViewerPosinterPostHis24HIsMutable();
+        viewerPosinterPostHis24H_.setLong(index, value);
         onChanged();
         return this;
       }
@@ -6421,94 +8561,105 @@ public final class RecFeature {
        * 用户最近24h评论收藏分享视频post列表
        * </pre>
        *
-       * <code>string viewer_posinter_post_his_24h = 35;</code>
+       * <code>repeated int64 viewer_posinter_post_his_24h = 35;</code>
+       * @param value The viewerPosinterPostHis24h to add.
+       * @return This builder for chaining.
+       */
+      public Builder addViewerPosinterPostHis24H(long value) {
+        ensureViewerPosinterPostHis24HIsMutable();
+        viewerPosinterPostHis24H_.addLong(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近24h评论收藏分享视频post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_posinter_post_his_24h = 35;</code>
+       * @param values The viewerPosinterPostHis24h to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAllViewerPosinterPostHis24H(
+          java.lang.Iterable<? extends java.lang.Long> values) {
+        ensureViewerPosinterPostHis24HIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, viewerPosinterPostHis24H_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近24h评论收藏分享视频post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_posinter_post_his_24h = 35;</code>
        * @return This builder for chaining.
        */
       public Builder clearViewerPosinterPostHis24H() {
-        
-        viewerPosinterPostHis24H_ = getDefaultInstance().getViewerPosinterPostHis24H();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 用户最近24h评论收藏分享视频post列表
-       * </pre>
-       *
-       * <code>string viewer_posinter_post_his_24h = 35;</code>
-       * @param value The bytes for viewerPosinterPostHis24h to set.
-       * @return This builder for chaining.
-       */
-      public Builder setViewerPosinterPostHis24HBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        viewerPosinterPostHis24H_ = value;
+        viewerPosinterPostHis24H_ = emptyLongList();
+        bitField0_ = (bitField0_ & ~0x00000800);
         onChanged();
         return this;
       }
 
-      private java.lang.Object viewerLikeAuthorHis24H_ = "";
-      /**
-       * <pre>
-       * 作者相关特征 (24小时)
-       * </pre>
-       *
-       * <code>string viewer_like_author_his_24h = 40;</code>
-       * @return The viewerLikeAuthorHis24h.
-       */
-      public java.lang.String getViewerLikeAuthorHis24H() {
-        java.lang.Object ref = viewerLikeAuthorHis24H_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          viewerLikeAuthorHis24H_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
+      private com.google.protobuf.Internal.IntList viewerLikeAuthorHis24H_ = emptyIntList();
+      private void ensureViewerLikeAuthorHis24HIsMutable() {
+        if (!((bitField0_ & 0x00001000) != 0)) {
+          viewerLikeAuthorHis24H_ = mutableCopy(viewerLikeAuthorHis24H_);
+          bitField0_ |= 0x00001000;
+         }
       }
       /**
        * <pre>
        * 作者相关特征 (24小时)
        * </pre>
        *
-       * <code>string viewer_like_author_his_24h = 40;</code>
-       * @return The bytes for viewerLikeAuthorHis24h.
+       * <code>repeated int32 viewer_like_author_his_24h = 40;</code>
+       * @return A list containing the viewerLikeAuthorHis24h.
        */
-      public com.google.protobuf.ByteString
-          getViewerLikeAuthorHis24HBytes() {
-        java.lang.Object ref = viewerLikeAuthorHis24H_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          viewerLikeAuthorHis24H_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
+      public java.util.List<java.lang.Integer>
+          getViewerLikeAuthorHis24HList() {
+        return ((bitField0_ & 0x00001000) != 0) ?
+                 java.util.Collections.unmodifiableList(viewerLikeAuthorHis24H_) : viewerLikeAuthorHis24H_;
       }
       /**
        * <pre>
        * 作者相关特征 (24小时)
        * </pre>
        *
-       * <code>string viewer_like_author_his_24h = 40;</code>
+       * <code>repeated int32 viewer_like_author_his_24h = 40;</code>
+       * @return The count of viewerLikeAuthorHis24h.
+       */
+      public int getViewerLikeAuthorHis24HCount() {
+        return viewerLikeAuthorHis24H_.size();
+      }
+      /**
+       * <pre>
+       * 作者相关特征 (24小时)
+       * </pre>
+       *
+       * <code>repeated int32 viewer_like_author_his_24h = 40;</code>
+       * @param index The index of the element to return.
+       * @return The viewerLikeAuthorHis24h at the given index.
+       */
+      public int getViewerLikeAuthorHis24H(int index) {
+        return viewerLikeAuthorHis24H_.getInt(index);
+      }
+      /**
+       * <pre>
+       * 作者相关特征 (24小时)
+       * </pre>
+       *
+       * <code>repeated int32 viewer_like_author_his_24h = 40;</code>
+       * @param index The index to set the value at.
        * @param value The viewerLikeAuthorHis24h to set.
        * @return This builder for chaining.
        */
       public Builder setViewerLikeAuthorHis24H(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        viewerLikeAuthorHis24H_ = value;
+          int index, int value) {
+        ensureViewerLikeAuthorHis24HIsMutable();
+        viewerLikeAuthorHis24H_.setInt(index, value);
         onChanged();
         return this;
       }
@@ -6517,94 +8668,105 @@ public final class RecFeature {
        * 作者相关特征 (24小时)
        * </pre>
        *
-       * <code>string viewer_like_author_his_24h = 40;</code>
+       * <code>repeated int32 viewer_like_author_his_24h = 40;</code>
+       * @param value The viewerLikeAuthorHis24h to add.
+       * @return This builder for chaining.
+       */
+      public Builder addViewerLikeAuthorHis24H(int value) {
+        ensureViewerLikeAuthorHis24HIsMutable();
+        viewerLikeAuthorHis24H_.addInt(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 作者相关特征 (24小时)
+       * </pre>
+       *
+       * <code>repeated int32 viewer_like_author_his_24h = 40;</code>
+       * @param values The viewerLikeAuthorHis24h to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAllViewerLikeAuthorHis24H(
+          java.lang.Iterable<? extends java.lang.Integer> values) {
+        ensureViewerLikeAuthorHis24HIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, viewerLikeAuthorHis24H_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 作者相关特征 (24小时)
+       * </pre>
+       *
+       * <code>repeated int32 viewer_like_author_his_24h = 40;</code>
        * @return This builder for chaining.
        */
       public Builder clearViewerLikeAuthorHis24H() {
-        
-        viewerLikeAuthorHis24H_ = getDefaultInstance().getViewerLikeAuthorHis24H();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 作者相关特征 (24小时)
-       * </pre>
-       *
-       * <code>string viewer_like_author_his_24h = 40;</code>
-       * @param value The bytes for viewerLikeAuthorHis24h to set.
-       * @return This builder for chaining.
-       */
-      public Builder setViewerLikeAuthorHis24HBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        viewerLikeAuthorHis24H_ = value;
+        viewerLikeAuthorHis24H_ = emptyIntList();
+        bitField0_ = (bitField0_ & ~0x00001000);
         onChanged();
         return this;
       }
 
-      private java.lang.Object viewerFollowAuthorHis24H_ = "";
-      /**
-       * <pre>
-       * 用户最近24h关注视频的作者列表
-       * </pre>
-       *
-       * <code>string viewer_follow_author_his_24h = 41;</code>
-       * @return The viewerFollowAuthorHis24h.
-       */
-      public java.lang.String getViewerFollowAuthorHis24H() {
-        java.lang.Object ref = viewerFollowAuthorHis24H_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          viewerFollowAuthorHis24H_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
+      private com.google.protobuf.Internal.IntList viewerFollowAuthorHis24H_ = emptyIntList();
+      private void ensureViewerFollowAuthorHis24HIsMutable() {
+        if (!((bitField0_ & 0x00002000) != 0)) {
+          viewerFollowAuthorHis24H_ = mutableCopy(viewerFollowAuthorHis24H_);
+          bitField0_ |= 0x00002000;
+         }
       }
       /**
        * <pre>
        * 用户最近24h关注视频的作者列表
        * </pre>
        *
-       * <code>string viewer_follow_author_his_24h = 41;</code>
-       * @return The bytes for viewerFollowAuthorHis24h.
+       * <code>repeated int32 viewer_follow_author_his_24h = 41;</code>
+       * @return A list containing the viewerFollowAuthorHis24h.
        */
-      public com.google.protobuf.ByteString
-          getViewerFollowAuthorHis24HBytes() {
-        java.lang.Object ref = viewerFollowAuthorHis24H_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          viewerFollowAuthorHis24H_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
+      public java.util.List<java.lang.Integer>
+          getViewerFollowAuthorHis24HList() {
+        return ((bitField0_ & 0x00002000) != 0) ?
+                 java.util.Collections.unmodifiableList(viewerFollowAuthorHis24H_) : viewerFollowAuthorHis24H_;
       }
       /**
        * <pre>
        * 用户最近24h关注视频的作者列表
        * </pre>
        *
-       * <code>string viewer_follow_author_his_24h = 41;</code>
+       * <code>repeated int32 viewer_follow_author_his_24h = 41;</code>
+       * @return The count of viewerFollowAuthorHis24h.
+       */
+      public int getViewerFollowAuthorHis24HCount() {
+        return viewerFollowAuthorHis24H_.size();
+      }
+      /**
+       * <pre>
+       * 用户最近24h关注视频的作者列表
+       * </pre>
+       *
+       * <code>repeated int32 viewer_follow_author_his_24h = 41;</code>
+       * @param index The index of the element to return.
+       * @return The viewerFollowAuthorHis24h at the given index.
+       */
+      public int getViewerFollowAuthorHis24H(int index) {
+        return viewerFollowAuthorHis24H_.getInt(index);
+      }
+      /**
+       * <pre>
+       * 用户最近24h关注视频的作者列表
+       * </pre>
+       *
+       * <code>repeated int32 viewer_follow_author_his_24h = 41;</code>
+       * @param index The index to set the value at.
        * @param value The viewerFollowAuthorHis24h to set.
        * @return This builder for chaining.
        */
       public Builder setViewerFollowAuthorHis24H(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        viewerFollowAuthorHis24H_ = value;
+          int index, int value) {
+        ensureViewerFollowAuthorHis24HIsMutable();
+        viewerFollowAuthorHis24H_.setInt(index, value);
         onChanged();
         return this;
       }
@@ -6613,94 +8775,105 @@ public final class RecFeature {
        * 用户最近24h关注视频的作者列表
        * </pre>
        *
-       * <code>string viewer_follow_author_his_24h = 41;</code>
+       * <code>repeated int32 viewer_follow_author_his_24h = 41;</code>
+       * @param value The viewerFollowAuthorHis24h to add.
+       * @return This builder for chaining.
+       */
+      public Builder addViewerFollowAuthorHis24H(int value) {
+        ensureViewerFollowAuthorHis24HIsMutable();
+        viewerFollowAuthorHis24H_.addInt(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近24h关注视频的作者列表
+       * </pre>
+       *
+       * <code>repeated int32 viewer_follow_author_his_24h = 41;</code>
+       * @param values The viewerFollowAuthorHis24h to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAllViewerFollowAuthorHis24H(
+          java.lang.Iterable<? extends java.lang.Integer> values) {
+        ensureViewerFollowAuthorHis24HIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, viewerFollowAuthorHis24H_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近24h关注视频的作者列表
+       * </pre>
+       *
+       * <code>repeated int32 viewer_follow_author_his_24h = 41;</code>
        * @return This builder for chaining.
        */
       public Builder clearViewerFollowAuthorHis24H() {
-        
-        viewerFollowAuthorHis24H_ = getDefaultInstance().getViewerFollowAuthorHis24H();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 用户最近24h关注视频的作者列表
-       * </pre>
-       *
-       * <code>string viewer_follow_author_his_24h = 41;</code>
-       * @param value The bytes for viewerFollowAuthorHis24h to set.
-       * @return This builder for chaining.
-       */
-      public Builder setViewerFollowAuthorHis24HBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        viewerFollowAuthorHis24H_ = value;
+        viewerFollowAuthorHis24H_ = emptyIntList();
+        bitField0_ = (bitField0_ & ~0x00002000);
         onChanged();
         return this;
       }
 
-      private java.lang.Object viewerProfileAuthorHis24H_ = "";
-      /**
-       * <pre>
-       * 用户最近24h查看主页视频的作者列表
-       * </pre>
-       *
-       * <code>string viewer_profile_author_his_24h = 42;</code>
-       * @return The viewerProfileAuthorHis24h.
-       */
-      public java.lang.String getViewerProfileAuthorHis24H() {
-        java.lang.Object ref = viewerProfileAuthorHis24H_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          viewerProfileAuthorHis24H_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
+      private com.google.protobuf.Internal.IntList viewerProfileAuthorHis24H_ = emptyIntList();
+      private void ensureViewerProfileAuthorHis24HIsMutable() {
+        if (!((bitField0_ & 0x00004000) != 0)) {
+          viewerProfileAuthorHis24H_ = mutableCopy(viewerProfileAuthorHis24H_);
+          bitField0_ |= 0x00004000;
+         }
       }
       /**
        * <pre>
        * 用户最近24h查看主页视频的作者列表
        * </pre>
        *
-       * <code>string viewer_profile_author_his_24h = 42;</code>
-       * @return The bytes for viewerProfileAuthorHis24h.
+       * <code>repeated int32 viewer_profile_author_his_24h = 42;</code>
+       * @return A list containing the viewerProfileAuthorHis24h.
        */
-      public com.google.protobuf.ByteString
-          getViewerProfileAuthorHis24HBytes() {
-        java.lang.Object ref = viewerProfileAuthorHis24H_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          viewerProfileAuthorHis24H_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
+      public java.util.List<java.lang.Integer>
+          getViewerProfileAuthorHis24HList() {
+        return ((bitField0_ & 0x00004000) != 0) ?
+                 java.util.Collections.unmodifiableList(viewerProfileAuthorHis24H_) : viewerProfileAuthorHis24H_;
       }
       /**
        * <pre>
        * 用户最近24h查看主页视频的作者列表
        * </pre>
        *
-       * <code>string viewer_profile_author_his_24h = 42;</code>
+       * <code>repeated int32 viewer_profile_author_his_24h = 42;</code>
+       * @return The count of viewerProfileAuthorHis24h.
+       */
+      public int getViewerProfileAuthorHis24HCount() {
+        return viewerProfileAuthorHis24H_.size();
+      }
+      /**
+       * <pre>
+       * 用户最近24h查看主页视频的作者列表
+       * </pre>
+       *
+       * <code>repeated int32 viewer_profile_author_his_24h = 42;</code>
+       * @param index The index of the element to return.
+       * @return The viewerProfileAuthorHis24h at the given index.
+       */
+      public int getViewerProfileAuthorHis24H(int index) {
+        return viewerProfileAuthorHis24H_.getInt(index);
+      }
+      /**
+       * <pre>
+       * 用户最近24h查看主页视频的作者列表
+       * </pre>
+       *
+       * <code>repeated int32 viewer_profile_author_his_24h = 42;</code>
+       * @param index The index to set the value at.
        * @param value The viewerProfileAuthorHis24h to set.
        * @return This builder for chaining.
        */
       public Builder setViewerProfileAuthorHis24H(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        viewerProfileAuthorHis24H_ = value;
+          int index, int value) {
+        ensureViewerProfileAuthorHis24HIsMutable();
+        viewerProfileAuthorHis24H_.setInt(index, value);
         onChanged();
         return this;
       }
@@ -6709,32 +8882,44 @@ public final class RecFeature {
        * 用户最近24h查看主页视频的作者列表
        * </pre>
        *
-       * <code>string viewer_profile_author_his_24h = 42;</code>
+       * <code>repeated int32 viewer_profile_author_his_24h = 42;</code>
+       * @param value The viewerProfileAuthorHis24h to add.
+       * @return This builder for chaining.
+       */
+      public Builder addViewerProfileAuthorHis24H(int value) {
+        ensureViewerProfileAuthorHis24HIsMutable();
+        viewerProfileAuthorHis24H_.addInt(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近24h查看主页视频的作者列表
+       * </pre>
+       *
+       * <code>repeated int32 viewer_profile_author_his_24h = 42;</code>
+       * @param values The viewerProfileAuthorHis24h to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAllViewerProfileAuthorHis24H(
+          java.lang.Iterable<? extends java.lang.Integer> values) {
+        ensureViewerProfileAuthorHis24HIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, viewerProfileAuthorHis24H_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近24h查看主页视频的作者列表
+       * </pre>
+       *
+       * <code>repeated int32 viewer_profile_author_his_24h = 42;</code>
        * @return This builder for chaining.
        */
       public Builder clearViewerProfileAuthorHis24H() {
-        
-        viewerProfileAuthorHis24H_ = getDefaultInstance().getViewerProfileAuthorHis24H();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 用户最近24h查看主页视频的作者列表
-       * </pre>
-       *
-       * <code>string viewer_profile_author_his_24h = 42;</code>
-       * @param value The bytes for viewerProfileAuthorHis24h to set.
-       * @return This builder for chaining.
-       */
-      public Builder setViewerProfileAuthorHis24HBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        viewerProfileAuthorHis24H_ = value;
+        viewerProfileAuthorHis24H_ = emptyIntList();
+        bitField0_ = (bitField0_ & ~0x00004000);
         onChanged();
         return this;
       }
@@ -7083,64 +9268,63 @@ public final class RecFeature {
         return this;
       }
 
-      private java.lang.Object userDeepviewPostids7D_ = "";
-      /**
-       * <pre>
-       * id列表
-       * </pre>
-       *
-       * <code>string user_deepview_postids_7d = 58;</code>
-       * @return The userDeepviewPostids7d.
-       */
-      public java.lang.String getUserDeepviewPostids7D() {
-        java.lang.Object ref = userDeepviewPostids7D_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          userDeepviewPostids7D_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
+      private com.google.protobuf.Internal.LongList userDeepviewPostids7D_ = emptyLongList();
+      private void ensureUserDeepviewPostids7DIsMutable() {
+        if (!((bitField0_ & 0x00008000) != 0)) {
+          userDeepviewPostids7D_ = mutableCopy(userDeepviewPostids7D_);
+          bitField0_ |= 0x00008000;
+         }
       }
       /**
        * <pre>
        * id列表
        * </pre>
        *
-       * <code>string user_deepview_postids_7d = 58;</code>
-       * @return The bytes for userDeepviewPostids7d.
+       * <code>repeated int64 user_deepview_postids_7d = 58;</code>
+       * @return A list containing the userDeepviewPostids7d.
        */
-      public com.google.protobuf.ByteString
-          getUserDeepviewPostids7DBytes() {
-        java.lang.Object ref = userDeepviewPostids7D_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          userDeepviewPostids7D_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
+      public java.util.List<java.lang.Long>
+          getUserDeepviewPostids7DList() {
+        return ((bitField0_ & 0x00008000) != 0) ?
+                 java.util.Collections.unmodifiableList(userDeepviewPostids7D_) : userDeepviewPostids7D_;
       }
       /**
        * <pre>
        * id列表
        * </pre>
        *
-       * <code>string user_deepview_postids_7d = 58;</code>
+       * <code>repeated int64 user_deepview_postids_7d = 58;</code>
+       * @return The count of userDeepviewPostids7d.
+       */
+      public int getUserDeepviewPostids7DCount() {
+        return userDeepviewPostids7D_.size();
+      }
+      /**
+       * <pre>
+       * id列表
+       * </pre>
+       *
+       * <code>repeated int64 user_deepview_postids_7d = 58;</code>
+       * @param index The index of the element to return.
+       * @return The userDeepviewPostids7d at the given index.
+       */
+      public long getUserDeepviewPostids7D(int index) {
+        return userDeepviewPostids7D_.getLong(index);
+      }
+      /**
+       * <pre>
+       * id列表
+       * </pre>
+       *
+       * <code>repeated int64 user_deepview_postids_7d = 58;</code>
+       * @param index The index to set the value at.
        * @param value The userDeepviewPostids7d to set.
        * @return This builder for chaining.
        */
       public Builder setUserDeepviewPostids7D(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        userDeepviewPostids7D_ = value;
+          int index, long value) {
+        ensureUserDeepviewPostids7DIsMutable();
+        userDeepviewPostids7D_.setLong(index, value);
         onChanged();
         return this;
       }
@@ -7149,94 +9333,105 @@ public final class RecFeature {
        * id列表
        * </pre>
        *
-       * <code>string user_deepview_postids_7d = 58;</code>
+       * <code>repeated int64 user_deepview_postids_7d = 58;</code>
+       * @param value The userDeepviewPostids7d to add.
+       * @return This builder for chaining.
+       */
+      public Builder addUserDeepviewPostids7D(long value) {
+        ensureUserDeepviewPostids7DIsMutable();
+        userDeepviewPostids7D_.addLong(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * id列表
+       * </pre>
+       *
+       * <code>repeated int64 user_deepview_postids_7d = 58;</code>
+       * @param values The userDeepviewPostids7d to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAllUserDeepviewPostids7D(
+          java.lang.Iterable<? extends java.lang.Long> values) {
+        ensureUserDeepviewPostids7DIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, userDeepviewPostids7D_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * id列表
+       * </pre>
+       *
+       * <code>repeated int64 user_deepview_postids_7d = 58;</code>
        * @return This builder for chaining.
        */
       public Builder clearUserDeepviewPostids7D() {
-        
-        userDeepviewPostids7D_ = getDefaultInstance().getUserDeepviewPostids7D();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * id列表
-       * </pre>
-       *
-       * <code>string user_deepview_postids_7d = 58;</code>
-       * @param value The bytes for userDeepviewPostids7d to set.
-       * @return This builder for chaining.
-       */
-      public Builder setUserDeepviewPostids7DBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        userDeepviewPostids7D_ = value;
+        userDeepviewPostids7D_ = emptyLongList();
+        bitField0_ = (bitField0_ & ~0x00008000);
         onChanged();
         return this;
       }
 
-      private java.lang.Object userInteractPostids7D_ = "";
-      /**
-       * <pre>
-       * 最近7天有正向交互的itemid列表
-       * </pre>
-       *
-       * <code>string user_interact_postids_7d = 59;</code>
-       * @return The userInteractPostids7d.
-       */
-      public java.lang.String getUserInteractPostids7D() {
-        java.lang.Object ref = userInteractPostids7D_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          userInteractPostids7D_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
+      private com.google.protobuf.Internal.LongList userInteractPostids7D_ = emptyLongList();
+      private void ensureUserInteractPostids7DIsMutable() {
+        if (!((bitField0_ & 0x00010000) != 0)) {
+          userInteractPostids7D_ = mutableCopy(userInteractPostids7D_);
+          bitField0_ |= 0x00010000;
+         }
       }
       /**
        * <pre>
        * 最近7天有正向交互的itemid列表
        * </pre>
        *
-       * <code>string user_interact_postids_7d = 59;</code>
-       * @return The bytes for userInteractPostids7d.
+       * <code>repeated int64 user_interact_postids_7d = 59;</code>
+       * @return A list containing the userInteractPostids7d.
        */
-      public com.google.protobuf.ByteString
-          getUserInteractPostids7DBytes() {
-        java.lang.Object ref = userInteractPostids7D_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          userInteractPostids7D_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
+      public java.util.List<java.lang.Long>
+          getUserInteractPostids7DList() {
+        return ((bitField0_ & 0x00010000) != 0) ?
+                 java.util.Collections.unmodifiableList(userInteractPostids7D_) : userInteractPostids7D_;
       }
       /**
        * <pre>
        * 最近7天有正向交互的itemid列表
        * </pre>
        *
-       * <code>string user_interact_postids_7d = 59;</code>
+       * <code>repeated int64 user_interact_postids_7d = 59;</code>
+       * @return The count of userInteractPostids7d.
+       */
+      public int getUserInteractPostids7DCount() {
+        return userInteractPostids7D_.size();
+      }
+      /**
+       * <pre>
+       * 最近7天有正向交互的itemid列表
+       * </pre>
+       *
+       * <code>repeated int64 user_interact_postids_7d = 59;</code>
+       * @param index The index of the element to return.
+       * @return The userInteractPostids7d at the given index.
+       */
+      public long getUserInteractPostids7D(int index) {
+        return userInteractPostids7D_.getLong(index);
+      }
+      /**
+       * <pre>
+       * 最近7天有正向交互的itemid列表
+       * </pre>
+       *
+       * <code>repeated int64 user_interact_postids_7d = 59;</code>
+       * @param index The index to set the value at.
        * @param value The userInteractPostids7d to set.
        * @return This builder for chaining.
        */
       public Builder setUserInteractPostids7D(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        userInteractPostids7D_ = value;
+          int index, long value) {
+        ensureUserInteractPostids7DIsMutable();
+        userInteractPostids7D_.setLong(index, value);
         onChanged();
         return this;
       }
@@ -7245,32 +9440,44 @@ public final class RecFeature {
        * 最近7天有正向交互的itemid列表
        * </pre>
        *
-       * <code>string user_interact_postids_7d = 59;</code>
+       * <code>repeated int64 user_interact_postids_7d = 59;</code>
+       * @param value The userInteractPostids7d to add.
+       * @return This builder for chaining.
+       */
+      public Builder addUserInteractPostids7D(long value) {
+        ensureUserInteractPostids7DIsMutable();
+        userInteractPostids7D_.addLong(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 最近7天有正向交互的itemid列表
+       * </pre>
+       *
+       * <code>repeated int64 user_interact_postids_7d = 59;</code>
+       * @param values The userInteractPostids7d to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAllUserInteractPostids7D(
+          java.lang.Iterable<? extends java.lang.Long> values) {
+        ensureUserInteractPostids7DIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, userInteractPostids7D_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 最近7天有正向交互的itemid列表
+       * </pre>
+       *
+       * <code>repeated int64 user_interact_postids_7d = 59;</code>
        * @return This builder for chaining.
        */
       public Builder clearUserInteractPostids7D() {
-        
-        userInteractPostids7D_ = getDefaultInstance().getUserInteractPostids7D();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 最近7天有正向交互的itemid列表
-       * </pre>
-       *
-       * <code>string user_interact_postids_7d = 59;</code>
-       * @param value The bytes for userInteractPostids7d to set.
-       * @return This builder for chaining.
-       */
-      public Builder setUserInteractPostids7DBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        userInteractPostids7D_ = value;
+        userInteractPostids7D_ = emptyLongList();
+        bitField0_ = (bitField0_ & ~0x00010000);
         onChanged();
         return this;
       }
@@ -7345,6 +9552,113 @@ public final class RecFeature {
       public Builder clearUserDailyWatchliveMinutes() {
         
         userDailyWatchliveMinutes_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.Internal.LongList userLiveFollowPreferAnchorIds_ = emptyLongList();
+      private void ensureUserLiveFollowPreferAnchorIdsIsMutable() {
+        if (!((bitField0_ & 0x00020000) != 0)) {
+          userLiveFollowPreferAnchorIds_ = mutableCopy(userLiveFollowPreferAnchorIds_);
+          bitField0_ |= 0x00020000;
+         }
+      }
+      /**
+       * <pre>
+       * 直播其他
+       * </pre>
+       *
+       * <code>repeated uint64 user_live_follow_prefer_anchor_ids = 62;</code>
+       * @return A list containing the userLiveFollowPreferAnchorIds.
+       */
+      public java.util.List<java.lang.Long>
+          getUserLiveFollowPreferAnchorIdsList() {
+        return ((bitField0_ & 0x00020000) != 0) ?
+                 java.util.Collections.unmodifiableList(userLiveFollowPreferAnchorIds_) : userLiveFollowPreferAnchorIds_;
+      }
+      /**
+       * <pre>
+       * 直播其他
+       * </pre>
+       *
+       * <code>repeated uint64 user_live_follow_prefer_anchor_ids = 62;</code>
+       * @return The count of userLiveFollowPreferAnchorIds.
+       */
+      public int getUserLiveFollowPreferAnchorIdsCount() {
+        return userLiveFollowPreferAnchorIds_.size();
+      }
+      /**
+       * <pre>
+       * 直播其他
+       * </pre>
+       *
+       * <code>repeated uint64 user_live_follow_prefer_anchor_ids = 62;</code>
+       * @param index The index of the element to return.
+       * @return The userLiveFollowPreferAnchorIds at the given index.
+       */
+      public long getUserLiveFollowPreferAnchorIds(int index) {
+        return userLiveFollowPreferAnchorIds_.getLong(index);
+      }
+      /**
+       * <pre>
+       * 直播其他
+       * </pre>
+       *
+       * <code>repeated uint64 user_live_follow_prefer_anchor_ids = 62;</code>
+       * @param index The index to set the value at.
+       * @param value The userLiveFollowPreferAnchorIds to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserLiveFollowPreferAnchorIds(
+          int index, long value) {
+        ensureUserLiveFollowPreferAnchorIdsIsMutable();
+        userLiveFollowPreferAnchorIds_.setLong(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 直播其他
+       * </pre>
+       *
+       * <code>repeated uint64 user_live_follow_prefer_anchor_ids = 62;</code>
+       * @param value The userLiveFollowPreferAnchorIds to add.
+       * @return This builder for chaining.
+       */
+      public Builder addUserLiveFollowPreferAnchorIds(long value) {
+        ensureUserLiveFollowPreferAnchorIdsIsMutable();
+        userLiveFollowPreferAnchorIds_.addLong(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 直播其他
+       * </pre>
+       *
+       * <code>repeated uint64 user_live_follow_prefer_anchor_ids = 62;</code>
+       * @param values The userLiveFollowPreferAnchorIds to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAllUserLiveFollowPreferAnchorIds(
+          java.lang.Iterable<? extends java.lang.Long> values) {
+        ensureUserLiveFollowPreferAnchorIdsIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, userLiveFollowPreferAnchorIds_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 直播其他
+       * </pre>
+       *
+       * <code>repeated uint64 user_live_follow_prefer_anchor_ids = 62;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserLiveFollowPreferAnchorIds() {
+        userLiveFollowPreferAnchorIds_ = emptyLongList();
+        bitField0_ = (bitField0_ & ~0x00020000);
         onChanged();
         return this;
       }
@@ -9368,9 +11682,9 @@ public final class RecFeature {
       private java.util.List<com.gosh.entity.RecFeature.FeedbackTag> feedbackTags_ =
         java.util.Collections.emptyList();
       private void ensureFeedbackTagsIsMutable() {
-        if (!((bitField0_ & 0x00000001) != 0)) {
+        if (!((bitField0_ & 0x00040000) != 0)) {
           feedbackTags_ = new java.util.ArrayList<com.gosh.entity.RecFeature.FeedbackTag>(feedbackTags_);
-          bitField0_ |= 0x00000001;
+          bitField0_ |= 0x00040000;
          }
       }
 
@@ -9379,10 +11693,10 @@ public final class RecFeature {
 
       /**
        * <pre>
-       * 负反馈
+       * 负反馈标签队列（最近5个）
        * </pre>
        *
-       * <code>repeated .com.gosh.entity.FeedbackTag FeedbackTags = 96;</code>
+       * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
        */
       public java.util.List<com.gosh.entity.RecFeature.FeedbackTag> getFeedbackTagsList() {
         if (feedbackTagsBuilder_ == null) {
@@ -9393,10 +11707,10 @@ public final class RecFeature {
       }
       /**
        * <pre>
-       * 负反馈
+       * 负反馈标签队列（最近5个）
        * </pre>
        *
-       * <code>repeated .com.gosh.entity.FeedbackTag FeedbackTags = 96;</code>
+       * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
        */
       public int getFeedbackTagsCount() {
         if (feedbackTagsBuilder_ == null) {
@@ -9407,10 +11721,10 @@ public final class RecFeature {
       }
       /**
        * <pre>
-       * 负反馈
+       * 负反馈标签队列（最近5个）
        * </pre>
        *
-       * <code>repeated .com.gosh.entity.FeedbackTag FeedbackTags = 96;</code>
+       * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
        */
       public com.gosh.entity.RecFeature.FeedbackTag getFeedbackTags(int index) {
         if (feedbackTagsBuilder_ == null) {
@@ -9421,10 +11735,10 @@ public final class RecFeature {
       }
       /**
        * <pre>
-       * 负反馈
+       * 负反馈标签队列（最近5个）
        * </pre>
        *
-       * <code>repeated .com.gosh.entity.FeedbackTag FeedbackTags = 96;</code>
+       * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
        */
       public Builder setFeedbackTags(
           int index, com.gosh.entity.RecFeature.FeedbackTag value) {
@@ -9442,10 +11756,10 @@ public final class RecFeature {
       }
       /**
        * <pre>
-       * 负反馈
+       * 负反馈标签队列（最近5个）
        * </pre>
        *
-       * <code>repeated .com.gosh.entity.FeedbackTag FeedbackTags = 96;</code>
+       * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
        */
       public Builder setFeedbackTags(
           int index, com.gosh.entity.RecFeature.FeedbackTag.Builder builderForValue) {
@@ -9460,10 +11774,10 @@ public final class RecFeature {
       }
       /**
        * <pre>
-       * 负反馈
+       * 负反馈标签队列（最近5个）
        * </pre>
        *
-       * <code>repeated .com.gosh.entity.FeedbackTag FeedbackTags = 96;</code>
+       * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
        */
       public Builder addFeedbackTags(com.gosh.entity.RecFeature.FeedbackTag value) {
         if (feedbackTagsBuilder_ == null) {
@@ -9480,10 +11794,10 @@ public final class RecFeature {
       }
       /**
        * <pre>
-       * 负反馈
+       * 负反馈标签队列（最近5个）
        * </pre>
        *
-       * <code>repeated .com.gosh.entity.FeedbackTag FeedbackTags = 96;</code>
+       * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
        */
       public Builder addFeedbackTags(
           int index, com.gosh.entity.RecFeature.FeedbackTag value) {
@@ -9501,10 +11815,10 @@ public final class RecFeature {
       }
       /**
        * <pre>
-       * 负反馈
+       * 负反馈标签队列（最近5个）
        * </pre>
        *
-       * <code>repeated .com.gosh.entity.FeedbackTag FeedbackTags = 96;</code>
+       * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
        */
       public Builder addFeedbackTags(
           com.gosh.entity.RecFeature.FeedbackTag.Builder builderForValue) {
@@ -9519,10 +11833,10 @@ public final class RecFeature {
       }
       /**
        * <pre>
-       * 负反馈
+       * 负反馈标签队列（最近5个）
        * </pre>
        *
-       * <code>repeated .com.gosh.entity.FeedbackTag FeedbackTags = 96;</code>
+       * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
        */
       public Builder addFeedbackTags(
           int index, com.gosh.entity.RecFeature.FeedbackTag.Builder builderForValue) {
@@ -9537,10 +11851,10 @@ public final class RecFeature {
       }
       /**
        * <pre>
-       * 负反馈
+       * 负反馈标签队列（最近5个）
        * </pre>
        *
-       * <code>repeated .com.gosh.entity.FeedbackTag FeedbackTags = 96;</code>
+       * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
        */
       public Builder addAllFeedbackTags(
           java.lang.Iterable<? extends com.gosh.entity.RecFeature.FeedbackTag> values) {
@@ -9556,15 +11870,15 @@ public final class RecFeature {
       }
       /**
        * <pre>
-       * 负反馈
+       * 负反馈标签队列（最近5个）
        * </pre>
        *
-       * <code>repeated .com.gosh.entity.FeedbackTag FeedbackTags = 96;</code>
+       * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
        */
       public Builder clearFeedbackTags() {
         if (feedbackTagsBuilder_ == null) {
           feedbackTags_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000001);
+          bitField0_ = (bitField0_ & ~0x00040000);
           onChanged();
         } else {
           feedbackTagsBuilder_.clear();
@@ -9573,10 +11887,10 @@ public final class RecFeature {
       }
       /**
        * <pre>
-       * 负反馈
+       * 负反馈标签队列（最近5个）
        * </pre>
        *
-       * <code>repeated .com.gosh.entity.FeedbackTag FeedbackTags = 96;</code>
+       * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
        */
       public Builder removeFeedbackTags(int index) {
         if (feedbackTagsBuilder_ == null) {
@@ -9590,10 +11904,10 @@ public final class RecFeature {
       }
       /**
        * <pre>
-       * 负反馈
+       * 负反馈标签队列（最近5个）
        * </pre>
        *
-       * <code>repeated .com.gosh.entity.FeedbackTag FeedbackTags = 96;</code>
+       * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
        */
       public com.gosh.entity.RecFeature.FeedbackTag.Builder getFeedbackTagsBuilder(
           int index) {
@@ -9601,10 +11915,10 @@ public final class RecFeature {
       }
       /**
        * <pre>
-       * 负反馈
+       * 负反馈标签队列（最近5个）
        * </pre>
        *
-       * <code>repeated .com.gosh.entity.FeedbackTag FeedbackTags = 96;</code>
+       * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
        */
       public com.gosh.entity.RecFeature.FeedbackTagOrBuilder getFeedbackTagsOrBuilder(
           int index) {
@@ -9615,10 +11929,10 @@ public final class RecFeature {
       }
       /**
        * <pre>
-       * 负反馈
+       * 负反馈标签队列（最近5个）
        * </pre>
        *
-       * <code>repeated .com.gosh.entity.FeedbackTag FeedbackTags = 96;</code>
+       * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
        */
       public java.util.List<? extends com.gosh.entity.RecFeature.FeedbackTagOrBuilder> 
            getFeedbackTagsOrBuilderList() {
@@ -9630,10 +11944,10 @@ public final class RecFeature {
       }
       /**
        * <pre>
-       * 负反馈
+       * 负反馈标签队列（最近5个）
        * </pre>
        *
-       * <code>repeated .com.gosh.entity.FeedbackTag FeedbackTags = 96;</code>
+       * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
        */
       public com.gosh.entity.RecFeature.FeedbackTag.Builder addFeedbackTagsBuilder() {
         return getFeedbackTagsFieldBuilder().addBuilder(
@@ -9641,10 +11955,10 @@ public final class RecFeature {
       }
       /**
        * <pre>
-       * 负反馈
+       * 负反馈标签队列（最近5个）
        * </pre>
        *
-       * <code>repeated .com.gosh.entity.FeedbackTag FeedbackTags = 96;</code>
+       * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
        */
       public com.gosh.entity.RecFeature.FeedbackTag.Builder addFeedbackTagsBuilder(
           int index) {
@@ -9653,10 +11967,10 @@ public final class RecFeature {
       }
       /**
        * <pre>
-       * 负反馈
+       * 负反馈标签队列（最近5个）
        * </pre>
        *
-       * <code>repeated .com.gosh.entity.FeedbackTag FeedbackTags = 96;</code>
+       * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
        */
       public java.util.List<com.gosh.entity.RecFeature.FeedbackTag.Builder> 
            getFeedbackTagsBuilderList() {
@@ -9669,7 +11983,7 @@ public final class RecFeature {
           feedbackTagsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               com.gosh.entity.RecFeature.FeedbackTag, com.gosh.entity.RecFeature.FeedbackTag.Builder, com.gosh.entity.RecFeature.FeedbackTagOrBuilder>(
                   feedbackTags_,
-                  ((bitField0_ & 0x00000001) != 0),
+                  ((bitField0_ & 0x00040000) != 0),
                   getParentForChildren(),
                   isClean());
           feedbackTags_ = null;
@@ -9680,9 +11994,9 @@ public final class RecFeature {
       private java.util.List<com.gosh.entity.RecFeature.FeedbackAuthorId> feedbackAuthorIds_ =
         java.util.Collections.emptyList();
       private void ensureFeedbackAuthorIdsIsMutable() {
-        if (!((bitField0_ & 0x00000002) != 0)) {
+        if (!((bitField0_ & 0x00080000) != 0)) {
           feedbackAuthorIds_ = new java.util.ArrayList<com.gosh.entity.RecFeature.FeedbackAuthorId>(feedbackAuthorIds_);
-          bitField0_ |= 0x00000002;
+          bitField0_ |= 0x00080000;
          }
       }
 
@@ -9690,7 +12004,7 @@ public final class RecFeature {
           com.gosh.entity.RecFeature.FeedbackAuthorId, com.gosh.entity.RecFeature.FeedbackAuthorId.Builder, com.gosh.entity.RecFeature.FeedbackAuthorIdOrBuilder> feedbackAuthorIdsBuilder_;
 
       /**
-       * <code>repeated .com.gosh.entity.FeedbackAuthorId FeedbackAuthorIds = 97;</code>
+       * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
        */
       public java.util.List<com.gosh.entity.RecFeature.FeedbackAuthorId> getFeedbackAuthorIdsList() {
         if (feedbackAuthorIdsBuilder_ == null) {
@@ -9700,7 +12014,7 @@ public final class RecFeature {
         }
       }
       /**
-       * <code>repeated .com.gosh.entity.FeedbackAuthorId FeedbackAuthorIds = 97;</code>
+       * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
        */
       public int getFeedbackAuthorIdsCount() {
         if (feedbackAuthorIdsBuilder_ == null) {
@@ -9710,7 +12024,7 @@ public final class RecFeature {
         }
       }
       /**
-       * <code>repeated .com.gosh.entity.FeedbackAuthorId FeedbackAuthorIds = 97;</code>
+       * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
        */
       public com.gosh.entity.RecFeature.FeedbackAuthorId getFeedbackAuthorIds(int index) {
         if (feedbackAuthorIdsBuilder_ == null) {
@@ -9720,7 +12034,7 @@ public final class RecFeature {
         }
       }
       /**
-       * <code>repeated .com.gosh.entity.FeedbackAuthorId FeedbackAuthorIds = 97;</code>
+       * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
        */
       public Builder setFeedbackAuthorIds(
           int index, com.gosh.entity.RecFeature.FeedbackAuthorId value) {
@@ -9737,7 +12051,7 @@ public final class RecFeature {
         return this;
       }
       /**
-       * <code>repeated .com.gosh.entity.FeedbackAuthorId FeedbackAuthorIds = 97;</code>
+       * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
        */
       public Builder setFeedbackAuthorIds(
           int index, com.gosh.entity.RecFeature.FeedbackAuthorId.Builder builderForValue) {
@@ -9751,7 +12065,7 @@ public final class RecFeature {
         return this;
       }
       /**
-       * <code>repeated .com.gosh.entity.FeedbackAuthorId FeedbackAuthorIds = 97;</code>
+       * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
        */
       public Builder addFeedbackAuthorIds(com.gosh.entity.RecFeature.FeedbackAuthorId value) {
         if (feedbackAuthorIdsBuilder_ == null) {
@@ -9767,7 +12081,7 @@ public final class RecFeature {
         return this;
       }
       /**
-       * <code>repeated .com.gosh.entity.FeedbackAuthorId FeedbackAuthorIds = 97;</code>
+       * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
        */
       public Builder addFeedbackAuthorIds(
           int index, com.gosh.entity.RecFeature.FeedbackAuthorId value) {
@@ -9784,7 +12098,7 @@ public final class RecFeature {
         return this;
       }
       /**
-       * <code>repeated .com.gosh.entity.FeedbackAuthorId FeedbackAuthorIds = 97;</code>
+       * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
        */
       public Builder addFeedbackAuthorIds(
           com.gosh.entity.RecFeature.FeedbackAuthorId.Builder builderForValue) {
@@ -9798,7 +12112,7 @@ public final class RecFeature {
         return this;
       }
       /**
-       * <code>repeated .com.gosh.entity.FeedbackAuthorId FeedbackAuthorIds = 97;</code>
+       * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
        */
       public Builder addFeedbackAuthorIds(
           int index, com.gosh.entity.RecFeature.FeedbackAuthorId.Builder builderForValue) {
@@ -9812,7 +12126,7 @@ public final class RecFeature {
         return this;
       }
       /**
-       * <code>repeated .com.gosh.entity.FeedbackAuthorId FeedbackAuthorIds = 97;</code>
+       * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
        */
       public Builder addAllFeedbackAuthorIds(
           java.lang.Iterable<? extends com.gosh.entity.RecFeature.FeedbackAuthorId> values) {
@@ -9827,12 +12141,12 @@ public final class RecFeature {
         return this;
       }
       /**
-       * <code>repeated .com.gosh.entity.FeedbackAuthorId FeedbackAuthorIds = 97;</code>
+       * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
        */
       public Builder clearFeedbackAuthorIds() {
         if (feedbackAuthorIdsBuilder_ == null) {
           feedbackAuthorIds_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000002);
+          bitField0_ = (bitField0_ & ~0x00080000);
           onChanged();
         } else {
           feedbackAuthorIdsBuilder_.clear();
@@ -9840,7 +12154,7 @@ public final class RecFeature {
         return this;
       }
       /**
-       * <code>repeated .com.gosh.entity.FeedbackAuthorId FeedbackAuthorIds = 97;</code>
+       * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
        */
       public Builder removeFeedbackAuthorIds(int index) {
         if (feedbackAuthorIdsBuilder_ == null) {
@@ -9853,14 +12167,14 @@ public final class RecFeature {
         return this;
       }
       /**
-       * <code>repeated .com.gosh.entity.FeedbackAuthorId FeedbackAuthorIds = 97;</code>
+       * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
        */
       public com.gosh.entity.RecFeature.FeedbackAuthorId.Builder getFeedbackAuthorIdsBuilder(
           int index) {
         return getFeedbackAuthorIdsFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .com.gosh.entity.FeedbackAuthorId FeedbackAuthorIds = 97;</code>
+       * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
        */
       public com.gosh.entity.RecFeature.FeedbackAuthorIdOrBuilder getFeedbackAuthorIdsOrBuilder(
           int index) {
@@ -9870,7 +12184,7 @@ public final class RecFeature {
         }
       }
       /**
-       * <code>repeated .com.gosh.entity.FeedbackAuthorId FeedbackAuthorIds = 97;</code>
+       * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
        */
       public java.util.List<? extends com.gosh.entity.RecFeature.FeedbackAuthorIdOrBuilder> 
            getFeedbackAuthorIdsOrBuilderList() {
@@ -9881,14 +12195,14 @@ public final class RecFeature {
         }
       }
       /**
-       * <code>repeated .com.gosh.entity.FeedbackAuthorId FeedbackAuthorIds = 97;</code>
+       * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
        */
       public com.gosh.entity.RecFeature.FeedbackAuthorId.Builder addFeedbackAuthorIdsBuilder() {
         return getFeedbackAuthorIdsFieldBuilder().addBuilder(
             com.gosh.entity.RecFeature.FeedbackAuthorId.getDefaultInstance());
       }
       /**
-       * <code>repeated .com.gosh.entity.FeedbackAuthorId FeedbackAuthorIds = 97;</code>
+       * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
        */
       public com.gosh.entity.RecFeature.FeedbackAuthorId.Builder addFeedbackAuthorIdsBuilder(
           int index) {
@@ -9896,7 +12210,7 @@ public final class RecFeature {
             index, com.gosh.entity.RecFeature.FeedbackAuthorId.getDefaultInstance());
       }
       /**
-       * <code>repeated .com.gosh.entity.FeedbackAuthorId FeedbackAuthorIds = 97;</code>
+       * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
        */
       public java.util.List<com.gosh.entity.RecFeature.FeedbackAuthorId.Builder> 
            getFeedbackAuthorIdsBuilderList() {
@@ -9909,7 +12223,7 @@ public final class RecFeature {
           feedbackAuthorIdsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               com.gosh.entity.RecFeature.FeedbackAuthorId, com.gosh.entity.RecFeature.FeedbackAuthorId.Builder, com.gosh.entity.RecFeature.FeedbackAuthorIdOrBuilder>(
                   feedbackAuthorIds_,
-                  ((bitField0_ & 0x00000002) != 0),
+                  ((bitField0_ & 0x00080000) != 0),
                   getParentForChildren(),
                   isClean());
           feedbackAuthorIds_ = null;
@@ -9964,6 +12278,1283 @@ public final class RecFeature {
 
     @java.lang.Override
     public com.gosh.entity.RecFeature.RecUserFeature getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface FeedbackTagOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.gosh.entity.FeedbackTag)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * 标签内容，如 "age#youngadult"
+     * </pre>
+     *
+     * <code>string tag = 1;</code>
+     * @return The tag.
+     */
+    java.lang.String getTag();
+    /**
+     * <pre>
+     * 标签内容，如 "age#youngadult"
+     * </pre>
+     *
+     * <code>string tag = 1;</code>
+     * @return The bytes for tag.
+     */
+    com.google.protobuf.ByteString
+        getTagBytes();
+
+    /**
+     * <pre>
+     * 权重，统一为 0.1
+     * </pre>
+     *
+     * <code>float weight = 2;</code>
+     * @return The weight.
+     */
+    float getWeight();
+  }
+  /**
+   * <pre>
+   * 负反馈标签
+   * </pre>
+   *
+   * Protobuf type {@code com.gosh.entity.FeedbackTag}
+   */
+  public static final class FeedbackTag extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:com.gosh.entity.FeedbackTag)
+      FeedbackTagOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use FeedbackTag.newBuilder() to construct.
+    private FeedbackTag(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private FeedbackTag() {
+      tag_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new FeedbackTag();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private FeedbackTag(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              tag_ = s;
+              break;
+            }
+            case 21: {
+
+              weight_ = input.readFloat();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (com.google.protobuf.UninitializedMessageException e) {
+        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_FeedbackTag_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_FeedbackTag_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.gosh.entity.RecFeature.FeedbackTag.class, com.gosh.entity.RecFeature.FeedbackTag.Builder.class);
+    }
+
+    public static final int TAG_FIELD_NUMBER = 1;
+    private volatile java.lang.Object tag_;
+    /**
+     * <pre>
+     * 标签内容，如 "age#youngadult"
+     * </pre>
+     *
+     * <code>string tag = 1;</code>
+     * @return The tag.
+     */
+    @java.lang.Override
+    public java.lang.String getTag() {
+      java.lang.Object ref = tag_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        tag_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * 标签内容，如 "age#youngadult"
+     * </pre>
+     *
+     * <code>string tag = 1;</code>
+     * @return The bytes for tag.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getTagBytes() {
+      java.lang.Object ref = tag_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        tag_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int WEIGHT_FIELD_NUMBER = 2;
+    private float weight_;
+    /**
+     * <pre>
+     * 权重，统一为 0.1
+     * </pre>
+     *
+     * <code>float weight = 2;</code>
+     * @return The weight.
+     */
+    @java.lang.Override
+    public float getWeight() {
+      return weight_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(tag_)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, tag_);
+      }
+      if (java.lang.Float.floatToRawIntBits(weight_) != 0) {
+        output.writeFloat(2, weight_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(tag_)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, tag_);
+      }
+      if (java.lang.Float.floatToRawIntBits(weight_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(2, weight_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.gosh.entity.RecFeature.FeedbackTag)) {
+        return super.equals(obj);
+      }
+      com.gosh.entity.RecFeature.FeedbackTag other = (com.gosh.entity.RecFeature.FeedbackTag) obj;
+
+      if (!getTag()
+          .equals(other.getTag())) return false;
+      if (java.lang.Float.floatToIntBits(getWeight())
+          != java.lang.Float.floatToIntBits(
+              other.getWeight())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + TAG_FIELD_NUMBER;
+      hash = (53 * hash) + getTag().hashCode();
+      hash = (37 * hash) + WEIGHT_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getWeight());
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.gosh.entity.RecFeature.FeedbackTag parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.gosh.entity.RecFeature.FeedbackTag parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.gosh.entity.RecFeature.FeedbackTag parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.gosh.entity.RecFeature.FeedbackTag parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.gosh.entity.RecFeature.FeedbackTag parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.gosh.entity.RecFeature.FeedbackTag parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.gosh.entity.RecFeature.FeedbackTag parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.gosh.entity.RecFeature.FeedbackTag parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.gosh.entity.RecFeature.FeedbackTag parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.gosh.entity.RecFeature.FeedbackTag parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.gosh.entity.RecFeature.FeedbackTag parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.gosh.entity.RecFeature.FeedbackTag parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.gosh.entity.RecFeature.FeedbackTag prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * <pre>
+     * 负反馈标签
+     * </pre>
+     *
+     * Protobuf type {@code com.gosh.entity.FeedbackTag}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.gosh.entity.FeedbackTag)
+        com.gosh.entity.RecFeature.FeedbackTagOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_FeedbackTag_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_FeedbackTag_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.gosh.entity.RecFeature.FeedbackTag.class, com.gosh.entity.RecFeature.FeedbackTag.Builder.class);
+      }
+
+      // Construct using com.gosh.entity.RecFeature.FeedbackTag.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        tag_ = "";
+
+        weight_ = 0F;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_FeedbackTag_descriptor;
+      }
+
+      @java.lang.Override
+      public com.gosh.entity.RecFeature.FeedbackTag getDefaultInstanceForType() {
+        return com.gosh.entity.RecFeature.FeedbackTag.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.gosh.entity.RecFeature.FeedbackTag build() {
+        com.gosh.entity.RecFeature.FeedbackTag result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.gosh.entity.RecFeature.FeedbackTag buildPartial() {
+        com.gosh.entity.RecFeature.FeedbackTag result = new com.gosh.entity.RecFeature.FeedbackTag(this);
+        result.tag_ = tag_;
+        result.weight_ = weight_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.gosh.entity.RecFeature.FeedbackTag) {
+          return mergeFrom((com.gosh.entity.RecFeature.FeedbackTag)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.gosh.entity.RecFeature.FeedbackTag other) {
+        if (other == com.gosh.entity.RecFeature.FeedbackTag.getDefaultInstance()) return this;
+        if (!other.getTag().isEmpty()) {
+          tag_ = other.tag_;
+          onChanged();
+        }
+        if (other.getWeight() != 0F) {
+          setWeight(other.getWeight());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.gosh.entity.RecFeature.FeedbackTag parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.gosh.entity.RecFeature.FeedbackTag) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object tag_ = "";
+      /**
+       * <pre>
+       * 标签内容，如 "age#youngadult"
+       * </pre>
+       *
+       * <code>string tag = 1;</code>
+       * @return The tag.
+       */
+      public java.lang.String getTag() {
+        java.lang.Object ref = tag_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          tag_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 标签内容，如 "age#youngadult"
+       * </pre>
+       *
+       * <code>string tag = 1;</code>
+       * @return The bytes for tag.
+       */
+      public com.google.protobuf.ByteString
+          getTagBytes() {
+        java.lang.Object ref = tag_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          tag_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 标签内容，如 "age#youngadult"
+       * </pre>
+       *
+       * <code>string tag = 1;</code>
+       * @param value The tag to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTag(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        tag_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 标签内容，如 "age#youngadult"
+       * </pre>
+       *
+       * <code>string tag = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearTag() {
+        
+        tag_ = getDefaultInstance().getTag();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 标签内容，如 "age#youngadult"
+       * </pre>
+       *
+       * <code>string tag = 1;</code>
+       * @param value The bytes for tag to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTagBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        tag_ = value;
+        onChanged();
+        return this;
+      }
+
+      private float weight_ ;
+      /**
+       * <pre>
+       * 权重，统一为 0.1
+       * </pre>
+       *
+       * <code>float weight = 2;</code>
+       * @return The weight.
+       */
+      @java.lang.Override
+      public float getWeight() {
+        return weight_;
+      }
+      /**
+       * <pre>
+       * 权重，统一为 0.1
+       * </pre>
+       *
+       * <code>float weight = 2;</code>
+       * @param value The weight to set.
+       * @return This builder for chaining.
+       */
+      public Builder setWeight(float value) {
+        
+        weight_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 权重，统一为 0.1
+       * </pre>
+       *
+       * <code>float weight = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearWeight() {
+        
+        weight_ = 0F;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:com.gosh.entity.FeedbackTag)
+    }
+
+    // @@protoc_insertion_point(class_scope:com.gosh.entity.FeedbackTag)
+    private static final com.gosh.entity.RecFeature.FeedbackTag DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.gosh.entity.RecFeature.FeedbackTag();
+    }
+
+    public static com.gosh.entity.RecFeature.FeedbackTag getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<FeedbackTag>
+        PARSER = new com.google.protobuf.AbstractParser<FeedbackTag>() {
+      @java.lang.Override
+      public FeedbackTag parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new FeedbackTag(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<FeedbackTag> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<FeedbackTag> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.gosh.entity.RecFeature.FeedbackTag getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface FeedbackAuthorIdOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.gosh.entity.FeedbackAuthorId)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>uint64 author_id = 1;</code>
+     * @return The authorId.
+     */
+    long getAuthorId();
+
+    /**
+     * <code>float weight = 2;</code>
+     * @return The weight.
+     */
+    float getWeight();
+  }
+  /**
+   * <pre>
+   * 负反馈作者
+   * </pre>
+   *
+   * Protobuf type {@code com.gosh.entity.FeedbackAuthorId}
+   */
+  public static final class FeedbackAuthorId extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:com.gosh.entity.FeedbackAuthorId)
+      FeedbackAuthorIdOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use FeedbackAuthorId.newBuilder() to construct.
+    private FeedbackAuthorId(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private FeedbackAuthorId() {
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new FeedbackAuthorId();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private FeedbackAuthorId(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+
+              authorId_ = input.readUInt64();
+              break;
+            }
+            case 21: {
+
+              weight_ = input.readFloat();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (com.google.protobuf.UninitializedMessageException e) {
+        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_FeedbackAuthorId_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_FeedbackAuthorId_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.gosh.entity.RecFeature.FeedbackAuthorId.class, com.gosh.entity.RecFeature.FeedbackAuthorId.Builder.class);
+    }
+
+    public static final int AUTHOR_ID_FIELD_NUMBER = 1;
+    private long authorId_;
+    /**
+     * <code>uint64 author_id = 1;</code>
+     * @return The authorId.
+     */
+    @java.lang.Override
+    public long getAuthorId() {
+      return authorId_;
+    }
+
+    public static final int WEIGHT_FIELD_NUMBER = 2;
+    private float weight_;
+    /**
+     * <code>float weight = 2;</code>
+     * @return The weight.
+     */
+    @java.lang.Override
+    public float getWeight() {
+      return weight_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (authorId_ != 0L) {
+        output.writeUInt64(1, authorId_);
+      }
+      if (java.lang.Float.floatToRawIntBits(weight_) != 0) {
+        output.writeFloat(2, weight_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (authorId_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, authorId_);
+      }
+      if (java.lang.Float.floatToRawIntBits(weight_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(2, weight_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.gosh.entity.RecFeature.FeedbackAuthorId)) {
+        return super.equals(obj);
+      }
+      com.gosh.entity.RecFeature.FeedbackAuthorId other = (com.gosh.entity.RecFeature.FeedbackAuthorId) obj;
+
+      if (getAuthorId()
+          != other.getAuthorId()) return false;
+      if (java.lang.Float.floatToIntBits(getWeight())
+          != java.lang.Float.floatToIntBits(
+              other.getWeight())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + AUTHOR_ID_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getAuthorId());
+      hash = (37 * hash) + WEIGHT_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getWeight());
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.gosh.entity.RecFeature.FeedbackAuthorId parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.gosh.entity.RecFeature.FeedbackAuthorId parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.gosh.entity.RecFeature.FeedbackAuthorId parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.gosh.entity.RecFeature.FeedbackAuthorId parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.gosh.entity.RecFeature.FeedbackAuthorId parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.gosh.entity.RecFeature.FeedbackAuthorId parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.gosh.entity.RecFeature.FeedbackAuthorId parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.gosh.entity.RecFeature.FeedbackAuthorId parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.gosh.entity.RecFeature.FeedbackAuthorId parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.gosh.entity.RecFeature.FeedbackAuthorId parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.gosh.entity.RecFeature.FeedbackAuthorId parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.gosh.entity.RecFeature.FeedbackAuthorId parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.gosh.entity.RecFeature.FeedbackAuthorId prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * <pre>
+     * 负反馈作者
+     * </pre>
+     *
+     * Protobuf type {@code com.gosh.entity.FeedbackAuthorId}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.gosh.entity.FeedbackAuthorId)
+        com.gosh.entity.RecFeature.FeedbackAuthorIdOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_FeedbackAuthorId_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_FeedbackAuthorId_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.gosh.entity.RecFeature.FeedbackAuthorId.class, com.gosh.entity.RecFeature.FeedbackAuthorId.Builder.class);
+      }
+
+      // Construct using com.gosh.entity.RecFeature.FeedbackAuthorId.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        authorId_ = 0L;
+
+        weight_ = 0F;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_FeedbackAuthorId_descriptor;
+      }
+
+      @java.lang.Override
+      public com.gosh.entity.RecFeature.FeedbackAuthorId getDefaultInstanceForType() {
+        return com.gosh.entity.RecFeature.FeedbackAuthorId.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.gosh.entity.RecFeature.FeedbackAuthorId build() {
+        com.gosh.entity.RecFeature.FeedbackAuthorId result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.gosh.entity.RecFeature.FeedbackAuthorId buildPartial() {
+        com.gosh.entity.RecFeature.FeedbackAuthorId result = new com.gosh.entity.RecFeature.FeedbackAuthorId(this);
+        result.authorId_ = authorId_;
+        result.weight_ = weight_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.gosh.entity.RecFeature.FeedbackAuthorId) {
+          return mergeFrom((com.gosh.entity.RecFeature.FeedbackAuthorId)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.gosh.entity.RecFeature.FeedbackAuthorId other) {
+        if (other == com.gosh.entity.RecFeature.FeedbackAuthorId.getDefaultInstance()) return this;
+        if (other.getAuthorId() != 0L) {
+          setAuthorId(other.getAuthorId());
+        }
+        if (other.getWeight() != 0F) {
+          setWeight(other.getWeight());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.gosh.entity.RecFeature.FeedbackAuthorId parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.gosh.entity.RecFeature.FeedbackAuthorId) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private long authorId_ ;
+      /**
+       * <code>uint64 author_id = 1;</code>
+       * @return The authorId.
+       */
+      @java.lang.Override
+      public long getAuthorId() {
+        return authorId_;
+      }
+      /**
+       * <code>uint64 author_id = 1;</code>
+       * @param value The authorId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAuthorId(long value) {
+        
+        authorId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>uint64 author_id = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearAuthorId() {
+        
+        authorId_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private float weight_ ;
+      /**
+       * <code>float weight = 2;</code>
+       * @return The weight.
+       */
+      @java.lang.Override
+      public float getWeight() {
+        return weight_;
+      }
+      /**
+       * <code>float weight = 2;</code>
+       * @param value The weight to set.
+       * @return This builder for chaining.
+       */
+      public Builder setWeight(float value) {
+        
+        weight_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>float weight = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearWeight() {
+        
+        weight_ = 0F;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:com.gosh.entity.FeedbackAuthorId)
+    }
+
+    // @@protoc_insertion_point(class_scope:com.gosh.entity.FeedbackAuthorId)
+    private static final com.gosh.entity.RecFeature.FeedbackAuthorId DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.gosh.entity.RecFeature.FeedbackAuthorId();
+    }
+
+    public static com.gosh.entity.RecFeature.FeedbackAuthorId getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<FeedbackAuthorId>
+        PARSER = new com.google.protobuf.AbstractParser<FeedbackAuthorId>() {
+      @java.lang.Override
+      public FeedbackAuthorId parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new FeedbackAuthorId(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<FeedbackAuthorId> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<FeedbackAuthorId> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.gosh.entity.RecFeature.FeedbackAuthorId getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -15339,1211 +18930,6 @@ public final class RecFeature {
 
   }
 
-  public interface FeedbackTagOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.gosh.entity.FeedbackTag)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>string tag = 1;</code>
-     * @return The tag.
-     */
-    java.lang.String getTag();
-    /**
-     * <code>string tag = 1;</code>
-     * @return The bytes for tag.
-     */
-    com.google.protobuf.ByteString
-        getTagBytes();
-
-    /**
-     * <code>float weight = 2;</code>
-     * @return The weight.
-     */
-    float getWeight();
-  }
-  /**
-   * Protobuf type {@code com.gosh.entity.FeedbackTag}
-   */
-  public static final class FeedbackTag extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:com.gosh.entity.FeedbackTag)
-      FeedbackTagOrBuilder {
-  private static final long serialVersionUID = 0L;
-    // Use FeedbackTag.newBuilder() to construct.
-    private FeedbackTag(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-      super(builder);
-    }
-    private FeedbackTag() {
-      tag_ = "";
-    }
-
-    @java.lang.Override
-    @SuppressWarnings({"unused"})
-    protected java.lang.Object newInstance(
-        UnusedPrivateParameter unused) {
-      return new FeedbackTag();
-    }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
-    private FeedbackTag(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            case 10: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              tag_ = s;
-              break;
-            }
-            case 21: {
-
-              weight_ = input.readFloat();
-              break;
-            }
-            default: {
-              if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (com.google.protobuf.UninitializedMessageException e) {
-        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_FeedbackTag_descriptor;
-    }
-
-    @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_FeedbackTag_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.gosh.entity.RecFeature.FeedbackTag.class, com.gosh.entity.RecFeature.FeedbackTag.Builder.class);
-    }
-
-    public static final int TAG_FIELD_NUMBER = 1;
-    private volatile java.lang.Object tag_;
-    /**
-     * <code>string tag = 1;</code>
-     * @return The tag.
-     */
-    @java.lang.Override
-    public java.lang.String getTag() {
-      java.lang.Object ref = tag_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        tag_ = s;
-        return s;
-      }
-    }
-    /**
-     * <code>string tag = 1;</code>
-     * @return The bytes for tag.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getTagBytes() {
-      java.lang.Object ref = tag_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        tag_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int WEIGHT_FIELD_NUMBER = 2;
-    private float weight_;
-    /**
-     * <code>float weight = 2;</code>
-     * @return The weight.
-     */
-    @java.lang.Override
-    public float getWeight() {
-      return weight_;
-    }
-
-    private byte memoizedIsInitialized = -1;
-    @java.lang.Override
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(tag_)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, tag_);
-      }
-      if (java.lang.Float.floatToRawIntBits(weight_) != 0) {
-        output.writeFloat(2, weight_);
-      }
-      unknownFields.writeTo(output);
-    }
-
-    @java.lang.Override
-    public int getSerializedSize() {
-      int size = memoizedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(tag_)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, tag_);
-      }
-      if (java.lang.Float.floatToRawIntBits(weight_) != 0) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeFloatSize(2, weight_);
-      }
-      size += unknownFields.getSerializedSize();
-      memoizedSize = size;
-      return size;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this) {
-       return true;
-      }
-      if (!(obj instanceof com.gosh.entity.RecFeature.FeedbackTag)) {
-        return super.equals(obj);
-      }
-      com.gosh.entity.RecFeature.FeedbackTag other = (com.gosh.entity.RecFeature.FeedbackTag) obj;
-
-      if (!getTag()
-          .equals(other.getTag())) return false;
-      if (java.lang.Float.floatToIntBits(getWeight())
-          != java.lang.Float.floatToIntBits(
-              other.getWeight())) return false;
-      if (!unknownFields.equals(other.unknownFields)) return false;
-      return true;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-      if (memoizedHashCode != 0) {
-        return memoizedHashCode;
-      }
-      int hash = 41;
-      hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + TAG_FIELD_NUMBER;
-      hash = (53 * hash) + getTag().hashCode();
-      hash = (37 * hash) + WEIGHT_FIELD_NUMBER;
-      hash = (53 * hash) + java.lang.Float.floatToIntBits(
-          getWeight());
-      hash = (29 * hash) + unknownFields.hashCode();
-      memoizedHashCode = hash;
-      return hash;
-    }
-
-    public static com.gosh.entity.RecFeature.FeedbackTag parseFrom(
-        java.nio.ByteBuffer data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.gosh.entity.RecFeature.FeedbackTag parseFrom(
-        java.nio.ByteBuffer data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.gosh.entity.RecFeature.FeedbackTag parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.gosh.entity.RecFeature.FeedbackTag parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.gosh.entity.RecFeature.FeedbackTag parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.gosh.entity.RecFeature.FeedbackTag parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.gosh.entity.RecFeature.FeedbackTag parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static com.gosh.entity.RecFeature.FeedbackTag parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static com.gosh.entity.RecFeature.FeedbackTag parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
-    }
-    public static com.gosh.entity.RecFeature.FeedbackTag parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static com.gosh.entity.RecFeature.FeedbackTag parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static com.gosh.entity.RecFeature.FeedbackTag parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    @java.lang.Override
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder() {
-      return DEFAULT_INSTANCE.toBuilder();
-    }
-    public static Builder newBuilder(com.gosh.entity.RecFeature.FeedbackTag prototype) {
-      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-    @java.lang.Override
-    public Builder toBuilder() {
-      return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code com.gosh.entity.FeedbackTag}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.gosh.entity.FeedbackTag)
-        com.gosh.entity.RecFeature.FeedbackTagOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_FeedbackTag_descriptor;
-      }
-
-      @java.lang.Override
-      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_FeedbackTag_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                com.gosh.entity.RecFeature.FeedbackTag.class, com.gosh.entity.RecFeature.FeedbackTag.Builder.class);
-      }
-
-      // Construct using com.gosh.entity.RecFeature.FeedbackTag.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-        }
-      }
-      @java.lang.Override
-      public Builder clear() {
-        super.clear();
-        tag_ = "";
-
-        weight_ = 0F;
-
-        return this;
-      }
-
-      @java.lang.Override
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_FeedbackTag_descriptor;
-      }
-
-      @java.lang.Override
-      public com.gosh.entity.RecFeature.FeedbackTag getDefaultInstanceForType() {
-        return com.gosh.entity.RecFeature.FeedbackTag.getDefaultInstance();
-      }
-
-      @java.lang.Override
-      public com.gosh.entity.RecFeature.FeedbackTag build() {
-        com.gosh.entity.RecFeature.FeedbackTag result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      @java.lang.Override
-      public com.gosh.entity.RecFeature.FeedbackTag buildPartial() {
-        com.gosh.entity.RecFeature.FeedbackTag result = new com.gosh.entity.RecFeature.FeedbackTag(this);
-        result.tag_ = tag_;
-        result.weight_ = weight_;
-        onBuilt();
-        return result;
-      }
-
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
-      @java.lang.Override
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.gosh.entity.RecFeature.FeedbackTag) {
-          return mergeFrom((com.gosh.entity.RecFeature.FeedbackTag)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(com.gosh.entity.RecFeature.FeedbackTag other) {
-        if (other == com.gosh.entity.RecFeature.FeedbackTag.getDefaultInstance()) return this;
-        if (!other.getTag().isEmpty()) {
-          tag_ = other.tag_;
-          onChanged();
-        }
-        if (other.getWeight() != 0F) {
-          setWeight(other.getWeight());
-        }
-        this.mergeUnknownFields(other.unknownFields);
-        onChanged();
-        return this;
-      }
-
-      @java.lang.Override
-      public final boolean isInitialized() {
-        return true;
-      }
-
-      @java.lang.Override
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.gosh.entity.RecFeature.FeedbackTag parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.gosh.entity.RecFeature.FeedbackTag) e.getUnfinishedMessage();
-          throw e.unwrapIOException();
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-
-      private java.lang.Object tag_ = "";
-      /**
-       * <code>string tag = 1;</code>
-       * @return The tag.
-       */
-      public java.lang.String getTag() {
-        java.lang.Object ref = tag_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          tag_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>string tag = 1;</code>
-       * @return The bytes for tag.
-       */
-      public com.google.protobuf.ByteString
-          getTagBytes() {
-        java.lang.Object ref = tag_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          tag_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>string tag = 1;</code>
-       * @param value The tag to set.
-       * @return This builder for chaining.
-       */
-      public Builder setTag(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        tag_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string tag = 1;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearTag() {
-        
-        tag_ = getDefaultInstance().getTag();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string tag = 1;</code>
-       * @param value The bytes for tag to set.
-       * @return This builder for chaining.
-       */
-      public Builder setTagBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        tag_ = value;
-        onChanged();
-        return this;
-      }
-
-      private float weight_ ;
-      /**
-       * <code>float weight = 2;</code>
-       * @return The weight.
-       */
-      @java.lang.Override
-      public float getWeight() {
-        return weight_;
-      }
-      /**
-       * <code>float weight = 2;</code>
-       * @param value The weight to set.
-       * @return This builder for chaining.
-       */
-      public Builder setWeight(float value) {
-        
-        weight_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>float weight = 2;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearWeight() {
-        
-        weight_ = 0F;
-        onChanged();
-        return this;
-      }
-      @java.lang.Override
-      public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFields(unknownFields);
-      }
-
-      @java.lang.Override
-      public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.mergeUnknownFields(unknownFields);
-      }
-
-
-      // @@protoc_insertion_point(builder_scope:com.gosh.entity.FeedbackTag)
-    }
-
-    // @@protoc_insertion_point(class_scope:com.gosh.entity.FeedbackTag)
-    private static final com.gosh.entity.RecFeature.FeedbackTag DEFAULT_INSTANCE;
-    static {
-      DEFAULT_INSTANCE = new com.gosh.entity.RecFeature.FeedbackTag();
-    }
-
-    public static com.gosh.entity.RecFeature.FeedbackTag getDefaultInstance() {
-      return DEFAULT_INSTANCE;
-    }
-
-    private static final com.google.protobuf.Parser<FeedbackTag>
-        PARSER = new com.google.protobuf.AbstractParser<FeedbackTag>() {
-      @java.lang.Override
-      public FeedbackTag parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new FeedbackTag(input, extensionRegistry);
-      }
-    };
-
-    public static com.google.protobuf.Parser<FeedbackTag> parser() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<FeedbackTag> getParserForType() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public com.gosh.entity.RecFeature.FeedbackTag getDefaultInstanceForType() {
-      return DEFAULT_INSTANCE;
-    }
-
-  }
-
-  public interface FeedbackAuthorIdOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.gosh.entity.FeedbackAuthorId)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>uint64 author_id = 1;</code>
-     * @return The authorId.
-     */
-    long getAuthorId();
-
-    /**
-     * <code>float weight = 2;</code>
-     * @return The weight.
-     */
-    float getWeight();
-  }
-  /**
-   * Protobuf type {@code com.gosh.entity.FeedbackAuthorId}
-   */
-  public static final class FeedbackAuthorId extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:com.gosh.entity.FeedbackAuthorId)
-      FeedbackAuthorIdOrBuilder {
-  private static final long serialVersionUID = 0L;
-    // Use FeedbackAuthorId.newBuilder() to construct.
-    private FeedbackAuthorId(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-      super(builder);
-    }
-    private FeedbackAuthorId() {
-    }
-
-    @java.lang.Override
-    @SuppressWarnings({"unused"})
-    protected java.lang.Object newInstance(
-        UnusedPrivateParameter unused) {
-      return new FeedbackAuthorId();
-    }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
-    private FeedbackAuthorId(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            case 8: {
-
-              authorId_ = input.readUInt64();
-              break;
-            }
-            case 21: {
-
-              weight_ = input.readFloat();
-              break;
-            }
-            default: {
-              if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (com.google.protobuf.UninitializedMessageException e) {
-        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_FeedbackAuthorId_descriptor;
-    }
-
-    @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_FeedbackAuthorId_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.gosh.entity.RecFeature.FeedbackAuthorId.class, com.gosh.entity.RecFeature.FeedbackAuthorId.Builder.class);
-    }
-
-    public static final int AUTHOR_ID_FIELD_NUMBER = 1;
-    private long authorId_;
-    /**
-     * <code>uint64 author_id = 1;</code>
-     * @return The authorId.
-     */
-    @java.lang.Override
-    public long getAuthorId() {
-      return authorId_;
-    }
-
-    public static final int WEIGHT_FIELD_NUMBER = 2;
-    private float weight_;
-    /**
-     * <code>float weight = 2;</code>
-     * @return The weight.
-     */
-    @java.lang.Override
-    public float getWeight() {
-      return weight_;
-    }
-
-    private byte memoizedIsInitialized = -1;
-    @java.lang.Override
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      if (authorId_ != 0L) {
-        output.writeUInt64(1, authorId_);
-      }
-      if (java.lang.Float.floatToRawIntBits(weight_) != 0) {
-        output.writeFloat(2, weight_);
-      }
-      unknownFields.writeTo(output);
-    }
-
-    @java.lang.Override
-    public int getSerializedSize() {
-      int size = memoizedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (authorId_ != 0L) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(1, authorId_);
-      }
-      if (java.lang.Float.floatToRawIntBits(weight_) != 0) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeFloatSize(2, weight_);
-      }
-      size += unknownFields.getSerializedSize();
-      memoizedSize = size;
-      return size;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this) {
-       return true;
-      }
-      if (!(obj instanceof com.gosh.entity.RecFeature.FeedbackAuthorId)) {
-        return super.equals(obj);
-      }
-      com.gosh.entity.RecFeature.FeedbackAuthorId other = (com.gosh.entity.RecFeature.FeedbackAuthorId) obj;
-
-      if (getAuthorId()
-          != other.getAuthorId()) return false;
-      if (java.lang.Float.floatToIntBits(getWeight())
-          != java.lang.Float.floatToIntBits(
-              other.getWeight())) return false;
-      if (!unknownFields.equals(other.unknownFields)) return false;
-      return true;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-      if (memoizedHashCode != 0) {
-        return memoizedHashCode;
-      }
-      int hash = 41;
-      hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + AUTHOR_ID_FIELD_NUMBER;
-      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getAuthorId());
-      hash = (37 * hash) + WEIGHT_FIELD_NUMBER;
-      hash = (53 * hash) + java.lang.Float.floatToIntBits(
-          getWeight());
-      hash = (29 * hash) + unknownFields.hashCode();
-      memoizedHashCode = hash;
-      return hash;
-    }
-
-    public static com.gosh.entity.RecFeature.FeedbackAuthorId parseFrom(
-        java.nio.ByteBuffer data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.gosh.entity.RecFeature.FeedbackAuthorId parseFrom(
-        java.nio.ByteBuffer data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.gosh.entity.RecFeature.FeedbackAuthorId parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.gosh.entity.RecFeature.FeedbackAuthorId parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.gosh.entity.RecFeature.FeedbackAuthorId parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.gosh.entity.RecFeature.FeedbackAuthorId parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.gosh.entity.RecFeature.FeedbackAuthorId parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static com.gosh.entity.RecFeature.FeedbackAuthorId parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static com.gosh.entity.RecFeature.FeedbackAuthorId parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
-    }
-    public static com.gosh.entity.RecFeature.FeedbackAuthorId parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static com.gosh.entity.RecFeature.FeedbackAuthorId parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static com.gosh.entity.RecFeature.FeedbackAuthorId parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    @java.lang.Override
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder() {
-      return DEFAULT_INSTANCE.toBuilder();
-    }
-    public static Builder newBuilder(com.gosh.entity.RecFeature.FeedbackAuthorId prototype) {
-      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-    @java.lang.Override
-    public Builder toBuilder() {
-      return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code com.gosh.entity.FeedbackAuthorId}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.gosh.entity.FeedbackAuthorId)
-        com.gosh.entity.RecFeature.FeedbackAuthorIdOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_FeedbackAuthorId_descriptor;
-      }
-
-      @java.lang.Override
-      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_FeedbackAuthorId_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                com.gosh.entity.RecFeature.FeedbackAuthorId.class, com.gosh.entity.RecFeature.FeedbackAuthorId.Builder.class);
-      }
-
-      // Construct using com.gosh.entity.RecFeature.FeedbackAuthorId.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-        }
-      }
-      @java.lang.Override
-      public Builder clear() {
-        super.clear();
-        authorId_ = 0L;
-
-        weight_ = 0F;
-
-        return this;
-      }
-
-      @java.lang.Override
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_FeedbackAuthorId_descriptor;
-      }
-
-      @java.lang.Override
-      public com.gosh.entity.RecFeature.FeedbackAuthorId getDefaultInstanceForType() {
-        return com.gosh.entity.RecFeature.FeedbackAuthorId.getDefaultInstance();
-      }
-
-      @java.lang.Override
-      public com.gosh.entity.RecFeature.FeedbackAuthorId build() {
-        com.gosh.entity.RecFeature.FeedbackAuthorId result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      @java.lang.Override
-      public com.gosh.entity.RecFeature.FeedbackAuthorId buildPartial() {
-        com.gosh.entity.RecFeature.FeedbackAuthorId result = new com.gosh.entity.RecFeature.FeedbackAuthorId(this);
-        result.authorId_ = authorId_;
-        result.weight_ = weight_;
-        onBuilt();
-        return result;
-      }
-
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
-      @java.lang.Override
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.gosh.entity.RecFeature.FeedbackAuthorId) {
-          return mergeFrom((com.gosh.entity.RecFeature.FeedbackAuthorId)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(com.gosh.entity.RecFeature.FeedbackAuthorId other) {
-        if (other == com.gosh.entity.RecFeature.FeedbackAuthorId.getDefaultInstance()) return this;
-        if (other.getAuthorId() != 0L) {
-          setAuthorId(other.getAuthorId());
-        }
-        if (other.getWeight() != 0F) {
-          setWeight(other.getWeight());
-        }
-        this.mergeUnknownFields(other.unknownFields);
-        onChanged();
-        return this;
-      }
-
-      @java.lang.Override
-      public final boolean isInitialized() {
-        return true;
-      }
-
-      @java.lang.Override
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.gosh.entity.RecFeature.FeedbackAuthorId parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.gosh.entity.RecFeature.FeedbackAuthorId) e.getUnfinishedMessage();
-          throw e.unwrapIOException();
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-
-      private long authorId_ ;
-      /**
-       * <code>uint64 author_id = 1;</code>
-       * @return The authorId.
-       */
-      @java.lang.Override
-      public long getAuthorId() {
-        return authorId_;
-      }
-      /**
-       * <code>uint64 author_id = 1;</code>
-       * @param value The authorId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setAuthorId(long value) {
-        
-        authorId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>uint64 author_id = 1;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearAuthorId() {
-        
-        authorId_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      private float weight_ ;
-      /**
-       * <code>float weight = 2;</code>
-       * @return The weight.
-       */
-      @java.lang.Override
-      public float getWeight() {
-        return weight_;
-      }
-      /**
-       * <code>float weight = 2;</code>
-       * @param value The weight to set.
-       * @return This builder for chaining.
-       */
-      public Builder setWeight(float value) {
-        
-        weight_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>float weight = 2;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearWeight() {
-        
-        weight_ = 0F;
-        onChanged();
-        return this;
-      }
-      @java.lang.Override
-      public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFields(unknownFields);
-      }
-
-      @java.lang.Override
-      public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.mergeUnknownFields(unknownFields);
-      }
-
-
-      // @@protoc_insertion_point(builder_scope:com.gosh.entity.FeedbackAuthorId)
-    }
-
-    // @@protoc_insertion_point(class_scope:com.gosh.entity.FeedbackAuthorId)
-    private static final com.gosh.entity.RecFeature.FeedbackAuthorId DEFAULT_INSTANCE;
-    static {
-      DEFAULT_INSTANCE = new com.gosh.entity.RecFeature.FeedbackAuthorId();
-    }
-
-    public static com.gosh.entity.RecFeature.FeedbackAuthorId getDefaultInstance() {
-      return DEFAULT_INSTANCE;
-    }
-
-    private static final com.google.protobuf.Parser<FeedbackAuthorId>
-        PARSER = new com.google.protobuf.AbstractParser<FeedbackAuthorId>() {
-      @java.lang.Override
-      public FeedbackAuthorId parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new FeedbackAuthorId(input, extensionRegistry);
-      }
-    };
-
-    public static com.google.protobuf.Parser<FeedbackAuthorId> parser() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<FeedbackAuthorId> getParserForType() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public com.gosh.entity.RecFeature.FeedbackAuthorId getDefaultInstanceForType() {
-      return DEFAULT_INSTANCE;
-    }
-
-  }
-
   public interface RecUserAuthorFeatureOrBuilder extends
       // @@protoc_insertion_point(interface_extends:com.gosh.entity.RecUserAuthorFeature)
       com.google.protobuf.MessageOrBuilder {
@@ -16555,11 +18941,6 @@ public final class RecFeature {
     long getUserId();
 
     /**
-     * <pre>
-     * 过期时间标识 (1h 或 24h)
-     *   string expire_time = 3;
-     * </pre>
-     *
      * <code>uint64 author_id = 2;</code>
      * @return The authorId.
      */
@@ -17681,11 +20062,6 @@ public final class RecFeature {
     public static final int AUTHOR_ID_FIELD_NUMBER = 2;
     private long authorId_;
     /**
-     * <pre>
-     * 过期时间标识 (1h 或 24h)
-     *   string expire_time = 3;
-     * </pre>
-     *
      * <code>uint64 author_id = 2;</code>
      * @return The authorId.
      */
@@ -20210,11 +22586,6 @@ public final class RecFeature {
 
       private long authorId_ ;
       /**
-       * <pre>
-       * 过期时间标识 (1h 或 24h)
-       *   string expire_time = 3;
-       * </pre>
-       *
        * <code>uint64 author_id = 2;</code>
        * @return The authorId.
        */
@@ -20223,11 +22594,6 @@ public final class RecFeature {
         return authorId_;
       }
       /**
-       * <pre>
-       * 过期时间标识 (1h 或 24h)
-       *   string expire_time = 3;
-       * </pre>
-       *
        * <code>uint64 author_id = 2;</code>
        * @param value The authorId to set.
        * @return This builder for chaining.
@@ -20239,11 +22605,6 @@ public final class RecFeature {
         return this;
       }
       /**
-       * <pre>
-       * 过期时间标识 (1h 或 24h)
-       *   string expire_time = 3;
-       * </pre>
-       *
        * <code>uint64 author_id = 2;</code>
        * @return This builder for chaining.
        */
@@ -23312,11 +25673,91 @@ public final class RecFeature {
      * @return The userAnchorNegativeFeedbackCnt15min.
      */
     int getUserAnchorNegativeFeedbackCnt15Min();
+
+    /**
+     * <pre>
+     * 7天窗口特征
+     * </pre>
+     *
+     * <code>int32 user_anchor_enter_cnt_7d = 20;</code>
+     * @return The userAnchorEnterCnt7d.
+     */
+    int getUserAnchorEnterCnt7D();
+
+    /**
+     * <pre>
+     * 用户主播7天退房次数
+     * </pre>
+     *
+     * <code>int32 user_anchor_quit_cnt_7d = 21;</code>
+     * @return The userAnchorQuitCnt7d.
+     */
+    int getUserAnchorQuitCnt7D();
+
+    /**
+     * <pre>
+     * 用户主播7天停留超10s次数
+     * </pre>
+     *
+     * <code>int32 user_anchor_stay_gt10s_cnt_7d = 22;</code>
+     * @return The userAnchorStayGt10sCnt7d.
+     */
+    int getUserAnchorStayGt10SCnt7D();
+
+    /**
+     * <pre>
+     * 用户主播7天停留超30s次数
+     * </pre>
+     *
+     * <code>int32 user_anchor_stay_gt30s_cnt_7d = 23;</code>
+     * @return The userAnchorStayGt30sCnt7d.
+     */
+    int getUserAnchorStayGt30SCnt7D();
+
+    /**
+     * <pre>
+     * 用户主播7天次均预览时长
+     * </pre>
+     *
+     * <code>float user_anchor_avg_view_duration_7d = 24;</code>
+     * @return The userAnchorAvgViewDuration7d.
+     */
+    float getUserAnchorAvgViewDuration7D();
+
+    /**
+     * <pre>
+     * 用户主播7天正反馈次数（关注or送礼or公聊or分享）
+     * </pre>
+     *
+     * <code>int32 user_anchor_positive_feedback_cnt_7d = 25;</code>
+     * @return The userAnchorPositiveFeedbackCnt7d.
+     */
+    int getUserAnchorPositiveFeedbackCnt7D();
+
+    /**
+     * <pre>
+     * 用户主播7天负反馈次数（拉黑or举报）
+     * </pre>
+     *
+     * <code>int32 user_anchor_negative_feedback_cnt_7d = 26;</code>
+     * @return The userAnchorNegativeFeedbackCnt7d.
+     */
+    int getUserAnchorNegativeFeedbackCnt7D();
+
+    /**
+     * <pre>
+     * 用户主播7天主动进房次数(点击or10s进房)
+     * </pre>
+     *
+     * <code>int32 user_anchor_active_enter_cnt_7d = 27;</code>
+     * @return The userAnchorActiveEnterCnt7d.
+     */
+    int getUserAnchorActiveEnterCnt7D();
   }
   /**
    * <pre>
    * 直播用户主播交叉特征,hset格式
-   * Redis Key: rec:user_anchor_feature:{user_id}:live15min
+   * Redis Key: rec:user_anchor_feature:{user_id}:live15min;rec:user_anchor_feature:{user_id}:live7d
    * </pre>
    *
    * Protobuf type {@code com.gosh.entity.LiveUserAnchorFeature}
@@ -23421,6 +25862,46 @@ public final class RecFeature {
             case 152: {
 
               userAnchorNegativeFeedbackCnt15Min_ = input.readInt32();
+              break;
+            }
+            case 160: {
+
+              userAnchorEnterCnt7D_ = input.readInt32();
+              break;
+            }
+            case 168: {
+
+              userAnchorQuitCnt7D_ = input.readInt32();
+              break;
+            }
+            case 176: {
+
+              userAnchorStayGt10SCnt7D_ = input.readInt32();
+              break;
+            }
+            case 184: {
+
+              userAnchorStayGt30SCnt7D_ = input.readInt32();
+              break;
+            }
+            case 197: {
+
+              userAnchorAvgViewDuration7D_ = input.readFloat();
+              break;
+            }
+            case 200: {
+
+              userAnchorPositiveFeedbackCnt7D_ = input.readInt32();
+              break;
+            }
+            case 208: {
+
+              userAnchorNegativeFeedbackCnt7D_ = input.readInt32();
+              break;
+            }
+            case 216: {
+
+              userAnchorActiveEnterCnt7D_ = input.readInt32();
               break;
             }
             default: {
@@ -23630,6 +26111,126 @@ public final class RecFeature {
       return userAnchorNegativeFeedbackCnt15Min_;
     }
 
+    public static final int USER_ANCHOR_ENTER_CNT_7D_FIELD_NUMBER = 20;
+    private int userAnchorEnterCnt7D_;
+    /**
+     * <pre>
+     * 7天窗口特征
+     * </pre>
+     *
+     * <code>int32 user_anchor_enter_cnt_7d = 20;</code>
+     * @return The userAnchorEnterCnt7d.
+     */
+    @java.lang.Override
+    public int getUserAnchorEnterCnt7D() {
+      return userAnchorEnterCnt7D_;
+    }
+
+    public static final int USER_ANCHOR_QUIT_CNT_7D_FIELD_NUMBER = 21;
+    private int userAnchorQuitCnt7D_;
+    /**
+     * <pre>
+     * 用户主播7天退房次数
+     * </pre>
+     *
+     * <code>int32 user_anchor_quit_cnt_7d = 21;</code>
+     * @return The userAnchorQuitCnt7d.
+     */
+    @java.lang.Override
+    public int getUserAnchorQuitCnt7D() {
+      return userAnchorQuitCnt7D_;
+    }
+
+    public static final int USER_ANCHOR_STAY_GT10S_CNT_7D_FIELD_NUMBER = 22;
+    private int userAnchorStayGt10SCnt7D_;
+    /**
+     * <pre>
+     * 用户主播7天停留超10s次数
+     * </pre>
+     *
+     * <code>int32 user_anchor_stay_gt10s_cnt_7d = 22;</code>
+     * @return The userAnchorStayGt10sCnt7d.
+     */
+    @java.lang.Override
+    public int getUserAnchorStayGt10SCnt7D() {
+      return userAnchorStayGt10SCnt7D_;
+    }
+
+    public static final int USER_ANCHOR_STAY_GT30S_CNT_7D_FIELD_NUMBER = 23;
+    private int userAnchorStayGt30SCnt7D_;
+    /**
+     * <pre>
+     * 用户主播7天停留超30s次数
+     * </pre>
+     *
+     * <code>int32 user_anchor_stay_gt30s_cnt_7d = 23;</code>
+     * @return The userAnchorStayGt30sCnt7d.
+     */
+    @java.lang.Override
+    public int getUserAnchorStayGt30SCnt7D() {
+      return userAnchorStayGt30SCnt7D_;
+    }
+
+    public static final int USER_ANCHOR_AVG_VIEW_DURATION_7D_FIELD_NUMBER = 24;
+    private float userAnchorAvgViewDuration7D_;
+    /**
+     * <pre>
+     * 用户主播7天次均预览时长
+     * </pre>
+     *
+     * <code>float user_anchor_avg_view_duration_7d = 24;</code>
+     * @return The userAnchorAvgViewDuration7d.
+     */
+    @java.lang.Override
+    public float getUserAnchorAvgViewDuration7D() {
+      return userAnchorAvgViewDuration7D_;
+    }
+
+    public static final int USER_ANCHOR_POSITIVE_FEEDBACK_CNT_7D_FIELD_NUMBER = 25;
+    private int userAnchorPositiveFeedbackCnt7D_;
+    /**
+     * <pre>
+     * 用户主播7天正反馈次数（关注or送礼or公聊or分享）
+     * </pre>
+     *
+     * <code>int32 user_anchor_positive_feedback_cnt_7d = 25;</code>
+     * @return The userAnchorPositiveFeedbackCnt7d.
+     */
+    @java.lang.Override
+    public int getUserAnchorPositiveFeedbackCnt7D() {
+      return userAnchorPositiveFeedbackCnt7D_;
+    }
+
+    public static final int USER_ANCHOR_NEGATIVE_FEEDBACK_CNT_7D_FIELD_NUMBER = 26;
+    private int userAnchorNegativeFeedbackCnt7D_;
+    /**
+     * <pre>
+     * 用户主播7天负反馈次数（拉黑or举报）
+     * </pre>
+     *
+     * <code>int32 user_anchor_negative_feedback_cnt_7d = 26;</code>
+     * @return The userAnchorNegativeFeedbackCnt7d.
+     */
+    @java.lang.Override
+    public int getUserAnchorNegativeFeedbackCnt7D() {
+      return userAnchorNegativeFeedbackCnt7D_;
+    }
+
+    public static final int USER_ANCHOR_ACTIVE_ENTER_CNT_7D_FIELD_NUMBER = 27;
+    private int userAnchorActiveEnterCnt7D_;
+    /**
+     * <pre>
+     * 用户主播7天主动进房次数(点击or10s进房)
+     * </pre>
+     *
+     * <code>int32 user_anchor_active_enter_cnt_7d = 27;</code>
+     * @return The userAnchorActiveEnterCnt7d.
+     */
+    @java.lang.Override
+    public int getUserAnchorActiveEnterCnt7D() {
+      return userAnchorActiveEnterCnt7D_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -23679,6 +26280,30 @@ public final class RecFeature {
       }
       if (userAnchorNegativeFeedbackCnt15Min_ != 0) {
         output.writeInt32(19, userAnchorNegativeFeedbackCnt15Min_);
+      }
+      if (userAnchorEnterCnt7D_ != 0) {
+        output.writeInt32(20, userAnchorEnterCnt7D_);
+      }
+      if (userAnchorQuitCnt7D_ != 0) {
+        output.writeInt32(21, userAnchorQuitCnt7D_);
+      }
+      if (userAnchorStayGt10SCnt7D_ != 0) {
+        output.writeInt32(22, userAnchorStayGt10SCnt7D_);
+      }
+      if (userAnchorStayGt30SCnt7D_ != 0) {
+        output.writeInt32(23, userAnchorStayGt30SCnt7D_);
+      }
+      if (java.lang.Float.floatToRawIntBits(userAnchorAvgViewDuration7D_) != 0) {
+        output.writeFloat(24, userAnchorAvgViewDuration7D_);
+      }
+      if (userAnchorPositiveFeedbackCnt7D_ != 0) {
+        output.writeInt32(25, userAnchorPositiveFeedbackCnt7D_);
+      }
+      if (userAnchorNegativeFeedbackCnt7D_ != 0) {
+        output.writeInt32(26, userAnchorNegativeFeedbackCnt7D_);
+      }
+      if (userAnchorActiveEnterCnt7D_ != 0) {
+        output.writeInt32(27, userAnchorActiveEnterCnt7D_);
       }
       unknownFields.writeTo(output);
     }
@@ -23737,6 +26362,38 @@ public final class RecFeature {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(19, userAnchorNegativeFeedbackCnt15Min_);
       }
+      if (userAnchorEnterCnt7D_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(20, userAnchorEnterCnt7D_);
+      }
+      if (userAnchorQuitCnt7D_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(21, userAnchorQuitCnt7D_);
+      }
+      if (userAnchorStayGt10SCnt7D_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(22, userAnchorStayGt10SCnt7D_);
+      }
+      if (userAnchorStayGt30SCnt7D_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(23, userAnchorStayGt30SCnt7D_);
+      }
+      if (java.lang.Float.floatToRawIntBits(userAnchorAvgViewDuration7D_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(24, userAnchorAvgViewDuration7D_);
+      }
+      if (userAnchorPositiveFeedbackCnt7D_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(25, userAnchorPositiveFeedbackCnt7D_);
+      }
+      if (userAnchorNegativeFeedbackCnt7D_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(26, userAnchorNegativeFeedbackCnt7D_);
+      }
+      if (userAnchorActiveEnterCnt7D_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(27, userAnchorActiveEnterCnt7D_);
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -23776,6 +26433,23 @@ public final class RecFeature {
           != other.getUserAnchorGiftAmount15Min()) return false;
       if (getUserAnchorNegativeFeedbackCnt15Min()
           != other.getUserAnchorNegativeFeedbackCnt15Min()) return false;
+      if (getUserAnchorEnterCnt7D()
+          != other.getUserAnchorEnterCnt7D()) return false;
+      if (getUserAnchorQuitCnt7D()
+          != other.getUserAnchorQuitCnt7D()) return false;
+      if (getUserAnchorStayGt10SCnt7D()
+          != other.getUserAnchorStayGt10SCnt7D()) return false;
+      if (getUserAnchorStayGt30SCnt7D()
+          != other.getUserAnchorStayGt30SCnt7D()) return false;
+      if (java.lang.Float.floatToIntBits(getUserAnchorAvgViewDuration7D())
+          != java.lang.Float.floatToIntBits(
+              other.getUserAnchorAvgViewDuration7D())) return false;
+      if (getUserAnchorPositiveFeedbackCnt7D()
+          != other.getUserAnchorPositiveFeedbackCnt7D()) return false;
+      if (getUserAnchorNegativeFeedbackCnt7D()
+          != other.getUserAnchorNegativeFeedbackCnt7D()) return false;
+      if (getUserAnchorActiveEnterCnt7D()
+          != other.getUserAnchorActiveEnterCnt7D()) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -23813,6 +26487,23 @@ public final class RecFeature {
       hash = (53 * hash) + getUserAnchorGiftAmount15Min();
       hash = (37 * hash) + USER_ANCHOR_NEGATIVE_FEEDBACK_CNT_15MIN_FIELD_NUMBER;
       hash = (53 * hash) + getUserAnchorNegativeFeedbackCnt15Min();
+      hash = (37 * hash) + USER_ANCHOR_ENTER_CNT_7D_FIELD_NUMBER;
+      hash = (53 * hash) + getUserAnchorEnterCnt7D();
+      hash = (37 * hash) + USER_ANCHOR_QUIT_CNT_7D_FIELD_NUMBER;
+      hash = (53 * hash) + getUserAnchorQuitCnt7D();
+      hash = (37 * hash) + USER_ANCHOR_STAY_GT10S_CNT_7D_FIELD_NUMBER;
+      hash = (53 * hash) + getUserAnchorStayGt10SCnt7D();
+      hash = (37 * hash) + USER_ANCHOR_STAY_GT30S_CNT_7D_FIELD_NUMBER;
+      hash = (53 * hash) + getUserAnchorStayGt30SCnt7D();
+      hash = (37 * hash) + USER_ANCHOR_AVG_VIEW_DURATION_7D_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getUserAnchorAvgViewDuration7D());
+      hash = (37 * hash) + USER_ANCHOR_POSITIVE_FEEDBACK_CNT_7D_FIELD_NUMBER;
+      hash = (53 * hash) + getUserAnchorPositiveFeedbackCnt7D();
+      hash = (37 * hash) + USER_ANCHOR_NEGATIVE_FEEDBACK_CNT_7D_FIELD_NUMBER;
+      hash = (53 * hash) + getUserAnchorNegativeFeedbackCnt7D();
+      hash = (37 * hash) + USER_ANCHOR_ACTIVE_ENTER_CNT_7D_FIELD_NUMBER;
+      hash = (53 * hash) + getUserAnchorActiveEnterCnt7D();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -23911,7 +26602,7 @@ public final class RecFeature {
     /**
      * <pre>
      * 直播用户主播交叉特征,hset格式
-     * Redis Key: rec:user_anchor_feature:{user_id}:live15min
+     * Redis Key: rec:user_anchor_feature:{user_id}:live15min;rec:user_anchor_feature:{user_id}:live7d
      * </pre>
      *
      * Protobuf type {@code com.gosh.entity.LiveUserAnchorFeature}
@@ -23975,6 +26666,22 @@ public final class RecFeature {
 
         userAnchorNegativeFeedbackCnt15Min_ = 0;
 
+        userAnchorEnterCnt7D_ = 0;
+
+        userAnchorQuitCnt7D_ = 0;
+
+        userAnchorStayGt10SCnt7D_ = 0;
+
+        userAnchorStayGt30SCnt7D_ = 0;
+
+        userAnchorAvgViewDuration7D_ = 0F;
+
+        userAnchorPositiveFeedbackCnt7D_ = 0;
+
+        userAnchorNegativeFeedbackCnt7D_ = 0;
+
+        userAnchorActiveEnterCnt7D_ = 0;
+
         return this;
       }
 
@@ -24013,6 +26720,14 @@ public final class RecFeature {
         result.userAnchorGiftCnt15Min_ = userAnchorGiftCnt15Min_;
         result.userAnchorGiftAmount15Min_ = userAnchorGiftAmount15Min_;
         result.userAnchorNegativeFeedbackCnt15Min_ = userAnchorNegativeFeedbackCnt15Min_;
+        result.userAnchorEnterCnt7D_ = userAnchorEnterCnt7D_;
+        result.userAnchorQuitCnt7D_ = userAnchorQuitCnt7D_;
+        result.userAnchorStayGt10SCnt7D_ = userAnchorStayGt10SCnt7D_;
+        result.userAnchorStayGt30SCnt7D_ = userAnchorStayGt30SCnt7D_;
+        result.userAnchorAvgViewDuration7D_ = userAnchorAvgViewDuration7D_;
+        result.userAnchorPositiveFeedbackCnt7D_ = userAnchorPositiveFeedbackCnt7D_;
+        result.userAnchorNegativeFeedbackCnt7D_ = userAnchorNegativeFeedbackCnt7D_;
+        result.userAnchorActiveEnterCnt7D_ = userAnchorActiveEnterCnt7D_;
         onBuilt();
         return result;
       }
@@ -24096,6 +26811,30 @@ public final class RecFeature {
         }
         if (other.getUserAnchorNegativeFeedbackCnt15Min() != 0) {
           setUserAnchorNegativeFeedbackCnt15Min(other.getUserAnchorNegativeFeedbackCnt15Min());
+        }
+        if (other.getUserAnchorEnterCnt7D() != 0) {
+          setUserAnchorEnterCnt7D(other.getUserAnchorEnterCnt7D());
+        }
+        if (other.getUserAnchorQuitCnt7D() != 0) {
+          setUserAnchorQuitCnt7D(other.getUserAnchorQuitCnt7D());
+        }
+        if (other.getUserAnchorStayGt10SCnt7D() != 0) {
+          setUserAnchorStayGt10SCnt7D(other.getUserAnchorStayGt10SCnt7D());
+        }
+        if (other.getUserAnchorStayGt30SCnt7D() != 0) {
+          setUserAnchorStayGt30SCnt7D(other.getUserAnchorStayGt30SCnt7D());
+        }
+        if (other.getUserAnchorAvgViewDuration7D() != 0F) {
+          setUserAnchorAvgViewDuration7D(other.getUserAnchorAvgViewDuration7D());
+        }
+        if (other.getUserAnchorPositiveFeedbackCnt7D() != 0) {
+          setUserAnchorPositiveFeedbackCnt7D(other.getUserAnchorPositiveFeedbackCnt7D());
+        }
+        if (other.getUserAnchorNegativeFeedbackCnt7D() != 0) {
+          setUserAnchorNegativeFeedbackCnt7D(other.getUserAnchorNegativeFeedbackCnt7D());
+        }
+        if (other.getUserAnchorActiveEnterCnt7D() != 0) {
+          setUserAnchorActiveEnterCnt7D(other.getUserAnchorActiveEnterCnt7D());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -24620,6 +27359,350 @@ public final class RecFeature {
         onChanged();
         return this;
       }
+
+      private int userAnchorEnterCnt7D_ ;
+      /**
+       * <pre>
+       * 7天窗口特征
+       * </pre>
+       *
+       * <code>int32 user_anchor_enter_cnt_7d = 20;</code>
+       * @return The userAnchorEnterCnt7d.
+       */
+      @java.lang.Override
+      public int getUserAnchorEnterCnt7D() {
+        return userAnchorEnterCnt7D_;
+      }
+      /**
+       * <pre>
+       * 7天窗口特征
+       * </pre>
+       *
+       * <code>int32 user_anchor_enter_cnt_7d = 20;</code>
+       * @param value The userAnchorEnterCnt7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserAnchorEnterCnt7D(int value) {
+        
+        userAnchorEnterCnt7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 7天窗口特征
+       * </pre>
+       *
+       * <code>int32 user_anchor_enter_cnt_7d = 20;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserAnchorEnterCnt7D() {
+        
+        userAnchorEnterCnt7D_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userAnchorQuitCnt7D_ ;
+      /**
+       * <pre>
+       * 用户主播7天退房次数
+       * </pre>
+       *
+       * <code>int32 user_anchor_quit_cnt_7d = 21;</code>
+       * @return The userAnchorQuitCnt7d.
+       */
+      @java.lang.Override
+      public int getUserAnchorQuitCnt7D() {
+        return userAnchorQuitCnt7D_;
+      }
+      /**
+       * <pre>
+       * 用户主播7天退房次数
+       * </pre>
+       *
+       * <code>int32 user_anchor_quit_cnt_7d = 21;</code>
+       * @param value The userAnchorQuitCnt7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserAnchorQuitCnt7D(int value) {
+        
+        userAnchorQuitCnt7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户主播7天退房次数
+       * </pre>
+       *
+       * <code>int32 user_anchor_quit_cnt_7d = 21;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserAnchorQuitCnt7D() {
+        
+        userAnchorQuitCnt7D_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userAnchorStayGt10SCnt7D_ ;
+      /**
+       * <pre>
+       * 用户主播7天停留超10s次数
+       * </pre>
+       *
+       * <code>int32 user_anchor_stay_gt10s_cnt_7d = 22;</code>
+       * @return The userAnchorStayGt10sCnt7d.
+       */
+      @java.lang.Override
+      public int getUserAnchorStayGt10SCnt7D() {
+        return userAnchorStayGt10SCnt7D_;
+      }
+      /**
+       * <pre>
+       * 用户主播7天停留超10s次数
+       * </pre>
+       *
+       * <code>int32 user_anchor_stay_gt10s_cnt_7d = 22;</code>
+       * @param value The userAnchorStayGt10sCnt7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserAnchorStayGt10SCnt7D(int value) {
+        
+        userAnchorStayGt10SCnt7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户主播7天停留超10s次数
+       * </pre>
+       *
+       * <code>int32 user_anchor_stay_gt10s_cnt_7d = 22;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserAnchorStayGt10SCnt7D() {
+        
+        userAnchorStayGt10SCnt7D_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userAnchorStayGt30SCnt7D_ ;
+      /**
+       * <pre>
+       * 用户主播7天停留超30s次数
+       * </pre>
+       *
+       * <code>int32 user_anchor_stay_gt30s_cnt_7d = 23;</code>
+       * @return The userAnchorStayGt30sCnt7d.
+       */
+      @java.lang.Override
+      public int getUserAnchorStayGt30SCnt7D() {
+        return userAnchorStayGt30SCnt7D_;
+      }
+      /**
+       * <pre>
+       * 用户主播7天停留超30s次数
+       * </pre>
+       *
+       * <code>int32 user_anchor_stay_gt30s_cnt_7d = 23;</code>
+       * @param value The userAnchorStayGt30sCnt7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserAnchorStayGt30SCnt7D(int value) {
+        
+        userAnchorStayGt30SCnt7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户主播7天停留超30s次数
+       * </pre>
+       *
+       * <code>int32 user_anchor_stay_gt30s_cnt_7d = 23;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserAnchorStayGt30SCnt7D() {
+        
+        userAnchorStayGt30SCnt7D_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private float userAnchorAvgViewDuration7D_ ;
+      /**
+       * <pre>
+       * 用户主播7天次均预览时长
+       * </pre>
+       *
+       * <code>float user_anchor_avg_view_duration_7d = 24;</code>
+       * @return The userAnchorAvgViewDuration7d.
+       */
+      @java.lang.Override
+      public float getUserAnchorAvgViewDuration7D() {
+        return userAnchorAvgViewDuration7D_;
+      }
+      /**
+       * <pre>
+       * 用户主播7天次均预览时长
+       * </pre>
+       *
+       * <code>float user_anchor_avg_view_duration_7d = 24;</code>
+       * @param value The userAnchorAvgViewDuration7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserAnchorAvgViewDuration7D(float value) {
+        
+        userAnchorAvgViewDuration7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户主播7天次均预览时长
+       * </pre>
+       *
+       * <code>float user_anchor_avg_view_duration_7d = 24;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserAnchorAvgViewDuration7D() {
+        
+        userAnchorAvgViewDuration7D_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private int userAnchorPositiveFeedbackCnt7D_ ;
+      /**
+       * <pre>
+       * 用户主播7天正反馈次数（关注or送礼or公聊or分享）
+       * </pre>
+       *
+       * <code>int32 user_anchor_positive_feedback_cnt_7d = 25;</code>
+       * @return The userAnchorPositiveFeedbackCnt7d.
+       */
+      @java.lang.Override
+      public int getUserAnchorPositiveFeedbackCnt7D() {
+        return userAnchorPositiveFeedbackCnt7D_;
+      }
+      /**
+       * <pre>
+       * 用户主播7天正反馈次数（关注or送礼or公聊or分享）
+       * </pre>
+       *
+       * <code>int32 user_anchor_positive_feedback_cnt_7d = 25;</code>
+       * @param value The userAnchorPositiveFeedbackCnt7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserAnchorPositiveFeedbackCnt7D(int value) {
+        
+        userAnchorPositiveFeedbackCnt7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户主播7天正反馈次数（关注or送礼or公聊or分享）
+       * </pre>
+       *
+       * <code>int32 user_anchor_positive_feedback_cnt_7d = 25;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserAnchorPositiveFeedbackCnt7D() {
+        
+        userAnchorPositiveFeedbackCnt7D_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userAnchorNegativeFeedbackCnt7D_ ;
+      /**
+       * <pre>
+       * 用户主播7天负反馈次数（拉黑or举报）
+       * </pre>
+       *
+       * <code>int32 user_anchor_negative_feedback_cnt_7d = 26;</code>
+       * @return The userAnchorNegativeFeedbackCnt7d.
+       */
+      @java.lang.Override
+      public int getUserAnchorNegativeFeedbackCnt7D() {
+        return userAnchorNegativeFeedbackCnt7D_;
+      }
+      /**
+       * <pre>
+       * 用户主播7天负反馈次数（拉黑or举报）
+       * </pre>
+       *
+       * <code>int32 user_anchor_negative_feedback_cnt_7d = 26;</code>
+       * @param value The userAnchorNegativeFeedbackCnt7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserAnchorNegativeFeedbackCnt7D(int value) {
+        
+        userAnchorNegativeFeedbackCnt7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户主播7天负反馈次数（拉黑or举报）
+       * </pre>
+       *
+       * <code>int32 user_anchor_negative_feedback_cnt_7d = 26;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserAnchorNegativeFeedbackCnt7D() {
+        
+        userAnchorNegativeFeedbackCnt7D_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userAnchorActiveEnterCnt7D_ ;
+      /**
+       * <pre>
+       * 用户主播7天主动进房次数(点击or10s进房)
+       * </pre>
+       *
+       * <code>int32 user_anchor_active_enter_cnt_7d = 27;</code>
+       * @return The userAnchorActiveEnterCnt7d.
+       */
+      @java.lang.Override
+      public int getUserAnchorActiveEnterCnt7D() {
+        return userAnchorActiveEnterCnt7D_;
+      }
+      /**
+       * <pre>
+       * 用户主播7天主动进房次数(点击or10s进房)
+       * </pre>
+       *
+       * <code>int32 user_anchor_active_enter_cnt_7d = 27;</code>
+       * @param value The userAnchorActiveEnterCnt7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserAnchorActiveEnterCnt7D(int value) {
+        
+        userAnchorActiveEnterCnt7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户主播7天主动进房次数(点击or10s进房)
+       * </pre>
+       *
+       * <code>int32 user_anchor_active_enter_cnt_7d = 27;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserAnchorActiveEnterCnt7D() {
+        
+        userAnchorActiveEnterCnt7D_ = 0;
+        onChanged();
+        return this;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -24892,11 +27975,151 @@ public final class RecFeature {
      * @return The liveAnchorChatUsernum15min.
      */
     int getLiveAnchorChatUsernum15Min();
+
+    /**
+     * <pre>
+     * 7天窗口特征
+     * </pre>
+     *
+     * <code>int32 anchor_enter_cnt_7d = 40;</code>
+     * @return The anchorEnterCnt7d.
+     */
+    int getAnchorEnterCnt7D();
+
+    /**
+     * <pre>
+     * 7天退房次数
+     * </pre>
+     *
+     * <code>int32 anchor_quit_cnt_7d = 41;</code>
+     * @return The anchorQuitCnt7d.
+     */
+    int getAnchorQuitCnt7D();
+
+    /**
+     * <pre>
+     * 7天停留超3s次数
+     * </pre>
+     *
+     * <code>int32 anchor_stay_gt3s_cnt_7d = 42;</code>
+     * @return The anchorStayGt3sCnt7d.
+     */
+    int getAnchorStayGt3SCnt7D();
+
+    /**
+     * <pre>
+     * 7天停留超10s次数
+     * </pre>
+     *
+     * <code>int32 anchor_stay_gt10s_cnt_7d = 43;</code>
+     * @return The anchorStayGt10sCnt7d.
+     */
+    int getAnchorStayGt10SCnt7D();
+
+    /**
+     * <pre>
+     * 7天停留超30s次数
+     * </pre>
+     *
+     * <code>int32 anchor_stay_gt30s_cnt_7d = 44;</code>
+     * @return The anchorStayGt30sCnt7d.
+     */
+    int getAnchorStayGt30SCnt7D();
+
+    /**
+     * <pre>
+     * 7天次均预览时长
+     * </pre>
+     *
+     * <code>float anchor_avg_view_duration_7d = 45;</code>
+     * @return The anchorAvgViewDuration7d.
+     */
+    float getAnchorAvgViewDuration7D();
+
+    /**
+     * <pre>
+     * 7天关注数
+     * </pre>
+     *
+     * <code>int32 anchor_follow_cnt_7d = 46;</code>
+     * @return The anchorFollowCnt7d.
+     */
+    int getAnchorFollowCnt7D();
+
+    /**
+     * <pre>
+     * 7天正反馈次数（关注or送礼or公聊or分享）
+     * </pre>
+     *
+     * <code>int32 anchor_positive_feedback_cnt_7d = 47;</code>
+     * @return The anchorPositiveFeedbackCnt7d.
+     */
+    int getAnchorPositiveFeedbackCnt7D();
+
+    /**
+     * <pre>
+     * 7天负反馈次数（拉黑or举报）
+     * </pre>
+     *
+     * <code>int32 anchor_negative_feedback_cnt_7d = 48;</code>
+     * @return The anchorNegativeFeedbackCnt7d.
+     */
+    int getAnchorNegativeFeedbackCnt7D();
+
+    /**
+     * <pre>
+     * 7天live场景曝光次数
+     * </pre>
+     *
+     * <code>int32 anchor_live_scene_exposure_cnt_7d = 49;</code>
+     * @return The anchorLiveSceneExposureCnt7d.
+     */
+    int getAnchorLiveSceneExposureCnt7D();
+
+    /**
+     * <pre>
+     * 7天foru场景曝光次数
+     * </pre>
+     *
+     * <code>int32 anchor_foru_scene_exposure_cnt_7d = 50;</code>
+     * @return The anchorForuSceneExposureCnt7d.
+     */
+    int getAnchorForuSceneExposureCnt7D();
+
+    /**
+     * <pre>
+     * 7天live场景进房次数
+     * </pre>
+     *
+     * <code>int32 anchor_live_scene_enter_cnt_7d = 51;</code>
+     * @return The anchorLiveSceneEnterCnt7d.
+     */
+    int getAnchorLiveSceneEnterCnt7D();
+
+    /**
+     * <pre>
+     * 7天foru场景进房次数
+     * </pre>
+     *
+     * <code>int32 anchor_foru_scene_enter_cnt_7d = 52;</code>
+     * @return The anchorForuSceneEnterCnt7d.
+     */
+    int getAnchorForuSceneEnterCnt7D();
+
+    /**
+     * <pre>
+     * 7天主播收礼数
+     * </pre>
+     *
+     * <code>int32 anchor_gift_cnt_7d = 53;</code>
+     * @return The anchorGiftCnt7d.
+     */
+    int getAnchorGiftCnt7D();
   }
   /**
    * <pre>
    * 直播主播特征（主播维度）- 包含热度等特征
-   * Redis Key: rec:user_author_feature:{anchor_id}:live5min/live10min/live15min
+   * Redis Key: rec:live_anchor_feature:{anchor_id}:live5min/live10min/live15min;rec:live_anchor_feature:{anchor_id}:live7d
    * </pre>
    *
    * Protobuf type {@code com.gosh.entity.RecLiveAnchorFeature}
@@ -25051,6 +28274,76 @@ public final class RecFeature {
             case 288: {
 
               liveAnchorChatUsernum15Min_ = input.readInt32();
+              break;
+            }
+            case 320: {
+
+              anchorEnterCnt7D_ = input.readInt32();
+              break;
+            }
+            case 328: {
+
+              anchorQuitCnt7D_ = input.readInt32();
+              break;
+            }
+            case 336: {
+
+              anchorStayGt3SCnt7D_ = input.readInt32();
+              break;
+            }
+            case 344: {
+
+              anchorStayGt10SCnt7D_ = input.readInt32();
+              break;
+            }
+            case 352: {
+
+              anchorStayGt30SCnt7D_ = input.readInt32();
+              break;
+            }
+            case 365: {
+
+              anchorAvgViewDuration7D_ = input.readFloat();
+              break;
+            }
+            case 368: {
+
+              anchorFollowCnt7D_ = input.readInt32();
+              break;
+            }
+            case 376: {
+
+              anchorPositiveFeedbackCnt7D_ = input.readInt32();
+              break;
+            }
+            case 384: {
+
+              anchorNegativeFeedbackCnt7D_ = input.readInt32();
+              break;
+            }
+            case 392: {
+
+              anchorLiveSceneExposureCnt7D_ = input.readInt32();
+              break;
+            }
+            case 400: {
+
+              anchorForuSceneExposureCnt7D_ = input.readInt32();
+              break;
+            }
+            case 408: {
+
+              anchorLiveSceneEnterCnt7D_ = input.readInt32();
+              break;
+            }
+            case 416: {
+
+              anchorForuSceneEnterCnt7D_ = input.readInt32();
+              break;
+            }
+            case 424: {
+
+              anchorGiftCnt7D_ = input.readInt32();
               break;
             }
             default: {
@@ -25413,6 +28706,216 @@ public final class RecFeature {
       return liveAnchorChatUsernum15Min_;
     }
 
+    public static final int ANCHOR_ENTER_CNT_7D_FIELD_NUMBER = 40;
+    private int anchorEnterCnt7D_;
+    /**
+     * <pre>
+     * 7天窗口特征
+     * </pre>
+     *
+     * <code>int32 anchor_enter_cnt_7d = 40;</code>
+     * @return The anchorEnterCnt7d.
+     */
+    @java.lang.Override
+    public int getAnchorEnterCnt7D() {
+      return anchorEnterCnt7D_;
+    }
+
+    public static final int ANCHOR_QUIT_CNT_7D_FIELD_NUMBER = 41;
+    private int anchorQuitCnt7D_;
+    /**
+     * <pre>
+     * 7天退房次数
+     * </pre>
+     *
+     * <code>int32 anchor_quit_cnt_7d = 41;</code>
+     * @return The anchorQuitCnt7d.
+     */
+    @java.lang.Override
+    public int getAnchorQuitCnt7D() {
+      return anchorQuitCnt7D_;
+    }
+
+    public static final int ANCHOR_STAY_GT3S_CNT_7D_FIELD_NUMBER = 42;
+    private int anchorStayGt3SCnt7D_;
+    /**
+     * <pre>
+     * 7天停留超3s次数
+     * </pre>
+     *
+     * <code>int32 anchor_stay_gt3s_cnt_7d = 42;</code>
+     * @return The anchorStayGt3sCnt7d.
+     */
+    @java.lang.Override
+    public int getAnchorStayGt3SCnt7D() {
+      return anchorStayGt3SCnt7D_;
+    }
+
+    public static final int ANCHOR_STAY_GT10S_CNT_7D_FIELD_NUMBER = 43;
+    private int anchorStayGt10SCnt7D_;
+    /**
+     * <pre>
+     * 7天停留超10s次数
+     * </pre>
+     *
+     * <code>int32 anchor_stay_gt10s_cnt_7d = 43;</code>
+     * @return The anchorStayGt10sCnt7d.
+     */
+    @java.lang.Override
+    public int getAnchorStayGt10SCnt7D() {
+      return anchorStayGt10SCnt7D_;
+    }
+
+    public static final int ANCHOR_STAY_GT30S_CNT_7D_FIELD_NUMBER = 44;
+    private int anchorStayGt30SCnt7D_;
+    /**
+     * <pre>
+     * 7天停留超30s次数
+     * </pre>
+     *
+     * <code>int32 anchor_stay_gt30s_cnt_7d = 44;</code>
+     * @return The anchorStayGt30sCnt7d.
+     */
+    @java.lang.Override
+    public int getAnchorStayGt30SCnt7D() {
+      return anchorStayGt30SCnt7D_;
+    }
+
+    public static final int ANCHOR_AVG_VIEW_DURATION_7D_FIELD_NUMBER = 45;
+    private float anchorAvgViewDuration7D_;
+    /**
+     * <pre>
+     * 7天次均预览时长
+     * </pre>
+     *
+     * <code>float anchor_avg_view_duration_7d = 45;</code>
+     * @return The anchorAvgViewDuration7d.
+     */
+    @java.lang.Override
+    public float getAnchorAvgViewDuration7D() {
+      return anchorAvgViewDuration7D_;
+    }
+
+    public static final int ANCHOR_FOLLOW_CNT_7D_FIELD_NUMBER = 46;
+    private int anchorFollowCnt7D_;
+    /**
+     * <pre>
+     * 7天关注数
+     * </pre>
+     *
+     * <code>int32 anchor_follow_cnt_7d = 46;</code>
+     * @return The anchorFollowCnt7d.
+     */
+    @java.lang.Override
+    public int getAnchorFollowCnt7D() {
+      return anchorFollowCnt7D_;
+    }
+
+    public static final int ANCHOR_POSITIVE_FEEDBACK_CNT_7D_FIELD_NUMBER = 47;
+    private int anchorPositiveFeedbackCnt7D_;
+    /**
+     * <pre>
+     * 7天正反馈次数（关注or送礼or公聊or分享）
+     * </pre>
+     *
+     * <code>int32 anchor_positive_feedback_cnt_7d = 47;</code>
+     * @return The anchorPositiveFeedbackCnt7d.
+     */
+    @java.lang.Override
+    public int getAnchorPositiveFeedbackCnt7D() {
+      return anchorPositiveFeedbackCnt7D_;
+    }
+
+    public static final int ANCHOR_NEGATIVE_FEEDBACK_CNT_7D_FIELD_NUMBER = 48;
+    private int anchorNegativeFeedbackCnt7D_;
+    /**
+     * <pre>
+     * 7天负反馈次数（拉黑or举报）
+     * </pre>
+     *
+     * <code>int32 anchor_negative_feedback_cnt_7d = 48;</code>
+     * @return The anchorNegativeFeedbackCnt7d.
+     */
+    @java.lang.Override
+    public int getAnchorNegativeFeedbackCnt7D() {
+      return anchorNegativeFeedbackCnt7D_;
+    }
+
+    public static final int ANCHOR_LIVE_SCENE_EXPOSURE_CNT_7D_FIELD_NUMBER = 49;
+    private int anchorLiveSceneExposureCnt7D_;
+    /**
+     * <pre>
+     * 7天live场景曝光次数
+     * </pre>
+     *
+     * <code>int32 anchor_live_scene_exposure_cnt_7d = 49;</code>
+     * @return The anchorLiveSceneExposureCnt7d.
+     */
+    @java.lang.Override
+    public int getAnchorLiveSceneExposureCnt7D() {
+      return anchorLiveSceneExposureCnt7D_;
+    }
+
+    public static final int ANCHOR_FORU_SCENE_EXPOSURE_CNT_7D_FIELD_NUMBER = 50;
+    private int anchorForuSceneExposureCnt7D_;
+    /**
+     * <pre>
+     * 7天foru场景曝光次数
+     * </pre>
+     *
+     * <code>int32 anchor_foru_scene_exposure_cnt_7d = 50;</code>
+     * @return The anchorForuSceneExposureCnt7d.
+     */
+    @java.lang.Override
+    public int getAnchorForuSceneExposureCnt7D() {
+      return anchorForuSceneExposureCnt7D_;
+    }
+
+    public static final int ANCHOR_LIVE_SCENE_ENTER_CNT_7D_FIELD_NUMBER = 51;
+    private int anchorLiveSceneEnterCnt7D_;
+    /**
+     * <pre>
+     * 7天live场景进房次数
+     * </pre>
+     *
+     * <code>int32 anchor_live_scene_enter_cnt_7d = 51;</code>
+     * @return The anchorLiveSceneEnterCnt7d.
+     */
+    @java.lang.Override
+    public int getAnchorLiveSceneEnterCnt7D() {
+      return anchorLiveSceneEnterCnt7D_;
+    }
+
+    public static final int ANCHOR_FORU_SCENE_ENTER_CNT_7D_FIELD_NUMBER = 52;
+    private int anchorForuSceneEnterCnt7D_;
+    /**
+     * <pre>
+     * 7天foru场景进房次数
+     * </pre>
+     *
+     * <code>int32 anchor_foru_scene_enter_cnt_7d = 52;</code>
+     * @return The anchorForuSceneEnterCnt7d.
+     */
+    @java.lang.Override
+    public int getAnchorForuSceneEnterCnt7D() {
+      return anchorForuSceneEnterCnt7D_;
+    }
+
+    public static final int ANCHOR_GIFT_CNT_7D_FIELD_NUMBER = 53;
+    private int anchorGiftCnt7D_;
+    /**
+     * <pre>
+     * 7天主播收礼数
+     * </pre>
+     *
+     * <code>int32 anchor_gift_cnt_7d = 53;</code>
+     * @return The anchorGiftCnt7d.
+     */
+    @java.lang.Override
+    public int getAnchorGiftCnt7D() {
+      return anchorGiftCnt7D_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -25492,6 +28995,48 @@ public final class RecFeature {
       }
       if (liveAnchorChatUsernum15Min_ != 0) {
         output.writeInt32(36, liveAnchorChatUsernum15Min_);
+      }
+      if (anchorEnterCnt7D_ != 0) {
+        output.writeInt32(40, anchorEnterCnt7D_);
+      }
+      if (anchorQuitCnt7D_ != 0) {
+        output.writeInt32(41, anchorQuitCnt7D_);
+      }
+      if (anchorStayGt3SCnt7D_ != 0) {
+        output.writeInt32(42, anchorStayGt3SCnt7D_);
+      }
+      if (anchorStayGt10SCnt7D_ != 0) {
+        output.writeInt32(43, anchorStayGt10SCnt7D_);
+      }
+      if (anchorStayGt30SCnt7D_ != 0) {
+        output.writeInt32(44, anchorStayGt30SCnt7D_);
+      }
+      if (java.lang.Float.floatToRawIntBits(anchorAvgViewDuration7D_) != 0) {
+        output.writeFloat(45, anchorAvgViewDuration7D_);
+      }
+      if (anchorFollowCnt7D_ != 0) {
+        output.writeInt32(46, anchorFollowCnt7D_);
+      }
+      if (anchorPositiveFeedbackCnt7D_ != 0) {
+        output.writeInt32(47, anchorPositiveFeedbackCnt7D_);
+      }
+      if (anchorNegativeFeedbackCnt7D_ != 0) {
+        output.writeInt32(48, anchorNegativeFeedbackCnt7D_);
+      }
+      if (anchorLiveSceneExposureCnt7D_ != 0) {
+        output.writeInt32(49, anchorLiveSceneExposureCnt7D_);
+      }
+      if (anchorForuSceneExposureCnt7D_ != 0) {
+        output.writeInt32(50, anchorForuSceneExposureCnt7D_);
+      }
+      if (anchorLiveSceneEnterCnt7D_ != 0) {
+        output.writeInt32(51, anchorLiveSceneEnterCnt7D_);
+      }
+      if (anchorForuSceneEnterCnt7D_ != 0) {
+        output.writeInt32(52, anchorForuSceneEnterCnt7D_);
+      }
+      if (anchorGiftCnt7D_ != 0) {
+        output.writeInt32(53, anchorGiftCnt7D_);
       }
       unknownFields.writeTo(output);
     }
@@ -25590,6 +29135,62 @@ public final class RecFeature {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(36, liveAnchorChatUsernum15Min_);
       }
+      if (anchorEnterCnt7D_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(40, anchorEnterCnt7D_);
+      }
+      if (anchorQuitCnt7D_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(41, anchorQuitCnt7D_);
+      }
+      if (anchorStayGt3SCnt7D_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(42, anchorStayGt3SCnt7D_);
+      }
+      if (anchorStayGt10SCnt7D_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(43, anchorStayGt10SCnt7D_);
+      }
+      if (anchorStayGt30SCnt7D_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(44, anchorStayGt30SCnt7D_);
+      }
+      if (java.lang.Float.floatToRawIntBits(anchorAvgViewDuration7D_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(45, anchorAvgViewDuration7D_);
+      }
+      if (anchorFollowCnt7D_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(46, anchorFollowCnt7D_);
+      }
+      if (anchorPositiveFeedbackCnt7D_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(47, anchorPositiveFeedbackCnt7D_);
+      }
+      if (anchorNegativeFeedbackCnt7D_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(48, anchorNegativeFeedbackCnt7D_);
+      }
+      if (anchorLiveSceneExposureCnt7D_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(49, anchorLiveSceneExposureCnt7D_);
+      }
+      if (anchorForuSceneExposureCnt7D_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(50, anchorForuSceneExposureCnt7D_);
+      }
+      if (anchorLiveSceneEnterCnt7D_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(51, anchorLiveSceneEnterCnt7D_);
+      }
+      if (anchorForuSceneEnterCnt7D_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(52, anchorForuSceneEnterCnt7D_);
+      }
+      if (anchorGiftCnt7D_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(53, anchorGiftCnt7D_);
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -25649,6 +29250,35 @@ public final class RecFeature {
           != other.getLiveAnchorFollowUsernum15Min()) return false;
       if (getLiveAnchorChatUsernum15Min()
           != other.getLiveAnchorChatUsernum15Min()) return false;
+      if (getAnchorEnterCnt7D()
+          != other.getAnchorEnterCnt7D()) return false;
+      if (getAnchorQuitCnt7D()
+          != other.getAnchorQuitCnt7D()) return false;
+      if (getAnchorStayGt3SCnt7D()
+          != other.getAnchorStayGt3SCnt7D()) return false;
+      if (getAnchorStayGt10SCnt7D()
+          != other.getAnchorStayGt10SCnt7D()) return false;
+      if (getAnchorStayGt30SCnt7D()
+          != other.getAnchorStayGt30SCnt7D()) return false;
+      if (java.lang.Float.floatToIntBits(getAnchorAvgViewDuration7D())
+          != java.lang.Float.floatToIntBits(
+              other.getAnchorAvgViewDuration7D())) return false;
+      if (getAnchorFollowCnt7D()
+          != other.getAnchorFollowCnt7D()) return false;
+      if (getAnchorPositiveFeedbackCnt7D()
+          != other.getAnchorPositiveFeedbackCnt7D()) return false;
+      if (getAnchorNegativeFeedbackCnt7D()
+          != other.getAnchorNegativeFeedbackCnt7D()) return false;
+      if (getAnchorLiveSceneExposureCnt7D()
+          != other.getAnchorLiveSceneExposureCnt7D()) return false;
+      if (getAnchorForuSceneExposureCnt7D()
+          != other.getAnchorForuSceneExposureCnt7D()) return false;
+      if (getAnchorLiveSceneEnterCnt7D()
+          != other.getAnchorLiveSceneEnterCnt7D()) return false;
+      if (getAnchorForuSceneEnterCnt7D()
+          != other.getAnchorForuSceneEnterCnt7D()) return false;
+      if (getAnchorGiftCnt7D()
+          != other.getAnchorGiftCnt7D()) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -25705,6 +29335,35 @@ public final class RecFeature {
       hash = (53 * hash) + getLiveAnchorFollowUsernum15Min();
       hash = (37 * hash) + LIVE_ANCHOR_CHAT_USERNUM_15MIN_FIELD_NUMBER;
       hash = (53 * hash) + getLiveAnchorChatUsernum15Min();
+      hash = (37 * hash) + ANCHOR_ENTER_CNT_7D_FIELD_NUMBER;
+      hash = (53 * hash) + getAnchorEnterCnt7D();
+      hash = (37 * hash) + ANCHOR_QUIT_CNT_7D_FIELD_NUMBER;
+      hash = (53 * hash) + getAnchorQuitCnt7D();
+      hash = (37 * hash) + ANCHOR_STAY_GT3S_CNT_7D_FIELD_NUMBER;
+      hash = (53 * hash) + getAnchorStayGt3SCnt7D();
+      hash = (37 * hash) + ANCHOR_STAY_GT10S_CNT_7D_FIELD_NUMBER;
+      hash = (53 * hash) + getAnchorStayGt10SCnt7D();
+      hash = (37 * hash) + ANCHOR_STAY_GT30S_CNT_7D_FIELD_NUMBER;
+      hash = (53 * hash) + getAnchorStayGt30SCnt7D();
+      hash = (37 * hash) + ANCHOR_AVG_VIEW_DURATION_7D_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getAnchorAvgViewDuration7D());
+      hash = (37 * hash) + ANCHOR_FOLLOW_CNT_7D_FIELD_NUMBER;
+      hash = (53 * hash) + getAnchorFollowCnt7D();
+      hash = (37 * hash) + ANCHOR_POSITIVE_FEEDBACK_CNT_7D_FIELD_NUMBER;
+      hash = (53 * hash) + getAnchorPositiveFeedbackCnt7D();
+      hash = (37 * hash) + ANCHOR_NEGATIVE_FEEDBACK_CNT_7D_FIELD_NUMBER;
+      hash = (53 * hash) + getAnchorNegativeFeedbackCnt7D();
+      hash = (37 * hash) + ANCHOR_LIVE_SCENE_EXPOSURE_CNT_7D_FIELD_NUMBER;
+      hash = (53 * hash) + getAnchorLiveSceneExposureCnt7D();
+      hash = (37 * hash) + ANCHOR_FORU_SCENE_EXPOSURE_CNT_7D_FIELD_NUMBER;
+      hash = (53 * hash) + getAnchorForuSceneExposureCnt7D();
+      hash = (37 * hash) + ANCHOR_LIVE_SCENE_ENTER_CNT_7D_FIELD_NUMBER;
+      hash = (53 * hash) + getAnchorLiveSceneEnterCnt7D();
+      hash = (37 * hash) + ANCHOR_FORU_SCENE_ENTER_CNT_7D_FIELD_NUMBER;
+      hash = (53 * hash) + getAnchorForuSceneEnterCnt7D();
+      hash = (37 * hash) + ANCHOR_GIFT_CNT_7D_FIELD_NUMBER;
+      hash = (53 * hash) + getAnchorGiftCnt7D();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -25803,7 +29462,7 @@ public final class RecFeature {
     /**
      * <pre>
      * 直播主播特征（主播维度）- 包含热度等特征
-     * Redis Key: rec:user_author_feature:{anchor_id}:live5min/live10min/live15min
+     * Redis Key: rec:live_anchor_feature:{anchor_id}:live5min/live10min/live15min;rec:live_anchor_feature:{anchor_id}:live7d
      * </pre>
      *
      * Protobuf type {@code com.gosh.entity.RecLiveAnchorFeature}
@@ -25887,6 +29546,34 @@ public final class RecFeature {
 
         liveAnchorChatUsernum15Min_ = 0;
 
+        anchorEnterCnt7D_ = 0;
+
+        anchorQuitCnt7D_ = 0;
+
+        anchorStayGt3SCnt7D_ = 0;
+
+        anchorStayGt10SCnt7D_ = 0;
+
+        anchorStayGt30SCnt7D_ = 0;
+
+        anchorAvgViewDuration7D_ = 0F;
+
+        anchorFollowCnt7D_ = 0;
+
+        anchorPositiveFeedbackCnt7D_ = 0;
+
+        anchorNegativeFeedbackCnt7D_ = 0;
+
+        anchorLiveSceneExposureCnt7D_ = 0;
+
+        anchorForuSceneExposureCnt7D_ = 0;
+
+        anchorLiveSceneEnterCnt7D_ = 0;
+
+        anchorForuSceneEnterCnt7D_ = 0;
+
+        anchorGiftCnt7D_ = 0;
+
         return this;
       }
 
@@ -25935,6 +29622,20 @@ public final class RecFeature {
         result.liveAnchorGiftUsernum15Min_ = liveAnchorGiftUsernum15Min_;
         result.liveAnchorFollowUsernum15Min_ = liveAnchorFollowUsernum15Min_;
         result.liveAnchorChatUsernum15Min_ = liveAnchorChatUsernum15Min_;
+        result.anchorEnterCnt7D_ = anchorEnterCnt7D_;
+        result.anchorQuitCnt7D_ = anchorQuitCnt7D_;
+        result.anchorStayGt3SCnt7D_ = anchorStayGt3SCnt7D_;
+        result.anchorStayGt10SCnt7D_ = anchorStayGt10SCnt7D_;
+        result.anchorStayGt30SCnt7D_ = anchorStayGt30SCnt7D_;
+        result.anchorAvgViewDuration7D_ = anchorAvgViewDuration7D_;
+        result.anchorFollowCnt7D_ = anchorFollowCnt7D_;
+        result.anchorPositiveFeedbackCnt7D_ = anchorPositiveFeedbackCnt7D_;
+        result.anchorNegativeFeedbackCnt7D_ = anchorNegativeFeedbackCnt7D_;
+        result.anchorLiveSceneExposureCnt7D_ = anchorLiveSceneExposureCnt7D_;
+        result.anchorForuSceneExposureCnt7D_ = anchorForuSceneExposureCnt7D_;
+        result.anchorLiveSceneEnterCnt7D_ = anchorLiveSceneEnterCnt7D_;
+        result.anchorForuSceneEnterCnt7D_ = anchorForuSceneEnterCnt7D_;
+        result.anchorGiftCnt7D_ = anchorGiftCnt7D_;
         onBuilt();
         return result;
       }
@@ -26048,6 +29749,48 @@ public final class RecFeature {
         }
         if (other.getLiveAnchorChatUsernum15Min() != 0) {
           setLiveAnchorChatUsernum15Min(other.getLiveAnchorChatUsernum15Min());
+        }
+        if (other.getAnchorEnterCnt7D() != 0) {
+          setAnchorEnterCnt7D(other.getAnchorEnterCnt7D());
+        }
+        if (other.getAnchorQuitCnt7D() != 0) {
+          setAnchorQuitCnt7D(other.getAnchorQuitCnt7D());
+        }
+        if (other.getAnchorStayGt3SCnt7D() != 0) {
+          setAnchorStayGt3SCnt7D(other.getAnchorStayGt3SCnt7D());
+        }
+        if (other.getAnchorStayGt10SCnt7D() != 0) {
+          setAnchorStayGt10SCnt7D(other.getAnchorStayGt10SCnt7D());
+        }
+        if (other.getAnchorStayGt30SCnt7D() != 0) {
+          setAnchorStayGt30SCnt7D(other.getAnchorStayGt30SCnt7D());
+        }
+        if (other.getAnchorAvgViewDuration7D() != 0F) {
+          setAnchorAvgViewDuration7D(other.getAnchorAvgViewDuration7D());
+        }
+        if (other.getAnchorFollowCnt7D() != 0) {
+          setAnchorFollowCnt7D(other.getAnchorFollowCnt7D());
+        }
+        if (other.getAnchorPositiveFeedbackCnt7D() != 0) {
+          setAnchorPositiveFeedbackCnt7D(other.getAnchorPositiveFeedbackCnt7D());
+        }
+        if (other.getAnchorNegativeFeedbackCnt7D() != 0) {
+          setAnchorNegativeFeedbackCnt7D(other.getAnchorNegativeFeedbackCnt7D());
+        }
+        if (other.getAnchorLiveSceneExposureCnt7D() != 0) {
+          setAnchorLiveSceneExposureCnt7D(other.getAnchorLiveSceneExposureCnt7D());
+        }
+        if (other.getAnchorForuSceneExposureCnt7D() != 0) {
+          setAnchorForuSceneExposureCnt7D(other.getAnchorForuSceneExposureCnt7D());
+        }
+        if (other.getAnchorLiveSceneEnterCnt7D() != 0) {
+          setAnchorLiveSceneEnterCnt7D(other.getAnchorLiveSceneEnterCnt7D());
+        }
+        if (other.getAnchorForuSceneEnterCnt7D() != 0) {
+          setAnchorForuSceneEnterCnt7D(other.getAnchorForuSceneEnterCnt7D());
+        }
+        if (other.getAnchorGiftCnt7D() != 0) {
+          setAnchorGiftCnt7D(other.getAnchorGiftCnt7D());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -27011,6 +30754,608 @@ public final class RecFeature {
         onChanged();
         return this;
       }
+
+      private int anchorEnterCnt7D_ ;
+      /**
+       * <pre>
+       * 7天窗口特征
+       * </pre>
+       *
+       * <code>int32 anchor_enter_cnt_7d = 40;</code>
+       * @return The anchorEnterCnt7d.
+       */
+      @java.lang.Override
+      public int getAnchorEnterCnt7D() {
+        return anchorEnterCnt7D_;
+      }
+      /**
+       * <pre>
+       * 7天窗口特征
+       * </pre>
+       *
+       * <code>int32 anchor_enter_cnt_7d = 40;</code>
+       * @param value The anchorEnterCnt7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAnchorEnterCnt7D(int value) {
+        
+        anchorEnterCnt7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 7天窗口特征
+       * </pre>
+       *
+       * <code>int32 anchor_enter_cnt_7d = 40;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearAnchorEnterCnt7D() {
+        
+        anchorEnterCnt7D_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int anchorQuitCnt7D_ ;
+      /**
+       * <pre>
+       * 7天退房次数
+       * </pre>
+       *
+       * <code>int32 anchor_quit_cnt_7d = 41;</code>
+       * @return The anchorQuitCnt7d.
+       */
+      @java.lang.Override
+      public int getAnchorQuitCnt7D() {
+        return anchorQuitCnt7D_;
+      }
+      /**
+       * <pre>
+       * 7天退房次数
+       * </pre>
+       *
+       * <code>int32 anchor_quit_cnt_7d = 41;</code>
+       * @param value The anchorQuitCnt7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAnchorQuitCnt7D(int value) {
+        
+        anchorQuitCnt7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 7天退房次数
+       * </pre>
+       *
+       * <code>int32 anchor_quit_cnt_7d = 41;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearAnchorQuitCnt7D() {
+        
+        anchorQuitCnt7D_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int anchorStayGt3SCnt7D_ ;
+      /**
+       * <pre>
+       * 7天停留超3s次数
+       * </pre>
+       *
+       * <code>int32 anchor_stay_gt3s_cnt_7d = 42;</code>
+       * @return The anchorStayGt3sCnt7d.
+       */
+      @java.lang.Override
+      public int getAnchorStayGt3SCnt7D() {
+        return anchorStayGt3SCnt7D_;
+      }
+      /**
+       * <pre>
+       * 7天停留超3s次数
+       * </pre>
+       *
+       * <code>int32 anchor_stay_gt3s_cnt_7d = 42;</code>
+       * @param value The anchorStayGt3sCnt7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAnchorStayGt3SCnt7D(int value) {
+        
+        anchorStayGt3SCnt7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 7天停留超3s次数
+       * </pre>
+       *
+       * <code>int32 anchor_stay_gt3s_cnt_7d = 42;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearAnchorStayGt3SCnt7D() {
+        
+        anchorStayGt3SCnt7D_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int anchorStayGt10SCnt7D_ ;
+      /**
+       * <pre>
+       * 7天停留超10s次数
+       * </pre>
+       *
+       * <code>int32 anchor_stay_gt10s_cnt_7d = 43;</code>
+       * @return The anchorStayGt10sCnt7d.
+       */
+      @java.lang.Override
+      public int getAnchorStayGt10SCnt7D() {
+        return anchorStayGt10SCnt7D_;
+      }
+      /**
+       * <pre>
+       * 7天停留超10s次数
+       * </pre>
+       *
+       * <code>int32 anchor_stay_gt10s_cnt_7d = 43;</code>
+       * @param value The anchorStayGt10sCnt7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAnchorStayGt10SCnt7D(int value) {
+        
+        anchorStayGt10SCnt7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 7天停留超10s次数
+       * </pre>
+       *
+       * <code>int32 anchor_stay_gt10s_cnt_7d = 43;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearAnchorStayGt10SCnt7D() {
+        
+        anchorStayGt10SCnt7D_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int anchorStayGt30SCnt7D_ ;
+      /**
+       * <pre>
+       * 7天停留超30s次数
+       * </pre>
+       *
+       * <code>int32 anchor_stay_gt30s_cnt_7d = 44;</code>
+       * @return The anchorStayGt30sCnt7d.
+       */
+      @java.lang.Override
+      public int getAnchorStayGt30SCnt7D() {
+        return anchorStayGt30SCnt7D_;
+      }
+      /**
+       * <pre>
+       * 7天停留超30s次数
+       * </pre>
+       *
+       * <code>int32 anchor_stay_gt30s_cnt_7d = 44;</code>
+       * @param value The anchorStayGt30sCnt7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAnchorStayGt30SCnt7D(int value) {
+        
+        anchorStayGt30SCnt7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 7天停留超30s次数
+       * </pre>
+       *
+       * <code>int32 anchor_stay_gt30s_cnt_7d = 44;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearAnchorStayGt30SCnt7D() {
+        
+        anchorStayGt30SCnt7D_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private float anchorAvgViewDuration7D_ ;
+      /**
+       * <pre>
+       * 7天次均预览时长
+       * </pre>
+       *
+       * <code>float anchor_avg_view_duration_7d = 45;</code>
+       * @return The anchorAvgViewDuration7d.
+       */
+      @java.lang.Override
+      public float getAnchorAvgViewDuration7D() {
+        return anchorAvgViewDuration7D_;
+      }
+      /**
+       * <pre>
+       * 7天次均预览时长
+       * </pre>
+       *
+       * <code>float anchor_avg_view_duration_7d = 45;</code>
+       * @param value The anchorAvgViewDuration7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAnchorAvgViewDuration7D(float value) {
+        
+        anchorAvgViewDuration7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 7天次均预览时长
+       * </pre>
+       *
+       * <code>float anchor_avg_view_duration_7d = 45;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearAnchorAvgViewDuration7D() {
+        
+        anchorAvgViewDuration7D_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private int anchorFollowCnt7D_ ;
+      /**
+       * <pre>
+       * 7天关注数
+       * </pre>
+       *
+       * <code>int32 anchor_follow_cnt_7d = 46;</code>
+       * @return The anchorFollowCnt7d.
+       */
+      @java.lang.Override
+      public int getAnchorFollowCnt7D() {
+        return anchorFollowCnt7D_;
+      }
+      /**
+       * <pre>
+       * 7天关注数
+       * </pre>
+       *
+       * <code>int32 anchor_follow_cnt_7d = 46;</code>
+       * @param value The anchorFollowCnt7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAnchorFollowCnt7D(int value) {
+        
+        anchorFollowCnt7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 7天关注数
+       * </pre>
+       *
+       * <code>int32 anchor_follow_cnt_7d = 46;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearAnchorFollowCnt7D() {
+        
+        anchorFollowCnt7D_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int anchorPositiveFeedbackCnt7D_ ;
+      /**
+       * <pre>
+       * 7天正反馈次数（关注or送礼or公聊or分享）
+       * </pre>
+       *
+       * <code>int32 anchor_positive_feedback_cnt_7d = 47;</code>
+       * @return The anchorPositiveFeedbackCnt7d.
+       */
+      @java.lang.Override
+      public int getAnchorPositiveFeedbackCnt7D() {
+        return anchorPositiveFeedbackCnt7D_;
+      }
+      /**
+       * <pre>
+       * 7天正反馈次数（关注or送礼or公聊or分享）
+       * </pre>
+       *
+       * <code>int32 anchor_positive_feedback_cnt_7d = 47;</code>
+       * @param value The anchorPositiveFeedbackCnt7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAnchorPositiveFeedbackCnt7D(int value) {
+        
+        anchorPositiveFeedbackCnt7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 7天正反馈次数（关注or送礼or公聊or分享）
+       * </pre>
+       *
+       * <code>int32 anchor_positive_feedback_cnt_7d = 47;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearAnchorPositiveFeedbackCnt7D() {
+        
+        anchorPositiveFeedbackCnt7D_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int anchorNegativeFeedbackCnt7D_ ;
+      /**
+       * <pre>
+       * 7天负反馈次数（拉黑or举报）
+       * </pre>
+       *
+       * <code>int32 anchor_negative_feedback_cnt_7d = 48;</code>
+       * @return The anchorNegativeFeedbackCnt7d.
+       */
+      @java.lang.Override
+      public int getAnchorNegativeFeedbackCnt7D() {
+        return anchorNegativeFeedbackCnt7D_;
+      }
+      /**
+       * <pre>
+       * 7天负反馈次数（拉黑or举报）
+       * </pre>
+       *
+       * <code>int32 anchor_negative_feedback_cnt_7d = 48;</code>
+       * @param value The anchorNegativeFeedbackCnt7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAnchorNegativeFeedbackCnt7D(int value) {
+        
+        anchorNegativeFeedbackCnt7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 7天负反馈次数（拉黑or举报）
+       * </pre>
+       *
+       * <code>int32 anchor_negative_feedback_cnt_7d = 48;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearAnchorNegativeFeedbackCnt7D() {
+        
+        anchorNegativeFeedbackCnt7D_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int anchorLiveSceneExposureCnt7D_ ;
+      /**
+       * <pre>
+       * 7天live场景曝光次数
+       * </pre>
+       *
+       * <code>int32 anchor_live_scene_exposure_cnt_7d = 49;</code>
+       * @return The anchorLiveSceneExposureCnt7d.
+       */
+      @java.lang.Override
+      public int getAnchorLiveSceneExposureCnt7D() {
+        return anchorLiveSceneExposureCnt7D_;
+      }
+      /**
+       * <pre>
+       * 7天live场景曝光次数
+       * </pre>
+       *
+       * <code>int32 anchor_live_scene_exposure_cnt_7d = 49;</code>
+       * @param value The anchorLiveSceneExposureCnt7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAnchorLiveSceneExposureCnt7D(int value) {
+        
+        anchorLiveSceneExposureCnt7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 7天live场景曝光次数
+       * </pre>
+       *
+       * <code>int32 anchor_live_scene_exposure_cnt_7d = 49;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearAnchorLiveSceneExposureCnt7D() {
+        
+        anchorLiveSceneExposureCnt7D_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int anchorForuSceneExposureCnt7D_ ;
+      /**
+       * <pre>
+       * 7天foru场景曝光次数
+       * </pre>
+       *
+       * <code>int32 anchor_foru_scene_exposure_cnt_7d = 50;</code>
+       * @return The anchorForuSceneExposureCnt7d.
+       */
+      @java.lang.Override
+      public int getAnchorForuSceneExposureCnt7D() {
+        return anchorForuSceneExposureCnt7D_;
+      }
+      /**
+       * <pre>
+       * 7天foru场景曝光次数
+       * </pre>
+       *
+       * <code>int32 anchor_foru_scene_exposure_cnt_7d = 50;</code>
+       * @param value The anchorForuSceneExposureCnt7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAnchorForuSceneExposureCnt7D(int value) {
+        
+        anchorForuSceneExposureCnt7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 7天foru场景曝光次数
+       * </pre>
+       *
+       * <code>int32 anchor_foru_scene_exposure_cnt_7d = 50;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearAnchorForuSceneExposureCnt7D() {
+        
+        anchorForuSceneExposureCnt7D_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int anchorLiveSceneEnterCnt7D_ ;
+      /**
+       * <pre>
+       * 7天live场景进房次数
+       * </pre>
+       *
+       * <code>int32 anchor_live_scene_enter_cnt_7d = 51;</code>
+       * @return The anchorLiveSceneEnterCnt7d.
+       */
+      @java.lang.Override
+      public int getAnchorLiveSceneEnterCnt7D() {
+        return anchorLiveSceneEnterCnt7D_;
+      }
+      /**
+       * <pre>
+       * 7天live场景进房次数
+       * </pre>
+       *
+       * <code>int32 anchor_live_scene_enter_cnt_7d = 51;</code>
+       * @param value The anchorLiveSceneEnterCnt7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAnchorLiveSceneEnterCnt7D(int value) {
+        
+        anchorLiveSceneEnterCnt7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 7天live场景进房次数
+       * </pre>
+       *
+       * <code>int32 anchor_live_scene_enter_cnt_7d = 51;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearAnchorLiveSceneEnterCnt7D() {
+        
+        anchorLiveSceneEnterCnt7D_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int anchorForuSceneEnterCnt7D_ ;
+      /**
+       * <pre>
+       * 7天foru场景进房次数
+       * </pre>
+       *
+       * <code>int32 anchor_foru_scene_enter_cnt_7d = 52;</code>
+       * @return The anchorForuSceneEnterCnt7d.
+       */
+      @java.lang.Override
+      public int getAnchorForuSceneEnterCnt7D() {
+        return anchorForuSceneEnterCnt7D_;
+      }
+      /**
+       * <pre>
+       * 7天foru场景进房次数
+       * </pre>
+       *
+       * <code>int32 anchor_foru_scene_enter_cnt_7d = 52;</code>
+       * @param value The anchorForuSceneEnterCnt7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAnchorForuSceneEnterCnt7D(int value) {
+        
+        anchorForuSceneEnterCnt7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 7天foru场景进房次数
+       * </pre>
+       *
+       * <code>int32 anchor_foru_scene_enter_cnt_7d = 52;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearAnchorForuSceneEnterCnt7D() {
+        
+        anchorForuSceneEnterCnt7D_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int anchorGiftCnt7D_ ;
+      /**
+       * <pre>
+       * 7天主播收礼数
+       * </pre>
+       *
+       * <code>int32 anchor_gift_cnt_7d = 53;</code>
+       * @return The anchorGiftCnt7d.
+       */
+      @java.lang.Override
+      public int getAnchorGiftCnt7D() {
+        return anchorGiftCnt7D_;
+      }
+      /**
+       * <pre>
+       * 7天主播收礼数
+       * </pre>
+       *
+       * <code>int32 anchor_gift_cnt_7d = 53;</code>
+       * @param value The anchorGiftCnt7d to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAnchorGiftCnt7D(int value) {
+        
+        anchorGiftCnt7D_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 7天主播收礼数
+       * </pre>
+       *
+       * <code>int32 anchor_gift_cnt_7d = 53;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearAnchorGiftCnt7D() {
+        
+        anchorGiftCnt7D_ = 0;
+        onChanged();
+        return this;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -27064,16 +31409,2061 @@ public final class RecFeature {
 
   }
 
+  public interface RecLiveUserFeatureOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.gosh.entity.RecLiveUserFeature)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>uint64 user_id = 1;</code>
+     * @return The userId.
+     */
+    long getUserId();
+
+    /**
+     * <pre>
+     * 7天窗口特征 - 主播列表相关
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore user_stay_gt10s_anchor_list = 10;</code>
+     */
+    java.util.List<com.gosh.entity.RecFeature.IdScore> 
+        getUserStayGt10SAnchorListList();
+    /**
+     * <pre>
+     * 7天窗口特征 - 主播列表相关
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore user_stay_gt10s_anchor_list = 10;</code>
+     */
+    com.gosh.entity.RecFeature.IdScore getUserStayGt10SAnchorList(int index);
+    /**
+     * <pre>
+     * 7天窗口特征 - 主播列表相关
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore user_stay_gt10s_anchor_list = 10;</code>
+     */
+    int getUserStayGt10SAnchorListCount();
+    /**
+     * <pre>
+     * 7天窗口特征 - 主播列表相关
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore user_stay_gt10s_anchor_list = 10;</code>
+     */
+    java.util.List<? extends com.gosh.entity.RecFeature.IdScoreOrBuilder> 
+        getUserStayGt10SAnchorListOrBuilderList();
+    /**
+     * <pre>
+     * 7天窗口特征 - 主播列表相关
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore user_stay_gt10s_anchor_list = 10;</code>
+     */
+    com.gosh.entity.RecFeature.IdScoreOrBuilder getUserStayGt10SAnchorListOrBuilder(
+        int index);
+
+    /**
+     * <pre>
+     * 用户7天主动进房的主播列表，逗号分隔
+     * </pre>
+     *
+     * <code>repeated int32 user_active_enter_anchor_list = 11;</code>
+     * @return A list containing the userActiveEnterAnchorList.
+     */
+    java.util.List<java.lang.Integer> getUserActiveEnterAnchorListList();
+    /**
+     * <pre>
+     * 用户7天主动进房的主播列表，逗号分隔
+     * </pre>
+     *
+     * <code>repeated int32 user_active_enter_anchor_list = 11;</code>
+     * @return The count of userActiveEnterAnchorList.
+     */
+    int getUserActiveEnterAnchorListCount();
+    /**
+     * <pre>
+     * 用户7天主动进房的主播列表，逗号分隔
+     * </pre>
+     *
+     * <code>repeated int32 user_active_enter_anchor_list = 11;</code>
+     * @param index The index of the element to return.
+     * @return The userActiveEnterAnchorList at the given index.
+     */
+    int getUserActiveEnterAnchorList(int index);
+
+    /**
+     * <pre>
+     * 用户7天正反馈的主播列表，逗号分隔
+     * </pre>
+     *
+     * <code>repeated int32 user_positive_feedback_anchor_list = 12;</code>
+     * @return A list containing the userPositiveFeedbackAnchorList.
+     */
+    java.util.List<java.lang.Integer> getUserPositiveFeedbackAnchorListList();
+    /**
+     * <pre>
+     * 用户7天正反馈的主播列表，逗号分隔
+     * </pre>
+     *
+     * <code>repeated int32 user_positive_feedback_anchor_list = 12;</code>
+     * @return The count of userPositiveFeedbackAnchorList.
+     */
+    int getUserPositiveFeedbackAnchorListCount();
+    /**
+     * <pre>
+     * 用户7天正反馈的主播列表，逗号分隔
+     * </pre>
+     *
+     * <code>repeated int32 user_positive_feedback_anchor_list = 12;</code>
+     * @param index The index of the element to return.
+     * @return The userPositiveFeedbackAnchorList at the given index.
+     */
+    int getUserPositiveFeedbackAnchorList(int index);
+  }
+  /**
+   * <pre>
+   * 直播用户特征（用户维度）- 包含用户直播行为历史
+   * Redis Key: rec:live_user_feature:{user_id}:live7d
+   * </pre>
+   *
+   * Protobuf type {@code com.gosh.entity.RecLiveUserFeature}
+   */
+  public static final class RecLiveUserFeature extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:com.gosh.entity.RecLiveUserFeature)
+      RecLiveUserFeatureOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use RecLiveUserFeature.newBuilder() to construct.
+    private RecLiveUserFeature(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private RecLiveUserFeature() {
+      userStayGt10SAnchorList_ = java.util.Collections.emptyList();
+      userActiveEnterAnchorList_ = emptyIntList();
+      userPositiveFeedbackAnchorList_ = emptyIntList();
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new RecLiveUserFeature();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private RecLiveUserFeature(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+
+              userId_ = input.readUInt64();
+              break;
+            }
+            case 82: {
+              if (!((mutable_bitField0_ & 0x00000001) != 0)) {
+                userStayGt10SAnchorList_ = new java.util.ArrayList<com.gosh.entity.RecFeature.IdScore>();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              userStayGt10SAnchorList_.add(
+                  input.readMessage(com.gosh.entity.RecFeature.IdScore.parser(), extensionRegistry));
+              break;
+            }
+            case 88: {
+              if (!((mutable_bitField0_ & 0x00000002) != 0)) {
+                userActiveEnterAnchorList_ = newIntList();
+                mutable_bitField0_ |= 0x00000002;
+              }
+              userActiveEnterAnchorList_.addInt(input.readInt32());
+              break;
+            }
+            case 90: {
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField0_ & 0x00000002) != 0) && input.getBytesUntilLimit() > 0) {
+                userActiveEnterAnchorList_ = newIntList();
+                mutable_bitField0_ |= 0x00000002;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                userActiveEnterAnchorList_.addInt(input.readInt32());
+              }
+              input.popLimit(limit);
+              break;
+            }
+            case 96: {
+              if (!((mutable_bitField0_ & 0x00000004) != 0)) {
+                userPositiveFeedbackAnchorList_ = newIntList();
+                mutable_bitField0_ |= 0x00000004;
+              }
+              userPositiveFeedbackAnchorList_.addInt(input.readInt32());
+              break;
+            }
+            case 98: {
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField0_ & 0x00000004) != 0) && input.getBytesUntilLimit() > 0) {
+                userPositiveFeedbackAnchorList_ = newIntList();
+                mutable_bitField0_ |= 0x00000004;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                userPositiveFeedbackAnchorList_.addInt(input.readInt32());
+              }
+              input.popLimit(limit);
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (com.google.protobuf.UninitializedMessageException e) {
+        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000001) != 0)) {
+          userStayGt10SAnchorList_ = java.util.Collections.unmodifiableList(userStayGt10SAnchorList_);
+        }
+        if (((mutable_bitField0_ & 0x00000002) != 0)) {
+          userActiveEnterAnchorList_.makeImmutable(); // C
+        }
+        if (((mutable_bitField0_ & 0x00000004) != 0)) {
+          userPositiveFeedbackAnchorList_.makeImmutable(); // C
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_RecLiveUserFeature_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_RecLiveUserFeature_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.gosh.entity.RecFeature.RecLiveUserFeature.class, com.gosh.entity.RecFeature.RecLiveUserFeature.Builder.class);
+    }
+
+    public static final int USER_ID_FIELD_NUMBER = 1;
+    private long userId_;
+    /**
+     * <code>uint64 user_id = 1;</code>
+     * @return The userId.
+     */
+    @java.lang.Override
+    public long getUserId() {
+      return userId_;
+    }
+
+    public static final int USER_STAY_GT10S_ANCHOR_LIST_FIELD_NUMBER = 10;
+    private java.util.List<com.gosh.entity.RecFeature.IdScore> userStayGt10SAnchorList_;
+    /**
+     * <pre>
+     * 7天窗口特征 - 主播列表相关
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore user_stay_gt10s_anchor_list = 10;</code>
+     */
+    @java.lang.Override
+    public java.util.List<com.gosh.entity.RecFeature.IdScore> getUserStayGt10SAnchorListList() {
+      return userStayGt10SAnchorList_;
+    }
+    /**
+     * <pre>
+     * 7天窗口特征 - 主播列表相关
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore user_stay_gt10s_anchor_list = 10;</code>
+     */
+    @java.lang.Override
+    public java.util.List<? extends com.gosh.entity.RecFeature.IdScoreOrBuilder> 
+        getUserStayGt10SAnchorListOrBuilderList() {
+      return userStayGt10SAnchorList_;
+    }
+    /**
+     * <pre>
+     * 7天窗口特征 - 主播列表相关
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore user_stay_gt10s_anchor_list = 10;</code>
+     */
+    @java.lang.Override
+    public int getUserStayGt10SAnchorListCount() {
+      return userStayGt10SAnchorList_.size();
+    }
+    /**
+     * <pre>
+     * 7天窗口特征 - 主播列表相关
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore user_stay_gt10s_anchor_list = 10;</code>
+     */
+    @java.lang.Override
+    public com.gosh.entity.RecFeature.IdScore getUserStayGt10SAnchorList(int index) {
+      return userStayGt10SAnchorList_.get(index);
+    }
+    /**
+     * <pre>
+     * 7天窗口特征 - 主播列表相关
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore user_stay_gt10s_anchor_list = 10;</code>
+     */
+    @java.lang.Override
+    public com.gosh.entity.RecFeature.IdScoreOrBuilder getUserStayGt10SAnchorListOrBuilder(
+        int index) {
+      return userStayGt10SAnchorList_.get(index);
+    }
+
+    public static final int USER_ACTIVE_ENTER_ANCHOR_LIST_FIELD_NUMBER = 11;
+    private com.google.protobuf.Internal.IntList userActiveEnterAnchorList_;
+    /**
+     * <pre>
+     * 用户7天主动进房的主播列表，逗号分隔
+     * </pre>
+     *
+     * <code>repeated int32 user_active_enter_anchor_list = 11;</code>
+     * @return A list containing the userActiveEnterAnchorList.
+     */
+    @java.lang.Override
+    public java.util.List<java.lang.Integer>
+        getUserActiveEnterAnchorListList() {
+      return userActiveEnterAnchorList_;
+    }
+    /**
+     * <pre>
+     * 用户7天主动进房的主播列表，逗号分隔
+     * </pre>
+     *
+     * <code>repeated int32 user_active_enter_anchor_list = 11;</code>
+     * @return The count of userActiveEnterAnchorList.
+     */
+    public int getUserActiveEnterAnchorListCount() {
+      return userActiveEnterAnchorList_.size();
+    }
+    /**
+     * <pre>
+     * 用户7天主动进房的主播列表，逗号分隔
+     * </pre>
+     *
+     * <code>repeated int32 user_active_enter_anchor_list = 11;</code>
+     * @param index The index of the element to return.
+     * @return The userActiveEnterAnchorList at the given index.
+     */
+    public int getUserActiveEnterAnchorList(int index) {
+      return userActiveEnterAnchorList_.getInt(index);
+    }
+    private int userActiveEnterAnchorListMemoizedSerializedSize = -1;
+
+    public static final int USER_POSITIVE_FEEDBACK_ANCHOR_LIST_FIELD_NUMBER = 12;
+    private com.google.protobuf.Internal.IntList userPositiveFeedbackAnchorList_;
+    /**
+     * <pre>
+     * 用户7天正反馈的主播列表，逗号分隔
+     * </pre>
+     *
+     * <code>repeated int32 user_positive_feedback_anchor_list = 12;</code>
+     * @return A list containing the userPositiveFeedbackAnchorList.
+     */
+    @java.lang.Override
+    public java.util.List<java.lang.Integer>
+        getUserPositiveFeedbackAnchorListList() {
+      return userPositiveFeedbackAnchorList_;
+    }
+    /**
+     * <pre>
+     * 用户7天正反馈的主播列表，逗号分隔
+     * </pre>
+     *
+     * <code>repeated int32 user_positive_feedback_anchor_list = 12;</code>
+     * @return The count of userPositiveFeedbackAnchorList.
+     */
+    public int getUserPositiveFeedbackAnchorListCount() {
+      return userPositiveFeedbackAnchorList_.size();
+    }
+    /**
+     * <pre>
+     * 用户7天正反馈的主播列表，逗号分隔
+     * </pre>
+     *
+     * <code>repeated int32 user_positive_feedback_anchor_list = 12;</code>
+     * @param index The index of the element to return.
+     * @return The userPositiveFeedbackAnchorList at the given index.
+     */
+    public int getUserPositiveFeedbackAnchorList(int index) {
+      return userPositiveFeedbackAnchorList_.getInt(index);
+    }
+    private int userPositiveFeedbackAnchorListMemoizedSerializedSize = -1;
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (userId_ != 0L) {
+        output.writeUInt64(1, userId_);
+      }
+      for (int i = 0; i < userStayGt10SAnchorList_.size(); i++) {
+        output.writeMessage(10, userStayGt10SAnchorList_.get(i));
+      }
+      if (getUserActiveEnterAnchorListList().size() > 0) {
+        output.writeUInt32NoTag(90);
+        output.writeUInt32NoTag(userActiveEnterAnchorListMemoizedSerializedSize);
+      }
+      for (int i = 0; i < userActiveEnterAnchorList_.size(); i++) {
+        output.writeInt32NoTag(userActiveEnterAnchorList_.getInt(i));
+      }
+      if (getUserPositiveFeedbackAnchorListList().size() > 0) {
+        output.writeUInt32NoTag(98);
+        output.writeUInt32NoTag(userPositiveFeedbackAnchorListMemoizedSerializedSize);
+      }
+      for (int i = 0; i < userPositiveFeedbackAnchorList_.size(); i++) {
+        output.writeInt32NoTag(userPositiveFeedbackAnchorList_.getInt(i));
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (userId_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, userId_);
+      }
+      for (int i = 0; i < userStayGt10SAnchorList_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(10, userStayGt10SAnchorList_.get(i));
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < userActiveEnterAnchorList_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeInt32SizeNoTag(userActiveEnterAnchorList_.getInt(i));
+        }
+        size += dataSize;
+        if (!getUserActiveEnterAnchorListList().isEmpty()) {
+          size += 1;
+          size += com.google.protobuf.CodedOutputStream
+              .computeInt32SizeNoTag(dataSize);
+        }
+        userActiveEnterAnchorListMemoizedSerializedSize = dataSize;
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < userPositiveFeedbackAnchorList_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeInt32SizeNoTag(userPositiveFeedbackAnchorList_.getInt(i));
+        }
+        size += dataSize;
+        if (!getUserPositiveFeedbackAnchorListList().isEmpty()) {
+          size += 1;
+          size += com.google.protobuf.CodedOutputStream
+              .computeInt32SizeNoTag(dataSize);
+        }
+        userPositiveFeedbackAnchorListMemoizedSerializedSize = dataSize;
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.gosh.entity.RecFeature.RecLiveUserFeature)) {
+        return super.equals(obj);
+      }
+      com.gosh.entity.RecFeature.RecLiveUserFeature other = (com.gosh.entity.RecFeature.RecLiveUserFeature) obj;
+
+      if (getUserId()
+          != other.getUserId()) return false;
+      if (!getUserStayGt10SAnchorListList()
+          .equals(other.getUserStayGt10SAnchorListList())) return false;
+      if (!getUserActiveEnterAnchorListList()
+          .equals(other.getUserActiveEnterAnchorListList())) return false;
+      if (!getUserPositiveFeedbackAnchorListList()
+          .equals(other.getUserPositiveFeedbackAnchorListList())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + USER_ID_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getUserId());
+      if (getUserStayGt10SAnchorListCount() > 0) {
+        hash = (37 * hash) + USER_STAY_GT10S_ANCHOR_LIST_FIELD_NUMBER;
+        hash = (53 * hash) + getUserStayGt10SAnchorListList().hashCode();
+      }
+      if (getUserActiveEnterAnchorListCount() > 0) {
+        hash = (37 * hash) + USER_ACTIVE_ENTER_ANCHOR_LIST_FIELD_NUMBER;
+        hash = (53 * hash) + getUserActiveEnterAnchorListList().hashCode();
+      }
+      if (getUserPositiveFeedbackAnchorListCount() > 0) {
+        hash = (37 * hash) + USER_POSITIVE_FEEDBACK_ANCHOR_LIST_FIELD_NUMBER;
+        hash = (53 * hash) + getUserPositiveFeedbackAnchorListList().hashCode();
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.gosh.entity.RecFeature.RecLiveUserFeature parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.gosh.entity.RecFeature.RecLiveUserFeature parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.gosh.entity.RecFeature.RecLiveUserFeature parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.gosh.entity.RecFeature.RecLiveUserFeature parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.gosh.entity.RecFeature.RecLiveUserFeature parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.gosh.entity.RecFeature.RecLiveUserFeature parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.gosh.entity.RecFeature.RecLiveUserFeature parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.gosh.entity.RecFeature.RecLiveUserFeature parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.gosh.entity.RecFeature.RecLiveUserFeature parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.gosh.entity.RecFeature.RecLiveUserFeature parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.gosh.entity.RecFeature.RecLiveUserFeature parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.gosh.entity.RecFeature.RecLiveUserFeature parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.gosh.entity.RecFeature.RecLiveUserFeature prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * <pre>
+     * 直播用户特征（用户维度）- 包含用户直播行为历史
+     * Redis Key: rec:live_user_feature:{user_id}:live7d
+     * </pre>
+     *
+     * Protobuf type {@code com.gosh.entity.RecLiveUserFeature}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.gosh.entity.RecLiveUserFeature)
+        com.gosh.entity.RecFeature.RecLiveUserFeatureOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_RecLiveUserFeature_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_RecLiveUserFeature_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.gosh.entity.RecFeature.RecLiveUserFeature.class, com.gosh.entity.RecFeature.RecLiveUserFeature.Builder.class);
+      }
+
+      // Construct using com.gosh.entity.RecFeature.RecLiveUserFeature.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+          getUserStayGt10SAnchorListFieldBuilder();
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        userId_ = 0L;
+
+        if (userStayGt10SAnchorListBuilder_ == null) {
+          userStayGt10SAnchorList_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+        } else {
+          userStayGt10SAnchorListBuilder_.clear();
+        }
+        userActiveEnterAnchorList_ = emptyIntList();
+        bitField0_ = (bitField0_ & ~0x00000002);
+        userPositiveFeedbackAnchorList_ = emptyIntList();
+        bitField0_ = (bitField0_ & ~0x00000004);
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_RecLiveUserFeature_descriptor;
+      }
+
+      @java.lang.Override
+      public com.gosh.entity.RecFeature.RecLiveUserFeature getDefaultInstanceForType() {
+        return com.gosh.entity.RecFeature.RecLiveUserFeature.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.gosh.entity.RecFeature.RecLiveUserFeature build() {
+        com.gosh.entity.RecFeature.RecLiveUserFeature result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.gosh.entity.RecFeature.RecLiveUserFeature buildPartial() {
+        com.gosh.entity.RecFeature.RecLiveUserFeature result = new com.gosh.entity.RecFeature.RecLiveUserFeature(this);
+        int from_bitField0_ = bitField0_;
+        result.userId_ = userId_;
+        if (userStayGt10SAnchorListBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) != 0)) {
+            userStayGt10SAnchorList_ = java.util.Collections.unmodifiableList(userStayGt10SAnchorList_);
+            bitField0_ = (bitField0_ & ~0x00000001);
+          }
+          result.userStayGt10SAnchorList_ = userStayGt10SAnchorList_;
+        } else {
+          result.userStayGt10SAnchorList_ = userStayGt10SAnchorListBuilder_.build();
+        }
+        if (((bitField0_ & 0x00000002) != 0)) {
+          userActiveEnterAnchorList_.makeImmutable();
+          bitField0_ = (bitField0_ & ~0x00000002);
+        }
+        result.userActiveEnterAnchorList_ = userActiveEnterAnchorList_;
+        if (((bitField0_ & 0x00000004) != 0)) {
+          userPositiveFeedbackAnchorList_.makeImmutable();
+          bitField0_ = (bitField0_ & ~0x00000004);
+        }
+        result.userPositiveFeedbackAnchorList_ = userPositiveFeedbackAnchorList_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.gosh.entity.RecFeature.RecLiveUserFeature) {
+          return mergeFrom((com.gosh.entity.RecFeature.RecLiveUserFeature)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.gosh.entity.RecFeature.RecLiveUserFeature other) {
+        if (other == com.gosh.entity.RecFeature.RecLiveUserFeature.getDefaultInstance()) return this;
+        if (other.getUserId() != 0L) {
+          setUserId(other.getUserId());
+        }
+        if (userStayGt10SAnchorListBuilder_ == null) {
+          if (!other.userStayGt10SAnchorList_.isEmpty()) {
+            if (userStayGt10SAnchorList_.isEmpty()) {
+              userStayGt10SAnchorList_ = other.userStayGt10SAnchorList_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+            } else {
+              ensureUserStayGt10SAnchorListIsMutable();
+              userStayGt10SAnchorList_.addAll(other.userStayGt10SAnchorList_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.userStayGt10SAnchorList_.isEmpty()) {
+            if (userStayGt10SAnchorListBuilder_.isEmpty()) {
+              userStayGt10SAnchorListBuilder_.dispose();
+              userStayGt10SAnchorListBuilder_ = null;
+              userStayGt10SAnchorList_ = other.userStayGt10SAnchorList_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+              userStayGt10SAnchorListBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getUserStayGt10SAnchorListFieldBuilder() : null;
+            } else {
+              userStayGt10SAnchorListBuilder_.addAllMessages(other.userStayGt10SAnchorList_);
+            }
+          }
+        }
+        if (!other.userActiveEnterAnchorList_.isEmpty()) {
+          if (userActiveEnterAnchorList_.isEmpty()) {
+            userActiveEnterAnchorList_ = other.userActiveEnterAnchorList_;
+            bitField0_ = (bitField0_ & ~0x00000002);
+          } else {
+            ensureUserActiveEnterAnchorListIsMutable();
+            userActiveEnterAnchorList_.addAll(other.userActiveEnterAnchorList_);
+          }
+          onChanged();
+        }
+        if (!other.userPositiveFeedbackAnchorList_.isEmpty()) {
+          if (userPositiveFeedbackAnchorList_.isEmpty()) {
+            userPositiveFeedbackAnchorList_ = other.userPositiveFeedbackAnchorList_;
+            bitField0_ = (bitField0_ & ~0x00000004);
+          } else {
+            ensureUserPositiveFeedbackAnchorListIsMutable();
+            userPositiveFeedbackAnchorList_.addAll(other.userPositiveFeedbackAnchorList_);
+          }
+          onChanged();
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.gosh.entity.RecFeature.RecLiveUserFeature parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.gosh.entity.RecFeature.RecLiveUserFeature) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private long userId_ ;
+      /**
+       * <code>uint64 user_id = 1;</code>
+       * @return The userId.
+       */
+      @java.lang.Override
+      public long getUserId() {
+        return userId_;
+      }
+      /**
+       * <code>uint64 user_id = 1;</code>
+       * @param value The userId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserId(long value) {
+        
+        userId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>uint64 user_id = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserId() {
+        
+        userId_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.util.List<com.gosh.entity.RecFeature.IdScore> userStayGt10SAnchorList_ =
+        java.util.Collections.emptyList();
+      private void ensureUserStayGt10SAnchorListIsMutable() {
+        if (!((bitField0_ & 0x00000001) != 0)) {
+          userStayGt10SAnchorList_ = new java.util.ArrayList<com.gosh.entity.RecFeature.IdScore>(userStayGt10SAnchorList_);
+          bitField0_ |= 0x00000001;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          com.gosh.entity.RecFeature.IdScore, com.gosh.entity.RecFeature.IdScore.Builder, com.gosh.entity.RecFeature.IdScoreOrBuilder> userStayGt10SAnchorListBuilder_;
+
+      /**
+       * <pre>
+       * 7天窗口特征 - 主播列表相关
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore user_stay_gt10s_anchor_list = 10;</code>
+       */
+      public java.util.List<com.gosh.entity.RecFeature.IdScore> getUserStayGt10SAnchorListList() {
+        if (userStayGt10SAnchorListBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(userStayGt10SAnchorList_);
+        } else {
+          return userStayGt10SAnchorListBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <pre>
+       * 7天窗口特征 - 主播列表相关
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore user_stay_gt10s_anchor_list = 10;</code>
+       */
+      public int getUserStayGt10SAnchorListCount() {
+        if (userStayGt10SAnchorListBuilder_ == null) {
+          return userStayGt10SAnchorList_.size();
+        } else {
+          return userStayGt10SAnchorListBuilder_.getCount();
+        }
+      }
+      /**
+       * <pre>
+       * 7天窗口特征 - 主播列表相关
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore user_stay_gt10s_anchor_list = 10;</code>
+       */
+      public com.gosh.entity.RecFeature.IdScore getUserStayGt10SAnchorList(int index) {
+        if (userStayGt10SAnchorListBuilder_ == null) {
+          return userStayGt10SAnchorList_.get(index);
+        } else {
+          return userStayGt10SAnchorListBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <pre>
+       * 7天窗口特征 - 主播列表相关
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore user_stay_gt10s_anchor_list = 10;</code>
+       */
+      public Builder setUserStayGt10SAnchorList(
+          int index, com.gosh.entity.RecFeature.IdScore value) {
+        if (userStayGt10SAnchorListBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureUserStayGt10SAnchorListIsMutable();
+          userStayGt10SAnchorList_.set(index, value);
+          onChanged();
+        } else {
+          userStayGt10SAnchorListBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 7天窗口特征 - 主播列表相关
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore user_stay_gt10s_anchor_list = 10;</code>
+       */
+      public Builder setUserStayGt10SAnchorList(
+          int index, com.gosh.entity.RecFeature.IdScore.Builder builderForValue) {
+        if (userStayGt10SAnchorListBuilder_ == null) {
+          ensureUserStayGt10SAnchorListIsMutable();
+          userStayGt10SAnchorList_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          userStayGt10SAnchorListBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 7天窗口特征 - 主播列表相关
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore user_stay_gt10s_anchor_list = 10;</code>
+       */
+      public Builder addUserStayGt10SAnchorList(com.gosh.entity.RecFeature.IdScore value) {
+        if (userStayGt10SAnchorListBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureUserStayGt10SAnchorListIsMutable();
+          userStayGt10SAnchorList_.add(value);
+          onChanged();
+        } else {
+          userStayGt10SAnchorListBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 7天窗口特征 - 主播列表相关
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore user_stay_gt10s_anchor_list = 10;</code>
+       */
+      public Builder addUserStayGt10SAnchorList(
+          int index, com.gosh.entity.RecFeature.IdScore value) {
+        if (userStayGt10SAnchorListBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureUserStayGt10SAnchorListIsMutable();
+          userStayGt10SAnchorList_.add(index, value);
+          onChanged();
+        } else {
+          userStayGt10SAnchorListBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 7天窗口特征 - 主播列表相关
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore user_stay_gt10s_anchor_list = 10;</code>
+       */
+      public Builder addUserStayGt10SAnchorList(
+          com.gosh.entity.RecFeature.IdScore.Builder builderForValue) {
+        if (userStayGt10SAnchorListBuilder_ == null) {
+          ensureUserStayGt10SAnchorListIsMutable();
+          userStayGt10SAnchorList_.add(builderForValue.build());
+          onChanged();
+        } else {
+          userStayGt10SAnchorListBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 7天窗口特征 - 主播列表相关
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore user_stay_gt10s_anchor_list = 10;</code>
+       */
+      public Builder addUserStayGt10SAnchorList(
+          int index, com.gosh.entity.RecFeature.IdScore.Builder builderForValue) {
+        if (userStayGt10SAnchorListBuilder_ == null) {
+          ensureUserStayGt10SAnchorListIsMutable();
+          userStayGt10SAnchorList_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          userStayGt10SAnchorListBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 7天窗口特征 - 主播列表相关
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore user_stay_gt10s_anchor_list = 10;</code>
+       */
+      public Builder addAllUserStayGt10SAnchorList(
+          java.lang.Iterable<? extends com.gosh.entity.RecFeature.IdScore> values) {
+        if (userStayGt10SAnchorListBuilder_ == null) {
+          ensureUserStayGt10SAnchorListIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, userStayGt10SAnchorList_);
+          onChanged();
+        } else {
+          userStayGt10SAnchorListBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 7天窗口特征 - 主播列表相关
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore user_stay_gt10s_anchor_list = 10;</code>
+       */
+      public Builder clearUserStayGt10SAnchorList() {
+        if (userStayGt10SAnchorListBuilder_ == null) {
+          userStayGt10SAnchorList_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+          onChanged();
+        } else {
+          userStayGt10SAnchorListBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 7天窗口特征 - 主播列表相关
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore user_stay_gt10s_anchor_list = 10;</code>
+       */
+      public Builder removeUserStayGt10SAnchorList(int index) {
+        if (userStayGt10SAnchorListBuilder_ == null) {
+          ensureUserStayGt10SAnchorListIsMutable();
+          userStayGt10SAnchorList_.remove(index);
+          onChanged();
+        } else {
+          userStayGt10SAnchorListBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 7天窗口特征 - 主播列表相关
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore user_stay_gt10s_anchor_list = 10;</code>
+       */
+      public com.gosh.entity.RecFeature.IdScore.Builder getUserStayGt10SAnchorListBuilder(
+          int index) {
+        return getUserStayGt10SAnchorListFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <pre>
+       * 7天窗口特征 - 主播列表相关
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore user_stay_gt10s_anchor_list = 10;</code>
+       */
+      public com.gosh.entity.RecFeature.IdScoreOrBuilder getUserStayGt10SAnchorListOrBuilder(
+          int index) {
+        if (userStayGt10SAnchorListBuilder_ == null) {
+          return userStayGt10SAnchorList_.get(index);  } else {
+          return userStayGt10SAnchorListBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <pre>
+       * 7天窗口特征 - 主播列表相关
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore user_stay_gt10s_anchor_list = 10;</code>
+       */
+      public java.util.List<? extends com.gosh.entity.RecFeature.IdScoreOrBuilder> 
+           getUserStayGt10SAnchorListOrBuilderList() {
+        if (userStayGt10SAnchorListBuilder_ != null) {
+          return userStayGt10SAnchorListBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(userStayGt10SAnchorList_);
+        }
+      }
+      /**
+       * <pre>
+       * 7天窗口特征 - 主播列表相关
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore user_stay_gt10s_anchor_list = 10;</code>
+       */
+      public com.gosh.entity.RecFeature.IdScore.Builder addUserStayGt10SAnchorListBuilder() {
+        return getUserStayGt10SAnchorListFieldBuilder().addBuilder(
+            com.gosh.entity.RecFeature.IdScore.getDefaultInstance());
+      }
+      /**
+       * <pre>
+       * 7天窗口特征 - 主播列表相关
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore user_stay_gt10s_anchor_list = 10;</code>
+       */
+      public com.gosh.entity.RecFeature.IdScore.Builder addUserStayGt10SAnchorListBuilder(
+          int index) {
+        return getUserStayGt10SAnchorListFieldBuilder().addBuilder(
+            index, com.gosh.entity.RecFeature.IdScore.getDefaultInstance());
+      }
+      /**
+       * <pre>
+       * 7天窗口特征 - 主播列表相关
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore user_stay_gt10s_anchor_list = 10;</code>
+       */
+      public java.util.List<com.gosh.entity.RecFeature.IdScore.Builder> 
+           getUserStayGt10SAnchorListBuilderList() {
+        return getUserStayGt10SAnchorListFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          com.gosh.entity.RecFeature.IdScore, com.gosh.entity.RecFeature.IdScore.Builder, com.gosh.entity.RecFeature.IdScoreOrBuilder> 
+          getUserStayGt10SAnchorListFieldBuilder() {
+        if (userStayGt10SAnchorListBuilder_ == null) {
+          userStayGt10SAnchorListBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+              com.gosh.entity.RecFeature.IdScore, com.gosh.entity.RecFeature.IdScore.Builder, com.gosh.entity.RecFeature.IdScoreOrBuilder>(
+                  userStayGt10SAnchorList_,
+                  ((bitField0_ & 0x00000001) != 0),
+                  getParentForChildren(),
+                  isClean());
+          userStayGt10SAnchorList_ = null;
+        }
+        return userStayGt10SAnchorListBuilder_;
+      }
+
+      private com.google.protobuf.Internal.IntList userActiveEnterAnchorList_ = emptyIntList();
+      private void ensureUserActiveEnterAnchorListIsMutable() {
+        if (!((bitField0_ & 0x00000002) != 0)) {
+          userActiveEnterAnchorList_ = mutableCopy(userActiveEnterAnchorList_);
+          bitField0_ |= 0x00000002;
+         }
+      }
+      /**
+       * <pre>
+       * 用户7天主动进房的主播列表，逗号分隔
+       * </pre>
+       *
+       * <code>repeated int32 user_active_enter_anchor_list = 11;</code>
+       * @return A list containing the userActiveEnterAnchorList.
+       */
+      public java.util.List<java.lang.Integer>
+          getUserActiveEnterAnchorListList() {
+        return ((bitField0_ & 0x00000002) != 0) ?
+                 java.util.Collections.unmodifiableList(userActiveEnterAnchorList_) : userActiveEnterAnchorList_;
+      }
+      /**
+       * <pre>
+       * 用户7天主动进房的主播列表，逗号分隔
+       * </pre>
+       *
+       * <code>repeated int32 user_active_enter_anchor_list = 11;</code>
+       * @return The count of userActiveEnterAnchorList.
+       */
+      public int getUserActiveEnterAnchorListCount() {
+        return userActiveEnterAnchorList_.size();
+      }
+      /**
+       * <pre>
+       * 用户7天主动进房的主播列表，逗号分隔
+       * </pre>
+       *
+       * <code>repeated int32 user_active_enter_anchor_list = 11;</code>
+       * @param index The index of the element to return.
+       * @return The userActiveEnterAnchorList at the given index.
+       */
+      public int getUserActiveEnterAnchorList(int index) {
+        return userActiveEnterAnchorList_.getInt(index);
+      }
+      /**
+       * <pre>
+       * 用户7天主动进房的主播列表，逗号分隔
+       * </pre>
+       *
+       * <code>repeated int32 user_active_enter_anchor_list = 11;</code>
+       * @param index The index to set the value at.
+       * @param value The userActiveEnterAnchorList to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserActiveEnterAnchorList(
+          int index, int value) {
+        ensureUserActiveEnterAnchorListIsMutable();
+        userActiveEnterAnchorList_.setInt(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户7天主动进房的主播列表，逗号分隔
+       * </pre>
+       *
+       * <code>repeated int32 user_active_enter_anchor_list = 11;</code>
+       * @param value The userActiveEnterAnchorList to add.
+       * @return This builder for chaining.
+       */
+      public Builder addUserActiveEnterAnchorList(int value) {
+        ensureUserActiveEnterAnchorListIsMutable();
+        userActiveEnterAnchorList_.addInt(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户7天主动进房的主播列表，逗号分隔
+       * </pre>
+       *
+       * <code>repeated int32 user_active_enter_anchor_list = 11;</code>
+       * @param values The userActiveEnterAnchorList to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAllUserActiveEnterAnchorList(
+          java.lang.Iterable<? extends java.lang.Integer> values) {
+        ensureUserActiveEnterAnchorListIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, userActiveEnterAnchorList_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户7天主动进房的主播列表，逗号分隔
+       * </pre>
+       *
+       * <code>repeated int32 user_active_enter_anchor_list = 11;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserActiveEnterAnchorList() {
+        userActiveEnterAnchorList_ = emptyIntList();
+        bitField0_ = (bitField0_ & ~0x00000002);
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.Internal.IntList userPositiveFeedbackAnchorList_ = emptyIntList();
+      private void ensureUserPositiveFeedbackAnchorListIsMutable() {
+        if (!((bitField0_ & 0x00000004) != 0)) {
+          userPositiveFeedbackAnchorList_ = mutableCopy(userPositiveFeedbackAnchorList_);
+          bitField0_ |= 0x00000004;
+         }
+      }
+      /**
+       * <pre>
+       * 用户7天正反馈的主播列表，逗号分隔
+       * </pre>
+       *
+       * <code>repeated int32 user_positive_feedback_anchor_list = 12;</code>
+       * @return A list containing the userPositiveFeedbackAnchorList.
+       */
+      public java.util.List<java.lang.Integer>
+          getUserPositiveFeedbackAnchorListList() {
+        return ((bitField0_ & 0x00000004) != 0) ?
+                 java.util.Collections.unmodifiableList(userPositiveFeedbackAnchorList_) : userPositiveFeedbackAnchorList_;
+      }
+      /**
+       * <pre>
+       * 用户7天正反馈的主播列表，逗号分隔
+       * </pre>
+       *
+       * <code>repeated int32 user_positive_feedback_anchor_list = 12;</code>
+       * @return The count of userPositiveFeedbackAnchorList.
+       */
+      public int getUserPositiveFeedbackAnchorListCount() {
+        return userPositiveFeedbackAnchorList_.size();
+      }
+      /**
+       * <pre>
+       * 用户7天正反馈的主播列表，逗号分隔
+       * </pre>
+       *
+       * <code>repeated int32 user_positive_feedback_anchor_list = 12;</code>
+       * @param index The index of the element to return.
+       * @return The userPositiveFeedbackAnchorList at the given index.
+       */
+      public int getUserPositiveFeedbackAnchorList(int index) {
+        return userPositiveFeedbackAnchorList_.getInt(index);
+      }
+      /**
+       * <pre>
+       * 用户7天正反馈的主播列表，逗号分隔
+       * </pre>
+       *
+       * <code>repeated int32 user_positive_feedback_anchor_list = 12;</code>
+       * @param index The index to set the value at.
+       * @param value The userPositiveFeedbackAnchorList to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserPositiveFeedbackAnchorList(
+          int index, int value) {
+        ensureUserPositiveFeedbackAnchorListIsMutable();
+        userPositiveFeedbackAnchorList_.setInt(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户7天正反馈的主播列表，逗号分隔
+       * </pre>
+       *
+       * <code>repeated int32 user_positive_feedback_anchor_list = 12;</code>
+       * @param value The userPositiveFeedbackAnchorList to add.
+       * @return This builder for chaining.
+       */
+      public Builder addUserPositiveFeedbackAnchorList(int value) {
+        ensureUserPositiveFeedbackAnchorListIsMutable();
+        userPositiveFeedbackAnchorList_.addInt(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户7天正反馈的主播列表，逗号分隔
+       * </pre>
+       *
+       * <code>repeated int32 user_positive_feedback_anchor_list = 12;</code>
+       * @param values The userPositiveFeedbackAnchorList to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAllUserPositiveFeedbackAnchorList(
+          java.lang.Iterable<? extends java.lang.Integer> values) {
+        ensureUserPositiveFeedbackAnchorListIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, userPositiveFeedbackAnchorList_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户7天正反馈的主播列表，逗号分隔
+       * </pre>
+       *
+       * <code>repeated int32 user_positive_feedback_anchor_list = 12;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserPositiveFeedbackAnchorList() {
+        userPositiveFeedbackAnchorList_ = emptyIntList();
+        bitField0_ = (bitField0_ & ~0x00000004);
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:com.gosh.entity.RecLiveUserFeature)
+    }
+
+    // @@protoc_insertion_point(class_scope:com.gosh.entity.RecLiveUserFeature)
+    private static final com.gosh.entity.RecFeature.RecLiveUserFeature DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.gosh.entity.RecFeature.RecLiveUserFeature();
+    }
+
+    public static com.gosh.entity.RecFeature.RecLiveUserFeature getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<RecLiveUserFeature>
+        PARSER = new com.google.protobuf.AbstractParser<RecLiveUserFeature>() {
+      @java.lang.Override
+      public RecLiveUserFeature parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new RecLiveUserFeature(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<RecLiveUserFeature> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<RecLiveUserFeature> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.gosh.entity.RecFeature.RecLiveUserFeature getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface IdScoreOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.gosh.entity.IdScore)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>int64 id = 1;</code>
+     * @return The id.
+     */
+    long getId();
+
+    /**
+     * <code>float score = 2;</code>
+     * @return The score.
+     */
+    float getScore();
+  }
+  /**
+   * <pre>
+   * 专门用于储存用户喜欢的postid或主播id及得分
+   * </pre>
+   *
+   * Protobuf type {@code com.gosh.entity.IdScore}
+   */
+  public static final class IdScore extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:com.gosh.entity.IdScore)
+      IdScoreOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use IdScore.newBuilder() to construct.
+    private IdScore(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private IdScore() {
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new IdScore();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private IdScore(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+
+              id_ = input.readInt64();
+              break;
+            }
+            case 21: {
+
+              score_ = input.readFloat();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (com.google.protobuf.UninitializedMessageException e) {
+        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_IdScore_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_IdScore_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.gosh.entity.RecFeature.IdScore.class, com.gosh.entity.RecFeature.IdScore.Builder.class);
+    }
+
+    public static final int ID_FIELD_NUMBER = 1;
+    private long id_;
+    /**
+     * <code>int64 id = 1;</code>
+     * @return The id.
+     */
+    @java.lang.Override
+    public long getId() {
+      return id_;
+    }
+
+    public static final int SCORE_FIELD_NUMBER = 2;
+    private float score_;
+    /**
+     * <code>float score = 2;</code>
+     * @return The score.
+     */
+    @java.lang.Override
+    public float getScore() {
+      return score_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (id_ != 0L) {
+        output.writeInt64(1, id_);
+      }
+      if (java.lang.Float.floatToRawIntBits(score_) != 0) {
+        output.writeFloat(2, score_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (id_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(1, id_);
+      }
+      if (java.lang.Float.floatToRawIntBits(score_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(2, score_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.gosh.entity.RecFeature.IdScore)) {
+        return super.equals(obj);
+      }
+      com.gosh.entity.RecFeature.IdScore other = (com.gosh.entity.RecFeature.IdScore) obj;
+
+      if (getId()
+          != other.getId()) return false;
+      if (java.lang.Float.floatToIntBits(getScore())
+          != java.lang.Float.floatToIntBits(
+              other.getScore())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + ID_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getId());
+      hash = (37 * hash) + SCORE_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getScore());
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.gosh.entity.RecFeature.IdScore parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.gosh.entity.RecFeature.IdScore parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.gosh.entity.RecFeature.IdScore parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.gosh.entity.RecFeature.IdScore parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.gosh.entity.RecFeature.IdScore parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.gosh.entity.RecFeature.IdScore parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.gosh.entity.RecFeature.IdScore parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.gosh.entity.RecFeature.IdScore parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.gosh.entity.RecFeature.IdScore parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.gosh.entity.RecFeature.IdScore parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.gosh.entity.RecFeature.IdScore parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.gosh.entity.RecFeature.IdScore parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.gosh.entity.RecFeature.IdScore prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * <pre>
+     * 专门用于储存用户喜欢的postid或主播id及得分
+     * </pre>
+     *
+     * Protobuf type {@code com.gosh.entity.IdScore}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.gosh.entity.IdScore)
+        com.gosh.entity.RecFeature.IdScoreOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_IdScore_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_IdScore_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.gosh.entity.RecFeature.IdScore.class, com.gosh.entity.RecFeature.IdScore.Builder.class);
+      }
+
+      // Construct using com.gosh.entity.RecFeature.IdScore.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        id_ = 0L;
+
+        score_ = 0F;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_IdScore_descriptor;
+      }
+
+      @java.lang.Override
+      public com.gosh.entity.RecFeature.IdScore getDefaultInstanceForType() {
+        return com.gosh.entity.RecFeature.IdScore.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.gosh.entity.RecFeature.IdScore build() {
+        com.gosh.entity.RecFeature.IdScore result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.gosh.entity.RecFeature.IdScore buildPartial() {
+        com.gosh.entity.RecFeature.IdScore result = new com.gosh.entity.RecFeature.IdScore(this);
+        result.id_ = id_;
+        result.score_ = score_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.gosh.entity.RecFeature.IdScore) {
+          return mergeFrom((com.gosh.entity.RecFeature.IdScore)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.gosh.entity.RecFeature.IdScore other) {
+        if (other == com.gosh.entity.RecFeature.IdScore.getDefaultInstance()) return this;
+        if (other.getId() != 0L) {
+          setId(other.getId());
+        }
+        if (other.getScore() != 0F) {
+          setScore(other.getScore());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.gosh.entity.RecFeature.IdScore parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.gosh.entity.RecFeature.IdScore) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private long id_ ;
+      /**
+       * <code>int64 id = 1;</code>
+       * @return The id.
+       */
+      @java.lang.Override
+      public long getId() {
+        return id_;
+      }
+      /**
+       * <code>int64 id = 1;</code>
+       * @param value The id to set.
+       * @return This builder for chaining.
+       */
+      public Builder setId(long value) {
+        
+        id_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int64 id = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearId() {
+        
+        id_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private float score_ ;
+      /**
+       * <code>float score = 2;</code>
+       * @return The score.
+       */
+      @java.lang.Override
+      public float getScore() {
+        return score_;
+      }
+      /**
+       * <code>float score = 2;</code>
+       * @param value The score to set.
+       * @return This builder for chaining.
+       */
+      public Builder setScore(float value) {
+        
+        score_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>float score = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearScore() {
+        
+        score_ = 0F;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:com.gosh.entity.IdScore)
+    }
+
+    // @@protoc_insertion_point(class_scope:com.gosh.entity.IdScore)
+    private static final com.gosh.entity.RecFeature.IdScore DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.gosh.entity.RecFeature.IdScore();
+    }
+
+    public static com.gosh.entity.RecFeature.IdScore getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<IdScore>
+        PARSER = new com.google.protobuf.AbstractParser<IdScore>() {
+      @java.lang.Override
+      public IdScore parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new IdScore(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<IdScore> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<IdScore> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.gosh.entity.RecFeature.IdScore getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_gosh_entity_RecUserFeature_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_com_gosh_entity_RecUserFeature_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_gosh_entity_RecPostFeature_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_com_gosh_entity_RecPostFeature_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_gosh_entity_FeedbackTag_descriptor;
   private static final 
@@ -27084,6 +33474,11 @@ public final class RecFeature {
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_com_gosh_entity_FeedbackAuthorId_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_gosh_entity_RecPostFeature_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_com_gosh_entity_RecPostFeature_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_gosh_entity_RecUserAuthorFeature_descriptor;
   private static final 
@@ -27099,6 +33494,16 @@ public final class RecFeature {
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_com_gosh_entity_RecLiveAnchorFeature_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_gosh_entity_RecLiveUserFeature_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_com_gosh_entity_RecLiveUserFeature_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_gosh_entity_IdScore_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_com_gosh_entity_IdScore_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -27109,61 +33514,68 @@ public final class RecFeature {
   static {
     java.lang.String[] descriptorData = {
       "\n com/gosh/entity/RecFeature.proto\022\017com." +
-      "gosh.entity\"\354\020\n\016RecUserFeature\022\025\n\rviewer" +
-      "_is_old\030\001 \001(\005\022\035\n\025viewer_exppost_cnt_1h\030\n" +
-      " \001(\005\022\037\n\027viewer_exp1_post_cnt_1h\030\013 \001(\005\022\037\n" +
-      "\027viewer_exp2_post_cnt_1h\030\014 \001(\005\022!\n\031viewer" +
-      "_3sview_post_cnt_1h\030\r \001(\005\022\"\n\032viewer_3svi" +
-      "ew1_post_cnt_1h\030\016 \001(\005\022\"\n\032viewer_3sview2_" +
-      "post_cnt_1h\030\017 \001(\005\022!\n\031viewer_3sview_post_" +
-      "his_1h\030\020 \001(\t\022\"\n\032viewer_5sstand_post_his_" +
-      "1h\030\021 \001(\t\022\037\n\027viewer_like_post_his_1h\030\022 \001(" +
-      "\t\022!\n\031viewer_follow_post_his_1h\030\023 \001(\t\022\"\n\032" +
-      "viewer_profile_post_his_1h\030\024 \001(\t\022#\n\033view" +
-      "er_posinter_post_his_1h\030\025 \001(\t\022\"\n\032viewer_" +
-      "3sview_post_his_24h\030\036 \001(\t\022#\n\033viewer_5sst" +
-      "and_post_his_24h\030\037 \001(\t\022 \n\030viewer_like_po" +
-      "st_his_24h\030  \001(\t\022\"\n\032viewer_follow_post_h" +
-      "is_24h\030! \001(\t\022#\n\033viewer_profile_post_his_" +
-      "24h\030\" \001(\t\022$\n\034viewer_posinter_post_his_24" +
-      "h\030# \001(\t\022\"\n\032viewer_like_author_his_24h\030( " +
-      "\001(\t\022$\n\034viewer_follow_author_his_24h\030) \001(" +
-      "\t\022%\n\035viewer_profile_author_his_24h\030* \001(\t" +
-      "\022\035\n\025viewer_active_days_7d\0302 \001(\005\022\032\n\022viewe" +
-      "r_view_cnt_7d\0303 \001(\005\022\037\n\027viewer_validview_" +
-      "cnt_7d\0304 \001(\005\022#\n\033viewer_complete_view_cnt" +
-      "_7d\0305 \001(\005\022\037\n\027viewer_view_duration_7d\0306 \001" +
-      "(\002\022\032\n\022viewer_like_cnt_7d\0307 \001(\005\022\035\n\025viewer" +
-      "_comment_cnt_7d\0308 \001(\005\022 \n\030viewer_validvie" +
-      "w_rate_7d\0309 \001(\002\022 \n\030user_deepview_postids" +
-      "_7d\030: \001(\t\022 \n\030user_interact_postids_7d\030; " +
-      "\001(\t\022\027\n\017user_gift_count\030< \001(\005\022$\n\034user_dai" +
-      "ly_watchlive_minutes\030= \001(\002\022\037\n\027prefer_pos" +
-      "_tag1_7d_top3\030F \001(\t\022\037\n\027prefer_pos_tag2_7" +
-      "d_top3\030G \001(\t\022\037\n\027prefer_pos_tag3_7d_top3\030" +
-      "H \001(\t\022\037\n\027prefer_pos_tag4_7d_top3\030I \001(\t\022\037" +
-      "\n\027prefer_pos_tag5_7d_top3\030J \001(\t\022\037\n\027prefe" +
-      "r_pos_tag6_7d_top3\030K \001(\t\022\037\n\027prefer_pos_t" +
-      "ag7_7d_top3\030L \001(\t\022 \n\030prefer_pos_ftag1_7d" +
-      "_top3\030M \001(\t\022 \n\030prefer_pos_ftag2_7d_top3\030" +
-      "N \001(\t\022 \n\030prefer_pos_ftag3_7d_top3\030O \001(\t\022" +
-      " \n\030prefer_pos_ftag4_7d_top3\030P \001(\t\022 \n\030pre" +
-      "fer_pos_ftag5_7d_top3\030Q \001(\t\022 \n\030prefer_po" +
-      "s_ftag6_7d_top3\030R \001(\t\022\037\n\027prefer_neg_tag1" +
-      "_7d_top3\030S \001(\t\022\037\n\027prefer_neg_tag2_7d_top" +
-      "3\030T \001(\t\022\037\n\027prefer_neg_tag3_7d_top3\030U \001(\t" +
-      "\022\037\n\027prefer_neg_tag4_7d_top3\030V \001(\t\022\037\n\027pre" +
-      "fer_neg_tag5_7d_top3\030W \001(\t\022\037\n\027prefer_neg" +
-      "_tag6_7d_top3\030X \001(\t\022\037\n\027prefer_neg_tag7_7" +
-      "d_top3\030Y \001(\t\022 \n\030prefer_neg_ftag1_7d_top3" +
-      "\030Z \001(\t\022 \n\030prefer_neg_ftag2_7d_top3\030[ \001(\t" +
-      "\022 \n\030prefer_neg_ftag3_7d_top3\030\\ \001(\t\022 \n\030pr" +
-      "efer_neg_ftag4_7d_top3\030] \001(\t\022 \n\030prefer_n" +
-      "eg_ftag5_7d_top3\030^ \001(\t\022 \n\030prefer_neg_fta" +
-      "g6_7d_top3\030_ \001(\t\0222\n\014FeedbackTags\030` \003(\0132\034" +
-      ".com.gosh.entity.FeedbackTag\022<\n\021Feedback" +
-      "AuthorIds\030a \003(\0132!.com.gosh.entity.Feedba" +
-      "ckAuthorId\"\302\013\n\016RecPostFeature\022\017\n\007post_id" +
+      "gosh.entity\"\241\022\n\016RecUserFeature\022\025\n\rviewer" +
+      "_is_old\030\001 \001(\005\022\034\n\024viewer_register_days\030\002 " +
+      "\001(\005\022\035\n\025viewer_exppost_cnt_1h\030\n \001(\005\022\037\n\027vi" +
+      "ewer_exp1_post_cnt_1h\030\013 \001(\005\022\037\n\027viewer_ex" +
+      "p2_post_cnt_1h\030\014 \001(\005\022!\n\031viewer_3sview_po" +
+      "st_cnt_1h\030\r \001(\005\022\"\n\032viewer_3sview1_post_c" +
+      "nt_1h\030\016 \001(\005\022\"\n\032viewer_3sview2_post_cnt_1" +
+      "h\030\017 \001(\005\022;\n\031viewer_3sview_post_his_1h\030\020 \003" +
+      "(\0132\030.com.gosh.entity.IdScore\022<\n\032viewer_5" +
+      "sstand_post_his_1h\030\021 \003(\0132\030.com.gosh.enti" +
+      "ty.IdScore\022\037\n\027viewer_like_post_his_1h\030\022 " +
+      "\003(\003\022!\n\031viewer_follow_post_his_1h\030\023 \003(\003\022\"" +
+      "\n\032viewer_profile_post_his_1h\030\024 \003(\003\022#\n\033vi" +
+      "ewer_posinter_post_his_1h\030\025 \003(\003\022<\n\032viewe" +
+      "r_3sview_post_his_24h\030\036 \003(\0132\030.com.gosh.e" +
+      "ntity.IdScore\022=\n\033viewer_5sstand_post_his" +
+      "_24h\030\037 \003(\0132\030.com.gosh.entity.IdScore\022 \n\030" +
+      "viewer_like_post_his_24h\030  \003(\003\022\"\n\032viewer" +
+      "_follow_post_his_24h\030! \003(\003\022#\n\033viewer_pro" +
+      "file_post_his_24h\030\" \003(\003\022$\n\034viewer_posint" +
+      "er_post_his_24h\030# \003(\003\022\"\n\032viewer_like_aut" +
+      "hor_his_24h\030( \003(\005\022$\n\034viewer_follow_autho" +
+      "r_his_24h\030) \003(\005\022%\n\035viewer_profile_author" +
+      "_his_24h\030* \003(\005\022\035\n\025viewer_active_days_7d\030" +
+      "2 \001(\005\022\032\n\022viewer_view_cnt_7d\0303 \001(\005\022\037\n\027vie" +
+      "wer_validview_cnt_7d\0304 \001(\005\022#\n\033viewer_com" +
+      "plete_view_cnt_7d\0305 \001(\005\022\037\n\027viewer_view_d" +
+      "uration_7d\0306 \001(\002\022\032\n\022viewer_like_cnt_7d\0307" +
+      " \001(\005\022\035\n\025viewer_comment_cnt_7d\0308 \001(\005\022 \n\030v" +
+      "iewer_validview_rate_7d\0309 \001(\002\022 \n\030user_de" +
+      "epview_postids_7d\030: \003(\003\022 \n\030user_interact" +
+      "_postids_7d\030; \003(\003\022\027\n\017user_gift_count\030< \001" +
+      "(\005\022$\n\034user_daily_watchlive_minutes\030= \001(\002" +
+      "\022*\n\"user_live_follow_prefer_anchor_ids\030>" +
+      " \003(\004\022\037\n\027prefer_pos_tag1_7d_top3\030F \001(\t\022\037\n" +
+      "\027prefer_pos_tag2_7d_top3\030G \001(\t\022\037\n\027prefer" +
+      "_pos_tag3_7d_top3\030H \001(\t\022\037\n\027prefer_pos_ta" +
+      "g4_7d_top3\030I \001(\t\022\037\n\027prefer_pos_tag5_7d_t" +
+      "op3\030J \001(\t\022\037\n\027prefer_pos_tag6_7d_top3\030K \001" +
+      "(\t\022\037\n\027prefer_pos_tag7_7d_top3\030L \001(\t\022 \n\030p" +
+      "refer_pos_ftag1_7d_top3\030M \001(\t\022 \n\030prefer_" +
+      "pos_ftag2_7d_top3\030N \001(\t\022 \n\030prefer_pos_ft" +
+      "ag3_7d_top3\030O \001(\t\022 \n\030prefer_pos_ftag4_7d" +
+      "_top3\030P \001(\t\022 \n\030prefer_pos_ftag5_7d_top3\030" +
+      "Q \001(\t\022 \n\030prefer_pos_ftag6_7d_top3\030R \001(\t\022" +
+      "\037\n\027prefer_neg_tag1_7d_top3\030S \001(\t\022\037\n\027pref" +
+      "er_neg_tag2_7d_top3\030T \001(\t\022\037\n\027prefer_neg_" +
+      "tag3_7d_top3\030U \001(\t\022\037\n\027prefer_neg_tag4_7d" +
+      "_top3\030V \001(\t\022\037\n\027prefer_neg_tag5_7d_top3\030W" +
+      " \001(\t\022\037\n\027prefer_neg_tag6_7d_top3\030X \001(\t\022\037\n" +
+      "\027prefer_neg_tag7_7d_top3\030Y \001(\t\022 \n\030prefer" +
+      "_neg_ftag1_7d_top3\030Z \001(\t\022 \n\030prefer_neg_f" +
+      "tag2_7d_top3\030[ \001(\t\022 \n\030prefer_neg_ftag3_7" +
+      "d_top3\030\\ \001(\t\022 \n\030prefer_neg_ftag4_7d_top3" +
+      "\030] \001(\t\022 \n\030prefer_neg_ftag5_7d_top3\030^ \001(\t" +
+      "\022 \n\030prefer_neg_ftag6_7d_top3\030_ \001(\t\0223\n\rfe" +
+      "edback_tags\030` \003(\0132\034.com.gosh.entity.Feed" +
+      "backTag\022>\n\023feedback_author_ids\030a \003(\0132!.c" +
+      "om.gosh.entity.FeedbackAuthorId\"*\n\013Feedb" +
+      "ackTag\022\013\n\003tag\030\001 \001(\t\022\016\n\006weight\030\002 \001(\002\"5\n\020F" +
+      "eedbackAuthorId\022\021\n\tauthor_id\030\001 \001(\004\022\016\n\006we" +
+      "ight\030\002 \001(\002\"\302\013\n\016RecPostFeature\022\017\n\007post_id" +
       "\030\001 \001(\004\022\027\n\017post_exp_cnt_1h\030\n \001(\005\022\032\n\022post_" +
       "3sview_cnt_1h\030\013 \001(\005\022\032\n\022post_8sview_cnt_1" +
       "h\030\014 \001(\005\022\033\n\023post_12sview_cnt_1h\030\r \001(\005\022\033\n\023" +
@@ -27200,96 +33612,120 @@ public final class RecFeature {
       "\n\021post_like_rate_7d\030? \001(\002\022\034\n\024post_commen" +
       "t_rate_7d\030@ \001(\002\022\031\n\021post_ai_embedding\030F \003" +
       "(\002\022\024\n\014post_ai_tags\030G \001(\t\022\025\n\rpost_asr_lan" +
-      "g\030H \001(\t\"*\n\013FeedbackTag\022\013\n\003tag\030\001 \001(\t\022\016\n\006w" +
-      "eight\030\002 \001(\002\"5\n\020FeedbackAuthorId\022\021\n\tautho" +
-      "r_id\030\001 \001(\004\022\016\n\006weight\030\002 \001(\002\"\227\021\n\024RecUserAu" +
-      "thorFeature\022\017\n\007user_id\030\001 \001(\004\022\021\n\tauthor_i" +
-      "d\030\002 \001(\004\022\035\n\025userauthor_exp_cnt_1h\030\n \001(\005\022 " +
-      "\n\030userauthor_3sview_cnt_1h\030\013 \001(\005\022 \n\030user" +
-      "author_8sview_cnt_1h\030\014 \001(\005\022!\n\031userauthor" +
-      "_12sview_cnt_1h\030\r \001(\005\022!\n\031userauthor_20sv" +
-      "iew_cnt_1h\030\016 \001(\005\022!\n\031userauthor_5sstand_c" +
-      "nt_1h\030\017 \001(\005\022\"\n\032userauthor_10sstand_cnt_1" +
-      "h\030\020 \001(\005\022\036\n\026userauthor_like_cnt_1h\030\021 \001(\005\022" +
-      "\036\n\026userauthor_exp_cnt_24h\030\036 \001(\005\022!\n\031usera" +
-      "uthor_3sview_cnt_24h\030\037 \001(\005\022!\n\031userauthor" +
-      "_8sview_cnt_24h\030  \001(\005\022\"\n\032userauthor_12sv" +
-      "iew_cnt_24h\030! \001(\005\022\"\n\032userauthor_20sview_" +
-      "cnt_24h\030\" \001(\005\022\"\n\032userauthor_5sstand_cnt_" +
-      "24h\030# \001(\005\022#\n\033userauthor_10sstand_cnt_24h" +
-      "\030$ \001(\005\022\037\n\027userauthor_like_cnt_24h\030% \001(\005\022" +
-      "\037\n\027user_author_view_cnt_7d\030( \001(\005\022$\n\034user" +
-      "_author_validview_cnt_7d\030) \001(\002\022(\n user_a" +
-      "uthor_compeleteview_cnt_7d\030* \001(\005\022\037\n\027user" +
-      "_author_like_cnt_7d\030+ \001(\005\022\"\n\032user_author" +
-      "_comment_cnt_7d\030, \001(\005\022(\n user_author_avg" +
-      "_view_duration_7d\030- \001(\002\022&\n\036user_author_v" +
-      "alidview_tfidf_7d\030. \001(\002\022*\n\"user_author_c" +
-      "ompeleteview_tfidf_7d\030/ \001(\002\022(\n user_auth" +
-      "or_likecomment_tfidf_7d\0300 \001(\002\022\032\n\022user_ta" +
-      "g11_is_like\0302 \001(\005\022\032\n\022user_tag11_is_play\030" +
-      "3 \001(\005\022\035\n\025user_tag11_is_comment\0304 \001(\005\022\032\n\022" +
-      "user_tag12_is_like\0305 \001(\005\022\032\n\022user_tag12_i" +
-      "s_play\0306 \001(\005\022\035\n\025user_tag12_is_comment\0307 " +
-      "\001(\005\022\032\n\022user_tag13_is_like\0308 \001(\005\022\032\n\022user_" +
-      "tag13_is_play\0309 \001(\005\022\035\n\025user_tag13_is_com" +
-      "ment\030: \001(\005\022\032\n\022user_tag14_is_like\030; \001(\005\022\032" +
-      "\n\022user_tag14_is_play\030< \001(\005\022\035\n\025user_tag14" +
-      "_is_comment\030= \001(\005\022\032\n\022user_tag15_is_like\030" +
-      "> \001(\005\022\032\n\022user_tag15_is_play\030? \001(\005\022\035\n\025use" +
-      "r_tag15_is_comment\030@ \001(\005\022\032\n\022user_tag16_i" +
-      "s_like\030A \001(\005\022\032\n\022user_tag16_is_play\030B \001(\005" +
-      "\022\035\n\025user_tag16_is_comment\030C \001(\005\022\032\n\022user_" +
-      "tag17_is_like\030D \001(\005\022\032\n\022user_tag17_is_pla" +
-      "y\030E \001(\005\022\035\n\025user_tag17_is_comment\030F \001(\005\022\033" +
-      "\n\023user_tag11_like_cnt\030G \001(\005\022\033\n\023user_tag1" +
-      "1_play_cnt\030H \001(\005\022\036\n\026user_tag11_comment_c" +
-      "nt\030I \001(\005\022\033\n\023user_tag12_like_cnt\030J \001(\005\022\033\n" +
-      "\023user_tag12_play_cnt\030K \001(\005\022\036\n\026user_tag12" +
-      "_comment_cnt\030L \001(\005\022\033\n\023user_tag13_like_cn" +
-      "t\030M \001(\005\022\033\n\023user_tag13_play_cnt\030N \001(\005\022\036\n\026" +
-      "user_tag13_comment_cnt\030O \001(\005\022\033\n\023user_tag" +
-      "14_like_cnt\030P \001(\005\022\033\n\023user_tag14_play_cnt" +
-      "\030Q \001(\005\022\036\n\026user_tag14_comment_cnt\030R \001(\005\022\033" +
-      "\n\023user_tag15_like_cnt\030S \001(\005\022\033\n\023user_tag1" +
-      "5_play_cnt\030T \001(\005\022\036\n\026user_tag15_comment_c" +
-      "nt\030U \001(\005\022\033\n\023user_tag16_like_cnt\030V \001(\005\022\033\n" +
-      "\023user_tag16_play_cnt\030W \001(\005\022\036\n\026user_tag16" +
-      "_comment_cnt\030X \001(\005\022\033\n\023user_tag17_like_cn" +
-      "t\030Y \001(\005\022\033\n\023user_tag17_play_cnt\030Z \001(\005\022\036\n\026" +
-      "user_tag17_comment_cnt\030[ \001(\005\"\274\003\n\025LiveUse" +
-      "rAnchorFeature\022\017\n\007user_id\030\001 \001(\004\022\021\n\tancho" +
-      "r_id\030\002 \001(\004\022!\n\031user_anchor_exp_cnt_15min\030" +
-      "\n \001(\005\022$\n\034user_anchor_3squit_cnt_15min\030\013 " +
-      "\001(\005\022$\n\034user_anchor_6squit_cnt_15min\030\014 \001(" +
-      "\005\022\"\n\032user_anchor_like_cnt_15min\030\r \001(\005\022%\n" +
-      "\035user_anchor_comment_cnt_15min\030\016 \001(\005\022$\n\034" +
-      "user_anchor_follow_cnt_15min\030\017 \001(\005\022#\n\033us" +
-      "er_anchor_share_cnt_15min\030\020 \001(\005\022\"\n\032user_" +
-      "anchor_gift_cnt_15min\030\021 \001(\005\022%\n\035user_anch" +
-      "or_gift_amount_15min\030\022 \001(\005\022/\n\'user_ancho" +
-      "r_negative_feedback_cnt_15min\030\023 \001(\005\"\272\006\n\024" +
-      "RecLiveAnchorFeature\022\021\n\tanchor_id\030\001 \001(\004\022" +
-      "\037\n\027live_enter_usernum_5min\030\n \001(\005\022\036\n\026live" +
-      "_quit_usernum_5min\030\013 \001(\005\022#\n\033live_quit_av" +
-      "g_duration_5min\030\014 \001(\005\022\"\n\032live_anchor_gif" +
-      "t_coin_5min\030\r \001(\005\022%\n\035live_anchor_gift_us" +
-      "ernum_5min\030\016 \001(\005\022\'\n\037live_anchor_follow_u" +
-      "sernum_5min\030\017 \001(\005\022%\n\035live_anchor_chat_us" +
-      "ernum_5min\030\020 \001(\005\022 \n\030live_enter_usernum_1" +
-      "0min\030\024 \001(\005\022\037\n\027live_quit_usernum_10min\030\025 " +
-      "\001(\005\022$\n\034live_quit_avg_duration_10min\030\026 \001(" +
-      "\005\022#\n\033live_anchor_gift_coin_10min\030\027 \001(\005\022&" +
-      "\n\036live_anchor_gift_usernum_10min\030\030 \001(\005\022(" +
-      "\n live_anchor_follow_usernum_10min\030\031 \001(\005" +
-      "\022&\n\036live_anchor_chat_usernum_10min\030\032 \001(\005" +
-      "\022 \n\030live_enter_usernum_15min\030\036 \001(\005\022\037\n\027li" +
-      "ve_quit_usernum_15min\030\037 \001(\005\022$\n\034live_quit" +
-      "_avg_duration_15min\030  \001(\005\022#\n\033live_anchor" +
-      "_gift_coin_15min\030! \001(\005\022&\n\036live_anchor_gi" +
-      "ft_usernum_15min\030\" \001(\005\022(\n live_anchor_fo" +
-      "llow_usernum_15min\030# \001(\005\022&\n\036live_anchor_" +
-      "chat_usernum_15min\030$ \001(\005b\006proto3"
+      "g\030H \001(\t\"\227\021\n\024RecUserAuthorFeature\022\017\n\007user" +
+      "_id\030\001 \001(\004\022\021\n\tauthor_id\030\002 \001(\004\022\035\n\025userauth" +
+      "or_exp_cnt_1h\030\n \001(\005\022 \n\030userauthor_3sview" +
+      "_cnt_1h\030\013 \001(\005\022 \n\030userauthor_8sview_cnt_1" +
+      "h\030\014 \001(\005\022!\n\031userauthor_12sview_cnt_1h\030\r \001" +
+      "(\005\022!\n\031userauthor_20sview_cnt_1h\030\016 \001(\005\022!\n" +
+      "\031userauthor_5sstand_cnt_1h\030\017 \001(\005\022\"\n\032user" +
+      "author_10sstand_cnt_1h\030\020 \001(\005\022\036\n\026userauth" +
+      "or_like_cnt_1h\030\021 \001(\005\022\036\n\026userauthor_exp_c" +
+      "nt_24h\030\036 \001(\005\022!\n\031userauthor_3sview_cnt_24" +
+      "h\030\037 \001(\005\022!\n\031userauthor_8sview_cnt_24h\030  \001" +
+      "(\005\022\"\n\032userauthor_12sview_cnt_24h\030! \001(\005\022\"" +
+      "\n\032userauthor_20sview_cnt_24h\030\" \001(\005\022\"\n\032us" +
+      "erauthor_5sstand_cnt_24h\030# \001(\005\022#\n\033userau" +
+      "thor_10sstand_cnt_24h\030$ \001(\005\022\037\n\027userautho" +
+      "r_like_cnt_24h\030% \001(\005\022\037\n\027user_author_view" +
+      "_cnt_7d\030( \001(\005\022$\n\034user_author_validview_c" +
+      "nt_7d\030) \001(\002\022(\n user_author_compeleteview" +
+      "_cnt_7d\030* \001(\005\022\037\n\027user_author_like_cnt_7d" +
+      "\030+ \001(\005\022\"\n\032user_author_comment_cnt_7d\030, \001" +
+      "(\005\022(\n user_author_avg_view_duration_7d\030-" +
+      " \001(\002\022&\n\036user_author_validview_tfidf_7d\030." +
+      " \001(\002\022*\n\"user_author_compeleteview_tfidf_" +
+      "7d\030/ \001(\002\022(\n user_author_likecomment_tfid" +
+      "f_7d\0300 \001(\002\022\032\n\022user_tag11_is_like\0302 \001(\005\022\032" +
+      "\n\022user_tag11_is_play\0303 \001(\005\022\035\n\025user_tag11" +
+      "_is_comment\0304 \001(\005\022\032\n\022user_tag12_is_like\030" +
+      "5 \001(\005\022\032\n\022user_tag12_is_play\0306 \001(\005\022\035\n\025use" +
+      "r_tag12_is_comment\0307 \001(\005\022\032\n\022user_tag13_i" +
+      "s_like\0308 \001(\005\022\032\n\022user_tag13_is_play\0309 \001(\005" +
+      "\022\035\n\025user_tag13_is_comment\030: \001(\005\022\032\n\022user_" +
+      "tag14_is_like\030; \001(\005\022\032\n\022user_tag14_is_pla" +
+      "y\030< \001(\005\022\035\n\025user_tag14_is_comment\030= \001(\005\022\032" +
+      "\n\022user_tag15_is_like\030> \001(\005\022\032\n\022user_tag15" +
+      "_is_play\030? \001(\005\022\035\n\025user_tag15_is_comment\030" +
+      "@ \001(\005\022\032\n\022user_tag16_is_like\030A \001(\005\022\032\n\022use" +
+      "r_tag16_is_play\030B \001(\005\022\035\n\025user_tag16_is_c" +
+      "omment\030C \001(\005\022\032\n\022user_tag17_is_like\030D \001(\005" +
+      "\022\032\n\022user_tag17_is_play\030E \001(\005\022\035\n\025user_tag" +
+      "17_is_comment\030F \001(\005\022\033\n\023user_tag11_like_c" +
+      "nt\030G \001(\005\022\033\n\023user_tag11_play_cnt\030H \001(\005\022\036\n" +
+      "\026user_tag11_comment_cnt\030I \001(\005\022\033\n\023user_ta" +
+      "g12_like_cnt\030J \001(\005\022\033\n\023user_tag12_play_cn" +
+      "t\030K \001(\005\022\036\n\026user_tag12_comment_cnt\030L \001(\005\022" +
+      "\033\n\023user_tag13_like_cnt\030M \001(\005\022\033\n\023user_tag" +
+      "13_play_cnt\030N \001(\005\022\036\n\026user_tag13_comment_" +
+      "cnt\030O \001(\005\022\033\n\023user_tag14_like_cnt\030P \001(\005\022\033" +
+      "\n\023user_tag14_play_cnt\030Q \001(\005\022\036\n\026user_tag1" +
+      "4_comment_cnt\030R \001(\005\022\033\n\023user_tag15_like_c" +
+      "nt\030S \001(\005\022\033\n\023user_tag15_play_cnt\030T \001(\005\022\036\n" +
+      "\026user_tag15_comment_cnt\030U \001(\005\022\033\n\023user_ta" +
+      "g16_like_cnt\030V \001(\005\022\033\n\023user_tag16_play_cn" +
+      "t\030W \001(\005\022\036\n\026user_tag16_comment_cnt\030X \001(\005\022" +
+      "\033\n\023user_tag17_like_cnt\030Y \001(\005\022\033\n\023user_tag" +
+      "17_play_cnt\030Z \001(\005\022\036\n\026user_tag17_comment_" +
+      "cnt\030[ \001(\005\"\374\005\n\025LiveUserAnchorFeature\022\017\n\007u" +
+      "ser_id\030\001 \001(\004\022\021\n\tanchor_id\030\002 \001(\004\022!\n\031user_" +
+      "anchor_exp_cnt_15min\030\n \001(\005\022$\n\034user_ancho" +
+      "r_3squit_cnt_15min\030\013 \001(\005\022$\n\034user_anchor_" +
+      "6squit_cnt_15min\030\014 \001(\005\022\"\n\032user_anchor_li" +
+      "ke_cnt_15min\030\r \001(\005\022%\n\035user_anchor_commen" +
+      "t_cnt_15min\030\016 \001(\005\022$\n\034user_anchor_follow_" +
+      "cnt_15min\030\017 \001(\005\022#\n\033user_anchor_share_cnt" +
+      "_15min\030\020 \001(\005\022\"\n\032user_anchor_gift_cnt_15m" +
+      "in\030\021 \001(\005\022%\n\035user_anchor_gift_amount_15mi" +
+      "n\030\022 \001(\005\022/\n\'user_anchor_negative_feedback" +
+      "_cnt_15min\030\023 \001(\005\022 \n\030user_anchor_enter_cn" +
+      "t_7d\030\024 \001(\005\022\037\n\027user_anchor_quit_cnt_7d\030\025 " +
+      "\001(\005\022%\n\035user_anchor_stay_gt10s_cnt_7d\030\026 \001" +
+      "(\005\022%\n\035user_anchor_stay_gt30s_cnt_7d\030\027 \001(" +
+      "\005\022(\n user_anchor_avg_view_duration_7d\030\030 " +
+      "\001(\002\022,\n$user_anchor_positive_feedback_cnt" +
+      "_7d\030\031 \001(\005\022,\n$user_anchor_negative_feedba" +
+      "ck_cnt_7d\030\032 \001(\005\022\'\n\037user_anchor_active_en" +
+      "ter_cnt_7d\030\033 \001(\005\"\257\n\n\024RecLiveAnchorFeatur" +
+      "e\022\021\n\tanchor_id\030\001 \001(\004\022\037\n\027live_enter_usern" +
+      "um_5min\030\n \001(\005\022\036\n\026live_quit_usernum_5min\030" +
+      "\013 \001(\005\022#\n\033live_quit_avg_duration_5min\030\014 \001" +
+      "(\005\022\"\n\032live_anchor_gift_coin_5min\030\r \001(\005\022%" +
+      "\n\035live_anchor_gift_usernum_5min\030\016 \001(\005\022\'\n" +
+      "\037live_anchor_follow_usernum_5min\030\017 \001(\005\022%" +
+      "\n\035live_anchor_chat_usernum_5min\030\020 \001(\005\022 \n" +
+      "\030live_enter_usernum_10min\030\024 \001(\005\022\037\n\027live_" +
+      "quit_usernum_10min\030\025 \001(\005\022$\n\034live_quit_av" +
+      "g_duration_10min\030\026 \001(\005\022#\n\033live_anchor_gi" +
+      "ft_coin_10min\030\027 \001(\005\022&\n\036live_anchor_gift_" +
+      "usernum_10min\030\030 \001(\005\022(\n live_anchor_follo" +
+      "w_usernum_10min\030\031 \001(\005\022&\n\036live_anchor_cha" +
+      "t_usernum_10min\030\032 \001(\005\022 \n\030live_enter_user" +
+      "num_15min\030\036 \001(\005\022\037\n\027live_quit_usernum_15m" +
+      "in\030\037 \001(\005\022$\n\034live_quit_avg_duration_15min" +
+      "\030  \001(\005\022#\n\033live_anchor_gift_coin_15min\030! " +
+      "\001(\005\022&\n\036live_anchor_gift_usernum_15min\030\" " +
+      "\001(\005\022(\n live_anchor_follow_usernum_15min\030" +
+      "# \001(\005\022&\n\036live_anchor_chat_usernum_15min\030" +
+      "$ \001(\005\022\033\n\023anchor_enter_cnt_7d\030( \001(\005\022\032\n\022an" +
+      "chor_quit_cnt_7d\030) \001(\005\022\037\n\027anchor_stay_gt" +
+      "3s_cnt_7d\030* \001(\005\022 \n\030anchor_stay_gt10s_cnt" +
+      "_7d\030+ \001(\005\022 \n\030anchor_stay_gt30s_cnt_7d\030, " +
+      "\001(\005\022#\n\033anchor_avg_view_duration_7d\030- \001(\002" +
+      "\022\034\n\024anchor_follow_cnt_7d\030. \001(\005\022\'\n\037anchor" +
+      "_positive_feedback_cnt_7d\030/ \001(\005\022\'\n\037ancho" +
+      "r_negative_feedback_cnt_7d\0300 \001(\005\022)\n!anch" +
+      "or_live_scene_exposure_cnt_7d\0301 \001(\005\022)\n!a" +
+      "nchor_foru_scene_exposure_cnt_7d\0302 \001(\005\022&" +
+      "\n\036anchor_live_scene_enter_cnt_7d\0303 \001(\005\022&" +
+      "\n\036anchor_foru_scene_enter_cnt_7d\0304 \001(\005\022\032" +
+      "\n\022anchor_gift_cnt_7d\0305 \001(\005\"\267\001\n\022RecLiveUs" +
+      "erFeature\022\017\n\007user_id\030\001 \001(\004\022=\n\033user_stay_" +
+      "gt10s_anchor_list\030\n \003(\0132\030.com.gosh.entit" +
+      "y.IdScore\022%\n\035user_active_enter_anchor_li" +
+      "st\030\013 \003(\005\022*\n\"user_positive_feedback_ancho" +
+      "r_list\030\014 \003(\005\"$\n\007IdScore\022\n\n\002id\030\001 \001(\003\022\r\n\005s" +
+      "core\030\002 \001(\002b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -27300,25 +33736,25 @@ public final class RecFeature {
     internal_static_com_gosh_entity_RecUserFeature_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_gosh_entity_RecUserFeature_descriptor,
-        new java.lang.String[] { "ViewerIsOld", "ViewerExppostCnt1H", "ViewerExp1PostCnt1H", "ViewerExp2PostCnt1H", "Viewer3SviewPostCnt1H", "Viewer3Sview1PostCnt1H", "Viewer3Sview2PostCnt1H", "Viewer3SviewPostHis1H", "Viewer5SstandPostHis1H", "ViewerLikePostHis1H", "ViewerFollowPostHis1H", "ViewerProfilePostHis1H", "ViewerPosinterPostHis1H", "Viewer3SviewPostHis24H", "Viewer5SstandPostHis24H", "ViewerLikePostHis24H", "ViewerFollowPostHis24H", "ViewerProfilePostHis24H", "ViewerPosinterPostHis24H", "ViewerLikeAuthorHis24H", "ViewerFollowAuthorHis24H", "ViewerProfileAuthorHis24H", "ViewerActiveDays7D", "ViewerViewCnt7D", "ViewerValidviewCnt7D", "ViewerCompleteViewCnt7D", "ViewerViewDuration7D", "ViewerLikeCnt7D", "ViewerCommentCnt7D", "ViewerValidviewRate7D", "UserDeepviewPostids7D", "UserInteractPostids7D", "UserGiftCount", "UserDailyWatchliveMinutes", "PreferPosTag17DTop3", "PreferPosTag27DTop3", "PreferPosTag37DTop3", "PreferPosTag47DTop3", "PreferPosTag57DTop3", "PreferPosTag67DTop3", "PreferPosTag77DTop3", "PreferPosFtag17DTop3", "PreferPosFtag27DTop3", "PreferPosFtag37DTop3", "PreferPosFtag47DTop3", "PreferPosFtag57DTop3", "PreferPosFtag67DTop3", "PreferNegTag17DTop3", "PreferNegTag27DTop3", "PreferNegTag37DTop3", "PreferNegTag47DTop3", "PreferNegTag57DTop3", "PreferNegTag67DTop3", "PreferNegTag77DTop3", "PreferNegFtag17DTop3", "PreferNegFtag27DTop3", "PreferNegFtag37DTop3", "PreferNegFtag47DTop3", "PreferNegFtag57DTop3", "PreferNegFtag67DTop3", "FeedbackTags", "FeedbackAuthorIds", });
-    internal_static_com_gosh_entity_RecPostFeature_descriptor =
-      getDescriptor().getMessageTypes().get(1);
-    internal_static_com_gosh_entity_RecPostFeature_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_com_gosh_entity_RecPostFeature_descriptor,
-        new java.lang.String[] { "PostId", "PostExpCnt1H", "Post3SviewCnt1H", "Post8SviewCnt1H", "Post12SviewCnt1H", "Post20SviewCnt1H", "Post5SstandCnt1H", "Post10SstandCnt1H", "PostLikeCnt1H", "PostFollowCnt1H", "PostProfileCnt1H", "PostPosinterCnt1H", "PostExpCnt24H", "Post3SviewCnt24H", "Post8SviewCnt24H", "Post12SviewCnt24H", "Post20SviewCnt24H", "Post5SstandCnt24H", "Post10SstandCnt24H", "PostLikeCnt24H", "PostFollowCnt24H", "PostProfileCnt24H", "PostPosinterCnt24H", "PostViewCnt7D", "PostValidviewCnt7D", "PostCompleteviewCnt7D", "PostViewDuration7D", "PostLikeCnt7D", "PostCommentCnt7D", "TagIds", "AuthorExpDistinctPostCnt7D", "AuthorExpPostCnt7D", "AuthorValidviewPostCnt7D", "AuthorViewPostDuration7D", "AuthorLikeCnt7D", "AuthorCommentCnt7D", "AuthorCompleteviewPostCnt7D", "AuthorViewAvgDuration7D", "AuthorInterProfileCnt7D", "AuthorFollowCnt7D", "AuthorFollowersCnt", "PostValidviewRate7D", "PostCompleteviewRate7D", "PostAvgViewDuration7D", "PostLikeRate7D", "PostCommentRate7D", "PostAiEmbedding", "PostAiTags", "PostAsrLang", });
+        new java.lang.String[] { "ViewerIsOld", "ViewerRegisterDays", "ViewerExppostCnt1H", "ViewerExp1PostCnt1H", "ViewerExp2PostCnt1H", "Viewer3SviewPostCnt1H", "Viewer3Sview1PostCnt1H", "Viewer3Sview2PostCnt1H", "Viewer3SviewPostHis1H", "Viewer5SstandPostHis1H", "ViewerLikePostHis1H", "ViewerFollowPostHis1H", "ViewerProfilePostHis1H", "ViewerPosinterPostHis1H", "Viewer3SviewPostHis24H", "Viewer5SstandPostHis24H", "ViewerLikePostHis24H", "ViewerFollowPostHis24H", "ViewerProfilePostHis24H", "ViewerPosinterPostHis24H", "ViewerLikeAuthorHis24H", "ViewerFollowAuthorHis24H", "ViewerProfileAuthorHis24H", "ViewerActiveDays7D", "ViewerViewCnt7D", "ViewerValidviewCnt7D", "ViewerCompleteViewCnt7D", "ViewerViewDuration7D", "ViewerLikeCnt7D", "ViewerCommentCnt7D", "ViewerValidviewRate7D", "UserDeepviewPostids7D", "UserInteractPostids7D", "UserGiftCount", "UserDailyWatchliveMinutes", "UserLiveFollowPreferAnchorIds", "PreferPosTag17DTop3", "PreferPosTag27DTop3", "PreferPosTag37DTop3", "PreferPosTag47DTop3", "PreferPosTag57DTop3", "PreferPosTag67DTop3", "PreferPosTag77DTop3", "PreferPosFtag17DTop3", "PreferPosFtag27DTop3", "PreferPosFtag37DTop3", "PreferPosFtag47DTop3", "PreferPosFtag57DTop3", "PreferPosFtag67DTop3", "PreferNegTag17DTop3", "PreferNegTag27DTop3", "PreferNegTag37DTop3", "PreferNegTag47DTop3", "PreferNegTag57DTop3", "PreferNegTag67DTop3", "PreferNegTag77DTop3", "PreferNegFtag17DTop3", "PreferNegFtag27DTop3", "PreferNegFtag37DTop3", "PreferNegFtag47DTop3", "PreferNegFtag57DTop3", "PreferNegFtag67DTop3", "FeedbackTags", "FeedbackAuthorIds", });
     internal_static_com_gosh_entity_FeedbackTag_descriptor =
-      getDescriptor().getMessageTypes().get(2);
+      getDescriptor().getMessageTypes().get(1);
     internal_static_com_gosh_entity_FeedbackTag_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_gosh_entity_FeedbackTag_descriptor,
         new java.lang.String[] { "Tag", "Weight", });
     internal_static_com_gosh_entity_FeedbackAuthorId_descriptor =
-      getDescriptor().getMessageTypes().get(3);
+      getDescriptor().getMessageTypes().get(2);
     internal_static_com_gosh_entity_FeedbackAuthorId_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_gosh_entity_FeedbackAuthorId_descriptor,
         new java.lang.String[] { "AuthorId", "Weight", });
+    internal_static_com_gosh_entity_RecPostFeature_descriptor =
+      getDescriptor().getMessageTypes().get(3);
+    internal_static_com_gosh_entity_RecPostFeature_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_com_gosh_entity_RecPostFeature_descriptor,
+        new java.lang.String[] { "PostId", "PostExpCnt1H", "Post3SviewCnt1H", "Post8SviewCnt1H", "Post12SviewCnt1H", "Post20SviewCnt1H", "Post5SstandCnt1H", "Post10SstandCnt1H", "PostLikeCnt1H", "PostFollowCnt1H", "PostProfileCnt1H", "PostPosinterCnt1H", "PostExpCnt24H", "Post3SviewCnt24H", "Post8SviewCnt24H", "Post12SviewCnt24H", "Post20SviewCnt24H", "Post5SstandCnt24H", "Post10SstandCnt24H", "PostLikeCnt24H", "PostFollowCnt24H", "PostProfileCnt24H", "PostPosinterCnt24H", "PostViewCnt7D", "PostValidviewCnt7D", "PostCompleteviewCnt7D", "PostViewDuration7D", "PostLikeCnt7D", "PostCommentCnt7D", "TagIds", "AuthorExpDistinctPostCnt7D", "AuthorExpPostCnt7D", "AuthorValidviewPostCnt7D", "AuthorViewPostDuration7D", "AuthorLikeCnt7D", "AuthorCommentCnt7D", "AuthorCompleteviewPostCnt7D", "AuthorViewAvgDuration7D", "AuthorInterProfileCnt7D", "AuthorFollowCnt7D", "AuthorFollowersCnt", "PostValidviewRate7D", "PostCompleteviewRate7D", "PostAvgViewDuration7D", "PostLikeRate7D", "PostCommentRate7D", "PostAiEmbedding", "PostAiTags", "PostAsrLang", });
     internal_static_com_gosh_entity_RecUserAuthorFeature_descriptor =
       getDescriptor().getMessageTypes().get(4);
     internal_static_com_gosh_entity_RecUserAuthorFeature_fieldAccessorTable = new
@@ -27330,13 +33766,25 @@ public final class RecFeature {
     internal_static_com_gosh_entity_LiveUserAnchorFeature_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_gosh_entity_LiveUserAnchorFeature_descriptor,
-        new java.lang.String[] { "UserId", "AnchorId", "UserAnchorExpCnt15Min", "UserAnchor3SquitCnt15Min", "UserAnchor6SquitCnt15Min", "UserAnchorLikeCnt15Min", "UserAnchorCommentCnt15Min", "UserAnchorFollowCnt15Min", "UserAnchorShareCnt15Min", "UserAnchorGiftCnt15Min", "UserAnchorGiftAmount15Min", "UserAnchorNegativeFeedbackCnt15Min", });
+        new java.lang.String[] { "UserId", "AnchorId", "UserAnchorExpCnt15Min", "UserAnchor3SquitCnt15Min", "UserAnchor6SquitCnt15Min", "UserAnchorLikeCnt15Min", "UserAnchorCommentCnt15Min", "UserAnchorFollowCnt15Min", "UserAnchorShareCnt15Min", "UserAnchorGiftCnt15Min", "UserAnchorGiftAmount15Min", "UserAnchorNegativeFeedbackCnt15Min", "UserAnchorEnterCnt7D", "UserAnchorQuitCnt7D", "UserAnchorStayGt10SCnt7D", "UserAnchorStayGt30SCnt7D", "UserAnchorAvgViewDuration7D", "UserAnchorPositiveFeedbackCnt7D", "UserAnchorNegativeFeedbackCnt7D", "UserAnchorActiveEnterCnt7D", });
     internal_static_com_gosh_entity_RecLiveAnchorFeature_descriptor =
       getDescriptor().getMessageTypes().get(6);
     internal_static_com_gosh_entity_RecLiveAnchorFeature_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_gosh_entity_RecLiveAnchorFeature_descriptor,
-        new java.lang.String[] { "AnchorId", "LiveEnterUsernum5Min", "LiveQuitUsernum5Min", "LiveQuitAvgDuration5Min", "LiveAnchorGiftCoin5Min", "LiveAnchorGiftUsernum5Min", "LiveAnchorFollowUsernum5Min", "LiveAnchorChatUsernum5Min", "LiveEnterUsernum10Min", "LiveQuitUsernum10Min", "LiveQuitAvgDuration10Min", "LiveAnchorGiftCoin10Min", "LiveAnchorGiftUsernum10Min", "LiveAnchorFollowUsernum10Min", "LiveAnchorChatUsernum10Min", "LiveEnterUsernum15Min", "LiveQuitUsernum15Min", "LiveQuitAvgDuration15Min", "LiveAnchorGiftCoin15Min", "LiveAnchorGiftUsernum15Min", "LiveAnchorFollowUsernum15Min", "LiveAnchorChatUsernum15Min", });
+        new java.lang.String[] { "AnchorId", "LiveEnterUsernum5Min", "LiveQuitUsernum5Min", "LiveQuitAvgDuration5Min", "LiveAnchorGiftCoin5Min", "LiveAnchorGiftUsernum5Min", "LiveAnchorFollowUsernum5Min", "LiveAnchorChatUsernum5Min", "LiveEnterUsernum10Min", "LiveQuitUsernum10Min", "LiveQuitAvgDuration10Min", "LiveAnchorGiftCoin10Min", "LiveAnchorGiftUsernum10Min", "LiveAnchorFollowUsernum10Min", "LiveAnchorChatUsernum10Min", "LiveEnterUsernum15Min", "LiveQuitUsernum15Min", "LiveQuitAvgDuration15Min", "LiveAnchorGiftCoin15Min", "LiveAnchorGiftUsernum15Min", "LiveAnchorFollowUsernum15Min", "LiveAnchorChatUsernum15Min", "AnchorEnterCnt7D", "AnchorQuitCnt7D", "AnchorStayGt3SCnt7D", "AnchorStayGt10SCnt7D", "AnchorStayGt30SCnt7D", "AnchorAvgViewDuration7D", "AnchorFollowCnt7D", "AnchorPositiveFeedbackCnt7D", "AnchorNegativeFeedbackCnt7D", "AnchorLiveSceneExposureCnt7D", "AnchorForuSceneExposureCnt7D", "AnchorLiveSceneEnterCnt7D", "AnchorForuSceneEnterCnt7D", "AnchorGiftCnt7D", });
+    internal_static_com_gosh_entity_RecLiveUserFeature_descriptor =
+      getDescriptor().getMessageTypes().get(7);
+    internal_static_com_gosh_entity_RecLiveUserFeature_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_com_gosh_entity_RecLiveUserFeature_descriptor,
+        new java.lang.String[] { "UserId", "UserStayGt10SAnchorList", "UserActiveEnterAnchorList", "UserPositiveFeedbackAnchorList", });
+    internal_static_com_gosh_entity_IdScore_descriptor =
+      getDescriptor().getMessageTypes().get(8);
+    internal_static_com_gosh_entity_IdScore_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_com_gosh_entity_IdScore_descriptor,
+        new java.lang.String[] { "Id", "Score", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)
