@@ -1272,7 +1272,7 @@ public class OnlineCFJobWithDetailedLogs {
     // Configuration - 保持不变
     // ------------------------------------------------------------------------
 
-    static class OnlineCFConfig {
+    static class OnlineCFConfig implements java.io.Serializable {
         // ... 配置内容保持不变 ...
         // Kafka配置
         private static final String KAFKA_GROUP_ID = "gosh-onlinecf";
