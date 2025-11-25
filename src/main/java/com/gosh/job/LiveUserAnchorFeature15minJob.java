@@ -101,7 +101,6 @@ public class LiveUserAnchorFeature15minJob {
             );
 
         // 第四步：原有的实现（按uid分组，会导致数据倾斜）- 已注释保留
-        /*
         DataStream<UserAnchorFeatureAggregation> aggregatedStream = eventStream
             .keyBy(new KeySelector<LiveUserAnchorEvent, Long>() {
                 @Override
@@ -111,50 +110,49 @@ public class LiveUserAnchorFeature15minJob {
             })
             .window(SlidingProcessingTimeWindows.of(
                 Time.minutes(15),
-                Time.seconds(15)
+                Time.seconds(30)
             ))
             .aggregate(new UserAnchorFeatureAggregator())
             .name("User-Anchor Feature Aggregation");
-        */
 
-        DataStream<LiveUserAnchorEvent> rebalanceSteam = eventStream.rebalance();
-        // 保持两阶段聚合，解决key倾斜问题，同时确保序列化兼容性
-        // 第一阶段：使用Long类型作为key，但通过取模方式分散热点
-        DataStream<UserAnchorFeatureAggregation> preAggregatedStream = rebalanceSteam
-            .keyBy(new KeySelector<LiveUserAnchorEvent, Long>() {
-                @Override
-                public Long getKey(LiveUserAnchorEvent value) throws Exception {
-                    // 优化盐值策略：使用更大范围的盐值(64)，进一步分散热点
-                    int salt = (int) (Math.abs(value.uid) % 64);
-                    // 使用更优的位运算组合，确保更好的分布
-                    return (value.uid << 6) | salt;
-                }
-            })
-            .window(SlidingProcessingTimeWindows.of(
-                Time.minutes(15),
-                Time.seconds(15)
-            ))
-            .aggregate(new UserAnchorFeatureAggregator())
-            .name("Pre-Aggregation with Distributed Keys")
-            // 过滤掉空结果
-            .filter(agg -> agg != null)
-            .shuffle();
-        
-        // 第二阶段：按原始uid进行全局聚合，使用Long类型key确保兼容性
-        DataStream<UserAnchorFeatureAggregation> aggregatedStream = preAggregatedStream
-            .keyBy(new KeySelector<UserAnchorFeatureAggregation, Long>() {
-                @Override
-                public Long getKey(UserAnchorFeatureAggregation value) throws Exception {
-                    return value.uid; // 使用原始Long类型uid作为key
-                }
-            })
-            .window(SlidingProcessingTimeWindows.of(
-                Time.minutes(15),
-                Time.seconds(30)
-            ))
-            .aggregate(new GlobalUserAnchorFeatureAggregator())
-            .name("Global Aggregation by Original UID")
-            .shuffle();
+//        DataStream<LiveUserAnchorEvent> rebalanceSteam = eventStream.rebalance();
+//        // 保持两阶段聚合，解决key倾斜问题，同时确保序列化兼容性
+//        // 第一阶段：使用Long类型作为key，但通过取模方式分散热点
+//        DataStream<UserAnchorFeatureAggregation> preAggregatedStream = rebalanceSteam
+//            .keyBy(new KeySelector<LiveUserAnchorEvent, Long>() {
+//                @Override
+//                public Long getKey(LiveUserAnchorEvent value) throws Exception {
+//                    // 优化盐值策略：使用更大范围的盐值(64)，进一步分散热点
+//                    int salt = (int) (Math.abs(value.uid) % 64);
+//                    // 使用更优的位运算组合，确保更好的分布
+//                    return (value.uid << 6) | salt;
+//                }
+//            })
+//            .window(SlidingProcessingTimeWindows.of(
+//                Time.minutes(15),
+//                Time.seconds(15)
+//            ))
+//            .aggregate(new UserAnchorFeatureAggregator())
+//            .name("Pre-Aggregation with Distributed Keys")
+//            // 过滤掉空结果
+//            .filter(agg -> agg != null)
+//            .shuffle();
+//
+//        // 第二阶段：按原始uid进行全局聚合，使用Long类型key确保兼容性
+//        DataStream<UserAnchorFeatureAggregation> aggregatedStream = preAggregatedStream
+//            .keyBy(new KeySelector<UserAnchorFeatureAggregation, Long>() {
+//                @Override
+//                public Long getKey(UserAnchorFeatureAggregation value) throws Exception {
+//                    return value.uid; // 使用原始Long类型uid作为key
+//                }
+//            })
+//            .window(SlidingProcessingTimeWindows.of(
+//                Time.minutes(15),
+//                Time.seconds(30)
+//            ))
+//            .aggregate(new GlobalUserAnchorFeatureAggregator())
+//            .name("Global Aggregation by Original UID")
+//            .shuffle();
         
         
 
