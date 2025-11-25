@@ -98,7 +98,21 @@ message RecUserFeature {
   string prefer_neg_ftag4_7d_top3 = 93;
   string prefer_neg_ftag5_7d_top3 = 94;
   string prefer_neg_ftag6_7d_top3 = 95;
+  // 负反馈标签队列（最近5个）
+  repeated FeedbackTag feedback_tags = 96;
+  repeated FeedbackAuthorId feedback_author_ids = 97;
+}
 
+// 负反馈标签
+message FeedbackTag {
+  string tag = 1;        // 标签内容，如 "age#youngadult"
+  float weight = 2;      // 权重，统一为 0.1
+}
+
+// 负反馈作者
+message FeedbackAuthorId {
+  uint64 author_id = 1;
+  float weight = 2;
 }
 
 // Item侧特征 (Post特征)
