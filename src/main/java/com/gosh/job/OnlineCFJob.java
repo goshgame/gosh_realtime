@@ -648,6 +648,8 @@ public class OnlineCFJob {
                 mergeHistoryFromIds(result, feature.getViewerFollowPostHis24HList(), 1.3);
                 mergeHistoryFromIds(result, feature.getViewerProfilePostHis24HList(), 0.8);
                 mergeHistoryFromIds(result, feature.getViewerPosinterPostHis24HList(), 1.1);
+                mergeHistoryFromIds(result, feature.getUserDeepviewPostids7DList(), 1.6);
+                mergeHistoryFromIds(result, feature.getUserInteractPostids7DList(), 1.5);
                 return limitAndFilter(result);
             } catch (Exception protoError) {
                 String raw = new String(payload, StandardCharsets.UTF_8);
@@ -955,19 +957,19 @@ public class OnlineCFJob {
         private static final int DECAY_STEP_MINUTES = 2;
 
         // Pair配置
-        private static final long PAIR_MIN_SCORE = 25L;
-        private static final int PAIR_EXPIRE_SECONDS = 12 * 3600; // 12小时
+        private static final long PAIR_MIN_SCORE = 40L;
+        private static final int PAIR_EXPIRE_SECONDS = 8 * 3600; // 8小时
 
         // Index配置
         private static final int INDEX_LIMIT = 128;
         private static final int INDEX_EXPIRE_SECONDS = 4 * 3600; // 4小时
-        private static final long INDEX_MIN_SCORE = 25L;
+        private static final long INDEX_MIN_SCORE = 40L;
 
         // Redis Key配置
         private static final String HISTORY_KEY_PREFIX = "rec:user_feature:{";
         private static final String HISTORY_KEY_SUFFIX = "}:post24h";
-        private static final String PAIR_KEY_PREFIX = "roc:pair:";
-        private static final String INDEX_KEY_PREFIX = "roc:index:";
+        private static final String PAIR_KEY_PREFIX = "rec:actioncf_pair:";
+        private static final String INDEX_KEY_PREFIX = "rec:actioncf_index:";
 
         // 历史记录配置
         private static final int HISTORY_MAX_ITEMS = 50;
