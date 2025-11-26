@@ -31326,6 +31326,602 @@ public final class RecFeature {
 
   }
 
+  public interface RecLiveIdFeatureOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.gosh.entity.RecLiveIdFeature)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>int64 live_id = 1;</code>
+     * @return The liveId.
+     */
+    long getLiveId();
+
+    /**
+     * <pre>
+     * 5分钟窗口
+     * 曝光特征
+     * </pre>
+     *
+     * <code>int32 live_id_exp_cnt_5min = 10;</code>
+     * @return The liveIdExpCnt5min.
+     */
+    int getLiveIdExpCnt5Min();
+  }
+  /**
+   * <pre>
+   * 直播特征（直播间维度）
+   * Redis Key: rec:live_id_feature:{live_id}:live5min
+   * </pre>
+   *
+   * Protobuf type {@code com.gosh.entity.RecLiveIdFeature}
+   */
+  public static final class RecLiveIdFeature extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:com.gosh.entity.RecLiveIdFeature)
+      RecLiveIdFeatureOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use RecLiveIdFeature.newBuilder() to construct.
+    private RecLiveIdFeature(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private RecLiveIdFeature() {
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new RecLiveIdFeature();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private RecLiveIdFeature(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+
+              liveId_ = input.readInt64();
+              break;
+            }
+            case 80: {
+
+              liveIdExpCnt5Min_ = input.readInt32();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (com.google.protobuf.UninitializedMessageException e) {
+        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_RecLiveIdFeature_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_RecLiveIdFeature_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.gosh.entity.RecFeature.RecLiveIdFeature.class, com.gosh.entity.RecFeature.RecLiveIdFeature.Builder.class);
+    }
+
+    public static final int LIVE_ID_FIELD_NUMBER = 1;
+    private long liveId_;
+    /**
+     * <code>int64 live_id = 1;</code>
+     * @return The liveId.
+     */
+    @java.lang.Override
+    public long getLiveId() {
+      return liveId_;
+    }
+
+    public static final int LIVE_ID_EXP_CNT_5MIN_FIELD_NUMBER = 10;
+    private int liveIdExpCnt5Min_;
+    /**
+     * <pre>
+     * 5分钟窗口
+     * 曝光特征
+     * </pre>
+     *
+     * <code>int32 live_id_exp_cnt_5min = 10;</code>
+     * @return The liveIdExpCnt5min.
+     */
+    @java.lang.Override
+    public int getLiveIdExpCnt5Min() {
+      return liveIdExpCnt5Min_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (liveId_ != 0L) {
+        output.writeInt64(1, liveId_);
+      }
+      if (liveIdExpCnt5Min_ != 0) {
+        output.writeInt32(10, liveIdExpCnt5Min_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (liveId_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(1, liveId_);
+      }
+      if (liveIdExpCnt5Min_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(10, liveIdExpCnt5Min_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.gosh.entity.RecFeature.RecLiveIdFeature)) {
+        return super.equals(obj);
+      }
+      com.gosh.entity.RecFeature.RecLiveIdFeature other = (com.gosh.entity.RecFeature.RecLiveIdFeature) obj;
+
+      if (getLiveId()
+          != other.getLiveId()) return false;
+      if (getLiveIdExpCnt5Min()
+          != other.getLiveIdExpCnt5Min()) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + LIVE_ID_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getLiveId());
+      hash = (37 * hash) + LIVE_ID_EXP_CNT_5MIN_FIELD_NUMBER;
+      hash = (53 * hash) + getLiveIdExpCnt5Min();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.gosh.entity.RecFeature.RecLiveIdFeature parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.gosh.entity.RecFeature.RecLiveIdFeature parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.gosh.entity.RecFeature.RecLiveIdFeature parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.gosh.entity.RecFeature.RecLiveIdFeature parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.gosh.entity.RecFeature.RecLiveIdFeature parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.gosh.entity.RecFeature.RecLiveIdFeature parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.gosh.entity.RecFeature.RecLiveIdFeature parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.gosh.entity.RecFeature.RecLiveIdFeature parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.gosh.entity.RecFeature.RecLiveIdFeature parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.gosh.entity.RecFeature.RecLiveIdFeature parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.gosh.entity.RecFeature.RecLiveIdFeature parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.gosh.entity.RecFeature.RecLiveIdFeature parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.gosh.entity.RecFeature.RecLiveIdFeature prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * <pre>
+     * 直播特征（直播间维度）
+     * Redis Key: rec:live_id_feature:{live_id}:live5min
+     * </pre>
+     *
+     * Protobuf type {@code com.gosh.entity.RecLiveIdFeature}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.gosh.entity.RecLiveIdFeature)
+        com.gosh.entity.RecFeature.RecLiveIdFeatureOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_RecLiveIdFeature_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_RecLiveIdFeature_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.gosh.entity.RecFeature.RecLiveIdFeature.class, com.gosh.entity.RecFeature.RecLiveIdFeature.Builder.class);
+      }
+
+      // Construct using com.gosh.entity.RecFeature.RecLiveIdFeature.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        liveId_ = 0L;
+
+        liveIdExpCnt5Min_ = 0;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_RecLiveIdFeature_descriptor;
+      }
+
+      @java.lang.Override
+      public com.gosh.entity.RecFeature.RecLiveIdFeature getDefaultInstanceForType() {
+        return com.gosh.entity.RecFeature.RecLiveIdFeature.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.gosh.entity.RecFeature.RecLiveIdFeature build() {
+        com.gosh.entity.RecFeature.RecLiveIdFeature result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.gosh.entity.RecFeature.RecLiveIdFeature buildPartial() {
+        com.gosh.entity.RecFeature.RecLiveIdFeature result = new com.gosh.entity.RecFeature.RecLiveIdFeature(this);
+        result.liveId_ = liveId_;
+        result.liveIdExpCnt5Min_ = liveIdExpCnt5Min_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.gosh.entity.RecFeature.RecLiveIdFeature) {
+          return mergeFrom((com.gosh.entity.RecFeature.RecLiveIdFeature)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.gosh.entity.RecFeature.RecLiveIdFeature other) {
+        if (other == com.gosh.entity.RecFeature.RecLiveIdFeature.getDefaultInstance()) return this;
+        if (other.getLiveId() != 0L) {
+          setLiveId(other.getLiveId());
+        }
+        if (other.getLiveIdExpCnt5Min() != 0) {
+          setLiveIdExpCnt5Min(other.getLiveIdExpCnt5Min());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.gosh.entity.RecFeature.RecLiveIdFeature parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.gosh.entity.RecFeature.RecLiveIdFeature) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private long liveId_ ;
+      /**
+       * <code>int64 live_id = 1;</code>
+       * @return The liveId.
+       */
+      @java.lang.Override
+      public long getLiveId() {
+        return liveId_;
+      }
+      /**
+       * <code>int64 live_id = 1;</code>
+       * @param value The liveId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setLiveId(long value) {
+        
+        liveId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int64 live_id = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearLiveId() {
+        
+        liveId_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private int liveIdExpCnt5Min_ ;
+      /**
+       * <pre>
+       * 5分钟窗口
+       * 曝光特征
+       * </pre>
+       *
+       * <code>int32 live_id_exp_cnt_5min = 10;</code>
+       * @return The liveIdExpCnt5min.
+       */
+      @java.lang.Override
+      public int getLiveIdExpCnt5Min() {
+        return liveIdExpCnt5Min_;
+      }
+      /**
+       * <pre>
+       * 5分钟窗口
+       * 曝光特征
+       * </pre>
+       *
+       * <code>int32 live_id_exp_cnt_5min = 10;</code>
+       * @param value The liveIdExpCnt5min to set.
+       * @return This builder for chaining.
+       */
+      public Builder setLiveIdExpCnt5Min(int value) {
+        
+        liveIdExpCnt5Min_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 5分钟窗口
+       * 曝光特征
+       * </pre>
+       *
+       * <code>int32 live_id_exp_cnt_5min = 10;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearLiveIdExpCnt5Min() {
+        
+        liveIdExpCnt5Min_ = 0;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:com.gosh.entity.RecLiveIdFeature)
+    }
+
+    // @@protoc_insertion_point(class_scope:com.gosh.entity.RecLiveIdFeature)
+    private static final com.gosh.entity.RecFeature.RecLiveIdFeature DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.gosh.entity.RecFeature.RecLiveIdFeature();
+    }
+
+    public static com.gosh.entity.RecFeature.RecLiveIdFeature getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<RecLiveIdFeature>
+        PARSER = new com.google.protobuf.AbstractParser<RecLiveIdFeature>() {
+      @java.lang.Override
+      public RecLiveIdFeature parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new RecLiveIdFeature(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<RecLiveIdFeature> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<RecLiveIdFeature> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.gosh.entity.RecFeature.RecLiveIdFeature getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_gosh_entity_RecUserFeature_descriptor;
   private static final 
@@ -31361,6 +31957,11 @@ public final class RecFeature {
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_com_gosh_entity_IdScore_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_gosh_entity_RecLiveIdFeature_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_com_gosh_entity_RecLiveIdFeature_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -31576,7 +32177,9 @@ public final class RecFeature {
       "sh.entity.IdScore\022%\n\035user_active_enter_a" +
       "nchor_list\030\013 \003(\005\022*\n\"user_positive_feedba" +
       "ck_anchor_list\030\014 \003(\005\"$\n\007IdScore\022\n\n\002id\030\001 " +
-      "\001(\003\022\r\n\005score\030\002 \001(\002b\006proto3"
+      "\001(\003\022\r\n\005score\030\002 \001(\002\"A\n\020RecLiveIdFeature\022\017" +
+      "\n\007live_id\030\001 \001(\003\022\034\n\024live_id_exp_cnt_5min\030" +
+      "\n \001(\005b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -31624,6 +32227,12 @@ public final class RecFeature {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_gosh_entity_IdScore_descriptor,
         new java.lang.String[] { "Id", "Score", });
+    internal_static_com_gosh_entity_RecLiveIdFeature_descriptor =
+      getDescriptor().getMessageTypes().get(7);
+    internal_static_com_gosh_entity_RecLiveIdFeature_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_com_gosh_entity_RecLiveIdFeature_descriptor,
+        new java.lang.String[] { "LiveId", "LiveIdExpCnt5Min", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

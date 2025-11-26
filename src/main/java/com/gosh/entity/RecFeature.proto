@@ -394,3 +394,13 @@ message IdScore {
   int64 id =1;
   float score =2;
 }
+
+// 直播特征（直播间维度）
+// Redis Key: rec:live_id_feature:{live_id}:live5min
+message RecLiveIdFeature {
+  int64 live_id = 1;
+
+  // 5分钟窗口
+  // 曝光特征
+  int32 live_id_exp_cnt_5min = 10;
+}
