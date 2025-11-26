@@ -952,12 +952,14 @@ public class OnlineCFJobWithDetailedLogs {
                 System.out.println("UserHistoryParser: Protobuf解析成功");
 
                 List<ItemHistory> result = new ArrayList<>();
-                mergeHistory(result, feature.getViewer3SviewPostHis24H(), 1.0);
-                mergeHistory(result, feature.getViewer5SstandPostHis24H(), 1.0);
-                mergeHistory(result, feature.getViewerLikePostHis24H(), 1.2);
-                mergeHistory(result, feature.getViewerFollowPostHis24H(), 1.3);
-                mergeHistory(result, feature.getViewerProfilePostHis24H(), 0.8);
-                mergeHistory(result, feature.getViewerPosinterPostHis24H(), 1.1);
+                mergeHistoryWithScores(result, feature.getViewer3SviewPostHis24HList(), 1.0);
+                mergeHistoryWithScores(result, feature.getViewer5SstandPostHis24HList(), 1.0);
+                mergeHistoryFromIds(result, feature.getViewerLikePostHis24HList(), 1.2);
+                mergeHistoryFromIds(result, feature.getViewerFollowPostHis24HList(), 1.3);
+                mergeHistoryFromIds(result, feature.getViewerProfilePostHis24HList(), 0.8);
+                mergeHistoryFromIds(result, feature.getViewerPosinterPostHis24HList(), 1.1);
+                mergeHistoryFromIds(result, feature.getUserDeepviewPostids7DList(), 1.6);
+                mergeHistoryFromIds(result, feature.getUserInteractPostids7DList(), 1.5);
 
                 System.out.println("UserHistoryParser: Protobuf解析完成，原始数量: " + result.size());
                 return limitAndFilter(result);
@@ -968,7 +970,44 @@ public class OnlineCFJobWithDetailedLogs {
             }
         }
 
-        private void mergeHistory(List<ItemHistory> target, String raw, double baseWeight) {
+        private void mergeHistoryWithScores(List<ItemHistory> target, List<RecFeature.IdScore> entries, double baseWeight) {
+            if (entries == null || entries.isEmpty()) {
+                return;
+            }
+            for (RecFeature.IdScore entry : entries) {
+                long itemId = entry.getId();
+                if (itemId <= 0) {
+                    continue;
+                }
+                ItemHistory history = new ItemHistory();
+                history.itemId = itemId;
+                history.timestamp = System.currentTimeMillis();
+                history.weight = baseWeight;
+                target.add(history);
+
+                System.out.println("UserHistoryParser: 添加带分值历史记录 - " + history);
+            }
+        }
+
+        private void mergeHistoryFromIds(List<ItemHistory> target, List<Long> ids, double baseWeight) {
+            if (ids == null || ids.isEmpty()) {
+                return;
+            }
+            for (Long id : ids) {
+                if (id == null || id <= 0) {
+                    continue;
+                }
+                ItemHistory history = new ItemHistory();
+                history.itemId = id;
+                history.timestamp = System.currentTimeMillis();
+                history.weight = baseWeight;
+                target.add(history);
+
+                System.out.println("UserHistoryParser: 添加历史记录 - " + history);
+            }
+        }
+
+        private void mergeHistoryFromString(List<ItemHistory> target, String raw, double baseWeight) {
             if (StringUtils.isBlank(raw)) {
                 return;
             }
@@ -985,16 +1024,9 @@ public class OnlineCFJobWithDetailedLogs {
                 if (itemId <= 0) {
                     continue;
                 }
-                long ts = System.currentTimeMillis();
-                if (parts.length > 1) {
-                    long candidate = NumberUtils.toLong(parts[1], 0L);
-                    if (candidate > 1000000L) {
-                        ts = TimeUnit.SECONDS.toMillis(candidate);
-                    }
-                }
                 ItemHistory history = new ItemHistory();
                 history.itemId = itemId;
-                history.timestamp = ts;
+                history.timestamp = System.currentTimeMillis();
                 history.weight = baseWeight;
                 target.add(history);
 
@@ -1030,7 +1062,7 @@ public class OnlineCFJobWithDetailedLogs {
             } catch (IOException ignore) {
                 System.out.println("UserHistoryParser: JSON解析失败，回退到简单解析");
             }
-            mergeHistory(result, raw, 1.0);
+            mergeHistoryFromString(result, raw, 1.0);
             return limitAndFilter(result);
         }
 
@@ -1290,19 +1322,19 @@ public class OnlineCFJobWithDetailedLogs {
         private static final int DECAY_STEP_MINUTES = 2;
 
         // Pair配置
-        private static final long PAIR_MIN_SCORE = 25L;
-        private static final int PAIR_EXPIRE_SECONDS = 12 * 3600; // 12小时
+        private static final long PAIR_MIN_SCORE = 40L;
+        private static final int PAIR_EXPIRE_SECONDS = 6 * 3600; // 6小时
 
         // Index配置
         private static final int INDEX_LIMIT = 128;
         private static final int INDEX_EXPIRE_SECONDS = 4 * 3600; // 4小时
-        private static final long INDEX_MIN_SCORE = 25L;
+        private static final long INDEX_MIN_SCORE = 40L;
 
         // Redis Key配置
         private static final String HISTORY_KEY_PREFIX = "rec:user_feature:{";
         private static final String HISTORY_KEY_SUFFIX = "}:post24h";
-        private static final String PAIR_KEY_PREFIX = "roc:pair:";
-        private static final String INDEX_KEY_PREFIX = "roc:index:";
+        private static final String PAIR_KEY_PREFIX = "rec:actioncf_pair:";
+        private static final String INDEX_KEY_PREFIX = "rec:actioncf_index:";
 
         // 历史记录配置
         private static final int HISTORY_MAX_ITEMS = 50;

@@ -29,7 +29,9 @@ import org.slf4j.LoggerFactory;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 public class UserFeature1hJob {
     private static final Logger LOG = LoggerFactory.getLogger(UserFeature1hJob.class);
@@ -40,37 +42,37 @@ public class UserFeature1hJob {
 
     public static void main(String[] args) throws Exception {
         System.out.println("Starting UserFeature1hJob...");
-        
+
         // 第一步：创建flink环境
         StreamExecutionEnvironment env = FlinkEnvUtil.createStreamExecutionEnvironment();
         // 设置全局并行度为1
 //        env.setParallelism(3);
         System.out.println("Flink environment created with parallelism: " + env.getParallelism());
-        
+
         // 第二步：创建Source，Kafka环境
         KafkaSource<String> inputTopic = KafkaEnvUtil.createKafkaSource(
-            KafkaEnvUtil.loadProperties(), "post"
+                KafkaEnvUtil.loadProperties(), "post"
         );
         System.out.println("Kafka source created for topic: post");
         LOG.info("loglog----------Kafka source created for topic: post");
 
         // 第三步：使用KafkaSource创建DataStream
         DataStreamSource<String> kafkaSource = env.fromSource(
-            inputTopic,
-            WatermarkStrategy.forBoundedOutOfOrderness(Duration.ofSeconds(5)),
-            "Kafka Source"
+                inputTopic,
+                WatermarkStrategy.forBoundedOutOfOrderness(Duration.ofSeconds(5)),
+                "Kafka Source"
         );
         System.out.println("Kafka source stream created");
 
         // 3.0 预过滤 - 只保留我们需要的事件类型
         DataStream<String> filteredStream = kafkaSource
-            .filter(EventFilterUtil.createFastEventTypeFilter(16, 8))
-            .name("Pre-filter Events");
+                .filter(EventFilterUtil.createFastEventTypeFilter(16, 8))
+                .name("Pre-filter Events");
 
         // 3.1 解析曝光事件 (event_type=16)
         SingleOutputStreamOperator<UserFeatureCommon.PostExposeEvent> exposeStream = filteredStream
-            .flatMap(new UserFeatureCommon.ExposeEventParser())
-            .name("Parse Expose Events");
+                .flatMap(new UserFeatureCommon.ExposeEventParser())
+                .name("Parse Expose Events");
 
         // 增加曝光事件计数日志（每分钟采样一次）
 //        exposeStream = exposeStream
@@ -103,8 +105,8 @@ public class UserFeature1hJob {
 
         // 3.2 解析观看事件 (event_type=8)
         SingleOutputStreamOperator<UserFeatureCommon.PostViewEvent> viewStream = filteredStream
-            .flatMap(new UserFeatureCommon.ViewEventParser())
-            .name("Parse View Events");
+                .flatMap(new UserFeatureCommon.ViewEventParser())
+                .name("Parse View Events");
 
         // 增加观看事件计数日志（每分钟采样一次）
 //        viewStream = viewStream
@@ -137,69 +139,70 @@ public class UserFeature1hJob {
 
         // 3.3 将曝光事件转换为统一的用户特征事件
         DataStream<UserFeatureCommon.UserFeatureEvent> exposeFeatureStream = exposeStream
-            .flatMap(new UserFeatureCommon.ExposeToFeatureMapper())
-            .name("Expose to Feature");
+                .flatMap(new UserFeatureCommon.ExposeToFeatureMapper())
+                .name("Expose to Feature");
 
         // 3.4 将观看事件转换为统一的用户特征事件
         DataStream<UserFeatureCommon.UserFeatureEvent> viewFeatureStream = viewStream
-            .flatMap(new UserFeatureCommon.ViewToFeatureMapper())
-            .name("View to Feature");
+                .flatMap(new UserFeatureCommon.ViewToFeatureMapper())
+                .name("View to Feature");
 
         // 3.5 合并两个流
         DataStream<UserFeatureCommon.UserFeatureEvent> unifiedStream = exposeFeatureStream
-            .union(viewFeatureStream)
-            .assignTimestampsAndWatermarks(
-                WatermarkStrategy.<UserFeatureCommon.UserFeatureEvent>forBoundedOutOfOrderness(Duration.ofSeconds(10))
-                    .withTimestampAssigner((event, recordTimestamp) -> event.getTimestamp())
-            );
+                .union(viewFeatureStream)
+                .assignTimestampsAndWatermarks(
+                        WatermarkStrategy.<UserFeatureCommon.UserFeatureEvent>forBoundedOutOfOrderness(Duration.ofSeconds(10))
+                                .withTimestampAssigner((event, recordTimestamp) -> event.getTimestamp())
+                );
 
         // 第四步：按用户ID分组并进行滑动窗口聚合
         DataStream<UserFeatureAggregation> aggregatedStream = unifiedStream
-            .keyBy(new KeySelector<UserFeatureCommon.UserFeatureEvent, Long>() {
-                @Override
-                public Long getKey(UserFeatureCommon.UserFeatureEvent value) throws Exception {
-                    return value.getUid();
-                }
-            })
-            .window(SlidingProcessingTimeWindows.of(
-                Time.minutes(60),  // 窗口大小1小时
-                Time.minutes(5)   // 滑动间隔5分钟
-            ))
-            .aggregate(new UserFeatureAggregator())
-            .name("User Feature Aggregation");
+                .keyBy(new KeySelector<UserFeatureCommon.UserFeatureEvent, Long>() {
+                    @Override
+                    public Long getKey(UserFeatureCommon.UserFeatureEvent value) throws Exception {
+                        return value.getUid();
+                    }
+                })
+                .window(SlidingProcessingTimeWindows.of(
+                        Time.minutes(60),  // 窗口大小1小时
+                        Time.minutes(5)   // 滑动间隔5分钟
+                ))
+                .aggregate(new UserFeatureAggregator())
+                .name("User Feature Aggregation");
 
         // 第五步：转换为Protobuf并写入Redis
         DataStream<Tuple2<String, byte[]>> dataStream = aggregatedStream
-            .map(new MapFunction<UserFeatureAggregation, Tuple2<String, byte[]>>() {
-                @Override
-                public Tuple2<String, byte[]> map(UserFeatureAggregation agg) throws Exception {
-                    // 构建Redis key
-                    String redisKey = PREFIX + agg.uid + SUFFIX;
-                    
-                    // 构建Protobuf
-                    RecFeature.RecUserFeature feature = RecFeature.RecUserFeature.newBuilder()
-                        // 1小时曝光特征
-                        .setViewerExppostCnt1H(agg.viewerExppostCnt1h)
-                        .setViewerExp1PostCnt1H(agg.viewerExp1PostCnt1h)
-                        .setViewerExp2PostCnt1H(agg.viewerExp2PostCnt1h)
-                        // 1小时观看特征
-                        .setViewer3SviewPostCnt1H(agg.viewer3sviewPostCnt1h)
-                        .setViewer3Sview1PostCnt1H(agg.viewer3sview1PostCnt1h)
-                        .setViewer3Sview2PostCnt1H(agg.viewer3sview2PostCnt1h)
-                        // 1小时历史记录特征
-                        .setViewer3SviewPostHis1H(agg.viewer3sviewPostHis1h)
-                        .setViewer5SstandPostHis1H(agg.viewer5sstandPostHis1h)
-                        .setViewerLikePostHis1H(agg.viewerLikePostHis1h)
-                        .setViewerFollowPostHis1H(agg.viewerFollowPostHis1h)
-                        .setViewerProfilePostHis1H(agg.viewerProfilePostHis1h)
-                        .setViewerPosinterPostHis1H(agg.viewerPosinterPostHis1h)
-                        .build();
+                .map(new MapFunction<UserFeatureAggregation, Tuple2<String, byte[]>>() {
+                    @Override
+                    public Tuple2<String, byte[]> map(UserFeatureAggregation agg) throws Exception {
+                        // 构建Redis key
+                        String redisKey = PREFIX + agg.uid + SUFFIX;
 
-                    byte[] value = feature.toByteArray();
-                    return new Tuple2<>(redisKey, value);
-                }
-            })
-            .name("Aggregation to Protobuf Bytes");
+                        // 构建Protobuf
+                        RecFeature.RecUserFeature.Builder builder = RecFeature.RecUserFeature.newBuilder()
+                                // 1小时曝光特征
+                                .setViewerExppostCnt1H(agg.viewerExppostCnt1h)
+                                .setViewerExp1PostCnt1H(agg.viewerExp1PostCnt1h)
+                                .setViewerExp2PostCnt1H(agg.viewerExp2PostCnt1h)
+                                // 1小时观看特征
+                                .setViewer3SviewPostCnt1H(agg.viewer3sviewPostCnt1h)
+                                .setViewer3Sview1PostCnt1H(agg.viewer3sview1PostCnt1h)
+                                .setViewer3Sview2PostCnt1H(agg.viewer3sview2PostCnt1h);
+
+                        agg.viewer3sviewPostHis1h.forEach(builder::addViewer3SviewPostHis1H);
+                        agg.viewer5sstandPostHis1h.forEach(builder::addViewer5SstandPostHis1H);
+                        agg.viewerLikePostHis1h.forEach(builder::addViewerLikePostHis1H);
+                        agg.viewerFollowPostHis1h.forEach(builder::addViewerFollowPostHis1H);
+                        agg.viewerProfilePostHis1h.forEach(builder::addViewerProfilePostHis1H);
+                        agg.viewerPosinterPostHis1h.forEach(builder::addViewerPosinterPostHis1H);
+
+                        RecFeature.RecUserFeature feature = builder.build();
+
+                        byte[] value = feature.toByteArray();
+                        return new Tuple2<>(redisKey, value);
+                    }
+                })
+                .name("Aggregation to Protobuf Bytes");
 
         // 打印聚合结果用于调试（采样）
 //        aggregatedStream
@@ -243,12 +246,12 @@ public class UserFeature1hJob {
         RedisConfig redisConfig = RedisConfig.fromProperties(RedisUtil.loadProperties());
         redisConfig.setTtl(600);
         System.out.println("Redis config created with TTL: " + redisConfig.getTtl());
-        
+
         RedisUtil.addRedisSink(
-            dataStream,
-            redisConfig,
-            true, // 异步写入
-            100   // 批量大小
+                dataStream,
+                redisConfig,
+                true, // 异步写入
+                100   // 批量大小
         );
         System.out.println("Redis sink added to the pipeline");
 
@@ -274,7 +277,7 @@ public class UserFeature1hJob {
         public UserFeatureCommon.UserFeatureAccumulator add(UserFeatureCommon.UserFeatureEvent event, UserFeatureCommon.UserFeatureAccumulator accumulator) {
             // 先设置uid，确保能写入Redis
             accumulator.uid = event.uid;
-            
+
             if (accumulator.totalEventCount >= MAX_EVENTS_PER_WINDOW) {
                 // 如果超过限制，标记超限状态，不再更新
                 if (!accumulator.exceededLimit) {
@@ -294,34 +297,34 @@ public class UserFeature1hJob {
             if (result.uid == 0L) {
                 LOG.warn("UserFeatureAggregation uid is 0, check upstream event parsing and keyBy logic");
             }
-            
+
             // 检查是否超限，如果是则打印日志
             if (accumulator.exceededLimit) {
-                LOG.warn("User {} exceeded event limit ({}). Final event count: {}.", 
+                LOG.warn("User {} exceeded event limit ({}). Final event count: {}.",
                         accumulator.uid, MAX_EVENTS_PER_WINDOW, accumulator.totalEventCount);
             }
-            
+
             // 曝光特征
             result.viewerExppostCnt1h = accumulator.exposePostIds.size();
             // 注意：由于曝光事件中没有post_type信息，暂时无法统计图片和视频的单独曝光数
             result.viewerExp1PostCnt1h = 0; // 图片曝光数 - 需要额外数据源
             result.viewerExp2PostCnt1h = 0; // 视频曝光数 - 需要额外数据源
-            
+
             // 观看特征
             result.viewer3sviewPostCnt1h = accumulator.view3sPostIds.size();
             result.viewer3sview1PostCnt1h = accumulator.view3s1PostIds.size();
             result.viewer3sview2PostCnt1h = accumulator.view3s2PostIds.size();
-            
+
             // 历史记录特征 - 构建字符串格式
-            result.viewer3sviewPostHis1h = UserFeatureCommon.buildPostHistoryString(accumulator.view3sPostDetails, 10);
-            result.viewer5sstandPostHis1h = UserFeatureCommon.buildPostHistoryString(accumulator.stand5sPostDetails, 10);
-            result.viewerLikePostHis1h = UserFeatureCommon.buildPostListString(accumulator.likePostIds, 10);
-            result.viewerFollowPostHis1h = UserFeatureCommon.buildPostListString(accumulator.followPostIds, 10);
-            result.viewerProfilePostHis1h = UserFeatureCommon.buildPostListString(accumulator.profilePostIds, 10);
-            result.viewerPosinterPostHis1h = UserFeatureCommon.buildPostListString(accumulator.posinterPostIds, 10);
-            
+            result.viewer3sviewPostHis1h = UserFeatureCommon.buildIdScoreList(accumulator.view3sPostDetails, 10);
+            result.viewer5sstandPostHis1h = UserFeatureCommon.buildIdScoreList(accumulator.stand5sPostDetails, 10);
+            result.viewerLikePostHis1h = UserFeatureCommon.buildPostIdList(accumulator.likePostIds, 10);
+            result.viewerFollowPostHis1h = UserFeatureCommon.buildPostIdList(accumulator.followPostIds, 10);
+            result.viewerProfilePostHis1h = UserFeatureCommon.buildPostIdList(accumulator.profilePostIds, 10);
+            result.viewerPosinterPostHis1h = UserFeatureCommon.buildPostIdList(accumulator.posinterPostIds, 10);
+
             result.updateTime = System.currentTimeMillis();
-            
+
             LOG.info("Generated user feature aggregation for uid {}: {}", result.uid, result);
             return result;
         }
@@ -336,7 +339,7 @@ public class UserFeature1hJob {
 
     public static class UserFeatureAggregation {
         public long uid;
-        
+
         // 1小时特征
         public int viewerExppostCnt1h;
         public int viewerExp1PostCnt1h;  // 图片曝光数
@@ -344,15 +347,15 @@ public class UserFeature1hJob {
         public int viewer3sviewPostCnt1h;
         public int viewer3sview1PostCnt1h;
         public int viewer3sview2PostCnt1h;
-        
+
         // 历史记录
-        public String viewer3sviewPostHis1h;
-        public String viewer5sstandPostHis1h;
-        public String viewerLikePostHis1h;
-        public String viewerFollowPostHis1h;
-        public String viewerProfilePostHis1h;
-        public String viewerPosinterPostHis1h;
-        
+        public List<RecFeature.IdScore> viewer3sviewPostHis1h = Collections.emptyList();
+        public List<RecFeature.IdScore> viewer5sstandPostHis1h = Collections.emptyList();
+        public List<Long> viewerLikePostHis1h = Collections.emptyList();
+        public List<Long> viewerFollowPostHis1h = Collections.emptyList();
+        public List<Long> viewerProfilePostHis1h = Collections.emptyList();
+        public List<Long> viewerPosinterPostHis1h = Collections.emptyList();
+
         public long updateTime;
 
 
