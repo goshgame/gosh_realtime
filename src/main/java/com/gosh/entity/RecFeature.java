@@ -1109,6 +1109,74 @@ public final class RecFeature {
      */
     com.google.protobuf.ByteString
         getPreferNegFtag67DTop3Bytes();
+
+    /**
+     * <pre>
+     * 负反馈标签队列（最近5个）
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
+     */
+    java.util.List<com.gosh.entity.RecFeature.FeedbackTag> 
+        getFeedbackTagsList();
+    /**
+     * <pre>
+     * 负反馈标签队列（最近5个）
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
+     */
+    com.gosh.entity.RecFeature.FeedbackTag getFeedbackTags(int index);
+    /**
+     * <pre>
+     * 负反馈标签队列（最近5个）
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
+     */
+    int getFeedbackTagsCount();
+    /**
+     * <pre>
+     * 负反馈标签队列（最近5个）
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
+     */
+    java.util.List<? extends com.gosh.entity.RecFeature.FeedbackTagOrBuilder> 
+        getFeedbackTagsOrBuilderList();
+    /**
+     * <pre>
+     * 负反馈标签队列（最近5个）
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
+     */
+    com.gosh.entity.RecFeature.FeedbackTagOrBuilder getFeedbackTagsOrBuilder(
+        int index);
+
+    /**
+     * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
+     */
+    java.util.List<com.gosh.entity.RecFeature.FeedbackAuthorId> 
+        getFeedbackAuthorIdsList();
+    /**
+     * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
+     */
+    com.gosh.entity.RecFeature.FeedbackAuthorId getFeedbackAuthorIds(int index);
+    /**
+     * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
+     */
+    int getFeedbackAuthorIdsCount();
+    /**
+     * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
+     */
+    java.util.List<? extends com.gosh.entity.RecFeature.FeedbackAuthorIdOrBuilder> 
+        getFeedbackAuthorIdsOrBuilderList();
+    /**
+     * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
+     */
+    com.gosh.entity.RecFeature.FeedbackAuthorIdOrBuilder getFeedbackAuthorIdsOrBuilder(
+        int index);
   }
   /**
    * <pre>
@@ -1173,6 +1241,8 @@ public final class RecFeature {
       preferNegFtag47DTop3_ = "";
       preferNegFtag57DTop3_ = "";
       preferNegFtag67DTop3_ = "";
+      feedbackTags_ = java.util.Collections.emptyList();
+      feedbackAuthorIds_ = java.util.Collections.emptyList();
     }
 
     @java.lang.Override
@@ -1782,6 +1852,24 @@ public final class RecFeature {
               preferNegFtag67DTop3_ = s;
               break;
             }
+            case 770: {
+              if (!((mutable_bitField0_ & 0x00040000) != 0)) {
+                feedbackTags_ = new java.util.ArrayList<com.gosh.entity.RecFeature.FeedbackTag>();
+                mutable_bitField0_ |= 0x00040000;
+              }
+              feedbackTags_.add(
+                  input.readMessage(com.gosh.entity.RecFeature.FeedbackTag.parser(), extensionRegistry));
+              break;
+            }
+            case 778: {
+              if (!((mutable_bitField0_ & 0x00080000) != 0)) {
+                feedbackAuthorIds_ = new java.util.ArrayList<com.gosh.entity.RecFeature.FeedbackAuthorId>();
+                mutable_bitField0_ |= 0x00080000;
+              }
+              feedbackAuthorIds_.add(
+                  input.readMessage(com.gosh.entity.RecFeature.FeedbackAuthorId.parser(), extensionRegistry));
+              break;
+            }
             default: {
               if (!parseUnknownField(
                   input, unknownFields, extensionRegistry, tag)) {
@@ -1852,6 +1940,12 @@ public final class RecFeature {
         }
         if (((mutable_bitField0_ & 0x00020000) != 0)) {
           userLiveFollowPreferAnchorIds_.makeImmutable(); // C
+        }
+        if (((mutable_bitField0_ & 0x00040000) != 0)) {
+          feedbackTags_ = java.util.Collections.unmodifiableList(feedbackTags_);
+        }
+        if (((mutable_bitField0_ & 0x00080000) != 0)) {
+          feedbackAuthorIds_ = java.util.Collections.unmodifiableList(feedbackAuthorIds_);
         }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -3946,6 +4040,106 @@ public final class RecFeature {
       }
     }
 
+    public static final int FEEDBACK_TAGS_FIELD_NUMBER = 96;
+    private java.util.List<com.gosh.entity.RecFeature.FeedbackTag> feedbackTags_;
+    /**
+     * <pre>
+     * 负反馈标签队列（最近5个）
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
+     */
+    @java.lang.Override
+    public java.util.List<com.gosh.entity.RecFeature.FeedbackTag> getFeedbackTagsList() {
+      return feedbackTags_;
+    }
+    /**
+     * <pre>
+     * 负反馈标签队列（最近5个）
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
+     */
+    @java.lang.Override
+    public java.util.List<? extends com.gosh.entity.RecFeature.FeedbackTagOrBuilder> 
+        getFeedbackTagsOrBuilderList() {
+      return feedbackTags_;
+    }
+    /**
+     * <pre>
+     * 负反馈标签队列（最近5个）
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
+     */
+    @java.lang.Override
+    public int getFeedbackTagsCount() {
+      return feedbackTags_.size();
+    }
+    /**
+     * <pre>
+     * 负反馈标签队列（最近5个）
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
+     */
+    @java.lang.Override
+    public com.gosh.entity.RecFeature.FeedbackTag getFeedbackTags(int index) {
+      return feedbackTags_.get(index);
+    }
+    /**
+     * <pre>
+     * 负反馈标签队列（最近5个）
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
+     */
+    @java.lang.Override
+    public com.gosh.entity.RecFeature.FeedbackTagOrBuilder getFeedbackTagsOrBuilder(
+        int index) {
+      return feedbackTags_.get(index);
+    }
+
+    public static final int FEEDBACK_AUTHOR_IDS_FIELD_NUMBER = 97;
+    private java.util.List<com.gosh.entity.RecFeature.FeedbackAuthorId> feedbackAuthorIds_;
+    /**
+     * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
+     */
+    @java.lang.Override
+    public java.util.List<com.gosh.entity.RecFeature.FeedbackAuthorId> getFeedbackAuthorIdsList() {
+      return feedbackAuthorIds_;
+    }
+    /**
+     * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
+     */
+    @java.lang.Override
+    public java.util.List<? extends com.gosh.entity.RecFeature.FeedbackAuthorIdOrBuilder> 
+        getFeedbackAuthorIdsOrBuilderList() {
+      return feedbackAuthorIds_;
+    }
+    /**
+     * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
+     */
+    @java.lang.Override
+    public int getFeedbackAuthorIdsCount() {
+      return feedbackAuthorIds_.size();
+    }
+    /**
+     * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
+     */
+    @java.lang.Override
+    public com.gosh.entity.RecFeature.FeedbackAuthorId getFeedbackAuthorIds(int index) {
+      return feedbackAuthorIds_.get(index);
+    }
+    /**
+     * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
+     */
+    @java.lang.Override
+    public com.gosh.entity.RecFeature.FeedbackAuthorIdOrBuilder getFeedbackAuthorIdsOrBuilder(
+        int index) {
+      return feedbackAuthorIds_.get(index);
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -4202,6 +4396,12 @@ public final class RecFeature {
       }
       if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferNegFtag67DTop3_)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 95, preferNegFtag67DTop3_);
+      }
+      for (int i = 0; i < feedbackTags_.size(); i++) {
+        output.writeMessage(96, feedbackTags_.get(i));
+      }
+      for (int i = 0; i < feedbackAuthorIds_.size(); i++) {
+        output.writeMessage(97, feedbackAuthorIds_.get(i));
       }
       unknownFields.writeTo(output);
     }
@@ -4574,6 +4774,14 @@ public final class RecFeature {
       if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(preferNegFtag67DTop3_)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(95, preferNegFtag67DTop3_);
       }
+      for (int i = 0; i < feedbackTags_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(96, feedbackTags_.get(i));
+      }
+      for (int i = 0; i < feedbackAuthorIds_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(97, feedbackAuthorIds_.get(i));
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -4716,6 +4924,10 @@ public final class RecFeature {
           .equals(other.getPreferNegFtag57DTop3())) return false;
       if (!getPreferNegFtag67DTop3()
           .equals(other.getPreferNegFtag67DTop3())) return false;
+      if (!getFeedbackTagsList()
+          .equals(other.getFeedbackTagsList())) return false;
+      if (!getFeedbackAuthorIdsList()
+          .equals(other.getFeedbackAuthorIdsList())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -4890,6 +5102,14 @@ public final class RecFeature {
       hash = (53 * hash) + getPreferNegFtag57DTop3().hashCode();
       hash = (37 * hash) + PREFER_NEG_FTAG6_7D_TOP3_FIELD_NUMBER;
       hash = (53 * hash) + getPreferNegFtag67DTop3().hashCode();
+      if (getFeedbackTagsCount() > 0) {
+        hash = (37 * hash) + FEEDBACK_TAGS_FIELD_NUMBER;
+        hash = (53 * hash) + getFeedbackTagsList().hashCode();
+      }
+      if (getFeedbackAuthorIdsCount() > 0) {
+        hash = (37 * hash) + FEEDBACK_AUTHOR_IDS_FIELD_NUMBER;
+        hash = (53 * hash) + getFeedbackAuthorIdsList().hashCode();
+      }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -5028,6 +5248,8 @@ public final class RecFeature {
           getViewer5SstandPostHis1HFieldBuilder();
           getViewer3SviewPostHis24HFieldBuilder();
           getViewer5SstandPostHis24HFieldBuilder();
+          getFeedbackTagsFieldBuilder();
+          getFeedbackAuthorIdsFieldBuilder();
         }
       }
       @java.lang.Override
@@ -5173,6 +5395,18 @@ public final class RecFeature {
 
         preferNegFtag67DTop3_ = "";
 
+        if (feedbackTagsBuilder_ == null) {
+          feedbackTags_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00040000);
+        } else {
+          feedbackTagsBuilder_.clear();
+        }
+        if (feedbackAuthorIdsBuilder_ == null) {
+          feedbackAuthorIds_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00080000);
+        } else {
+          feedbackAuthorIdsBuilder_.clear();
+        }
         return this;
       }
 
@@ -5350,6 +5584,24 @@ public final class RecFeature {
         result.preferNegFtag47DTop3_ = preferNegFtag47DTop3_;
         result.preferNegFtag57DTop3_ = preferNegFtag57DTop3_;
         result.preferNegFtag67DTop3_ = preferNegFtag67DTop3_;
+        if (feedbackTagsBuilder_ == null) {
+          if (((bitField0_ & 0x00040000) != 0)) {
+            feedbackTags_ = java.util.Collections.unmodifiableList(feedbackTags_);
+            bitField0_ = (bitField0_ & ~0x00040000);
+          }
+          result.feedbackTags_ = feedbackTags_;
+        } else {
+          result.feedbackTags_ = feedbackTagsBuilder_.build();
+        }
+        if (feedbackAuthorIdsBuilder_ == null) {
+          if (((bitField0_ & 0x00080000) != 0)) {
+            feedbackAuthorIds_ = java.util.Collections.unmodifiableList(feedbackAuthorIds_);
+            bitField0_ = (bitField0_ & ~0x00080000);
+          }
+          result.feedbackAuthorIds_ = feedbackAuthorIds_;
+        } else {
+          result.feedbackAuthorIds_ = feedbackAuthorIdsBuilder_.build();
+        }
         onBuilt();
         return result;
       }
@@ -5799,6 +6051,58 @@ public final class RecFeature {
         if (!other.getPreferNegFtag67DTop3().isEmpty()) {
           preferNegFtag67DTop3_ = other.preferNegFtag67DTop3_;
           onChanged();
+        }
+        if (feedbackTagsBuilder_ == null) {
+          if (!other.feedbackTags_.isEmpty()) {
+            if (feedbackTags_.isEmpty()) {
+              feedbackTags_ = other.feedbackTags_;
+              bitField0_ = (bitField0_ & ~0x00040000);
+            } else {
+              ensureFeedbackTagsIsMutable();
+              feedbackTags_.addAll(other.feedbackTags_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.feedbackTags_.isEmpty()) {
+            if (feedbackTagsBuilder_.isEmpty()) {
+              feedbackTagsBuilder_.dispose();
+              feedbackTagsBuilder_ = null;
+              feedbackTags_ = other.feedbackTags_;
+              bitField0_ = (bitField0_ & ~0x00040000);
+              feedbackTagsBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getFeedbackTagsFieldBuilder() : null;
+            } else {
+              feedbackTagsBuilder_.addAllMessages(other.feedbackTags_);
+            }
+          }
+        }
+        if (feedbackAuthorIdsBuilder_ == null) {
+          if (!other.feedbackAuthorIds_.isEmpty()) {
+            if (feedbackAuthorIds_.isEmpty()) {
+              feedbackAuthorIds_ = other.feedbackAuthorIds_;
+              bitField0_ = (bitField0_ & ~0x00080000);
+            } else {
+              ensureFeedbackAuthorIdsIsMutable();
+              feedbackAuthorIds_.addAll(other.feedbackAuthorIds_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.feedbackAuthorIds_.isEmpty()) {
+            if (feedbackAuthorIdsBuilder_.isEmpty()) {
+              feedbackAuthorIdsBuilder_.dispose();
+              feedbackAuthorIdsBuilder_ = null;
+              feedbackAuthorIds_ = other.feedbackAuthorIds_;
+              bitField0_ = (bitField0_ & ~0x00080000);
+              feedbackAuthorIdsBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getFeedbackAuthorIdsFieldBuilder() : null;
+            } else {
+              feedbackAuthorIdsBuilder_.addAllMessages(other.feedbackAuthorIds_);
+            }
+          }
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -11374,6 +11678,558 @@ public final class RecFeature {
         onChanged();
         return this;
       }
+
+      private java.util.List<com.gosh.entity.RecFeature.FeedbackTag> feedbackTags_ =
+        java.util.Collections.emptyList();
+      private void ensureFeedbackTagsIsMutable() {
+        if (!((bitField0_ & 0x00040000) != 0)) {
+          feedbackTags_ = new java.util.ArrayList<com.gosh.entity.RecFeature.FeedbackTag>(feedbackTags_);
+          bitField0_ |= 0x00040000;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          com.gosh.entity.RecFeature.FeedbackTag, com.gosh.entity.RecFeature.FeedbackTag.Builder, com.gosh.entity.RecFeature.FeedbackTagOrBuilder> feedbackTagsBuilder_;
+
+      /**
+       * <pre>
+       * 负反馈标签队列（最近5个）
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
+       */
+      public java.util.List<com.gosh.entity.RecFeature.FeedbackTag> getFeedbackTagsList() {
+        if (feedbackTagsBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(feedbackTags_);
+        } else {
+          return feedbackTagsBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <pre>
+       * 负反馈标签队列（最近5个）
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
+       */
+      public int getFeedbackTagsCount() {
+        if (feedbackTagsBuilder_ == null) {
+          return feedbackTags_.size();
+        } else {
+          return feedbackTagsBuilder_.getCount();
+        }
+      }
+      /**
+       * <pre>
+       * 负反馈标签队列（最近5个）
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
+       */
+      public com.gosh.entity.RecFeature.FeedbackTag getFeedbackTags(int index) {
+        if (feedbackTagsBuilder_ == null) {
+          return feedbackTags_.get(index);
+        } else {
+          return feedbackTagsBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <pre>
+       * 负反馈标签队列（最近5个）
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
+       */
+      public Builder setFeedbackTags(
+          int index, com.gosh.entity.RecFeature.FeedbackTag value) {
+        if (feedbackTagsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureFeedbackTagsIsMutable();
+          feedbackTags_.set(index, value);
+          onChanged();
+        } else {
+          feedbackTagsBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 负反馈标签队列（最近5个）
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
+       */
+      public Builder setFeedbackTags(
+          int index, com.gosh.entity.RecFeature.FeedbackTag.Builder builderForValue) {
+        if (feedbackTagsBuilder_ == null) {
+          ensureFeedbackTagsIsMutable();
+          feedbackTags_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          feedbackTagsBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 负反馈标签队列（最近5个）
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
+       */
+      public Builder addFeedbackTags(com.gosh.entity.RecFeature.FeedbackTag value) {
+        if (feedbackTagsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureFeedbackTagsIsMutable();
+          feedbackTags_.add(value);
+          onChanged();
+        } else {
+          feedbackTagsBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 负反馈标签队列（最近5个）
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
+       */
+      public Builder addFeedbackTags(
+          int index, com.gosh.entity.RecFeature.FeedbackTag value) {
+        if (feedbackTagsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureFeedbackTagsIsMutable();
+          feedbackTags_.add(index, value);
+          onChanged();
+        } else {
+          feedbackTagsBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 负反馈标签队列（最近5个）
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
+       */
+      public Builder addFeedbackTags(
+          com.gosh.entity.RecFeature.FeedbackTag.Builder builderForValue) {
+        if (feedbackTagsBuilder_ == null) {
+          ensureFeedbackTagsIsMutable();
+          feedbackTags_.add(builderForValue.build());
+          onChanged();
+        } else {
+          feedbackTagsBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 负反馈标签队列（最近5个）
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
+       */
+      public Builder addFeedbackTags(
+          int index, com.gosh.entity.RecFeature.FeedbackTag.Builder builderForValue) {
+        if (feedbackTagsBuilder_ == null) {
+          ensureFeedbackTagsIsMutable();
+          feedbackTags_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          feedbackTagsBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 负反馈标签队列（最近5个）
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
+       */
+      public Builder addAllFeedbackTags(
+          java.lang.Iterable<? extends com.gosh.entity.RecFeature.FeedbackTag> values) {
+        if (feedbackTagsBuilder_ == null) {
+          ensureFeedbackTagsIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, feedbackTags_);
+          onChanged();
+        } else {
+          feedbackTagsBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 负反馈标签队列（最近5个）
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
+       */
+      public Builder clearFeedbackTags() {
+        if (feedbackTagsBuilder_ == null) {
+          feedbackTags_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00040000);
+          onChanged();
+        } else {
+          feedbackTagsBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 负反馈标签队列（最近5个）
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
+       */
+      public Builder removeFeedbackTags(int index) {
+        if (feedbackTagsBuilder_ == null) {
+          ensureFeedbackTagsIsMutable();
+          feedbackTags_.remove(index);
+          onChanged();
+        } else {
+          feedbackTagsBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 负反馈标签队列（最近5个）
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
+       */
+      public com.gosh.entity.RecFeature.FeedbackTag.Builder getFeedbackTagsBuilder(
+          int index) {
+        return getFeedbackTagsFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <pre>
+       * 负反馈标签队列（最近5个）
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
+       */
+      public com.gosh.entity.RecFeature.FeedbackTagOrBuilder getFeedbackTagsOrBuilder(
+          int index) {
+        if (feedbackTagsBuilder_ == null) {
+          return feedbackTags_.get(index);  } else {
+          return feedbackTagsBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <pre>
+       * 负反馈标签队列（最近5个）
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
+       */
+      public java.util.List<? extends com.gosh.entity.RecFeature.FeedbackTagOrBuilder> 
+           getFeedbackTagsOrBuilderList() {
+        if (feedbackTagsBuilder_ != null) {
+          return feedbackTagsBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(feedbackTags_);
+        }
+      }
+      /**
+       * <pre>
+       * 负反馈标签队列（最近5个）
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
+       */
+      public com.gosh.entity.RecFeature.FeedbackTag.Builder addFeedbackTagsBuilder() {
+        return getFeedbackTagsFieldBuilder().addBuilder(
+            com.gosh.entity.RecFeature.FeedbackTag.getDefaultInstance());
+      }
+      /**
+       * <pre>
+       * 负反馈标签队列（最近5个）
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
+       */
+      public com.gosh.entity.RecFeature.FeedbackTag.Builder addFeedbackTagsBuilder(
+          int index) {
+        return getFeedbackTagsFieldBuilder().addBuilder(
+            index, com.gosh.entity.RecFeature.FeedbackTag.getDefaultInstance());
+      }
+      /**
+       * <pre>
+       * 负反馈标签队列（最近5个）
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.FeedbackTag feedback_tags = 96;</code>
+       */
+      public java.util.List<com.gosh.entity.RecFeature.FeedbackTag.Builder> 
+           getFeedbackTagsBuilderList() {
+        return getFeedbackTagsFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          com.gosh.entity.RecFeature.FeedbackTag, com.gosh.entity.RecFeature.FeedbackTag.Builder, com.gosh.entity.RecFeature.FeedbackTagOrBuilder> 
+          getFeedbackTagsFieldBuilder() {
+        if (feedbackTagsBuilder_ == null) {
+          feedbackTagsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+              com.gosh.entity.RecFeature.FeedbackTag, com.gosh.entity.RecFeature.FeedbackTag.Builder, com.gosh.entity.RecFeature.FeedbackTagOrBuilder>(
+                  feedbackTags_,
+                  ((bitField0_ & 0x00040000) != 0),
+                  getParentForChildren(),
+                  isClean());
+          feedbackTags_ = null;
+        }
+        return feedbackTagsBuilder_;
+      }
+
+      private java.util.List<com.gosh.entity.RecFeature.FeedbackAuthorId> feedbackAuthorIds_ =
+        java.util.Collections.emptyList();
+      private void ensureFeedbackAuthorIdsIsMutable() {
+        if (!((bitField0_ & 0x00080000) != 0)) {
+          feedbackAuthorIds_ = new java.util.ArrayList<com.gosh.entity.RecFeature.FeedbackAuthorId>(feedbackAuthorIds_);
+          bitField0_ |= 0x00080000;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          com.gosh.entity.RecFeature.FeedbackAuthorId, com.gosh.entity.RecFeature.FeedbackAuthorId.Builder, com.gosh.entity.RecFeature.FeedbackAuthorIdOrBuilder> feedbackAuthorIdsBuilder_;
+
+      /**
+       * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
+       */
+      public java.util.List<com.gosh.entity.RecFeature.FeedbackAuthorId> getFeedbackAuthorIdsList() {
+        if (feedbackAuthorIdsBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(feedbackAuthorIds_);
+        } else {
+          return feedbackAuthorIdsBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
+       */
+      public int getFeedbackAuthorIdsCount() {
+        if (feedbackAuthorIdsBuilder_ == null) {
+          return feedbackAuthorIds_.size();
+        } else {
+          return feedbackAuthorIdsBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
+       */
+      public com.gosh.entity.RecFeature.FeedbackAuthorId getFeedbackAuthorIds(int index) {
+        if (feedbackAuthorIdsBuilder_ == null) {
+          return feedbackAuthorIds_.get(index);
+        } else {
+          return feedbackAuthorIdsBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
+       */
+      public Builder setFeedbackAuthorIds(
+          int index, com.gosh.entity.RecFeature.FeedbackAuthorId value) {
+        if (feedbackAuthorIdsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureFeedbackAuthorIdsIsMutable();
+          feedbackAuthorIds_.set(index, value);
+          onChanged();
+        } else {
+          feedbackAuthorIdsBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
+       */
+      public Builder setFeedbackAuthorIds(
+          int index, com.gosh.entity.RecFeature.FeedbackAuthorId.Builder builderForValue) {
+        if (feedbackAuthorIdsBuilder_ == null) {
+          ensureFeedbackAuthorIdsIsMutable();
+          feedbackAuthorIds_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          feedbackAuthorIdsBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
+       */
+      public Builder addFeedbackAuthorIds(com.gosh.entity.RecFeature.FeedbackAuthorId value) {
+        if (feedbackAuthorIdsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureFeedbackAuthorIdsIsMutable();
+          feedbackAuthorIds_.add(value);
+          onChanged();
+        } else {
+          feedbackAuthorIdsBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
+       */
+      public Builder addFeedbackAuthorIds(
+          int index, com.gosh.entity.RecFeature.FeedbackAuthorId value) {
+        if (feedbackAuthorIdsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureFeedbackAuthorIdsIsMutable();
+          feedbackAuthorIds_.add(index, value);
+          onChanged();
+        } else {
+          feedbackAuthorIdsBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
+       */
+      public Builder addFeedbackAuthorIds(
+          com.gosh.entity.RecFeature.FeedbackAuthorId.Builder builderForValue) {
+        if (feedbackAuthorIdsBuilder_ == null) {
+          ensureFeedbackAuthorIdsIsMutable();
+          feedbackAuthorIds_.add(builderForValue.build());
+          onChanged();
+        } else {
+          feedbackAuthorIdsBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
+       */
+      public Builder addFeedbackAuthorIds(
+          int index, com.gosh.entity.RecFeature.FeedbackAuthorId.Builder builderForValue) {
+        if (feedbackAuthorIdsBuilder_ == null) {
+          ensureFeedbackAuthorIdsIsMutable();
+          feedbackAuthorIds_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          feedbackAuthorIdsBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
+       */
+      public Builder addAllFeedbackAuthorIds(
+          java.lang.Iterable<? extends com.gosh.entity.RecFeature.FeedbackAuthorId> values) {
+        if (feedbackAuthorIdsBuilder_ == null) {
+          ensureFeedbackAuthorIdsIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, feedbackAuthorIds_);
+          onChanged();
+        } else {
+          feedbackAuthorIdsBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
+       */
+      public Builder clearFeedbackAuthorIds() {
+        if (feedbackAuthorIdsBuilder_ == null) {
+          feedbackAuthorIds_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00080000);
+          onChanged();
+        } else {
+          feedbackAuthorIdsBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
+       */
+      public Builder removeFeedbackAuthorIds(int index) {
+        if (feedbackAuthorIdsBuilder_ == null) {
+          ensureFeedbackAuthorIdsIsMutable();
+          feedbackAuthorIds_.remove(index);
+          onChanged();
+        } else {
+          feedbackAuthorIdsBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
+       */
+      public com.gosh.entity.RecFeature.FeedbackAuthorId.Builder getFeedbackAuthorIdsBuilder(
+          int index) {
+        return getFeedbackAuthorIdsFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
+       */
+      public com.gosh.entity.RecFeature.FeedbackAuthorIdOrBuilder getFeedbackAuthorIdsOrBuilder(
+          int index) {
+        if (feedbackAuthorIdsBuilder_ == null) {
+          return feedbackAuthorIds_.get(index);  } else {
+          return feedbackAuthorIdsBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
+       */
+      public java.util.List<? extends com.gosh.entity.RecFeature.FeedbackAuthorIdOrBuilder> 
+           getFeedbackAuthorIdsOrBuilderList() {
+        if (feedbackAuthorIdsBuilder_ != null) {
+          return feedbackAuthorIdsBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(feedbackAuthorIds_);
+        }
+      }
+      /**
+       * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
+       */
+      public com.gosh.entity.RecFeature.FeedbackAuthorId.Builder addFeedbackAuthorIdsBuilder() {
+        return getFeedbackAuthorIdsFieldBuilder().addBuilder(
+            com.gosh.entity.RecFeature.FeedbackAuthorId.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
+       */
+      public com.gosh.entity.RecFeature.FeedbackAuthorId.Builder addFeedbackAuthorIdsBuilder(
+          int index) {
+        return getFeedbackAuthorIdsFieldBuilder().addBuilder(
+            index, com.gosh.entity.RecFeature.FeedbackAuthorId.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
+       */
+      public java.util.List<com.gosh.entity.RecFeature.FeedbackAuthorId.Builder> 
+           getFeedbackAuthorIdsBuilderList() {
+        return getFeedbackAuthorIdsFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          com.gosh.entity.RecFeature.FeedbackAuthorId, com.gosh.entity.RecFeature.FeedbackAuthorId.Builder, com.gosh.entity.RecFeature.FeedbackAuthorIdOrBuilder> 
+          getFeedbackAuthorIdsFieldBuilder() {
+        if (feedbackAuthorIdsBuilder_ == null) {
+          feedbackAuthorIdsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+              com.gosh.entity.RecFeature.FeedbackAuthorId, com.gosh.entity.RecFeature.FeedbackAuthorId.Builder, com.gosh.entity.RecFeature.FeedbackAuthorIdOrBuilder>(
+                  feedbackAuthorIds_,
+                  ((bitField0_ & 0x00080000) != 0),
+                  getParentForChildren(),
+                  isClean());
+          feedbackAuthorIds_ = null;
+        }
+        return feedbackAuthorIdsBuilder_;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -11422,6 +12278,1283 @@ public final class RecFeature {
 
     @java.lang.Override
     public com.gosh.entity.RecFeature.RecUserFeature getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface FeedbackTagOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.gosh.entity.FeedbackTag)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * 标签内容，如 "age#youngadult"
+     * </pre>
+     *
+     * <code>string tag = 1;</code>
+     * @return The tag.
+     */
+    java.lang.String getTag();
+    /**
+     * <pre>
+     * 标签内容，如 "age#youngadult"
+     * </pre>
+     *
+     * <code>string tag = 1;</code>
+     * @return The bytes for tag.
+     */
+    com.google.protobuf.ByteString
+        getTagBytes();
+
+    /**
+     * <pre>
+     * 权重，统一为 0.1
+     * </pre>
+     *
+     * <code>float weight = 2;</code>
+     * @return The weight.
+     */
+    float getWeight();
+  }
+  /**
+   * <pre>
+   * 负反馈标签
+   * </pre>
+   *
+   * Protobuf type {@code com.gosh.entity.FeedbackTag}
+   */
+  public static final class FeedbackTag extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:com.gosh.entity.FeedbackTag)
+      FeedbackTagOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use FeedbackTag.newBuilder() to construct.
+    private FeedbackTag(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private FeedbackTag() {
+      tag_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new FeedbackTag();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private FeedbackTag(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              tag_ = s;
+              break;
+            }
+            case 21: {
+
+              weight_ = input.readFloat();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (com.google.protobuf.UninitializedMessageException e) {
+        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_FeedbackTag_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_FeedbackTag_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.gosh.entity.RecFeature.FeedbackTag.class, com.gosh.entity.RecFeature.FeedbackTag.Builder.class);
+    }
+
+    public static final int TAG_FIELD_NUMBER = 1;
+    private volatile java.lang.Object tag_;
+    /**
+     * <pre>
+     * 标签内容，如 "age#youngadult"
+     * </pre>
+     *
+     * <code>string tag = 1;</code>
+     * @return The tag.
+     */
+    @java.lang.Override
+    public java.lang.String getTag() {
+      java.lang.Object ref = tag_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        tag_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * 标签内容，如 "age#youngadult"
+     * </pre>
+     *
+     * <code>string tag = 1;</code>
+     * @return The bytes for tag.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getTagBytes() {
+      java.lang.Object ref = tag_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        tag_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int WEIGHT_FIELD_NUMBER = 2;
+    private float weight_;
+    /**
+     * <pre>
+     * 权重，统一为 0.1
+     * </pre>
+     *
+     * <code>float weight = 2;</code>
+     * @return The weight.
+     */
+    @java.lang.Override
+    public float getWeight() {
+      return weight_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(tag_)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, tag_);
+      }
+      if (java.lang.Float.floatToRawIntBits(weight_) != 0) {
+        output.writeFloat(2, weight_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(tag_)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, tag_);
+      }
+      if (java.lang.Float.floatToRawIntBits(weight_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(2, weight_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.gosh.entity.RecFeature.FeedbackTag)) {
+        return super.equals(obj);
+      }
+      com.gosh.entity.RecFeature.FeedbackTag other = (com.gosh.entity.RecFeature.FeedbackTag) obj;
+
+      if (!getTag()
+          .equals(other.getTag())) return false;
+      if (java.lang.Float.floatToIntBits(getWeight())
+          != java.lang.Float.floatToIntBits(
+              other.getWeight())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + TAG_FIELD_NUMBER;
+      hash = (53 * hash) + getTag().hashCode();
+      hash = (37 * hash) + WEIGHT_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getWeight());
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.gosh.entity.RecFeature.FeedbackTag parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.gosh.entity.RecFeature.FeedbackTag parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.gosh.entity.RecFeature.FeedbackTag parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.gosh.entity.RecFeature.FeedbackTag parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.gosh.entity.RecFeature.FeedbackTag parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.gosh.entity.RecFeature.FeedbackTag parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.gosh.entity.RecFeature.FeedbackTag parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.gosh.entity.RecFeature.FeedbackTag parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.gosh.entity.RecFeature.FeedbackTag parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.gosh.entity.RecFeature.FeedbackTag parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.gosh.entity.RecFeature.FeedbackTag parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.gosh.entity.RecFeature.FeedbackTag parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.gosh.entity.RecFeature.FeedbackTag prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * <pre>
+     * 负反馈标签
+     * </pre>
+     *
+     * Protobuf type {@code com.gosh.entity.FeedbackTag}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.gosh.entity.FeedbackTag)
+        com.gosh.entity.RecFeature.FeedbackTagOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_FeedbackTag_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_FeedbackTag_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.gosh.entity.RecFeature.FeedbackTag.class, com.gosh.entity.RecFeature.FeedbackTag.Builder.class);
+      }
+
+      // Construct using com.gosh.entity.RecFeature.FeedbackTag.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        tag_ = "";
+
+        weight_ = 0F;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_FeedbackTag_descriptor;
+      }
+
+      @java.lang.Override
+      public com.gosh.entity.RecFeature.FeedbackTag getDefaultInstanceForType() {
+        return com.gosh.entity.RecFeature.FeedbackTag.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.gosh.entity.RecFeature.FeedbackTag build() {
+        com.gosh.entity.RecFeature.FeedbackTag result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.gosh.entity.RecFeature.FeedbackTag buildPartial() {
+        com.gosh.entity.RecFeature.FeedbackTag result = new com.gosh.entity.RecFeature.FeedbackTag(this);
+        result.tag_ = tag_;
+        result.weight_ = weight_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.gosh.entity.RecFeature.FeedbackTag) {
+          return mergeFrom((com.gosh.entity.RecFeature.FeedbackTag)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.gosh.entity.RecFeature.FeedbackTag other) {
+        if (other == com.gosh.entity.RecFeature.FeedbackTag.getDefaultInstance()) return this;
+        if (!other.getTag().isEmpty()) {
+          tag_ = other.tag_;
+          onChanged();
+        }
+        if (other.getWeight() != 0F) {
+          setWeight(other.getWeight());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.gosh.entity.RecFeature.FeedbackTag parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.gosh.entity.RecFeature.FeedbackTag) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object tag_ = "";
+      /**
+       * <pre>
+       * 标签内容，如 "age#youngadult"
+       * </pre>
+       *
+       * <code>string tag = 1;</code>
+       * @return The tag.
+       */
+      public java.lang.String getTag() {
+        java.lang.Object ref = tag_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          tag_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 标签内容，如 "age#youngadult"
+       * </pre>
+       *
+       * <code>string tag = 1;</code>
+       * @return The bytes for tag.
+       */
+      public com.google.protobuf.ByteString
+          getTagBytes() {
+        java.lang.Object ref = tag_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          tag_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 标签内容，如 "age#youngadult"
+       * </pre>
+       *
+       * <code>string tag = 1;</code>
+       * @param value The tag to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTag(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        tag_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 标签内容，如 "age#youngadult"
+       * </pre>
+       *
+       * <code>string tag = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearTag() {
+        
+        tag_ = getDefaultInstance().getTag();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 标签内容，如 "age#youngadult"
+       * </pre>
+       *
+       * <code>string tag = 1;</code>
+       * @param value The bytes for tag to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTagBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        tag_ = value;
+        onChanged();
+        return this;
+      }
+
+      private float weight_ ;
+      /**
+       * <pre>
+       * 权重，统一为 0.1
+       * </pre>
+       *
+       * <code>float weight = 2;</code>
+       * @return The weight.
+       */
+      @java.lang.Override
+      public float getWeight() {
+        return weight_;
+      }
+      /**
+       * <pre>
+       * 权重，统一为 0.1
+       * </pre>
+       *
+       * <code>float weight = 2;</code>
+       * @param value The weight to set.
+       * @return This builder for chaining.
+       */
+      public Builder setWeight(float value) {
+        
+        weight_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 权重，统一为 0.1
+       * </pre>
+       *
+       * <code>float weight = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearWeight() {
+        
+        weight_ = 0F;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:com.gosh.entity.FeedbackTag)
+    }
+
+    // @@protoc_insertion_point(class_scope:com.gosh.entity.FeedbackTag)
+    private static final com.gosh.entity.RecFeature.FeedbackTag DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.gosh.entity.RecFeature.FeedbackTag();
+    }
+
+    public static com.gosh.entity.RecFeature.FeedbackTag getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<FeedbackTag>
+        PARSER = new com.google.protobuf.AbstractParser<FeedbackTag>() {
+      @java.lang.Override
+      public FeedbackTag parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new FeedbackTag(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<FeedbackTag> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<FeedbackTag> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.gosh.entity.RecFeature.FeedbackTag getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface FeedbackAuthorIdOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.gosh.entity.FeedbackAuthorId)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>uint64 author_id = 1;</code>
+     * @return The authorId.
+     */
+    long getAuthorId();
+
+    /**
+     * <code>float weight = 2;</code>
+     * @return The weight.
+     */
+    float getWeight();
+  }
+  /**
+   * <pre>
+   * 负反馈作者
+   * </pre>
+   *
+   * Protobuf type {@code com.gosh.entity.FeedbackAuthorId}
+   */
+  public static final class FeedbackAuthorId extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:com.gosh.entity.FeedbackAuthorId)
+      FeedbackAuthorIdOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use FeedbackAuthorId.newBuilder() to construct.
+    private FeedbackAuthorId(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private FeedbackAuthorId() {
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new FeedbackAuthorId();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private FeedbackAuthorId(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+
+              authorId_ = input.readUInt64();
+              break;
+            }
+            case 21: {
+
+              weight_ = input.readFloat();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (com.google.protobuf.UninitializedMessageException e) {
+        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_FeedbackAuthorId_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_FeedbackAuthorId_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.gosh.entity.RecFeature.FeedbackAuthorId.class, com.gosh.entity.RecFeature.FeedbackAuthorId.Builder.class);
+    }
+
+    public static final int AUTHOR_ID_FIELD_NUMBER = 1;
+    private long authorId_;
+    /**
+     * <code>uint64 author_id = 1;</code>
+     * @return The authorId.
+     */
+    @java.lang.Override
+    public long getAuthorId() {
+      return authorId_;
+    }
+
+    public static final int WEIGHT_FIELD_NUMBER = 2;
+    private float weight_;
+    /**
+     * <code>float weight = 2;</code>
+     * @return The weight.
+     */
+    @java.lang.Override
+    public float getWeight() {
+      return weight_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (authorId_ != 0L) {
+        output.writeUInt64(1, authorId_);
+      }
+      if (java.lang.Float.floatToRawIntBits(weight_) != 0) {
+        output.writeFloat(2, weight_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (authorId_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, authorId_);
+      }
+      if (java.lang.Float.floatToRawIntBits(weight_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(2, weight_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.gosh.entity.RecFeature.FeedbackAuthorId)) {
+        return super.equals(obj);
+      }
+      com.gosh.entity.RecFeature.FeedbackAuthorId other = (com.gosh.entity.RecFeature.FeedbackAuthorId) obj;
+
+      if (getAuthorId()
+          != other.getAuthorId()) return false;
+      if (java.lang.Float.floatToIntBits(getWeight())
+          != java.lang.Float.floatToIntBits(
+              other.getWeight())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + AUTHOR_ID_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getAuthorId());
+      hash = (37 * hash) + WEIGHT_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getWeight());
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.gosh.entity.RecFeature.FeedbackAuthorId parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.gosh.entity.RecFeature.FeedbackAuthorId parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.gosh.entity.RecFeature.FeedbackAuthorId parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.gosh.entity.RecFeature.FeedbackAuthorId parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.gosh.entity.RecFeature.FeedbackAuthorId parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.gosh.entity.RecFeature.FeedbackAuthorId parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.gosh.entity.RecFeature.FeedbackAuthorId parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.gosh.entity.RecFeature.FeedbackAuthorId parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.gosh.entity.RecFeature.FeedbackAuthorId parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.gosh.entity.RecFeature.FeedbackAuthorId parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.gosh.entity.RecFeature.FeedbackAuthorId parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.gosh.entity.RecFeature.FeedbackAuthorId parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.gosh.entity.RecFeature.FeedbackAuthorId prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * <pre>
+     * 负反馈作者
+     * </pre>
+     *
+     * Protobuf type {@code com.gosh.entity.FeedbackAuthorId}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.gosh.entity.FeedbackAuthorId)
+        com.gosh.entity.RecFeature.FeedbackAuthorIdOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_FeedbackAuthorId_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_FeedbackAuthorId_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.gosh.entity.RecFeature.FeedbackAuthorId.class, com.gosh.entity.RecFeature.FeedbackAuthorId.Builder.class);
+      }
+
+      // Construct using com.gosh.entity.RecFeature.FeedbackAuthorId.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        authorId_ = 0L;
+
+        weight_ = 0F;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.gosh.entity.RecFeature.internal_static_com_gosh_entity_FeedbackAuthorId_descriptor;
+      }
+
+      @java.lang.Override
+      public com.gosh.entity.RecFeature.FeedbackAuthorId getDefaultInstanceForType() {
+        return com.gosh.entity.RecFeature.FeedbackAuthorId.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.gosh.entity.RecFeature.FeedbackAuthorId build() {
+        com.gosh.entity.RecFeature.FeedbackAuthorId result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.gosh.entity.RecFeature.FeedbackAuthorId buildPartial() {
+        com.gosh.entity.RecFeature.FeedbackAuthorId result = new com.gosh.entity.RecFeature.FeedbackAuthorId(this);
+        result.authorId_ = authorId_;
+        result.weight_ = weight_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.gosh.entity.RecFeature.FeedbackAuthorId) {
+          return mergeFrom((com.gosh.entity.RecFeature.FeedbackAuthorId)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.gosh.entity.RecFeature.FeedbackAuthorId other) {
+        if (other == com.gosh.entity.RecFeature.FeedbackAuthorId.getDefaultInstance()) return this;
+        if (other.getAuthorId() != 0L) {
+          setAuthorId(other.getAuthorId());
+        }
+        if (other.getWeight() != 0F) {
+          setWeight(other.getWeight());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.gosh.entity.RecFeature.FeedbackAuthorId parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.gosh.entity.RecFeature.FeedbackAuthorId) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private long authorId_ ;
+      /**
+       * <code>uint64 author_id = 1;</code>
+       * @return The authorId.
+       */
+      @java.lang.Override
+      public long getAuthorId() {
+        return authorId_;
+      }
+      /**
+       * <code>uint64 author_id = 1;</code>
+       * @param value The authorId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAuthorId(long value) {
+        
+        authorId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>uint64 author_id = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearAuthorId() {
+        
+        authorId_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private float weight_ ;
+      /**
+       * <code>float weight = 2;</code>
+       * @return The weight.
+       */
+      @java.lang.Override
+      public float getWeight() {
+        return weight_;
+      }
+      /**
+       * <code>float weight = 2;</code>
+       * @param value The weight to set.
+       * @return This builder for chaining.
+       */
+      public Builder setWeight(float value) {
+        
+        weight_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>float weight = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearWeight() {
+        
+        weight_ = 0F;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:com.gosh.entity.FeedbackAuthorId)
+    }
+
+    // @@protoc_insertion_point(class_scope:com.gosh.entity.FeedbackAuthorId)
+    private static final com.gosh.entity.RecFeature.FeedbackAuthorId DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.gosh.entity.RecFeature.FeedbackAuthorId();
+    }
+
+    public static com.gosh.entity.RecFeature.FeedbackAuthorId getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<FeedbackAuthorId>
+        PARSER = new com.google.protobuf.AbstractParser<FeedbackAuthorId>() {
+      @java.lang.Override
+      public FeedbackAuthorId parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new FeedbackAuthorId(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<FeedbackAuthorId> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<FeedbackAuthorId> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.gosh.entity.RecFeature.FeedbackAuthorId getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -31928,6 +34061,16 @@ public final class RecFeature {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_com_gosh_entity_RecUserFeature_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_gosh_entity_FeedbackTag_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_com_gosh_entity_FeedbackTag_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_gosh_entity_FeedbackAuthorId_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_com_gosh_entity_FeedbackAuthorId_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_gosh_entity_RecPostFeature_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -31971,7 +34114,7 @@ public final class RecFeature {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\020RecFeature.proto\022\017com.gosh.entity\"\254\021\n\016" +
+      "\n\020RecFeature.proto\022\017com.gosh.entity\"\241\022\n\016" +
       "RecUserFeature\022\025\n\rviewer_is_old\030\001 \001(\005\022\034\n" +
       "\024viewer_register_days\030\002 \001(\005\022\035\n\025viewer_ex" +
       "ppost_cnt_1h\030\n \001(\005\022\037\n\027viewer_exp1_post_c" +
@@ -32027,159 +34170,164 @@ public final class RecFeature {
       "(\t\022 \n\030prefer_neg_ftag3_7d_top3\030\\ \001(\t\022 \n\030" +
       "prefer_neg_ftag4_7d_top3\030] \001(\t\022 \n\030prefer" +
       "_neg_ftag5_7d_top3\030^ \001(\t\022 \n\030prefer_neg_f" +
-      "tag6_7d_top3\030_ \001(\t\"\302\013\n\016RecPostFeature\022\017\n" +
-      "\007post_id\030\001 \001(\004\022\027\n\017post_exp_cnt_1h\030\n \001(\005\022" +
-      "\032\n\022post_3sview_cnt_1h\030\013 \001(\005\022\032\n\022post_8svi" +
-      "ew_cnt_1h\030\014 \001(\005\022\033\n\023post_12sview_cnt_1h\030\r" +
-      " \001(\005\022\033\n\023post_20sview_cnt_1h\030\016 \001(\005\022\033\n\023pos" +
-      "t_5sstand_cnt_1h\030\017 \001(\005\022\034\n\024post_10sstand_" +
-      "cnt_1h\030\020 \001(\005\022\030\n\020post_like_cnt_1h\030\021 \001(\005\022\032" +
-      "\n\022post_follow_cnt_1h\030\022 \001(\005\022\033\n\023post_profi" +
-      "le_cnt_1h\030\023 \001(\005\022\034\n\024post_posinter_cnt_1h\030" +
-      "\024 \001(\005\022\030\n\020post_exp_cnt_24h\030\036 \001(\005\022\033\n\023post_" +
-      "3sview_cnt_24h\030\037 \001(\005\022\033\n\023post_8sview_cnt_" +
-      "24h\030  \001(\005\022\034\n\024post_12sview_cnt_24h\030! \001(\005\022" +
-      "\034\n\024post_20sview_cnt_24h\030\" \001(\005\022\034\n\024post_5s" +
-      "stand_cnt_24h\030# \001(\005\022\035\n\025post_10sstand_cnt" +
-      "_24h\030$ \001(\005\022\031\n\021post_like_cnt_24h\030% \001(\005\022\033\n" +
-      "\023post_follow_cnt_24h\030& \001(\005\022\034\n\024post_profi" +
-      "le_cnt_24h\030\' \001(\005\022\035\n\025post_posinter_cnt_24" +
-      "h\030( \001(\005\022\030\n\020post_view_cnt_7d\030) \001(\005\022\035\n\025pos" +
-      "t_validview_cnt_7d\030* \001(\005\022 \n\030post_complet" +
-      "eview_cnt_7d\030+ \001(\005\022\035\n\025post_view_duration" +
-      "_7d\030, \001(\002\022\030\n\020post_like_cnt_7d\030- \001(\005\022\033\n\023p" +
-      "ost_comment_cnt_7d\030. \001(\005\022\017\n\007tag_ids\030/ \003(" +
-      "\005\022\'\n\037author_exp_distinct_post_cnt_7d\0300 \001" +
-      "(\005\022\036\n\026author_exp_post_cnt_7d\0301 \001(\005\022$\n\034au" +
-      "thor_validview_post_cnt_7d\0302 \001(\005\022$\n\034auth" +
-      "or_view_post_duration_7d\0303 \001(\002\022\032\n\022author" +
-      "_like_cnt_7d\0304 \001(\005\022\035\n\025author_comment_cnt" +
-      "_7d\0305 \001(\005\022\'\n\037author_completeview_post_cn" +
-      "t_7d\0306 \001(\005\022#\n\033author_view_avg_duration_7" +
-      "d\0307 \001(\002\022#\n\033author_inter_profile_cnt_7d\0308" +
-      " \001(\005\022\034\n\024author_follow_cnt_7d\0309 \001(\005\022\034\n\024au" +
-      "thor_followers_cnt\030: \001(\005\022\036\n\026post_validvi" +
-      "ew_rate_7d\030< \001(\002\022!\n\031post_completeview_ra" +
-      "te_7d\030= \001(\002\022!\n\031post_avg_view_duration_7d" +
-      "\030> \001(\002\022\031\n\021post_like_rate_7d\030? \001(\002\022\034\n\024pos" +
-      "t_comment_rate_7d\030@ \001(\002\022\031\n\021post_ai_embed" +
-      "ding\030F \003(\002\022\024\n\014post_ai_tags\030G \001(\t\022\025\n\rpost" +
-      "_asr_lang\030H \001(\t\"\227\021\n\024RecUserAuthorFeature" +
-      "\022\017\n\007user_id\030\001 \001(\004\022\021\n\tauthor_id\030\002 \001(\004\022\035\n\025" +
-      "userauthor_exp_cnt_1h\030\n \001(\005\022 \n\030userautho" +
-      "r_3sview_cnt_1h\030\013 \001(\005\022 \n\030userauthor_8svi" +
-      "ew_cnt_1h\030\014 \001(\005\022!\n\031userauthor_12sview_cn" +
-      "t_1h\030\r \001(\005\022!\n\031userauthor_20sview_cnt_1h\030" +
-      "\016 \001(\005\022!\n\031userauthor_5sstand_cnt_1h\030\017 \001(\005" +
-      "\022\"\n\032userauthor_10sstand_cnt_1h\030\020 \001(\005\022\036\n\026" +
-      "userauthor_like_cnt_1h\030\021 \001(\005\022\036\n\026userauth" +
-      "or_exp_cnt_24h\030\036 \001(\005\022!\n\031userauthor_3svie" +
-      "w_cnt_24h\030\037 \001(\005\022!\n\031userauthor_8sview_cnt" +
-      "_24h\030  \001(\005\022\"\n\032userauthor_12sview_cnt_24h" +
-      "\030! \001(\005\022\"\n\032userauthor_20sview_cnt_24h\030\" \001" +
-      "(\005\022\"\n\032userauthor_5sstand_cnt_24h\030# \001(\005\022#" +
-      "\n\033userauthor_10sstand_cnt_24h\030$ \001(\005\022\037\n\027u" +
-      "serauthor_like_cnt_24h\030% \001(\005\022\037\n\027user_aut" +
-      "hor_view_cnt_7d\030( \001(\005\022$\n\034user_author_val" +
-      "idview_cnt_7d\030) \001(\002\022(\n user_author_compe" +
-      "leteview_cnt_7d\030* \001(\005\022\037\n\027user_author_lik" +
-      "e_cnt_7d\030+ \001(\005\022\"\n\032user_author_comment_cn" +
-      "t_7d\030, \001(\005\022(\n user_author_avg_view_durat" +
-      "ion_7d\030- \001(\002\022&\n\036user_author_validview_tf" +
-      "idf_7d\030. \001(\002\022*\n\"user_author_compeletevie" +
-      "w_tfidf_7d\030/ \001(\002\022(\n user_author_likecomm" +
-      "ent_tfidf_7d\0300 \001(\002\022\032\n\022user_tag11_is_like" +
-      "\0302 \001(\005\022\032\n\022user_tag11_is_play\0303 \001(\005\022\035\n\025us" +
-      "er_tag11_is_comment\0304 \001(\005\022\032\n\022user_tag12_" +
-      "is_like\0305 \001(\005\022\032\n\022user_tag12_is_play\0306 \001(" +
-      "\005\022\035\n\025user_tag12_is_comment\0307 \001(\005\022\032\n\022user" +
-      "_tag13_is_like\0308 \001(\005\022\032\n\022user_tag13_is_pl" +
-      "ay\0309 \001(\005\022\035\n\025user_tag13_is_comment\030: \001(\005\022" +
-      "\032\n\022user_tag14_is_like\030; \001(\005\022\032\n\022user_tag1" +
-      "4_is_play\030< \001(\005\022\035\n\025user_tag14_is_comment" +
-      "\030= \001(\005\022\032\n\022user_tag15_is_like\030> \001(\005\022\032\n\022us" +
-      "er_tag15_is_play\030? \001(\005\022\035\n\025user_tag15_is_" +
-      "comment\030@ \001(\005\022\032\n\022user_tag16_is_like\030A \001(" +
-      "\005\022\032\n\022user_tag16_is_play\030B \001(\005\022\035\n\025user_ta" +
-      "g16_is_comment\030C \001(\005\022\032\n\022user_tag17_is_li" +
-      "ke\030D \001(\005\022\032\n\022user_tag17_is_play\030E \001(\005\022\035\n\025" +
-      "user_tag17_is_comment\030F \001(\005\022\033\n\023user_tag1" +
-      "1_like_cnt\030G \001(\005\022\033\n\023user_tag11_play_cnt\030" +
-      "H \001(\005\022\036\n\026user_tag11_comment_cnt\030I \001(\005\022\033\n" +
-      "\023user_tag12_like_cnt\030J \001(\005\022\033\n\023user_tag12" +
-      "_play_cnt\030K \001(\005\022\036\n\026user_tag12_comment_cn" +
-      "t\030L \001(\005\022\033\n\023user_tag13_like_cnt\030M \001(\005\022\033\n\023" +
-      "user_tag13_play_cnt\030N \001(\005\022\036\n\026user_tag13_" +
-      "comment_cnt\030O \001(\005\022\033\n\023user_tag14_like_cnt" +
-      "\030P \001(\005\022\033\n\023user_tag14_play_cnt\030Q \001(\005\022\036\n\026u" +
-      "ser_tag14_comment_cnt\030R \001(\005\022\033\n\023user_tag1" +
-      "5_like_cnt\030S \001(\005\022\033\n\023user_tag15_play_cnt\030" +
-      "T \001(\005\022\036\n\026user_tag15_comment_cnt\030U \001(\005\022\033\n" +
-      "\023user_tag16_like_cnt\030V \001(\005\022\033\n\023user_tag16" +
-      "_play_cnt\030W \001(\005\022\036\n\026user_tag16_comment_cn" +
-      "t\030X \001(\005\022\033\n\023user_tag17_like_cnt\030Y \001(\005\022\033\n\023" +
-      "user_tag17_play_cnt\030Z \001(\005\022\036\n\026user_tag17_" +
-      "comment_cnt\030[ \001(\005\"\374\005\n\025LiveUserAnchorFeat" +
-      "ure\022\017\n\007user_id\030\001 \001(\004\022\021\n\tanchor_id\030\002 \001(\004\022" +
-      "!\n\031user_anchor_exp_cnt_15min\030\n \001(\005\022$\n\034us" +
-      "er_anchor_3squit_cnt_15min\030\013 \001(\005\022$\n\034user" +
-      "_anchor_6squit_cnt_15min\030\014 \001(\005\022\"\n\032user_a" +
-      "nchor_like_cnt_15min\030\r \001(\005\022%\n\035user_ancho" +
-      "r_comment_cnt_15min\030\016 \001(\005\022$\n\034user_anchor" +
-      "_follow_cnt_15min\030\017 \001(\005\022#\n\033user_anchor_s" +
-      "hare_cnt_15min\030\020 \001(\005\022\"\n\032user_anchor_gift" +
-      "_cnt_15min\030\021 \001(\005\022%\n\035user_anchor_gift_amo" +
-      "unt_15min\030\022 \001(\005\022/\n\'user_anchor_negative_" +
-      "feedback_cnt_15min\030\023 \001(\005\022 \n\030user_anchor_" +
-      "enter_cnt_7d\030\024 \001(\005\022\037\n\027user_anchor_quit_c" +
-      "nt_7d\030\025 \001(\005\022%\n\035user_anchor_stay_gt10s_cn" +
-      "t_7d\030\026 \001(\005\022%\n\035user_anchor_stay_gt30s_cnt" +
-      "_7d\030\027 \001(\005\022(\n user_anchor_avg_view_durati" +
-      "on_7d\030\030 \001(\002\022,\n$user_anchor_positive_feed" +
-      "back_cnt_7d\030\031 \001(\005\022,\n$user_anchor_negativ" +
-      "e_feedback_cnt_7d\030\032 \001(\005\022\'\n\037user_anchor_a" +
-      "ctive_enter_cnt_7d\030\033 \001(\005\"\257\n\n\024RecLiveAnch" +
-      "orFeature\022\021\n\tanchor_id\030\001 \001(\004\022\037\n\027live_ent" +
-      "er_usernum_5min\030\n \001(\005\022\036\n\026live_quit_usern" +
-      "um_5min\030\013 \001(\005\022#\n\033live_quit_avg_duration_" +
-      "5min\030\014 \001(\005\022\"\n\032live_anchor_gift_coin_5min" +
-      "\030\r \001(\005\022%\n\035live_anchor_gift_usernum_5min\030" +
-      "\016 \001(\005\022\'\n\037live_anchor_follow_usernum_5min" +
-      "\030\017 \001(\005\022%\n\035live_anchor_chat_usernum_5min\030" +
-      "\020 \001(\005\022 \n\030live_enter_usernum_10min\030\024 \001(\005\022" +
-      "\037\n\027live_quit_usernum_10min\030\025 \001(\005\022$\n\034live" +
-      "_quit_avg_duration_10min\030\026 \001(\005\022#\n\033live_a" +
-      "nchor_gift_coin_10min\030\027 \001(\005\022&\n\036live_anch" +
-      "or_gift_usernum_10min\030\030 \001(\005\022(\n live_anch" +
-      "or_follow_usernum_10min\030\031 \001(\005\022&\n\036live_an" +
-      "chor_chat_usernum_10min\030\032 \001(\005\022 \n\030live_en" +
-      "ter_usernum_15min\030\036 \001(\005\022\037\n\027live_quit_use" +
-      "rnum_15min\030\037 \001(\005\022$\n\034live_quit_avg_durati" +
-      "on_15min\030  \001(\005\022#\n\033live_anchor_gift_coin_" +
-      "15min\030! \001(\005\022&\n\036live_anchor_gift_usernum_" +
-      "15min\030\" \001(\005\022(\n live_anchor_follow_usernu" +
-      "m_15min\030# \001(\005\022&\n\036live_anchor_chat_usernu" +
-      "m_15min\030$ \001(\005\022\033\n\023anchor_enter_cnt_7d\030( \001" +
-      "(\005\022\032\n\022anchor_quit_cnt_7d\030) \001(\005\022\037\n\027anchor" +
-      "_stay_gt3s_cnt_7d\030* \001(\005\022 \n\030anchor_stay_g" +
-      "t10s_cnt_7d\030+ \001(\005\022 \n\030anchor_stay_gt30s_c" +
-      "nt_7d\030, \001(\005\022#\n\033anchor_avg_view_duration_" +
-      "7d\030- \001(\002\022\034\n\024anchor_follow_cnt_7d\030. \001(\005\022\'" +
-      "\n\037anchor_positive_feedback_cnt_7d\030/ \001(\005\022" +
-      "\'\n\037anchor_negative_feedback_cnt_7d\0300 \001(\005" +
-      "\022)\n!anchor_live_scene_exposure_cnt_7d\0301 " +
-      "\001(\005\022)\n!anchor_foru_scene_exposure_cnt_7d" +
-      "\0302 \001(\005\022&\n\036anchor_live_scene_enter_cnt_7d" +
-      "\0303 \001(\005\022&\n\036anchor_foru_scene_enter_cnt_7d" +
-      "\0304 \001(\005\022\032\n\022anchor_gift_cnt_7d\0305 \001(\005\"\267\001\n\022R" +
-      "ecLiveUserFeature\022\017\n\007user_id\030\001 \001(\004\022=\n\033us" +
-      "er_stay_gt10s_anchor_list\030\n \003(\0132\030.com.go" +
-      "sh.entity.IdScore\022%\n\035user_active_enter_a" +
-      "nchor_list\030\013 \003(\005\022*\n\"user_positive_feedba" +
-      "ck_anchor_list\030\014 \003(\005\"$\n\007IdScore\022\n\n\002id\030\001 " +
-      "\001(\003\022\r\n\005score\030\002 \001(\002\"A\n\020RecLiveIdFeature\022\017" +
-      "\n\007live_id\030\001 \001(\003\022\034\n\024live_id_exp_cnt_5min\030" +
-      "\n \001(\005b\006proto3"
+      "tag6_7d_top3\030_ \001(\t\0223\n\rfeedback_tags\030` \003(" +
+      "\0132\034.com.gosh.entity.FeedbackTag\022>\n\023feedb" +
+      "ack_author_ids\030a \003(\0132!.com.gosh.entity.F" +
+      "eedbackAuthorId\"*\n\013FeedbackTag\022\013\n\003tag\030\001 " +
+      "\001(\t\022\016\n\006weight\030\002 \001(\002\"5\n\020FeedbackAuthorId\022" +
+      "\021\n\tauthor_id\030\001 \001(\004\022\016\n\006weight\030\002 \001(\002\"\302\013\n\016R" +
+      "ecPostFeature\022\017\n\007post_id\030\001 \001(\004\022\027\n\017post_e" +
+      "xp_cnt_1h\030\n \001(\005\022\032\n\022post_3sview_cnt_1h\030\013 " +
+      "\001(\005\022\032\n\022post_8sview_cnt_1h\030\014 \001(\005\022\033\n\023post_" +
+      "12sview_cnt_1h\030\r \001(\005\022\033\n\023post_20sview_cnt" +
+      "_1h\030\016 \001(\005\022\033\n\023post_5sstand_cnt_1h\030\017 \001(\005\022\034" +
+      "\n\024post_10sstand_cnt_1h\030\020 \001(\005\022\030\n\020post_lik" +
+      "e_cnt_1h\030\021 \001(\005\022\032\n\022post_follow_cnt_1h\030\022 \001" +
+      "(\005\022\033\n\023post_profile_cnt_1h\030\023 \001(\005\022\034\n\024post_" +
+      "posinter_cnt_1h\030\024 \001(\005\022\030\n\020post_exp_cnt_24" +
+      "h\030\036 \001(\005\022\033\n\023post_3sview_cnt_24h\030\037 \001(\005\022\033\n\023" +
+      "post_8sview_cnt_24h\030  \001(\005\022\034\n\024post_12svie" +
+      "w_cnt_24h\030! \001(\005\022\034\n\024post_20sview_cnt_24h\030" +
+      "\" \001(\005\022\034\n\024post_5sstand_cnt_24h\030# \001(\005\022\035\n\025p" +
+      "ost_10sstand_cnt_24h\030$ \001(\005\022\031\n\021post_like_" +
+      "cnt_24h\030% \001(\005\022\033\n\023post_follow_cnt_24h\030& \001" +
+      "(\005\022\034\n\024post_profile_cnt_24h\030\' \001(\005\022\035\n\025post" +
+      "_posinter_cnt_24h\030( \001(\005\022\030\n\020post_view_cnt" +
+      "_7d\030) \001(\005\022\035\n\025post_validview_cnt_7d\030* \001(\005" +
+      "\022 \n\030post_completeview_cnt_7d\030+ \001(\005\022\035\n\025po" +
+      "st_view_duration_7d\030, \001(\002\022\030\n\020post_like_c" +
+      "nt_7d\030- \001(\005\022\033\n\023post_comment_cnt_7d\030. \001(\005" +
+      "\022\017\n\007tag_ids\030/ \003(\005\022\'\n\037author_exp_distinct" +
+      "_post_cnt_7d\0300 \001(\005\022\036\n\026author_exp_post_cn" +
+      "t_7d\0301 \001(\005\022$\n\034author_validview_post_cnt_" +
+      "7d\0302 \001(\005\022$\n\034author_view_post_duration_7d" +
+      "\0303 \001(\002\022\032\n\022author_like_cnt_7d\0304 \001(\005\022\035\n\025au" +
+      "thor_comment_cnt_7d\0305 \001(\005\022\'\n\037author_comp" +
+      "leteview_post_cnt_7d\0306 \001(\005\022#\n\033author_vie" +
+      "w_avg_duration_7d\0307 \001(\002\022#\n\033author_inter_" +
+      "profile_cnt_7d\0308 \001(\005\022\034\n\024author_follow_cn" +
+      "t_7d\0309 \001(\005\022\034\n\024author_followers_cnt\030: \001(\005" +
+      "\022\036\n\026post_validview_rate_7d\030< \001(\002\022!\n\031post" +
+      "_completeview_rate_7d\030= \001(\002\022!\n\031post_avg_" +
+      "view_duration_7d\030> \001(\002\022\031\n\021post_like_rate" +
+      "_7d\030? \001(\002\022\034\n\024post_comment_rate_7d\030@ \001(\002\022" +
+      "\031\n\021post_ai_embedding\030F \003(\002\022\024\n\014post_ai_ta" +
+      "gs\030G \001(\t\022\025\n\rpost_asr_lang\030H \001(\t\"\227\021\n\024RecU" +
+      "serAuthorFeature\022\017\n\007user_id\030\001 \001(\004\022\021\n\taut" +
+      "hor_id\030\002 \001(\004\022\035\n\025userauthor_exp_cnt_1h\030\n " +
+      "\001(\005\022 \n\030userauthor_3sview_cnt_1h\030\013 \001(\005\022 \n" +
+      "\030userauthor_8sview_cnt_1h\030\014 \001(\005\022!\n\031usera" +
+      "uthor_12sview_cnt_1h\030\r \001(\005\022!\n\031userauthor" +
+      "_20sview_cnt_1h\030\016 \001(\005\022!\n\031userauthor_5sst" +
+      "and_cnt_1h\030\017 \001(\005\022\"\n\032userauthor_10sstand_" +
+      "cnt_1h\030\020 \001(\005\022\036\n\026userauthor_like_cnt_1h\030\021" +
+      " \001(\005\022\036\n\026userauthor_exp_cnt_24h\030\036 \001(\005\022!\n\031" +
+      "userauthor_3sview_cnt_24h\030\037 \001(\005\022!\n\031usera" +
+      "uthor_8sview_cnt_24h\030  \001(\005\022\"\n\032userauthor" +
+      "_12sview_cnt_24h\030! \001(\005\022\"\n\032userauthor_20s" +
+      "view_cnt_24h\030\" \001(\005\022\"\n\032userauthor_5sstand" +
+      "_cnt_24h\030# \001(\005\022#\n\033userauthor_10sstand_cn" +
+      "t_24h\030$ \001(\005\022\037\n\027userauthor_like_cnt_24h\030%" +
+      " \001(\005\022\037\n\027user_author_view_cnt_7d\030( \001(\005\022$\n" +
+      "\034user_author_validview_cnt_7d\030) \001(\002\022(\n u" +
+      "ser_author_compeleteview_cnt_7d\030* \001(\005\022\037\n" +
+      "\027user_author_like_cnt_7d\030+ \001(\005\022\"\n\032user_a" +
+      "uthor_comment_cnt_7d\030, \001(\005\022(\n user_autho" +
+      "r_avg_view_duration_7d\030- \001(\002\022&\n\036user_aut" +
+      "hor_validview_tfidf_7d\030. \001(\002\022*\n\"user_aut" +
+      "hor_compeleteview_tfidf_7d\030/ \001(\002\022(\n user" +
+      "_author_likecomment_tfidf_7d\0300 \001(\002\022\032\n\022us" +
+      "er_tag11_is_like\0302 \001(\005\022\032\n\022user_tag11_is_" +
+      "play\0303 \001(\005\022\035\n\025user_tag11_is_comment\0304 \001(" +
+      "\005\022\032\n\022user_tag12_is_like\0305 \001(\005\022\032\n\022user_ta" +
+      "g12_is_play\0306 \001(\005\022\035\n\025user_tag12_is_comme" +
+      "nt\0307 \001(\005\022\032\n\022user_tag13_is_like\0308 \001(\005\022\032\n\022" +
+      "user_tag13_is_play\0309 \001(\005\022\035\n\025user_tag13_i" +
+      "s_comment\030: \001(\005\022\032\n\022user_tag14_is_like\030; " +
+      "\001(\005\022\032\n\022user_tag14_is_play\030< \001(\005\022\035\n\025user_" +
+      "tag14_is_comment\030= \001(\005\022\032\n\022user_tag15_is_" +
+      "like\030> \001(\005\022\032\n\022user_tag15_is_play\030? \001(\005\022\035" +
+      "\n\025user_tag15_is_comment\030@ \001(\005\022\032\n\022user_ta" +
+      "g16_is_like\030A \001(\005\022\032\n\022user_tag16_is_play\030" +
+      "B \001(\005\022\035\n\025user_tag16_is_comment\030C \001(\005\022\032\n\022" +
+      "user_tag17_is_like\030D \001(\005\022\032\n\022user_tag17_i" +
+      "s_play\030E \001(\005\022\035\n\025user_tag17_is_comment\030F " +
+      "\001(\005\022\033\n\023user_tag11_like_cnt\030G \001(\005\022\033\n\023user" +
+      "_tag11_play_cnt\030H \001(\005\022\036\n\026user_tag11_comm" +
+      "ent_cnt\030I \001(\005\022\033\n\023user_tag12_like_cnt\030J \001" +
+      "(\005\022\033\n\023user_tag12_play_cnt\030K \001(\005\022\036\n\026user_" +
+      "tag12_comment_cnt\030L \001(\005\022\033\n\023user_tag13_li" +
+      "ke_cnt\030M \001(\005\022\033\n\023user_tag13_play_cnt\030N \001(" +
+      "\005\022\036\n\026user_tag13_comment_cnt\030O \001(\005\022\033\n\023use" +
+      "r_tag14_like_cnt\030P \001(\005\022\033\n\023user_tag14_pla" +
+      "y_cnt\030Q \001(\005\022\036\n\026user_tag14_comment_cnt\030R " +
+      "\001(\005\022\033\n\023user_tag15_like_cnt\030S \001(\005\022\033\n\023user" +
+      "_tag15_play_cnt\030T \001(\005\022\036\n\026user_tag15_comm" +
+      "ent_cnt\030U \001(\005\022\033\n\023user_tag16_like_cnt\030V \001" +
+      "(\005\022\033\n\023user_tag16_play_cnt\030W \001(\005\022\036\n\026user_" +
+      "tag16_comment_cnt\030X \001(\005\022\033\n\023user_tag17_li" +
+      "ke_cnt\030Y \001(\005\022\033\n\023user_tag17_play_cnt\030Z \001(" +
+      "\005\022\036\n\026user_tag17_comment_cnt\030[ \001(\005\"\374\005\n\025Li" +
+      "veUserAnchorFeature\022\017\n\007user_id\030\001 \001(\004\022\021\n\t" +
+      "anchor_id\030\002 \001(\004\022!\n\031user_anchor_exp_cnt_1" +
+      "5min\030\n \001(\005\022$\n\034user_anchor_3squit_cnt_15m" +
+      "in\030\013 \001(\005\022$\n\034user_anchor_6squit_cnt_15min" +
+      "\030\014 \001(\005\022\"\n\032user_anchor_like_cnt_15min\030\r \001" +
+      "(\005\022%\n\035user_anchor_comment_cnt_15min\030\016 \001(" +
+      "\005\022$\n\034user_anchor_follow_cnt_15min\030\017 \001(\005\022" +
+      "#\n\033user_anchor_share_cnt_15min\030\020 \001(\005\022\"\n\032" +
+      "user_anchor_gift_cnt_15min\030\021 \001(\005\022%\n\035user" +
+      "_anchor_gift_amount_15min\030\022 \001(\005\022/\n\'user_" +
+      "anchor_negative_feedback_cnt_15min\030\023 \001(\005" +
+      "\022 \n\030user_anchor_enter_cnt_7d\030\024 \001(\005\022\037\n\027us" +
+      "er_anchor_quit_cnt_7d\030\025 \001(\005\022%\n\035user_anch" +
+      "or_stay_gt10s_cnt_7d\030\026 \001(\005\022%\n\035user_ancho" +
+      "r_stay_gt30s_cnt_7d\030\027 \001(\005\022(\n user_anchor" +
+      "_avg_view_duration_7d\030\030 \001(\002\022,\n$user_anch" +
+      "or_positive_feedback_cnt_7d\030\031 \001(\005\022,\n$use" +
+      "r_anchor_negative_feedback_cnt_7d\030\032 \001(\005\022" +
+      "\'\n\037user_anchor_active_enter_cnt_7d\030\033 \001(\005" +
+      "\"\257\n\n\024RecLiveAnchorFeature\022\021\n\tanchor_id\030\001" +
+      " \001(\004\022\037\n\027live_enter_usernum_5min\030\n \001(\005\022\036\n" +
+      "\026live_quit_usernum_5min\030\013 \001(\005\022#\n\033live_qu" +
+      "it_avg_duration_5min\030\014 \001(\005\022\"\n\032live_ancho" +
+      "r_gift_coin_5min\030\r \001(\005\022%\n\035live_anchor_gi" +
+      "ft_usernum_5min\030\016 \001(\005\022\'\n\037live_anchor_fol" +
+      "low_usernum_5min\030\017 \001(\005\022%\n\035live_anchor_ch" +
+      "at_usernum_5min\030\020 \001(\005\022 \n\030live_enter_user" +
+      "num_10min\030\024 \001(\005\022\037\n\027live_quit_usernum_10m" +
+      "in\030\025 \001(\005\022$\n\034live_quit_avg_duration_10min" +
+      "\030\026 \001(\005\022#\n\033live_anchor_gift_coin_10min\030\027 " +
+      "\001(\005\022&\n\036live_anchor_gift_usernum_10min\030\030 " +
+      "\001(\005\022(\n live_anchor_follow_usernum_10min\030" +
+      "\031 \001(\005\022&\n\036live_anchor_chat_usernum_10min\030" +
+      "\032 \001(\005\022 \n\030live_enter_usernum_15min\030\036 \001(\005\022" +
+      "\037\n\027live_quit_usernum_15min\030\037 \001(\005\022$\n\034live" +
+      "_quit_avg_duration_15min\030  \001(\005\022#\n\033live_a" +
+      "nchor_gift_coin_15min\030! \001(\005\022&\n\036live_anch" +
+      "or_gift_usernum_15min\030\" \001(\005\022(\n live_anch" +
+      "or_follow_usernum_15min\030# \001(\005\022&\n\036live_an" +
+      "chor_chat_usernum_15min\030$ \001(\005\022\033\n\023anchor_" +
+      "enter_cnt_7d\030( \001(\005\022\032\n\022anchor_quit_cnt_7d" +
+      "\030) \001(\005\022\037\n\027anchor_stay_gt3s_cnt_7d\030* \001(\005\022" +
+      " \n\030anchor_stay_gt10s_cnt_7d\030+ \001(\005\022 \n\030anc" +
+      "hor_stay_gt30s_cnt_7d\030, \001(\005\022#\n\033anchor_av" +
+      "g_view_duration_7d\030- \001(\002\022\034\n\024anchor_follo" +
+      "w_cnt_7d\030. \001(\005\022\'\n\037anchor_positive_feedba" +
+      "ck_cnt_7d\030/ \001(\005\022\'\n\037anchor_negative_feedb" +
+      "ack_cnt_7d\0300 \001(\005\022)\n!anchor_live_scene_ex" +
+      "posure_cnt_7d\0301 \001(\005\022)\n!anchor_foru_scene" +
+      "_exposure_cnt_7d\0302 \001(\005\022&\n\036anchor_live_sc" +
+      "ene_enter_cnt_7d\0303 \001(\005\022&\n\036anchor_foru_sc" +
+      "ene_enter_cnt_7d\0304 \001(\005\022\032\n\022anchor_gift_cn" +
+      "t_7d\0305 \001(\005\"\267\001\n\022RecLiveUserFeature\022\017\n\007use" +
+      "r_id\030\001 \001(\004\022=\n\033user_stay_gt10s_anchor_lis" +
+      "t\030\n \003(\0132\030.com.gosh.entity.IdScore\022%\n\035use" +
+      "r_active_enter_anchor_list\030\013 \003(\005\022*\n\"user" +
+      "_positive_feedback_anchor_list\030\014 \003(\005\"$\n\007" +
+      "IdScore\022\n\n\002id\030\001 \001(\003\022\r\n\005score\030\002 \001(\002\"A\n\020Re" +
+      "cLiveIdFeature\022\017\n\007live_id\030\001 \001(\003\022\034\n\024live_" +
+      "id_exp_cnt_5min\030\n \001(\005b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -32190,45 +34338,57 @@ public final class RecFeature {
     internal_static_com_gosh_entity_RecUserFeature_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_gosh_entity_RecUserFeature_descriptor,
-        new java.lang.String[] { "ViewerIsOld", "ViewerRegisterDays", "ViewerExppostCnt1H", "ViewerExp1PostCnt1H", "ViewerExp2PostCnt1H", "Viewer3SviewPostCnt1H", "Viewer3Sview1PostCnt1H", "Viewer3Sview2PostCnt1H", "Viewer3SviewPostHis1H", "Viewer5SstandPostHis1H", "ViewerLikePostHis1H", "ViewerFollowPostHis1H", "ViewerProfilePostHis1H", "ViewerPosinterPostHis1H", "Viewer3SviewPostHis24H", "Viewer5SstandPostHis24H", "ViewerLikePostHis24H", "ViewerFollowPostHis24H", "ViewerProfilePostHis24H", "ViewerPosinterPostHis24H", "ViewerLikeAuthorHis24H", "ViewerFollowAuthorHis24H", "ViewerProfileAuthorHis24H", "ViewerActiveDays7D", "ViewerViewCnt7D", "ViewerValidviewCnt7D", "ViewerCompleteViewCnt7D", "ViewerViewDuration7D", "ViewerLikeCnt7D", "ViewerCommentCnt7D", "ViewerValidviewRate7D", "UserDeepviewPostids7D", "UserInteractPostids7D", "UserGiftCount", "UserDailyWatchliveMinutes", "UserLiveFollowPreferAnchorIds", "PreferPosTag17DTop3", "PreferPosTag27DTop3", "PreferPosTag37DTop3", "PreferPosTag47DTop3", "PreferPosTag57DTop3", "PreferPosTag67DTop3", "PreferPosTag77DTop3", "PreferPosFtag17DTop3", "PreferPosFtag27DTop3", "PreferPosFtag37DTop3", "PreferPosFtag47DTop3", "PreferPosFtag57DTop3", "PreferPosFtag67DTop3", "PreferNegTag17DTop3", "PreferNegTag27DTop3", "PreferNegTag37DTop3", "PreferNegTag47DTop3", "PreferNegTag57DTop3", "PreferNegTag67DTop3", "PreferNegTag77DTop3", "PreferNegFtag17DTop3", "PreferNegFtag27DTop3", "PreferNegFtag37DTop3", "PreferNegFtag47DTop3", "PreferNegFtag57DTop3", "PreferNegFtag67DTop3", });
-    internal_static_com_gosh_entity_RecPostFeature_descriptor =
+        new java.lang.String[] { "ViewerIsOld", "ViewerRegisterDays", "ViewerExppostCnt1H", "ViewerExp1PostCnt1H", "ViewerExp2PostCnt1H", "Viewer3SviewPostCnt1H", "Viewer3Sview1PostCnt1H", "Viewer3Sview2PostCnt1H", "Viewer3SviewPostHis1H", "Viewer5SstandPostHis1H", "ViewerLikePostHis1H", "ViewerFollowPostHis1H", "ViewerProfilePostHis1H", "ViewerPosinterPostHis1H", "Viewer3SviewPostHis24H", "Viewer5SstandPostHis24H", "ViewerLikePostHis24H", "ViewerFollowPostHis24H", "ViewerProfilePostHis24H", "ViewerPosinterPostHis24H", "ViewerLikeAuthorHis24H", "ViewerFollowAuthorHis24H", "ViewerProfileAuthorHis24H", "ViewerActiveDays7D", "ViewerViewCnt7D", "ViewerValidviewCnt7D", "ViewerCompleteViewCnt7D", "ViewerViewDuration7D", "ViewerLikeCnt7D", "ViewerCommentCnt7D", "ViewerValidviewRate7D", "UserDeepviewPostids7D", "UserInteractPostids7D", "UserGiftCount", "UserDailyWatchliveMinutes", "UserLiveFollowPreferAnchorIds", "PreferPosTag17DTop3", "PreferPosTag27DTop3", "PreferPosTag37DTop3", "PreferPosTag47DTop3", "PreferPosTag57DTop3", "PreferPosTag67DTop3", "PreferPosTag77DTop3", "PreferPosFtag17DTop3", "PreferPosFtag27DTop3", "PreferPosFtag37DTop3", "PreferPosFtag47DTop3", "PreferPosFtag57DTop3", "PreferPosFtag67DTop3", "PreferNegTag17DTop3", "PreferNegTag27DTop3", "PreferNegTag37DTop3", "PreferNegTag47DTop3", "PreferNegTag57DTop3", "PreferNegTag67DTop3", "PreferNegTag77DTop3", "PreferNegFtag17DTop3", "PreferNegFtag27DTop3", "PreferNegFtag37DTop3", "PreferNegFtag47DTop3", "PreferNegFtag57DTop3", "PreferNegFtag67DTop3", "FeedbackTags", "FeedbackAuthorIds", });
+    internal_static_com_gosh_entity_FeedbackTag_descriptor =
       getDescriptor().getMessageTypes().get(1);
+    internal_static_com_gosh_entity_FeedbackTag_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_com_gosh_entity_FeedbackTag_descriptor,
+        new java.lang.String[] { "Tag", "Weight", });
+    internal_static_com_gosh_entity_FeedbackAuthorId_descriptor =
+      getDescriptor().getMessageTypes().get(2);
+    internal_static_com_gosh_entity_FeedbackAuthorId_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_com_gosh_entity_FeedbackAuthorId_descriptor,
+        new java.lang.String[] { "AuthorId", "Weight", });
+    internal_static_com_gosh_entity_RecPostFeature_descriptor =
+      getDescriptor().getMessageTypes().get(3);
     internal_static_com_gosh_entity_RecPostFeature_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_gosh_entity_RecPostFeature_descriptor,
         new java.lang.String[] { "PostId", "PostExpCnt1H", "Post3SviewCnt1H", "Post8SviewCnt1H", "Post12SviewCnt1H", "Post20SviewCnt1H", "Post5SstandCnt1H", "Post10SstandCnt1H", "PostLikeCnt1H", "PostFollowCnt1H", "PostProfileCnt1H", "PostPosinterCnt1H", "PostExpCnt24H", "Post3SviewCnt24H", "Post8SviewCnt24H", "Post12SviewCnt24H", "Post20SviewCnt24H", "Post5SstandCnt24H", "Post10SstandCnt24H", "PostLikeCnt24H", "PostFollowCnt24H", "PostProfileCnt24H", "PostPosinterCnt24H", "PostViewCnt7D", "PostValidviewCnt7D", "PostCompleteviewCnt7D", "PostViewDuration7D", "PostLikeCnt7D", "PostCommentCnt7D", "TagIds", "AuthorExpDistinctPostCnt7D", "AuthorExpPostCnt7D", "AuthorValidviewPostCnt7D", "AuthorViewPostDuration7D", "AuthorLikeCnt7D", "AuthorCommentCnt7D", "AuthorCompleteviewPostCnt7D", "AuthorViewAvgDuration7D", "AuthorInterProfileCnt7D", "AuthorFollowCnt7D", "AuthorFollowersCnt", "PostValidviewRate7D", "PostCompleteviewRate7D", "PostAvgViewDuration7D", "PostLikeRate7D", "PostCommentRate7D", "PostAiEmbedding", "PostAiTags", "PostAsrLang", });
     internal_static_com_gosh_entity_RecUserAuthorFeature_descriptor =
-      getDescriptor().getMessageTypes().get(2);
+      getDescriptor().getMessageTypes().get(4);
     internal_static_com_gosh_entity_RecUserAuthorFeature_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_gosh_entity_RecUserAuthorFeature_descriptor,
         new java.lang.String[] { "UserId", "AuthorId", "UserauthorExpCnt1H", "Userauthor3SviewCnt1H", "Userauthor8SviewCnt1H", "Userauthor12SviewCnt1H", "Userauthor20SviewCnt1H", "Userauthor5SstandCnt1H", "Userauthor10SstandCnt1H", "UserauthorLikeCnt1H", "UserauthorExpCnt24H", "Userauthor3SviewCnt24H", "Userauthor8SviewCnt24H", "Userauthor12SviewCnt24H", "Userauthor20SviewCnt24H", "Userauthor5SstandCnt24H", "Userauthor10SstandCnt24H", "UserauthorLikeCnt24H", "UserAuthorViewCnt7D", "UserAuthorValidviewCnt7D", "UserAuthorCompeleteviewCnt7D", "UserAuthorLikeCnt7D", "UserAuthorCommentCnt7D", "UserAuthorAvgViewDuration7D", "UserAuthorValidviewTfidf7D", "UserAuthorCompeleteviewTfidf7D", "UserAuthorLikecommentTfidf7D", "UserTag11IsLike", "UserTag11IsPlay", "UserTag11IsComment", "UserTag12IsLike", "UserTag12IsPlay", "UserTag12IsComment", "UserTag13IsLike", "UserTag13IsPlay", "UserTag13IsComment", "UserTag14IsLike", "UserTag14IsPlay", "UserTag14IsComment", "UserTag15IsLike", "UserTag15IsPlay", "UserTag15IsComment", "UserTag16IsLike", "UserTag16IsPlay", "UserTag16IsComment", "UserTag17IsLike", "UserTag17IsPlay", "UserTag17IsComment", "UserTag11LikeCnt", "UserTag11PlayCnt", "UserTag11CommentCnt", "UserTag12LikeCnt", "UserTag12PlayCnt", "UserTag12CommentCnt", "UserTag13LikeCnt", "UserTag13PlayCnt", "UserTag13CommentCnt", "UserTag14LikeCnt", "UserTag14PlayCnt", "UserTag14CommentCnt", "UserTag15LikeCnt", "UserTag15PlayCnt", "UserTag15CommentCnt", "UserTag16LikeCnt", "UserTag16PlayCnt", "UserTag16CommentCnt", "UserTag17LikeCnt", "UserTag17PlayCnt", "UserTag17CommentCnt", });
     internal_static_com_gosh_entity_LiveUserAnchorFeature_descriptor =
-      getDescriptor().getMessageTypes().get(3);
+      getDescriptor().getMessageTypes().get(5);
     internal_static_com_gosh_entity_LiveUserAnchorFeature_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_gosh_entity_LiveUserAnchorFeature_descriptor,
         new java.lang.String[] { "UserId", "AnchorId", "UserAnchorExpCnt15Min", "UserAnchor3SquitCnt15Min", "UserAnchor6SquitCnt15Min", "UserAnchorLikeCnt15Min", "UserAnchorCommentCnt15Min", "UserAnchorFollowCnt15Min", "UserAnchorShareCnt15Min", "UserAnchorGiftCnt15Min", "UserAnchorGiftAmount15Min", "UserAnchorNegativeFeedbackCnt15Min", "UserAnchorEnterCnt7D", "UserAnchorQuitCnt7D", "UserAnchorStayGt10SCnt7D", "UserAnchorStayGt30SCnt7D", "UserAnchorAvgViewDuration7D", "UserAnchorPositiveFeedbackCnt7D", "UserAnchorNegativeFeedbackCnt7D", "UserAnchorActiveEnterCnt7D", });
     internal_static_com_gosh_entity_RecLiveAnchorFeature_descriptor =
-      getDescriptor().getMessageTypes().get(4);
+      getDescriptor().getMessageTypes().get(6);
     internal_static_com_gosh_entity_RecLiveAnchorFeature_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_gosh_entity_RecLiveAnchorFeature_descriptor,
         new java.lang.String[] { "AnchorId", "LiveEnterUsernum5Min", "LiveQuitUsernum5Min", "LiveQuitAvgDuration5Min", "LiveAnchorGiftCoin5Min", "LiveAnchorGiftUsernum5Min", "LiveAnchorFollowUsernum5Min", "LiveAnchorChatUsernum5Min", "LiveEnterUsernum10Min", "LiveQuitUsernum10Min", "LiveQuitAvgDuration10Min", "LiveAnchorGiftCoin10Min", "LiveAnchorGiftUsernum10Min", "LiveAnchorFollowUsernum10Min", "LiveAnchorChatUsernum10Min", "LiveEnterUsernum15Min", "LiveQuitUsernum15Min", "LiveQuitAvgDuration15Min", "LiveAnchorGiftCoin15Min", "LiveAnchorGiftUsernum15Min", "LiveAnchorFollowUsernum15Min", "LiveAnchorChatUsernum15Min", "AnchorEnterCnt7D", "AnchorQuitCnt7D", "AnchorStayGt3SCnt7D", "AnchorStayGt10SCnt7D", "AnchorStayGt30SCnt7D", "AnchorAvgViewDuration7D", "AnchorFollowCnt7D", "AnchorPositiveFeedbackCnt7D", "AnchorNegativeFeedbackCnt7D", "AnchorLiveSceneExposureCnt7D", "AnchorForuSceneExposureCnt7D", "AnchorLiveSceneEnterCnt7D", "AnchorForuSceneEnterCnt7D", "AnchorGiftCnt7D", });
     internal_static_com_gosh_entity_RecLiveUserFeature_descriptor =
-      getDescriptor().getMessageTypes().get(5);
+      getDescriptor().getMessageTypes().get(7);
     internal_static_com_gosh_entity_RecLiveUserFeature_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_gosh_entity_RecLiveUserFeature_descriptor,
         new java.lang.String[] { "UserId", "UserStayGt10SAnchorList", "UserActiveEnterAnchorList", "UserPositiveFeedbackAnchorList", });
     internal_static_com_gosh_entity_IdScore_descriptor =
-      getDescriptor().getMessageTypes().get(6);
+      getDescriptor().getMessageTypes().get(8);
     internal_static_com_gosh_entity_IdScore_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_gosh_entity_IdScore_descriptor,
         new java.lang.String[] { "Id", "Score", });
     internal_static_com_gosh_entity_RecLiveIdFeature_descriptor =
-      getDescriptor().getMessageTypes().get(7);
+      getDescriptor().getMessageTypes().get(9);
     internal_static_com_gosh_entity_RecLiveIdFeature_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_gosh_entity_RecLiveIdFeature_descriptor,

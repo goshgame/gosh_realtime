@@ -1,6 +1,7 @@
 package com.gosh.config;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -363,6 +364,39 @@ public class RedisConfig implements Serializable {
 
     public void setClusterTopologyTimeout(int clusterTopologyTimeout) {
         this.clusterTopologyTimeout = clusterTopologyTimeout;
+    }
+
+    public RedisConfig copy() {
+        RedisConfig copy = new RedisConfig();
+        copy.hostname = this.hostname;
+        copy.port = this.port;
+        copy.password = this.password;
+        copy.database = this.database;
+        copy.keyPattern = this.keyPattern;
+        copy.valueType = this.valueType;
+        copy.command = this.command;
+        copy.timeout = this.timeout;
+        copy.ssl = this.ssl;
+        copy.ttl = this.ttl;
+        copy.async = this.async;
+        copy.clusterMode = this.clusterMode;
+        copy.clusterNodes = this.clusterNodes == null ? null : new ArrayList<>(this.clusterNodes);
+        copy.sslEnabled = this.sslEnabled;
+        copy.sslTrustStore = this.sslTrustStore;
+        copy.sslTrustStorePassword = this.sslTrustStorePassword;
+        copy.sslKeyStore = this.sslKeyStore;
+        copy.sslKeyStorePassword = this.sslKeyStorePassword;
+        copy.sslKeyPassword = this.sslKeyPassword;
+        copy.connectTimeout = this.connectTimeout;
+        copy.readTimeout = this.readTimeout;
+        copy.clusterTopologyTimeout = this.clusterTopologyTimeout;
+        copy.serializerType = this.serializerType;
+        copy.protobufMessageType = this.protobufMessageType;
+        copy.threadPoolCoreSize = this.threadPoolCoreSize;
+        copy.threadPoolMaxSize = this.threadPoolMaxSize;
+        copy.threadPoolKeepAliveTime = this.threadPoolKeepAliveTime;
+        copy.threadPoolQueueCapacity = this.threadPoolQueueCapacity;
+        return copy;
     }
 
     @Override
