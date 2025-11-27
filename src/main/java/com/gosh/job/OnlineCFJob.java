@@ -500,12 +500,15 @@ public class OnlineCFJob {
 
     /**
      * 写入 pair 计数到 Redis（用于时间衰减计算）
+     * 使用批量写入优化性能
      */
     private static class PairCountRedisSink extends RichSinkFunction<PairScoreEvent> {
 
         private final OnlineCFConfig config;
         private final RedisConfig redisConfig;
         private transient RedisHelper redisHelper;
+        private transient Map<String, String> batchBuffer;
+        private static final int BATCH_SIZE = 100; // 批量写入阈值
 
         PairCountRedisSink(OnlineCFConfig config, RedisConfig redisConfig) {
             this.config = config;
@@ -516,6 +519,7 @@ public class OnlineCFJob {
         public void open(org.apache.flink.configuration.Configuration parameters) {
             this.redisHelper = new RedisHelper(redisConfig);
             this.redisHelper.open();
+            this.batchBuffer = new HashMap<>();
         }
 
         @Override
@@ -526,11 +530,28 @@ public class OnlineCFJob {
             long currentMinute = TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis());
             String pairKey = config.getPairKeyPrefix() + value.leftItemId + "_" + value.rightItemId;
             String pairValue = value.score + ":" + currentMinute;
-            redisHelper.setex(pairKey, config.getPairExpireSeconds(), pairValue);
+
+            // 添加到批量缓冲区
+            batchBuffer.put(pairKey, pairValue);
+
+            // 达到批量阈值时执行批量写入
+            if (batchBuffer.size() >= BATCH_SIZE) {
+                flushBatch();
+            }
+        }
+
+        private void flushBatch() {
+            if (batchBuffer.isEmpty()) {
+                return;
+            }
+            redisHelper.msetex(batchBuffer, config.getPairExpireSeconds());
+            batchBuffer.clear();
         }
 
         @Override
         public void close() {
+            // 关闭前刷新剩余数据
+            flushBatch();
             Optional.ofNullable(redisHelper).ifPresent(RedisHelper::close);
         }
     }
@@ -538,12 +559,15 @@ public class OnlineCFJob {
     /**
      * 批量写入 index Top-K 到 Redis（Protobuf 格式）
      * 读取现有 Top-K，合并新数据，排序后重新写入
+     * 使用批量缓冲区和异步写入优化性能
      */
     private static class IndexTopKRedisSink extends RichSinkFunction<Tuple2<Long, List<Tuple2<Long, Long>>>> {
 
         private final OnlineCFConfig config;
         private final RedisConfig redisConfig;
         private transient RedisHelper redisHelper;
+        private transient Map<String, byte[]> batchBuffer;
+        private static final int BATCH_SIZE = 50; // 批量写入阈值
 
         IndexTopKRedisSink(OnlineCFConfig config, RedisConfig redisConfig) {
             this.config = config;
@@ -554,6 +578,7 @@ public class OnlineCFJob {
         public void open(org.apache.flink.configuration.Configuration parameters) {
             this.redisHelper = new RedisHelper(redisConfig);
             this.redisHelper.open();
+            this.batchBuffer = new HashMap<>();
         }
 
         @Override
@@ -615,13 +640,28 @@ public class OnlineCFJob {
                 listBuilder.addItems(itemBuilder.build());
             }
 
-            // 6. 序列化并写入 Redis
+            // 6. 序列化并添加到批量缓冲区
             byte[] protobufBytes = listBuilder.build().toByteArray();
-            redisHelper.setex(indexKey, config.getIndexExpireSeconds(), protobufBytes);
+            batchBuffer.put(indexKey, protobufBytes);
+
+            // 7. 达到批量阈值时执行批量异步写入
+            if (batchBuffer.size() >= BATCH_SIZE) {
+                flushBatch();
+            }
+        }
+
+        private void flushBatch() {
+            if (batchBuffer.isEmpty()) {
+                return;
+            }
+            redisHelper.msetexBytes(batchBuffer, config.getIndexExpireSeconds());
+            batchBuffer.clear();
         }
 
         @Override
         public void close() {
+            // 关闭前刷新剩余数据
+            flushBatch();
             Optional.ofNullable(redisHelper).ifPresent(RedisHelper::close);
         }
     }
@@ -796,6 +836,10 @@ public class OnlineCFJob {
             }
         }
 
+        RedisConnectionManager getConnectionManager() {
+            return connectionManager;
+        }
+
         byte[] getValue(String key) {
             Tuple2<String, byte[]> result = clusterMode
                     ? clusterCommands.get(key)
@@ -839,6 +883,92 @@ public class OnlineCFJob {
                 } else {
                     commands.set(key, tuple);
                 }
+            }
+        }
+
+        /**
+         * 批量写入多个 key-value 对（使用 MSET + 批量 EXPIRE）
+         * 使用异步批量写入提高性能
+         */
+        void msetex(Map<String, String> keyValueMap, int ttlSeconds) {
+            if (keyValueMap == null || keyValueMap.isEmpty()) {
+                return;
+            }
+
+            // 转换为 Tuple2 格式
+            Map<String, Tuple2<String, byte[]>> wrappedMap = new HashMap<>();
+            for (Map.Entry<String, String> entry : keyValueMap.entrySet()) {
+                wrappedMap.put(entry.getKey(), wrap(entry.getValue()));
+            }
+
+            // 使用异步批量写入
+            if (clusterMode) {
+                connectionManager.executeClusterAsync(cmd -> {
+                    // MSET 批量设置
+                    cmd.mset(wrappedMap);
+                    // 批量设置过期时间
+                    if (ttlSeconds > 0) {
+                        for (String key : wrappedMap.keySet()) {
+                            cmd.expire(key, ttlSeconds);
+                        }
+                    }
+                    return null;
+                });
+            } else {
+                connectionManager.executeAsync(cmd -> {
+                    // MSET 批量设置
+                    cmd.mset(wrappedMap);
+                    // 批量设置过期时间
+                    if (ttlSeconds > 0) {
+                        for (String key : wrappedMap.keySet()) {
+                            cmd.expire(key, ttlSeconds);
+                        }
+                    }
+                    return null;
+                });
+            }
+        }
+
+        /**
+         * 批量写入多个 key-byte[] 对（使用 MSET + 批量 EXPIRE）
+         * 用于 Protobuf 数据的批量异步写入
+         */
+        void msetexBytes(Map<String, byte[]> keyValueMap, int ttlSeconds) {
+            if (keyValueMap == null || keyValueMap.isEmpty()) {
+                return;
+            }
+
+            // 转换为 Tuple2 格式
+            Map<String, Tuple2<String, byte[]>> wrappedMap = new HashMap<>();
+            for (Map.Entry<String, byte[]> entry : keyValueMap.entrySet()) {
+                wrappedMap.put(entry.getKey(), new Tuple2<>("", entry.getValue()));
+            }
+
+            // 使用异步批量写入
+            if (clusterMode) {
+                connectionManager.executeClusterAsync(cmd -> {
+                    // MSET 批量设置
+                    cmd.mset(wrappedMap);
+                    // 批量设置过期时间
+                    if (ttlSeconds > 0) {
+                        for (String key : wrappedMap.keySet()) {
+                            cmd.expire(key, ttlSeconds);
+                        }
+                    }
+                    return null;
+                });
+            } else {
+                connectionManager.executeAsync(cmd -> {
+                    // MSET 批量设置
+                    cmd.mset(wrappedMap);
+                    // 批量设置过期时间
+                    if (ttlSeconds > 0) {
+                        for (String key : wrappedMap.keySet()) {
+                            cmd.expire(key, ttlSeconds);
+                        }
+                    }
+                    return null;
+                });
             }
         }
 
