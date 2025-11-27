@@ -175,22 +175,153 @@ public class OnlineCFJob {
 
     public static class UserInteractionEvent implements Serializable {
         private static final long serialVersionUID = 1L;
-        long uid;
-        long itemId;
-        String recToken;
-        long timestamp;
-        boolean expose;
-        boolean view;
-        boolean click;
-        boolean longView;
-        boolean like;
-        boolean follow;
-        boolean profileEnter;
-        boolean favorite;
-        boolean comment;
-        boolean forward;
-        boolean share;
-        boolean download;
+        public long uid;
+        public long itemId;
+        public String recToken;
+        public long timestamp;
+        public boolean expose;
+        public boolean view;
+        public boolean click;
+        public boolean longView;
+        public boolean like;
+        public boolean follow;
+        public boolean profileEnter;
+        public boolean favorite;
+        public boolean comment;
+        public boolean forward;
+        public boolean share;
+        public boolean download;
+
+        public UserInteractionEvent() {
+        }
+
+        public long getUid() {
+            return uid;
+        }
+
+        public void setUid(long uid) {
+            this.uid = uid;
+        }
+
+        public long getItemId() {
+            return itemId;
+        }
+
+        public void setItemId(long itemId) {
+            this.itemId = itemId;
+        }
+
+        public String getRecToken() {
+            return recToken;
+        }
+
+        public void setRecToken(String recToken) {
+            this.recToken = recToken;
+        }
+
+        public long getTimestamp() {
+            return timestamp;
+        }
+
+        public void setTimestamp(long timestamp) {
+            this.timestamp = timestamp;
+        }
+
+        public boolean isExpose() {
+            return expose;
+        }
+
+        public void setExpose(boolean expose) {
+            this.expose = expose;
+        }
+
+        public boolean isView() {
+            return view;
+        }
+
+        public void setView(boolean view) {
+            this.view = view;
+        }
+
+        public boolean isClick() {
+            return click;
+        }
+
+        public void setClick(boolean click) {
+            this.click = click;
+        }
+
+        public boolean isLongView() {
+            return longView;
+        }
+
+        public void setLongView(boolean longView) {
+            this.longView = longView;
+        }
+
+        public boolean isLike() {
+            return like;
+        }
+
+        public void setLike(boolean like) {
+            this.like = like;
+        }
+
+        public boolean isFollow() {
+            return follow;
+        }
+
+        public void setFollow(boolean follow) {
+            this.follow = follow;
+        }
+
+        public boolean isProfileEnter() {
+            return profileEnter;
+        }
+
+        public void setProfileEnter(boolean profileEnter) {
+            this.profileEnter = profileEnter;
+        }
+
+        public boolean isFavorite() {
+            return favorite;
+        }
+
+        public void setFavorite(boolean favorite) {
+            this.favorite = favorite;
+        }
+
+        public boolean isComment() {
+            return comment;
+        }
+
+        public void setComment(boolean comment) {
+            this.comment = comment;
+        }
+
+        public boolean isForward() {
+            return forward;
+        }
+
+        public void setForward(boolean forward) {
+            this.forward = forward;
+        }
+
+        public boolean isShare() {
+            return share;
+        }
+
+        public void setShare(boolean share) {
+            this.share = share;
+        }
+
+        public boolean isDownload() {
+            return download;
+        }
+
+        public void setDownload(boolean download) {
+            this.download = download;
+        }
 
         String sessionKey() {
             return uid + "|" + recToken + "|" + itemId;
