@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gosh.config.RedisConfig;
 import com.gosh.config.RedisConnectionManager;
 import com.gosh.entity.RecFeature;
+import com.gosh.entity.RecTagColdFeature;
 import com.gosh.job.UserFeatureCommon.ExposeEventParser;
 import com.gosh.job.UserFeatureCommon.ExposeToFeatureMapper;
 import com.gosh.job.UserFeatureCommon.UserFeatureEvent;
@@ -817,7 +818,8 @@ public class OnlineCFJobWithDetailedLogs {
     }
 
     /**
-     * 批量写入 index Top-K 到 Redis ZSet
+     * 批量写入 index Top-K 到 Redis（Protobuf 格式）
+     * 读取现有 Top-K，合并新数据，排序后重新写入
      */
     private static class IndexTopKRedisSink extends RichSinkFunction<Tuple2<Long, List<Tuple2<Long, Long>>>> {
 
@@ -851,32 +853,35 @@ public class OnlineCFJobWithDetailedLogs {
             }
 
             long leftItemId = value.f0;
-            String indexKey = config.getIndexKeyPrefix() + leftItemId;
+            String indexKey = config.getIndexKey(leftItemId);
             System.out.println(String.format("IndexTopKRedisSink[%d]: 处理Index Key - %s", indexSinkCount, indexKey));
 
-            // 1. 读取现有的 Top-K
+            // 1. 读取现有的 Top-K（Protobuf 格式），用于合并历史数据
             System.out.println(String.format("IndexTopKRedisSink[%d]: 读取现有Top-K", indexSinkCount));
-            List<String> existingTopK = redisHelper.getTopK(indexKey, config.getIndexLimit());
-            System.out.println(String.format("IndexTopKRedisSink[%d]: 现有Top-K数量: %d", indexSinkCount, existingTopK.size()));
-
             List<Long> newRightItemIds = value.f1.stream()
                     .map(pair -> pair.f0)
                     .collect(Collectors.toList());
             System.out.println(String.format("IndexTopKRedisSink[%d]: 新RightItem数量: %d", indexSinkCount, newRightItemIds.size()));
 
             List<Tuple2<Long, Long>> existingPairs = new ArrayList<>();
-            for (String member : existingTopK) {
+            byte[] existingData = redisHelper.getValue(indexKey);
+            if (existingData != null && existingData.length > 0) {
                 try {
-                    long rightItemId = Long.parseLong(member);
-                    if (!newRightItemIds.contains(rightItemId)) {
-                        Double score = redisHelper.zscore(indexKey, member);
-                        if (score != null) {
-                            existingPairs.add(Tuple2.of(rightItemId, score.longValue()));
+                    RecTagColdFeature.PostItemList existingList = RecTagColdFeature.PostItemList.parseFrom(existingData);
+                    System.out.println(String.format("IndexTopKRedisSink[%d]: 现有Top-K数量: %d", indexSinkCount, existingList.getItemsCount()));
+                    for (RecTagColdFeature.PostItem item : existingList.getItemsList()) {
+                        long rightItemId = item.getPostId();
+                        // 排除新数据中已存在的 rightItem（新数据会覆盖）
+                        if (!newRightItemIds.contains(rightItemId)) {
+                            long score = Math.round(item.getScore());
+                            existingPairs.add(Tuple2.of(rightItemId, score));
                         }
                     }
-                } catch (NumberFormatException e) {
-                    // 忽略无效的 member
+                } catch (Exception e) {
+                    System.out.println(String.format("IndexTopKRedisSink[%d]: Protobuf解析失败: %s", indexSinkCount, e.getMessage()));
                 }
+            } else {
+                System.out.println(String.format("IndexTopKRedisSink[%d]: Redis中无现有数据", indexSinkCount));
             }
             System.out.println(String.format("IndexTopKRedisSink[%d]: 保留的历史Pair数量: %d", indexSinkCount, existingPairs.size()));
 
@@ -902,23 +907,21 @@ public class OnlineCFJobWithDetailedLogs {
                     .collect(Collectors.toList());
             System.out.println(String.format("IndexTopKRedisSink[%d]: 过滤后Top-K数量: %d", indexSinkCount, sorted.size()));
 
-            // 5. 删除旧的 ZSet，重新写入 Top-K
-            System.out.println(String.format("IndexTopKRedisSink[%d]: 删除旧Index", indexSinkCount));
-            redisHelper.del(indexKey);
-
-            // 6. 批量写入 ZSet
-            System.out.println(String.format("IndexTopKRedisSink[%d]: 开始写入新Index", indexSinkCount));
+            // 5. 构建 Protobuf PostItemList
+            System.out.println(String.format("IndexTopKRedisSink[%d]: 构建Protobuf", indexSinkCount));
+            RecTagColdFeature.PostItemList.Builder listBuilder = RecTagColdFeature.PostItemList.newBuilder();
             for (Map.Entry<Long, Long> entry : sorted) {
-                redisHelper.zadd(indexKey, entry.getValue().doubleValue(), String.valueOf(entry.getKey()));
+                RecTagColdFeature.PostItem.Builder itemBuilder = RecTagColdFeature.PostItem.newBuilder();
+                itemBuilder.setPostId(entry.getKey());
+                itemBuilder.setScore(entry.getValue().floatValue());
+                listBuilder.addItems(itemBuilder.build());
             }
 
-            // 7. 设置过期时间
-            if (!sorted.isEmpty()) {
-                redisHelper.expire(indexKey, config.getIndexExpireSeconds());
-                System.out.println(String.format("IndexTopKRedisSink[%d]: 设置过期时间: %d秒", indexSinkCount, config.getIndexExpireSeconds()));
-            } else {
-                System.out.println(String.format("IndexTopKRedisSink[%d]: 无有效数据，不设置过期时间", indexSinkCount));
-            }
+            // 6. 序列化并写入 Redis
+            byte[] protobufBytes = listBuilder.build().toByteArray();
+            System.out.println(String.format("IndexTopKRedisSink[%d]: Protobuf序列化完成，大小: %d bytes", indexSinkCount, protobufBytes.length));
+            redisHelper.setex(indexKey, config.getIndexExpireSeconds(), protobufBytes);
+            System.out.println(String.format("IndexTopKRedisSink[%d]: 写入Redis完成，TTL: %d秒", indexSinkCount, config.getIndexExpireSeconds()));
 
             System.out.println(String.format("IndexTopKRedisSink[%d]: 处理完成", indexSinkCount));
         }
@@ -1184,6 +1187,29 @@ public class OnlineCFJobWithDetailedLogs {
             }
         }
 
+        void setex(String key, int ttlSeconds, byte[] value) {
+            System.out.println(String.format("RedisHelper: SETEX (byte[]) - Key: %s, TTL: %d, Size: %d bytes", key, ttlSeconds, value.length));
+            try {
+                Tuple2<String, byte[]> tuple = new Tuple2<>("", value);
+                if (ttlSeconds > 0) {
+                    if (clusterMode) {
+                        clusterCommands.setex(key, ttlSeconds, tuple);
+                    } else {
+                        commands.setex(key, ttlSeconds, tuple);
+                    }
+                } else {
+                    if (clusterMode) {
+                        clusterCommands.set(key, tuple);
+                    } else {
+                        commands.set(key, tuple);
+                    }
+                }
+                System.out.println("RedisHelper: SETEX (byte[]) 操作完成");
+            } catch (Exception e) {
+                System.err.println("RedisHelper: SETEX (byte[]) 操作异常 - " + e.getMessage());
+            }
+        }
+
         void zadd(String key, double score, String member) {
             System.out.println(String.format("RedisHelper: ZADD - Key: %s, Score: %.2f, Member: %s", key, score, member));
             try {
@@ -1334,7 +1360,8 @@ public class OnlineCFJobWithDetailedLogs {
         private static final String HISTORY_KEY_PREFIX = "rec:user_feature:{";
         private static final String HISTORY_KEY_SUFFIX = "}:post24h";
         private static final String PAIR_KEY_PREFIX = "rec:actioncf_pair:";
-        private static final String INDEX_KEY_PREFIX = "rec:actioncf_index:";
+        private static final String INDEX_KEY_PREFIX = "rec_post:{";
+        private static final String INDEX_KEY_SUFFIX = "}:user_action_onlinecf";
 
         // 历史记录配置
         private static final int HISTORY_MAX_ITEMS = 50;
@@ -1417,6 +1444,10 @@ public class OnlineCFJobWithDetailedLogs {
 
         String getIndexKeyPrefix() {
             return INDEX_KEY_PREFIX;
+        }
+
+        String getIndexKey(long leftItemId) {
+            return INDEX_KEY_PREFIX + leftItemId + INDEX_KEY_SUFFIX;
         }
 
         int getActionWeight(String action) {
