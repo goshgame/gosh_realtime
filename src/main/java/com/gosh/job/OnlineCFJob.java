@@ -43,6 +43,7 @@ import io.lettuce.core.api.sync.RedisCommands;
 import io.lettuce.core.cluster.api.sync.RedisAdvancedClusterCommands;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.*;
@@ -172,7 +173,8 @@ public class OnlineCFJob {
     // Data model
     // ------------------------------------------------------------------------
 
-    private static class UserInteractionEvent {
+    public static class UserInteractionEvent implements Serializable {
+        private static final long serialVersionUID = 1L;
         long uid;
         long itemId;
         String recToken;
@@ -195,7 +197,8 @@ public class OnlineCFJob {
         }
     }
 
-    private static class SessionAccumulator {
+    public static class SessionAccumulator implements Serializable {
+        private static final long serialVersionUID = 1L;
         long uid;
         long itemId;
         String recToken;
@@ -203,7 +206,8 @@ public class OnlineCFJob {
         long latestTs;
     }
 
-    private static class SessionInteractionScore {
+    public static class SessionInteractionScore implements Serializable {
+        private static final long serialVersionUID = 1L;
         long uid;
         long rightItemId;
         long totalScore;
@@ -211,7 +215,8 @@ public class OnlineCFJob {
         String recToken;
     }
 
-    private static class PairScoreEvent {
+    public static class PairScoreEvent implements Serializable {
+        private static final long serialVersionUID = 1L;
         long leftItemId;
         long rightItemId;
         long score;
@@ -227,7 +232,8 @@ public class OnlineCFJob {
         }
     }
 
-    private static class ItemHistory {
+    private static class ItemHistory implements Serializable {
+        private static final long serialVersionUID = 1L;
         long itemId;
         long timestamp;
         double weight;
@@ -1092,7 +1098,8 @@ public class OnlineCFJob {
     // Configuration - All config values are hardcoded constants
     // ------------------------------------------------------------------------
 
-    static class OnlineCFConfig {
+    static class OnlineCFConfig implements Serializable {
+        private static final long serialVersionUID = 1L;
         // Kafka配置
         private static final String KAFKA_GROUP_ID = "gosh-onlinecf";
 
