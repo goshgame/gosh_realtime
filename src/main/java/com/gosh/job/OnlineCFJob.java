@@ -1362,7 +1362,7 @@ public class OnlineCFJob {
         private static final int ACTION_WEIGHT_DOWNLOAD = 5;
 
         // Flink配置
-        private static final int PARALLELISM = 4;
+        private static final int PARALLELISM = 1;
 
         String getKafkaGroupId() {
             return KAFKA_GROUP_ID;
