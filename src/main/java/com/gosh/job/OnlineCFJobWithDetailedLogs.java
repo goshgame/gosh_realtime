@@ -60,19 +60,19 @@ public class OnlineCFJobWithDetailedLogs {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     public static void main(String[] args) throws Exception {
-        System.out.println("=== OnlineCFJob 启动 ===");
-        System.out.println("启动时间: " + new Date());
-        System.out.println("参数: " + Arrays.toString(args));
+        LOG.info("=== OnlineCFJob 启动 ===");
+        LOG.info("启动时间: " + new Date());
+        LOG.info("参数: " + Arrays.toString(args));
 
         try {
             OnlineCFConfig config = new OnlineCFConfig();
-            System.out.println("1. 加载配置完成");
+            LOG.info("1. 加载配置完成");
 
             RedisConfig baseRedisConfig = RedisConfig.fromProperties(RedisUtil.loadProperties());
             RedisConfig historyRedisConfig = baseRedisConfig.copy();
             RedisConfig pairRedisConfig = baseRedisConfig.copy();
             pairRedisConfig.setTtl(config.getPairExpireSeconds());
-            System.out.println("2. Redis配置初始化完成");
+            LOG.info("2. Redis配置初始化完成");
 
             StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
             env.enableCheckpointing(60000, CheckpointingMode.EXACTLY_ONCE);
@@ -82,28 +82,28 @@ public class OnlineCFJobWithDetailedLogs {
             int configuredParallelism = config.getParallelism();
             if (configuredParallelism > 0) {
                 env.setParallelism(configuredParallelism);
-                System.out.println("3. Flink环境配置完成，并行度: " + config.getParallelism());
+                LOG.info("3. Flink环境配置完成，并行度: " + config.getParallelism());
             } else {
-                System.out.println("3. Flink环境配置完成，使用 Flink 默认并行度");
+                LOG.info("3. Flink环境配置完成，使用 Flink 默认并行度");
             }
 
             java.util.Properties kafkaProperties = KafkaEnvUtil.loadProperties();
             kafkaProperties.setProperty("group.id", config.getKafkaGroupId());
-            System.out.println("4. Kafka配置: group.id=" + config.getKafkaGroupId());
+            LOG.info("4. Kafka配置: group.id=" + config.getKafkaGroupId());
 
             KafkaSource<String> kafkaSource = KafkaEnvUtil.createKafkaSource(
                     kafkaProperties,
                     "post");
-            System.out.println("5. Kafka Source创建完成");
+            LOG.info("5. Kafka Source创建完成");
 
             DataStream<String> kafkaStream = env.fromSource(kafkaSource,
                     WatermarkStrategy.noWatermarks(), "onlinecf-kafka-source");
-            System.out.println("6. Kafka数据流创建完成");
+            LOG.info("6. Kafka数据流创建完成");
 
             // 添加Kafka消息调试
             DataStream<String> debugKafkaStream = kafkaStream
                     .map(value -> {
-                        System.out.println("Kafka原始消息: " + (value.length() > 200 ? value.substring(0, 200) + "..." : value));
+                        LOG.info("Kafka原始消息: " + (value.length() > 200 ? value.substring(0, 200) + "..." : value));
                         return value;
                     })
                     .name("debug-kafka-messages");
@@ -112,17 +112,17 @@ public class OnlineCFJobWithDetailedLogs {
                     WatermarkStrategy.<UserFeatureEvent>forBoundedOutOfOrderness(Duration.ofSeconds(10))
                             .withTimestampAssigner((SerializableTimestampAssigner<UserFeatureEvent>) (event, recordTimestamp) -> {
                                 long ts = event.getTimestamp();
-                                System.out.println("特征事件时间戳分配: " + ts + ", 事件类型: " + event.eventType);
+                                LOG.info("特征事件时间戳分配: " + ts + ", 事件类型: " + event.eventType);
                                 return ts;
                             });
 
-            System.out.println("7. 开始解析曝光事件...");
+            LOG.info("7. 开始解析曝光事件...");
             DataStream<UserFeatureEvent> exposeFeatureStream = debugKafkaStream
                     .flatMap(new ExposeEventParser())
                     .name("parse-expose-events")
                     .map(event -> {
                         if (event != null) {
-                            System.out.println("解析曝光事件 - UID: " + event.uid + ", PostID: " + event.infoList.stream().map(e -> e.postId).collect(Collectors.toList()).toString());
+                            LOG.info("解析曝光事件 - UID: " + event.uid + ", PostID: " + event.infoList.stream().map(e -> e.postId).collect(Collectors.toList()).toString());
                         }
                         return event;
                     })
@@ -131,19 +131,19 @@ public class OnlineCFJobWithDetailedLogs {
                     .name("expose-to-feature")
                     .map(event -> {
                         if (event != null) {
-                            System.out.println("曝光特征事件 - UID: " + event.uid + ", PostID: " + event.postId + ", 时间戳: " + event.timestamp);
+                            LOG.info("曝光特征事件 - UID: " + event.uid + ", PostID: " + event.postId + ", 时间戳: " + event.timestamp);
                         }
                         return event;
                     })
                     .name("debug-expose-features");
 
-            System.out.println("8. 开始解析观看事件...");
+            LOG.info("8. 开始解析观看事件...");
             DataStream<UserFeatureEvent> viewFeatureStream = debugKafkaStream
                     .flatMap(new ViewEventParser())
                     .name("parse-view-events")
                     .map(event -> {
                         if (event != null) {
-                            System.out.println("解析观看事件 - UID: " + event.uid + ", PostID: " + event.infoList.stream().map(e -> e.postId).collect(Collectors.toList()).toString()+ ", 进度: " + event.infoList.stream().map(e -> e.progressTime).collect(Collectors.toList()).toString());
+                            LOG.info("解析观看事件 - UID: " + event.uid + ", PostID: " + event.infoList.stream().map(e -> e.postId).collect(Collectors.toList()).toString()+ ", 进度: " + event.infoList.stream().map(e -> e.progressTime).collect(Collectors.toList()).toString());
                         }
                         return event;
                     })
@@ -152,7 +152,7 @@ public class OnlineCFJobWithDetailedLogs {
                     .name("view-to-feature")
                     .map(event -> {
                         if (event != null) {
-                            System.out.println("观看特征事件 - UID: " + event.uid + ", PostID: " + event.postId + ", 时间戳: " + event.timestamp);
+                            LOG.info("观看特征事件 - UID: " + event.uid + ", PostID: " + event.postId + ", 时间戳: " + event.timestamp);
                         }
                         return event;
                     })
@@ -163,16 +163,16 @@ public class OnlineCFJobWithDetailedLogs {
                     .assignTimestampsAndWatermarks(featureWatermark)
                     .name("unified-feature-stream")
                     .map(event -> {
-                        System.out.println("统一特征流事件 - UID: " + event.uid + ", PostID: " + event.postId + ", 类型: " + event.eventType);
+                        LOG.info("统一特征流事件 - UID: " + event.uid + ", PostID: " + event.postId + ", 类型: " + event.eventType);
                         return event;
                     })
                     .name("debug-unified-features");
 
-            System.out.println("9. 开始转换交互事件...");
+            LOG.info("9. 开始转换交互事件...");
             WatermarkStrategy<UserInteractionEvent> interactionWatermark =
                     WatermarkStrategy.<UserInteractionEvent>forBoundedOutOfOrderness(Duration.ofSeconds(5))
                             .withTimestampAssigner((SerializableTimestampAssigner<UserInteractionEvent>) (event, recordTimestamp) -> {
-                                System.out.println("交互事件时间戳: " + event.timestamp);
+                                LOG.info("交互事件时间戳: " + event.timestamp);
                                 return event.timestamp;
                             });
 
@@ -180,7 +180,7 @@ public class OnlineCFJobWithDetailedLogs {
                     .map(new FeatureEventToInteractionMapper())
                     .name("feature-to-interaction")
                     .map(event -> {
-                        System.out.println("转换后交互事件 - UID: " + event.uid + ", ItemID: " + event.itemId +
+                        LOG.info("转换后交互事件 - UID: " + event.uid + ", ItemID: " + event.itemId +
                                 ", SessionKey: " + event.sessionKey() + ", 时间戳: " + event.timestamp);
                         return event;
                     })
@@ -189,23 +189,23 @@ public class OnlineCFJobWithDetailedLogs {
                     .filter((FilterFunction<UserInteractionEvent>) event -> {
                         boolean valid = event.uid > 0 && event.itemId > 0;
                         if (!valid) {
-                            System.out.println("过滤无效交互事件 - UID: " + event.uid + ", ItemID: " + event.itemId);
+                            LOG.info("过滤无效交互事件 - UID: " + event.uid + ", ItemID: " + event.itemId);
                         }
                         return valid;
                     });
 
-            System.out.println("10. 开始会话窗口聚合...");
+            LOG.info("10. 开始会话窗口聚合...");
             DataStream<SessionInteractionScore> sessionScoreStream = interactionStream
                     .keyBy((KeySelector<UserInteractionEvent, String>) event -> {
                         String key = event.sessionKey();
-                        System.out.println("KeyBy Session: " + key);
+                        LOG.info("KeyBy Session: " + key);
                         return key;
                     })
                     .window(TumblingEventTimeWindows.of(Time.minutes(config.getSessionWindowMinutes())))
                     .aggregate(new SessionAggregateFunction(config), new SessionWindowProcessFunction())
                     .name("session-score-aggregate")
                     .map(score -> {
-                        System.out.println("会话得分 - UID: " + score.uid + ", ItemID: " + score.rightItemId +
+                        LOG.info("会话得分 - UID: " + score.uid + ", ItemID: " + score.rightItemId +
                                 ", 总分: " + score.totalScore + ", 窗口结束: " + score.windowEndTs);
                         return score;
                     })
@@ -213,17 +213,17 @@ public class OnlineCFJobWithDetailedLogs {
                     .filter((FilterFunction<SessionInteractionScore>) session -> {
                         boolean valid = session.totalScore > 0;
                         if (!valid) {
-                            System.out.println("过滤零分会话 - UID: " + session.uid + ", ItemID: " + session.rightItemId);
+                            LOG.info("过滤零分会话 - UID: " + session.uid + ", ItemID: " + session.rightItemId);
                         }
                         return valid;
                     });
 
-            System.out.println("11. 开始用户历史关联...");
+            LOG.info("11. 开始用户历史关联...");
             DataStream<PairScoreEvent> pairCandidateStream = sessionScoreStream
                     .flatMap(new UserHistoryJoinFunction(config, historyRedisConfig))
                     .name("join-user-history")
                     .map(pair -> {
-                        System.out.println("候选Pair - Left: " + pair.leftItemId + ", Right: " + pair.rightItemId +
+                        LOG.info("候选Pair - Left: " + pair.leftItemId + ", Right: " + pair.rightItemId +
                                 ", 得分: " + pair.score + ", 时间: " + pair.eventTimestamp);
                         return pair;
                     })
@@ -231,23 +231,23 @@ public class OnlineCFJobWithDetailedLogs {
                     .filter((FilterFunction<PairScoreEvent>) pair -> {
                         boolean valid = pair.leftItemId > 0 && pair.rightItemId > 0;
                         if (!valid) {
-                            System.out.println("过滤无效Pair - Left: " + pair.leftItemId + ", Right: " + pair.rightItemId);
+                            LOG.info("过滤无效Pair - Left: " + pair.leftItemId + ", Right: " + pair.rightItemId);
                         }
                         return valid;
                     });
 
-            System.out.println("12. 开始Pair窗口聚合...");
+            LOG.info("12. 开始Pair窗口聚合...");
             DataStream<PairScoreEvent> pairWindowedStream = pairCandidateStream
                     .keyBy((KeySelector<PairScoreEvent, String>) pair -> {
                         String key = pair.pairKey();
-                        System.out.println("KeyBy Pair: " + key);
+                        LOG.info("KeyBy Pair: " + key);
                         return key;
                     })
                     .window(TumblingProcessingTimeWindows.of(Time.minutes(config.getPairWindowMinutes())))
                     .reduce(new PairScoreReducer(), new PairWindowProcessFunction())
                     .name("pair-window-aggregate")
                     .map(pair -> {
-                        System.out.println("窗口聚合Pair - Left: " + pair.leftItemId + ", Right: " + pair.rightItemId +
+                        LOG.info("窗口聚合Pair - Left: " + pair.leftItemId + ", Right: " + pair.rightItemId +
                                 ", 聚合得分: " + pair.score + ", 时间: " + pair.eventTimestamp);
                         return pair;
                     })
@@ -255,18 +255,18 @@ public class OnlineCFJobWithDetailedLogs {
                     .filter((FilterFunction<PairScoreEvent>) pair -> {
                         boolean valid = pair.score >= config.getPairMinScore();
                         if (!valid) {
-                            System.out.println("过滤低分Pair - Left: " + pair.leftItemId + ", Right: " + pair.rightItemId +
+                            LOG.info("过滤低分Pair - Left: " + pair.leftItemId + ", Right: " + pair.rightItemId +
                                     ", 得分: " + pair.score + ", 阈值: " + config.getPairMinScore());
                         }
                         return valid;
                     });
 
-            System.out.println("13. 开始时间衰减处理...");
+            LOG.info("13. 开始时间衰减处理...");
             DataStream<PairScoreEvent> pairWithDecayStream = pairWindowedStream
                     .flatMap(new PastPairCountDecayRedisFunction(config, pairRedisConfig))
                     .name("pair-decay-merge")
                     .map(pair -> {
-                        System.out.println("衰减后Pair - Left: " + pair.leftItemId + ", Right: " + pair.rightItemId +
+                        LOG.info("衰减后Pair - Left: " + pair.leftItemId + ", Right: " + pair.rightItemId +
                                 ", 衰减得分: " + pair.score);
                         return pair;
                     })
@@ -274,64 +274,64 @@ public class OnlineCFJobWithDetailedLogs {
                     .filter((FilterFunction<PairScoreEvent>) pair -> {
                         boolean valid = pair.score >= config.getPairMinScore();
                         if (!valid) {
-                            System.out.println("过滤衰减后低分Pair - Left: " + pair.leftItemId + ", Right: " + pair.rightItemId +
+                            LOG.info("过滤衰减后低分Pair - Left: " + pair.leftItemId + ", Right: " + pair.rightItemId +
                                     ", 得分: " + pair.score);
                         }
                         return valid;
                     });
 
             // 写入 pair 计数（用于时间衰减）
-            System.out.println("14. 设置Pair计数Redis Sink...");
+            LOG.info("14. 设置Pair计数Redis Sink...");
             pairWithDecayStream.addSink(new PairCountRedisSink(config, pairRedisConfig))
                     .name("redis-pair-count-sink");
 
             // 按 leftItem 聚合所有 rightItem，然后批量写入 index
-            System.out.println("15. 开始LeftItem聚合...");
+            LOG.info("15. 开始LeftItem聚合...");
             DataStream<Tuple2<Long, List<Tuple2<Long, Long>>>> leftItemAggregatedStream = pairWithDecayStream
                     .map((MapFunction<PairScoreEvent, Tuple2<Long, List<Tuple2<Long, Long>>>>) pair -> {
                         Tuple2<Long, List<Tuple2<Long, Long>>> result =
                                 Tuple2.of(pair.leftItemId, Collections.singletonList(Tuple2.of(pair.rightItemId, pair.score)));
-                        System.out.println("LeftItem映射 - Left: " + result.f0 + ", Right数量: 1");
+                        LOG.info("LeftItem映射 - Left: " + result.f0 + ", Right数量: 1");
                         return result;
                     })
                     .returns(Types.TUPLE(Types.LONG, Types.LIST(Types.TUPLE(Types.LONG, Types.LONG))))
                     .keyBy((KeySelector<Tuple2<Long, List<Tuple2<Long, Long>>>, Long>) value -> {
-                        System.out.println("KeyBy LeftItem: " + value.f0);
+                        LOG.info("KeyBy LeftItem: " + value.f0);
                         return value.f0;
                     })
                     .window(TumblingProcessingTimeWindows.of(Time.minutes(config.getPairWindowMinutes())))
                     .reduce((ReduceFunction<Tuple2<Long, List<Tuple2<Long, Long>>>>) (a, b) -> {
                         int before = a.f1.size();
                         a.f1.addAll(b.f1);
-                        System.out.println("LeftItem聚合 - Left: " + a.f0 + ", 合并前: " + before + ", 合并后: " + a.f1.size());
+                        LOG.info("LeftItem聚合 - Left: " + a.f0 + ", 合并前: " + before + ", 合并后: " + a.f1.size());
                         return a;
                     })
                     .name("left-item-aggregate")
                     .map((MapFunction<Tuple2<Long, List<Tuple2<Long, Long>>>, Tuple2<Long, List<Tuple2<Long, Long>>>>) value -> {
-                        System.out.println("聚合结果 - Left: " + value.f0 + ", Right数量: " + value.f1.size());
+                        LOG.info("聚合结果 - Left: " + value.f0 + ", Right数量: " + value.f1.size());
                         return value;
                     })
                     .returns(Types.TUPLE(Types.LONG, Types.LIST(Types.TUPLE(Types.LONG, Types.LONG))))
                     .name("debug-left-aggregated");
 
-            System.out.println("16. 设置TopK Redis Sink...");
+            LOG.info("16. 设置TopK Redis Sink...");
             leftItemAggregatedStream.addSink(new IndexTopKRedisSink(config, pairRedisConfig))
                     .name("redis-index-topk-sink");
 
-            System.out.println("=== 开始执行Flink任务 ===");
-            System.out.println("执行时间: " + new Date());
+            LOG.info("=== 开始执行Flink任务 ===");
+            LOG.info("执行时间: " + new Date());
             env.execute("gosh-onlinecf");
 
         } catch (Exception e) {
-            System.err.println("!!! OnlineCFJob 执行异常 !!!");
-            System.err.println("异常时间: " + new Date());
+            LOG.error("!!! OnlineCFJob 执行异常 !!!");
+            LOG.error("异常时间: " + new Date());
             e.printStackTrace();
             LOG.error("OnlineCFJob 执行失败", e);
             throw e;
         }
 
-        System.out.println("=== OnlineCFJob 正常结束 ===");
-        System.out.println("结束时间: " + new Date());
+        LOG.info("=== OnlineCFJob 正常结束 ===");
+        LOG.info("结束时间: " + new Date());
     }
 
     // ------------------------------------------------------------------------
@@ -663,7 +663,7 @@ public class OnlineCFJobWithDetailedLogs {
             processedCount++;
             UserInteractionEvent interaction = new UserInteractionEvent();
             if (event == null) {
-                System.out.println("FeatureEventToInteractionMapper: 输入事件为null");
+                LOG.info("FeatureEventToInteractionMapper: 输入事件为null");
                 return interaction;
             }
 
@@ -706,7 +706,7 @@ public class OnlineCFJobWithDetailedLogs {
                 }
             }
 
-            System.out.println(String.format("FeatureEventToInteractionMapper[%d]: 转换完成 - %s",
+            LOG.info(String.format("FeatureEventToInteractionMapper[%d]: 转换完成 - %s",
                     processedCount, interaction));
             return interaction;
         }
@@ -736,14 +736,14 @@ public class OnlineCFJobWithDetailedLogs {
             long score = computeScore(value);
             acc.score += score;
 
-            System.out.println(String.format("SessionAggregateFunction[%d]: 添加事件 - UID: %d, Item: %d, 得分: %d, 累计得分: %d",
+            LOG.info(String.format("SessionAggregateFunction[%d]: 添加事件 - UID: %d, Item: %d, 得分: %d, 累计得分: %d",
                     aggregateCount, value.uid, value.itemId, score, acc.score));
             return acc;
         }
 
         @Override
         public SessionAccumulator getResult(SessionAccumulator accumulator) {
-            System.out.println(String.format("SessionAggregateFunction: 获取结果 - %s", accumulator));
+            LOG.info(String.format("SessionAggregateFunction: 获取结果 - %s", accumulator));
             return accumulator;
         }
 
@@ -756,7 +756,7 @@ public class OnlineCFJobWithDetailedLogs {
             merged.score = a.score + b.score;
             merged.latestTs = Math.max(a.latestTs, b.latestTs);
 
-            System.out.println(String.format("SessionAggregateFunction: 合并累加器 - A: %s, B: %s, 合并: %s",
+            LOG.info(String.format("SessionAggregateFunction: 合并累加器 - A: %s, B: %s, 合并: %s",
                     a, b, merged));
             return merged;
         }
@@ -808,7 +808,7 @@ public class OnlineCFJobWithDetailedLogs {
             windowCount++;
             SessionAccumulator acc = elements.iterator().next();
             if (acc == null || acc.uid <= 0 || acc.itemId <= 0 || acc.score <= 0) {
-                System.out.println(String.format("SessionWindowProcessFunction[%d]: 无效累加器 - %s", windowCount, acc));
+                LOG.info(String.format("SessionWindowProcessFunction[%d]: 无效累加器 - %s", windowCount, acc));
                 return;
             }
 
@@ -819,7 +819,7 @@ public class OnlineCFJobWithDetailedLogs {
             score.totalScore = acc.score;
             score.windowEndTs = context.window().getEnd();
 
-            System.out.println(String.format("SessionWindowProcessFunction[%d]: 窗口处理完成 - %s", windowCount, score));
+            LOG.info(String.format("SessionWindowProcessFunction[%d]: 窗口处理完成 - %s", windowCount, score));
             out.collect(score);
         }
     }
@@ -827,10 +827,10 @@ public class OnlineCFJobWithDetailedLogs {
     private static class PairScoreReducer implements ReduceFunction<PairScoreEvent> {
         @Override
         public PairScoreEvent reduce(PairScoreEvent value1, PairScoreEvent value2) {
-            System.out.println(String.format("PairScoreReducer: 合并Pair - A: %s, B: %s", value1, value2));
+            LOG.info(String.format("PairScoreReducer: 合并Pair - A: %s, B: %s", value1, value2));
             value1.score += value2.score;
             value1.eventTimestamp = Math.max(value1.eventTimestamp, value2.eventTimestamp);
-            System.out.println(String.format("PairScoreReducer: 合并结果 - %s", value1));
+            LOG.info(String.format("PairScoreReducer: 合并结果 - %s", value1));
             return value1;
         }
     }
@@ -847,10 +847,10 @@ public class OnlineCFJobWithDetailedLogs {
             PairScoreEvent event = elements.iterator().next();
             if (event != null) {
                 event.eventTimestamp = context.window().getEnd();
-                System.out.println(String.format("PairWindowProcessFunction[%d]: 窗口处理完成 - %s", pairWindowCount, event));
+                LOG.info(String.format("PairWindowProcessFunction[%d]: 窗口处理完成 - %s", pairWindowCount, event));
                 out.collect(event);
             } else {
-                System.out.println(String.format("PairWindowProcessFunction[%d]: 窗口内无有效事件", pairWindowCount));
+                LOG.info(String.format("PairWindowProcessFunction[%d]: 窗口内无有效事件", pairWindowCount));
             }
         }
     }
@@ -875,38 +875,38 @@ public class OnlineCFJobWithDetailedLogs {
 
         @Override
         public void open(org.apache.flink.configuration.Configuration parameters) {
-            System.out.println("UserHistoryJoinFunction: 初始化开始...");
+            LOG.info("UserHistoryJoinFunction: 初始化开始...");
             this.redisHelper = new RedisHelper(redisConfig);
             this.redisHelper.open();
-            System.out.println("UserHistoryJoinFunction: Redis连接初始化完成");
+            LOG.info("UserHistoryJoinFunction: Redis连接初始化完成");
         }
 
         @Override
         public void flatMap(SessionInteractionScore value,
                             Collector<PairScoreEvent> out) throws Exception {
             joinCount++;
-            System.out.println(String.format("UserHistoryJoinFunction[%d]: 开始处理 - %s", joinCount, value));
+            LOG.info(String.format("UserHistoryJoinFunction[%d]: 开始处理 - %s", joinCount, value));
 
             if (value == null || value.uid <= 0) {
-                System.out.println(String.format("UserHistoryJoinFunction[%d]: 无效输入", joinCount));
+                LOG.info(String.format("UserHistoryJoinFunction[%d]: 无效输入", joinCount));
                 return;
             }
 
             String redisKey = config.getHistoryKeyPrefix() + value.uid + config.getHistoryKeySuffix();
-            System.out.println(String.format("UserHistoryJoinFunction[%d]: 读取Redis Key - %s", joinCount, redisKey));
+            LOG.info(String.format("UserHistoryJoinFunction[%d]: 读取Redis Key - %s", joinCount, redisKey));
 
             byte[] raw = redisHelper.getValue(redisKey);
             if (raw == null || raw.length == 0) {
-                System.out.println(String.format("UserHistoryJoinFunction[%d]: Redis中无用户历史数据", joinCount));
+                LOG.info(String.format("UserHistoryJoinFunction[%d]: Redis中无用户历史数据", joinCount));
                 return;
             }
 
-            System.out.println(String.format("UserHistoryJoinFunction[%d]: 获取到历史数据，大小: %d bytes", joinCount, raw.length));
+            LOG.info(String.format("UserHistoryJoinFunction[%d]: 获取到历史数据，大小: %d bytes", joinCount, raw.length));
             List<ItemHistory> histories = parser.parse(raw);
-            System.out.println(String.format("UserHistoryJoinFunction[%d]: 解析出历史记录数量: %d", joinCount, histories.size()));
+            LOG.info(String.format("UserHistoryJoinFunction[%d]: 解析出历史记录数量: %d", joinCount, histories.size()));
 
             if (histories.isEmpty()) {
-                System.out.println(String.format("UserHistoryJoinFunction[%d]: 历史记录为空", joinCount));
+                LOG.info(String.format("UserHistoryJoinFunction[%d]: 历史记录为空", joinCount));
                 return;
             }
 
@@ -922,18 +922,18 @@ public class OnlineCFJobWithDetailedLogs {
                 pair.score = Math.max(1, scaledScore);
                 pair.eventTimestamp = value.windowEndTs;
 
-                System.out.println(String.format("UserHistoryJoinFunction[%d]: 生成Pair - %s, 历史权重: %.2f",
+                LOG.info(String.format("UserHistoryJoinFunction[%d]: 生成Pair - %s, 历史权重: %.2f",
                         joinCount, pair, history.weight));
                 out.collect(pair);
                 pairCount++;
             }
 
-            System.out.println(String.format("UserHistoryJoinFunction[%d]: 处理完成，生成 %d 个Pair", joinCount, pairCount));
+            LOG.info(String.format("UserHistoryJoinFunction[%d]: 处理完成，生成 %d 个Pair", joinCount, pairCount));
         }
 
         @Override
         public void close() {
-            System.out.println("UserHistoryJoinFunction: 关闭，总共处理: " + joinCount + " 次连接");
+            LOG.info("UserHistoryJoinFunction: 关闭，总共处理: " + joinCount + " 次连接");
             Optional.ofNullable(redisHelper).ifPresent(RedisHelper::close);
         }
     }
@@ -952,36 +952,36 @@ public class OnlineCFJobWithDetailedLogs {
 
         @Override
         public void open(org.apache.flink.configuration.Configuration parameters) {
-            System.out.println("PastPairCountDecayRedisFunction: 初始化开始...");
+            LOG.info("PastPairCountDecayRedisFunction: 初始化开始...");
             this.redisHelper = new RedisHelper(redisConfig);
             this.redisHelper.open();
-            System.out.println("PastPairCountDecayRedisFunction: Redis连接初始化完成");
+            LOG.info("PastPairCountDecayRedisFunction: Redis连接初始化完成");
         }
 
         @Override
         public void flatMap(PairScoreEvent value, Collector<PairScoreEvent> out) {
             decayCount++;
-            System.out.println(String.format("PastPairCountDecayRedisFunction[%d]: 开始处理 - %s", decayCount, value));
+            LOG.info(String.format("PastPairCountDecayRedisFunction[%d]: 开始处理 - %s", decayCount, value));
 
             if (value == null) {
-                System.out.println(String.format("PastPairCountDecayRedisFunction[%d]: 无效输入", decayCount));
+                LOG.info(String.format("PastPairCountDecayRedisFunction[%d]: 无效输入", decayCount));
                 return;
             }
 
             String key = config.getPairKeyPrefix() + value.leftItemId + "_" + value.rightItemId;
-            System.out.println(String.format("PastPairCountDecayRedisFunction[%d]: 查询Redis Key - %s", decayCount, key));
+            LOG.info(String.format("PastPairCountDecayRedisFunction[%d]: 查询Redis Key - %s", decayCount, key));
 
             String cached = redisHelper.getStringValue(key);
             long currentMinute = TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis());
             long decayed = countDecay(cached, config.getDecayWeight(), config.getDecayStepMinutes(), currentMinute);
 
-            System.out.println(String.format("PastPairCountDecayRedisFunction[%d]: 衰减计算 - 缓存值: %s, 当前分钟: %d, 衰减得分: %d",
+            LOG.info(String.format("PastPairCountDecayRedisFunction[%d]: 衰减计算 - 缓存值: %s, 当前分钟: %d, 衰减得分: %d",
                     decayCount, cached, currentMinute, decayed));
 
             long originalScore = value.score;
             value.score += decayed;
 
-            System.out.println(String.format("PastPairCountDecayRedisFunction[%d]: 得分更新 - 原始: %d, 衰减后: %d, 最终: %d",
+            LOG.info(String.format("PastPairCountDecayRedisFunction[%d]: 得分更新 - 原始: %d, 衰减后: %d, 最终: %d",
                     decayCount, originalScore, decayed, value.score));
 
             out.collect(value);
@@ -989,7 +989,7 @@ public class OnlineCFJobWithDetailedLogs {
 
         @Override
         public void close() {
-            System.out.println("PastPairCountDecayRedisFunction: 关闭，总共处理: " + decayCount + " 次衰减");
+            LOG.info("PastPairCountDecayRedisFunction: 关闭，总共处理: " + decayCount + " 次衰减");
             Optional.ofNullable(redisHelper).ifPresent(RedisHelper::close);
         }
     }
@@ -1016,21 +1016,21 @@ public class OnlineCFJobWithDetailedLogs {
 
         @Override
         public void open(org.apache.flink.configuration.Configuration parameters) {
-            System.out.println("PairCountRedisSink: 初始化开始...");
+            LOG.info("PairCountRedisSink: 初始化开始...");
             this.redisHelper = new RedisHelper(redisConfig);
             this.redisHelper.open();
             this.batchBuffer = new HashMap<>();
             this.lastFlushTime = System.currentTimeMillis();
-            System.out.println("PairCountRedisSink: Redis连接初始化完成，批量大小: " + BATCH_SIZE);
+            LOG.info("PairCountRedisSink: Redis连接初始化完成，批量大小: " + BATCH_SIZE);
         }
 
         @Override
         public void invoke(PairScoreEvent value, Context context) {
             sinkCount++;
-            System.out.println(String.format("PairCountRedisSink[%d]: 开始写入 - %s", sinkCount, value));
+            LOG.info(String.format("PairCountRedisSink[%d]: 开始写入 - %s", sinkCount, value));
 
             if (value == null || value.leftItemId <= 0 || value.rightItemId <= 0) {
-                System.out.println(String.format("PairCountRedisSink[%d]: 无效数据，跳过写入", sinkCount));
+                LOG.info(String.format("PairCountRedisSink[%d]: 无效数据，跳过写入", sinkCount));
                 return;
             }
 
@@ -1040,7 +1040,7 @@ public class OnlineCFJobWithDetailedLogs {
 
             // 添加到批量缓冲区
             batchBuffer.put(pairKey, pairValue);
-            System.out.println(String.format("PairCountRedisSink[%d]: 添加到批量缓冲区 - Key: %s, Value: %s, 缓冲区大小: %d",
+            LOG.info(String.format("PairCountRedisSink[%d]: 添加到批量缓冲区 - Key: %s, Value: %s, 缓冲区大小: %d",
                     sinkCount, pairKey, pairValue, batchBuffer.size()));
 
             // 达到批量阈值时执行批量写入
@@ -1053,11 +1053,11 @@ public class OnlineCFJobWithDetailedLogs {
             boolean dueToTime = (now - lastFlushTime) >= BATCH_FLUSH_INTERVAL_MS;
             if (force || dueToSize || dueToTime) {
                 if (force) {
-                    System.out.println("PairCountRedisSink: 关闭前强制刷新批量缓冲区");
+                    LOG.info("PairCountRedisSink: 关闭前强制刷新批量缓冲区");
                 } else if (dueToSize) {
-                    System.out.println(String.format("PairCountRedisSink: 缓冲区达到阈值(%d)，执行批量写入", BATCH_SIZE));
+                    LOG.info(String.format("PairCountRedisSink: 缓冲区达到阈值(%d)，执行批量写入", BATCH_SIZE));
                 } else {
-                    System.out.println("PairCountRedisSink: 达到定时刷新间隔，执行批量写入");
+                    LOG.info("PairCountRedisSink: 达到定时刷新间隔，执行批量写入");
                 }
                 flushBatchInternal();
                 lastFlushTime = now;
@@ -1068,19 +1068,19 @@ public class OnlineCFJobWithDetailedLogs {
             if (batchBuffer.isEmpty()) {
                 return;
             }
-            System.out.println(String.format("PairCountRedisSink: 批量写入 %d 条记录到Redis，TTL: %d",
+            LOG.info(String.format("PairCountRedisSink: 批量写入 %d 条记录到Redis，TTL: %d",
                     batchBuffer.size(), config.getPairExpireSeconds()));
             redisHelper.msetex(batchBuffer, config.getPairExpireSeconds());
             batchBuffer.clear();
-            System.out.println("PairCountRedisSink: 批量写入完成");
+            LOG.info("PairCountRedisSink: 批量写入完成");
         }
 
         @Override
         public void close() {
             // 关闭前刷新剩余数据
-            System.out.println("PairCountRedisSink: 关闭，刷新剩余数据");
+            LOG.info("PairCountRedisSink: 关闭，刷新剩余数据");
             maybeFlushBatch(true);
-            System.out.println("PairCountRedisSink: 关闭，总共写入: " + sinkCount + " 条记录");
+            LOG.info("PairCountRedisSink: 关闭，总共写入: " + sinkCount + " 条记录");
             Optional.ofNullable(redisHelper).ifPresent(RedisHelper::close);
         }
     }
@@ -1108,42 +1108,42 @@ public class OnlineCFJobWithDetailedLogs {
 
         @Override
         public void open(org.apache.flink.configuration.Configuration parameters) {
-            System.out.println("IndexTopKRedisSink: 初始化开始...");
+            LOG.info("IndexTopKRedisSink: 初始化开始...");
             this.redisHelper = new RedisHelper(redisConfig);
             this.redisHelper.open();
             this.batchBuffer = new HashMap<>();
             this.lastFlushTime = System.currentTimeMillis();
-            System.out.println("IndexTopKRedisSink: Redis连接初始化完成，批量大小: " + BATCH_SIZE);
+            LOG.info("IndexTopKRedisSink: Redis连接初始化完成，批量大小: " + BATCH_SIZE);
         }
 
         @Override
         public void invoke(Tuple2<Long, List<Tuple2<Long, Long>>> value, Context context) {
             indexSinkCount++;
-            System.out.println(String.format("IndexTopKRedisSink[%d]: 开始处理 - Left: %d, Right数量: %d",
+            LOG.info(String.format("IndexTopKRedisSink[%d]: 开始处理 - Left: %d, Right数量: %d",
                     indexSinkCount, value.f0, value.f1.size()));
 
             if (value == null || value.f0 == null || value.f1 == null || value.f1.isEmpty()) {
-                System.out.println(String.format("IndexTopKRedisSink[%d]: 无效数据，跳过处理", indexSinkCount));
+                LOG.info(String.format("IndexTopKRedisSink[%d]: 无效数据，跳过处理", indexSinkCount));
                 return;
             }
 
             long leftItemId = value.f0;
             String indexKey = config.getIndexKey(leftItemId);
-            System.out.println(String.format("IndexTopKRedisSink[%d]: 处理Index Key - %s", indexSinkCount, indexKey));
+            LOG.info(String.format("IndexTopKRedisSink[%d]: 处理Index Key - %s", indexSinkCount, indexKey));
 
             // 1. 读取现有的 Top-K（Protobuf 格式），用于合并历史数据
-            System.out.println(String.format("IndexTopKRedisSink[%d]: 读取现有Top-K", indexSinkCount));
+            LOG.info(String.format("IndexTopKRedisSink[%d]: 读取现有Top-K", indexSinkCount));
             List<Long> newRightItemIds = value.f1.stream()
                     .map(pair -> pair.f0)
                     .collect(Collectors.toList());
-            System.out.println(String.format("IndexTopKRedisSink[%d]: 新RightItem数量: %d", indexSinkCount, newRightItemIds.size()));
+            LOG.info(String.format("IndexTopKRedisSink[%d]: 新RightItem数量: %d", indexSinkCount, newRightItemIds.size()));
 
             List<Tuple2<Long, Long>> existingPairs = new ArrayList<>();
             byte[] existingData = redisHelper.getValue(indexKey);
             if (existingData != null && existingData.length > 0) {
                 try {
                     RecTagColdFeature.PostItemList existingList = RecTagColdFeature.PostItemList.parseFrom(existingData);
-                    System.out.println(String.format("IndexTopKRedisSink[%d]: 现有Top-K数量: %d", indexSinkCount, existingList.getItemsCount()));
+                    LOG.info(String.format("IndexTopKRedisSink[%d]: 现有Top-K数量: %d", indexSinkCount, existingList.getItemsCount()));
                     for (RecTagColdFeature.PostItem item : existingList.getItemsList()) {
                         long rightItemId = item.getPostId();
                         // 排除新数据中已存在的 rightItem（新数据会覆盖）
@@ -1153,17 +1153,17 @@ public class OnlineCFJobWithDetailedLogs {
                         }
                     }
                 } catch (Exception e) {
-                    System.out.println(String.format("IndexTopKRedisSink[%d]: Protobuf解析失败: %s", indexSinkCount, e.getMessage()));
+                    LOG.info(String.format("IndexTopKRedisSink[%d]: Protobuf解析失败: %s", indexSinkCount, e.getMessage()));
                 }
             } else {
-                System.out.println(String.format("IndexTopKRedisSink[%d]: Redis中无现有数据", indexSinkCount));
+                LOG.info(String.format("IndexTopKRedisSink[%d]: Redis中无现有数据", indexSinkCount));
             }
-            System.out.println(String.format("IndexTopKRedisSink[%d]: 保留的历史Pair数量: %d", indexSinkCount, existingPairs.size()));
+            LOG.info(String.format("IndexTopKRedisSink[%d]: 保留的历史Pair数量: %d", indexSinkCount, existingPairs.size()));
 
             // 2. 合并新数据和历史数据
             List<Tuple2<Long, Long>> allPairs = new ArrayList<>(value.f1);
             allPairs.addAll(existingPairs);
-            System.out.println(String.format("IndexTopKRedisSink[%d]: 合并后总Pair数量: %d", indexSinkCount, allPairs.size()));
+            LOG.info(String.format("IndexTopKRedisSink[%d]: 合并后总Pair数量: %d", indexSinkCount, allPairs.size()));
 
             // 3. 按 score 从高到低排序，去重并保留最高分
             Map<Long, Long> scoreMap = new HashMap<>();
@@ -1172,7 +1172,7 @@ public class OnlineCFJobWithDetailedLogs {
                 long score = pair.f1;
                 scoreMap.merge(rightItemId, score, Math::max);
             }
-            System.out.println(String.format("IndexTopKRedisSink[%d]: 去重后唯一Pair数量: %d", indexSinkCount, scoreMap.size()));
+            LOG.info(String.format("IndexTopKRedisSink[%d]: 去重后唯一Pair数量: %d", indexSinkCount, scoreMap.size()));
 
             // 4. 按 score 从高到低排序，过滤并限制 Top-K
             List<Map.Entry<Long, Long>> sorted = scoreMap.entrySet().stream()
@@ -1180,10 +1180,10 @@ public class OnlineCFJobWithDetailedLogs {
                     .sorted(Map.Entry.<Long, Long>comparingByValue().reversed())
                     .limit(config.getIndexLimit())
                     .collect(Collectors.toList());
-            System.out.println(String.format("IndexTopKRedisSink[%d]: 过滤后Top-K数量: %d", indexSinkCount, sorted.size()));
+            LOG.info(String.format("IndexTopKRedisSink[%d]: 过滤后Top-K数量: %d", indexSinkCount, sorted.size()));
 
             // 5. 构建 Protobuf PostItemList
-            System.out.println(String.format("IndexTopKRedisSink[%d]: 构建Protobuf", indexSinkCount));
+            LOG.info(String.format("IndexTopKRedisSink[%d]: 构建Protobuf", indexSinkCount));
             RecTagColdFeature.PostItemList.Builder listBuilder = RecTagColdFeature.PostItemList.newBuilder();
             for (Map.Entry<Long, Long> entry : sorted) {
                 RecTagColdFeature.PostItem.Builder itemBuilder = RecTagColdFeature.PostItem.newBuilder();
@@ -1194,14 +1194,14 @@ public class OnlineCFJobWithDetailedLogs {
 
             // 6. 序列化并添加到批量缓冲区
             byte[] protobufBytes = listBuilder.build().toByteArray();
-            System.out.println(String.format("IndexTopKRedisSink[%d]: Protobuf序列化完成，大小: %d bytes", indexSinkCount, protobufBytes.length));
+            LOG.info(String.format("IndexTopKRedisSink[%d]: Protobuf序列化完成，大小: %d bytes", indexSinkCount, protobufBytes.length));
             batchBuffer.put(indexKey, protobufBytes);
-            System.out.println(String.format("IndexTopKRedisSink[%d]: 添加到批量缓冲区，缓冲区大小: %d", indexSinkCount, batchBuffer.size()));
+            LOG.info(String.format("IndexTopKRedisSink[%d]: 添加到批量缓冲区，缓冲区大小: %d", indexSinkCount, batchBuffer.size()));
 
             // 7. 达到批量阈值时执行批量异步写入
             maybeFlushBatch(false);
 
-            System.out.println(String.format("IndexTopKRedisSink[%d]: 处理完成", indexSinkCount));
+            LOG.info(String.format("IndexTopKRedisSink[%d]: 处理完成", indexSinkCount));
         }
 
         private void maybeFlushBatch(boolean force) {
@@ -1210,11 +1210,11 @@ public class OnlineCFJobWithDetailedLogs {
             boolean dueToTime = (now - lastFlushTime) >= BATCH_FLUSH_INTERVAL_MS;
             if (force || dueToSize || dueToTime) {
                 if (force) {
-                    System.out.println("IndexTopKRedisSink: 关闭前强制刷新批量缓冲区");
+                    LOG.info("IndexTopKRedisSink: 关闭前强制刷新批量缓冲区");
                 } else if (dueToSize) {
-                    System.out.println(String.format("IndexTopKRedisSink: 缓冲区达到阈值(%d)，执行批量写入", BATCH_SIZE));
+                    LOG.info(String.format("IndexTopKRedisSink: 缓冲区达到阈值(%d)，执行批量写入", BATCH_SIZE));
                 } else {
-                    System.out.println("IndexTopKRedisSink: 达到定时刷新间隔，执行批量写入");
+                    LOG.info("IndexTopKRedisSink: 达到定时刷新间隔，执行批量写入");
                 }
                 flushBatchInternal();
                 lastFlushTime = now;
@@ -1225,19 +1225,19 @@ public class OnlineCFJobWithDetailedLogs {
             if (batchBuffer.isEmpty()) {
                 return;
             }
-            System.out.println(String.format("IndexTopKRedisSink: 批量写入 %d 个Index到Redis，TTL: %d",
+            LOG.info(String.format("IndexTopKRedisSink: 批量写入 %d 个Index到Redis，TTL: %d",
                     batchBuffer.size(), config.getIndexExpireSeconds()));
             redisHelper.msetexBytes(batchBuffer, config.getIndexExpireSeconds());
             batchBuffer.clear();
-            System.out.println("IndexTopKRedisSink: 批量写入完成");
+            LOG.info("IndexTopKRedisSink: 批量写入完成");
         }
 
         @Override
         public void close() {
             // 关闭前刷新剩余数据
-            System.out.println("IndexTopKRedisSink: 关闭，刷新剩余数据");
+            LOG.info("IndexTopKRedisSink: 关闭，刷新剩余数据");
             maybeFlushBatch(true);
-            System.out.println("IndexTopKRedisSink: 关闭，总共处理: " + indexSinkCount + " 个Index");
+            LOG.info("IndexTopKRedisSink: 关闭，总共处理: " + indexSinkCount + " 个Index");
             Optional.ofNullable(redisHelper).ifPresent(RedisHelper::close);
         }
     }
@@ -1256,12 +1256,12 @@ public class OnlineCFJobWithDetailedLogs {
         }
 
         List<ItemHistory> parse(byte[] payload) {
-            System.out.println("UserHistoryParser: 开始解析历史数据，大小: " + payload.length + " bytes");
+            LOG.info("UserHistoryParser: 开始解析历史数据，大小: " + payload.length + " bytes");
 
             // First try to parse protobuf RecUserFeature
             try {
                 RecFeature.RecUserFeature feature = RecFeature.RecUserFeature.parseFrom(payload);
-                System.out.println("UserHistoryParser: Protobuf解析成功");
+                LOG.info("UserHistoryParser: Protobuf解析成功");
 
                 List<ItemHistory> result = new ArrayList<>();
                 mergeHistoryWithScores(result, feature.getViewer3SviewPostHis24HList(), 1.0);
@@ -1273,10 +1273,10 @@ public class OnlineCFJobWithDetailedLogs {
                 mergeHistoryFromIds(result, feature.getUserDeepviewPostids7DList(), 1.6);
                 mergeHistoryFromIds(result, feature.getUserInteractPostids7DList(), 1.5);
 
-                System.out.println("UserHistoryParser: Protobuf解析完成，原始数量: " + result.size());
+                LOG.info("UserHistoryParser: Protobuf解析完成，原始数量: " + result.size());
                 return limitAndFilter(result);
             } catch (Exception protoError) {
-                System.out.println("UserHistoryParser: Protobuf解析失败，尝试文本解析: " + protoError.getMessage());
+                LOG.info("UserHistoryParser: Protobuf解析失败，尝试文本解析: " + protoError.getMessage());
                 String raw = new String(payload, StandardCharsets.UTF_8);
                 return parsePlainString(raw);
             }
@@ -1297,7 +1297,7 @@ public class OnlineCFJobWithDetailedLogs {
                 history.weight = baseWeight;
                 target.add(history);
 
-                System.out.println("UserHistoryParser: 添加带分值历史记录 - " + history);
+                LOG.info("UserHistoryParser: 添加带分值历史记录 - " + history);
             }
         }
 
@@ -1315,7 +1315,7 @@ public class OnlineCFJobWithDetailedLogs {
                 history.weight = baseWeight;
                 target.add(history);
 
-                System.out.println("UserHistoryParser: 添加历史记录 - " + history);
+                LOG.info("UserHistoryParser: 添加历史记录 - " + history);
             }
         }
 
@@ -1324,7 +1324,7 @@ public class OnlineCFJobWithDetailedLogs {
                 return;
             }
             String[] tokens = raw.split(",");
-            System.out.println("UserHistoryParser: 合并历史 - 原始字符串: " + raw + ", 分割数量: " + tokens.length);
+            LOG.info("UserHistoryParser: 合并历史 - 原始字符串: " + raw + ", 分割数量: " + tokens.length);
 
             for (String token : tokens) {
                 String trimmed = token.trim();
@@ -1342,12 +1342,12 @@ public class OnlineCFJobWithDetailedLogs {
                 history.weight = baseWeight;
                 target.add(history);
 
-                System.out.println("UserHistoryParser: 添加历史记录 - " + history);
+                LOG.info("UserHistoryParser: 添加历史记录 - " + history);
             }
         }
 
         private List<ItemHistory> parsePlainString(String raw) {
-            System.out.println("UserHistoryParser: 开始文本解析 - " + (raw.length() > 200 ? raw.substring(0, 200) + "..." : raw));
+            LOG.info("UserHistoryParser: 开始文本解析 - " + (raw.length() > 200 ? raw.substring(0, 200) + "..." : raw));
             List<ItemHistory> result = new ArrayList<>();
             if (StringUtils.isBlank(raw)) {
                 return result;
@@ -1355,7 +1355,7 @@ public class OnlineCFJobWithDetailedLogs {
             try {
                 JsonNode arrayNode = OBJECT_MAPPER.readTree(raw);
                 if (arrayNode.isArray()) {
-                    System.out.println("UserHistoryParser: JSON数组解析，元素数量: " + arrayNode.size());
+                    LOG.info("UserHistoryParser: JSON数组解析，元素数量: " + arrayNode.size());
                     for (JsonNode node : arrayNode) {
                         long itemId = node.path("itemId").asLong(node.path("item_id").asLong(0));
                         if (itemId <= 0) {
@@ -1368,11 +1368,11 @@ public class OnlineCFJobWithDetailedLogs {
                         history.weight = node.path("weight").asDouble(1.0);
                         result.add(history);
                     }
-                    System.out.println("UserHistoryParser: JSON解析完成，数量: " + result.size());
+                    LOG.info("UserHistoryParser: JSON解析完成，数量: " + result.size());
                     return limitAndFilter(result);
                 }
             } catch (IOException ignore) {
-                System.out.println("UserHistoryParser: JSON解析失败，回退到简单解析");
+                LOG.info("UserHistoryParser: JSON解析失败，回退到简单解析");
             }
             mergeHistoryFromString(result, raw, 1.0);
             return limitAndFilter(result);
@@ -1381,7 +1381,7 @@ public class OnlineCFJobWithDetailedLogs {
         private List<ItemHistory> limitAndFilter(List<ItemHistory> input) {
             long expireMillis = TimeUnit.HOURS.toMillis(config.getHistoryMaxAgeHours());
             long now = System.currentTimeMillis();
-            System.out.println("UserHistoryParser: 开始过滤限制 - 输入数量: " + input.size() + ", 最大年龄: " + config.getHistoryMaxAgeHours() + "小时");
+            LOG.info("UserHistoryParser: 开始过滤限制 - 输入数量: " + input.size() + ", 最大年龄: " + config.getHistoryMaxAgeHours() + "小时");
 
             List<ItemHistory> filtered = input.stream()
                     .filter(history -> history.itemId > 0)
@@ -1389,7 +1389,7 @@ public class OnlineCFJobWithDetailedLogs {
                     .sorted(Comparator.comparingLong((ItemHistory h) -> h.timestamp).reversed())
                     .collect(Collectors.toList());
 
-            System.out.println("UserHistoryParser: 时间过滤后数量: " + filtered.size());
+            LOG.info("UserHistoryParser: 时间过滤后数量: " + filtered.size());
 
             LinkedHashMap<Long, ItemHistory> dedup = new LinkedHashMap<>();
             for (ItemHistory history : filtered) {
@@ -1397,19 +1397,19 @@ public class OnlineCFJobWithDetailedLogs {
             }
 
             List<ItemHistory> result = dedup.values().stream().limit(config.getHistoryMaxItems()).collect(Collectors.toList());
-            System.out.println("UserHistoryParser: 去重限制后最终数量: " + result.size());
+            LOG.info("UserHistoryParser: 去重限制后最终数量: " + result.size());
             return result;
         }
     }
 
     private static long countDecay(String storedValue, double decayWeight, int decayStepMinutes, long currentMinuteTs) {
         if (StringUtils.isBlank(storedValue)) {
-            System.out.println("countDecay: 存储值为空，返回0");
+            LOG.info("countDecay: 存储值为空，返回0");
             return 0L;
         }
         String[] parts = storedValue.split(":");
         if (parts.length < 2) {
-            System.out.println("countDecay: 存储值格式错误: " + storedValue);
+            LOG.info("countDecay: 存储值格式错误: " + storedValue);
             return 0L;
         }
         long cachedScore = NumberUtils.toLong(parts[0], 0L);
@@ -1419,7 +1419,7 @@ public class OnlineCFJobWithDetailedLogs {
         double factor = Math.pow(decayWeight, steps / stepSize);
         long result = Math.round(cachedScore * factor);
 
-        System.out.println(String.format("countDecay: 缓存值: %s, 当前分钟: %d, 缓存分钟: %d, 步数: %d, 衰减因子: %.4f, 结果: %d",
+        LOG.info(String.format("countDecay: 缓存值: %s, 当前分钟: %d, 缓存分钟: %d, 步数: %d, 衰减因子: %.4f, 结果: %d",
                 storedValue, currentMinuteTs, cachedMinute, steps, factor, result));
         return result;
     }
@@ -1436,15 +1436,15 @@ public class OnlineCFJobWithDetailedLogs {
         }
 
         void open() {
-            System.out.println("RedisHelper: 开始初始化Redis连接");
+            LOG.info("RedisHelper: 开始初始化Redis连接");
             this.connectionManager = RedisConnectionManager.getInstance(redisConfig);
             this.clusterMode = redisConfig.isClusterMode();
             if (clusterMode) {
                 this.clusterCommands = connectionManager.getRedisClusterCommands();
-                System.out.println("RedisHelper: 集群模式初始化完成");
+                LOG.info("RedisHelper: 集群模式初始化完成");
             } else {
                 this.commands = connectionManager.getRedisCommands();
-                System.out.println("RedisHelper: 单机模式初始化完成");
+                LOG.info("RedisHelper: 单机模式初始化完成");
             }
         }
 
@@ -1453,19 +1453,19 @@ public class OnlineCFJobWithDetailedLogs {
         }
 
         byte[] getValue(String key) {
-            System.out.println("RedisHelper: GET值 - Key: " + key);
+            LOG.info("RedisHelper: GET值 - Key: " + key);
             try {
                 Tuple2<String, byte[]> result = clusterMode
                         ? clusterCommands.get(key)
                         : commands.get(key);
                 if (result == null) {
-                    System.out.println("RedisHelper: GET返回null");
+                    LOG.info("RedisHelper: GET返回null");
                     return null;
                 }
-                System.out.println("RedisHelper: GET成功，数据大小: " + (result.f1 != null ? result.f1.length : 0) + " bytes");
+                LOG.info("RedisHelper: GET成功，数据大小: " + (result.f1 != null ? result.f1.length : 0) + " bytes");
                 return result.f1;
             } catch (Exception e) {
-                System.err.println("RedisHelper: GET操作异常 - " + e.getMessage());
+                LOG.error("RedisHelper: GET操作异常 - " + e.getMessage());
                 return null;
             }
         }
@@ -1473,12 +1473,12 @@ public class OnlineCFJobWithDetailedLogs {
         String getStringValue(String key) {
             byte[] value = getValue(key);
             String result = value == null ? null : new String(value, StandardCharsets.UTF_8);
-            System.out.println("RedisHelper: 字符串值 - " + result);
+            LOG.info("RedisHelper: 字符串值 - " + result);
             return result;
         }
 
         void setex(String key, int ttlSeconds, String value) {
-            System.out.println(String.format("RedisHelper: SETEX - Key: %s, TTL: %d, Value: %s", key, ttlSeconds, value));
+            LOG.info(String.format("RedisHelper: SETEX - Key: %s, TTL: %d, Value: %s", key, ttlSeconds, value));
             try {
                 Tuple2<String, byte[]> tuple = wrap(value);
                 if (ttlSeconds > 0) {
@@ -1494,14 +1494,14 @@ public class OnlineCFJobWithDetailedLogs {
                         commands.set(key, tuple);
                     }
                 }
-                System.out.println("RedisHelper: SETEX操作完成");
+                LOG.info("RedisHelper: SETEX操作完成");
             } catch (Exception e) {
-                System.err.println("RedisHelper: SETEX操作异常 - " + e.getMessage());
+                LOG.error("RedisHelper: SETEX操作异常 - " + e.getMessage());
             }
         }
 
         void setex(String key, int ttlSeconds, byte[] value) {
-            System.out.println(String.format("RedisHelper: SETEX (byte[]) - Key: %s, TTL: %d, Size: %d bytes", key, ttlSeconds, value.length));
+            LOG.info(String.format("RedisHelper: SETEX (byte[]) - Key: %s, TTL: %d, Size: %d bytes", key, ttlSeconds, value.length));
             try {
                 Tuple2<String, byte[]> tuple = new Tuple2<>("", value);
                 if (ttlSeconds > 0) {
@@ -1517,9 +1517,9 @@ public class OnlineCFJobWithDetailedLogs {
                         commands.set(key, tuple);
                     }
                 }
-                System.out.println("RedisHelper: SETEX (byte[]) 操作完成");
+                LOG.info("RedisHelper: SETEX (byte[]) 操作完成");
             } catch (Exception e) {
-                System.err.println("RedisHelper: SETEX (byte[]) 操作异常 - " + e.getMessage());
+                LOG.error("RedisHelper: SETEX (byte[]) 操作异常 - " + e.getMessage());
             }
         }
 
@@ -1529,11 +1529,11 @@ public class OnlineCFJobWithDetailedLogs {
          */
         void msetex(Map<String, String> keyValueMap, int ttlSeconds) {
             if (keyValueMap == null || keyValueMap.isEmpty()) {
-                System.out.println("RedisHelper: 批量写入数据为空，跳过");
+                LOG.info("RedisHelper: 批量写入数据为空，跳过");
                 return;
             }
 
-            System.out.println(String.format("RedisHelper: 批量写入 - 数量: %d, TTL: %d", keyValueMap.size(), ttlSeconds));
+            LOG.info(String.format("RedisHelper: 批量写入 - 数量: %d, TTL: %d", keyValueMap.size(), ttlSeconds));
 
             // 转换为 Tuple2 格式
             Map<String, Tuple2<String, byte[]>> wrappedMap = new HashMap<>();
@@ -1553,7 +1553,7 @@ public class OnlineCFJobWithDetailedLogs {
                                 cmd.expire(key, ttlSeconds);
                             }
                         }
-                        System.out.println(String.format("RedisHelper: 异步批量写入完成 - 数量: %d", wrappedMap.size()));
+                        LOG.info(String.format("RedisHelper: 异步批量写入完成 - 数量: %d", wrappedMap.size()));
                         return null;
                     });
                 } else {
@@ -1566,12 +1566,12 @@ public class OnlineCFJobWithDetailedLogs {
                                 cmd.expire(key, ttlSeconds);
                             }
                         }
-                        System.out.println(String.format("RedisHelper: 异步批量写入完成 - 数量: %d", wrappedMap.size()));
+                        LOG.info(String.format("RedisHelper: 异步批量写入完成 - 数量: %d", wrappedMap.size()));
                         return null;
                     });
                 }
             } catch (Exception e) {
-                System.err.println("RedisHelper: 批量写入异常 - " + e.getMessage());
+                LOG.error("RedisHelper: 批量写入异常 - " + e.getMessage());
             }
         }
 
@@ -1581,11 +1581,11 @@ public class OnlineCFJobWithDetailedLogs {
          */
         void msetexBytes(Map<String, byte[]> keyValueMap, int ttlSeconds) {
             if (keyValueMap == null || keyValueMap.isEmpty()) {
-                System.out.println("RedisHelper: 批量写入数据为空，跳过");
+                LOG.info("RedisHelper: 批量写入数据为空，跳过");
                 return;
             }
 
-            System.out.println(String.format("RedisHelper: 批量写入 (byte[]) - 数量: %d, TTL: %d", keyValueMap.size(), ttlSeconds));
+            LOG.info(String.format("RedisHelper: 批量写入 (byte[]) - 数量: %d, TTL: %d", keyValueMap.size(), ttlSeconds));
 
             // 转换为 Tuple2 格式
             Map<String, Tuple2<String, byte[]>> wrappedMap = new HashMap<>();
@@ -1605,7 +1605,7 @@ public class OnlineCFJobWithDetailedLogs {
                                 cmd.expire(key, ttlSeconds);
                             }
                         }
-                        System.out.println(String.format("RedisHelper: 异步批量写入完成 (byte[]) - 数量: %d", wrappedMap.size()));
+                        LOG.info(String.format("RedisHelper: 异步批量写入完成 (byte[]) - 数量: %d", wrappedMap.size()));
                         return null;
                     });
                 } else {
@@ -1618,17 +1618,17 @@ public class OnlineCFJobWithDetailedLogs {
                                 cmd.expire(key, ttlSeconds);
                             }
                         }
-                        System.out.println(String.format("RedisHelper: 异步批量写入完成 (byte[]) - 数量: %d", wrappedMap.size()));
+                        LOG.info(String.format("RedisHelper: 异步批量写入完成 (byte[]) - 数量: %d", wrappedMap.size()));
                         return null;
                     });
                 }
             } catch (Exception e) {
-                System.err.println("RedisHelper: 批量写入异常 (byte[]) - " + e.getMessage());
+                LOG.error("RedisHelper: 批量写入异常 (byte[]) - " + e.getMessage());
             }
         }
 
         void zadd(String key, double score, String member) {
-            System.out.println(String.format("RedisHelper: ZADD - Key: %s, Score: %.2f, Member: %s", key, score, member));
+            LOG.info(String.format("RedisHelper: ZADD - Key: %s, Score: %.2f, Member: %s", key, score, member));
             try {
                 Tuple2<String, byte[]> tuple = wrap(member);
                 if (clusterMode) {
@@ -1637,24 +1637,24 @@ public class OnlineCFJobWithDetailedLogs {
                     commands.zadd(key, score, tuple);
                 }
             } catch (Exception e) {
-                System.err.println("RedisHelper: ZADD操作异常 - " + e.getMessage());
+                LOG.error("RedisHelper: ZADD操作异常 - " + e.getMessage());
             }
         }
 
         long zcard(String key) {
-            System.out.println("RedisHelper: ZCARD - Key: " + key);
+            LOG.info("RedisHelper: ZCARD - Key: " + key);
             try {
                 long result = clusterMode ? clusterCommands.zcard(key) : commands.zcard(key);
-                System.out.println("RedisHelper: ZCARD结果: " + result);
+                LOG.info("RedisHelper: ZCARD结果: " + result);
                 return result;
             } catch (Exception e) {
-                System.err.println("RedisHelper: ZCARD操作异常 - " + e.getMessage());
+                LOG.error("RedisHelper: ZCARD操作异常 - " + e.getMessage());
                 return 0;
             }
         }
 
         void zremRangeByRank(String key, long start, long end) {
-            System.out.println(String.format("RedisHelper: ZREMRANGEBYRANK - Key: %s, Start: %d, End: %d", key, start, end));
+            LOG.info(String.format("RedisHelper: ZREMRANGEBYRANK - Key: %s, Start: %d, End: %d", key, start, end));
             try {
                 if (clusterMode) {
                     clusterCommands.zremrangebyrank(key, start, end);
@@ -1662,12 +1662,12 @@ public class OnlineCFJobWithDetailedLogs {
                     commands.zremrangebyrank(key, start, end);
                 }
             } catch (Exception e) {
-                System.err.println("RedisHelper: ZREMRANGEBYRANK操作异常 - " + e.getMessage());
+                LOG.error("RedisHelper: ZREMRANGEBYRANK操作异常 - " + e.getMessage());
             }
         }
 
         List<String> zrevrange(String key, long start, long end) {
-            System.out.println(String.format("RedisHelper: ZREVRANGE - Key: %s, Start: %d, End: %d", key, start, end));
+            LOG.info(String.format("RedisHelper: ZREVRANGE - Key: %s, Start: %d, End: %d", key, start, end));
             try {
                 List<Tuple2<String, byte[]>> result;
                 if (clusterMode) {
@@ -1678,29 +1678,29 @@ public class OnlineCFJobWithDetailedLogs {
                 List<String> members = result.stream()
                         .map(tuple -> new String(tuple.f1, StandardCharsets.UTF_8))
                         .collect(Collectors.toList());
-                System.out.println("RedisHelper: ZREVRANGE结果数量: " + members.size());
+                LOG.info("RedisHelper: ZREVRANGE结果数量: " + members.size());
                 return members;
             } catch (Exception e) {
-                System.err.println("RedisHelper: ZREVRANGE操作异常 - " + e.getMessage());
+                LOG.error("RedisHelper: ZREVRANGE操作异常 - " + e.getMessage());
                 return Collections.emptyList();
             }
         }
 
         Double zscore(String key, String member) {
-            System.out.println(String.format("RedisHelper: ZSCORE - Key: %s, Member: %s", key, member));
+            LOG.info(String.format("RedisHelper: ZSCORE - Key: %s, Member: %s", key, member));
             try {
                 Tuple2<String, byte[]> tuple = wrap(member);
                 Double result = clusterMode ? clusterCommands.zscore(key, tuple) : commands.zscore(key, tuple);
-                System.out.println("RedisHelper: ZSCORE结果: " + result);
+                LOG.info("RedisHelper: ZSCORE结果: " + result);
                 return result;
             } catch (Exception e) {
-                System.err.println("RedisHelper: ZSCORE操作异常 - " + e.getMessage());
+                LOG.error("RedisHelper: ZSCORE操作异常 - " + e.getMessage());
                 return null;
             }
         }
 
         List<String> getTopK(String key, int limit) {
-            System.out.println(String.format("RedisHelper: 获取TopK - Key: %s, Limit: %d", key, limit));
+            LOG.info(String.format("RedisHelper: 获取TopK - Key: %s, Limit: %d", key, limit));
             return zrevrange(key, 0, limit - 1);
         }
 
@@ -1708,7 +1708,7 @@ public class OnlineCFJobWithDetailedLogs {
             if (ttlSeconds <= 0) {
                 return;
             }
-            System.out.println(String.format("RedisHelper: EXPIRE - Key: %s, TTL: %d", key, ttlSeconds));
+            LOG.info(String.format("RedisHelper: EXPIRE - Key: %s, TTL: %d", key, ttlSeconds));
             try {
                 if (clusterMode) {
                     clusterCommands.expire(key, ttlSeconds);
@@ -1716,12 +1716,12 @@ public class OnlineCFJobWithDetailedLogs {
                     commands.expire(key, ttlSeconds);
                 }
             } catch (Exception e) {
-                System.err.println("RedisHelper: EXPIRE操作异常 - " + e.getMessage());
+                LOG.error("RedisHelper: EXPIRE操作异常 - " + e.getMessage());
             }
         }
 
         void del(String key) {
-            System.out.println("RedisHelper: DEL - Key: " + key);
+            LOG.info("RedisHelper: DEL - Key: " + key);
             try {
                 if (clusterMode) {
                     clusterCommands.del(key);
@@ -1729,12 +1729,12 @@ public class OnlineCFJobWithDetailedLogs {
                     commands.del(key);
                 }
             } catch (Exception e) {
-                System.err.println("RedisHelper: DEL操作异常 - " + e.getMessage());
+                LOG.error("RedisHelper: DEL操作异常 - " + e.getMessage());
             }
         }
 
         void close() {
-            System.out.println("RedisHelper: 关闭Redis连接");
+            LOG.info("RedisHelper: 关闭Redis连接");
             if (connectionManager != null) {
                 connectionManager.shutdown();
             }
