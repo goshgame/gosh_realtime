@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gosh.config.RedisConfig;
 import com.gosh.config.RedisConnectionManager;
 import com.gosh.entity.RecFeature;
+import com.gosh.entity.RecTagColdFeature;
 import com.gosh.job.UserFeatureCommon.ExposeEventParser;
 import com.gosh.job.UserFeatureCommon.ExposeToFeatureMapper;
 import com.gosh.job.UserFeatureCommon.UserFeatureEvent;
@@ -499,12 +500,15 @@ public class OnlineCFJob {
 
     /**
      * 写入 pair 计数到 Redis（用于时间衰减计算）
+     * 使用批量写入优化性能
      */
     private static class PairCountRedisSink extends RichSinkFunction<PairScoreEvent> {
 
         private final OnlineCFConfig config;
         private final RedisConfig redisConfig;
         private transient RedisHelper redisHelper;
+        private transient Map<String, String> batchBuffer;
+        private static final int BATCH_SIZE = 100; // 批量写入阈值
 
         PairCountRedisSink(OnlineCFConfig config, RedisConfig redisConfig) {
             this.config = config;
@@ -515,6 +519,7 @@ public class OnlineCFJob {
         public void open(org.apache.flink.configuration.Configuration parameters) {
             this.redisHelper = new RedisHelper(redisConfig);
             this.redisHelper.open();
+            this.batchBuffer = new HashMap<>();
         }
 
         @Override
@@ -525,24 +530,44 @@ public class OnlineCFJob {
             long currentMinute = TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis());
             String pairKey = config.getPairKeyPrefix() + value.leftItemId + "_" + value.rightItemId;
             String pairValue = value.score + ":" + currentMinute;
-            redisHelper.setex(pairKey, config.getPairExpireSeconds(), pairValue);
+
+            // 添加到批量缓冲区
+            batchBuffer.put(pairKey, pairValue);
+
+            // 达到批量阈值时执行批量写入
+            if (batchBuffer.size() >= BATCH_SIZE) {
+                flushBatch();
+            }
+        }
+
+        private void flushBatch() {
+            if (batchBuffer.isEmpty()) {
+                return;
+            }
+            redisHelper.msetex(batchBuffer, config.getPairExpireSeconds());
+            batchBuffer.clear();
         }
 
         @Override
         public void close() {
+            // 关闭前刷新剩余数据
+            flushBatch();
             Optional.ofNullable(redisHelper).ifPresent(RedisHelper::close);
         }
     }
 
     /**
-     * 批量写入 index Top-K 到 Redis ZSet
+     * 批量写入 index Top-K 到 Redis（Protobuf 格式）
      * 读取现有 Top-K，合并新数据，排序后重新写入
+     * 使用批量缓冲区和异步写入优化性能
      */
     private static class IndexTopKRedisSink extends RichSinkFunction<Tuple2<Long, List<Tuple2<Long, Long>>>> {
 
         private final OnlineCFConfig config;
         private final RedisConfig redisConfig;
         private transient RedisHelper redisHelper;
+        private transient Map<String, byte[]> batchBuffer;
+        private static final int BATCH_SIZE = 50; // 批量写入阈值
 
         IndexTopKRedisSink(OnlineCFConfig config, RedisConfig redisConfig) {
             this.config = config;
@@ -553,6 +578,7 @@ public class OnlineCFJob {
         public void open(org.apache.flink.configuration.Configuration parameters) {
             this.redisHelper = new RedisHelper(redisConfig);
             this.redisHelper.open();
+            this.batchBuffer = new HashMap<>();
         }
 
         @Override
@@ -561,28 +587,28 @@ public class OnlineCFJob {
                 return;
             }
             long leftItemId = value.f0;
-            String indexKey = config.getIndexKeyPrefix() + leftItemId;
+            String indexKey = config.getIndexKey(leftItemId);
 
-            // 1. 读取现有的 Top-K（从高到低），用于合并历史数据
-            // 原版逻辑：读取现有 index，排除新数据中已存在的 rightItem，避免重复计算
+            // 1. 读取现有的 Top-K（Protobuf 格式），用于合并历史数据
             List<Long> newRightItemIds = value.f1.stream()
                     .map(pair -> pair.f0)
                     .collect(Collectors.toList());
 
-            List<String> existingTopK = redisHelper.getTopK(indexKey, config.getIndexLimit());
             List<Tuple2<Long, Long>> existingPairs = new ArrayList<>();
-            for (String member : existingTopK) {
+            byte[] existingData = redisHelper.getValue(indexKey);
+            if (existingData != null && existingData.length > 0) {
                 try {
-                    long rightItemId = Long.parseLong(member);
-                    // 原版逻辑：排除新数据中已存在的 rightItem（新数据会覆盖）
-                    if (!newRightItemIds.contains(rightItemId)) {
-                        Double score = redisHelper.zscore(indexKey, member);
-                        if (score != null) {
-                            existingPairs.add(Tuple2.of(rightItemId, score.longValue()));
+                    RecTagColdFeature.PostItemList existingList = RecTagColdFeature.PostItemList.parseFrom(existingData);
+                    for (RecTagColdFeature.PostItem item : existingList.getItemsList()) {
+                        long rightItemId = item.getPostId();
+                        // 排除新数据中已存在的 rightItem（新数据会覆盖）
+                        if (!newRightItemIds.contains(rightItemId)) {
+                            long score = Math.round(item.getScore());
+                            existingPairs.add(Tuple2.of(rightItemId, score));
                         }
                     }
-                } catch (NumberFormatException e) {
-                    // 忽略无效的 member
+                } catch (Exception e) {
+                    LOG.warn("Failed to parse existing PostItemList from Redis key: {}, error: {}", indexKey, e.getMessage());
                 }
             }
 
@@ -605,22 +631,37 @@ public class OnlineCFJob {
                     .limit(config.getIndexLimit())
                     .collect(Collectors.toList());
 
-            // 5. 删除旧的 ZSet，重新写入 Top-K（原版也是覆盖整个 index）
-            redisHelper.del(indexKey);
-
-            // 6. 批量写入 ZSet（按 score 从高到低）
+            // 5. 构建 Protobuf PostItemList
+            RecTagColdFeature.PostItemList.Builder listBuilder = RecTagColdFeature.PostItemList.newBuilder();
             for (Map.Entry<Long, Long> entry : sorted) {
-                redisHelper.zadd(indexKey, entry.getValue().doubleValue(), String.valueOf(entry.getKey()));
+                RecTagColdFeature.PostItem.Builder itemBuilder = RecTagColdFeature.PostItem.newBuilder();
+                itemBuilder.setPostId(entry.getKey());
+                itemBuilder.setScore(entry.getValue().floatValue());
+                listBuilder.addItems(itemBuilder.build());
             }
 
-            // 7. 设置过期时间
-            if (!sorted.isEmpty()) {
-                redisHelper.expire(indexKey, config.getIndexExpireSeconds());
+            // 6. 序列化并添加到批量缓冲区
+            byte[] protobufBytes = listBuilder.build().toByteArray();
+            batchBuffer.put(indexKey, protobufBytes);
+
+            // 7. 达到批量阈值时执行批量异步写入
+            if (batchBuffer.size() >= BATCH_SIZE) {
+                flushBatch();
             }
+        }
+
+        private void flushBatch() {
+            if (batchBuffer.isEmpty()) {
+                return;
+            }
+            redisHelper.msetexBytes(batchBuffer, config.getIndexExpireSeconds());
+            batchBuffer.clear();
         }
 
         @Override
         public void close() {
+            // 关闭前刷新剩余数据
+            flushBatch();
             Optional.ofNullable(redisHelper).ifPresent(RedisHelper::close);
         }
     }
@@ -648,6 +689,8 @@ public class OnlineCFJob {
                 mergeHistoryFromIds(result, feature.getViewerFollowPostHis24HList(), 1.3);
                 mergeHistoryFromIds(result, feature.getViewerProfilePostHis24HList(), 0.8);
                 mergeHistoryFromIds(result, feature.getViewerPosinterPostHis24HList(), 1.1);
+                mergeHistoryFromIds(result, feature.getUserDeepviewPostids7DList(), 1.6);
+                mergeHistoryFromIds(result, feature.getUserInteractPostids7DList(), 1.5);
                 return limitAndFilter(result);
             } catch (Exception protoError) {
                 String raw = new String(payload, StandardCharsets.UTF_8);
@@ -793,6 +836,10 @@ public class OnlineCFJob {
             }
         }
 
+        RedisConnectionManager getConnectionManager() {
+            return connectionManager;
+        }
+
         byte[] getValue(String key) {
             Tuple2<String, byte[]> result = clusterMode
                     ? clusterCommands.get(key)
@@ -819,6 +866,109 @@ public class OnlineCFJob {
                 } else {
                     commands.set(key, tuple);
                 }
+            }
+        }
+
+        void setex(String key, int ttlSeconds, byte[] value) {
+            Tuple2<String, byte[]> tuple = new Tuple2<>("", value);
+            if (ttlSeconds > 0) {
+                if (clusterMode) {
+                    clusterCommands.setex(key, ttlSeconds, tuple);
+                } else {
+                    commands.setex(key, ttlSeconds, tuple);
+                }
+            } else {
+                if (clusterMode) {
+                    clusterCommands.set(key, tuple);
+                } else {
+                    commands.set(key, tuple);
+                }
+            }
+        }
+
+        /**
+         * 批量写入多个 key-value 对（使用 MSET + 批量 EXPIRE）
+         * 使用异步批量写入提高性能
+         */
+        void msetex(Map<String, String> keyValueMap, int ttlSeconds) {
+            if (keyValueMap == null || keyValueMap.isEmpty()) {
+                return;
+            }
+
+            // 转换为 Tuple2 格式
+            Map<String, Tuple2<String, byte[]>> wrappedMap = new HashMap<>();
+            for (Map.Entry<String, String> entry : keyValueMap.entrySet()) {
+                wrappedMap.put(entry.getKey(), wrap(entry.getValue()));
+            }
+
+            // 使用异步批量写入
+            if (clusterMode) {
+                connectionManager.executeClusterAsync(cmd -> {
+                    // MSET 批量设置
+                    cmd.mset(wrappedMap);
+                    // 批量设置过期时间
+                    if (ttlSeconds > 0) {
+                        for (String key : wrappedMap.keySet()) {
+                            cmd.expire(key, ttlSeconds);
+                        }
+                    }
+                    return null;
+                });
+            } else {
+                connectionManager.executeAsync(cmd -> {
+                    // MSET 批量设置
+                    cmd.mset(wrappedMap);
+                    // 批量设置过期时间
+                    if (ttlSeconds > 0) {
+                        for (String key : wrappedMap.keySet()) {
+                            cmd.expire(key, ttlSeconds);
+                        }
+                    }
+                    return null;
+                });
+            }
+        }
+
+        /**
+         * 批量写入多个 key-byte[] 对（使用 MSET + 批量 EXPIRE）
+         * 用于 Protobuf 数据的批量异步写入
+         */
+        void msetexBytes(Map<String, byte[]> keyValueMap, int ttlSeconds) {
+            if (keyValueMap == null || keyValueMap.isEmpty()) {
+                return;
+            }
+
+            // 转换为 Tuple2 格式
+            Map<String, Tuple2<String, byte[]>> wrappedMap = new HashMap<>();
+            for (Map.Entry<String, byte[]> entry : keyValueMap.entrySet()) {
+                wrappedMap.put(entry.getKey(), new Tuple2<>("", entry.getValue()));
+            }
+
+            // 使用异步批量写入
+            if (clusterMode) {
+                connectionManager.executeClusterAsync(cmd -> {
+                    // MSET 批量设置
+                    cmd.mset(wrappedMap);
+                    // 批量设置过期时间
+                    if (ttlSeconds > 0) {
+                        for (String key : wrappedMap.keySet()) {
+                            cmd.expire(key, ttlSeconds);
+                        }
+                    }
+                    return null;
+                });
+            } else {
+                connectionManager.executeAsync(cmd -> {
+                    // MSET 批量设置
+                    cmd.mset(wrappedMap);
+                    // 批量设置过期时间
+                    if (ttlSeconds > 0) {
+                        for (String key : wrappedMap.keySet()) {
+                            cmd.expire(key, ttlSeconds);
+                        }
+                    }
+                    return null;
+                });
             }
         }
 
@@ -955,19 +1105,20 @@ public class OnlineCFJob {
         private static final int DECAY_STEP_MINUTES = 2;
 
         // Pair配置
-        private static final long PAIR_MIN_SCORE = 25L;
-        private static final int PAIR_EXPIRE_SECONDS = 12 * 3600; // 12小时
+        private static final long PAIR_MIN_SCORE = 40L;
+        private static final int PAIR_EXPIRE_SECONDS = 6 * 3600; // 6小时
 
         // Index配置
         private static final int INDEX_LIMIT = 128;
         private static final int INDEX_EXPIRE_SECONDS = 4 * 3600; // 4小时
-        private static final long INDEX_MIN_SCORE = 25L;
+        private static final long INDEX_MIN_SCORE = 40L;
 
         // Redis Key配置
         private static final String HISTORY_KEY_PREFIX = "rec:user_feature:{";
         private static final String HISTORY_KEY_SUFFIX = "}:post24h";
-        private static final String PAIR_KEY_PREFIX = "roc:pair:";
-        private static final String INDEX_KEY_PREFIX = "roc:index:";
+        private static final String PAIR_KEY_PREFIX = "rec:actioncf_pair:";
+        private static final String INDEX_KEY_PREFIX = "rec_post:{";
+        private static final String INDEX_KEY_SUFFIX = "}:user_action_onlinecf";
 
         // 历史记录配置
         private static final int HISTORY_MAX_ITEMS = 50;
@@ -1050,6 +1201,10 @@ public class OnlineCFJob {
 
         String getIndexKeyPrefix() {
             return INDEX_KEY_PREFIX;
+        }
+
+        String getIndexKey(long leftItemId) {
+            return INDEX_KEY_PREFIX + leftItemId + INDEX_KEY_SUFFIX;
         }
 
         int getActionWeight(String action) {
