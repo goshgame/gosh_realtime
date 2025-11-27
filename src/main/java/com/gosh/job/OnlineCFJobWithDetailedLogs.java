@@ -768,13 +768,16 @@ public class OnlineCFJobWithDetailedLogs {
 
     /**
      * 写入 pair 计数到 Redis（用于时间衰减计算）
+     * 使用批量写入优化性能
      */
     private static class PairCountRedisSink extends RichSinkFunction<PairScoreEvent> {
 
         private final OnlineCFConfig config;
         private final RedisConfig redisConfig;
         private transient RedisHelper redisHelper;
+        private transient Map<String, String> batchBuffer;
         private transient int sinkCount = 0;
+        private static final int BATCH_SIZE = 100; // 批量写入阈值
 
         PairCountRedisSink(OnlineCFConfig config, RedisConfig redisConfig) {
             this.config = config;
@@ -786,7 +789,8 @@ public class OnlineCFJobWithDetailedLogs {
             System.out.println("PairCountRedisSink: 初始化开始...");
             this.redisHelper = new RedisHelper(redisConfig);
             this.redisHelper.open();
-            System.out.println("PairCountRedisSink: Redis连接初始化完成");
+            this.batchBuffer = new HashMap<>();
+            System.out.println("PairCountRedisSink: Redis连接初始化完成，批量大小: " + BATCH_SIZE);
         }
 
         @Override
@@ -803,15 +807,34 @@ public class OnlineCFJobWithDetailedLogs {
             String pairKey = config.getPairKeyPrefix() + value.leftItemId + "_" + value.rightItemId;
             String pairValue = value.score + ":" + currentMinute;
 
-            System.out.println(String.format("PairCountRedisSink[%d]: 写入Redis - Key: %s, Value: %s, TTL: %d",
-                    sinkCount, pairKey, pairValue, config.getPairExpireSeconds()));
+            // 添加到批量缓冲区
+            batchBuffer.put(pairKey, pairValue);
+            System.out.println(String.format("PairCountRedisSink[%d]: 添加到批量缓冲区 - Key: %s, Value: %s, 缓冲区大小: %d",
+                    sinkCount, pairKey, pairValue, batchBuffer.size()));
 
-            redisHelper.setex(pairKey, config.getPairExpireSeconds(), pairValue);
-            System.out.println(String.format("PairCountRedisSink[%d]: 写入完成", sinkCount));
+            // 达到批量阈值时执行批量写入
+            if (batchBuffer.size() >= BATCH_SIZE) {
+                System.out.println(String.format("PairCountRedisSink[%d]: 达到批量阈值，执行批量写入", sinkCount));
+                flushBatch();
+            }
+        }
+
+        private void flushBatch() {
+            if (batchBuffer.isEmpty()) {
+                return;
+            }
+            System.out.println(String.format("PairCountRedisSink: 批量写入 %d 条记录到Redis，TTL: %d",
+                    batchBuffer.size(), config.getPairExpireSeconds()));
+            redisHelper.msetex(batchBuffer, config.getPairExpireSeconds());
+            batchBuffer.clear();
+            System.out.println("PairCountRedisSink: 批量写入完成");
         }
 
         @Override
         public void close() {
+            // 关闭前刷新剩余数据
+            System.out.println("PairCountRedisSink: 关闭，刷新剩余数据");
+            flushBatch();
             System.out.println("PairCountRedisSink: 关闭，总共写入: " + sinkCount + " 条记录");
             Optional.ofNullable(redisHelper).ifPresent(RedisHelper::close);
         }
@@ -820,13 +843,16 @@ public class OnlineCFJobWithDetailedLogs {
     /**
      * 批量写入 index Top-K 到 Redis（Protobuf 格式）
      * 读取现有 Top-K，合并新数据，排序后重新写入
+     * 使用批量缓冲区和异步写入优化性能
      */
     private static class IndexTopKRedisSink extends RichSinkFunction<Tuple2<Long, List<Tuple2<Long, Long>>>> {
 
         private final OnlineCFConfig config;
         private final RedisConfig redisConfig;
         private transient RedisHelper redisHelper;
+        private transient Map<String, byte[]> batchBuffer;
         private transient int indexSinkCount = 0;
+        private static final int BATCH_SIZE = 50; // 批量写入阈值
 
         IndexTopKRedisSink(OnlineCFConfig config, RedisConfig redisConfig) {
             this.config = config;
@@ -838,7 +864,8 @@ public class OnlineCFJobWithDetailedLogs {
             System.out.println("IndexTopKRedisSink: 初始化开始...");
             this.redisHelper = new RedisHelper(redisConfig);
             this.redisHelper.open();
-            System.out.println("IndexTopKRedisSink: Redis连接初始化完成");
+            this.batchBuffer = new HashMap<>();
+            System.out.println("IndexTopKRedisSink: Redis连接初始化完成，批量大小: " + BATCH_SIZE);
         }
 
         @Override
@@ -917,17 +944,37 @@ public class OnlineCFJobWithDetailedLogs {
                 listBuilder.addItems(itemBuilder.build());
             }
 
-            // 6. 序列化并写入 Redis
+            // 6. 序列化并添加到批量缓冲区
             byte[] protobufBytes = listBuilder.build().toByteArray();
             System.out.println(String.format("IndexTopKRedisSink[%d]: Protobuf序列化完成，大小: %d bytes", indexSinkCount, protobufBytes.length));
-            redisHelper.setex(indexKey, config.getIndexExpireSeconds(), protobufBytes);
-            System.out.println(String.format("IndexTopKRedisSink[%d]: 写入Redis完成，TTL: %d秒", indexSinkCount, config.getIndexExpireSeconds()));
+            batchBuffer.put(indexKey, protobufBytes);
+            System.out.println(String.format("IndexTopKRedisSink[%d]: 添加到批量缓冲区，缓冲区大小: %d", indexSinkCount, batchBuffer.size()));
+
+            // 7. 达到批量阈值时执行批量异步写入
+            if (batchBuffer.size() >= BATCH_SIZE) {
+                System.out.println(String.format("IndexTopKRedisSink[%d]: 达到批量阈值，执行批量写入", indexSinkCount));
+                flushBatch();
+            }
 
             System.out.println(String.format("IndexTopKRedisSink[%d]: 处理完成", indexSinkCount));
         }
 
+        private void flushBatch() {
+            if (batchBuffer.isEmpty()) {
+                return;
+            }
+            System.out.println(String.format("IndexTopKRedisSink: 批量写入 %d 个Index到Redis，TTL: %d",
+                    batchBuffer.size(), config.getIndexExpireSeconds()));
+            redisHelper.msetexBytes(batchBuffer, config.getIndexExpireSeconds());
+            batchBuffer.clear();
+            System.out.println("IndexTopKRedisSink: 批量写入完成");
+        }
+
         @Override
         public void close() {
+            // 关闭前刷新剩余数据
+            System.out.println("IndexTopKRedisSink: 关闭，刷新剩余数据");
+            flushBatch();
             System.out.println("IndexTopKRedisSink: 关闭，总共处理: " + indexSinkCount + " 个Index");
             Optional.ofNullable(redisHelper).ifPresent(RedisHelper::close);
         }
@@ -1139,6 +1186,10 @@ public class OnlineCFJobWithDetailedLogs {
             }
         }
 
+        RedisConnectionManager getConnectionManager() {
+            return connectionManager;
+        }
+
         byte[] getValue(String key) {
             System.out.println("RedisHelper: GET值 - Key: " + key);
             try {
@@ -1207,6 +1258,110 @@ public class OnlineCFJobWithDetailedLogs {
                 System.out.println("RedisHelper: SETEX (byte[]) 操作完成");
             } catch (Exception e) {
                 System.err.println("RedisHelper: SETEX (byte[]) 操作异常 - " + e.getMessage());
+            }
+        }
+
+        /**
+         * 批量写入多个 key-value 对（使用 MSET + 批量 EXPIRE）
+         * 使用异步批量写入提高性能
+         */
+        void msetex(Map<String, String> keyValueMap, int ttlSeconds) {
+            if (keyValueMap == null || keyValueMap.isEmpty()) {
+                System.out.println("RedisHelper: 批量写入数据为空，跳过");
+                return;
+            }
+
+            System.out.println(String.format("RedisHelper: 批量写入 - 数量: %d, TTL: %d", keyValueMap.size(), ttlSeconds));
+
+            // 转换为 Tuple2 格式
+            Map<String, Tuple2<String, byte[]>> wrappedMap = new HashMap<>();
+            for (Map.Entry<String, String> entry : keyValueMap.entrySet()) {
+                wrappedMap.put(entry.getKey(), wrap(entry.getValue()));
+            }
+
+            // 使用异步批量写入
+            try {
+                if (clusterMode) {
+                    connectionManager.executeClusterAsync(cmd -> {
+                        // MSET 批量设置
+                        cmd.mset(wrappedMap);
+                        // 批量设置过期时间
+                        if (ttlSeconds > 0) {
+                            for (String key : wrappedMap.keySet()) {
+                                cmd.expire(key, ttlSeconds);
+                            }
+                        }
+                        System.out.println(String.format("RedisHelper: 异步批量写入完成 - 数量: %d", wrappedMap.size()));
+                        return null;
+                    });
+                } else {
+                    connectionManager.executeAsync(cmd -> {
+                        // MSET 批量设置
+                        cmd.mset(wrappedMap);
+                        // 批量设置过期时间
+                        if (ttlSeconds > 0) {
+                            for (String key : wrappedMap.keySet()) {
+                                cmd.expire(key, ttlSeconds);
+                            }
+                        }
+                        System.out.println(String.format("RedisHelper: 异步批量写入完成 - 数量: %d", wrappedMap.size()));
+                        return null;
+                    });
+                }
+            } catch (Exception e) {
+                System.err.println("RedisHelper: 批量写入异常 - " + e.getMessage());
+            }
+        }
+
+        /**
+         * 批量写入多个 key-byte[] 对（使用 MSET + 批量 EXPIRE）
+         * 用于 Protobuf 数据的批量异步写入
+         */
+        void msetexBytes(Map<String, byte[]> keyValueMap, int ttlSeconds) {
+            if (keyValueMap == null || keyValueMap.isEmpty()) {
+                System.out.println("RedisHelper: 批量写入数据为空，跳过");
+                return;
+            }
+
+            System.out.println(String.format("RedisHelper: 批量写入 (byte[]) - 数量: %d, TTL: %d", keyValueMap.size(), ttlSeconds));
+
+            // 转换为 Tuple2 格式
+            Map<String, Tuple2<String, byte[]>> wrappedMap = new HashMap<>();
+            for (Map.Entry<String, byte[]> entry : keyValueMap.entrySet()) {
+                wrappedMap.put(entry.getKey(), new Tuple2<>("", entry.getValue()));
+            }
+
+            // 使用异步批量写入
+            try {
+                if (clusterMode) {
+                    connectionManager.executeClusterAsync(cmd -> {
+                        // MSET 批量设置
+                        cmd.mset(wrappedMap);
+                        // 批量设置过期时间
+                        if (ttlSeconds > 0) {
+                            for (String key : wrappedMap.keySet()) {
+                                cmd.expire(key, ttlSeconds);
+                            }
+                        }
+                        System.out.println(String.format("RedisHelper: 异步批量写入完成 (byte[]) - 数量: %d", wrappedMap.size()));
+                        return null;
+                    });
+                } else {
+                    connectionManager.executeAsync(cmd -> {
+                        // MSET 批量设置
+                        cmd.mset(wrappedMap);
+                        // 批量设置过期时间
+                        if (ttlSeconds > 0) {
+                            for (String key : wrappedMap.keySet()) {
+                                cmd.expire(key, ttlSeconds);
+                            }
+                        }
+                        System.out.println(String.format("RedisHelper: 异步批量写入完成 (byte[]) - 数量: %d", wrappedMap.size()));
+                        return null;
+                    });
+                }
+            } catch (Exception e) {
+                System.err.println("RedisHelper: 批量写入异常 (byte[]) - " + e.getMessage());
             }
         }
 
