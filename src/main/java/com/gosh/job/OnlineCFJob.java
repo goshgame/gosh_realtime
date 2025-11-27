@@ -1361,7 +1361,7 @@ public class OnlineCFJob {
 
         // Redis Key配置
         private static final String HISTORY_KEY_PREFIX = "rec:user_feature:{";
-        private static final String HISTORY_KEY_SUFFIX = "}:post24h";
+        private static final String HISTORY_KEY_SUFFIX = "}:post7d";
         private static final String PAIR_KEY_PREFIX = "rec:actioncf_pair:";
         private static final String INDEX_KEY_PREFIX = "rec_post:{";
         private static final String INDEX_KEY_SUFFIX = "}:user_action_onlinecf";
