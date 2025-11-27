@@ -893,7 +893,8 @@ public class OnlineCFJob {
     // Helper classes
     // ------------------------------------------------------------------------
 
-    private static class UserHistoryParser {
+    private static class UserHistoryParser implements Serializable {
+        private static final long serialVersionUID = 1L;
 
         private final OnlineCFConfig config;
 
