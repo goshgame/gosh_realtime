@@ -199,20 +199,106 @@ public class OnlineCFJob {
 
     public static class SessionAccumulator implements Serializable {
         private static final long serialVersionUID = 1L;
-        long uid;
-        long itemId;
-        String recToken;
-        long score;
-        long latestTs;
+        public long uid;
+        public long itemId;
+        public String recToken;
+        public long score;
+        public long latestTs;
+
+        public SessionAccumulator() {
+        }
+
+        public long getUid() {
+            return uid;
+        }
+
+        public void setUid(long uid) {
+            this.uid = uid;
+        }
+
+        public long getItemId() {
+            return itemId;
+        }
+
+        public void setItemId(long itemId) {
+            this.itemId = itemId;
+        }
+
+        public String getRecToken() {
+            return recToken;
+        }
+
+        public void setRecToken(String recToken) {
+            this.recToken = recToken;
+        }
+
+        public long getScore() {
+            return score;
+        }
+
+        public void setScore(long score) {
+            this.score = score;
+        }
+
+        public long getLatestTs() {
+            return latestTs;
+        }
+
+        public void setLatestTs(long latestTs) {
+            this.latestTs = latestTs;
+        }
     }
 
     public static class SessionInteractionScore implements Serializable {
         private static final long serialVersionUID = 1L;
-        long uid;
-        long rightItemId;
-        long totalScore;
-        long windowEndTs;
-        String recToken;
+        public long uid;
+        public long rightItemId;
+        public long totalScore;
+        public long windowEndTs;
+        public String recToken;
+
+        public SessionInteractionScore() {
+        }
+
+        public long getUid() {
+            return uid;
+        }
+
+        public void setUid(long uid) {
+            this.uid = uid;
+        }
+
+        public long getRightItemId() {
+            return rightItemId;
+        }
+
+        public void setRightItemId(long rightItemId) {
+            this.rightItemId = rightItemId;
+        }
+
+        public long getTotalScore() {
+            return totalScore;
+        }
+
+        public void setTotalScore(long totalScore) {
+            this.totalScore = totalScore;
+        }
+
+        public long getWindowEndTs() {
+            return windowEndTs;
+        }
+
+        public void setWindowEndTs(long windowEndTs) {
+            this.windowEndTs = windowEndTs;
+        }
+
+        public String getRecToken() {
+            return recToken;
+        }
+
+        public void setRecToken(String recToken) {
+            this.recToken = recToken;
+        }
     }
 
     public static class PairScoreEvent implements Serializable {
