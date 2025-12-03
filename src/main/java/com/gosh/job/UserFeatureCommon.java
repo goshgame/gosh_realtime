@@ -2,12 +2,14 @@ package com.gosh.job;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gosh.entity.RecFeature;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.util.Collector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 用户特征处理的通用数据结构和工具函数
@@ -177,7 +179,7 @@ public class UserFeatureCommon {
                 for (JsonNode itemNode : listNode) {
                     try {
                         PostExposeInfo info = new PostExposeInfo();
-                        
+
                         // 解析post_id
                         JsonNode postIdNode = itemNode.path("post_id");
                         if (!postIdNode.isMissingNode()) {
@@ -276,7 +278,7 @@ public class UserFeatureCommon {
                 for (JsonNode itemNode : listNode) {
                     try {
                         PostViewInfo info = new PostViewInfo();
-                        
+
                         // 解析post_id
                         JsonNode postIdNode = itemNode.path("post_id");
                         if (!postIdNode.isMissingNode()) {
@@ -492,32 +494,43 @@ public class UserFeatureCommon {
      */
     public static String buildPostHistoryString(Map<Long, Float> postDetails, int limit) {
         return postDetails.entrySet().stream()
-            .sorted(Map.Entry.<Long, Float>comparingByValue().reversed())
-            .limit(limit)
-            .map(entry -> entry.getKey() + "|" + entry.getValue().intValue())
-            .reduce((a, b) -> a + "," + b)
-            .orElse("");
+                .sorted(Map.Entry.<Long, Float>comparingByValue().reversed())
+                .limit(limit)
+                .map(entry -> entry.getKey() + "|" + entry.getValue().intValue())
+                .reduce((a, b) -> a + "," + b)
+                .orElse("");
     }
 
-    /**
-     * 构建post列表字符串 格式: "123,234"
-     */
-    public static String buildPostListString(Set<Long> postIds, int limit) {
+    public static List<RecFeature.IdScore> buildIdScoreList(Map<Long, Float> postDetails, int limit) {
+        if (postDetails == null || postDetails.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return postDetails.entrySet().stream()
+                .sorted(Map.Entry.<Long, Float>comparingByValue().reversed())
+                .limit(limit)
+                .map(entry -> RecFeature.IdScore.newBuilder()
+                        .setId(entry.getKey())
+                        .setScore(entry.getValue())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    public static List<Long> buildPostIdList(Set<Long> postIds, int limit) {
+        if (postIds == null || postIds.isEmpty()) {
+            return Collections.emptyList();
+        }
         return postIds.stream()
-            .limit(limit)
-            .map(String::valueOf)
-            .reduce((a, b) -> a + "," + b)
-            .orElse("");
+                .limit(limit)
+                .collect(Collectors.toList());
     }
 
-    /**
-     * 构建作者列表字符串 格式: "123,234"
-     */
-    public static String buildAuthorListString(Set<Long> authorIds, int limit) {
+    public static List<Integer> buildAuthorIdList(Set<Long> authorIds, int limit) {
+        if (authorIds == null || authorIds.isEmpty()) {
+            return Collections.emptyList();
+        }
         return authorIds.stream()
-            .limit(limit)
-            .map(String::valueOf)
-            .reduce((a, b) -> a + "," + b)
-            .orElse("");
+                .limit(limit)
+                .map(id -> Math.toIntExact(id))
+                .collect(Collectors.toList());
     }
 }
