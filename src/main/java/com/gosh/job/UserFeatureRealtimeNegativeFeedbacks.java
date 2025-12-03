@@ -3,7 +3,6 @@ package com.gosh.job;
 import com.gosh.config.RedisConfig;
 import com.gosh.config.RedisConnectionManager;
 import com.gosh.entity.RecFeature;
-import com.gosh.job.UserFeatureCommon;
 import com.gosh.util.EventFilterUtil;
 import com.gosh.util.FlinkEnvUtil;
 import com.gosh.util.KafkaEnvUtil;
@@ -38,11 +37,28 @@ public class UserFeatureRealtimeNegativeFeedbacks {
     private static final String PREFIX = "rec:user_feature:{";
     private static final String SUFFIX = "}:latest5negtags";
 
-    // 负反馈标签队列最大长度
+    // 各队列最大长度
     private static final int MAX_NEGATIVE_TAGS = 5;
+    private static final int MAX_NEGATIVE_AUTHORS = 5;
+    private static final int MAX_POSITIVE_TAGS = 5;
+    private static final int MAX_POSITIVE_AUTHORS = 5;
 
-    // 标签权重（统一为 0.1）
-    private static final float TAG_WEIGHT = 0.1f;
+    // 权重常量
+    // 短播放负反馈（< 3秒）
+    private static final float NEGATIVE_SHORT_VIEW_TAG_WEIGHT = 0.5f;
+    private static final float NEGATIVE_SHORT_VIEW_AUTHOR_WEIGHT = 0.1f;
+    // 举报/不感兴趣负反馈
+    private static final float NEGATIVE_REPORT_TAG_WEIGHT = 0.1f;
+    private static final float NEGATIVE_REPORT_AUTHOR_WEIGHT = 0.1f;
+    // 正反馈（≥ 10秒）
+    private static final float POSITIVE_TAG_WEIGHT = 1.2f;
+    private static final float POSITIVE_AUTHOR_WEIGHT = 1.0f;
+
+    // 区分正负权重的阈值（兼容旧数据）
+    // 正反馈标签权重是 1.2，负反馈标签权重是 0.5 或 0.1，所以阈值设为 0.6
+    private static final float TAG_POSITIVE_THRESHOLD = 0.6f;
+    // 正反馈作者权重是 1.0，负反馈作者权重是 0.1，所以阈值设为 0.5
+    private static final float AUTHOR_POSITIVE_THRESHOLD = 0.5f;
 
     // Redis TTL（6小时，单位：秒）
     private static final int REDIS_TTL = 6 * 3600;
@@ -83,54 +99,78 @@ public class UserFeatureRealtimeNegativeFeedbacks {
                     .flatMap(new UserFeatureCommon.ViewEventParser())
                     .name("Parse View Events");
 
-            // 第六步：过滤负反馈事件（播放时长 < 3秒）
-            SingleOutputStreamOperator<NegativeFeedbackEvent> negativeFeedbackStream = viewStream
-                    .flatMap(new NegativeFeedbackEventParser())
-                    .name("Filter Negative Feedback Events");
+            // 第六步：识别正/负反馈事件
+            SingleOutputStreamOperator<FeedbackEvent> feedbackStream = viewStream
+                    .flatMap(new FeedbackEventParser())
+                    .name("Identify Feedback Events");
 
-            // 第七步：从 Redis 获取视频标签并维护标签队列
-            SingleOutputStreamOperator<UserNegativeTagQueue> tagQueueStream = negativeFeedbackStream
-                    .keyBy(new KeySelector<NegativeFeedbackEvent, Long>() {
+            // 第七步：从 Redis 获取视频标签并维护正负反馈队列
+            SingleOutputStreamOperator<UserFeedbackQueue> feedbackQueueStream = feedbackStream
+                    .keyBy(new KeySelector<FeedbackEvent, Long>() {
                         @Override
-                        public Long getKey(NegativeFeedbackEvent value) throws Exception {
+                        public Long getKey(FeedbackEvent value) throws Exception {
                             return value.uid;
                         }
                     })
                     .window(TumblingProcessingTimeWindows.of(java.time.Duration.ofSeconds(10))) // 10秒窗口，批量处理
-                    .process(new NegativeTagQueueProcessor())
-                    .name("Process Negative Tag Queue");
+                    .process(new FeedbackQueueProcessor())
+                    .name("Process Feedback Queues");
 
             // 第八步：转换为 Protobuf 并写入 Redis
-            DataStream<Tuple2<String, byte[]>> dataStream = tagQueueStream
-                    .map(new MapFunction<UserNegativeTagQueue, Tuple2<String, byte[]>>() {
+            DataStream<Tuple2<String, byte[]>> dataStream = feedbackQueueStream
+                    .map(new MapFunction<UserFeedbackQueue, Tuple2<String, byte[]>>() {
                         @Override
-                        public Tuple2<String, byte[]> map(UserNegativeTagQueue queue) throws Exception {
+                        public Tuple2<String, byte[]> map(UserFeedbackQueue queue) throws Exception {
                             // 构建 Redis key
                             String redisKey = PREFIX + queue.uid + SUFFIX;
 
                             // 构建 Protobuf
                             RecFeature.RecUserFeature.Builder builder = RecFeature.RecUserFeature.newBuilder();
 
-                            // 添加负反馈标签
-                            for (String tag : queue.tags) {
-                                RecFeature.FeedbackTag.Builder tagBuilder = RecFeature.FeedbackTag.newBuilder();
-                                tagBuilder.setTag(tag);
-                                tagBuilder.setWeight(TAG_WEIGHT);
-                                builder.addFeedbackTags(tagBuilder.build());
+                            // 添加正反馈标签（使用存储的权重）
+                            if (queue.positiveTags != null) {
+                                for (TagWithWeight tagWithWeight : queue.positiveTags) {
+                                    RecFeature.FeedbackTag.Builder tagBuilder = RecFeature.FeedbackTag.newBuilder();
+                                    tagBuilder.setTag(tagWithWeight.tag);
+                                    tagBuilder.setWeight(tagWithWeight.weight);
+                                    builder.addFeedbackTags(tagBuilder.build());
+                                }
                             }
 
-                            // 添加负反馈作者ID
-                            if (queue.authorIds != null) {
-                                for (Long authorId : queue.authorIds) {
-                                    if (authorId == null || authorId <= 0) {
+                            // 添加负反馈标签（使用存储的权重）
+                            if (queue.negativeTags != null) {
+                                for (TagWithWeight tagWithWeight : queue.negativeTags) {
+                                    RecFeature.FeedbackTag.Builder tagBuilder = RecFeature.FeedbackTag.newBuilder();
+                                    tagBuilder.setTag(tagWithWeight.tag);
+                                    tagBuilder.setWeight(tagWithWeight.weight);
+                                    builder.addFeedbackTags(tagBuilder.build());
+                                }
+                            }
+
+                            // 添加正反馈作者（使用存储的权重）
+                            if (queue.positiveAuthorIds != null) {
+                                for (AuthorWithWeight authorWithWeight : queue.positiveAuthorIds) {
+                                    if (authorWithWeight.authorId <= 0) {
                                         continue;
                                     }
                                     RecFeature.FeedbackAuthorId.Builder authorBuilder = RecFeature.FeedbackAuthorId.newBuilder();
-                                    authorBuilder.setAuthorId(authorId);
-                                    authorBuilder.setWeight(TAG_WEIGHT);
+                                    authorBuilder.setAuthorId(authorWithWeight.authorId);
+                                    authorBuilder.setWeight(authorWithWeight.weight);
                                     builder.addFeedbackAuthorIds(authorBuilder.build());
                                 }
-                            } else {
+                            }
+
+                            // 添加负反馈作者（使用存储的权重）
+                            if (queue.negativeAuthorIds != null) {
+                                for (AuthorWithWeight authorWithWeight : queue.negativeAuthorIds) {
+                                    if (authorWithWeight.authorId <= 0) {
+                                        continue;
+                                    }
+                                    RecFeature.FeedbackAuthorId.Builder authorBuilder = RecFeature.FeedbackAuthorId.newBuilder();
+                                    authorBuilder.setAuthorId(authorWithWeight.authorId);
+                                    authorBuilder.setWeight(authorWithWeight.weight);
+                                    builder.addFeedbackAuthorIds(authorBuilder.build());
+                                }
                             }
 
                             byte[] value = builder.build().toByteArray();
@@ -161,64 +201,10 @@ public class UserFeatureRealtimeNegativeFeedbacks {
     }
 
     /**
-     * 负反馈事件
+     * 反馈队列处理器：维护正负反馈标签与作者
      */
-    public static class NegativeFeedbackEvent {
-        public long uid;
-        public long postId;
-        public long authorId;
-        public long timestamp;
-
-        @Override
-        public String toString() {
-            return "NegativeFeedbackEvent{uid=" + uid + ", postId=" + postId + ", authorId=" + authorId + ", timestamp=" + timestamp + "}";
-        }
-    }
-
-    /**
-     * 用户负反馈标签队列
-     */
-    public static class UserNegativeTagQueue {
-        public long uid;
-        public List<String> tags; // 最多5个标签，按时间顺序（FIFO）
-        public List<Long> authorIds; // 最近5个负反馈作者列表
-
-        @Override
-        public String toString() {
-            return "UserNegativeTagQueue{uid=" + uid + ", tags=" + tags + ", authorIds=" + authorIds + "}";
-        }
-    }
-
-    /**
-     * 负反馈事件解析器 - 增强调试版本
-     */
-    private static class NegativeFeedbackEventParser implements FlatMapFunction<UserFeatureCommon.PostViewEvent, NegativeFeedbackEvent> {
-        @Override
-        public void flatMap(UserFeatureCommon.PostViewEvent viewEvent, Collector<NegativeFeedbackEvent> out) throws Exception {
-            if (viewEvent == null || viewEvent.infoList == null) {
-                return;
-            }
-
-            for (UserFeatureCommon.PostViewInfo info : viewEvent.infoList) {
-                // 筛选播放时长 < 3秒的视频（负反馈信号）
-                if (info.progressTime > 0 && info.progressTime < 3.0f && info.postId > 0) {
-                    NegativeFeedbackEvent event = new NegativeFeedbackEvent();
-                    event.uid = viewEvent.uid;
-                    event.postId = info.postId;
-                    event.authorId = info.author; // 提取作者ID
-                    event.timestamp = viewEvent.createdAt * 1000; // 转换为毫秒
-
-                    out.collect(event);
-                }
-            }
-        }
-    }
-
-    /**
-     * 负反馈标签队列处理器 - 增强调试版本
-     */
-    private static class NegativeTagQueueProcessor extends org.apache.flink.streaming.api.functions.windowing.ProcessWindowFunction<
-            NegativeFeedbackEvent, UserNegativeTagQueue, Long, org.apache.flink.streaming.api.windowing.windows.TimeWindow> {
+    private static class FeedbackQueueProcessor extends org.apache.flink.streaming.api.functions.windowing.ProcessWindowFunction<
+            FeedbackEvent, UserFeedbackQueue, Long, org.apache.flink.streaming.api.windowing.windows.TimeWindow> {
 
         private transient RedisConnectionManager redisConnectionManager;
         private transient RedisConfig redisConfig;
@@ -226,13 +212,9 @@ public class UserFeatureRealtimeNegativeFeedbacks {
         @Override
         public void open(Configuration parameters) throws Exception {
             super.open(parameters);
-
-            // 初始化 Redis 连接（用于读取视频标签）
             redisConfig = RedisConfig.fromProperties(RedisUtil.loadProperties());
-
             redisConnectionManager = RedisConnectionManager.getInstance(redisConfig);
-
-            LOG.info("NegativeTagQueueProcessor opened with Redis config: {}", redisConfig);
+            LOG.info("FeedbackQueueProcessor opened with Redis config: {}", redisConfig);
         }
 
         @Override
@@ -246,115 +228,176 @@ public class UserFeatureRealtimeNegativeFeedbacks {
         @Override
         public void process(Long uid,
                             org.apache.flink.streaming.api.functions.windowing.ProcessWindowFunction<
-                                    NegativeFeedbackEvent, UserNegativeTagQueue, Long,
+                                    FeedbackEvent, UserFeedbackQueue, Long,
                                     org.apache.flink.streaming.api.windowing.windows.TimeWindow>.Context context,
-                            Iterable<NegativeFeedbackEvent> elements,
-                            Collector<UserNegativeTagQueue> out) throws Exception {
+                            Iterable<FeedbackEvent> elements,
+                            Collector<UserFeedbackQueue> out) throws Exception {
 
-            List<NegativeFeedbackEvent> events = new ArrayList<>();
-            for (NegativeFeedbackEvent event : elements) {
+            List<FeedbackEvent> events = new ArrayList<>();
+            for (FeedbackEvent event : elements) {
                 events.add(event);
             }
             if (events.isEmpty()) {
                 return;
             }
 
-            // 读取用户现有的负反馈标签/作者队列（从 Redis）
             ExistingFeedbackState existingState = readExistingFeedbackFromRedis(uid);
-            LinkedHashSet<String> existingTags = existingState.tags;
-            LinkedHashSet<Long> existingAuthorIds = existingState.authorIds;
 
-            // 处理窗口内的所有负反馈事件
             List<CompletableFuture<String>> tagFutures = new ArrayList<>(events.size());
-            for (NegativeFeedbackEvent event : events) {
-                // 异步从 Redis 获取视频标签
-                CompletableFuture<String> tagFuture = getPostTagFromRedis(event.postId);
-                tagFutures.add(tagFuture);
-
-                // 处理作者ID队列
-                if (event.authorId > 0) {
-                    existingAuthorIds.remove(event.authorId);
-                    existingAuthorIds.add(event.authorId);
-                    trimAuthorQueue(existingAuthorIds);
-                }
+            for (FeedbackEvent event : events) {
+                tagFutures.add(getPostTagFromRedis(event.postId));
+                handleAuthor(event.authorId, event.feedbackType, existingState);
             }
 
-            // 等待所有标签获取完成
             for (int i = 0; i < tagFutures.size(); i++) {
                 try {
                     String tag = tagFutures.get(i).get();
-
-                    if (tag != null && !tag.isEmpty()) {
-
-                        // 如果标签已存在，先移除（保持 FIFO 顺序）
-                        existingTags.remove(tag);
-
-                        // 添加到队列末尾
-                        existingTags.add(tag);
-
-                        // 如果超过最大长度，移除最旧的标签（第一个）
-                        while (existingTags.size() > MAX_NEGATIVE_TAGS) {
-                            Iterator<String> iterator = existingTags.iterator();
-                            if (iterator.hasNext()) {
-                                String removedTag = iterator.next();
-                                iterator.remove();
-                            }
-                        }
-                    }
+                    handleTag(tag, events.get(i).feedbackType, existingState);
                 } catch (Exception e) {
                     LOG.warn("Failed to get tag for postId {}: {}", events.get(i).postId, e.getMessage());
                 }
             }
 
-            // 如果标签/作者队列有更新，输出结果
-            if (!existingTags.isEmpty() || !existingAuthorIds.isEmpty()) {
-                UserNegativeTagQueue queue = new UserNegativeTagQueue();
+            if (existingState.hasAny()) {
+                UserFeedbackQueue queue = new UserFeedbackQueue();
                 queue.uid = uid;
-                queue.tags = new ArrayList<>(existingTags);
-                queue.authorIds = new ArrayList<>(existingAuthorIds);
+                // 转换带权重的标签
+                queue.positiveTags = new ArrayList<>();
+                for (Map.Entry<String, Float> entry : existingState.positiveTags.entrySet()) {
+                    queue.positiveTags.add(new TagWithWeight(entry.getKey(), entry.getValue()));
+                }
+                queue.negativeTags = new ArrayList<>();
+                for (Map.Entry<String, Float> entry : existingState.negativeTags.entrySet()) {
+                    queue.negativeTags.add(new TagWithWeight(entry.getKey(), entry.getValue()));
+                }
+                // 转换带权重的作者
+                queue.positiveAuthorIds = new ArrayList<>();
+                for (Map.Entry<Long, Float> entry : existingState.positiveAuthorIds.entrySet()) {
+                    queue.positiveAuthorIds.add(new AuthorWithWeight(entry.getKey(), entry.getValue()));
+                }
+                queue.negativeAuthorIds = new ArrayList<>();
+                for (Map.Entry<Long, Float> entry : existingState.negativeAuthorIds.entrySet()) {
+                    queue.negativeAuthorIds.add(new AuthorWithWeight(entry.getKey(), entry.getValue()));
+                }
                 out.collect(queue);
             }
         }
 
-        /**
-         * 从 Redis 读取用户现有的负反馈标签/作者队列
-         */
+        private void handleAuthor(Long authorId, FeedbackType feedbackType, ExistingFeedbackState state) {
+            if (authorId == null || authorId <= 0) {
+                return;
+            }
+            float weight = getAuthorWeight(feedbackType);
+            if (feedbackType == FeedbackType.POSITIVE) {
+                // 如果已经在负反馈队列中，跳过（冲突处理：负反馈优先）
+                if (state.negativeAuthorIds.containsKey(authorId)) {
+                    return;
+                }
+                state.positiveAuthorIds.remove(authorId);
+                state.positiveAuthorIds.put(authorId, weight);
+                trimQueue(state.positiveAuthorIds, MAX_POSITIVE_AUTHORS);
+            } else {
+                // 负反馈：从正反馈队列中移除，加入负反馈队列
+                state.positiveAuthorIds.remove(authorId);
+                state.negativeAuthorIds.remove(authorId);
+                state.negativeAuthorIds.put(authorId, weight);
+                trimQueue(state.negativeAuthorIds, MAX_NEGATIVE_AUTHORS);
+            }
+        }
+
+        private void handleTag(String rawTag, FeedbackType feedbackType, ExistingFeedbackState state) {
+            if (rawTag == null) {
+                return;
+            }
+            String tag = rawTag.trim();
+            if (tag.isEmpty()) {
+                return;
+            }
+            float weight = getTagWeight(feedbackType);
+            if (feedbackType == FeedbackType.POSITIVE) {
+                // 如果已经在负反馈队列中，跳过（冲突处理：负反馈优先）
+                if (state.negativeTags.containsKey(tag)) {
+                    return;
+                }
+                state.positiveTags.remove(tag);
+                state.positiveTags.put(tag, weight);
+                trimQueue(state.positiveTags, MAX_POSITIVE_TAGS);
+            } else {
+                // 负反馈：从正反馈队列中移除，加入负反馈队列
+                state.positiveTags.remove(tag);
+                state.negativeTags.remove(tag);
+                state.negativeTags.put(tag, weight);
+                trimQueue(state.negativeTags, MAX_NEGATIVE_TAGS);
+            }
+        }
+
+        private float getTagWeight(FeedbackType feedbackType) {
+            switch (feedbackType) {
+                case POSITIVE:
+                    return POSITIVE_TAG_WEIGHT;
+                case NEGATIVE_SHORT:
+                    return NEGATIVE_SHORT_VIEW_TAG_WEIGHT;
+                case NEGATIVE_REPORT:
+                case NEGATIVE_NOT_INTERESTED:
+                    return NEGATIVE_REPORT_TAG_WEIGHT;
+                default:
+                    return NEGATIVE_SHORT_VIEW_TAG_WEIGHT;
+            }
+        }
+
+        private float getAuthorWeight(FeedbackType feedbackType) {
+            switch (feedbackType) {
+                case POSITIVE:
+                    return POSITIVE_AUTHOR_WEIGHT;
+                case NEGATIVE_SHORT:
+                    return NEGATIVE_SHORT_VIEW_AUTHOR_WEIGHT;
+                case NEGATIVE_REPORT:
+                case NEGATIVE_NOT_INTERESTED:
+                    return NEGATIVE_REPORT_AUTHOR_WEIGHT;
+                default:
+                    return NEGATIVE_SHORT_VIEW_AUTHOR_WEIGHT;
+            }
+        }
+
         private ExistingFeedbackState readExistingFeedbackFromRedis(long uid) {
             ExistingFeedbackState state = new ExistingFeedbackState();
             try {
                 String redisKey = PREFIX + uid + SUFFIX;
-
-                // 从 Redis 读取 Protobuf 数据
                 CompletableFuture<org.apache.flink.api.java.tuple.Tuple2<String, byte[]>> valueFuture =
-                        redisConnectionManager.executeStringAsync(
-                                commands -> commands.get(redisKey)
-                        );
-
+                        redisConnectionManager.executeStringAsync(commands -> commands.get(redisKey));
                 org.apache.flink.api.java.tuple.Tuple2<String, byte[]> tuple = valueFuture.get();
-
                 if (tuple != null && tuple.f1 != null && tuple.f1.length > 0) {
-
-                    // 解析 Protobuf
                     RecFeature.RecUserFeature feature = RecFeature.RecUserFeature.parseFrom(tuple.f1);
-
-                    // 读取标签列表
                     try {
-                        java.util.List<RecFeature.FeedbackTag> feedbackTags = feature.getFeedbackTagsList();
+                        List<RecFeature.FeedbackTag> feedbackTags = feature.getFeedbackTagsList();
                         for (RecFeature.FeedbackTag feedbackTag : feedbackTags) {
                             String tag = feedbackTag.getTag();
-                            state.tags.add(tag);
+                            if (tag == null || tag.trim().isEmpty()) {
+                                continue;
+                            }
+                            String trimmedTag = tag.trim();
+                            float weight = feedbackTag.getWeight();
+                            if (isPositiveTagWeight(weight)) {
+                                state.positiveTags.put(trimmedTag, weight);
+                            } else {
+                                state.negativeTags.put(trimmedTag, weight);
+                            }
                         }
                     } catch (Exception e) {
                         LOG.warn("Failed to get feedback tags list: {}", e.getMessage());
                     }
-
-                    // 读取作者ID列表
                     try {
-                        java.util.List<RecFeature.FeedbackAuthorId> feedbackAuthorIds = feature.getFeedbackAuthorIdsList();
+                        List<RecFeature.FeedbackAuthorId> feedbackAuthorIds = feature.getFeedbackAuthorIdsList();
                         for (RecFeature.FeedbackAuthorId feedbackAuthorId : feedbackAuthorIds) {
                             long authorId = feedbackAuthorId.getAuthorId();
-                            if (authorId > 0) {
-                                state.authorIds.add(authorId);
+                            if (authorId <= 0) {
+                                continue;
+                            }
+                            float weight = feedbackAuthorId.getWeight();
+                            if (isPositiveAuthorWeight(weight)) {
+                                state.positiveAuthorIds.put(authorId, weight);
+                            } else {
+                                state.negativeAuthorIds.put(authorId, weight);
                             }
                         }
                     } catch (Exception e) {
@@ -364,58 +407,33 @@ public class UserFeatureRealtimeNegativeFeedbacks {
             } catch (Exception e) {
                 LOG.debug("Failed to read existing feedback from Redis for uid {}: {}", uid, e.getMessage());
             }
+            trimQueue(state.positiveTags, MAX_POSITIVE_TAGS);
+            trimQueue(state.negativeTags, MAX_NEGATIVE_TAGS);
+            trimQueue(state.positiveAuthorIds, MAX_POSITIVE_AUTHORS);
+            trimQueue(state.negativeAuthorIds, MAX_NEGATIVE_AUTHORS);
             return state;
         }
 
-        /**
-         * 限制作者队列长度为最大长度
-         */
-        private void trimAuthorQueue(LinkedHashSet<Long> authorIds) {
-            while (authorIds.size() > MAX_NEGATIVE_TAGS) {
-                Iterator<Long> iterator = authorIds.iterator();
-                if (iterator.hasNext()) {
-                    Long removedAuthorId = iterator.next();
-                    iterator.remove();
-                } else {
-                    break;
-                }
-            }
-        }
-
-        /**
-         * 从 Redis 获取视频标签
-         */
         private CompletableFuture<String> getPostTagFromRedis(long postId) {
             String redisKey = "rec_post:{" + postId + "}:aitag";
-
             return redisConnectionManager.executeStringAsync(
                     commands -> {
                         try {
                             org.apache.flink.api.java.tuple.Tuple2<String, byte[]> tuple = commands.get(redisKey);
-
                             if (tuple != null && tuple.f1 != null && tuple.f1.length > 0) {
-                                // 将字节数组转换为字符串
                                 String value = new String(tuple.f1, java.nio.charset.StandardCharsets.UTF_8);
-
                                 if (!value.isEmpty()) {
-                                    String selectedTag = selectPrioritizedTag(value);
-                                    if (selectedTag != null) {
-                                        return selectedTag;
-                                    }
-                                } else {
+                                    return selectPrioritizedTag(value);
                                 }
-                            } else {
                             }
                         } catch (Exception e) {
+                            LOG.warn("Failed to fetch tag from Redis for postId {}: {}", postId, e.getMessage());
                         }
                         return null;
                     }
             );
         }
 
-        /**
-         * 优先返回包含 "restricted#explicit" 的标签，若不存在则返回第一个包含 "content" 的标签
-         */
         private String selectPrioritizedTag(String rawValue) {
             String[] tags = rawValue.split(",");
             String contentCandidate = null;
@@ -436,13 +454,190 @@ public class UserFeatureRealtimeNegativeFeedbacks {
             }
             return contentCandidate;
         }
+
+        private boolean isPositiveTagWeight(float weight) {
+            return weight >= TAG_POSITIVE_THRESHOLD;
+        }
+
+        private boolean isPositiveAuthorWeight(float weight) {
+            return weight >= AUTHOR_POSITIVE_THRESHOLD;
+        }
+
+        private <T> void trimQueue(LinkedHashMap<T, Float> queue, int limit) {
+            while (queue.size() > limit) {
+                Iterator<Map.Entry<T, Float>> iterator = queue.entrySet().iterator();
+                if (iterator.hasNext()) {
+                    iterator.next();
+                    iterator.remove();
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    /**
+     * 反馈类型枚举
+     */
+    public enum FeedbackType {
+        POSITIVE,           // 正反馈（≥ 10秒播放）
+        NEGATIVE_SHORT,    // 负反馈：短播放（< 3秒）
+        NEGATIVE_REPORT,   // 负反馈：举报（interaction == 7）
+        NEGATIVE_NOT_INTERESTED  // 负反馈：不感兴趣（interaction == 11）
     }
 
     /**
-     * 现有负反馈状态（标签和作者ID）
+     * 用户反馈事件（可正可负）
+     */
+    public static class FeedbackEvent {
+        public long uid;
+        public long postId;
+        public long authorId;
+        public long timestamp;
+        public boolean positive;
+        public FeedbackType feedbackType;  // 反馈类型
+
+        @Override
+        public String toString() {
+            return "FeedbackEvent{uid=" + uid + ", postId=" + postId + ", authorId=" + authorId
+                    + ", timestamp=" + timestamp + ", positive=" + positive
+                    + ", feedbackType=" + feedbackType + "}";
+        }
+    }
+
+    /**
+     * 带权重的标签信息
+     */
+    public static class TagWithWeight {
+        public String tag;
+        public float weight;
+
+        public TagWithWeight(String tag, float weight) {
+            this.tag = tag;
+            this.weight = weight;
+        }
+    }
+
+    /**
+     * 带权重的作者信息
+     */
+    public static class AuthorWithWeight {
+        public long authorId;
+        public float weight;
+
+        public AuthorWithWeight(long authorId, float weight) {
+            this.authorId = authorId;
+            this.weight = weight;
+        }
+    }
+
+    /**
+     * 用户反馈队列（正负标签、正负作者共存，带权重）
+     */
+    public static class UserFeedbackQueue {
+        public long uid;
+        public List<TagWithWeight> positiveTags;
+        public List<TagWithWeight> negativeTags;
+        public List<AuthorWithWeight> positiveAuthorIds;
+        public List<AuthorWithWeight> negativeAuthorIds;
+
+        @Override
+        public String toString() {
+            return "UserFeedbackQueue{uid=" + uid
+                    + ", positiveTags=" + positiveTags
+                    + ", negativeTags=" + negativeTags
+                    + ", positiveAuthorIds=" + positiveAuthorIds
+                    + ", negativeAuthorIds=" + negativeAuthorIds + "}";
+        }
+    }
+
+    /**
+     * 反馈事件解析器：同时识别正负反馈
+     */
+    private static class FeedbackEventParser implements FlatMapFunction<UserFeatureCommon.PostViewEvent, FeedbackEvent> {
+        private static final float POSITIVE_THRESHOLD_SECONDS = 10.0f;
+        private static final float NEGATIVE_THRESHOLD_SECONDS = 3.0f;
+        private static final int INTERACTION_REPORT = 7;  // 举报
+        private static final int INTERACTION_NOT_INTERESTED = 11;  // 不感兴趣
+
+        @Override
+        public void flatMap(UserFeatureCommon.PostViewEvent viewEvent, Collector<FeedbackEvent> out) throws Exception {
+            if (viewEvent == null || viewEvent.infoList == null) {
+                return;
+            }
+
+            for (UserFeatureCommon.PostViewInfo info : viewEvent.infoList) {
+                if (info.postId <= 0) {
+                    continue;
+                }
+
+                // 检查交互类型：举报和不感兴趣（优先级最高）
+                boolean hasReport = false;
+                boolean hasNotInterested = false;
+                if (info.interaction != null) {
+                    for (Integer interactionType : info.interaction) {
+                        if (interactionType == INTERACTION_REPORT) {
+                            hasReport = true;
+                        } else if (interactionType == INTERACTION_NOT_INTERESTED) {
+                            hasNotInterested = true;
+                        }
+                    }
+                }
+
+                // 负反馈：举报（interaction == 7）
+                if (hasReport) {
+                    FeedbackEvent negative = buildEvent(viewEvent, info, false, FeedbackType.NEGATIVE_REPORT);
+                    out.collect(negative);
+                }
+
+                // 负反馈：不感兴趣（interaction == 11）
+                if (hasNotInterested) {
+                    FeedbackEvent negative = buildEvent(viewEvent, info, false, FeedbackType.NEGATIVE_NOT_INTERESTED);
+                    out.collect(negative);
+                }
+
+                // 负反馈：播放 < 3 秒（如果没有举报或不感兴趣）
+                if (!hasReport && !hasNotInterested
+                        && info.progressTime > 0 && info.progressTime < NEGATIVE_THRESHOLD_SECONDS) {
+                    FeedbackEvent negative = buildEvent(viewEvent, info, false, FeedbackType.NEGATIVE_SHORT);
+                    out.collect(negative);
+                }
+
+                // 正反馈：播放 ≥ 10 秒
+                if (info.progressTime >= POSITIVE_THRESHOLD_SECONDS) {
+                    FeedbackEvent positive = buildEvent(viewEvent, info, true, FeedbackType.POSITIVE);
+                    out.collect(positive);
+                }
+            }
+        }
+
+        private FeedbackEvent buildEvent(UserFeatureCommon.PostViewEvent viewEvent,
+                                         UserFeatureCommon.PostViewInfo info,
+                                         boolean positive,
+                                         FeedbackType feedbackType) {
+            FeedbackEvent event = new FeedbackEvent();
+            event.uid = viewEvent.uid;
+            event.postId = info.postId;
+            event.authorId = info.author;
+            event.timestamp = viewEvent.createdAt * 1000;
+            event.positive = positive;
+            event.feedbackType = feedbackType;
+            return event;
+        }
+    }
+
+    /**
+     * 内存中的反馈状态（带权重）
      */
     private static class ExistingFeedbackState {
-        private final LinkedHashSet<String> tags = new LinkedHashSet<>();
-        private final LinkedHashSet<Long> authorIds = new LinkedHashSet<>();
+        // 使用 LinkedHashMap 保持插入顺序，同时存储权重
+        private final LinkedHashMap<String, Float> positiveTags = new LinkedHashMap<>();
+        private final LinkedHashMap<String, Float> negativeTags = new LinkedHashMap<>();
+        private final LinkedHashMap<Long, Float> positiveAuthorIds = new LinkedHashMap<>();
+        private final LinkedHashMap<Long, Float> negativeAuthorIds = new LinkedHashMap<>();
+
+        boolean hasAny() {
+            return !positiveTags.isEmpty() || !negativeTags.isEmpty()
+                    || !positiveAuthorIds.isEmpty() || !negativeAuthorIds.isEmpty();
+        }
     }
 }
