@@ -44,13 +44,15 @@ public class PostPoseParseJob {
         // 第四步：处理逻辑
         // 创建Jackson ObjectMapper用于JSON处理
         ObjectMapper objectMapper = new ObjectMapper();
+        // 配置ObjectMapper忽略未知属性
+        objectMapper.configure(com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         // 解析JSON为PostEvent实体，并筛选出event_type=16的数据
         DataStream<PostEvent> filteredEvents = kafkaSource
                 .map(kafkaRawEvent -> {
                     try {
                         PostEvent postEvent = objectMapper.readValue(kafkaRawEvent.getMessage(), PostEvent.class);
                         postEvent.setEvenTime(kafkaRawEvent.getTimestamp());
-
+                        LOG.info("解析后的数据：{}",postEvent);
                         return postEvent;
                     } catch (Exception e) {
                         LOG.info("异常解析数据：{}",kafkaRawEvent);

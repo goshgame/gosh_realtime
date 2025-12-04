@@ -73,6 +73,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  *     }
  * }
  */
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PostEvent {
     @JsonProperty("event_type")
     private Integer eventType;
