@@ -275,8 +275,10 @@ public class UserPornLabelJob {
                 }
                 if (!exist) {
                     String pornTag = getPostTagFromRedis(info.postId).get();
+                    List<PostViewInfo> infos = new ArrayList<>();
+                    infos.add(info);
                     allRecords.add(new Tuple4<>(
-                            Collections.singletonList(info),
+                            infos,
                             info.postId,
                             allRecords.size() + 1,
                             pornTag
