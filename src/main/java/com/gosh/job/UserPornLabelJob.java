@@ -118,11 +118,15 @@ public class UserPornLabelJob {
                         public Tuple2<String, byte[]> map(UserNExposures event) throws Exception {
                             Map<String, Float> standingStatistics = new HashMap<>(); //pornLabel -> standingTime
                             Map<String, Integer> positiveStatistics = new HashMap<>(); //pornLabel -> positiveCount
+                            Map<String, Integer> negativeStatistics = new HashMap<>(); //pornLabel -> positiveCount
+
                             float allStandTime = 0.0f;
                             for (Tuple4<List<PostViewInfo>, Long, Integer, String> tuple :event.firstNExposures) {
                                 String pornTag = tuple.f3;
                                 float standingTime = 0.0f;
                                 int positiveCount = 0;
+                                int negativeCount = 0;
+
                                 for (PostViewInfo info : tuple.f0) {
                                     if (info == null) {
                                         continue;
@@ -131,6 +135,8 @@ public class UserPornLabelJob {
                                     for (int action : info.interaction) {
                                         if (positiveActions.contains(action)) {
                                             positiveCount++;
+                                        }else if (action == 11) { // 不感兴趣
+                                            negativeCount++;
                                         }
                                     }
                                 }
@@ -139,10 +145,13 @@ public class UserPornLabelJob {
                                 standingStatistics.put(pornTag, stTime + standingTime);
                                 int pCount = positiveStatistics.get(pornTag);
                                 positiveStatistics.put(pornTag, pCount + positiveCount);
+                                int negCount = negativeStatistics.get(pornTag);
+                                negativeStatistics.put(pornTag, negCount + negativeCount);
                             }
                             String pornLabel = "u_ylevel_unk";
                             for (Map.Entry<String, Float> entry : standingStatistics.entrySet()) {
-                                if (entry.getValue() / allStandTime > 0.6 | positiveStatistics.get(entry.getKey()) > 0) {
+                                if ( (entry.getValue() / allStandTime > 0.6 | positiveStatistics.get(entry.getKey()) > 0) &
+                                    negativeStatistics.get(entry.getKey()) <= 0 ) {
                                     pornLabel = "u_ylevel_"+ entry.getKey();
                                     break;
                                 }
