@@ -291,7 +291,7 @@ public class UserPornLabelJob {
 
             // 只保留最近N条记录
             if (allRecords.size() > N) {
-                allRecords = allRecords.subList(allRecords.size() - N, allRecords.size());
+                allRecords = new ArrayList<>(allRecords.subList(allRecords.size() - N, allRecords.size()));
             }
 
             // 更新状态
