@@ -97,7 +97,7 @@ public class UserPornLabelJob {
                         return event;
                     })
                     .name("recent-exposure-statistics");
-
+            // 计算 用户 属于的色情群体
             List<Integer> positiveActions = Arrays.asList(1,3,5,6); // 点赞，评论，分享，收藏
             DataStream<Tuple2<String, byte[]>> dataStream =recentStats
                     .map(new MapFunction<UserNExposures, Tuple2<String, byte[]>>() {
@@ -152,7 +152,7 @@ public class UserPornLabelJob {
                             return new Tuple2<>(redisKey, pornLabel.getBytes());
                         }
                     })
-                    .name("Convert to Protobuf");
+                    .name("cal user porn label");
 
             // 9. 创建 Redis Sink
             System.out.println("9. 创建 Redis Sink...");
