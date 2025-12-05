@@ -142,11 +142,11 @@ public class UserPornLabelJob {
                                     }
                                 }
                                 allStandTime += standingTime;
-                                float stTime = standingStatistics.get(pornTag);
+                                float stTime = standingStatistics.getOrDefault(pornTag, 0.0f);
                                 standingStatistics.put(pornTag, stTime + standingTime);
-                                int pCount = positiveStatistics.get(pornTag);
+                                int pCount = positiveStatistics.getOrDefault(pornTag, 0);
                                 positiveStatistics.put(pornTag, pCount + positiveCount);
-                                int negCount = negativeStatistics.get(pornTag);
+                                int negCount = negativeStatistics.getOrDefault(pornTag, 0);
                                 negativeStatistics.put(pornTag, negCount + negativeCount);
                             }
                             String pornLabel = "u_ylevel_unk";
