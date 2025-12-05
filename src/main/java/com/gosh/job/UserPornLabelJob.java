@@ -97,53 +97,13 @@ public class UserPornLabelJob {
                         return event;
                     })
                     .name("recent-exposure-statistics");
-            // 计算 用户 属于的色情群体
+            //7. 计算 用户 属于的色情群体
             List<Integer> positiveActions = Arrays.asList(1,3,5,6); // 点赞，评论，分享，收藏
             DataStream<Tuple2<String, byte[]>> dataStream =recentStats
                     .map(new MapFunction<UserNExposures, Tuple2<String, byte[]>>() {
                         @Override
                         public Tuple2<String, byte[]> map(UserNExposures event) throws Exception {
-                            Map<String, Float> standingStatistics = new HashMap<>(); //pornLabel -> standingTime
-                            Map<String, Integer> positiveStatistics = new HashMap<>(); //pornLabel -> positiveCount
-                            Map<String, Integer> negativeStatistics = new HashMap<>(); //pornLabel -> positiveCount
-
-                            float allStandTime = 0.0f;
-                            for (Tuple4<List<PostViewInfo>, Long, Integer, String> tuple :event.firstNExposures) {
-                                String pornTag = tuple.f3;
-                                float standingTime = 0.0f;
-                                int positiveCount = 0;
-                                int negativeCount = 0;
-
-                                for (PostViewInfo info : tuple.f0) {
-                                    if (info != null) {
-                                        standingTime += info.standingTime;
-                                        if (info.interaction != null && !info.interaction.isEmpty()) {
-                                            for (int action : info.interaction) {
-                                                if (positiveActions.contains(action)) {
-                                                    positiveCount++;
-                                                } else if (action == 11) { // 不感兴趣
-                                                    negativeCount++;
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                allStandTime += standingTime;
-                                float stTime = standingStatistics.getOrDefault(pornTag, 0.0f);
-                                standingStatistics.put(pornTag, stTime + standingTime);
-                                int pCount = positiveStatistics.getOrDefault(pornTag, 0);
-                                positiveStatistics.put(pornTag, pCount + positiveCount);
-                                int negCount = negativeStatistics.getOrDefault(pornTag, 0);
-                                negativeStatistics.put(pornTag, negCount + negativeCount);
-                            }
-                            String pornLabel = "u_ylevel_unk";
-                            for (Map.Entry<String, Float> entry : standingStatistics.entrySet()) {
-                                if ( (entry.getValue() / allStandTime > 0.6 | positiveStatistics.get(entry.getKey()) > 0) &
-                                    negativeStatistics.get(entry.getKey()) <= 0 ) {
-                                    pornLabel = "u_ylevel_"+ entry.getKey();
-                                    break;
-                                }
-                            }
+                            String pornLabel = getPornLabel(event, positiveActions);
                             if (event.viewer == testUid) {
                                 System.out.println("[---redis val] UID: " + event.viewer + pornLabel + event.toString());
                             }
@@ -154,7 +114,7 @@ public class UserPornLabelJob {
                     })
                     .name("cal user porn label");
 
-            // 9. 创建 Redis Sink
+            // 8. 创建 Redis Sink
             System.out.println("9. 创建 Redis Sink...");
             RedisConfig redisConfig = RedisConfig.fromProperties(RedisUtil.loadProperties());
             redisConfig.setTtl(REDIS_TTL);
@@ -186,8 +146,53 @@ public class UserPornLabelJob {
         System.out.println("结束时间: " + new Date());
     }
 
+    public static String getPornLabel(UserNExposures event,  List<Integer> positiveActions) {
+        Map<String, Float> standingStatistics = new HashMap<>(); //pornLabel -> standingTime
+        Map<String, Integer> positiveStatistics = new HashMap<>(); //pornLabel -> positiveCount
+        Map<String, Integer> negativeStatistics = new HashMap<>(); //pornLabel -> positiveCount
+
+        float allStandTime = 0.0f;
+        for (Tuple4<List<PostViewInfo>, Long, Integer, String> tuple :event.firstNExposures) {
+            String pornTag = tuple.f3;
+            float standingTime = 0.0f;
+            int positiveCount = 0;
+            int negativeCount = 0;
+
+            for (PostViewInfo info : tuple.f0) {
+                if (info != null) {
+                    standingTime += info.standingTime;
+                    if (info.interaction != null && !info.interaction.isEmpty()) {
+                        for (int action : info.interaction) {
+                            if (positiveActions.contains(action)) {
+                                positiveCount++;
+                            } else if (action == 11) { // 不感兴趣
+                                negativeCount++;
+                            }
+                        }
+                    }
+                }
+            }
+            allStandTime += standingTime;
+            float stTime = standingStatistics.getOrDefault(pornTag, 0.0f);
+            standingStatistics.put(pornTag, stTime + standingTime);
+            int pCount = positiveStatistics.getOrDefault(pornTag, 0);
+            positiveStatistics.put(pornTag, pCount + positiveCount);
+            int negCount = negativeStatistics.getOrDefault(pornTag, 0);
+            negativeStatistics.put(pornTag, negCount + negativeCount);
+        }
+        String pornLabel = "u_ylevel_unk";
+        for (Map.Entry<String, Float> entry : standingStatistics.entrySet()) {
+            if ( (entry.getValue() / allStandTime > 0.6 | positiveStatistics.get(entry.getKey()) > 0) &
+                    negativeStatistics.get(entry.getKey()) <= 0 ) {
+                pornLabel = "u_ylevel_"+ entry.getKey();
+                break;
+            }
+        }
+        return pornLabel;
+    }
+
     // 前N次曝光统计输出
-    static class UserNExposures  implements Serializable {
+    public static class UserNExposures  implements Serializable {
         public long viewer;
         public List<Tuple4<List<PostViewInfo>, Long, Integer, String>>  firstNExposures;  // 前N次曝光记录
         public long collectionTime;  // 收集完成时间
