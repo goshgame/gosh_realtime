@@ -2,7 +2,6 @@ package com.gosh.job;
 
 import com.gosh.config.RedisConfig;
 import com.gosh.config.RedisConnectionManager;
-import com.gosh.entity.PostInteractionType;
 import com.gosh.util.EventFilterUtil;
 import com.gosh.util.FlinkEnvUtil;
 import com.gosh.util.KafkaEnvUtil;
@@ -28,7 +27,6 @@ import java.util.concurrent.CompletableFuture;
 import org.apache.flink.api.common.state.*;
 import com.gosh.job.UserFeatureCommon.*;
 import org.apache.flink.api.common.state.*;
-import org.apache.flink.api.java.tuple.Tuple3;
 
 public class UserPornLabelJob {
     private static final Logger LOG = LoggerFactory.getLogger(UserPornLabelJob.class);
@@ -108,9 +106,7 @@ public class UserPornLabelJob {
                     .keyBy(event -> event.uid)
                     .process(new RecentNExposures())
                     .map(event -> {
-                        if (event.viewer == testUid) {
-                            System.out.println("[UserNExposures] UID: " + event.viewer + event.toString());
-                        }
+                        System.out.println("[UserNExposures] UID: " + event.viewer + event.toString());
                         return event;
                     })
                     .name("recent-exposure-statistics");
@@ -143,15 +139,13 @@ public class UserPornLabelJob {
                             }
                             String pornLabel = "u_ylevel_unk";
                             for (Map.Entry<String, Float> entry : standingStatistics.entrySet()) {
-                                if (entry.getValue() / allStandTime > 0.6 & positiveStatistics.get(entry.getKey()) > 0) {
+                                if (entry.getValue() / allStandTime > 0.6 | positiveStatistics.get(entry.getKey()) > 0) {
                                     pornLabel = "u_ylevel_"+ entry.getKey();
                                     break;
                                 }
                             }
 
-                            if (event.viewer == testUid) {
-                                System.out.println("[---redis val] UID: " + event.viewer + pornLabel + event.toString());
-                            }
+                            System.out.println("[---redis val] UID: " + event.viewer + pornLabel + event.toString());
                             // 构建 Redis key
                             String redisKey = String.format(RedisKey, event.viewer);
                             return new Tuple2<>(redisKey, pornLabel.getBytes());
@@ -223,7 +217,8 @@ public class UserPornLabelJob {
                             org.apache.flink.api.common.typeinfo.Types.TUPLE(
                                     org.apache.flink.api.common.typeinfo.Types.LIST(org.apache.flink.api.common.typeinfo.Types.GENERIC(PostViewInfo.class)),
                                     org.apache.flink.api.common.typeinfo.Types.LONG,
-                                    org.apache.flink.api.common.typeinfo.Types.INT
+                                    org.apache.flink.api.common.typeinfo.Types.INT,
+                                    org.apache.flink.api.common.typeinfo.Types.STRING
                             )
                     )
             );
