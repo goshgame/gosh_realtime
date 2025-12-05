@@ -144,8 +144,9 @@ public class UserPornLabelJob {
                                     break;
                                 }
                             }
-
-                            System.out.println("[---redis val] UID: " + event.viewer + pornLabel + event.toString());
+                            if (event.viewer == testUid) {
+                                System.out.println("[---redis val] UID: " + event.viewer + pornLabel + event.toString());
+                            }
                             // 构建 Redis key
                             String redisKey = String.format(RedisKey, event.viewer);
                             return new Tuple2<>(redisKey, pornLabel.getBytes());
