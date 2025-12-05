@@ -130,11 +130,13 @@ public class UserPornLabelJob {
                                 for (PostViewInfo info : tuple.f0) {
                                     if (info != null) {
                                         standingTime += info.standingTime;
-                                        for (int action : info.interaction) {
-                                            if (positiveActions.contains(action)) {
-                                                positiveCount++;
-                                            } else if (action == 11) { // 不感兴趣
-                                                negativeCount++;
+                                        if (info.interaction != null && !info.interaction.isEmpty()) {
+                                            for (int action : info.interaction) {
+                                                if (positiveActions.contains(action)) {
+                                                    positiveCount++;
+                                                } else if (action == 11) { // 不感兴趣
+                                                    negativeCount++;
+                                                }
                                             }
                                         }
                                     }
