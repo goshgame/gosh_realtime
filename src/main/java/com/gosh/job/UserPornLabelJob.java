@@ -124,6 +124,9 @@ public class UserPornLabelJob {
                                 float standingTime = 0.0f;
                                 int positiveCount = 0;
                                 for (PostViewInfo info : tuple.f0) {
+                                    if (info == null) {
+                                        continue;
+                                    }
                                     standingTime += info.standingTime;
                                     for (int action : info.interaction) {
                                         if (positiveActions.contains(action)) {
