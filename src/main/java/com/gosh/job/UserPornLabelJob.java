@@ -128,15 +128,14 @@ public class UserPornLabelJob {
                                 int negativeCount = 0;
 
                                 for (PostViewInfo info : tuple.f0) {
-                                    if (info == null) {
-                                        continue;
-                                    }
-                                    standingTime += info.standingTime;
-                                    for (int action : info.interaction) {
-                                        if (positiveActions.contains(action)) {
-                                            positiveCount++;
-                                        }else if (action == 11) { // 不感兴趣
-                                            negativeCount++;
+                                    if (info != null) {
+                                        standingTime += info.standingTime;
+                                        for (int action : info.interaction) {
+                                            if (positiveActions.contains(action)) {
+                                                positiveCount++;
+                                            } else if (action == 11) { // 不感兴趣
+                                                negativeCount++;
+                                            }
                                         }
                                     }
                                 }
