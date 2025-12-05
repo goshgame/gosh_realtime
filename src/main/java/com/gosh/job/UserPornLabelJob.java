@@ -40,6 +40,7 @@ public class UserPornLabelJob {
 
     // Kafka Group ID
     private static final String KAFKA_GROUP_ID = "rec_porn_label";
+    private static long testUid = 117134;
 
     public static void main(String[] args) throws Exception {
         System.out.println("=== Flink 任务启动(UserPornLabelJob) ===");
@@ -79,7 +80,7 @@ public class UserPornLabelJob {
                     .filter(EventFilterUtil.createFastEventTypeFilter(8))
                     .name("Pre-filter View Events")
                     .map(value -> {
-                        System.out.println("[Kafka] 收到原始消息: " + value);
+//                        System.out.println("[Kafka] 收到原始消息: " + value);
                         return value;
                     })
                     .name("Debug Kafka Messages");
@@ -91,8 +92,10 @@ public class UserPornLabelJob {
                     .name("Parse View Events")
                     .map(event -> {
                         if (event != null) {
-                            System.out.println("[ViewEvent] UID: " + event.uid +
-                                    ", infoList size: " + (event.infoList != null ? event.infoList.size() : 0));
+                            if (event.uid == testUid) {
+                                System.out.println("[ViewEvent] UID: " + event.uid +
+                                        ", infoList size: " + (event.infoList != null ? event.infoList.size() : 0));
+                            }
                         } else {
                             System.out.println("[ViewEvent] 解析结果为 null");
                         }
@@ -104,6 +107,12 @@ public class UserPornLabelJob {
             SingleOutputStreamOperator<UserNExposures> recentStats = viewStream
                     .keyBy(event -> event.uid)
                     .process(new RecentNExposures())
+                    .map(event -> {
+                        if (event.viewer == testUid) {
+                            System.out.println("[UserNExposures] UID: " + event.viewer + event.toString());
+                        }
+                        return event;
+                    })
                     .name("recent-exposure-statistics");
 
             List<Integer> positiveActions = Arrays.asList(1,3,5,6); // 点赞，评论，分享，收藏
@@ -140,6 +149,9 @@ public class UserPornLabelJob {
                                 }
                             }
 
+                            if (event.viewer == testUid) {
+                                System.out.println("[---redis val] UID: " + event.viewer + pornLabel + event.toString());
+                            }
                             // 构建 Redis key
                             String redisKey = String.format(RedisKey, event.viewer);
                             return new Tuple2<>(redisKey, pornLabel.getBytes());
