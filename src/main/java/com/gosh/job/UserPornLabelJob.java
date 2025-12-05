@@ -30,16 +30,6 @@ import com.gosh.job.UserFeatureCommon.*;
 import org.apache.flink.api.common.state.*;
 import org.apache.flink.api.java.tuple.Tuple3;
 
-/**
- * 带详细日志的实时正负反馈标签/作者队列维护任务（调试版）
- *
- * 与 {@link UserFeatureRealtimeNegativeFeedbacks} 保持逻辑一致：
- * - 同时维护正负标签、正负作者队列
- * - 支持三种负反馈：短播放、不感兴趣、举报
- * - 使用相同的权重设计
- *
- * 区别：本任务会通过 System.out 打印详细的中间过程，方便线上问题排查。
- */
 public class UserPornLabelJob {
     private static final Logger LOG = LoggerFactory.getLogger(UserPornLabelJob.class);
 
@@ -175,7 +165,7 @@ public class UserPornLabelJob {
 
             // 执行任务
             System.out.println("=== 开始执行 Debug Flink 任务 ===");
-            env.execute("User Feature Realtime Fake Negative Feedbacks Job");
+            env.execute("UserPornLabelJob");
 
         } catch (Exception e) {
             System.err.println("!!! Flink Debug 任务执行异常 !!!");
