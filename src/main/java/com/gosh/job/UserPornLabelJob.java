@@ -315,7 +315,7 @@ public class UserPornLabelJob {
                         } catch (Exception e) {
                             LOG.warn("Failed to fetch tag from Redis for postId {}: {}", postId, e.getMessage());
                         }
-                        return null;
+                        return UNK;
                     }
             );
         }
