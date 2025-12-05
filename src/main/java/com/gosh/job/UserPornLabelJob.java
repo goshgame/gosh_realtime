@@ -20,6 +20,8 @@ import org.apache.flink.streaming.api.functions.KeyedProcessFunction;
 import org.apache.flink.util.Collector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.Serializable;
 import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -199,14 +201,18 @@ public class UserPornLabelJob {
     }
 
     // 前N次曝光统计输出
-    static class UserNExposures {
+    static class UserNExposures  implements Serializable {
         public long viewer;
         public List<Tuple4<List<PostViewInfo>, Long, Integer, String>>  firstNExposures;  // 前N次曝光记录
         public long collectionTime;  // 收集完成时间
 
         public UserNExposures(long viewer, List<Tuple4<List<PostViewInfo>, Long, Integer, String>> exposures) {
             this.viewer = viewer;
-            this.firstNExposures = exposures;
+            if (exposures == null || exposures.isEmpty()) {
+                this.firstNExposures = new ArrayList<>();
+            } else {
+                this.firstNExposures = exposures;
+            }
             this.collectionTime = System.currentTimeMillis();
         }
 
