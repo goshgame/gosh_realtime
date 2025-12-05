@@ -224,16 +224,16 @@ public class UserPornLabelJob {
         @Override
         public void open(Configuration parameters) {
             redisManager = RedisConnectionManager.getInstance(RedisConfig.fromProperties(RedisUtil.loadProperties()));
-            recentViewEventState = getRuntimeContext().getListState(
-                    new ListStateDescriptor<>("recentViewEvent",
-                            org.apache.flink.api.common.typeinfo.Types.TUPLE(
-                                    org.apache.flink.api.common.typeinfo.Types.LIST(org.apache.flink.api.common.typeinfo.Types.GENERIC(PostViewInfo.class)),
-                                    org.apache.flink.api.common.typeinfo.Types.LONG,
-                                    org.apache.flink.api.common.typeinfo.Types.LONG,
-                                    org.apache.flink.api.common.typeinfo.Types.STRING
-                            )
-                    )
-            );
+//            recentViewEventState = getRuntimeContext().getListState(
+//                    new ListStateDescriptor<>("recentViewEvent",
+//                            org.apache.flink.api.common.typeinfo.Types.TUPLE(
+//                                    org.apache.flink.api.common.typeinfo.Types.LIST(org.apache.flink.api.common.typeinfo.Types.GENERIC(PostViewInfo.class)),
+//                                    org.apache.flink.api.common.typeinfo.Types.LONG,
+//                                    org.apache.flink.api.common.typeinfo.Types.LONG,
+//                                    org.apache.flink.api.common.typeinfo.Types.STRING
+//                            )
+//                    )
+//            );
 
             StateTtlConfig ttlConfig = StateTtlConfig.newBuilder(Time.hours(1)) // 设置状态存活时间为1小时
                     .setTtlTimeCharacteristic(StateTtlConfig.TtlTimeCharacteristic.ProcessingTime) // 使用处理时间（也可用EventTime）
