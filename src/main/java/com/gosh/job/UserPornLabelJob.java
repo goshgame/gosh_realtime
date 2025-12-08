@@ -8,6 +8,9 @@ import com.gosh.util.KafkaEnvUtil;
 import com.gosh.util.RedisUtil;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.functions.MapFunction;
+import org.apache.flink.api.common.time.Time;
+import org.apache.flink.api.common.typeinfo.TypeHint;
+import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.api.java.tuple.Tuple4;
 import org.apache.flink.configuration.Configuration;
@@ -78,97 +81,43 @@ public class UserPornLabelJob {
             System.out.println("4. 过滤观看事件...");
             DataStream<String> filteredStream = kafkaStream
                     .filter(EventFilterUtil.createFastEventTypeFilter(8))
-                    .name("Pre-filter View Events")
-                    .map(value -> {
-//                        System.out.println("[Kafka] 收到原始消息: " + value);
-                        return value;
-                    })
-                    .name("Debug Kafka Messages");
+                    .name("Pre-filter View Events");
 
             // 5. 解析观看事件
             System.out.println("5. 解析观看事件...");
             SingleOutputStreamOperator<PostViewEvent> viewStream = filteredStream
                     .flatMap(new ViewEventParser())
-                    .name("Parse View Events")
-                    .map(event -> {
-                        if (event != null) {
-                            if (event.uid == testUid) {
-                                System.out.println("[ViewEvent] UID: " + event.uid +
-                                        ", infoList size: " + (event.infoList != null ? event.infoList.size() : 0));
-                            }
-                        } else {
-                            System.out.println("[ViewEvent] 解析结果为 null");
-                        }
-                        return event;
-                    })
-                    .name("Debug View Events");
+                    .name("Parse View Events");
 
-
+            // 6.保留最近 10 条记录
             SingleOutputStreamOperator<UserNExposures> recentStats = viewStream
                     .keyBy(event -> event.uid)
                     .process(new RecentNExposures())
                     .map(event -> {
+//                        if (event.viewer == testUid) {
                         System.out.println("[UserNExposures] UID: " + event.viewer + event.toString());
+//                        }
                         return event;
                     })
                     .name("recent-exposure-statistics");
-
+            //7. 计算 用户 属于的色情群体
             List<Integer> positiveActions = Arrays.asList(1,3,5,6); // 点赞，评论，分享，收藏
             DataStream<Tuple2<String, byte[]>> dataStream =recentStats
                     .map(new MapFunction<UserNExposures, Tuple2<String, byte[]>>() {
                         @Override
                         public Tuple2<String, byte[]> map(UserNExposures event) throws Exception {
-                            Map<String, Float> standingStatistics = new HashMap<>(); //pornLabel -> standingTime
-                            Map<String, Integer> positiveStatistics = new HashMap<>(); //pornLabel -> positiveCount
-                            Map<String, Integer> negativeStatistics = new HashMap<>(); //pornLabel -> positiveCount
-
-                            float allStandTime = 0.0f;
-                            for (Tuple4<List<PostViewInfo>, Long, Integer, String> tuple :event.firstNExposures) {
-                                String pornTag = tuple.f3;
-                                float standingTime = 0.0f;
-                                int positiveCount = 0;
-                                int negativeCount = 0;
-
-                                for (PostViewInfo info : tuple.f0) {
-                                    if (info != null) {
-                                        standingTime += info.standingTime;
-                                        if (info.interaction != null && !info.interaction.isEmpty()) {
-                                            for (int action : info.interaction) {
-                                                if (positiveActions.contains(action)) {
-                                                    positiveCount++;
-                                                } else if (action == 11) { // 不感兴趣
-                                                    negativeCount++;
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                allStandTime += standingTime;
-                                float stTime = standingStatistics.getOrDefault(pornTag, 0.0f);
-                                standingStatistics.put(pornTag, stTime + standingTime);
-                                int pCount = positiveStatistics.getOrDefault(pornTag, 0);
-                                positiveStatistics.put(pornTag, pCount + positiveCount);
-                                int negCount = negativeStatistics.getOrDefault(pornTag, 0);
-                                negativeStatistics.put(pornTag, negCount + negativeCount);
-                            }
-                            String pornLabel = "u_ylevel_unk";
-                            for (Map.Entry<String, Float> entry : standingStatistics.entrySet()) {
-                                if ( (entry.getValue() / allStandTime > 0.6 | positiveStatistics.get(entry.getKey()) > 0) &
-                                    negativeStatistics.get(entry.getKey()) <= 0 ) {
-                                    pornLabel = "u_ylevel_"+ entry.getKey();
-                                    break;
-                                }
-                            }
-
+                            String pornLabel = getPornLabel(event, positiveActions);
+//                            if (event.viewer == testUid) {
                             System.out.println("[---redis val] UID: " + event.viewer + pornLabel + event.toString());
+//                            }
                             // 构建 Redis key
                             String redisKey = String.format(RedisKey, event.viewer);
                             return new Tuple2<>(redisKey, pornLabel.getBytes());
                         }
                     })
-                    .name("Convert to Protobuf");
+                    .name("cal user porn label");
 
-            // 9. 创建 Redis Sink
+            // 8. 创建 Redis Sink
             System.out.println("9. 创建 Redis Sink...");
             RedisConfig redisConfig = RedisConfig.fromProperties(RedisUtil.loadProperties());
             redisConfig.setTtl(REDIS_TTL);
@@ -200,13 +149,58 @@ public class UserPornLabelJob {
         System.out.println("结束时间: " + new Date());
     }
 
+    public static String getPornLabel(UserNExposures event,  List<Integer> positiveActions) {
+        Map<String, Float> standingStatistics = new HashMap<>(); //pornLabel -> standingTime
+        Map<String, Integer> positiveStatistics = new HashMap<>(); //pornLabel -> positiveCount
+        Map<String, Integer> negativeStatistics = new HashMap<>(); //pornLabel -> positiveCount
+
+        float allStandTime = 0.0f;
+        for (Tuple4<List<PostViewInfo>, Long, Long, String> tuple :event.firstNExposures) {
+            String pornTag = tuple.f3;
+            float standingTime = 0.0f;
+            int positiveCount = 0;
+            int negativeCount = 0;
+
+            for (PostViewInfo info : tuple.f0) {
+                if (info != null) {
+                    standingTime += info.standingTime;
+                    if (info.interaction != null && !info.interaction.isEmpty()) {
+                        for (int action : info.interaction) {
+                            if (positiveActions.contains(action)) {
+                                positiveCount++;
+                            } else if (action == 11) { // 不感兴趣
+                                negativeCount++;
+                            }
+                        }
+                    }
+                }
+            }
+            allStandTime += standingTime;
+            float stTime = standingStatistics.getOrDefault(pornTag, 0.0f);
+            standingStatistics.put(pornTag, stTime + standingTime);
+            int pCount = positiveStatistics.getOrDefault(pornTag, 0);
+            positiveStatistics.put(pornTag, pCount + positiveCount);
+            int negCount = negativeStatistics.getOrDefault(pornTag, 0);
+            negativeStatistics.put(pornTag, negCount + negativeCount);
+        }
+        String pornLabel = "u_ylevel_unk";
+        for (Map.Entry<String, Float> entry : standingStatistics.entrySet()) {
+            if ( (entry.getValue() / allStandTime > 0.6 | positiveStatistics.get(entry.getKey()) > 0) &
+                    negativeStatistics.get(entry.getKey()) <= 0 ) {
+                pornLabel = "u_ylevel_"+ entry.getKey();
+                break;
+            }
+        }
+        return pornLabel;
+    }
+
     // 前N次曝光统计输出
-    static class UserNExposures  implements Serializable {
+    public static class UserNExposures  implements Serializable {
         public long viewer;
-        public List<Tuple4<List<PostViewInfo>, Long, Integer, String>>  firstNExposures;  // 前N次曝光记录
+        public List<Tuple4<List<PostViewInfo>, Long, Long, String>>  firstNExposures;  // 前N次曝光记录
         public long collectionTime;  // 收集完成时间
 
-        public UserNExposures(long viewer, List<Tuple4<List<PostViewInfo>, Long, Integer, String>> exposures) {
+        public UserNExposures(long viewer, List<Tuple4<List<PostViewInfo>, Long, Long, String>> exposures) {
             this.viewer = viewer;
             if (exposures == null || exposures.isEmpty()) {
                 this.firstNExposures = new ArrayList<>();
@@ -224,23 +218,32 @@ public class UserPornLabelJob {
 
     static class RecentNExposures extends KeyedProcessFunction<Long, PostViewEvent, UserNExposures> {
         private static final int N = 10;  // 保留最近10次
-        private Long LastTime = 0L;
-        private transient ListState<Tuple4<List<PostViewInfo>, Long, Integer, String>> recentViewEventState;  //
+        private transient ListState<Tuple4<List<PostViewInfo>, Long, Long, String>> recentViewEventState;  //
         private transient RedisConnectionManager redisManager;
 
         @Override
         public void open(Configuration parameters) {
-            redisManager = RedisConnectionManager.getInstance(RedisConfig.fromProperties(RedisUtil.loadProperties()));
-            recentViewEventState = getRuntimeContext().getListState(
-                    new ListStateDescriptor<>("recentViewEvent",
-                            org.apache.flink.api.common.typeinfo.Types.TUPLE(
-                                    org.apache.flink.api.common.typeinfo.Types.LIST(org.apache.flink.api.common.typeinfo.Types.GENERIC(PostViewInfo.class)),
-                                    org.apache.flink.api.common.typeinfo.Types.LONG,
-                                    org.apache.flink.api.common.typeinfo.Types.INT,
-                                    org.apache.flink.api.common.typeinfo.Types.STRING
-                            )
-                    )
-            );
+            redisManager = RedisConnectionManager.getInstance(RedisConfig.fromProperties(RedisUtil.loadProperties()))
+
+            StateTtlConfig ttlConfig = StateTtlConfig.newBuilder(Time.hours(1)) // 设置状态存活时间为1小时
+                    .setTtlTimeCharacteristic(StateTtlConfig.TtlTimeCharacteristic.ProcessingTime) // 使用处理时间（也可用EventTime）
+                    .setUpdateType(StateTtlConfig.UpdateType.OnCreateAndWrite) // 仅在创建和写入时更新TTL
+                    .cleanupFullSnapshot() // 清理策略：全量快照时清理（适用RocksDB和文件系统后端）
+                    .disableCleanupInBackground() // 可选：禁用后台清理（某些场景需要）
+                    .build();
+
+            // 2. 创建状态描述符，并为其启用 TTL
+            ListStateDescriptor<Tuple4<List<PostViewInfo>, Long, Long, String>> descriptor =
+                    new ListStateDescriptor<>(
+                            "recentViewEvent",
+                            TypeInformation.of(new TypeHint<Tuple4<List<PostViewInfo>, Long, Long, String>>() {})
+                    );
+
+            descriptor.enableTimeToLive(ttlConfig); // 关键：启用TTL
+
+            // 3. 获取状态
+            recentViewEventState = getRuntimeContext().getListState(descriptor);
+
         }
         @Override
         public void close() throws Exception {
@@ -257,16 +260,16 @@ public class UserPornLabelJob {
             long viewerId = event.uid;
 
             // 获取当前所有记录
-            List<Tuple4<List<PostViewInfo>, Long, Integer, String>> allRecords = new ArrayList<>();
+            List<Tuple4<List<PostViewInfo>, Long, Long, String>> allRecords = new ArrayList<>();
 
-            for (Tuple4<List<PostViewInfo>, Long, Integer, String> record : recentViewEventState.get()) {
+            for (Tuple4<List<PostViewInfo>, Long, Long, String> record : recentViewEventState.get()) {
                 allRecords.add(record);
             }
 
             // 添加新记录，包含序号
             for (PostViewInfo info : event.infoList) { // 按 postid 归类
                 boolean exist = false;
-                for (Tuple4<List<PostViewInfo>, Long, Integer, String> record : allRecords) {
+                for (Tuple4<List<PostViewInfo>, Long, Long, String> record : allRecords) {
                     if (record.f1 == info.postId) { // 已存在
                         record.f0.add(info);
                         exist = true;
@@ -280,7 +283,7 @@ public class UserPornLabelJob {
                     allRecords.add(new Tuple4<>(
                             infos,
                             info.postId,
-                            allRecords.size() + 1,
+                            currentTime,
                             pornTag
                     ));
                 }
@@ -296,9 +299,7 @@ public class UserPornLabelJob {
 
             // 更新状态
             recentViewEventState.clear();
-            for (Tuple4<List<PostViewInfo>, Long, Integer, String> record : allRecords) {
-                recentViewEventState.add(record);
-            }
+            recentViewEventState.addAll(allRecords);
 
             // 输出最新状态
             if (allRecords.size() == N) { //
