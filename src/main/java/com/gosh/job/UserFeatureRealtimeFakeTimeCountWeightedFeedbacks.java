@@ -69,8 +69,8 @@ public class UserFeatureRealtimeFakeTimeCountWeightedFeedbacks {
     private static final float MIN_WEIGHT = 0.0f;
     private static final float MAX_WEIGHT = 2.0f;
 
-    // Redis TTL（调试任务仍然保持 10 分钟，避免脏数据长时间堆积）
-    private static final int REDIS_TTL = 10 * 60;
+    // Redis TTL（调试任务保持 60 分钟，避免脏数据长时间堆积）
+    private static final int REDIS_TTL = 60 * 60;
 
     // Kafka Group ID
     private static final String KAFKA_GROUP_ID = "gosh-timestamp-count-weighted-feedbacks-debug";
