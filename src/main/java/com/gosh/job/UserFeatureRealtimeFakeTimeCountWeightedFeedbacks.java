@@ -73,7 +73,7 @@ public class UserFeatureRealtimeFakeTimeCountWeightedFeedbacks {
     private static final int REDIS_TTL = 60 * 60;
 
     // Kafka Group ID
-    private static final String KAFKA_GROUP_ID = "gosh-timestamp-count-weighted-feedbacks-debug";
+    private static final String KAFKA_GROUP_ID = "gosh-timestamp-count-weighted-feedbacks-debug-1208-1749";
 
     // 当无法从 Redis 获取标签时的默认标签集合（包含 content 标签）
     private static final String DEFAULT_POST_TAGS =
