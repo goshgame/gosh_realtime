@@ -183,11 +183,18 @@ public class UserPornLabelJob {
             int negCount = negativeStatistics.getOrDefault(pornTag, 0);
             negativeStatistics.put(pornTag, negCount + negativeCount);
         }
-        String pornLabel = "u_ylevel_unk";
+        List<Tuple2<String, Float>> standingStatisticsList = new ArrayList<>(); // <pornLabel, standingTime>
         for (Map.Entry<String, Float> entry : standingStatistics.entrySet()) {
-            if ( (entry.getValue() / allStandTime > 0.6 | positiveStatistics.get(entry.getKey()) > 0) &
-                    negativeStatistics.get(entry.getKey()) <= 0 ) {
-                pornLabel = "u_ylevel_"+ entry.getKey();
+            standingStatisticsList.add(Tuple2.of(entry.getKey(), entry.getValue()));
+        }
+        standingStatisticsList.sort((o1, o2) -> o2.f1.compareTo(o1.f1)); // 按 standing time 从大到小排序
+
+        String pornLabel = "u_ylevel_unk";
+
+        for (Tuple2<String, Float> item : standingStatisticsList) {
+            if ( (item.f1 / allStandTime > 0.6 | positiveStatistics.get(item.f0) > 0) &
+                    negativeStatistics.get(item.f0) <= 0 ) {
+                pornLabel = "u_ylevel_"+ item.f0;
                 break;
             }
         }
