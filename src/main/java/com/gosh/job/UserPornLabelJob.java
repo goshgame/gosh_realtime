@@ -352,7 +352,17 @@ public class UserPornLabelJob {
                 if (trimmed.contains("restricted#")) {
                     String[] vals = trimmed.split("#");
                     if (vals.length == 2) {
-                        return vals[1];
+                        if ("clean".equals(vals[1]) ) {
+                            return "clean";
+                        } else if ("explicit".equals(vals[1])) {
+                            return "explicit";
+                        } else if ("borderline".equals(vals[1])) {
+                            return "mid";
+                        } else if ("mid-sexy".equals(vals[1])) {
+                            return "high";
+                        } else {
+                            return UNK;
+                        }
                     }
                     break;
                 }
