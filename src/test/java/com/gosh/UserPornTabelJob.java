@@ -13,7 +13,7 @@ public class UserPornTabelJob
     public static void main(String[] args) throws Exception {
 
 
-        List<Tuple4<List<UserFeatureCommon.PostViewInfo>, Long, Integer, String>> exposures = new ArrayList<>();
+        List<Tuple4<List<UserFeatureCommon.PostViewInfo>, Long, Long, String>> exposures = new ArrayList<>();
         List<Integer> positiveActions = Arrays.asList(1,3,5,6); // 点赞，评论，分享，收藏
 
         List<String> labels = Arrays.asList("1", "2", "3", "4");
@@ -26,7 +26,7 @@ public class UserPornTabelJob
             }
             List<UserFeatureCommon.PostViewInfo> list = new ArrayList<>();
             list.add(info);
-            Tuple4<List<UserFeatureCommon.PostViewInfo>, Long, Integer, String> tp = new Tuple4<>(list, 123L, i, labels.get(i % labels.size()));
+            Tuple4<List<UserFeatureCommon.PostViewInfo>, Long, Long, String> tp = new Tuple4<>(list, 123L, (long)i, labels.get(i % labels.size()));
             exposures.add(tp);
         }
 
