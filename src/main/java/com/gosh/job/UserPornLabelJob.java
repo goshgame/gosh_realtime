@@ -107,11 +107,12 @@ public class UserPornLabelJob {
                         @Override
                         public Tuple2<String, byte[]> map(UserNExposures event) throws Exception {
                             String pornLabel = getPornLabel(event, positiveActions);
-                            if (event.viewer == testUid) {
-                                System.out.println("[---redis val] UID: " + event.viewer + pornLabel + event.toString());
-                            }
                             // 构建 Redis key
                             String redisKey = String.format(RedisKey, event.viewer);
+                            if  (!event.firstNExposures.isEmpty()) {
+                                LOG.info("数据写入: {} -> {} time {}", redisKey, pornLabel, event.firstNExposures.get(0).f2);
+                            }
+
                             return new Tuple2<>(redisKey, pornLabel.getBytes());
                         }
                     })
@@ -300,7 +301,7 @@ public class UserPornLabelJob {
                     allRecords.add(new Tuple4<>(
                             infos,
                             info.postId,
-                            currentTime,
+                            event.createdAt,
                             pornTag
                     ));
                 }
