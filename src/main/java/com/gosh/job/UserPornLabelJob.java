@@ -46,45 +46,31 @@ public class UserPornLabelJob {
     private static long testUid = 117134;
 
     public static void main(String[] args) throws Exception {
-        System.out.println("=== Flink 任务启动(UserPornLabelJob) ===");
-        System.out.println("启动时间: " + new Date());
-        System.out.println("参数: " + Arrays.toString(args));
-
         try {
             // 1. 创建 Flink 环境
-            System.out.println("1. 创建 Flink 环境...");
             StreamExecutionEnvironment env = FlinkEnvUtil.createStreamExecutionEnvironment();
-            System.out.println("Flink 环境创建完成，并行度: " + env.getParallelism());
 
             // 2. 创建 Kafka Source
-            System.out.println("2. 创建 Kafka Source...");
             Properties kafkaProperties = KafkaEnvUtil.loadProperties();
             kafkaProperties.setProperty("group.id", KAFKA_GROUP_ID);
-            System.out.println("Kafka 配置: " + kafkaProperties);
-
             KafkaSource<String> kafkaSource = KafkaEnvUtil.createKafkaSource(
                     kafkaProperties,
                     "post"
             );
-            System.out.println("Kafka Source 创建完成");
 
             // 3. 使用 KafkaSource 创建 DataStream
-            System.out.println("3. 创建 Kafka 数据流...");
             DataStreamSource<String> kafkaStream = env.fromSource(
                     kafkaSource,
                     WatermarkStrategy.forBoundedOutOfOrderness(Duration.ofSeconds(5)),
                     "Kafka Source"
             );
-            System.out.println("Kafka 数据流创建完成");
 
             // 4. 预过滤 - 只保留观看事件（event_type=8）
-            System.out.println("4. 过滤观看事件...");
             DataStream<String> filteredStream = kafkaStream
                     .filter(EventFilterUtil.createFastEventTypeFilter(8))
                     .name("Pre-filter View Events");
 
             // 5. 解析观看事件
-            System.out.println("5. 解析观看事件...");
             SingleOutputStreamOperator<PostViewEvent> viewStream = filteredStream
                     .flatMap(new ViewEventParser())
                     .name("Parse View Events");
@@ -111,6 +97,8 @@ public class UserPornLabelJob {
                             String redisKey = String.format(RedisKey, event.viewer);
                             if  (!event.firstNExposures.isEmpty()) {
                                 LOG.info("数据写入: {} -> {} time {}", redisKey, pornLabel, event.firstNExposures.get(0).f2);
+                            } else {
+                                LOG.info("数据写入: {} -> {}", redisKey, pornLabel);
                             }
 
                             return new Tuple2<>(redisKey, pornLabel.getBytes());
@@ -119,12 +107,8 @@ public class UserPornLabelJob {
                     .name("cal user porn label");
 
             // 8. 创建 Redis Sink
-            System.out.println("9. 创建 Redis Sink...");
             RedisConfig redisConfig = RedisConfig.fromProperties(RedisUtil.loadProperties());
             redisConfig.setTtl(REDIS_TTL);
-            System.out.println("Redis 配置: " + redisConfig);
-
-
 
             RedisUtil.addRedisSink(
                     dataStream,
@@ -132,22 +116,15 @@ public class UserPornLabelJob {
                     true,
                     100
             );
-            System.out.println("Redis Sink 创建完成");
 
             // 执行任务
-            System.out.println("=== 开始执行 Debug Flink 任务 ===");
             env.execute("UserPornLabelJob");
 
         } catch (Exception e) {
-            System.err.println("!!! Flink Debug 任务执行异常 !!!");
-            System.err.println("异常时间: " + new Date());
             e.printStackTrace();
             LOG.error("Flink任务执行失败", e);
             throw e;
         }
-
-        System.out.println("=== Flink Debug 任务正常结束 ===");
-        System.out.println("结束时间: " + new Date());
     }
 
     public static String getPornLabel(UserNExposures event,  List<Integer> positiveActions) {
