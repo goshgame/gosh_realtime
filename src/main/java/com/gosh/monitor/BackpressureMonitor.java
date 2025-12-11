@@ -19,8 +19,8 @@ import java.util.concurrent.*;
 public class BackpressureMonitor<T> extends RichMapFunction<T, T> {
     private static final Logger LOG = LoggerFactory.getLogger(BackpressureMonitor.class);
     private static final ThreadLocal<Long> currentQueueLength = ThreadLocal.withInitial(() -> 0L);
-    private final ScheduledExecutorService backpressureScheduler = Executors.newSingleThreadScheduledExecutor();
-    public final Map<String, Integer> highBackpressureCount = new ConcurrentHashMap<>();
+    private transient ScheduledExecutorService backpressureScheduler;
+    private transient Map<String, Integer> highBackpressureCount;
 
     // 反压监控配置
     private static long CHECK_INTERVAL_MS;
@@ -52,11 +52,14 @@ public class BackpressureMonitor<T> extends RichMapFunction<T, T> {
     public BackpressureMonitor(String jobName, String operatorName) {
         this.jobName = jobName;
         this.operatorName = operatorName;
-
     }
 
     @Override
     public void open(Configuration parameters) {
+        // 初始化不可序列化的资源
+        this.backpressureScheduler = Executors.newSingleThreadScheduledExecutor();
+        this.highBackpressureCount = new ConcurrentHashMap<>();
+        
         // 获取当前算子的MetricGroup，注册计数器
         MetricGroup metricGroup = getRuntimeContext().getMetricGroup();
         inputCount = metricGroup.counter("input_count");
@@ -120,11 +123,11 @@ public class BackpressureMonitor<T> extends RichMapFunction<T, T> {
                     );
                     MessageUtil.sendLarkshuMsg(alertMsg, null);
                     highBackpressureCount.put(operatorName, 0); // 重置计数器
-                    LOG.info("算子[{}]已触发反压告警，计数器重置为0", operatorName);
+                    LOG.warn("算子[{}]已触发反压告警，计数器重置为0", operatorName);
                 }
             } else if (currentCount > 0) {
                 highBackpressureCount.put(operatorName, 0);
-                LOG.info("算子[{}]输入队列长度恢复正常: {}（阈值: {}），累计超阈值次数重置为0",
+                LOG.warn("算子[{}]输入队列长度恢复正常: {}（阈值: {}），累计超阈值次数重置为0",
                         operatorName, currentQueueLength, QUEUE_HIGH_THRESHOLD);
             }
         } catch (Exception e) {
@@ -157,7 +160,7 @@ public class BackpressureMonitor<T> extends RichMapFunction<T, T> {
         shutdown();
         // 清理ThreadLocal，避免内存泄漏
         currentQueueLength.remove();
-        LOG.info("反压监控已停止，作业名称: {}", jobName);
+        LOG.warn("反压监控已停止，作业名称: {}", jobName);
     }
     /**
      * 关闭反压监控资源
@@ -175,6 +178,6 @@ public class BackpressureMonitor<T> extends RichMapFunction<T, T> {
             backpressureScheduler.shutdownNow();
         }
         highBackpressureCount.clear();
-        LOG.info("反压监控资源已关闭");
+        LOG.warn("反压监控资源已关闭");
     }
 }

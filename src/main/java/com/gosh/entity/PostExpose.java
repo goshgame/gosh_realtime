@@ -1,6 +1,7 @@
 package com.gosh.entity;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.List;
 /**
  * post_expose字段对应的实体类
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PostExpose {
     @JsonProperty("uid")
     private Long uid;
@@ -102,6 +104,19 @@ public class PostExpose {
     @JsonProperty("IDFA")
     @JsonAlias("idfa")
     private String IDFA;
+
+    @JsonProperty("source_channel")
+    private String sourceChannel;
+
+    @JsonProperty("app_id")
+    private Integer appId;
+
+    @JsonProperty("agent_id")
+    private Integer agentId;
+
+    @JsonProperty("channel_id")
+    private Integer channelId;
+
 
     // Getter和Setter方法
     public Long getUid() {
@@ -296,6 +311,38 @@ public class PostExpose {
         this.IDFA = IDFA;
     }
 
+    public String getSourceChannel() {
+        return sourceChannel;
+    }
+
+    public void setSourceChannel(String sourceChannel) {
+        this.sourceChannel = sourceChannel;
+    }
+
+    public Integer getAppId() {
+        return appId;
+    }
+
+    public void setAppId(Integer appId) {
+        this.appId = appId;
+    }
+
+    public Integer getAgentId() {
+        return agentId;
+    }
+
+    public void setAgentId(Integer agentId) {
+        this.agentId = agentId;
+    }
+
+    public Integer getChannelId() {
+        return channelId;
+    }
+
+    public void setChannelId(Integer channelId) {
+        this.channelId = channelId;
+    }
+
     @Override
     public String toString() {
         return "PostExpose{" +
@@ -323,6 +370,10 @@ public class PostExpose {
                 ", ADID='" + ADID + '\'' +
                 ", GAID='" + GAID + '\'' +
                 ", IDFA='" + IDFA + '\'' +
+                ", sourceChannel='" + sourceChannel + '\'' +
+                ", appId=" + appId +
+                ", agentId=" + agentId +
+                ", channelId=" + channelId +
                 '}';
     }
 }

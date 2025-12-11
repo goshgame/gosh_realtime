@@ -39,7 +39,7 @@ public class KeyHeatMonitor {
     private KeyHeatMonitor() {
         // 初始化滑动窗口清理任务
         scheduler.scheduleAtFixedRate(this::resetWindow, WINDOW_SIZE, WINDOW_SIZE, TimeUnit.MILLISECONDS);
-        LOG.info("KeyHeatMonitor初始化完成，窗口大小: {}ms, 采样率: {}%, 最小样本量: {}",
+        LOG.warn("KeyHeatMonitor初始化完成，窗口大小: {}ms, 采样率: {}%, 最小样本量: {}",
                 WINDOW_SIZE, (int)(SAMPLE_RATE * 100), MIN_SAMPLE_SIZE);
     }
 

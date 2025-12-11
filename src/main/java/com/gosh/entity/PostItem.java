@@ -1,10 +1,12 @@
 package com.gosh.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * list数组中的单个元素实体类
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PostItem {
     @JsonProperty("post_id")
     private String postId;
