@@ -94,9 +94,9 @@ public class UserPornLabelJob {
                     .keyBy(event -> event.uid)
                     .process(new RecentNExposures())
                     .map(event -> {
-//                        if (event.viewer == testUid) {
-                        System.out.println("[UserNExposures] UID: " + event.viewer + event.toString());
-//                        }
+                        if (event.viewer == testUid) {
+                            System.out.println("[UserNExposures] UID: " + event.viewer + event.toString());
+                        }
                         return event;
                     })
                     .name("recent-exposure-statistics");
@@ -107,11 +107,12 @@ public class UserPornLabelJob {
                         @Override
                         public Tuple2<String, byte[]> map(UserNExposures event) throws Exception {
                             String pornLabel = getPornLabel(event, positiveActions);
-//                            if (event.viewer == testUid) {
-                            System.out.println("[---redis val] UID: " + event.viewer + pornLabel + event.toString());
-//                            }
                             // 构建 Redis key
                             String redisKey = String.format(RedisKey, event.viewer);
+                            if  (!event.firstNExposures.isEmpty()) {
+                                System.out.printf("数据写入: %s -> %s time %d", redisKey, pornLabel, event.firstNExposures.get(0).f2);
+                            }
+
                             return new Tuple2<>(redisKey, pornLabel.getBytes());
                         }
                     })
@@ -183,11 +184,18 @@ public class UserPornLabelJob {
             int negCount = negativeStatistics.getOrDefault(pornTag, 0);
             negativeStatistics.put(pornTag, negCount + negativeCount);
         }
-        String pornLabel = "u_ylevel_unk";
+        List<Tuple2<String, Float>> standingStatisticsList = new ArrayList<>(); // <pornLabel, standingTime>
         for (Map.Entry<String, Float> entry : standingStatistics.entrySet()) {
-            if ( (entry.getValue() / allStandTime > 0.6 | positiveStatistics.get(entry.getKey()) > 0) &
-                    negativeStatistics.get(entry.getKey()) <= 0 ) {
-                pornLabel = "u_ylevel_"+ entry.getKey();
+            standingStatisticsList.add(Tuple2.of(entry.getKey(), entry.getValue()));
+        }
+        standingStatisticsList.sort((o1, o2) -> o2.f1.compareTo(o1.f1)); // 按 standing time 从大到小排序
+
+        String pornLabel = "u_ylevel_unk";
+
+        for (Tuple2<String, Float> item : standingStatisticsList) {
+            if ( (item.f1 / allStandTime > 0.6 | positiveStatistics.get(item.f0) > 0) &
+                    negativeStatistics.get(item.f0) <= 0 ) {
+                pornLabel = "u_ylevel_"+ item.f0;
                 break;
             }
         }
@@ -224,6 +232,16 @@ public class UserPornLabelJob {
         @Override
         public void open(Configuration parameters) {
             redisManager = RedisConnectionManager.getInstance(RedisConfig.fromProperties(RedisUtil.loadProperties()));
+//            recentViewEventState = getRuntimeContext().getListState(
+//                    new ListStateDescriptor<>("recentViewEvent",
+//                            org.apache.flink.api.common.typeinfo.Types.TUPLE(
+//                                    org.apache.flink.api.common.typeinfo.Types.LIST(org.apache.flink.api.common.typeinfo.Types.GENERIC(PostViewInfo.class)),
+//                                    org.apache.flink.api.common.typeinfo.Types.LONG,
+//                                    org.apache.flink.api.common.typeinfo.Types.LONG,
+//                                    org.apache.flink.api.common.typeinfo.Types.STRING
+//                            )
+//                    )
+//            );
 
             StateTtlConfig ttlConfig = StateTtlConfig.newBuilder(Time.hours(1)) // 设置状态存活时间为1小时
                     .setTtlTimeCharacteristic(StateTtlConfig.TtlTimeCharacteristic.ProcessingTime) // 使用处理时间（也可用EventTime）
@@ -283,7 +301,7 @@ public class UserPornLabelJob {
                     allRecords.add(new Tuple4<>(
                             infos,
                             info.postId,
-                            currentTime,
+                            event.createdAt,
                             pornTag
                     ));
                 }
@@ -342,7 +360,17 @@ public class UserPornLabelJob {
                 if (trimmed.contains("restricted#")) {
                     String[] vals = trimmed.split("#");
                     if (vals.length == 2) {
-                        return vals[1];
+                        if ("clean".equals(vals[1]) ) {
+                            return "clean";
+                        } else if ("explicit".equals(vals[1])) {
+                            return "explicit";
+                        } else if ("borderline".equals(vals[1])) {
+                            return "mid";
+                        } else if ("mid-sexy".equals(vals[1])) {
+                            return "high";
+                        } else {
+                            return UNK;
+                        }
                     }
                     break;
                 }
