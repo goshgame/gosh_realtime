@@ -280,9 +280,29 @@ public class PostRecFeature24hJob {
                 @Override
                 public Tuple2<String, Map<String, byte[]>> map(UserAuthorFeatureMapAggregation agg) throws Exception {
                     String redisKey = USER_AUTHOR_PREFIX + agg.uid + USER_AUTHOR_SUFFIX;
-                    return new Tuple2<>(redisKey, agg.authorFeatures);
+                    // 过滤掉map中的null值
+                    Map<String, byte[]> cleanFeatures = new HashMap<>();
+                    for (Map.Entry<String, byte[]> entry : agg.authorFeatures.entrySet()) {
+                        if (entry.getKey() != null && entry.getValue() != null && entry.getValue().length > 0) {
+                            cleanFeatures.put(entry.getKey(), entry.getValue());
+                            LOG.debug("Adding feature for author {} with {} bytes", entry.getKey(), entry.getValue().length);
+                        } else {
+                            LOG.warn("Skipping invalid feature for author {}: key={}, value={}",
+                                entry.getKey(),
+                                entry.getKey() != null ? "valid" : "null",
+                                entry.getValue() != null ? (entry.getValue().length + " bytes") : "null");
+                        }
+                    }
+                    
+                    if (cleanFeatures.isEmpty()) {
+                        LOG.warn("No valid features found for user {}", agg.uid);
+                        return null;
+                    }
+                    
+                    return new Tuple2<>(redisKey, cleanFeatures);
                 }
             })
+            .filter(tuple -> tuple != null && tuple.f1 != null && !tuple.f1.isEmpty()) // 确保没有空的特征map
             .name("UserAuthor Feature to Protobuf");
 
         // UserAuthor特征写入前采样日志
