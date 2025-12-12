@@ -130,7 +130,7 @@ public class UserFeatureRealtimeNegativeFeedbacks {
                             // 添加正反馈标签（使用存储的权重）
                             if (queue.positiveTags != null) {
                                 for (TagWithWeight tagWithWeight : queue.positiveTags) {
-                                    RecFeature.FeedbackTag.Builder tagBuilder = RecFeature.FeedbackTag.newBuilder();
+                                    RecFeature.FeedbackTagV2.Builder tagBuilder = RecFeature.FeedbackTagV2.newBuilder();
                                     tagBuilder.setTag(tagWithWeight.tag);
                                     tagBuilder.setWeight(tagWithWeight.weight);
                                     builder.addFeedbackTags(tagBuilder.build());
@@ -140,7 +140,7 @@ public class UserFeatureRealtimeNegativeFeedbacks {
                             // 添加负反馈标签（使用存储的权重）
                             if (queue.negativeTags != null) {
                                 for (TagWithWeight tagWithWeight : queue.negativeTags) {
-                                    RecFeature.FeedbackTag.Builder tagBuilder = RecFeature.FeedbackTag.newBuilder();
+                                    RecFeature.FeedbackTagV2.Builder tagBuilder = RecFeature.FeedbackTagV2.newBuilder();
                                     tagBuilder.setTag(tagWithWeight.tag);
                                     tagBuilder.setWeight(tagWithWeight.weight);
                                     builder.addFeedbackTags(tagBuilder.build());
@@ -369,8 +369,8 @@ public class UserFeatureRealtimeNegativeFeedbacks {
                 if (tuple != null && tuple.f1 != null && tuple.f1.length > 0) {
                     RecFeature.RecUserFeature feature = RecFeature.RecUserFeature.parseFrom(tuple.f1);
                     try {
-                        List<RecFeature.FeedbackTag> feedbackTags = feature.getFeedbackTagsList();
-                        for (RecFeature.FeedbackTag feedbackTag : feedbackTags) {
+                        List<RecFeature.FeedbackTagV2> feedbackTags = feature.getFeedbackTagsList();
+                        for (RecFeature.FeedbackTagV2 feedbackTag : feedbackTags) {
                             String tag = feedbackTag.getTag();
                             if (tag == null || tag.trim().isEmpty()) {
                                 continue;
