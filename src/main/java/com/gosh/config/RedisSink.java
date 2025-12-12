@@ -159,6 +159,11 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
                 }
             }
         } else {
+            // 防御性检查：对于DEL_HMSET命令，如果map为空则跳过执行
+            if ("DEL_HMSET".equals(command) && (valueMap == null || valueMap.isEmpty())) {
+                LOG.warn("Skipping DEL_HMSET command for key {}: value map is null or empty", key);
+                return;
+            }
             // 不支持批量处理的命令直接执行
             if (isClusterMode) {
                 executeClusterCommand(command, key, field, valueBytes, valueMap);

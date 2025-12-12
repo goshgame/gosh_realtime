@@ -420,6 +420,28 @@ public class PostRecFeature24hJob {
             })
             .name("Sample UserAuthor Feature Output");
 
+        // 最终安全检查：确保没有空map到达RedisSink
+        userAuthorDataStream = userAuthorDataStream
+            .filter(tuple -> {
+                if (tuple == null || tuple.f0 == null || tuple.f1 == null) {
+                    LOG.warn("Final filter: Skipping null tuple or null key/map");
+                    return false;
+                }
+                if (tuple.f1.isEmpty()) {
+                    LOG.warn("Final filter: Skipping empty map for key: {}", tuple.f0);
+                    return false;
+                }
+                // 验证map中所有值都有效
+                for (Map.Entry<String, byte[]> entry : tuple.f1.entrySet()) {
+                    if (entry.getKey() == null || entry.getValue() == null || entry.getValue().length == 0) {
+                        LOG.warn("Final filter: Skipping tuple with invalid entry for key: {}", tuple.f0);
+                        return false;
+                    }
+                }
+                return true;
+            })
+            .name("Final Safety Filter for UserAuthor Feature");
+
         // 第六步：创建sink，Redis环境
         RedisConfig redisConfig = RedisConfig.fromProperties(RedisUtil.loadProperties());
         redisConfig.setTtl(1200); // 20分钟TTL
