@@ -2,12 +2,18 @@ package com.gosh.job;
 
 import com.gosh.config.RedisConfig;
 import com.gosh.config.RedisConnectionManager;
+import com.gosh.job.UserFeatureCommon.PostViewEvent;
+import com.gosh.job.UserFeatureCommon.PostViewInfo;
+import com.gosh.job.UserFeatureCommon.ViewEventParser;
 import com.gosh.util.EventFilterUtil;
 import com.gosh.util.FlinkEnvUtil;
 import com.gosh.util.KafkaEnvUtil;
 import com.gosh.util.RedisUtil;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.functions.MapFunction;
+import org.apache.flink.api.common.state.ListState;
+import org.apache.flink.api.common.state.ListStateDescriptor;
+import org.apache.flink.api.common.state.StateTtlConfig;
 import org.apache.flink.api.common.time.Time;
 import org.apache.flink.api.common.typeinfo.TypeHint;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
@@ -29,21 +35,17 @@ import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
-import org.apache.flink.api.common.state.*;
-import com.gosh.job.UserFeatureCommon.*;
-import org.apache.flink.api.common.state.*;
-
-public class UserPornLabelJob {
-    private static final Logger LOG = LoggerFactory.getLogger(UserPornLabelJob.class);
+public class UserPornLabelJobV2 {
+    private static final Logger LOG = LoggerFactory.getLogger(UserPornLabelJobV2.class);
 
     // Redis Key 前缀和后缀
-    private static final String RedisKey = "rec_post:{%d}:rtylevel";
+    private static final String RedisKey = "rec_post:{%d}:rtylevel_v2";
 
-    private static final int REDIS_TTL = 3 * 60;
+    private static final String CleanTag = "clean";
+    private static final int REDIS_TTL = 3 * 3600; // 3小时
 
     // Kafka Group ID
-    private static final String KAFKA_GROUP_ID = "rec_porn_label";
-    private static long testUid = 117134;
+    private static final String KAFKA_GROUP_ID = "rec_porn_label_v2";
 
     public static void main(String[] args) throws Exception {
         try {
@@ -75,14 +77,11 @@ public class UserPornLabelJob {
                     .flatMap(new ViewEventParser())
                     .name("Parse View Events");
 
-            // 6.保留最近 10 条记录
+            // 6.保留最近 N 条记录
             SingleOutputStreamOperator<UserNExposures> recentStats = viewStream
                     .keyBy(event -> event.uid)
                     .process(new RecentNExposures())
                     .map(event -> {
-                        if (event.viewer == testUid) {
-                            System.out.println("[UserNExposures] UID: " + event.viewer + event.toString());
-                        }
                         return event;
                     })
                     .name("recent-exposure-statistics");
@@ -118,7 +117,7 @@ public class UserPornLabelJob {
             );
 
             // 执行任务
-            env.execute("UserPornLabelJob");
+            env.execute("UserPornLabelJobV2");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -168,9 +167,8 @@ public class UserPornLabelJob {
         standingStatisticsList.sort((o1, o2) -> o2.f1.compareTo(o1.f1)); // 按 standing time 从大到小排序
 
         String pornLabel = "u_ylevel_unk";
-
         for (Tuple2<String, Float> item : standingStatisticsList) {
-            if ( (item.f1 / allStandTime > 0.6 | positiveStatistics.get(item.f0) > 0) &
+            if ( (item.f1 >= 30 & !item.f0.equals(CleanTag) | positiveStatistics.get(item.f0) > 0) &
                     negativeStatistics.get(item.f0) <= 0 ) {
                 pornLabel = "u_ylevel_"+ item.f0;
                 break;
@@ -202,7 +200,8 @@ public class UserPornLabelJob {
     }
 
     static class RecentNExposures extends KeyedProcessFunction<Long, PostViewEvent, UserNExposures> {
-        private static final int N = 10;  // 保留最近10次
+        private static final int N = 20;  // 保留最近20次
+        private static final int CalNum = 2;  // 满足 2 条就
         private transient ListState<Tuple4<List<PostViewInfo>, Long, Long, String>> recentViewEventState;  //
         private transient RedisConnectionManager redisManager;
 
@@ -297,7 +296,7 @@ public class UserPornLabelJob {
             recentViewEventState.addAll(allRecords);
 
             // 输出最新状态
-            if (allRecords.size() == N) { //
+            if (allRecords.size() >= CalNum) { //
                 UserNExposures result = new UserNExposures(viewerId, allRecords);
                 out.collect(result);
             }
@@ -308,7 +307,7 @@ public class UserPornLabelJob {
             return redisManager.executeStringAsync(
                     commands -> {
                         try {
-                            org.apache.flink.api.java.tuple.Tuple2<String, byte[]> tuple = commands.get(redisKey);
+                            Tuple2<String, byte[]> tuple = commands.get(redisKey);
                             if (tuple != null && tuple.f1 != null && tuple.f1.length > 0) {
                                 String value = new String(tuple.f1, java.nio.charset.StandardCharsets.UTF_8);
                                 if (value.isEmpty()) {
@@ -337,8 +336,8 @@ public class UserPornLabelJob {
                 if (trimmed.contains("restricted#")) {
                     String[] vals = trimmed.split("#");
                     if (vals.length == 2) {
-                        if ("clean".equals(vals[1]) ) {
-                            return "clean";
+                        if (CleanTag.equals(vals[1]) ) {
+                            return CleanTag;
                         } else if ("explicit".equals(vals[1])) {
                             return "explicit";
                         } else if ("borderline".equals(vals[1])) {
