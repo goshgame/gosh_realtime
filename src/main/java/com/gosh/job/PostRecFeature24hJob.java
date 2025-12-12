@@ -67,12 +67,15 @@ public class PostRecFeature24hJob {
     private static final int MAX_EVENTS_PER_USER_WINDOW = 300;
 
     public static void main(String[] args) throws Exception {
+        System.out.println("=== PostRecFeature24hJob Starting ===");
+        System.out.println("LOG instance: " + LOG.getClass().getName());
         LOG.info("========================================");
         LOG.info("Starting PostRecFeature24hJob");
         LOG.info("Processing post events from advertise topic");
         LOG.info("SessionWindow gap: {} minutes", SESSION_GAP_MINUTES);
         LOG.info("SlidingWindow: {} hours, slide: {} minutes", WINDOW_SIZE_HOURS, SLIDE_INTERVAL_MINUTES);
         LOG.info("========================================");
+        System.out.println("=== PostRecFeature24hJob Logs Printed ===");
         
         // 第一步：创建flink环境
         StreamExecutionEnvironment env = FlinkEnvUtil.createStreamExecutionEnvironment();
