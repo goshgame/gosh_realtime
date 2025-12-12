@@ -16,12 +16,10 @@ import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.streaming.api.functions.ProcessFunction;
 import org.apache.flink.streaming.api.functions.windowing.ProcessWindowFunction;
 import org.apache.flink.streaming.api.windowing.assigners.EventTimeSessionWindows;
 import org.apache.flink.streaming.api.windowing.assigners.SlidingProcessingTimeWindows;
 import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
-import org.apache.flink.configuration.Configuration;
 import org.apache.flink.util.Collector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,12 +55,12 @@ public class PostRecFeature24hJob {
     private static final String EVENT_POST_UNINTERESTED = "postUninterestedClick";
     private static final String EVENT_POST_PAID = "post_paid_unlock_entry_show";
     
-    // SessionWindow gap: 1分钟
-    private static final long SESSION_GAP_MINUTES = 1;
+    // SessionWindow gap: 70秒
+    private static final long SESSION_GAP_SECONDES = 70;
     
     // 滑动窗口：24小时窗口，10分钟更新
     private static final long WINDOW_SIZE_HOURS = 24;
-    private static final long SLIDE_INTERVAL_MINUTES = 1;
+    private static final long SLIDE_INTERVAL_MINUTES = 10;
     // 单用户/用户作者窗口内事件上限
     private static final int MAX_EVENTS_PER_USER_WINDOW = 300;
 
@@ -72,7 +70,7 @@ public class PostRecFeature24hJob {
         LOG.info("========================================");
         LOG.info("Starting PostRecFeature24hJob");
         LOG.info("Processing post events from advertise topic");
-        LOG.info("SessionWindow gap: {} minutes", SESSION_GAP_MINUTES);
+        LOG.info("SessionWindow gap: {} seconds", SESSION_GAP_SECONDES);
         LOG.info("SlidingWindow: {} hours, slide: {} minutes", WINDOW_SIZE_HOURS, SLIDE_INTERVAL_MINUTES);
         LOG.info("========================================");
         System.out.println("=== PostRecFeature24hJob Logs Printed ===");
@@ -110,59 +108,7 @@ public class PostRecFeature24hJob {
                 WatermarkStrategy.<PostEvent>forBoundedOutOfOrderness(Duration.ofSeconds(5))
                     .withTimestampAssigner((event, recordTimestamp) -> event.eventTime)
                     .withIdleness(Duration.ofMinutes(1)) // 添加空闲检测，避免水位线停滞
-            )
-            .process(new ProcessFunction<PostEvent, PostEvent>() {
-                private transient long lastWatermarkLogTime = 0;
-                
-                @Override
-                public void processElement(PostEvent value, Context ctx, Collector<PostEvent> out) throws Exception {
-                    long currentTime = System.currentTimeMillis();
-                    long eventTime = value.eventTime;
-                    long watermark = ctx.timerService().currentWatermark();
-                    
-                    // 每分钟记录一次水位线和事件时间信息
-                    if (currentTime - lastWatermarkLogTime > 60_000) {
-                        lastWatermarkLogTime = currentTime;
-                        LOG.info("[Watermark Debug] currentTime={}, eventTime={}, watermark={}, diff={}ms", 
-                            currentTime, eventTime, watermark, currentTime - eventTime);
-                    }
-                    
-                    out.collect(value);
-                }
-            })
-            .name("Watermark Debug");
-
-        // 事件采样日志（每分钟最多3条）
-        eventStream = eventStream
-            .process(new ProcessFunction<PostEvent, PostEvent>() {
-                private static final long SAMPLE_INTERVAL = 60_000L;
-                private static final int SAMPLE_COUNT = 3;
-                private transient long lastSampleTime;
-                private transient int sampleCount;
-
-                @Override
-                public void open(Configuration parameters) {
-                    lastSampleTime = 0;
-                    sampleCount = 0;
-                }
-
-                @Override
-                public void processElement(PostEvent value, Context ctx, Collector<PostEvent> out) throws Exception {
-                    long now = System.currentTimeMillis();
-                    if (now - lastSampleTime > SAMPLE_INTERVAL) {
-                        lastSampleTime = now - (now % SAMPLE_INTERVAL);
-                        sampleCount = 0;
-                    }
-                    if (sampleCount < SAMPLE_COUNT) {
-                        sampleCount++;
-                        LOG.info("[Sample {}/{}] eventType={} uid={} postId={} authorId={} recToken={} exposedPos={} eventTime={}",
-                            sampleCount, SAMPLE_COUNT, value.eventType, value.uid, value.postId, value.authorId,
-                            value.recToken, value.exposedPos, value.eventTime);
-                    }
-                    out.collect(value);
-                }
-            })
-            .name("Sample Post Events");
+            );
 
         // 3.2 SessionWindow聚合：基于rec_token + post_id
         SingleOutputStreamOperator<SessionSummary> sessionStream = eventStream
@@ -172,7 +118,7 @@ public class PostRecFeature24hJob {
                     return value.recToken + "|" + value.postId;
                 }
             })
-            .window(EventTimeSessionWindows.withGap(org.apache.flink.streaming.api.windowing.time.Time.minutes(SESSION_GAP_MINUTES)))
+            .window(EventTimeSessionWindows.withGap(org.apache.flink.streaming.api.windowing.time.Time.seconds(SESSION_GAP_SECONDES)))
             .aggregate(new SessionAggregator(), new SessionWindowFunction())
             .name("Session Window Aggregation");
 
@@ -186,16 +132,7 @@ public class PostRecFeature24hJob {
                 org.apache.flink.streaming.api.windowing.time.Time.minutes(SLIDE_INTERVAL_MINUTES)
             ))
             .aggregate(new UserFeatureAggregator())
-            .name("User Feature Aggregation")
-            .map(new MapFunction<UserFeature24hAggregation, UserFeature24hAggregation>() {
-                @Override
-                public UserFeature24hAggregation map(UserFeature24hAggregation value) throws Exception {
-                    LOG.info("[Window Output] UserFeature uid={} expPostCnt={} skipPostCnt={}", 
-                        value.uid, value.expPostCnt, value.skipPostCnt);
-                    return value;
-                }
-            })
-            .name("Debug User Feature Window");
+            .name("User Feature Aggregation");
 
         // 4.2 Post侧特征
         // 使用 ProcessingTime 窗口，避免等待24小时才能触发
@@ -237,36 +174,6 @@ public class PostRecFeature24hJob {
             })
             .name("User Feature to Protobuf");
 
-        // User特征写入前采样日志
-        userDataStream = userDataStream
-            .process(new ProcessFunction<Tuple2<String, byte[]>, Tuple2<String, byte[]>>() {
-                private static final long SAMPLE_INTERVAL = 60_000L;
-                private static final int SAMPLE_COUNT = 3;
-                private transient long lastSampleTime;
-                private transient int sampleCount;
-
-                @Override
-                public void open(Configuration parameters) {
-                    lastSampleTime = 0;
-                    sampleCount = 0;
-                }
-
-                @Override
-                public void processElement(Tuple2<String, byte[]> value, Context ctx, Collector<Tuple2<String, byte[]>> out) throws Exception {
-                    long now = System.currentTimeMillis();
-                    if (now - lastSampleTime > SAMPLE_INTERVAL) {
-                        lastSampleTime = now - (now % SAMPLE_INTERVAL);
-                        sampleCount = 0;
-                    }
-                    if (sampleCount < SAMPLE_COUNT) {
-                        sampleCount++;
-                        LOG.info("[Sample {}/{}] Redis UserFeature key={} bytes={}", sampleCount, SAMPLE_COUNT, value.f0, value.f1 != null ? value.f1.length : 0);
-                    }
-                    out.collect(value);
-                }
-            })
-            .name("Sample User Feature Output");
-
         // 5.2 Post特征
         DataStream<Tuple2<String, byte[]>> postDataStream = postFeatureStream
             .map(new MapFunction<PostFeature24hAggregation, Tuple2<String, byte[]>>() {
@@ -278,36 +185,6 @@ public class PostRecFeature24hJob {
                 }
             })
             .name("Post Feature to Protobuf");
-
-        // Post特征写入前采样日志
-        postDataStream = postDataStream
-            .process(new ProcessFunction<Tuple2<String, byte[]>, Tuple2<String, byte[]>>() {
-                private static final long SAMPLE_INTERVAL = 60_000L;
-                private static final int SAMPLE_COUNT = 3;
-                private transient long lastSampleTime;
-                private transient int sampleCount;
-
-                @Override
-                public void open(Configuration parameters) {
-                    lastSampleTime = 0;
-                    sampleCount = 0;
-                }
-
-                @Override
-                public void processElement(Tuple2<String, byte[]> value, Context ctx, Collector<Tuple2<String, byte[]>> out) throws Exception {
-                    long now = System.currentTimeMillis();
-                    if (now - lastSampleTime > SAMPLE_INTERVAL) {
-                        lastSampleTime = now - (now % SAMPLE_INTERVAL);
-                        sampleCount = 0;
-                    }
-                    if (sampleCount < SAMPLE_COUNT) {
-                        sampleCount++;
-                        LOG.info("[Sample {}/{}] Redis PostFeature key={} bytes={}", sampleCount, SAMPLE_COUNT, value.f0, value.f1 != null ? value.f1.length : 0);
-                    }
-                    out.collect(value);
-                }
-            })
-            .name("Sample Post Feature Output");
 
         // 5.3 UserAuthor特征
         DataStream<Tuple2<String, Map<String, byte[]>>> userAuthorDataStream = userAuthorFeatureStream
@@ -321,7 +198,6 @@ public class PostRecFeature24hJob {
                     for (Map.Entry<String, byte[]> entry : agg.authorFeatures.entrySet()) {
                         if (entry.getKey() != null && entry.getValue() != null && entry.getValue().length > 0) {
                             cleanFeatures.put(entry.getKey(), entry.getValue());
-                            LOG.debug("Adding feature for author {} with {} bytes", entry.getKey(), entry.getValue().length);
                         } else {
                             LOG.warn("Skipping invalid feature for author {}: key={}, value={}",
                                 entry.getKey(),
@@ -340,98 +216,6 @@ public class PostRecFeature24hJob {
             })
             .filter(tuple -> tuple != null && tuple.f1 != null && !tuple.f1.isEmpty()) // 确保没有空的特征map
             .name("UserAuthor Feature to Protobuf");
-
-        // UserAuthor特征写入前采样日志和数据验证
-        userAuthorDataStream = userAuthorDataStream
-            .process(new ProcessFunction<Tuple2<String, Map<String, byte[]>>, Tuple2<String, Map<String, byte[]>>>() {
-                private static final long SAMPLE_INTERVAL = 60_000L;
-                private static final int SAMPLE_COUNT = 3;
-                private transient long lastSampleTime;
-                private transient int sampleCount;
-
-                @Override
-                public void open(Configuration parameters) {
-                    lastSampleTime = 0;
-                    sampleCount = 0;
-                }
-
-                @Override
-                public void processElement(Tuple2<String, Map<String, byte[]>> value, Context ctx, Collector<Tuple2<String, Map<String, byte[]>>> out) throws Exception {
-                    // 严格验证数据有效性
-                    if (value == null) {
-                        LOG.warn("Skipping null tuple");
-                        return;
-                    }
-                    if (value.f0 == null || value.f1 == null) {
-                        LOG.warn("Skipping invalid tuple: key={}, map={}", 
-                            value.f0 != null ? value.f0 : "null", value.f1 != null ? "not null" : "null");
-                        return;
-                    }
-                    
-                    // 验证 valueMap 不为空且所有值都有效
-                    Map<String, byte[]> valueMap = value.f1;
-                    if (valueMap.isEmpty()) {
-                        LOG.warn("Skipping empty valueMap for key: {}", value.f0);
-                        return;
-                    }
-                    
-                    // 再次过滤掉无效的条目，确保所有值都是有效的
-                    Map<String, byte[]> validatedMap = new HashMap<>();
-                    for (Map.Entry<String, byte[]> entry : valueMap.entrySet()) {
-                        if (entry.getKey() != null && entry.getValue() != null && entry.getValue().length > 0) {
-                            validatedMap.put(entry.getKey(), entry.getValue());
-                        } else {
-                            LOG.warn("Skipping invalid entry in valueMap for key {}: authorId={}, value={}", 
-                                value.f0, entry.getKey(), 
-                                entry.getValue() != null ? (entry.getValue().length + " bytes") : "null");
-                        }
-                    }
-                    
-                    // 如果验证后的 map 为空，跳过
-                    if (validatedMap.isEmpty()) {
-                        LOG.warn("Skipping key {}: validatedMap is empty after filtering", value.f0);
-                        return;
-                    }
-                    
-                    // 采样日志
-                    long now = System.currentTimeMillis();
-                    if (now - lastSampleTime > SAMPLE_INTERVAL) {
-                        lastSampleTime = now - (now % SAMPLE_INTERVAL);
-                        sampleCount = 0;
-                    }
-                    if (sampleCount < SAMPLE_COUNT) {
-                        sampleCount++;
-                        LOG.info("[Sample {}/{}] Redis UserAuthorFeature key={} authorCount={}", 
-                            sampleCount, SAMPLE_COUNT, value.f0, validatedMap.size());
-                    }
-                    
-                    // 输出验证后的数据
-                    out.collect(new Tuple2<>(value.f0, validatedMap));
-                }
-            })
-            .name("Sample UserAuthor Feature Output");
-
-        // 最终安全检查：确保没有空map到达RedisSink
-        userAuthorDataStream = userAuthorDataStream
-            .filter(tuple -> {
-                if (tuple == null || tuple.f0 == null || tuple.f1 == null) {
-                    LOG.warn("Final filter: Skipping null tuple or null key/map");
-                    return false;
-                }
-                if (tuple.f1.isEmpty()) {
-                    LOG.warn("Final filter: Skipping empty map for key: {}", tuple.f0);
-                    return false;
-                }
-                // 验证map中所有值都有效
-                for (Map.Entry<String, byte[]> entry : tuple.f1.entrySet()) {
-                    if (entry.getKey() == null || entry.getValue() == null || entry.getValue().length == 0) {
-                        LOG.warn("Final filter: Skipping tuple with invalid entry for key: {}", tuple.f0);
-                        return false;
-                    }
-                }
-                return true;
-            })
-            .name("Final Safety Filter for UserAuthor Feature");
 
         // 第六步：创建sink，Redis环境
         Properties redisProps = RedisUtil.loadProperties();
