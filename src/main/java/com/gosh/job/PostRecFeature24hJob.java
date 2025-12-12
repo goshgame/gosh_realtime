@@ -276,9 +276,12 @@ public class PostRecFeature24hJob {
         // 5.3 UserAuthor特征
         DataStream<Tuple2<String, Map<String, byte[]>>> userAuthorDataStream = userAuthorFeatureStream
             .filter(agg -> agg != null && agg.authorFeatures != null && !agg.authorFeatures.isEmpty())
-            .map((MapFunction<UserAuthorFeatureMapAggregation, Tuple2<String, Map<String, byte[]>>>) agg -> {
-                String redisKey = USER_AUTHOR_PREFIX + agg.uid + USER_AUTHOR_SUFFIX;
-                return new Tuple2<>(redisKey, agg.authorFeatures);
+            .map(new MapFunction<UserAuthorFeatureMapAggregation, Tuple2<String, Map<String, byte[]>>>() {
+                @Override
+                public Tuple2<String, Map<String, byte[]>> map(UserAuthorFeatureMapAggregation agg) throws Exception {
+                    String redisKey = USER_AUTHOR_PREFIX + agg.uid + USER_AUTHOR_SUFFIX;
+                    return new Tuple2<>(redisKey, agg.authorFeatures);
+                }
             })
             .name("UserAuthor Feature to Protobuf");
 
