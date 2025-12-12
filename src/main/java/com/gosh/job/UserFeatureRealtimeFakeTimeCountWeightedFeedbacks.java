@@ -188,7 +188,7 @@ public class UserFeatureRealtimeFakeTimeCountWeightedFeedbacks {
                                 for (TagWithScore tagWithScore : queue.tags) {
                                     System.out.println("[Write] 标签: " + tagWithScore.tag
                                             + ", score=" + tagWithScore.score);
-                                    RecFeature.FeedbackTag.Builder tagBuilder = RecFeature.FeedbackTag.newBuilder();
+                                    RecFeature.FeedbackTagV2.Builder tagBuilder = RecFeature.FeedbackTagV2.newBuilder();
                                     tagBuilder.setTag(tagWithScore.tag);
                                     tagBuilder.setWeight(tagWithScore.score);
                                     builder.addFeedbackTags(tagBuilder.build());
@@ -822,9 +822,9 @@ public class UserFeatureRealtimeFakeTimeCountWeightedFeedbacks {
                     System.out.println("[QueueProcessor] 读取到历史字节长度: " + tuple.f1.length);
                     RecFeature.RecUserFeature feature = RecFeature.RecUserFeature.parseFrom(tuple.f1);
                     try {
-                        List<RecFeature.FeedbackTag> feedbackTags = feature.getFeedbackTagsList();
+                        List<RecFeature.FeedbackTagV2> feedbackTags = feature.getFeedbackTagsList();
                         System.out.println("[QueueProcessor] 历史标签数量: " + feedbackTags.size());
-                        for (RecFeature.FeedbackTag feedbackTag : feedbackTags) {
+                        for (RecFeature.FeedbackTagV2 feedbackTag : feedbackTags) {
                             String tag = feedbackTag.getTag();
                             if (tag == null || tag.trim().isEmpty()) {
                                 continue;

@@ -132,7 +132,7 @@ public class UserFeatureRealtimeTimeCountWeightedFeedbacks {
                             // 添加标签（合并后的队列，权重在0-2之间）
                             if (queue.tags != null) {
                                 for (TagWithScore tagWithScore : queue.tags) {
-                                    RecFeature.FeedbackTag.Builder tagBuilder = RecFeature.FeedbackTag.newBuilder();
+                                    RecFeature.FeedbackTagV2.Builder tagBuilder = RecFeature.FeedbackTagV2.newBuilder();
                                     tagBuilder.setTag(tagWithScore.tag);
                                     tagBuilder.setWeight(tagWithScore.score);
                                     builder.addFeedbackTags(tagBuilder.build());
@@ -712,8 +712,8 @@ public class UserFeatureRealtimeTimeCountWeightedFeedbacks {
                 if (tuple != null && tuple.f1 != null && tuple.f1.length > 0) {
                     RecFeature.RecUserFeature feature = RecFeature.RecUserFeature.parseFrom(tuple.f1);
                     try {
-                        List<RecFeature.FeedbackTag> feedbackTags = feature.getFeedbackTagsList();
-                        for (RecFeature.FeedbackTag feedbackTag : feedbackTags) {
+                        List<RecFeature.FeedbackTagV2> feedbackTags = feature.getFeedbackTagsList();
+                        for (RecFeature.FeedbackTagV2 feedbackTag : feedbackTags) {
                             String tag = feedbackTag.getTag();
                             if (tag == null || tag.trim().isEmpty()) {
                                 continue;
