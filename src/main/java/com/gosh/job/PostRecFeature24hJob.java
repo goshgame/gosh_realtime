@@ -19,7 +19,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.ProcessFunction;
 import org.apache.flink.streaming.api.functions.windowing.ProcessWindowFunction;
 import org.apache.flink.streaming.api.windowing.assigners.EventTimeSessionWindows;
-import org.apache.flink.streaming.api.windowing.assigners.SlidingEventTimeWindows;
+import org.apache.flink.streaming.api.windowing.assigners.SlidingProcessingTimeWindows;
 import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.util.Collector;
@@ -187,9 +187,10 @@ public class PostRecFeature24hJob {
 
         // 第四步：分别计算三类特征
         // 4.1 User侧特征（单阶段，限制单用户窗口内事件数）
+        // 使用 ProcessingTime 窗口，避免等待24小时才能触发
         DataStream<UserFeature24hAggregation> userFeatureStream = sessionStream
             .keyBy((KeySelector<SessionSummary, Long>) value -> value.uid)
-            .window(SlidingEventTimeWindows.of(
+            .window(org.apache.flink.streaming.api.windowing.assigners.SlidingProcessingTimeWindows.of(
                 org.apache.flink.streaming.api.windowing.time.Time.hours(WINDOW_SIZE_HOURS),
                 org.apache.flink.streaming.api.windowing.time.Time.minutes(SLIDE_INTERVAL_MINUTES)
             ))
@@ -206,6 +207,7 @@ public class PostRecFeature24hJob {
             .name("Debug User Feature Window");
 
         // 4.2 Post侧特征
+        // 使用 ProcessingTime 窗口，避免等待24小时才能触发
         DataStream<PostFeature24hAggregation> postFeatureStream = sessionStream
             .keyBy(new KeySelector<SessionSummary, Long>() {
                 @Override
@@ -213,7 +215,7 @@ public class PostRecFeature24hJob {
                     return value.postId;
                 }
             })
-            .window(SlidingEventTimeWindows.of(
+            .window(SlidingProcessingTimeWindows.of(
                 org.apache.flink.streaming.api.windowing.time.Time.hours(WINDOW_SIZE_HOURS),
                 org.apache.flink.streaming.api.windowing.time.Time.minutes(SLIDE_INTERVAL_MINUTES)
             ))
@@ -221,9 +223,10 @@ public class PostRecFeature24hJob {
             .name("Post Feature Aggregation");
 
         // 4.3 UserAuthor侧特征（单阶段，限制单用户窗口内事件数，按uid聚合成hset）
+        // 使用 ProcessingTime 窗口，避免等待24小时才能触发
         DataStream<UserAuthorFeatureMapAggregation> userAuthorFeatureStream = sessionStream
             .keyBy((KeySelector<SessionSummary, Long>) value -> value.uid)
-            .window(SlidingEventTimeWindows.of(
+            .window(SlidingProcessingTimeWindows.of(
                 org.apache.flink.streaming.api.windowing.time.Time.hours(WINDOW_SIZE_HOURS),
                 org.apache.flink.streaming.api.windowing.time.Time.minutes(SLIDE_INTERVAL_MINUTES)
             ))
