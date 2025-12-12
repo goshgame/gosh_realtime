@@ -16,12 +16,10 @@ import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.streaming.api.functions.ProcessFunction;
 import org.apache.flink.streaming.api.functions.windowing.ProcessWindowFunction;
 import org.apache.flink.streaming.api.windowing.assigners.EventTimeSessionWindows;
-import org.apache.flink.streaming.api.windowing.assigners.SlidingEventTimeWindows;
+import org.apache.flink.streaming.api.windowing.assigners.SlidingProcessingTimeWindows;
 import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
-import org.apache.flink.configuration.Configuration;
 import org.apache.flink.util.Collector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,8 +55,8 @@ public class PostRecFeature24hJob {
     private static final String EVENT_POST_UNINTERESTED = "postUninterestedClick";
     private static final String EVENT_POST_PAID = "post_paid_unlock_entry_show";
     
-    // SessionWindow gap: 1分钟
-    private static final long SESSION_GAP_MINUTES = 1;
+    // SessionWindow gap: 70秒
+    private static final long SESSION_GAP_SECONDES = 70;
     
     // 滑动窗口：24小时窗口，10分钟更新
     private static final long WINDOW_SIZE_HOURS = 24;
@@ -67,12 +65,15 @@ public class PostRecFeature24hJob {
     private static final int MAX_EVENTS_PER_USER_WINDOW = 300;
 
     public static void main(String[] args) throws Exception {
+        System.out.println("=== PostRecFeature24hJob Starting ===");
+        System.out.println("LOG instance: " + LOG.getClass().getName());
         LOG.info("========================================");
         LOG.info("Starting PostRecFeature24hJob");
         LOG.info("Processing post events from advertise topic");
-        LOG.info("SessionWindow gap: {} minutes", SESSION_GAP_MINUTES);
+        LOG.info("SessionWindow gap: {} seconds", SESSION_GAP_SECONDES);
         LOG.info("SlidingWindow: {} hours, slide: {} minutes", WINDOW_SIZE_HOURS, SLIDE_INTERVAL_MINUTES);
         LOG.info("========================================");
+        System.out.println("=== PostRecFeature24hJob Logs Printed ===");
         
         // 第一步：创建flink环境
         StreamExecutionEnvironment env = FlinkEnvUtil.createStreamExecutionEnvironment();
@@ -106,39 +107,8 @@ public class PostRecFeature24hJob {
             .assignTimestampsAndWatermarks(
                 WatermarkStrategy.<PostEvent>forBoundedOutOfOrderness(Duration.ofSeconds(5))
                     .withTimestampAssigner((event, recordTimestamp) -> event.eventTime)
+                    .withIdleness(Duration.ofMinutes(1)) // 添加空闲检测，避免水位线停滞
             );
-
-        // 事件采样日志（每分钟最多3条）
-        eventStream = eventStream
-            .process(new ProcessFunction<PostEvent, PostEvent>() {
-                private static final long SAMPLE_INTERVAL = 60_000L;
-                private static final int SAMPLE_COUNT = 3;
-                private transient long lastSampleTime;
-                private transient int sampleCount;
-
-                @Override
-                public void open(Configuration parameters) {
-                    lastSampleTime = 0;
-                    sampleCount = 0;
-                }
-
-                @Override
-                public void processElement(PostEvent value, Context ctx, Collector<PostEvent> out) throws Exception {
-                    long now = System.currentTimeMillis();
-                    if (now - lastSampleTime > SAMPLE_INTERVAL) {
-                        lastSampleTime = now - (now % SAMPLE_INTERVAL);
-                        sampleCount = 0;
-                    }
-                    if (sampleCount < SAMPLE_COUNT) {
-                        sampleCount++;
-                        LOG.info("[Sample {}/{}] eventType={} uid={} postId={} authorId={} recToken={} exposedPos={} eventTime={}",
-                            sampleCount, SAMPLE_COUNT, value.eventType, value.uid, value.postId, value.authorId,
-                            value.recToken, value.exposedPos, value.eventTime);
-                    }
-                    out.collect(value);
-                }
-            })
-            .name("Sample Post Events");
 
         // 3.2 SessionWindow聚合：基于rec_token + post_id
         SingleOutputStreamOperator<SessionSummary> sessionStream = eventStream
@@ -148,15 +118,16 @@ public class PostRecFeature24hJob {
                     return value.recToken + "|" + value.postId;
                 }
             })
-            .window(EventTimeSessionWindows.withGap(org.apache.flink.streaming.api.windowing.time.Time.minutes(SESSION_GAP_MINUTES)))
+            .window(EventTimeSessionWindows.withGap(org.apache.flink.streaming.api.windowing.time.Time.seconds(SESSION_GAP_SECONDES)))
             .aggregate(new SessionAggregator(), new SessionWindowFunction())
             .name("Session Window Aggregation");
 
         // 第四步：分别计算三类特征
         // 4.1 User侧特征（单阶段，限制单用户窗口内事件数）
+        // 使用 ProcessingTime 窗口，避免等待24小时才能触发
         DataStream<UserFeature24hAggregation> userFeatureStream = sessionStream
             .keyBy((KeySelector<SessionSummary, Long>) value -> value.uid)
-            .window(SlidingEventTimeWindows.of(
+            .window(org.apache.flink.streaming.api.windowing.assigners.SlidingProcessingTimeWindows.of(
                 org.apache.flink.streaming.api.windowing.time.Time.hours(WINDOW_SIZE_HOURS),
                 org.apache.flink.streaming.api.windowing.time.Time.minutes(SLIDE_INTERVAL_MINUTES)
             ))
@@ -164,6 +135,7 @@ public class PostRecFeature24hJob {
             .name("User Feature Aggregation");
 
         // 4.2 Post侧特征
+        // 使用 ProcessingTime 窗口，避免等待24小时才能触发
         DataStream<PostFeature24hAggregation> postFeatureStream = sessionStream
             .keyBy(new KeySelector<SessionSummary, Long>() {
                 @Override
@@ -171,7 +143,7 @@ public class PostRecFeature24hJob {
                     return value.postId;
                 }
             })
-            .window(SlidingEventTimeWindows.of(
+            .window(SlidingProcessingTimeWindows.of(
                 org.apache.flink.streaming.api.windowing.time.Time.hours(WINDOW_SIZE_HOURS),
                 org.apache.flink.streaming.api.windowing.time.Time.minutes(SLIDE_INTERVAL_MINUTES)
             ))
@@ -179,9 +151,10 @@ public class PostRecFeature24hJob {
             .name("Post Feature Aggregation");
 
         // 4.3 UserAuthor侧特征（单阶段，限制单用户窗口内事件数，按uid聚合成hset）
+        // 使用 ProcessingTime 窗口，避免等待24小时才能触发
         DataStream<UserAuthorFeatureMapAggregation> userAuthorFeatureStream = sessionStream
             .keyBy((KeySelector<SessionSummary, Long>) value -> value.uid)
-            .window(SlidingEventTimeWindows.of(
+            .window(SlidingProcessingTimeWindows.of(
                 org.apache.flink.streaming.api.windowing.time.Time.hours(WINDOW_SIZE_HOURS),
                 org.apache.flink.streaming.api.windowing.time.Time.minutes(SLIDE_INTERVAL_MINUTES)
             ))
@@ -201,36 +174,6 @@ public class PostRecFeature24hJob {
             })
             .name("User Feature to Protobuf");
 
-        // User特征写入前采样日志
-        userDataStream = userDataStream
-            .process(new ProcessFunction<Tuple2<String, byte[]>, Tuple2<String, byte[]>>() {
-                private static final long SAMPLE_INTERVAL = 60_000L;
-                private static final int SAMPLE_COUNT = 3;
-                private transient long lastSampleTime;
-                private transient int sampleCount;
-
-                @Override
-                public void open(Configuration parameters) {
-                    lastSampleTime = 0;
-                    sampleCount = 0;
-                }
-
-                @Override
-                public void processElement(Tuple2<String, byte[]> value, Context ctx, Collector<Tuple2<String, byte[]>> out) throws Exception {
-                    long now = System.currentTimeMillis();
-                    if (now - lastSampleTime > SAMPLE_INTERVAL) {
-                        lastSampleTime = now - (now % SAMPLE_INTERVAL);
-                        sampleCount = 0;
-                    }
-                    if (sampleCount < SAMPLE_COUNT) {
-                        sampleCount++;
-                        LOG.info("[Sample {}/{}] Redis UserFeature key={} bytes={}", sampleCount, SAMPLE_COUNT, value.f0, value.f1 != null ? value.f1.length : 0);
-                    }
-                    out.collect(value);
-                }
-            })
-            .name("Sample User Feature Output");
-
         // 5.2 Post特征
         DataStream<Tuple2<String, byte[]>> postDataStream = postFeatureStream
             .map(new MapFunction<PostFeature24hAggregation, Tuple2<String, byte[]>>() {
@@ -242,36 +185,6 @@ public class PostRecFeature24hJob {
                 }
             })
             .name("Post Feature to Protobuf");
-
-        // Post特征写入前采样日志
-        postDataStream = postDataStream
-            .process(new ProcessFunction<Tuple2<String, byte[]>, Tuple2<String, byte[]>>() {
-                private static final long SAMPLE_INTERVAL = 60_000L;
-                private static final int SAMPLE_COUNT = 3;
-                private transient long lastSampleTime;
-                private transient int sampleCount;
-
-                @Override
-                public void open(Configuration parameters) {
-                    lastSampleTime = 0;
-                    sampleCount = 0;
-                }
-
-                @Override
-                public void processElement(Tuple2<String, byte[]> value, Context ctx, Collector<Tuple2<String, byte[]>> out) throws Exception {
-                    long now = System.currentTimeMillis();
-                    if (now - lastSampleTime > SAMPLE_INTERVAL) {
-                        lastSampleTime = now - (now % SAMPLE_INTERVAL);
-                        sampleCount = 0;
-                    }
-                    if (sampleCount < SAMPLE_COUNT) {
-                        sampleCount++;
-                        LOG.info("[Sample {}/{}] Redis PostFeature key={} bytes={}", sampleCount, SAMPLE_COUNT, value.f0, value.f1 != null ? value.f1.length : 0);
-                    }
-                    out.collect(value);
-                }
-            })
-            .name("Sample Post Feature Output");
 
         // 5.3 UserAuthor特征
         DataStream<Tuple2<String, Map<String, byte[]>>> userAuthorDataStream = userAuthorFeatureStream
@@ -285,7 +198,6 @@ public class PostRecFeature24hJob {
                     for (Map.Entry<String, byte[]> entry : agg.authorFeatures.entrySet()) {
                         if (entry.getKey() != null && entry.getValue() != null && entry.getValue().length > 0) {
                             cleanFeatures.put(entry.getKey(), entry.getValue());
-                            LOG.debug("Adding feature for author {} with {} bytes", entry.getKey(), entry.getValue().length);
                         } else {
                             LOG.warn("Skipping invalid feature for author {}: key={}, value={}",
                                 entry.getKey(),
@@ -305,50 +217,26 @@ public class PostRecFeature24hJob {
             .filter(tuple -> tuple != null && tuple.f1 != null && !tuple.f1.isEmpty()) // 确保没有空的特征map
             .name("UserAuthor Feature to Protobuf");
 
-        // UserAuthor特征写入前采样日志
-        userAuthorDataStream = userAuthorDataStream
-            .process(new ProcessFunction<Tuple2<String, Map<String, byte[]>>, Tuple2<String, Map<String, byte[]>>>() {
-                private static final long SAMPLE_INTERVAL = 60_000L;
-                private static final int SAMPLE_COUNT = 3;
-                private transient long lastSampleTime;
-                private transient int sampleCount;
-
-                @Override
-                public void open(Configuration parameters) {
-                    lastSampleTime = 0;
-                    sampleCount = 0;
-                }
-
-                @Override
-                public void processElement(Tuple2<String, Map<String, byte[]>> value, Context ctx, Collector<Tuple2<String, Map<String, byte[]>>> out) throws Exception {
-                    long now = System.currentTimeMillis();
-                    if (now - lastSampleTime > SAMPLE_INTERVAL) {
-                        lastSampleTime = now - (now % SAMPLE_INTERVAL);
-                        sampleCount = 0;
-                    }
-                    if (sampleCount < SAMPLE_COUNT) {
-                        sampleCount++;
-                        int authorCnt = value.f1 != null ? value.f1.size() : 0;
-                        LOG.info("[Sample {}/{}] Redis UserAuthorFeature key={} authorCount={}", sampleCount, SAMPLE_COUNT, value.f0, authorCnt);
-                    }
-                    out.collect(value);
-                }
-            })
-            .name("Sample UserAuthor Feature Output");
-
         // 第六步：创建sink，Redis环境
-        RedisConfig redisConfig = RedisConfig.fromProperties(RedisUtil.loadProperties());
-        redisConfig.setTtl(1200); // 20分钟TTL
+        Properties redisProps = RedisUtil.loadProperties();
         
-        // User特征sink
-        RedisUtil.addRedisSink(userDataStream, redisConfig, true, 100);
+        // User特征sink（使用SET命令，key-value结构）
+        RedisConfig userRedisConfig = RedisConfig.fromProperties(redisProps);
+        userRedisConfig.setTtl(1200); // 20分钟TTL
+        userRedisConfig.setCommand("SET"); // 明确设置为SET命令
+        RedisUtil.addRedisSink(userDataStream, userRedisConfig, true, 100);
         
-        // Post特征sink
-        RedisUtil.addRedisSink(postDataStream, redisConfig, true, 100);
+        // Post特征sink（使用SET命令，key-value结构）
+        RedisConfig postRedisConfig = RedisConfig.fromProperties(redisProps);
+        postRedisConfig.setTtl(1200); // 20分钟TTL
+        postRedisConfig.setCommand("SET"); // 明确设置为SET命令
+        RedisUtil.addRedisSink(postDataStream, postRedisConfig, true, 100);
         
-        // UserAuthor特征sink（HashMap格式）
-        redisConfig.setCommand("DEL_HMSET");
-        RedisUtil.addRedisHashMapSink(userAuthorDataStream, redisConfig, true, 100);
+        // UserAuthor特征sink（HashMap格式，使用DEL_HMSET命令）
+        RedisConfig userAuthorRedisConfig = RedisConfig.fromProperties(redisProps);
+        userAuthorRedisConfig.setTtl(1200); // 20分钟TTL
+        userAuthorRedisConfig.setCommand("DEL_HMSET"); // HashMap结构使用DEL_HMSET命令
+        RedisUtil.addRedisHashMapSink(userAuthorDataStream, userAuthorRedisConfig, true, 100);
 
         LOG.info("Job configured, starting execution...");
         String JOB_NAME = "Post Rec Feature 24h Job";
