@@ -10,8 +10,9 @@ import org.apache.flink.api.java.tuple.Tuple2;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.io.Serializable;
 
-public interface RedisConnectionManager {
+public interface RedisConnectionManager extends Serializable {
     // 明确返回支持所有命令的接口（包含list/hash等操作）
     RedisStringCommands<String, Tuple2<String, byte[]>> getStringCommands();
     RedisListCommands<String, Tuple2<String, byte[]>> getListCommands();
@@ -32,6 +33,9 @@ public interface RedisConnectionManager {
     <T> CompletableFuture<T> executeAsync(Function<RedisCommands<String, Tuple2<String, byte[]>>, T> operation, String threadPoolName);
     <T> CompletableFuture<T> executeClusterAsync(Function<RedisAdvancedClusterCommands<String, Tuple2<String, byte[]>>, T> operation);
     <T> CompletableFuture<T> executeClusterAsync(Function<RedisAdvancedClusterCommands<String, Tuple2<String, byte[]>>, T> operation, String threadPoolName);
+    /**
+     * 带重试机制的异步执行方法
+     */
     <T> CompletableFuture<T> executeWithRetry(Supplier<CompletableFuture<T>> operation, int maxRetries);
 
     void shutdown();

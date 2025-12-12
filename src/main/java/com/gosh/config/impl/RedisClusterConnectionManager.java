@@ -9,11 +9,15 @@ import io.lettuce.core.cluster.RedisClusterClient;
 import io.lettuce.core.cluster.api.StatefulRedisClusterConnection;
 import io.lettuce.core.api.StatefulConnection;
 import io.lettuce.core.cluster.api.sync.RedisAdvancedClusterCommands;
+import io.netty.util.Timer;
 
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.gosh.util.TimerUtil;
+
+import java.io.Serializable;
 import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.*;
@@ -22,13 +26,14 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-public class RedisClusterConnectionManager implements RedisConnectionManager {
+public class RedisClusterConnectionManager implements RedisConnectionManager, Serializable {
     private static final Logger LOG = LoggerFactory.getLogger(RedisClusterConnectionManager.class);
     private final RedisConfig config;
-    private final RedisClusterClient clusterClient;
-    private final ExecutorService threadPool;
+    private transient final RedisClusterClient clusterClient;
+    private transient final ExecutorService threadPool;
     private final String connectionKey;
-    private StatefulRedisClusterConnection<String, Tuple2<String, byte[]>> connection;
+    private transient final Timer sharedTimer;
+    private transient StatefulRedisClusterConnection<String, Tuple2<String, byte[]>> connection;
 
 
     public RedisClusterConnectionManager(RedisConfig config) {
@@ -36,6 +41,7 @@ public class RedisClusterConnectionManager implements RedisConnectionManager {
         this.connectionKey = getConnectionKey(config);
         this.clusterClient = createClusterClient(config);
         this.threadPool = createThreadPool(config);
+        this.sharedTimer = TimerUtil.getSharedTimer();
         this.connection = clusterClient.connect(new StringTupleCodec());
     }
 
@@ -190,6 +196,32 @@ public class RedisClusterConnectionManager implements RedisConnectionManager {
             LOG.error("Error shutting down single Redis connection manager", e);
         }
     }
+    
+    @Override
+    public <T> CompletableFuture<T> executeWithRetry(Supplier<CompletableFuture<T>> operation, int maxRetries) {
+        CompletableFuture<T> future = new CompletableFuture<>();
+
+        retryOperation(operation, maxRetries, 0, future);
+        return future;
+    }
+
+    private <T> void retryOperation(Supplier<CompletableFuture<T>> operation, int maxRetries, int currentAttempt, CompletableFuture<T> resultFuture) {
+        operation.get()
+                .thenAccept(resultFuture::complete)
+                .exceptionally(ex -> {
+                    if (currentAttempt < maxRetries) {
+                        long backoff = (long) (Math.pow(2, currentAttempt) * 100); // 指数退避
+                        LOG.warn("Operation failed, retrying in {}ms (attempt {}/{})", backoff, currentAttempt + 1, maxRetries, ex);
+
+                        sharedTimer.newTimeout(timeout -> {
+                            retryOperation(operation, maxRetries, currentAttempt + 1, resultFuture);
+                        }, backoff, TimeUnit.MILLISECONDS);
+                    } else {
+                        resultFuture.completeExceptionally(ex);
+                    }
+                    return null;
+                });
+    }
 
     private RedisClusterClient createClusterClient(RedisConfig config) {
         List<RedisURI> uris = config.getClusterNodes().stream()
@@ -258,31 +290,5 @@ public class RedisClusterConnectionManager implements RedisConnectionManager {
             System.setProperty("javax.net.ssl.trustStorePassword", config.getSslTrustStorePassword());
         }
     }
-    @Override
-    public <T> CompletableFuture<T> executeWithRetry(Supplier<CompletableFuture<T>> operation, int maxRetries) {
-        CompletableFuture<T> future = new CompletableFuture<>();
 
-        retryOperation(operation, maxRetries, 0, future);
-        return future;
-    }
-
-    private <T> void retryOperation(Supplier<CompletableFuture<T>> operation, int maxRetries, int currentAttempt, CompletableFuture<T> resultFuture) {
-        operation.get()
-                .thenAccept(resultFuture::complete)
-                .exceptionally(ex -> {
-                    if (currentAttempt < maxRetries) {
-                        long backoff = (long) (Math.pow(2, currentAttempt) * 100); // 指数退避
-                        LOG.warn("Operation failed, retrying in {}ms (attempt {}/{})", backoff, currentAttempt + 1, maxRetries, ex);
-
-                        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-                        scheduler.schedule(() -> {
-                            retryOperation(operation, maxRetries, currentAttempt + 1, resultFuture);
-                            scheduler.shutdown();
-                        }, backoff, TimeUnit.MILLISECONDS);
-                    } else {
-                        resultFuture.completeExceptionally(ex);
-                    }
-                    return null;
-                });
-    }
 }

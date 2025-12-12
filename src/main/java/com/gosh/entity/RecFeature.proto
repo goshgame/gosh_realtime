@@ -101,6 +101,25 @@ message RecUserFeature {
   // 负反馈标签队列（最近5个）
   repeated FeedbackTag feedback_tags = 96;
   repeated FeedbackAuthorId feedback_author_ids = 97;
+
+  // 24小时窗口特征 - 新增字段（PostRecFeature24hJob使用）
+  int32 viewer_exp_post_cnt_24h = 100;              // 用户最近24h曝光post数
+  int32 viewer_skip_post_cnt_24h = 101;              // 用户最近24h快划post数
+  repeated int64 viewer_completeplay_post_list_24h = 102;  // 用户最近24h完播的post列表
+  repeated int64 viewer_skip_post_list_24h = 103;     // 用户最近24h快划的post列表
+  repeated IdScore viewer_10sstand_post_list_24h = 104;    // 用户最近24h停留10s以上的post列表
+  repeated IdScore viewer_8splay_post_list_24h = 105;     // 用户最近24h观看8s以上的post列表
+  repeated int64 viewer_like_post_list_24h = 106;    // 用户最近24h点赞post列表
+  repeated int64 viewer_comment_post_list_24h = 107; // 用户最近24h评论post列表
+  repeated int64 viewer_share_post_list_24h = 108;   // 用户最近24h分享post列表
+  repeated int64 viewer_collect_post_list_24h = 109; // 用户最近24h收藏post列表
+  repeated int64 viewer_pay_post_list_24h = 110;     // 用户最近24h付费post列表
+  repeated int64 viewer_report_post_list_24h = 111;  // 用户最近24h举报post列表
+  repeated int64 viewer_dislike_post_list_24h = 112;  // 用户最近24h不喜欢post列表
+  repeated int64 viewer_positive_post_list_24h = 113; // 用户最近24h正反馈post列表
+  repeated int64 viewer_negetive_post_list_24h = 114; // 用户最近24h负反馈post列表
+  repeated int64 viewer_positive_author_list_24h = 115; // 用户最近24h正反馈作者列表
+  repeated int64 viewer_negetive_author_list_24h = 116; // 用户最近24h负反馈作者列表
 }
 
 // 负反馈标签
@@ -158,6 +177,20 @@ message RecPostFeature {
   int32 post_follow_cnt_24h = 38;             // post最近24h被关注次数
   int32 post_profile_cnt_24h = 39;            // post最近24h被点主页次数
   int32 post_posinter_cnt_24h = 40;           // post最近24h被评论收藏分享次数
+
+  // 24小时窗口特征 - 新增字段（PostRecFeature24hJob使用）
+  int32 post_skip_cnt_24h = 100;              // post最近24h快划次数
+  int32 post_compelete_cnt_24h = 101;         // post最近24h完播次数
+  float post_progress_rate_24h = 102;         // post最近24h平均播放进度
+  int32 post_20sstand_cnt_24h = 103;          // post最近24h停留超20s次数
+  int32 post_5splay_cnt_24h = 104;            // post最近24h观看超5s次数
+  int32 post_10splay_cnt_24h = 105;           // post最近24h观看超10s次数
+  int32 post_comment_cnt_24h = 106;           // post最近24h评论次数
+  int32 post_share_cnt_24h = 107;             // post最近24h分享次数
+  int32 post_collect_cnt_24h = 108;           // post最近24h收藏次数
+  int32 post_report_cnt_24h = 109;            // post最近24h举报次数
+  int32 post_dislike_cnt_24h = 110;           // post最近24h不喜欢次数
+  int32 post_pay_cnt_24h = 111;               // post最近24h付费次数
 
   // 7天互动指标
   int32 post_view_cnt_7d = 41;                // 最近7天浏览次数
@@ -237,6 +270,18 @@ message RecUserAuthorFeature {
   // 互动特征 (24小时)
   int32 userauthor_like_cnt_24h = 37;         // 用户作者最近24h被点赞次数
 
+  // 24小时窗口特征 - 新增字段（PostRecFeature24hJob使用）
+  int32 userauthor_skip_cnt_24h = 100;        // 用户作者最近24h快划次数
+  int32 userauthor_12splay_cnt_24h = 101;     // 用户作者最近24h播放12s次数
+  int32 userauthor_20sstand_cnt_24h = 102;    // 用户作者最近24h停留20s次数
+  int32 userauthor_comment_cnt_24h = 103;     // 用户作者最近24h评论次数
+  int32 userauthor_share_cnt_24h = 104;       // 用户作者最近24h分享次数
+  int32 userauthor_follow_cnt_24h = 105;      // 用户作者最近24h点关注次数
+  int32 userauthor_collect_cnt_24h = 106;     // 用户作者最近24h收藏次数
+  int32 userauthor_profile_cnt_24h = 107;     // 用户作者最近24h点作者主页次数
+  int32 userauthor_report_cnt_24h = 108;      // 用户作者最近24h举报次数
+  int32 userauthor_dislike_cnt_24h = 109;     // 用户作者最近24h不喜欢次数
+  int32 userauthor_pay_cnt_24h = 110;         // 用户作者最近24h付费次数
 
   // 7d特征
   // 基础互动指标
