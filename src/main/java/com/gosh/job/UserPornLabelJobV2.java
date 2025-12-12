@@ -168,7 +168,10 @@ public class UserPornLabelJobV2 {
 
         String pornLabel = "u_ylevel_unk";
         for (Tuple2<String, Float> item : standingStatisticsList) {
-            if ( (item.f1 >= 30 & !item.f0.equals(CleanTag) | positiveStatistics.get(item.f0) > 0) &
+            if (item.f0.equals("unk") | item.f0.equals(CleanTag)) {
+                continue;
+            }
+            if ( (item.f1 >= 30 | positiveStatistics.get(item.f0) > 0) &
                     negativeStatistics.get(item.f0) <= 0 ) {
                 pornLabel = "u_ylevel_"+ item.f0;
                 break;
@@ -200,7 +203,7 @@ public class UserPornLabelJobV2 {
     }
 
     static class RecentNExposures extends KeyedProcessFunction<Long, PostViewEvent, UserNExposures> {
-        private static final int N = 20;  // 保留最近20次
+        private static final int N = 10;  // 保留最近20次
         private static final int CalNum = 2;  // 满足 2 条就
         private transient ListState<Tuple4<List<PostViewInfo>, Long, Long, String>> recentViewEventState;  //
         private transient RedisConnectionManager redisManager;
