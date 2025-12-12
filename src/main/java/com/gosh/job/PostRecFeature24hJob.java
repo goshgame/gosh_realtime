@@ -174,16 +174,7 @@ public class PostRecFeature24hJob {
             })
             .window(EventTimeSessionWindows.withGap(org.apache.flink.streaming.api.windowing.time.Time.minutes(SESSION_GAP_MINUTES)))
             .aggregate(new SessionAggregator(), new SessionWindowFunction())
-            .name("Session Window Aggregation")
-            .map(new MapFunction<SessionSummary, SessionSummary>() {
-                @Override
-                public SessionSummary map(SessionSummary value) throws Exception {
-                    LOG.info("[Session Window Output] uid={} postId={} eventTime={}", 
-                        value.uid, value.postId, value.eventTime);
-                    return value;
-                }
-            })
-            .name("Debug Session Window Output");
+            .name("Session Window Aggregation");
 
         // 第四步：分别计算三类特征
         // 4.1 User侧特征（单阶段，限制单用户窗口内事件数）
@@ -443,18 +434,25 @@ public class PostRecFeature24hJob {
             .name("Final Safety Filter for UserAuthor Feature");
 
         // 第六步：创建sink，Redis环境
-        RedisConfig redisConfig = RedisConfig.fromProperties(RedisUtil.loadProperties());
-        redisConfig.setTtl(1200); // 20分钟TTL
+        Properties redisProps = RedisUtil.loadProperties();
         
-        // User特征sink
-        RedisUtil.addRedisSink(userDataStream, redisConfig, true, 100);
+        // User特征sink（使用SET命令，key-value结构）
+        RedisConfig userRedisConfig = RedisConfig.fromProperties(redisProps);
+        userRedisConfig.setTtl(1200); // 20分钟TTL
+        userRedisConfig.setCommand("SET"); // 明确设置为SET命令
+        RedisUtil.addRedisSink(userDataStream, userRedisConfig, true, 100);
         
-        // Post特征sink
-        RedisUtil.addRedisSink(postDataStream, redisConfig, true, 100);
+        // Post特征sink（使用SET命令，key-value结构）
+        RedisConfig postRedisConfig = RedisConfig.fromProperties(redisProps);
+        postRedisConfig.setTtl(1200); // 20分钟TTL
+        postRedisConfig.setCommand("SET"); // 明确设置为SET命令
+        RedisUtil.addRedisSink(postDataStream, postRedisConfig, true, 100);
         
-        // UserAuthor特征sink（HashMap格式）
-        redisConfig.setCommand("DEL_HMSET");
-        RedisUtil.addRedisHashMapSink(userAuthorDataStream, redisConfig, true, 100);
+        // UserAuthor特征sink（HashMap格式，使用DEL_HMSET命令）
+        RedisConfig userAuthorRedisConfig = RedisConfig.fromProperties(redisProps);
+        userAuthorRedisConfig.setTtl(1200); // 20分钟TTL
+        userAuthorRedisConfig.setCommand("DEL_HMSET"); // HashMap结构使用DEL_HMSET命令
+        RedisUtil.addRedisHashMapSink(userAuthorDataStream, userAuthorRedisConfig, true, 100);
 
         LOG.info("Job configured, starting execution...");
         String JOB_NAME = "Post Rec Feature 24h Job";
