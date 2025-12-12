@@ -317,7 +317,7 @@ public class PostRecFeature24hJob {
             .filter(tuple -> tuple != null && tuple.f1 != null && !tuple.f1.isEmpty()) // 确保没有空的特征map
             .name("UserAuthor Feature to Protobuf");
 
-        // UserAuthor特征写入前采样日志
+        // UserAuthor特征写入前采样日志和数据验证
         userAuthorDataStream = userAuthorDataStream
             .process(new ProcessFunction<Tuple2<String, Map<String, byte[]>>, Tuple2<String, Map<String, byte[]>>>() {
                 private static final long SAMPLE_INTERVAL = 60_000L;
@@ -333,6 +333,43 @@ public class PostRecFeature24hJob {
 
                 @Override
                 public void processElement(Tuple2<String, Map<String, byte[]>> value, Context ctx, Collector<Tuple2<String, Map<String, byte[]>>> out) throws Exception {
+                    // 严格验证数据有效性
+                    if (value == null) {
+                        LOG.warn("Skipping null tuple");
+                        return;
+                    }
+                    if (value.f0 == null || value.f1 == null) {
+                        LOG.warn("Skipping invalid tuple: key={}, map={}", 
+                            value.f0 != null ? value.f0 : "null", value.f1 != null ? "not null" : "null");
+                        return;
+                    }
+                    
+                    // 验证 valueMap 不为空且所有值都有效
+                    Map<String, byte[]> valueMap = value.f1;
+                    if (valueMap.isEmpty()) {
+                        LOG.warn("Skipping empty valueMap for key: {}", value.f0);
+                        return;
+                    }
+                    
+                    // 再次过滤掉无效的条目，确保所有值都是有效的
+                    Map<String, byte[]> validatedMap = new HashMap<>();
+                    for (Map.Entry<String, byte[]> entry : valueMap.entrySet()) {
+                        if (entry.getKey() != null && entry.getValue() != null && entry.getValue().length > 0) {
+                            validatedMap.put(entry.getKey(), entry.getValue());
+                        } else {
+                            LOG.warn("Skipping invalid entry in valueMap for key {}: authorId={}, value={}", 
+                                value.f0, entry.getKey(), 
+                                entry.getValue() != null ? (entry.getValue().length + " bytes") : "null");
+                        }
+                    }
+                    
+                    // 如果验证后的 map 为空，跳过
+                    if (validatedMap.isEmpty()) {
+                        LOG.warn("Skipping key {}: validatedMap is empty after filtering", value.f0);
+                        return;
+                    }
+                    
+                    // 采样日志
                     long now = System.currentTimeMillis();
                     if (now - lastSampleTime > SAMPLE_INTERVAL) {
                         lastSampleTime = now - (now % SAMPLE_INTERVAL);
@@ -340,10 +377,12 @@ public class PostRecFeature24hJob {
                     }
                     if (sampleCount < SAMPLE_COUNT) {
                         sampleCount++;
-                        int authorCnt = value.f1 != null ? value.f1.size() : 0;
-                        LOG.info("[Sample {}/{}] Redis UserAuthorFeature key={} authorCount={}", sampleCount, SAMPLE_COUNT, value.f0, authorCnt);
+                        LOG.info("[Sample {}/{}] Redis UserAuthorFeature key={} authorCount={}", 
+                            sampleCount, SAMPLE_COUNT, value.f0, validatedMap.size());
                     }
-                    out.collect(value);
+                    
+                    // 输出验证后的数据
+                    out.collect(new Tuple2<>(value.f0, validatedMap));
                 }
             })
             .name("Sample UserAuthor Feature Output");
