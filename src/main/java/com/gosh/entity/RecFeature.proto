@@ -98,21 +98,36 @@ message RecUserFeature {
   string prefer_neg_ftag4_7d_top3 = 93;
   string prefer_neg_ftag5_7d_top3 = 94;
   string prefer_neg_ftag6_7d_top3 = 95;
-  // 负反馈标签队列（最近5个）
-  repeated FeedbackTag feedback_tags = 96;
+
+  // 负反馈
+  repeated FeedbackTagV2 FeedbackTags = 96;
   repeated FeedbackAuthorId feedback_author_ids = 97;
-}
 
-// 负反馈标签
-message FeedbackTag {
-  string tag = 1;        // 标签内容，如 "age#youngadult"
-  float weight = 2;      // 权重，统一为 0.1
-}
+  // sexy
+  int32 viewer_is_hise = 98;                  // 用户是否重度sex
 
-// 负反馈作者
-message FeedbackAuthorId {
-  uint64 author_id = 1;
-  float weight = 2;
+  // 游戏相关
+  string viewer_gthy_prtag = 99;         // 用户博弈偏好标签
+  float viewer_gthy_score = 100;           // 用户博弈分
+
+  // 24小时窗口特征 - 新增字段（PostRecFeature24hJob使用）
+  int32 viewer_exp_post_cnt_24h = 117;              // 用户最近24h曝光post数
+  int32 viewer_skip_post_cnt_24h = 101;              // 用户最近24h快划post数
+  repeated int64 viewer_completeplay_post_list_24h = 102;  // 用户最近24h完播的post列表
+  repeated int64 viewer_skip_post_list_24h = 103;     // 用户最近24h快划的post列表
+  repeated IdScore viewer_10sstand_post_list_24h = 104;    // 用户最近24h停留10s以上的post列表
+  repeated IdScore viewer_8splay_post_list_24h = 105;     // 用户最近24h观看8s以上的post列表
+  repeated int64 viewer_like_post_list_24h = 106;    // 用户最近24h点赞post列表
+  repeated int64 viewer_comment_post_list_24h = 107; // 用户最近24h评论post列表
+  repeated int64 viewer_share_post_list_24h = 108;   // 用户最近24h分享post列表
+  repeated int64 viewer_collect_post_list_24h = 109; // 用户最近24h收藏post列表
+  repeated int64 viewer_pay_post_list_24h = 110;     // 用户最近24h付费post列表
+  repeated int64 viewer_report_post_list_24h = 111;  // 用户最近24h举报post列表
+  repeated int64 viewer_dislike_post_list_24h = 112;  // 用户最近24h不喜欢post列表
+  repeated int64 viewer_positive_post_list_24h = 113; // 用户最近24h正反馈post列表
+  repeated int64 viewer_negetive_post_list_24h = 114; // 用户最近24h负反馈post列表
+  repeated int64 viewer_positive_author_list_24h = 115; // 用户最近24h正反馈作者列表
+  repeated int64 viewer_negetive_author_list_24h = 116; // 用户最近24h负反馈作者列表
 }
 
 // Item侧特征 (Post特征)
@@ -195,14 +210,39 @@ message RecPostFeature {
   string post_ai_tags = 71;                  // item的ai标签
   string post_asr_lang = 72;                 // item的asr识别语言
 
+  // 24小时窗口特征 - 新增字段（PostRecFeature24hJob使用）
+  int32 post_skip_cnt_24h = 100;              // post最近24h快划次数
+  int32 post_compelete_cnt_24h = 101;         // post最近24h完播次数
+  float post_progress_rate_24h = 102;         // post最近24h平均播放进度
+  int32 post_20sstand_cnt_24h = 103;          // post最近24h停留超20s次数
+  int32 post_5splay_cnt_24h = 104;            // post最近24h观看超5s次数
+  int32 post_10splay_cnt_24h = 105;           // post最近24h观看超10s次数
+  int32 post_comment_cnt_24h = 106;           // post最近24h评论次数
+  int32 post_share_cnt_24h = 107;             // post最近24h分享次数
+  int32 post_collect_cnt_24h = 108;           // post最近24h收藏次数
+  int32 post_report_cnt_24h = 109;            // post最近24h举报次数
+  int32 post_dislike_cnt_24h = 110;           // post最近24h不喜欢次数
+  int32 post_pay_cnt_24h = 111;               // post最近24h付费次数
 }
+
+
+message FeedbackTagV2{
+  string tag = 1;
+  float weight = 2;
+}
+
+// 负反馈作者
+message FeedbackAuthorId {
+  uint64 author_id = 1;
+  float weight = 2;
+}
+
 
 // 用户作者交叉特征,hset格式
 // Redis Key: rec:user_author_feature:{user_id}:post1h, rec:user_author_feature:{user_id}:post24h
 message RecUserAuthorFeature {
   uint64 user_id = 1;
   uint64 author_id = 2;
-
   // 1小时窗口特征
   // 曝光特征
   int32 userauthor_exp_cnt_1h = 10;           // 用户作者最近1h曝光次数
@@ -297,6 +337,18 @@ message RecUserAuthorFeature {
   int32 user_tag17_play_cnt = 90;         // 用户对内容17最近7播放数
   int32 user_tag17_comment_cnt = 91;         // 用户对内容17最近7评论数
 
+  // 24小时窗口特征 - 新增字段（PostRecFeature24hJob使用）
+  int32 userauthor_skip_cnt_24h = 100;        // 用户作者最近24h快划次数
+  int32 userauthor_12splay_cnt_24h = 101;     // 用户作者最近24h播放12s次数
+  int32 userauthor_20sstand_cnt_24h = 102;    // 用户作者最近24h停留20s次数
+  int32 userauthor_comment_cnt_24h = 103;     // 用户作者最近24h评论次数
+  int32 userauthor_share_cnt_24h = 104;       // 用户作者最近24h分享次数
+  int32 userauthor_follow_cnt_24h = 105;      // 用户作者最近24h点关注次数
+  int32 userauthor_collect_cnt_24h = 106;     // 用户作者最近24h收藏次数
+  int32 userauthor_profile_cnt_24h = 107;     // 用户作者最近24h点作者主页次数
+  int32 userauthor_report_cnt_24h = 108;      // 用户作者最近24h举报次数
+  int32 userauthor_dislike_cnt_24h = 109;     // 用户作者最近24h不喜欢次数
+  int32 userauthor_pay_cnt_24h = 110;         // 用户作者最近24h付费次数
 }
 
 
@@ -341,6 +393,7 @@ message LiveUserAnchorFeature {
   int32 user_anchor_active_enter_cnt_7d = 27;                 // 用户主播7天主动进房次数(点击or10s进房)
 
 }
+
 
 // 直播主播特征（主播维度）- 包含热度等特征
 // Redis Key: rec:live_anchor_feature:{anchor_id}:live5min/live10min/live15min;rec:live_anchor_feature:{anchor_id}:live7d
@@ -389,6 +442,10 @@ message RecLiveAnchorFeature {
   int32 anchor_live_scene_enter_cnt_7d = 51;       // 7天live场景进房次数
   int32 anchor_foru_scene_enter_cnt_7d = 52;       // 7天foru场景进房次数
   int32 anchor_gift_cnt_7d =53;                    // 7天主播收礼数
+
+  // 类型特征
+  int32 anchor_type = 60;
+  int32 anchor_rec_type = 61;
 }
 
 // 直播用户特征（用户维度）- 包含用户直播行为历史
