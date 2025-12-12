@@ -62,7 +62,7 @@ public class PostRecFeature24hJob {
     
     // 滑动窗口：24小时窗口，10分钟更新
     private static final long WINDOW_SIZE_HOURS = 24;
-    private static final long SLIDE_INTERVAL_MINUTES = 10;
+    private static final long SLIDE_INTERVAL_MINUTES = 1;
     // 单用户/用户作者窗口内事件上限
     private static final int MAX_EVENTS_PER_USER_WINDOW = 300;
 
@@ -164,7 +164,16 @@ public class PostRecFeature24hJob {
                 org.apache.flink.streaming.api.windowing.time.Time.minutes(SLIDE_INTERVAL_MINUTES)
             ))
             .aggregate(new UserFeatureAggregator())
-            .name("User Feature Aggregation");
+            .name("User Feature Aggregation")
+            .map(new MapFunction<UserFeature24hAggregation, UserFeature24hAggregation>() {
+                @Override
+                public UserFeature24hAggregation map(UserFeature24hAggregation value) throws Exception {
+                    LOG.info("[Window Output] UserFeature uid={} expPostCnt={} skipPostCnt={}", 
+                        value.uid, value.expPostCnt, value.skipPostCnt);
+                    return value;
+                }
+            })
+            .name("Debug User Feature Window");
 
         // 4.2 Post侧特征
         DataStream<PostFeature24hAggregation> postFeatureStream = sessionStream
