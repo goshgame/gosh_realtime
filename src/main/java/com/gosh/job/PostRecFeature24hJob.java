@@ -109,7 +109,28 @@ public class PostRecFeature24hJob {
             .assignTimestampsAndWatermarks(
                 WatermarkStrategy.<PostEvent>forBoundedOutOfOrderness(Duration.ofSeconds(5))
                     .withTimestampAssigner((event, recordTimestamp) -> event.eventTime)
-            );
+                    .withIdleness(Duration.ofMinutes(1)) // 添加空闲检测，避免水位线停滞
+            )
+            .process(new ProcessFunction<PostEvent, PostEvent>() {
+                private transient long lastWatermarkLogTime = 0;
+                
+                @Override
+                public void processElement(PostEvent value, Context ctx, Collector<PostEvent> out) throws Exception {
+                    long currentTime = System.currentTimeMillis();
+                    long eventTime = value.eventTime;
+                    long watermark = ctx.timerService().currentWatermark();
+                    
+                    // 每分钟记录一次水位线和事件时间信息
+                    if (currentTime - lastWatermarkLogTime > 60_000) {
+                        lastWatermarkLogTime = currentTime;
+                        LOG.info("[Watermark Debug] currentTime={}, eventTime={}, watermark={}, diff={}ms", 
+                            currentTime, eventTime, watermark, currentTime - eventTime);
+                    }
+                    
+                    out.collect(value);
+                }
+            })
+            .name("Watermark Debug");
 
         // 事件采样日志（每分钟最多3条）
         eventStream = eventStream
@@ -153,7 +174,16 @@ public class PostRecFeature24hJob {
             })
             .window(EventTimeSessionWindows.withGap(org.apache.flink.streaming.api.windowing.time.Time.minutes(SESSION_GAP_MINUTES)))
             .aggregate(new SessionAggregator(), new SessionWindowFunction())
-            .name("Session Window Aggregation");
+            .name("Session Window Aggregation")
+            .map(new MapFunction<SessionSummary, SessionSummary>() {
+                @Override
+                public SessionSummary map(SessionSummary value) throws Exception {
+                    LOG.info("[Session Window Output] uid={} postId={} eventTime={}", 
+                        value.uid, value.postId, value.eventTime);
+                    return value;
+                }
+            })
+            .name("Debug Session Window Output");
 
         // 第四步：分别计算三类特征
         // 4.1 User侧特征（单阶段，限制单用户窗口内事件数）
