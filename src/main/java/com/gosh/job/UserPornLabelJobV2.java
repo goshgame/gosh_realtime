@@ -209,7 +209,7 @@ public class UserPornLabelJobV2 {
                             allInteractions.add(action);
                             if (positiveActions.contains(action)) {
                                 positiveCount++;
-                            } else if (action == 11) { // 不感兴趣
+                            } else if (action == 11 || action == 7 || action==18) { // 不感兴趣
                                 negativeCount++;
                             }
                         }
