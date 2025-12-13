@@ -10,6 +10,7 @@ import com.gosh.util.FlinkEnvUtil;
 import com.gosh.util.KafkaEnvUtil;
 import com.gosh.util.RedisUtil;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.common.state.ListState;
 import org.apache.flink.api.common.state.ListStateDescriptor;
@@ -143,7 +144,28 @@ public class UserPornLabelJobV2 {
                             return new Tuple2<>(redisKey, pornLabel.getBytes());
                         }
                     })
-                    .name("cal user porn label");
+                    .name("cal user porn label")
+                    // 过滤掉 value 为 u_ylevel_unk 的记录，不写入 Redis
+                    .filter(new FilterFunction<Tuple2<String, byte[]>>() {
+                        @Override
+                        public boolean filter(Tuple2<String, byte[]> value) throws Exception {
+                            if (value == null || value.f1 == null) {
+                                return false;
+                            }
+                            
+                            // 将 byte[] 转换回 String 进行比较
+                            String labelValue = new String(value.f1, java.nio.charset.StandardCharsets.UTF_8);
+                            
+                            // 如果是 u_ylevel_unk，过滤掉（返回 false 表示不保留）
+                            if ("u_ylevel_unk".equals(labelValue)) {
+                                LOG.debug("过滤掉 u_ylevel_unk 标签，不写入 Redis: key={}", value.f0);
+                                return false;
+                            }
+                            
+                            return true;
+                        }
+                    })
+                    .name("filter unk label");
 
             // 8. 创建 Redis Sink
             RedisConfig redisConfig = RedisConfig.fromProperties(RedisUtil.loadProperties());
