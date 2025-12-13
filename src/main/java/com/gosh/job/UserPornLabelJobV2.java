@@ -610,14 +610,14 @@ public class UserPornLabelJobV2 {
                                 LOG.info("    → 匹配到 explicit，返回: explicit");
                             }
                             return "explicit";
-                        } else if ("borderline".equals(tagType)) {
+                        } else if ("borderline".equals(tagType) || "mid".equals(tagType)) {
                             if (isMonitored) {
-                                LOG.info("    → 匹配到 borderline，返回: mid");
+                                LOG.info("    → 匹配到 borderline 或 mid，返回: mid");
                             }
                             return "mid";
-                        } else if ("mid-sexy".equals(tagType)) {
+                        } else if ("mid-sexy".equals(tagType) || "high".equals(tagType)) {
                             if (isMonitored) {
-                                LOG.info("    → 匹配到 mid-sexy，返回: high");
+                                LOG.info("    → 匹配到 mid-sexy 或 high，返回: high");
                             }
                             return "high";
                         } else {
