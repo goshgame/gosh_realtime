@@ -157,8 +157,9 @@ public class UserPornLabelJobV2 {
                             String labelValue = new String(value.f1, java.nio.charset.StandardCharsets.UTF_8);
                             
                             // 如果是 u_ylevel_unk，过滤掉（返回 false 表示不保留）
-                            if ("u_ylevel_unk".equals(labelValue)) {
-                                LOG.debug("过滤掉 u_ylevel_unk 标签，不写入 Redis: key={}", value.f0);
+                            if (!("u_ylevel_explicit".equals(labelValue) || "u_ylevel_high".equals(labelValue)
+                                    || "u_ylevel_mid".equals(labelValue))) {
+                                LOG.debug("过滤掉 非 u_ylevel_explicit｜u_ylevel_high｜u_ylevel_mid 标签，不写入 Redis: key={}", value.f0);
                                 return false;
                             }
                             
