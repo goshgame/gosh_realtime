@@ -101,7 +101,7 @@ public class UserPornLabelJobV2 {
                     })
                     .name("recent-exposure-statistics");
             //7. 计算 用户 属于的色情群体
-            List<Integer> positiveActions = Arrays.asList(1,3,5,6); // 点赞，评论，分享，收藏
+            List<Integer> positiveActions = Arrays.asList(1,3,5,6,9,10,13,15,16); // 点赞，评论，分享，收藏, 下载, 购买, 关注或点进主页关注，查看主页，订阅
             DataStream<Tuple2<String, byte[]>> dataStream =recentStats
                     .map(new MapFunction<UserNExposures, Tuple2<String, byte[]>>() {
                         @Override
