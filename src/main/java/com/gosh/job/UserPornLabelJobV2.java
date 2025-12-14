@@ -306,13 +306,13 @@ public class UserPornLabelJobV2 {
                 }
                 continue;
             }
-            
-            boolean condition1 = (stTime >= 30 | posCount > 0);
+            // note: standingTime判定色情倾向 放松阈值要求 >= 30s --> >= 10s 2025-12-14 15:35
+            boolean condition1 = (stTime >= 10 | posCount > 0);
             boolean condition2 = (negCount <= 0);
             boolean matched = condition1 & condition2;
             
             if (isMonitored) {
-                LOG.info("[监控用户 {}] 检查标签 [{}]: standingTime={} >= 30 或 positiveCount={} > 0 ? {}, negativeCount={} <= 0 ? {}, 匹配结果: {}", 
+                LOG.info("[监控用户 {}] 检查标签 [{}]: standingTime={} >= 10 或 positiveCount={} > 0 ? {}, negativeCount={} <= 0 ? {}, 匹配结果: {}",
                         viewerId, tag, stTime, posCount, condition1, negCount, condition2, matched);
             }
             
