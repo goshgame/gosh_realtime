@@ -312,7 +312,7 @@ public class UserPornLabelJobV2 {
             boolean matched = condition1 & condition2;
             
             if (isMonitored) {
-                LOG.info("[监控用户 {}] 检查标签 [{}]: standingTime={} >= 30 或 positiveCount={} > 0 ? {}, negativeCount={} <= 0 ? {}, 匹配结果: {}", 
+                LOG.info("[监控用户 {}] 检查标签 [{}]: standingTime={} >= 10 或 positiveCount={} > 0 ? {}, negativeCount={} <= 0 ? {}, 匹配结果: {}",
                         viewerId, tag, stTime, posCount, condition1, negCount, condition2, matched);
             }
             
