@@ -306,8 +306,8 @@ public class UserPornLabelJobV2 {
                 }
                 continue;
             }
-            
-            boolean condition1 = (stTime >= 30 | posCount > 0);
+            // note: standingTime判定色情倾向 放松阈值要求 >= 30s --> >= 10s 2025-12-14 15:35
+            boolean condition1 = (stTime >= 10 | posCount > 0);
             boolean condition2 = (negCount <= 0);
             boolean matched = condition1 & condition2;
             
