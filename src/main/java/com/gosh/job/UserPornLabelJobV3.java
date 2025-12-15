@@ -193,6 +193,22 @@ public class UserPornLabelJobV3 {
             String currentPosInRedis = readLabelFromRedis(keyPos);
             String currentPosForUpdate = currentPosInRedis == null ? "u_ylevel_unk" : currentPosInRedis;
 
+            // 强制降级：当 key2 本次要写 explicit 时，基于当前 key1 等级做处理
+            // 若当前 key1 等级 >= mid，则写 mid；否则写 unk
+            if (negLabel != null && negLabel.contains("explicit")) {
+                int currentPosLevel = getLabelLevel(currentPosForUpdate);
+                if (currentPosLevel >= getLabelLevel("u_ylevel_mid")) {
+                    posLabel = "u_ylevel_mid";
+                } else {
+                    posLabel = "u_ylevel_unk";
+                }
+            }
+
+            // 显式防护窗口：key2 当前为 explicit（15min TTL 内）时，不允许 key1 升级到 high/explicit
+            boolean explicitGuardActive = (negLabel != null && negLabel.contains("explicit"))
+                    || (currentNegInRedis != null && currentNegInRedis.contains("explicit"));
+            final int MID_LEVEL = getLabelLevel("u_ylevel_mid");
+
             // key1（正反馈）写入判断：需要参考 key2 当前等级
             boolean writePos = false;
             if (!"u_ylevel_unk".equals(posLabel)) {
@@ -201,15 +217,23 @@ public class UserPornLabelJobV3 {
                 int posOldLevel = getLabelLevel(currentPosForUpdate);
                 // 条件A：key2 不存在或 key1 新等级低于 key2 等级
                 boolean passNeg = (currentNegInRedis == null) || (posLevel < negLevel);
-                // 条件B：与原key1比较，新等级不低于原值
+                // 条件B：与原key1比较，新等级不低于原值（允许持平或升级；若显式防护，允许降级到 mid）
                 boolean passPos = (currentPosInRedis == null) || (posLevel >= posOldLevel);
+
+                // 防护：key2 为 explicit 时，禁止 key1 写入 high/explicit；允许写 mid/unk，并允许将高等级降到 mid
+                if (explicitGuardActive) {
+                    if (posLevel <= MID_LEVEL) {
+                        passPos = true; // 允许覆盖为 mid（即便会降级）
+                    } else {
+                        passPos = false;
+                    }
+                }
+
                 if (passNeg && passPos) {
                     writePos = true;
-                } else {
-                    if (isMonitored) {
-                        LOG.info("[监控用户 {}] key1 不更新：posLevel={} vs negLevel={}, oldPosLevel={}, 条件A(passNeg)={}, 条件B(passPos)={}",
-                                viewerId, posLevel, negLevel, posOldLevel, passNeg, passPos);
-                    }
+                } else if (isMonitored) {
+                    LOG.info("[监控用户 {}] key1 不更新：posLevel={} vs negLevel={}, oldPosLevel={}, explicitGuard={}, 条件A(passNeg)={}, 条件B(passPos)={}",
+                            viewerId, posLevel, negLevel, posOldLevel, explicitGuardActive, passNeg, passPos);
                 }
             }
 
