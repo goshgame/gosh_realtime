@@ -190,18 +190,25 @@ public class UserPornLabelJobV3 {
 
             String currentNegInRedis = readLabelFromRedis(keyNeg);
             String currentNegForUpdate = currentNegInRedis == null ? "u_ylevel_unk" : currentNegInRedis;
+            String currentPosInRedis = readLabelFromRedis(keyPos);
+            String currentPosForUpdate = currentPosInRedis == null ? "u_ylevel_unk" : currentPosInRedis;
 
             // key1（正反馈）写入判断：需要参考 key2 当前等级
             boolean writePos = false;
             if (!"u_ylevel_unk".equals(posLabel)) {
                 int posLevel = getLabelLevel(posLabel);
                 int negLevel = getLabelLevel(currentNegForUpdate);
-                // 仅当 key1 新等级低于 key2（更低）才更新；key2 不存在则允许更新
-                if (currentNegInRedis == null || posLevel < negLevel) {
+                int posOldLevel = getLabelLevel(currentPosForUpdate);
+                // 条件A：key2 不存在或 key1 新等级低于 key2 等级
+                boolean passNeg = (currentNegInRedis == null) || (posLevel < negLevel);
+                // 条件B：与原key1比较，新等级不低于原值
+                boolean passPos = (currentPosInRedis == null) || (posLevel >= posOldLevel);
+                if (passNeg && passPos) {
                     writePos = true;
                 } else {
                     if (isMonitored) {
-                        LOG.info("[监控用户 {}] key1 不更新：posLevel={} >= negLevel={}（同级或更色情，不允许写入）", viewerId, posLevel, negLevel);
+                        LOG.info("[监控用户 {}] key1 不更新：posLevel={} vs negLevel={}, oldPosLevel={}, 条件A(passNeg)={}, 条件B(passPos)={}",
+                                viewerId, posLevel, negLevel, posOldLevel, passNeg, passPos);
                     }
                 }
             }
