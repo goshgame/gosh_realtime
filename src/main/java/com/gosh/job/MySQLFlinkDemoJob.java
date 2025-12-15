@@ -2,11 +2,12 @@ package com.gosh.job;
 
 import com.gosh.config.RedisConfig;
 import com.gosh.util.FlinkEnvUtil;
-import com.gosh.util.FlinkMonitorUtil;
+//import com.gosh.util.FlinkMonitorUtil;
 import com.gosh.util.KafkaEnvUtil;
 import com.gosh.util.MySQLFlinkUtil;
 import com.gosh.util.RedisUtil;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+import org.apache.flink.api.common.typeinfo.Types;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.connector.jdbc.JdbcStatementBuilder;
 import org.apache.flink.connector.kafka.source.KafkaSource;
@@ -37,7 +38,7 @@ public class MySQLFlinkDemoJob {
         StreamExecutionEnvironment env = FlinkEnvUtil.createStreamExecutionEnvironment();
         
         // 创建监控实例
-        FlinkMonitorUtil.create(JOB_NAME, "MySQLDemoOperator");
+        //FlinkMonitorUtil.create(JOB_NAME, "MySQLDemoOperator");
 
         // 第一部分：MySQL Source → Redis Sink
         // 实现MySQL读取数据，统计用户ID出现次数并写入Redis
@@ -48,7 +49,8 @@ public class MySQLFlinkDemoJob {
         kafkaToMySQLProcessing(env);
 
         // 执行作业并监控
-        FlinkMonitorUtil.executeWithMonitor(env, JOB_NAME);
+        //FlinkMonitorUtil.executeWithMonitor(env, JOB_NAME);
+        env.execute(JOB_NAME);
     }
 
     /**
@@ -82,6 +84,7 @@ public class MySQLFlinkDemoJob {
                     
                     return new Tuple2<>(redisKey, valueBytes);
                 })
+                .returns(Types.TUPLE(Types.STRING,Types.BYTE))
                 .name("MySQL数据转换为Redis格式");
 
         // 创建Redis配置

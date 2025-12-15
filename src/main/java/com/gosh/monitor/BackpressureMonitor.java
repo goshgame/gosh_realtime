@@ -107,8 +107,8 @@ public class BackpressureMonitor<T> extends RichMapFunction<T, T> {
             long currentQueueLength = getCurrentQueueLength();
             int currentCount = highBackpressureCount.getOrDefault(operatorName, 0);
 
-            LOG.warn("反压检查 - 算子[{}]：当前队列长度={}，阈值={}，累计超阈值次数={}/{}",
-                    operatorName, currentQueueLength, QUEUE_HIGH_THRESHOLD, currentCount, HIGH_BACKPRESSURE_THRESHOLD);
+//            LOG.warn("反压检查 - 算子[{}]：当前队列长度={}，阈值={}，累计超阈值次数={}/{}",
+//                    operatorName, currentQueueLength, QUEUE_HIGH_THRESHOLD, currentCount, HIGH_BACKPRESSURE_THRESHOLD);
 
             if (currentQueueLength >= QUEUE_HIGH_THRESHOLD) {
                 int updatedCount = currentCount + 1;

@@ -224,23 +224,24 @@ public class PostRecFeature24hJob {
         RedisConfig userRedisConfig = RedisConfig.fromProperties(redisProps);
         userRedisConfig.setTtl(1200); // 20分钟TTL
         userRedisConfig.setCommand("SET"); // 明确设置为SET命令
-        RedisUtil.addRedisSink(userDataStream, userRedisConfig, true, 100);
+        RedisUtil.addRedisSink(userDataStream, userRedisConfig, true, 100, 100);
         
         // Post特征sink（使用SET命令，key-value结构）
         RedisConfig postRedisConfig = RedisConfig.fromProperties(redisProps);
         postRedisConfig.setTtl(1200); // 20分钟TTL
         postRedisConfig.setCommand("SET"); // 明确设置为SET命令
-        RedisUtil.addRedisSink(postDataStream, postRedisConfig, true, 100);
+        RedisUtil.addRedisSink(postDataStream, postRedisConfig, true, 100, 100);
         
         // UserAuthor特征sink（HashMap格式，使用DEL_HMSET命令）
         RedisConfig userAuthorRedisConfig = RedisConfig.fromProperties(redisProps);
         userAuthorRedisConfig.setTtl(1200); // 20分钟TTL
         userAuthorRedisConfig.setCommand("DEL_HMSET"); // HashMap结构使用DEL_HMSET命令
-        RedisUtil.addRedisHashMapSink(userAuthorDataStream, userAuthorRedisConfig, true, 100);
+        RedisUtil.addRedisHashMapSink(userAuthorDataStream, userAuthorRedisConfig, true, 100, 100);
 
         LOG.info("Job configured, starting execution...");
         String JOB_NAME = "Post Rec Feature 24h Job";
-        FlinkMonitorUtil.executeWithMonitor(env, JOB_NAME);
+        //FlinkMonitorUtil.executeWithMonitor(env, JOB_NAME);
+        env.execute(JOB_NAME);
     }
 
     // ==================== 事件解析 ====================

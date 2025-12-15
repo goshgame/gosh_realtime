@@ -49,21 +49,23 @@ public class RedisUtil {
      * @param config Redis配置
      * @param async 是否异步写入
      * @param batchSize 批量写入大小
+     * @param maxPendingOperations 最大并发操作数，默认10
      */
     public static void addRedisSink(
             DataStream<Tuple2<String, byte[]>> stream,
             RedisConfig config,
             boolean async,
-            int batchSize) {
-        stream.addSink(new RedisSink<>(config, async, batchSize))
+            int batchSize,
+            int... maxPendingOperations) {
+        int maxOps = maxPendingOperations.length > 0 ? maxPendingOperations[0] : 10;
+        stream.addSink(new RedisSink<>(config, async, batchSize, maxOps))
                 .name("Redis Sink (Tuple2)");
     }
 
     /**
      * 简化版：使用默认配置和批量参数
      */
-    public static void addRedisSink(
-            DataStream<Tuple2<String, byte[]>> stream) {
+    public static void addRedisSink(DataStream<Tuple2<String, byte[]>> stream) {
         Properties props = loadProperties();
         stream.addSink(new RedisSink<>(props))
                 .name("Redis Sink (Tuple2)");
@@ -75,13 +77,16 @@ public class RedisUtil {
      * @param config Redis配置
      * @param async 是否异步写入
      * @param batchSize 批量写入大小
+     * @param maxPendingOperations 最大并发操作数，默认10
      */
     public static void addRedisHashSink(
             DataStream<Tuple3<String, String, byte[]>> stream,
             RedisConfig config,
             boolean async,
-            int batchSize) {
-        stream.addSink(new RedisSink<>(config, async, batchSize))
+            int batchSize,
+            int... maxPendingOperations) {
+        int maxOps = maxPendingOperations.length > 0 ? maxPendingOperations[0] : 10;
+        stream.addSink(new RedisSink<>(config, async, batchSize, maxOps))
                 .name("Redis Hash Sink (Tuple3)");
     }
 
@@ -92,8 +97,10 @@ public class RedisUtil {
             DataStream<Tuple2<String, Map<String, byte[]>>> stream,
             RedisConfig config,
             boolean async,
-            int batchSize) {
-        stream.addSink(new RedisSink<>(config, async, batchSize))
+            int batchSize,
+            int... maxPendingOperations) {
+        int maxOps = maxPendingOperations.length > 0 ? maxPendingOperations[0] : 10;
+        stream.addSink(new RedisSink<>(config, async, batchSize, maxOps))
                 .name("Redis HashMap Sink (DEL_HMSET)");
     }
 }

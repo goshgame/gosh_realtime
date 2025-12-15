@@ -2,7 +2,7 @@ package com.gosh.job;
 
 import com.gosh.entity.*;
 import com.gosh.util.FlinkEnvUtil;
-import com.gosh.util.FlinkMonitorUtil;
+//import com.gosh.util.FlinkMonitorUtil;
 import com.gosh.util.KafkaEnvUtil;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.functions.FilterFunction;
@@ -146,9 +146,9 @@ public class PostPoseParseJob {
         outputJson.sinkTo(kafkaSink);
 
         // 第六步：使用监控工具类执行作业（替代原生execute方法）
-        FlinkMonitorUtil.executeWithMonitor(env,JOB_NAME);
+        //FlinkMonitorUtil.executeWithMonitor(env,JOB_NAME);
 
         // 执行Flink作业
-        //env.execute("Kafka Post Event Processing Job");
+        env.execute(JOB_NAME);
     }
 }
