@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Properties>
+        <!-- 日志文件路径 -->
+        <Property name="LOG_HOME">./logs</Property>
+        <!-- 日志格式 -->
+        <Property name="LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</Property>
+    </Properties>
+    
+    <Appenders>
+        <!-- 控制台输出 -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </Console>
+        
+        <!-- 主日志文件：INFO级别及以上 -->
+        <RollingFile name="MainFile" fileName="${LOG_HOME}/flink-job.log" 
+                     filePattern="${LOG_HOME}/flink-job-%d{yyyy-MM-dd}-%i.log.gz">
+            <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <!-- 按天滚动 -->
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <!-- 单文件大小超过100MB滚动 -->
+                <SizeBasedTriggeringPolicy size="100MB"/>
+            </Policies>
+            <!-- 保留最近3天的日志 -->
+            <DefaultRolloverStrategy max="3"/>
+        </RollingFile>
+        
+        <!-- 错误日志文件：ERROR级别及以上 -->
+        <RollingFile name="ErrorFile" fileName="${LOG_HOME}/flink-job-error.log" 
+                     filePattern="${LOG_HOME}/flink-job-error-%d{yyyy-MM-dd}-%i.log.gz">
+            <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <!-- 按天滚动 -->
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <!-- 单文件大小超过50MB滚动 -->
+                <SizeBasedTriggeringPolicy size="50MB"/>
+            </Policies>
+            <!-- 保留最近30天的错误日志 -->
+            <DefaultRolloverStrategy max="30"/>
+        </RollingFile>
+    </Appenders>
+    
+    <Loggers>
+        <!-- 项目包日志级别：INFO -->
+        <Logger name="com.gosh" level="INFO" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="MainFile"/>
+            <AppenderRef ref="ErrorFile"/>
+        </Logger>
+        
+        <!-- Flink相关日志级别：WARN -->
+        <Logger name="org.apache.flink" level="WARN" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="MainFile"/>
+            <AppenderRef ref="ErrorFile"/>
+        </Logger>
+        
+        <!-- Kafka相关日志级别：WARN -->
+        <Logger name="org.apache.kafka" level="WARN" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="MainFile"/>
+            <AppenderRef ref="ErrorFile"/>
+        </Logger>
+        
+        <!-- Redis相关日志级别：WARN -->
+        <Logger name="redis.clients" level="WARN" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="MainFile"/>
+            <AppenderRef ref="ErrorFile"/>
+        </Logger>
+        
+        <!-- 根日志级别：WARN -->
+        <Root level="WARN">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="MainFile"/>
+            <AppenderRef ref="ErrorFile"/>
+        </Root>
+    </Loggers>
+</Configuration>

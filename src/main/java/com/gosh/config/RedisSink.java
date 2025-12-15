@@ -41,15 +41,22 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
     private int maxPendingOperations;
 
     public RedisSink(RedisConfig config, boolean async, int batchSize) {
+        this(config, async, batchSize, 10); // 默认maxPendingOperations=10
+    }
+
+    public RedisSink(RedisConfig config, boolean async, int batchSize, int maxPendingOperations) {
         this.config = config;
         this.async = async;
         this.batchSize = batchSize;
-        // 最大并发操作数，可根据系统性能调整
-        this.maxPendingOperations = 100;
+        this.maxPendingOperations = maxPendingOperations;
     }
 
     public RedisSink(Properties props) {
-        this(RedisConfig.fromProperties(props), true, 100);
+        this(RedisConfig.fromProperties(props), true, 100, 10);
+    }
+
+    public void setMaxPendingOperations(int maxPendingOperations) {
+        this.maxPendingOperations = maxPendingOperations;
     }
 
     @Override
@@ -257,6 +264,13 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
      * 同步执行批量写入
      */
     private void doSyncBatchWrite() {
+        // 检查是否所有缓冲区都为空
+        boolean isAllBuffersEmpty = batchBuffer.isEmpty() && stringBatchBuffer.isEmpty() && listBatchBuffer.isEmpty() && setBatchBuffer.isEmpty();
+        if (isAllBuffersEmpty) {
+            LOG.debug("Synced batch: no data to write (all buffers are empty)");
+            return;
+        }
+        
         // 处理哈希类型命令（HSET/DEL_HSET/DEL_HMSET）
         for (Map.Entry<String, Map<String, Map<String, byte[]>>> commandEntry : batchBuffer.entrySet()) {
             String command = commandEntry.getKey();
@@ -265,6 +279,11 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
             for (Map.Entry<String, Map<String, byte[]>> keyEntry : keyBuffer.entrySet()) {
                 String key = keyEntry.getKey();
                 Map<String, byte[]> fieldValues = keyEntry.getValue();
+
+                // 跳过空的fieldValues，避免"Map must not be empty"错误
+                if (fieldValues.isEmpty()) {
+                    continue;
+                }
 
                 // 转换为Lettuce需要的Tuple2格式
                 Map<String, Tuple2<String, byte[]>> wrappedMap = new HashMap<>();
@@ -298,23 +317,26 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
             Map<String, Tuple2<String, byte[]>> wrappedStrings = new HashMap<>();
             stringBatchBuffer.forEach((k, v) -> wrappedStrings.put(k, new Tuple2<>("", v)));
 
-            if (isClusterMode) {
-                redisClusterCommands.mset(wrappedStrings);
-                // 批量设置过期时间
-                stringBatchBuffer.keySet().forEach(key -> {
-                    if (config.getTtl() > 0) {
-                        redisClusterCommands.expire(key, config.getTtl());
-                    }
-                });
-            } else {
-                redisCommands.mset(wrappedStrings);
-                stringBatchBuffer.keySet().forEach(key -> {
-                    if (config.getTtl() > 0) {
-                        redisCommands.expire(key, config.getTtl());
-                    }
-                });
+            // 再次检查wrappedStrings是否为空（理论上不应该，但为了安全）
+            if (!wrappedStrings.isEmpty()) {
+                if (isClusterMode) {
+                    redisClusterCommands.mset(wrappedStrings);
+                    // 批量设置过期时间
+                    stringBatchBuffer.keySet().forEach(key -> {
+                        if (config.getTtl() > 0) {
+                            redisClusterCommands.expire(key, config.getTtl());
+                        }
+                    });
+                } else {
+                    redisCommands.mset(wrappedStrings);
+                    stringBatchBuffer.keySet().forEach(key -> {
+                        if (config.getTtl() > 0) {
+                            redisCommands.expire(key, config.getTtl());
+                        }
+                    });
+                }
+                LOG.debug("Synced batch SET: keys={}", stringBatchBuffer.size());
             }
-            LOG.debug("Synced batch SET: keys={}", stringBatchBuffer.size());
         }
 
         // 处理列表命令（LPUSH/RPUSH）
@@ -323,6 +345,12 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
             for (Map.Entry<String, List<byte[]>> entry : listBatchBuffer.entrySet()) {
                 String key = entry.getKey();
                 List<byte[]> values = entry.getValue();
+                
+                // 跳过空的values列表
+                if (values.isEmpty()) {
+                    continue;
+                }
+                
                 Tuple2<String, byte[]>[] tupleValues = values.stream()
                         .map(v -> new Tuple2<>("", v))
                         .toArray(Tuple2[]::new);
@@ -355,6 +383,12 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
             for (Map.Entry<String, List<byte[]>> entry : setBatchBuffer.entrySet()) {
                 String key = entry.getKey();
                 List<byte[]> values = entry.getValue();
+                
+                // 跳过空的values列表
+                if (values.isEmpty()) {
+                    continue;
+                }
+                
                 Tuple2<String, byte[]>[] tupleValues = values.stream()
                         .map(v -> new Tuple2<>("", v))
                         .toArray(Tuple2[]::new);
@@ -379,16 +413,31 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
      * 异步执行批量写入
      */
     private CompletableFuture<Void> doAsyncBatchWrite() {
+        // 检查是否所有缓冲区都为空
+        boolean isAllBuffersEmpty = batchBuffer.isEmpty() && stringBatchBuffer.isEmpty() && listBatchBuffer.isEmpty() && setBatchBuffer.isEmpty();
+        if (isAllBuffersEmpty) {
+            LOG.debug("Async batch: no data to write (all buffers are empty)");
+            return CompletableFuture.completedFuture(null);
+        }
+        
         List<CompletableFuture<Void>> futures = new ArrayList<>();
 
         // 处理哈希类型命令（HSET/DEL_HSET/DEL_HMSET）
-        for (Map.Entry<String, Map<String, Map<String, byte[]>>> commandEntry : batchBuffer.entrySet()) {
+        // 创建batchBuffer的副本，避免竞态条件
+        Map<String, Map<String, Map<String, byte[]>>> batchBufferCopy = new HashMap<>(batchBuffer);
+        for (Map.Entry<String, Map<String, Map<String, byte[]>>> commandEntry : batchBufferCopy.entrySet()) {
             String command = commandEntry.getKey();
             Map<String, Map<String, byte[]>> keyBuffer = commandEntry.getValue();
 
             for (Map.Entry<String, Map<String, byte[]>> keyEntry : keyBuffer.entrySet()) {
                 String key = keyEntry.getKey();
-                Map<String, byte[]> fieldValues = keyEntry.getValue();
+                Map<String, byte[]> fieldValues = new HashMap<>(keyEntry.getValue()); // 创建fieldValues的副本
+                
+                // 跳过空的fieldValues，避免"Map must not be empty"错误
+                if (fieldValues.isEmpty()) {
+                    continue;
+                }
+                
                 Map<String, Tuple2<String, byte[]>> wrappedMap = new HashMap<>();
                 fieldValues.forEach((k, v) -> wrappedMap.put(k, new Tuple2<>("", v)));
 
@@ -396,33 +445,34 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
                 final String cmd = command;
                 final String currentKey = key;
                 final Map<String, Tuple2<String, byte[]>> finalWrappedMap = wrappedMap;
+                final int finalFieldCount = fieldValues.size();
                 
                 // 创建异步任务并添加到列表
                 CompletableFuture<Void> future;
                 if (isClusterMode) {
                     future = connectionManager.executeClusterAsync(clusterCmd -> {
                         // 处理DEL_HSET和DEL_HMSET的删除逻辑
-                        if (("DEL_HSET".equals(cmd) || "DEL_HMSET".equals(cmd)) && config.getTtl() <= 0) {
+                        if ( ("DEL_HSET".equals(cmd) || "DEL_HMSET".equals(cmd)) && config.getTtl() <= 0) {
                             clusterCmd.del(currentKey);
                         }
                         clusterCmd.hmset(currentKey, finalWrappedMap);
                         if (config.getTtl() > 0) {
                             clusterCmd.expire(currentKey, config.getTtl());
                         }
-                        LOG.warn("Async batch {} to Redis Cluster - key: {}, fields: {}", cmd, currentKey, fieldValues.size());
+                        LOG.warn("Async batch {} to Redis Cluster - key: {}, fields: {}", cmd, currentKey, finalFieldCount);
                         return null;
                     });
                 } else {
                     future = connectionManager.executeAsync(cmdObj -> {
                         // 处理DEL_HSET和DEL_HMSET的删除逻辑
-                        if (("DEL_HSET".equals(cmd) || "DEL_HMSET".equals(cmd)) && config.getTtl() <= 0) {
+                        if ( ("DEL_HSET".equals(cmd) || "DEL_HMSET".equals(cmd)) && config.getTtl() <= 0) {
                             cmdObj.del(currentKey);
                         }
                         cmdObj.hmset(currentKey, finalWrappedMap);
                         if (config.getTtl() > 0) {
                             cmdObj.expire(currentKey, config.getTtl());
                         }
-                        LOG.warn("Async batch {} to Redis - key: {}, fields: {}", cmd, currentKey, fieldValues.size());
+                        LOG.warn("Async batch {} to Redis - key: {}, fields: {}", cmd, currentKey, finalFieldCount);
                         return null;
                     });
                 }
@@ -431,43 +481,56 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
         }
 
         // 处理字符串命令（SET）
-        if (!stringBatchBuffer.isEmpty()) {
+        // 创建stringBatchBuffer的副本，避免竞态条件
+        Map<String, byte[]> stringBatchCopy = new HashMap<>(stringBatchBuffer);
+        if (!stringBatchCopy.isEmpty()) {
             Map<String, Tuple2<String, byte[]>> wrappedStrings = new HashMap<>();
-            stringBatchBuffer.forEach((k, v) -> wrappedStrings.put(k, new Tuple2<>("", v)));
+            stringBatchCopy.forEach((k, v) -> wrappedStrings.put(k, new Tuple2<>("", v)));
 
-            CompletableFuture<Void> future;
-            if (isClusterMode) {
-                future = connectionManager.executeClusterAsync(cmd -> {
-                    cmd.mset(wrappedStrings);
-                    wrappedStrings.keySet().forEach(key -> {
-                        if (config.getTtl() > 0) {
-                            cmd.expire(key, config.getTtl());
-                        }
+            // 再次检查wrappedStrings是否为空（理论上不应该，但为了安全）
+            if (!wrappedStrings.isEmpty()) {
+                CompletableFuture<Void> future;
+                if (isClusterMode) {
+                    future = connectionManager.executeClusterAsync(cmd -> {
+                        cmd.mset(wrappedStrings);
+                        wrappedStrings.keySet().forEach(key -> {
+                            if (config.getTtl() > 0) {
+                                cmd.expire(key, config.getTtl());
+                            }
+                        });
+                        LOG.warn("Async batch SET to Redis Cluster - keys: {}", wrappedStrings.size());
+                        return null;
                     });
-                    LOG.warn("Async batch SET to Redis Cluster - keys: {}", wrappedStrings.size());
-                    return null;
-                });
-            } else {
-                future = connectionManager.executeAsync(cmd -> {
-                    cmd.mset(wrappedStrings);
-                    wrappedStrings.keySet().forEach(key -> {
-                        if (config.getTtl() > 0) {
-                            cmd.expire(key, config.getTtl());
-                        }
+                } else {
+                    future = connectionManager.executeAsync(cmd -> {
+                        cmd.mset(wrappedStrings);
+                        wrappedStrings.keySet().forEach(key -> {
+                            if (config.getTtl() > 0) {
+                                cmd.expire(key, config.getTtl());
+                            }
+                        });
+                        LOG.warn("Async batch SET to Redis - keys: {}", wrappedStrings.size());
+                        return null;
                     });
-                    LOG.warn("Async batch SET to Redis - keys: {}", wrappedStrings.size());
-                    return null;
-                });
+                }
+                futures.add(future);
             }
-            futures.add(future);
         }
 
         // 处理列表命令（LPUSH/RPUSH）
         String currentCommand = config.getCommand().toUpperCase();
-        if ((currentCommand.equals("LPUSH") || currentCommand.equals("RPUSH")) && !listBatchBuffer.isEmpty()) {
-            for (Map.Entry<String, List<byte[]>> entry : listBatchBuffer.entrySet()) {
+        // 创建listBatchBuffer的副本，避免竞态条件
+        Map<String, List<byte[]>> listBatchCopy = new HashMap<>(listBatchBuffer);
+        if ((currentCommand.equals("LPUSH") || currentCommand.equals("RPUSH")) && !listBatchCopy.isEmpty()) {
+            for (Map.Entry<String, List<byte[]>> entry : listBatchCopy.entrySet()) {
                 String key = entry.getKey();
-                List<byte[]> values = entry.getValue();
+                List<byte[]> values = new ArrayList<>(entry.getValue()); // 创建values的副本
+                
+                // 跳过空的values列表
+                if (values.isEmpty()) {
+                    continue;
+                }
+                
                 Tuple2<String, byte[]>[] tupleValues = values.stream()
                         .map(v -> new Tuple2<>("", v))
                         .toArray(Tuple2[]::new);
@@ -505,10 +568,18 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
         }
         
         // 处理集合命令（SADD）
-        if (currentCommand.equals("SADD") && !setBatchBuffer.isEmpty()) {
-            for (Map.Entry<String, List<byte[]>> entry : setBatchBuffer.entrySet()) {
+        // 创建setBatchBuffer的副本，避免竞态条件
+        Map<String, List<byte[]>> setBatchCopy = new HashMap<>(setBatchBuffer);
+        if (currentCommand.equals("SADD") && !setBatchCopy.isEmpty()) {
+            for (Map.Entry<String, List<byte[]>> entry : setBatchCopy.entrySet()) {
                 String key = entry.getKey();
-                List<byte[]> values = entry.getValue();
+                List<byte[]> values = new ArrayList<>(entry.getValue()); // 创建values的副本
+                
+                // 跳过空的values列表
+                if (values.isEmpty()) {
+                    continue;
+                }
+                
                 Tuple2<String, byte[]>[] tupleValues = values.stream()
                         .map(v -> new Tuple2<>("", v))
                         .toArray(Tuple2[]::new);

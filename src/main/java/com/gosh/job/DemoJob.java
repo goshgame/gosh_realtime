@@ -9,7 +9,7 @@ import com.gosh.entity.UserLiveEvent;
 import com.gosh.monitor.BackpressureMonitor;
 import com.gosh.process.DataSkewProcessor;
 import com.gosh.util.FlinkEnvUtil;
-import com.gosh.util.FlinkMonitorUtil;
+//import com.gosh.util.FlinkMonitorUtil;
 import com.gosh.util.KafkaEnvUtil;
 import com.gosh.util.RedisUtil;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
@@ -17,6 +17,7 @@ import org.apache.flink.api.common.functions.AggregateFunction;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.common.time.Time;
+import org.apache.flink.api.common.typeinfo.Types;
 import org.apache.flink.api.java.functions.KeySelector;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.connector.kafka.source.KafkaSource;
@@ -69,7 +70,6 @@ public class DemoJob {
         SingleOutputStreamOperator parsedStream = kafkaSource
                 .flatMap(new JsonParserFlatMap())
                 .name("JSON Parser")
-                .setParallelism(4)
                 // 添加事件时间和水印策略
                 .assignTimestampsAndWatermarks(
                         WatermarkStrategy.<UserLiveEvent>forBoundedOutOfOrderness(Duration.ofSeconds(10))
@@ -100,13 +100,13 @@ public class DemoJob {
 
         // ===== 添加数据倾斜处理 =====
         // 使用 DataSkewProcessor 处理可能的数据倾斜
-        DataStream<UserLiveEvent> balancedStream = DataSkewProcessor.handleDataSkew(
-                parsedStream,
-                UserLiveEvent::getUid,  // Key选择器：使用uid作为判断依据
-                4                       // 基础并行度（与解析算子保持一致）
-        );
+//        DataStream<UserLiveEvent> balancedStream = DataSkewProcessor.handleDataSkew(
+//                parsedStream,
+//                UserLiveEvent::getUid,  // Key选择器：使用uid作为判断依据
+//                4                       // 基础并行度（与解析算子保持一致）
+//        );
 
-        DataStream<UserLiveAggregation> aggregatedStream = balancedStream
+        DataStream<UserLiveAggregation> aggregatedStream = parsedStream
                 .keyBy(new KeySelector<UserLiveEvent, String>() {
                     @Override
                     public String getKey(UserLiveEvent value) throws Exception {
@@ -134,6 +134,7 @@ public class DemoJob {
                 .map(byteArray -> {
                     return new Tuple2<>(byteArray.getKey(), byteArray.getResutls().toString().getBytes());
                 })
+                .returns(Types.TUPLE(Types.STRING,Types.BYTE))
                 .name("Byte Array to Tuple2");
 
 //        // 4.3 定义protobuf解析器和key提取逻辑
@@ -144,6 +145,7 @@ public class DemoJob {
         // 第五步：添加反压监控（在输出到Kafka前监控队列压力）
         SingleOutputStreamOperator<Tuple2<String, byte[]>> outDataStream =
                 dataStream.map(new BackpressureMonitor(JOB_NAME,"filter-operator"))
+                        .returns(Types.TUPLE(Types.STRING,Types.BYTE))
                         .name("z Monitor");
 
 
@@ -151,6 +153,8 @@ public class DemoJob {
         // 5.1 加载Redis配置
         RedisConfig redisConfig = RedisConfig.fromProperties(RedisUtil.loadProperties());
         // 5.2 添加Redis Sink
+        redisConfig.setTtl(7200);
+        redisConfig.setCommand("DEL_HMSET");
         //    支持异步和批量写入
         RedisUtil.addRedisSink(
                 outDataStream,
@@ -160,7 +164,8 @@ public class DemoJob {
         );
 
         // 启动任务
-        FlinkMonitorUtil.executeWithMonitor(env,JOB_NAME);
+        //FlinkMonitorUtil.executeWithMonitor(env,JOB_NAME);
+        env.execute(JOB_NAME);
     }
 
     /**
@@ -386,7 +391,7 @@ public class DemoJob {
     private static class UserKeyExtractor implements Function<RecFeatureDemoOuterClass.RecFeature, String>, Serializable {
         @Override
         public String apply(RecFeatureDemoOuterClass.RecFeature feature) {
-            return PREFIX + feature.getKey();
+            return PREFIX + "00983301";
         }
     }
 

@@ -25,8 +25,6 @@ public class FlinkEnvUtil {
      */
     public static StreamExecutionEnvironment createStreamExecutionEnvironment() {
         Configuration configuration = ConfigurationUtil.loadConfigurationFromProperties(CommonConstants.FLINK_DEFAULT_CONF);
-        LOG.info("参数：{}",configuration);
-
         // 创建执行环境
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
@@ -43,13 +41,8 @@ public class FlinkEnvUtil {
         } catch (Exception e) {
             LOG.error("设置状态后端失败: {}", e.getMessage(), e);
         }
-        
-        // 使用默认配置创建监控实例并包装环境
-        String defaultJobName = "default-flink-job"; // 默认作业名称
-        String defaultOperatorName = "default-operator"; // 默认算子名称
-        
-        FlinkMonitorUtil monitorUtil = FlinkMonitorUtil.create(defaultJobName, defaultOperatorName);
-        return monitorUtil.wrapMonitorEnvironment(env);
+
+        return env;
     }
 
     /**
@@ -105,11 +98,5 @@ public class FlinkEnvUtil {
                 host, port, configuration, jarFiles);
 
         return env;
-    }
-
-    public static void main(String[] args) {
-        // 创建默认的执行环境（带监控）
-        StreamExecutionEnvironment env = FlinkEnvUtil.createStreamExecutionEnvironment();
-        LOG.info("默认执行环境已创建");
     }
 }

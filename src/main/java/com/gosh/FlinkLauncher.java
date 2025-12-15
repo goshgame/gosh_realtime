@@ -1,6 +1,6 @@
 package com.gosh;
 
-import com.amazonaws.services.kinesisanalytics.runtime.KinesisAnalyticsRuntime;
+//import com.amazonaws.services.kinesisanalytics.runtime.KinesisAnalyticsRuntime;
 import org.apache.flink.api.java.utils.ParameterTool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,15 +23,15 @@ public class FlinkLauncher {
         String className = parameterTool.get(CLASS_NAME_PARAM);
 
         // 3. 如果命令行未指定，从AWS Kinesis配置中获取
-        if (className == null || className.trim().isEmpty()) {
-            Map<String, Properties> applicationProperties = KinesisAnalyticsRuntime.getApplicationProperties();
-            Properties consumerProperties = applicationProperties.get("ConsumerConfigProperties");
-            LOG.info("从AWS获取的ConsumerConfigProperties: {}", consumerProperties);
-
-            if (consumerProperties != null) {
-                className = consumerProperties.getProperty(CLASS_NAME_PARAM);
-            }
-        }
+//        if (className == null || className.trim().isEmpty()) {
+//            Map<String, Properties> applicationProperties = KinesisAnalyticsRuntime.getApplicationProperties();
+//            Properties consumerProperties = applicationProperties.get("ConsumerConfigProperties");
+//            LOG.info("从AWS获取的ConsumerConfigProperties: {}", consumerProperties);
+//
+//            if (consumerProperties != null) {
+//                className = consumerProperties.getProperty(CLASS_NAME_PARAM);
+//            }
+//        }
 
         // 4. 验证类名
         if (className == null || className.trim().isEmpty()) {
