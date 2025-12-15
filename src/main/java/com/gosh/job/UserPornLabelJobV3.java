@@ -111,11 +111,13 @@ public class UserPornLabelJobV3 {
             DataStream<Tuple2<String, byte[]>> posStream = writeResultStream
                     .filter(r -> r != null && r.writePos)
                     .map(r -> Tuple2.of(r.posKey, r.posValue.getBytes()))
+                    .returns(TypeInformation.of(new TypeHint<Tuple2<String, byte[]>>() {}))
                     .name("pos-redis-stream");
 
             DataStream<Tuple2<String, byte[]>> negStream = writeResultStream
                     .filter(r -> r != null && r.writeNeg)
                     .map(r -> Tuple2.of(r.negKey, r.negValue.getBytes()))
+                    .returns(TypeInformation.of(new TypeHint<Tuple2<String, byte[]>>() {}))
                     .name("neg-redis-stream");
 
             // 8. 创建 Redis Sink（正/负TTL分别设置）
