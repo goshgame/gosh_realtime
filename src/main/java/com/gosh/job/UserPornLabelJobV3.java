@@ -258,9 +258,9 @@ public class UserPornLabelJobV3 {
                 }
             }
 
-            // 显式防护窗口：key2 当前为 explicit（15min TTL 内）时，不允许 key1 升级到 high/explicit
-            boolean explicitGuardActive = (negLabel != null && negLabel.contains("explicit"))
-                    || (currentNegInRedis != null && currentNegInRedis.contains("explicit"));
+            // 防护窗口：key2 当前为 explicit 或 high（15min TTL 内）时，不允许 key1 升级到 high/explicit
+            boolean explicitGuardActive = (negLabel != null && (negLabel.contains("explicit") || negLabel.contains("high")))
+                    || (currentNegInRedis != null && (currentNegInRedis.contains("explicit") || currentNegInRedis.contains("high")));
             final int MID_LEVEL = getLabelLevel("u_ylevel_mid");
 
             // key1（正反馈）写入判断：需要参考 key2 当前等级
@@ -274,7 +274,7 @@ public class UserPornLabelJobV3 {
                 // 条件B：与原key1比较，新等级不低于原值（允许持平或升级；若显式防护，允许降级到 mid）
                 boolean passPos = (currentPosInRedis == null) || (posLevel >= posOldLevel);
 
-                // 防护：key2 为 explicit 时，禁止 key1 写入 high/explicit；允许写 mid/unk，并允许将高等级降到 mid
+                // 防护：key2 为 explicit 或 high 时，禁止 key1 写入 high/explicit；允许写 mid/unk，并允许将高等级降到 mid
                 if (explicitGuardActive) {
                     if (posLevel <= MID_LEVEL) {
                         passPos = true; // 允许覆盖为 mid（即便会降级）
