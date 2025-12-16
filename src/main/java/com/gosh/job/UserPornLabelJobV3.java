@@ -10,6 +10,7 @@ import com.gosh.util.FlinkEnvUtil;
 import com.gosh.util.KafkaEnvUtil;
 import com.gosh.util.RedisUtil;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.api.common.functions.RichMapFunction;
 import org.apache.flink.api.common.state.ListState;
 import org.apache.flink.api.common.state.ListStateDescriptor;
@@ -112,12 +113,46 @@ public class UserPornLabelJobV3 {
                     .filter(r -> r != null && r.writePos)
                     .map(r -> Tuple2.of(r.posKey, r.posValue.getBytes()))
                     .returns(TypeInformation.of(new TypeHint<Tuple2<String, byte[]>>() {}))
+                    .filter(new FilterFunction<Tuple2<String, byte[]>>() {
+                        @Override
+                        public boolean filter(Tuple2<String, byte[]> value) throws Exception {
+                            if (value == null || value.f1 == null) {
+                                return false;
+                            }
+                            // 将 byte[] 转换回 String 进行比较
+                            String labelValue = new String(value.f1, java.nio.charset.StandardCharsets.UTF_8);
+                            // 过滤掉 u_ylevel_unk，只保留 explicit、high、mid
+                            if (!("u_ylevel_explicit".equals(labelValue) || "u_ylevel_high".equals(labelValue)
+                                    || "u_ylevel_mid".equals(labelValue))) {
+                                LOG.debug("过滤掉 非 u_ylevel_explicit｜u_ylevel_high｜u_ylevel_mid 标签，不写入 Redis: key={}", value.f0);
+                                return false;
+                            }
+                            return true;
+                        }
+                    })
                     .name("pos-redis-stream");
 
             DataStream<Tuple2<String, byte[]>> negStream = writeResultStream
                     .filter(r -> r != null && r.writeNeg)
                     .map(r -> Tuple2.of(r.negKey, r.negValue.getBytes()))
                     .returns(TypeInformation.of(new TypeHint<Tuple2<String, byte[]>>() {}))
+                    .filter(new FilterFunction<Tuple2<String, byte[]>>() {
+                        @Override
+                        public boolean filter(Tuple2<String, byte[]> value) throws Exception {
+                            if (value == null || value.f1 == null) {
+                                return false;
+                            }
+                            // 将 byte[] 转换回 String 进行比较
+                            String labelValue = new String(value.f1, java.nio.charset.StandardCharsets.UTF_8);
+                            // 过滤掉 u_ylevel_unk，只保留 explicit、high、mid
+                            if (!("u_ylevel_explicit".equals(labelValue) || "u_ylevel_high".equals(labelValue)
+                                    || "u_ylevel_mid".equals(labelValue))) {
+                                LOG.debug("过滤掉 非 u_ylevel_explicit｜u_ylevel_high｜u_ylevel_mid 标签，不写入 Redis: key={}", value.f0);
+                                return false;
+                            }
+                            return true;
+                        }
+                    })
                     .name("neg-redis-stream");
 
             // 8. 创建 Redis Sink（正/负TTL分别设置）
@@ -149,6 +184,7 @@ public class UserPornLabelJobV3 {
         public int negativeCount = 0;       // 负反馈次数（包含短播 & dislike）
         public int shortPlayCount = 0;      // 短播次数（<3s）
         public int dislikeCount = 0;        // dislike 次数（interaction==11）
+        public long triggerPostId = 0;      // 触发该标签统计的postId（用于日志）
     }
 
     /**
@@ -161,6 +197,8 @@ public class UserPornLabelJobV3 {
         public String posValue;
         public String negKey;
         public String negValue;
+        public long triggerPosPostId;  // 触发正反馈写入的postId
+        public long triggerNegPostId;  // 触发负反馈写入的postId
     }
 
     /**
@@ -181,8 +219,13 @@ public class UserPornLabelJobV3 {
 
             Map<String, TagStatistics> statsMap = aggregateStats(event, isMonitored);
 
-            String positiveTag = pickHighestPositive(statsMap, isMonitored, viewerId);
-            String negativeTag = pickLowestNegative(statsMap, isMonitored, viewerId);
+            Tuple2<String, Long> positiveResult = pickHighestPositive(statsMap, isMonitored, viewerId);
+            String positiveTag = positiveResult.f0;
+            long triggerPosPostId = positiveResult.f1;
+
+            Tuple2<String, Long> negativeResult = pickLowestNegative(statsMap, isMonitored, viewerId);
+            String negativeTag = negativeResult.f0;
+            long triggerNegPostId = negativeResult.f1;
 
             String posLabel = buildLabel(positiveTag);
             String negLabel = negativeTag == null ? null : buildLabel(negativeTag);
@@ -195,14 +238,23 @@ public class UserPornLabelJobV3 {
             String currentPosInRedis = readLabelFromRedis(keyPos);
             String currentPosForUpdate = currentPosInRedis == null ? "u_ylevel_unk" : currentPosInRedis;
 
-            // 强制降级：当 key2 本次要写 explicit 时，基于当前 key1 等级做处理
-            // 若当前 key1 等级 >= mid，则写 mid；否则写 unk
-            if (negLabel != null && negLabel.contains("explicit")) {
-                int currentPosLevel = getLabelLevel(currentPosForUpdate);
-                if (currentPosLevel >= getLabelLevel("u_ylevel_mid")) {
-                    posLabel = "u_ylevel_mid";
-                } else {
-                    posLabel = "u_ylevel_unk";
+            // 强制降级：当 key2 本次要写 explicit 或 high 时，如果当前 key1 存在且等级 >= mid，则强制设为 mid（降级或刷新TTL）
+            // 如果 < mid，不处理（保持原逻辑）
+            boolean negTriggeredPosUpdate = false;
+            if (negLabel != null && currentPosInRedis != null) {
+                boolean isExplicit = negLabel.contains("explicit");
+                boolean isHigh = negLabel.contains("high");
+                if (isExplicit || isHigh) {
+                    int currentPosLevel = getLabelLevel(currentPosForUpdate);
+                    final int MID_LEVEL = getLabelLevel("u_ylevel_mid");
+                    if (currentPosLevel >= MID_LEVEL) {
+                        posLabel = "u_ylevel_mid";
+                        negTriggeredPosUpdate = true;
+                        if (isMonitored) {
+                            LOG.info("[监控用户 {}] key2={}触发，强制key1设为mid（原等级={}），触发postId={}", 
+                                    viewerId, isExplicit ? "explicit" : "high", currentPosInRedis, triggerNegPostId);
+                        }
+                    }
                 }
             }
 
@@ -231,11 +283,18 @@ public class UserPornLabelJobV3 {
                     }
                 }
 
-                if (passNeg && passPos) {
+                // 特殊情况：当负反馈为explicit或high触发强制降级时，如果正反馈已经是mid或更低，强制写入一次以刷新TTL
+                if (negTriggeredPosUpdate && posLevel <= MID_LEVEL && currentPosInRedis != null) {
+                    writePos = true;
+                    if (isMonitored) {
+                        LOG.info("[监控用户 {}] key2触发强制降级，强制刷新key1 TTL（posLabel={}），触发postId={}", 
+                                viewerId, posLabel, triggerNegPostId);
+                    }
+                } else if (passNeg && passPos) {
                     writePos = true;
                 } else if (isMonitored) {
-                    LOG.info("[监控用户 {}] key1 不更新：posLevel={} vs negLevel={}, oldPosLevel={}, explicitGuard={}, 条件A(passNeg)={}, 条件B(passPos)={}",
-                            viewerId, posLevel, negLevel, posOldLevel, explicitGuardActive, passNeg, passPos);
+                    LOG.info("[监控用户 {}] key1 不更新：posLevel={} vs negLevel={}, oldPosLevel={}, explicitGuard={}, negTriggered={}, 条件A(passNeg)={}, 条件B(passPos)={}",
+                            viewerId, posLevel, negLevel, posOldLevel, explicitGuardActive, negTriggeredPosUpdate, passNeg, passPos);
                 }
             }
 
@@ -259,6 +318,14 @@ public class UserPornLabelJobV3 {
             if (isMonitored) {
                 LOG.info("[监控用户 {}] 计算结果: posLabel={}, negLabel={}, writePos={}, writeNeg={}, keyPos={}, keyNeg={}",
                         viewerId, posLabel, negLabel, writePos, writeNeg, keyPos, keyNeg);
+                if (writePos) {
+                    LOG.info("[监控用户 {}] ✓ key1正反馈写入Redis: key={}, value={}, 触发postId={}", 
+                            viewerId, keyPos, posLabel, triggerPosPostId);
+                }
+                if (writeNeg) {
+                    LOG.info("[监控用户 {}] ✓ key2负反馈写入Redis: key={}, value={}, 触发postId={}", 
+                            viewerId, keyNeg, negLabel, triggerNegPostId);
+                }
             }
 
             RedisWriteResult result = new RedisWriteResult();
@@ -267,10 +334,12 @@ public class UserPornLabelJobV3 {
             if (writePos) {
                 result.posKey = keyPos;
                 result.posValue = posLabel;
+                result.triggerPosPostId = triggerPosPostId;
             }
             if (writeNeg) {
                 result.negKey = keyNeg;
                 result.negValue = negLabel;
+                result.triggerNegPostId = triggerNegPostId;
             }
             return result;
         }
@@ -279,7 +348,12 @@ public class UserPornLabelJobV3 {
             Map<String, TagStatistics> statsMap = new HashMap<>();
             for (Tuple4<List<PostViewInfo>, Long, Long, String> tuple : event.firstNExposures) {
                 String pornTag = tuple.f3;
+                long postId = tuple.f1;
                 TagStatistics stats = statsMap.getOrDefault(pornTag, new TagStatistics());
+                // 记录触发该标签的postId（取第一个遇到的postId）
+                if (stats.triggerPostId == 0) {
+                    stats.triggerPostId = postId;
+                }
 
                 for (PostViewInfo info : tuple.f0) {
                     if (info == null) {
@@ -323,8 +397,9 @@ public class UserPornLabelJobV3 {
                     || action == 10 || action == 13 || action == 15 || action == 16;
         }
 
-        private String pickHighestPositive(Map<String, TagStatistics> statsMap, boolean isMonitored, long uid) {
+        private Tuple2<String, Long> pickHighestPositive(Map<String, TagStatistics> statsMap, boolean isMonitored, long uid) {
             String bestTag = null;
+            long bestPostId = 0;
             int bestLevel = -1;
             for (Map.Entry<String, TagStatistics> entry : statsMap.entrySet()) {
                 String tag = entry.getKey();
@@ -339,17 +414,19 @@ public class UserPornLabelJobV3 {
                     if (level > bestLevel) {
                         bestLevel = level;
                         bestTag = tag;
+                        bestPostId = s.triggerPostId;
                     }
                 }
             }
             if (isMonitored) {
-                LOG.info("[监控用户 {}] 正反馈候选: bestTag={}, level={}", uid, bestTag, bestLevel);
+                LOG.info("[监控用户 {}] 正反馈候选: bestTag={}, level={}, triggerPostId={}", uid, bestTag, bestLevel, bestPostId);
             }
-            return bestTag;
+            return Tuple2.of(bestTag, bestPostId);
         }
 
-        private String pickLowestNegative(Map<String, TagStatistics> statsMap, boolean isMonitored, long uid) {
+        private Tuple2<String, Long> pickLowestNegative(Map<String, TagStatistics> statsMap, boolean isMonitored, long uid) {
             String worstTag = null;
+            long worstPostId = 0;
             int worstLevel = Integer.MAX_VALUE; // 越低越好（explicit高，unk低）
             for (Map.Entry<String, TagStatistics> entry : statsMap.entrySet()) {
                 String tag = entry.getKey();
@@ -363,13 +440,14 @@ public class UserPornLabelJobV3 {
                     if (level < worstLevel) {
                         worstLevel = level;
                         worstTag = tag;
+                        worstPostId = s.triggerPostId;
                     }
                 }
             }
             if (isMonitored) {
-                LOG.info("[监控用户 {}] 负反馈候选: worstTag={}, level={}", uid, worstTag, worstLevel);
+                LOG.info("[监控用户 {}] 负反馈候选: worstTag={}, level={}, triggerPostId={}", uid, worstTag, worstLevel, worstPostId);
             }
-            return worstTag;
+            return Tuple2.of(worstTag, worstPostId);
         }
 
         private String readLabelFromRedis(String key) {
