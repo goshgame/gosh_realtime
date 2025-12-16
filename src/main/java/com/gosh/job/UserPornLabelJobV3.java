@@ -58,7 +58,9 @@ public class UserPornLabelJobV3 {
             13374748L,  // 非专区用户
             13661418L,   // 非专区用户（重度色情）
             13687026L,
-            13372756L
+            13372756L,
+            13131686L,
+            12103877L
     ));
 
     /**
@@ -379,8 +381,8 @@ public class UserPornLabelJobV3 {
                         }
                     }
 
-                    // 短播：播放时长 < 3s 视为负反馈
-                    if (info.standingTime > 0 && info.standingTime < 3.0f) {
+                    // 短播：播放时长 < 3s 且进度时长 < 3s 视为负反馈
+                    if (info.standingTime < 3.0f && info.progressTime < 3.0f) {
                         stats.shortPlayCount++;
                         stats.negativeCount++;
                     }
