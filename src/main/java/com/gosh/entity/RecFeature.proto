@@ -223,6 +223,26 @@ message RecPostFeature {
   int32 post_report_cnt_24h = 109;            // post最近24h举报次数
   int32 post_dislike_cnt_24h = 110;           // post最近24h不喜欢次数
   int32 post_pay_cnt_24h = 111;               // post最近24h付费次数
+
+  // 48小时窗口特征
+  // 曝光特征
+  int32 post_exp_cnt_48h = 200;                // post最近48h曝光次数
+
+  // 观看特征 (48小时)
+  int32 post_3sview_cnt_48h = 201;             // post最近48h观看3s次数
+  int32 post_8sview_cnt_48h = 202;             // post最近48h观看8s次数
+  int32 post_12sview_cnt_48h = 203;            // post最近48h观看12s次数
+  int32 post_20sview_cnt_48h = 204;            // post最近48h观看20s次数
+
+  // 停留特征 (48小时)
+  int32 post_5sstand_cnt_48h = 205;            // post最近48h停留5s次数
+  int32 post_10sstand_cnt_48h = 206;           // post最近48h停留10s次数
+
+  // 互动特征 (48小时)
+  int32 post_like_cnt_48h = 207;               // post最近48h被点赞次数
+  int32 post_follow_cnt_48h = 208;             // post最近48h被关注次数
+  int32 post_profile_cnt_48h = 209;            // post最近48h被点主页次数
+  int32 post_posinter_cnt_48h = 210;           // post最近48h被评论收藏分享次数
 }
 
 
