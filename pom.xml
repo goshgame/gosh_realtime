@@ -16,61 +16,14 @@
         <kda.runtime.version>1.2.0</kda.runtime.version>
         <scala.binary.version>2.12</scala.binary.version>
         <protobuf.version>3.20.0</protobuf.version>
-        <hadoop.version>3.3.4</hadoop.version>
-        <log4j.version>2.17.2</log4j.version>
     </properties>
 
     <dependencies>
-<!--        <dependency>-->
-<!--            <groupId>com.amazonaws</groupId>-->
-<!--            <artifactId>aws-kinesisanalytics-runtime</artifactId>-->
-<!--            <version>${kda.runtime.version}</version>-->
-<!--            &lt;!&ndash;            <scope>${gosh.dependency.scope}</scope>&ndash;&gt;-->
-<!--        </dependency>-->
-        <!-- 添加gosh-connector -->
-        <dependency>
-            <groupId>com.gosh</groupId>
-            <artifactId>gosh-connector-redis</artifactId>
-            <version>1.4.3</version>
-        </dependency>
-        <!-- 镜像plugins start -->
-        <dependency>
-            <groupId>org.apache.hadoop</groupId>
-            <artifactId>hadoop-aws</artifactId>
-            <version>${hadoop.version}</version>
-            <scope>runtime</scope>
-            <!-- 排除冲突依赖（若有） -->
-            <exclusions>
-                <exclusion>
-                    <groupId>com.amazonaws</groupId>
-                    <artifactId>aws-java-sdk-bundle</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <!-- AWS Java SDK 依赖（与 hadoop-aws 兼容的版本） -->
         <dependency>
             <groupId>com.amazonaws</groupId>
-            <artifactId>aws-java-sdk-bundle</artifactId>
-            <version>1.11.1030</version>
-            <scope>runtime</scope>
-        </dependency>
-
-        <!-- 可选：commons-cli（若插件依赖） -->
-        <dependency>
-            <groupId>commons-cli</groupId>
-            <artifactId>commons-cli</artifactId>
-            <version>1.9.0</version>
-            <scope>runtime</scope>
-        </dependency>
-
-        <!-- 镜像plugins end -->
-
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.30</version>
-            <scope>provided</scope>
+            <artifactId>aws-kinesisanalytics-runtime</artifactId>
+            <version>${kda.runtime.version}</version>
+            <!--            <scope>${gosh.dependency.scope}</scope>-->
         </dependency>
 
         <!-- HyperLogLog support -->
@@ -78,12 +31,6 @@
             <groupId>com.addthis</groupId>
             <artifactId>stream-lib</artifactId>
             <version>3.0.0</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>slf4j-api</artifactId>
-                    <groupId>org.slf4j</groupId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <!-- Protobuf -->
@@ -100,28 +47,6 @@
             <artifactId>flink-streaming-java</artifactId>
             <version>${flink.version}</version>
             <scope>${gosh.dependency.scope}</scope>
-            <exclusions>
-                <exclusion>
-                    <artifactId>commons-compress</artifactId>
-                    <groupId>org.apache.commons</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>commons-io</artifactId>
-                    <groupId>commons-io</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>kryo</artifactId>
-                    <groupId>com.esotericsoftware.kryo</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>slf4j-api</artifactId>
-                    <groupId>org.slf4j</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>snappy-java</artifactId>
-                    <groupId>org.xerial.snappy</groupId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <!-- Flink Java API -->
@@ -130,32 +55,12 @@
             <artifactId>flink-clients</artifactId>
             <version>${flink.version}</version>
             <scope>${gosh.dependency.scope}</scope>
-            <exclusions>
-                <exclusion>
-                    <artifactId>slf4j-api</artifactId>
-                    <groupId>org.slf4j</groupId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-parquet</artifactId>
             <version>${flink.version}</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>protobuf-java</artifactId>
-                    <groupId>com.google.protobuf</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>slf4j-api</artifactId>
-                    <groupId>org.slf4j</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>zstd-jni</artifactId>
-                    <groupId>com.github.luben</groupId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <!-- Kafka Connector -->
@@ -163,20 +68,6 @@
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-connector-kafka</artifactId>
             <version>3.4.0-1.20</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>jsr305</artifactId>
-                    <groupId>com.google.code.findbugs</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>snappy-java</artifactId>
-                    <groupId>org.xerial.snappy</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>zstd-jni</artifactId>
-                    <groupId>com.github.luben</groupId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-connector-jdbc -->
@@ -184,13 +75,6 @@
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-connector-jdbc</artifactId>
             <version>3.3.0-1.20</version>
-            <exclusions>
-                <exclusion>
-                   <!-- 排除mysql -->
-                    <groupId>mysql</groupId>
-                    <artifactId>mysql-connector-java</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <dependency>
@@ -334,21 +218,12 @@
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-slf4j-impl</artifactId>
-            <version>${log4j.version}</version>
+            <version>2.17.2</version>
             <scope>${gosh.dependency.scope}</scope>
             <exclusions>
                 <exclusion>
                     <artifactId>slf4j-api</artifactId>
                     <groupId>org.slf4j</groupId>
-                </exclusion>
-                <!-- 排除旧版本log4j依赖 -->
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-core</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-api</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -357,7 +232,7 @@
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
-            <version>${log4j.version}</version>
+            <version>2.17.2</version>
             <scope>${gosh.dependency.scope}</scope>
         </dependency>
 
@@ -365,10 +240,15 @@
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
-            <version>${log4j.version}</version>
+            <version>2.17.2</version>
             <scope>${gosh.dependency.scope}</scope>
         </dependency>
 
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>s3</artifactId>
+            <version>2.25.37</version>
+        </dependency>
 
         <dependency>
             <groupId>org.apache.flink</groupId>
@@ -378,28 +258,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-            <version>2.15.2</version> <!-- 与已有的 jackson-dataformat-yaml 版本保持一致 -->
-        </dependency>
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.15.2</version> <!-- 与核心版本保持一致 -->
-        </dependency>
-
-        <dependency>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-            <version>1.2</version>
-        </dependency>
-
-
-        <dependency>
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-common</artifactId>
-            <version>${hadoop.version}</version>
+            <version>3.3.6</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>
@@ -412,98 +273,6 @@
                 <exclusion>
                     <groupId>log4j</groupId>
                     <artifactId>log4j</artifactId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>jackson-core</artifactId>
-                    <groupId>com.fasterxml.jackson.core</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>jackson-annotations</artifactId>
-                    <groupId>com.fasterxml.jackson.core</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>jackson-databind</artifactId>
-                    <groupId>com.fasterxml.jackson.core</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>guava</artifactId>
-                    <groupId>com.google.guava</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>guice</artifactId>
-                    <groupId>com.google.inject</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>guice-servlet</artifactId>
-                    <groupId>com.google.inject.extensions</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>commons-cli</artifactId>
-                    <groupId>commons-cli</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>protobuf-java</artifactId>
-                    <groupId>com.google.protobuf</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>stax2-api</artifactId>
-                    <groupId>org.codehaus.woodstox</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>audience-annotations</artifactId>
-                    <groupId>org.apache.yetus</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>commons-codec</artifactId>
-                    <groupId>commons-codec</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>commons-compress</artifactId>
-                    <groupId>org.apache.commons</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>commons-io</artifactId>
-                    <groupId>commons-io</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>commons-logging</artifactId>
-                    <groupId>commons-logging</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>commons-math3</artifactId>
-                    <groupId>org.apache.commons</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>commons-text</artifactId>
-                    <groupId>org.apache.commons</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>gson</artifactId>
-                    <groupId>com.google.code.gson</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>jsr305</artifactId>
-                    <groupId>com.google.code.findbugs</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>netty-handler</artifactId>
-                    <groupId>io.netty</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>netty-transport-native-epoll</artifactId>
-                    <groupId>io.netty</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>nimbus-jose-jwt</artifactId>
-                    <groupId>com.nimbusds</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>slf4j-api</artifactId>
-                    <groupId>org.slf4j</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>snappy-java</artifactId>
-                    <groupId>org.xerial.snappy</groupId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -511,7 +280,7 @@
         <dependency>
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-mapreduce-client-core</artifactId>
-            <version>${hadoop.version}</version>
+            <version>3.3.6</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>
@@ -525,157 +294,10 @@
                     <groupId>log4j</groupId>
                     <artifactId>log4j</artifactId>
                 </exclusion>
-                <!-- 新增S3委托令牌冲突排除 -->
-                <exclusion>
-                    <groupId>org.apache.hadoop</groupId>
-                    <artifactId>hadoop-aws</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.amazonaws</groupId>
-                    <artifactId>aws-java-sdk-bundle</artifactId>
-                </exclusion>
-                <!-- 排除zookeeper-->
-                <exclusion>
-                    <artifactId>zookeeper</artifactId>       
-                    <groupId>org.apache.zookeeper</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>zookeeper-jute</artifactId>       
-                    <groupId>org.apache.zookeeper</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>jackson-databind</artifactId>
-                    <groupId>com.fasterxml.jackson.core</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>gson</artifactId>
-                    <groupId>com.google.code.gson</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>guava</artifactId>
-                    <groupId>com.google.guava</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>jaxb-api</artifactId>
-                    <groupId>javax.xml.bind</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>commons-cli</artifactId>
-                    <groupId>commons-cli</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>commons-codec</artifactId>
-                    <groupId>commons-codec</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>commons-compress</artifactId>
-                    <groupId>org.apache.commons</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>commons-io</artifactId>
-                    <groupId>commons-io</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>commons-logging</artifactId>
-                    <groupId>commons-logging</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>commons-math3</artifactId>
-                    <groupId>org.apache.commons</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>commons-text</artifactId>
-                    <groupId>org.apache.commons</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>nimbus-jose-jwt</artifactId>
-                    <groupId>com.nimbusds</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>protobuf-java</artifactId>
-                    <groupId>com.google.protobuf</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>slf4j-api</artifactId>
-                    <groupId>org.slf4j</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>snappy-java</artifactId>
-                    <groupId>org.xerial.snappy</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>stax2-api</artifactId>
-                    <groupId>org.codehaus.woodstox</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>jsr305</artifactId>
-                    <groupId>com.google.code.findbugs</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>guice</artifactId>
-                    <groupId>com.google.inject</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>guice-servlet</artifactId>
-                    <groupId>com.google.inject.extensions</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>jackson-annotations</artifactId>
-                    <groupId>com.fasterxml.jackson.core</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>jackson-core</artifactId>
-                    <groupId>com.fasterxml.jackson.core</groupId>
-                </exclusion>
-
             </exclusions>
         </dependency>
 
-        <dependency>
-            <groupId>org.codehaus.woodstox</groupId>
-            <artifactId>stax2-api</artifactId>
-            <version>4.2.1</version> <!-- 稳定版本，兼容性较好 -->
-        </dependency>
-
-        <dependency>
-            <artifactId>nimbus-jose-jwt</artifactId>
-            <groupId>com.nimbusds</groupId>
-            <version>9.37.3</version>
-        </dependency>
-
-        <dependency>
-            <artifactId>zstd-jni</artifactId>
-            <groupId>com.github.luben</groupId>
-            <version>1.5.6-3</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.esotericsoftware.kryo</groupId>
-            <artifactId>kryo</artifactId>
-            <version>2.24.0</version>
-        </dependency>
     </dependencies>
-
-    <dependencyManagement>
-        <dependencies>
-            <!-- 强制所有log4j依赖使用指定版本 -->
-            <dependency>
-                <groupId>org.apache.logging.log4j</groupId>
-                <artifactId>log4j-api</artifactId>
-                <version>${log4j.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.logging.log4j</groupId>
-                <artifactId>log4j-core</artifactId>
-                <version>${log4j.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.logging.log4j</groupId>
-                <artifactId>log4j-slf4j-impl</artifactId>
-                <version>${log4j.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
     <profiles>
         <profile>
@@ -702,10 +324,46 @@
             <extension>
                 <groupId>kr.motd.maven</groupId>
                 <artifactId>os-maven-plugin</artifactId>
-                <version>1.7.0</version>
+                <version>1.7.0</version> <!-- 插件依赖，版本可固定 -->
             </extension>
         </extensions>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals><goal>shade</goal></goals>
+                        <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                            </transformers>
+                            <artifactSet>
+                                <excludes>
+                                    <exclude>org.apache.flink:force-shading</exclude>
+                                    <exclude>org.slf4j:*</exclude>
+                                    <exclude>org.apache.logging.log4j:*</exclude>
+                                </excludes>
+                            </artifactSet>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>module-info.class</exclude>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -721,94 +379,17 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.6.1</version> <!-- 使用最新版本 -->
+                <version>3.1.2</version> <!-- 使用最新版本 -->
                 <executions>
-                    <!-- 复制依赖到target/lib目录，配置如下：
-                         1. 保留flink-connector*.jar
-                         2. 剔除其他flink依赖
-                         3. 剔除hadoop*.jar和kerb*.jar
-                         4. 保留其他所有依赖
-                     -->
                     <execution>
                         <id>copy-dependencies</id>
-                        <phase>package</phase>
+                        <phase>prepare-package</phase> <!-- 或者其他合适的阶段 -->
                         <goals>
                             <goal>copy-dependencies</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${project.build.directory}/lib</outputDirectory>
-                            <includeScope>runtime</includeScope>
-                            
-                            <excludeGroupIds>
-                                <!-- 排除所有hadoop和kerb相关依赖 -->
-                                <!-- org.apache.hadoop,-->
-                                org.apache.kerby,
-                                org.apache.kerberos
-                            </excludeGroupIds>
-                            
-                            <!-- 排除其他flink依赖（flink-connector除外） -->
-                            <excludeArtifactIds>
-                                <!-- S3相关依赖 -->
-                                flink-s3-fs-hadoop,
-                                hadoop-aws,
-                                aws-java-sdk-bundle,
-                                commons-cli,
-                                
-                                <!-- 排除其他flink依赖 -->
-                                flink-core,
-                                flink-runtime_2.12,
-                                flink-runtime-web_2.12,
-                                flink-table-planner-loader,
-                                flink-table-runtime_2.12,
-                                flink-json,
-                                flink-statebackend-rocksdb_2.12,
-                                flink-metrics-core,
-                                flink-metrics-influxdb,
-                                flink-metrics-prometheus,
-                                flink-shaded-netty,
-                                flink-annotations, 
-                                flink-cep,
-                                flink-clients,
-                                flink-core-api,
-                                flink-datastream,
-                                flink-datastream-api,
-                                flink-file-sink-common,
-                                flink-hadoop-fs-hadoop,
-                                flink-hadoop-fs,
-                                flink-java,
-                                flink-optimizer,
-                                flink-queryable-state-client-java,
-                                flink-rpc-akka-loader,
-                                flink-rpc-core,
-                                flink-runtime,
-                                flink-scala_2.12,
-                                flink-shaded-asm-9,
-                                flink-shaded-guava,
-                                flink-shaded-jackson,
-                                flink-shaded-zookeeper-3,
-                                flink-statebackend-rocksdb,
-                                flink-streaming-java,
-                                flink-table-api-bridge-base,
-                                flink-table-api-java
-                            </excludeArtifactIds>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>copy-s3-plugins</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.basedir}/plugins/flink-s3-fs-hadoop</outputDirectory>
-                            <includeScope>runtime</includeScope>
-                            <includeArtifactIds>
-                                flink-s3-fs-hadoop,
-                                hadoop-aws,
-                                aws-java-sdk-bundle,
-                                commons-cli
-                            </includeArtifactIds>
-                            <excludeTransitive>true</excludeTransitive>
+                            <outputDirectory>${project.build.directory}/lib</outputDirectory> <!-- 指定输出目录 -->
+                            <includeScope>runtime</includeScope> <!-- 只包括运行时依赖 -->
                         </configuration>
                     </execution>
                 </executions>
@@ -827,31 +408,9 @@
                 </configuration>
             </plugin>
 
-            <!-- 编译插件配置 -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.13.0</version>
-                <configuration>
-                    <release>11</release>
-                    <encoding>UTF-8</encoding>
-                    <showWarnings>false</showWarnings>
-                </configuration>
-            </plugin>
         </plugins>
 
     </build>
-    <repositories>
-        <repository>
-            <id>github</id> <!-- 与settings.xml中的server.id一致 -->
-            <name>GitHub goshgame Packages</name>
-            <url>https://maven.pkg.github.com/goshgame/gosh_redis_connector</url>
-            <!-- 允许快照版本（如果发布的是快照版） -->
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
 
 
 </project>
