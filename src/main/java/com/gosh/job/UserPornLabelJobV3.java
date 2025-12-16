@@ -33,6 +33,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
@@ -346,6 +347,7 @@ public class UserPornLabelJobV3 {
 
         private Map<String, TagStatistics> aggregateStats(UserNExposures event, boolean isMonitored) {
             Map<String, TagStatistics> statsMap = new HashMap<>();
+            long filterTime = Instant.now().getEpochSecond() - (15 * 60);
             for (Tuple4<List<PostViewInfo>, Long, Long, String> tuple : event.firstNExposures) {
                 String pornTag = tuple.f3;
                 long postId = tuple.f1;
@@ -362,14 +364,16 @@ public class UserPornLabelJobV3 {
                     stats.standingTime += info.standingTime;
 
                     // 正反馈（沿用老规则）
-                    if (info.interaction != null && !info.interaction.isEmpty()) {
-                        for (int action : info.interaction) {
-                            if (isPositiveAction(action)) {
-                                stats.positiveCount++;
-                            } else if (action == 11 || action == 7 || action == 18) { // dislike / 不感兴趣
-                                stats.negativeCount++;
-                                if (action == 11) {
-                                    stats.dislikeCount++;
+                    if (tuple.f2 > filterTime) {
+                        if (info.interaction != null && !info.interaction.isEmpty()) {
+                            for (int action : info.interaction) {
+                                if (isPositiveAction(action)) {
+                                    stats.positiveCount++;
+                                } else if (action == 11 || action == 7 || action == 18) { // dislike / 不感兴趣
+                                    stats.negativeCount++;
+                                    if (action == 11) {
+                                        stats.dislikeCount++;
+                                    }
                                 }
                             }
                         }
