@@ -49,7 +49,7 @@ public class UserPornLabelJobV3 {
 
     private static final String CleanTag = "clean";
     private static final int REDIS_TTL_POS = 3 * 3600;     // key1: 3小时
-    private static final int REDIS_TTL_NEG = 15 * 60;      // key2: 15分钟
+    private static final int REDIS_TTL_NEG = 5 * 60;       // key2: 5分钟
 
     // Kafka Group ID
     private static final String KAFKA_GROUP_ID = "rec_porn_label_v3";
@@ -303,7 +303,7 @@ public class UserPornLabelJobV3 {
                 }
             }
 
-            // 防护窗口：key2 当前为 explicit 或 high（15min TTL 内）时，不允许 key1 升级到 high/explicit
+            // 防护窗口：key2 当前为 explicit 或 high（5min TTL 内）时，不允许 key1 升级到 high/explicit
             boolean explicitGuardActive = (negLabel != null && (negLabel.contains("explicit") || negLabel.contains("high")))
                     || (currentNegInRedis != null && (currentNegInRedis.contains("explicit") || currentNegInRedis.contains("high")));
             final int MID_LEVEL = getLabelLevel("u_ylevel_mid");
@@ -459,21 +459,34 @@ public class UserPornLabelJobV3 {
                         }
                     }
                     
-                    // 如果是所有postId都>=5秒触发的，显示所有满足条件的postId队列
-                    boolean allPostLongPlay = !positiveStats.allPostDetails.isEmpty() && 
-                            positiveStats.allPostDetails.size() == positiveStats.longPlayPostDetails.size();
-                    if (allPostLongPlay && !positiveStats.longPlayPostDetails.isEmpty()) {
+                    // 如果是最大standingTime>=10秒触发的，显示最大standingTime和相关信息
+                    float maxStandingTime = 0.0f;
+                    PostBehaviorDetail maxPostDetail = null;
+                    for (PostBehaviorDetail detailItem : positiveStats.allPostDetails) {
+                        if (detailItem.standingTime > maxStandingTime) {
+                            maxStandingTime = detailItem.standingTime;
+                            maxPostDetail = detailItem;
+                        }
+                    }
+                    if (maxStandingTime >= 10.0f && maxPostDetail != null) {
                         if (!positiveStats.positivePostDetails.isEmpty()) {
                             detail.append(" | ");
                         }
-                        detail.append("长播postId队列(所有postId都>=5秒,共").append(positiveStats.longPlayPostDetails.size()).append("个): ");
-                        for (PostBehaviorDetail detailItem : positiveStats.longPlayPostDetails) {
-                            detail.append(String.format("postId=%d(standingTime=%.2f秒, progressTime=%.2f秒); ", 
-                                    detailItem.postId, detailItem.standingTime, detailItem.progressTime));
-                        }
+                        detail.append("长播触发(最大standingTime=").append(String.format("%.2f", maxStandingTime)).append("秒, postId=").append(maxPostDetail.postId).append(")");
                     }
                     
                     LOG.info("[色情标签写入][监控用户 {}] {}", viewerId, detail.toString());
+                    
+                    // 打印所有postId的播放时长记录（长播触发时）
+                    if (maxStandingTime >= 10.0f && !positiveStats.allPostDetails.isEmpty()) {
+                        StringBuilder allDetail = new StringBuilder();
+                        allDetail.append("所有postId播放时长记录(共").append(positiveStats.allPostDetails.size()).append("个): ");
+                        for (PostBehaviorDetail detailItem : positiveStats.allPostDetails) {
+                            allDetail.append(String.format("postId=%d(standingTime=%.2f秒, progressTime=%.2f秒); ", 
+                                    detailItem.postId, detailItem.standingTime, detailItem.progressTime));
+                        }
+                        LOG.info("[色情标签写入][监控用户 {}] {}", viewerId, allDetail.toString());
+                    }
                 }
                 if (writeNeg && negativeStats != null) {
                     // [色情标签写入] 统一关键字标识
@@ -493,6 +506,17 @@ public class UserPornLabelJobV3 {
                             detail.append("); ");
                         }
                         LOG.info("[色情标签写入][监控用户 {}] {}", viewerId, detail.toString());
+                    }
+                    
+                    // 打印所有postId的播放时长记录（短播触发时）
+                    if (!negativeStats.allPostDetails.isEmpty()) {
+                        StringBuilder allDetail = new StringBuilder();
+                        allDetail.append("所有postId播放时长记录(共").append(negativeStats.allPostDetails.size()).append("个): ");
+                        for (PostBehaviorDetail detailItem : negativeStats.allPostDetails) {
+                            allDetail.append(String.format("postId=%d(standingTime=%.2f秒, progressTime=%.2f秒); ", 
+                                    detailItem.postId, detailItem.standingTime, detailItem.progressTime));
+                        }
+                        LOG.info("[色情标签写入][监控用户 {}] {}", viewerId, allDetail.toString());
                     }
                 }
             }
@@ -527,7 +551,7 @@ public class UserPornLabelJobV3 {
 
         private Map<String, TagStatistics> aggregateStats(UserNExposures event, boolean isMonitored) {
             Map<String, TagStatistics> statsMap = new HashMap<>();
-            long filterTime = Instant.now().getEpochSecond() - (15 * 60);
+            long filterTime = Instant.now().getEpochSecond() - (5 * 60);
             for (Tuple4<List<PostViewInfo>, Long, Long, String> tuple : event.firstNExposures) {
                 String pornTag = tuple.f3;
                 long postId = tuple.f1;
@@ -633,9 +657,9 @@ public class UserPornLabelJobV3 {
                 if (postDetail != null) {
                     // 所有postId都记录
                     stats.allPostDetails.add(postDetail);
-                    // 判断当前postId的总时长（累加所有info的standingTime）是否 >= 5秒
-                    // 用于正反馈判断：所有postId都 >= 5秒
-                    if (postDetail.standingTime >= 5.0f) {
+                    // 记录所有postId的standingTime，用于后续计算最大值
+                    // 用于正反馈判断：该标签下所有postId中standingTime最大的 >= 10秒
+                    if (postDetail.standingTime >= 10.0f) {
                         stats.longPlayPostDetails.add(postDetail);
                     }
                     // 有明确正反馈行为的postId（点赞、评论等）
@@ -699,11 +723,17 @@ public class UserPornLabelJobV3 {
                 if ("unk".equals(tag) || CleanTag.equals(tag)) {
                     continue;
                 }
-                // 正反馈判断：所有postId的standingTime都 >= 5秒 或 有正反馈行为
-                // 检查是否所有postId都满足时长条件（>= 5秒）
-                boolean allPostLongPlay = !s.allPostDetails.isEmpty() && 
-                        s.allPostDetails.size() == s.longPlayPostDetails.size();
-                boolean positive = allPostLongPlay || (s.positiveCount > 0);
+                // 正反馈判断：该标签下所有postId中standingTime最大的 >= 10秒 或 有正反馈行为
+                // 计算该标签下所有postId中standingTime的最大值
+                float maxStandingTime = 0.0f;
+                for (PostBehaviorDetail detail : s.allPostDetails) {
+                    if (detail.standingTime > maxStandingTime) {
+                        maxStandingTime = detail.standingTime;
+                    }
+                }
+                // 判断：最大standingTime >= 10秒 或 有正反馈行为
+                boolean hasLongPlay = maxStandingTime >= 10.0f;
+                boolean positive = hasLongPlay || (s.positiveCount > 0);
                 boolean noNegative = s.negativeCount <= 0;
                 if (positive && noNegative) {
                     int level = getTagLevel(tag);
