@@ -362,18 +362,30 @@ public class MySQLFlinkUtil {
                     } catch (SQLException e) {
                         LOG.error("轮询MySQL查询失败", e);
                         // 短暂等待后重试
-                        Thread.sleep(5000);
+                        if (isRunning) {
+                            Thread.sleep(5000);
+                        }
                     } catch (ClassNotFoundException e) {
                         LOG.error("加载MySQL驱动失败", e);
                         // 短暂等待后重试
-                        Thread.sleep(5000);
+                        if (isRunning) {
+                            Thread.sleep(5000);
+                        }
                     }
                     
                     // 等待下一次轮询
                     if (isRunning) {
                         LOG.info("完成本次MySQL轮询，等待 {} 毫秒后开始下一次轮询", pollingIntervalMs);
-                        Thread.sleep(pollingIntervalMs);
-                        LOG.info("开始新一轮MySQL轮询");
+                        try {
+                            Thread.sleep(pollingIntervalMs);
+                            LOG.info("开始新一轮MySQL轮询");
+                        } catch (InterruptedException e) {
+                            LOG.info("轮询线程被中断，准备退出轮询");
+                            // 恢复中断状态
+                            Thread.currentThread().interrupt();
+                            // 退出轮询循环
+                            isRunning = false;
+                        }
                     }
                 }
             }

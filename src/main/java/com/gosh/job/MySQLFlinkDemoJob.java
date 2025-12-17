@@ -61,7 +61,7 @@ public class MySQLFlinkDemoJob {
         LOG.info("开始处理 MySQL Source → Redis Sink");
 
         // 定义查询SQL，实现用户ID统计
-        String query = "SELECT uid user_id,count(*) cnt FROM gosh_social.agency_member WHERE anchor_type IN (11, 15) group by uid";
+        String query = "SELECT uid user_id,count(*) cnt FROM agency_member WHERE anchor_type IN (11, 15) group by uid";
 
         // 使用MySQLFlinkUtil创建JdbcSource
         DataStream<Row> mysqlStream = MySQLFlinkUtil.createJdbcSourceWithPolling(
