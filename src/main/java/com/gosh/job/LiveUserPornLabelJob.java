@@ -324,37 +324,89 @@ public class LiveUserPornLabelJob {
         public void run(SourceContext<Set<Long>> ctx) throws Exception {
             LOG.info("PornAnchorSourceFunction started");
             
+            // 第一次查询前等待一小段时间，确保环境初始化完成
+            Thread.sleep(2000);
+            
             while (isRunning) {
                 try {
                     // 使用 MySQLFlinkUtil 查询数据
                     String sql = "SELECT uid FROM gosh.agency_member WHERE anchor_type IN (11, 15)";
+                    LOG.info("Starting to query porn anchor data from MySQL, SQL: {}", sql);
                     
                     Set<Long> anchorSet = new HashSet<>();
                     // 直接使用 MySQLUtil 查询（因为这是 SourceFunction，不在 Flink 算子链中）
+                    LOG.info("Creating MySQLUtil instance...");
                     MySQLUtil mysqlUtil = MySQLUtil.createNewInstance();
+                    LOG.info("MySQLUtil instance created");
+                    
                     try {
-                        java.sql.Connection conn = mysqlUtil.getConnectionInternal("db1");
-                        try (java.sql.Statement stmt = conn.createStatement();
-                             java.sql.ResultSet rs = stmt.executeQuery(sql)) {
-                            while (rs.next()) {
-                                long uid = rs.getLong("uid");
-                                anchorSet.add(uid);
+                        java.sql.Connection conn = null;
+                        try {
+                            LOG.info("Getting MySQL connection for db1...");
+                            conn = mysqlUtil.getConnectionInternal("db1");
+                            LOG.info("MySQL connection established for porn anchor query");
+                            
+                            LOG.info("Executing SQL query...");
+                            try (java.sql.Statement stmt = conn.createStatement();
+                                 java.sql.ResultSet rs = stmt.executeQuery(sql)) {
+                                int count = 0;
+                                while (rs.next()) {
+                                    long uid = rs.getLong("uid");
+                                    anchorSet.add(uid);
+                                    count++;
+                                }
+                                LOG.info("Query executed successfully, found {} records", count);
+                            }
+                        } finally {
+                            if (conn != null) {
+                                try {
+                                    conn.close();
+                                    LOG.debug("MySQL connection closed");
+                                } catch (Exception e) {
+                                    LOG.warn("Error closing MySQL connection: {}", e.getMessage(), e);
+                                }
                             }
                         }
-                        conn.close();
                     } finally {
-                        mysqlUtil.shutdownInternal();
+                        try {
+                            mysqlUtil.shutdownInternal();
+                            LOG.debug("MySQLUtil shutdown completed");
+                        } catch (Exception e) {
+                            LOG.warn("Error shutting down MySQLUtil: {}", e.getMessage(), e);
+                        }
                     }
                     
                     // 输出到 BroadcastStream
+                    LOG.info("Collecting {} porn anchors to broadcast stream", anchorSet.size());
                     ctx.collect(anchorSet);
-                    LOG.info("Porn anchor data updated, size={}", anchorSet.size());
+                    LOG.info("Porn anchor data updated and broadcasted, size={}", anchorSet.size());
                     
                     // 等待指定时间后再次查询
+                    LOG.debug("Waiting {} seconds before next query...", MYSQL_CACHE_UPDATE_INTERVAL_SECONDS);
                     Thread.sleep(MYSQL_CACHE_UPDATE_INTERVAL_SECONDS * 1000);
                 } catch (Exception e) {
-                    LOG.error("Error querying porn anchor data", e);
+                    // 打印完整的错误信息，包括堆栈
+                    String errorMsg = e.getMessage();
+                    String errorClass = e.getClass().getName();
+                    LOG.error("Error querying porn anchor data. Error message: [{}], Error class: [{}]", 
+                        errorMsg != null ? errorMsg : "null", errorClass, e);
+                    
+                    // 打印堆栈到标准错误输出（确保能看到）
+                    System.err.println("========== Full stack trace for porn anchor query error ==========");
+                    System.err.println("Error class: " + errorClass);
+                    System.err.println("Error message: " + (errorMsg != null ? errorMsg : "null"));
+                    e.printStackTrace(System.err);
+                    System.err.println("================================================================");
+                    
+                    // 如果是特定异常，打印更多信息
+                    if (e instanceof java.sql.SQLException) {
+                        java.sql.SQLException sqlEx = (java.sql.SQLException) e;
+                        LOG.error("SQLException details - SQLState: {}, VendorError: {}", 
+                            sqlEx.getSQLState(), sqlEx.getErrorCode());
+                    }
+                    
                     // 出错后等待一段时间再重试
+                    LOG.info("Waiting {} seconds before retry...", MYSQL_CACHE_UPDATE_INTERVAL_SECONDS);
                     Thread.sleep(MYSQL_CACHE_UPDATE_INTERVAL_SECONDS * 1000);
                 }
             }
