@@ -121,12 +121,38 @@ public class MySQLFlinkUtil {
             String dsName,
             String query,
             int fetchSize) {
+        // 调用带dbName参数的重载方法，传入null表示使用配置文件中的数据库名称
+        return createJdbcSource(env, dsName, null, query, fetchSize);
+    }
+
+    /**
+     * 创建Flink MySQL Source (支持动态数据库名称)
+     * @param env StreamExecutionEnvironment
+     * @param dsName 数据源名称
+     * @param dbName 数据库名称（可选，如果提供则替换URL中的数据库名）
+     * @param query SQL查询语句
+     * @param fetchSize 批量获取大小
+     * @return DataStream<Row>
+     */
+    public static DataStream<Row> createJdbcSource(
+            StreamExecutionEnvironment env,
+            String dsName,
+            String dbName,
+            String query,
+            int fetchSize) {
 
         MySQLUtil.MySQLConfig config = MySQLUtil.getConfig(dsName);
+        String url = config.getUrl();
+        
+        // 如果提供了数据库名称，则替换URL中的数据库名
+        if (dbName != null && !dbName.isEmpty()) {
+            // 直接调用MySQLUtil的静态方法替换数据库名称
+            url = MySQLUtil.replaceDatabaseInUrl(url, dbName);
+        }
 
         // 构建JdbcSource，指定Row类型并添加默认的Row提取器
         JdbcSource<Row> jdbcSource = JdbcSource.<Row>builder()
-                .setDBUrl(config.getUrl())
+                .setDBUrl(url)
                 .setUsername(config.getUsername())
                 .setPassword(config.getPassword())
                 .setSql(query)
@@ -312,7 +338,7 @@ public class MySQLFlinkUtil {
     }
 
     /**
-     * 创建Flink MySQL Source (轮询读取) - 返回Row类型
+     * 创建Flink MySQL Source (轮询读取) - 返回Row类型（不带数据库名称参数，保持向后兼容性）
      * 适用于需要定期查询数据库获取最新数据的场景
      * 
      * @param env 流执行环境
@@ -328,6 +354,29 @@ public class MySQLFlinkUtil {
             String query,
             int fetchSize,
             long pollingIntervalMs) {
+        // 调用带数据库名称参数的重载方法，传入null表示使用配置文件中的数据库名称
+        return createJdbcSourceWithPolling(env, dsName, null, query, fetchSize, pollingIntervalMs);
+    }
+    
+    /**
+     * 创建Flink MySQL Source (轮询读取) - 返回Row类型（支持动态数据库名称）
+     * 适用于需要定期查询数据库获取最新数据的场景
+     * 
+     * @param env 流执行环境
+     * @param dsName 数据源名称
+     * @param dbName 数据库名称（可选，如果提供则替换URL中的数据库名）
+     * @param query SQL查询语句
+     * @param fetchSize 每次查询的批量大小
+     * @param pollingIntervalMs 轮询间隔(毫秒)
+     * @return Row类型的数据流
+     */
+    public static DataStream<Row> createJdbcSourceWithPolling(
+            StreamExecutionEnvironment env,
+            String dsName,
+            String dbName,
+            String query,
+            int fetchSize,
+            long pollingIntervalMs) {
 
         return env.addSource(new SourceFunction<Row>() {
             private volatile boolean isRunning = true;
@@ -335,8 +384,10 @@ public class MySQLFlinkUtil {
 
             @Override
             public void run(SourceFunction.SourceContext<Row> ctx) throws Exception {
+                // 只初始化指定数据源的线程池，避免资源浪费
+                MySQLUtil.initExecutorForDataSource(dsName);
                 while (isRunning) {
-                    try (Connection conn = MySQLUtil.getConnection(dsName);
+                    try (Connection conn = MySQLUtil.getConnection(dsName, dbName);
                          PreparedStatement stmt = conn.prepareStatement(query);
                          ResultSet rs = stmt.executeQuery()) {
                         

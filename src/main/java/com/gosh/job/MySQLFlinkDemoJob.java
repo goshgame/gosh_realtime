@@ -64,13 +64,23 @@ public class MySQLFlinkDemoJob {
         String query = "SELECT uid user_id,count(*) cnt FROM agency_member WHERE anchor_type IN (11, 15) group by uid";
 
         // 使用MySQLFlinkUtil创建JdbcSource
+        // 指定 dbName，默认使用配置文件中的数据库名称
         DataStream<Row> mysqlStream = MySQLFlinkUtil.createJdbcSourceWithPolling(
                 env,  // Flink执行环境
                 "db1", // 数据源名称，需要在配置文件中定义
+                "gosh", // 数据库名称
                 query, // SQL查询语句
                 1000,  // 批量获取大小
                 50000  // 获取间隔
         );  
+        //不指定 dbName，默认使用配置文件中的数据库名称
+        // DataStream<Row> mysqlStream = MySQLFlinkUtil.createJdbcSourceWithPolling(
+        //         env,  // Flink执行环境
+        //         "db1", // 数据源名称，需要在配置文件中定义
+        //         query, // SQL查询语句
+        //         1000,  // 批量获取大小
+        //         50000  // 获取间隔
+        // );
 
         // 转换数据格式为Redis需要的Tuple2<String, byte[]>
         DataStream<Tuple2<String, byte[]>> redisDataStream = mysqlStream

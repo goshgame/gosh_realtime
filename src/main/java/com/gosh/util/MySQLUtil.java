@@ -94,7 +94,7 @@ public class MySQLUtil {
         this.mysqlConfigs = new HashMap<>();
         this.executorServices = new HashMap<>();
         loadMySQLConfigs();
-        initExecutors();
+        // 不再初始化所有数据源的线程池，改为按需创建
     }
     
     /**
@@ -206,33 +206,13 @@ public class MySQLUtil {
     }
 
     /**
-     * 初始化线程池（实例方法）
+     * 初始化所有数据源的线程池（实例方法，已废弃）
+     * 建议使用按需创建线程池的方式，避免资源浪费
      */
+    @Deprecated
     private void initExecutors() {
-        for (MySQLConfig config : mysqlConfigs.values()) {
-            ThreadPoolExecutor executor = new ThreadPoolExecutor(
-                    config.getCorePoolSize(),
-                    config.getMaxThreadPoolSize(),
-                    config.getKeepAliveTime(),
-                    TimeUnit.SECONDS,
-                    new LinkedBlockingQueue<>(config.getQueueCapacity()),
-                    new ThreadFactory() {
-                        private int count = 0;
-                        @Override
-                        public Thread newThread(Runnable r) {
-                            Thread thread = new Thread(r, "mysql-exec-" + config.getName() + "-" + count++);
-                            thread.setDaemon(true);
-                            return thread;
-                        }
-                    },
-                    new ThreadPoolExecutor.CallerRunsPolicy()
-            );
-            executorServices.put(config.getName(), executor);
-            LOG.info("为数据源[{}]创建线程池: core={}, max={}, queue={}",
-                    config.getName(),
-                    config.getCorePoolSize(),
-                    config.getMaxThreadPoolSize(),
-                    config.getQueueCapacity());
+        for (String dsName : mysqlConfigs.keySet()) {
+            createExecutorForDataSource(dsName);
         }
     }
 
@@ -244,12 +224,63 @@ public class MySQLUtil {
     }
     
     /**
+     * 获取数据库连接（静态方法，支持动态数据库名称）
+     * @param dsName 数据源名称
+     * @param dbName 数据库名称（可选，如果提供则替换URL中的数据库名）
+     */
+    public static Connection getConnection(String dsName, String dbName) throws SQLException, ClassNotFoundException {
+        return getInstance().getConnectionInternal(dsName, dbName);
+    }
+    
+    /**
      * 获取数据库连接（实例方法）
      */
     public Connection getConnectionInternal(String dsName) throws SQLException, ClassNotFoundException {
         MySQLConfig config = getConfigInternal(dsName);
         Class.forName(config.getDriverClass());
         return DriverManager.getConnection(config.getUrl(), config.getUsername(), config.getPassword());
+    }
+    
+    /**
+     * 获取数据库连接（实例方法，支持动态数据库名称）
+     * @param dsName 数据源名称
+     * @param dbName 数据库名称（可选，如果提供则替换URL中的数据库名）
+     */
+    public Connection getConnectionInternal(String dsName, String dbName) throws SQLException, ClassNotFoundException {
+        MySQLConfig config = getConfigInternal(dsName);
+        Class.forName(config.getDriverClass());
+        
+        String url = config.getUrl();
+        if (dbName != null && !dbName.isEmpty()) {
+            // 替换URL中的数据库名称
+            url = replaceDatabaseInUrl(url, dbName);
+        }
+        
+        return DriverManager.getConnection(url, config.getUsername(), config.getPassword());
+    }
+    
+    /**
+     * 替换JDBC URL中的数据库名称
+     * @param originalUrl 原始URL
+     * @param newDbName 新数据库名称
+     * @return 替换后的URL
+     */
+    public static String replaceDatabaseInUrl(String originalUrl, String newDbName) {
+        // 正则表达式：匹配URL中的数据库名称部分
+        // 格式：jdbc:mysql://host:port/dbName?params
+        String regex = "(jdbc:mysql://[^:/]+(:[0-9]+)?/)[^/?]+(\\?.*)?";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(originalUrl);
+        
+        if (matcher.matches()) {
+            String prefix = matcher.group(1);
+            String params = matcher.group(3) != null ? matcher.group(3) : "";
+            return prefix + newDbName + params;
+        }
+        
+        // 如果URL格式不符合预期，返回原始URL
+        LOG.warn("无法替换URL中的数据库名称，URL格式不符合预期: {}", originalUrl);
+        return originalUrl;
     }
 
     /**
@@ -269,15 +300,54 @@ public class MySQLUtil {
      * @return 异步结果
      */
     public <T> CompletableFuture<T> executeAsyncInternal(String dsName, Supplier<T> task) {
-        ExecutorService executor = executorServices.get(dsName);
-        if (executor == null) {
-            return CompletableFuture.failedFuture(new IllegalArgumentException("未找到数据源线程池: " + dsName));
-        }
+        // 按需创建线程池
+        ExecutorService executor = executorServices.computeIfAbsent(dsName, this::createExecutorForDataSource);
         return CompletableFuture.supplyAsync(task, executor)
                 .exceptionally(ex -> {
                     LOG.error("异步任务执行失败", ex);
                     throw new CompletionException(ex);
                 });
+    }
+    
+    /**
+     * 为指定数据源创建线程池
+     */
+    private ExecutorService createExecutorForDataSource(String dsName) {
+        MySQLConfig config = getConfigInternal(dsName);
+        ThreadPoolExecutor executor = new ThreadPoolExecutor(
+                config.getCorePoolSize(),
+                config.getMaxThreadPoolSize(),
+                config.getKeepAliveTime(),
+                TimeUnit.SECONDS,
+                new LinkedBlockingQueue<>(config.getQueueCapacity()),
+                new ThreadFactory() {
+                    private int count = 0;
+                    @Override
+                    public Thread newThread(Runnable r) {
+                        Thread thread = new Thread(r, "mysql-exec-" + dsName + "-" + count++);
+                        thread.setDaemon(true);
+                        return thread;
+                    }
+                },
+                new ThreadPoolExecutor.CallerRunsPolicy()
+        );
+        LOG.info("为数据源[{}]创建线程池: core={}, max={}, queue={}",
+                dsName,
+                config.getCorePoolSize(),
+                config.getMaxThreadPoolSize(),
+                config.getQueueCapacity());
+        return executor;
+    }
+    
+    /**
+     * 为指定数据源初始化线程池
+     */
+    public static void initExecutorForDataSource(String dsName) {
+        MySQLUtil instance = getInstance();
+        // 检查数据源是否存在
+        instance.getConfigInternal(dsName);
+        // 按需创建线程池
+        instance.executorServices.computeIfAbsent(dsName, instance::createExecutorForDataSource);
     }
 
     /**
