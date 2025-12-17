@@ -1702,14 +1702,18 @@ public final class RecFeature {
      * @return The viewerNegetiveAuthorList24h at the given index.
      */
     long getViewerNegetiveAuthorList24H(int index);
+
+    /**
+     * <pre>
+     * sexy
+     * </pre>
+     *
+     * <code>int32 viewer_live_hise = 120;</code>
+     * @return The viewerLiveHise.
+     */
+    int getViewerLiveHise();
   }
   /**
-   * <pre>
-   * 用户侧特征
-   * Redis Key: rec:user_feature:{user_id}:post1h, rec:user_feature:{user_id}:post24h
-   *            rec:user_feature:{user_id}:offpic
-   * </pre>
-   *
    * Protobuf type {@code com.gosh.entity.RecUserFeature}
    */
   public static final class RecUserFeature extends
@@ -2727,6 +2731,11 @@ public final class RecFeature {
             case 936: {
 
               viewerExpPostCnt24H_ = input.readInt32();
+              break;
+            }
+            case 960: {
+
+              viewerLiveHise_ = input.readInt32();
               break;
             }
             default: {
@@ -5790,6 +5799,21 @@ public final class RecFeature {
     }
     private int viewerNegetiveAuthorList24HMemoizedSerializedSize = -1;
 
+    public static final int VIEWER_LIVE_HISE_FIELD_NUMBER = 120;
+    private int viewerLiveHise_;
+    /**
+     * <pre>
+     * sexy
+     * </pre>
+     *
+     * <code>int32 viewer_live_hise = 120;</code>
+     * @return The viewerLiveHise.
+     */
+    @java.lang.Override
+    public int getViewerLiveHise() {
+      return viewerLiveHise_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -6164,6 +6188,9 @@ public final class RecFeature {
       }
       if (viewerExpPostCnt24H_ != 0) {
         output.writeInt32(117, viewerExpPostCnt24H_);
+      }
+      if (viewerLiveHise_ != 0) {
+        output.writeInt32(120, viewerLiveHise_);
       }
       unknownFields.writeTo(output);
     }
@@ -6753,6 +6780,10 @@ public final class RecFeature {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(117, viewerExpPostCnt24H_);
       }
+      if (viewerLiveHise_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(120, viewerLiveHise_);
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -6940,6 +6971,8 @@ public final class RecFeature {
           .equals(other.getViewerPositiveAuthorList24HList())) return false;
       if (!getViewerNegetiveAuthorList24HList()
           .equals(other.getViewerNegetiveAuthorList24HList())) return false;
+      if (getViewerLiveHise()
+          != other.getViewerLiveHise()) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -7193,6 +7226,8 @@ public final class RecFeature {
         hash = (37 * hash) + VIEWER_NEGETIVE_AUTHOR_LIST_24H_FIELD_NUMBER;
         hash = (53 * hash) + getViewerNegetiveAuthorList24HList().hashCode();
       }
+      hash = (37 * hash) + VIEWER_LIVE_HISE_FIELD_NUMBER;
+      hash = (53 * hash) + getViewerLiveHise();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -7289,12 +7324,6 @@ public final class RecFeature {
       return builder;
     }
     /**
-     * <pre>
-     * 用户侧特征
-     * Redis Key: rec:user_feature:{user_id}:post1h, rec:user_feature:{user_id}:post24h
-     *            rec:user_feature:{user_id}:offpic
-     * </pre>
-     *
      * Protobuf type {@code com.gosh.entity.RecUserFeature}
      */
     public static final class Builder extends
@@ -7540,6 +7569,8 @@ public final class RecFeature {
         bitField1_ = (bitField1_ & ~0x00000002);
         viewerNegetiveAuthorList24H_ = emptyLongList();
         bitField1_ = (bitField1_ & ~0x00000004);
+        viewerLiveHise_ = 0;
+
         return this;
       }
 
@@ -7824,6 +7855,7 @@ public final class RecFeature {
           bitField1_ = (bitField1_ & ~0x00000004);
         }
         result.viewerNegetiveAuthorList24H_ = viewerNegetiveAuthorList24H_;
+        result.viewerLiveHise_ = viewerLiveHise_;
         onBuilt();
         return result;
       }
@@ -8523,6 +8555,9 @@ public final class RecFeature {
             viewerNegetiveAuthorList24H_.addAll(other.viewerNegetiveAuthorList24H_);
           }
           onChanged();
+        }
+        if (other.getViewerLiveHise() != 0) {
+          setViewerLiveHise(other.getViewerLiveHise());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -16931,6 +16966,49 @@ public final class RecFeature {
       public Builder clearViewerNegetiveAuthorList24H() {
         viewerNegetiveAuthorList24H_ = emptyLongList();
         bitField1_ = (bitField1_ & ~0x00000004);
+        onChanged();
+        return this;
+      }
+
+      private int viewerLiveHise_ ;
+      /**
+       * <pre>
+       * sexy
+       * </pre>
+       *
+       * <code>int32 viewer_live_hise = 120;</code>
+       * @return The viewerLiveHise.
+       */
+      @java.lang.Override
+      public int getViewerLiveHise() {
+        return viewerLiveHise_;
+      }
+      /**
+       * <pre>
+       * sexy
+       * </pre>
+       *
+       * <code>int32 viewer_live_hise = 120;</code>
+       * @param value The viewerLiveHise to set.
+       * @return This builder for chaining.
+       */
+      public Builder setViewerLiveHise(int value) {
+        
+        viewerLiveHise_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * sexy
+       * </pre>
+       *
+       * <code>int32 viewer_live_hise = 120;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearViewerLiveHise() {
+        
+        viewerLiveHise_ = 0;
         onChanged();
         return this;
       }
@@ -40986,7 +41064,7 @@ public final class RecFeature {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\020RecFeature.proto\022\017com.gosh.entity\"\241\030\n\016" +
+      "\n\020RecFeature.proto\022\017com.gosh.entity\"\273\030\n\016" +
       "RecUserFeature\022\025\n\rviewer_is_old\030\001 \001(\005\022\034\n" +
       "\024viewer_register_days\030\002 \001(\005\022\035\n\025viewer_ex" +
       "ppost_cnt_1h\030\n \001(\005\022\037\n\027viewer_exp1_post_c" +
@@ -41064,181 +41142,182 @@ public final class RecFeature {
       "ve_post_list_24h\030q \003(\003\022%\n\035viewer_negetiv" +
       "e_post_list_24h\030r \003(\003\022\'\n\037viewer_positive" +
       "_author_list_24h\030s \003(\003\022\'\n\037viewer_negetiv" +
-      "e_author_list_24h\030t \003(\003\"\244\016\n\016RecPostFeatu" +
-      "re\022\017\n\007post_id\030\001 \001(\004\022\027\n\017post_exp_cnt_1h\030\n" +
-      " \001(\005\022\032\n\022post_3sview_cnt_1h\030\013 \001(\005\022\032\n\022post" +
-      "_8sview_cnt_1h\030\014 \001(\005\022\033\n\023post_12sview_cnt" +
-      "_1h\030\r \001(\005\022\033\n\023post_20sview_cnt_1h\030\016 \001(\005\022\033" +
-      "\n\023post_5sstand_cnt_1h\030\017 \001(\005\022\034\n\024post_10ss" +
-      "tand_cnt_1h\030\020 \001(\005\022\030\n\020post_like_cnt_1h\030\021 " +
-      "\001(\005\022\032\n\022post_follow_cnt_1h\030\022 \001(\005\022\033\n\023post_" +
-      "profile_cnt_1h\030\023 \001(\005\022\034\n\024post_posinter_cn" +
-      "t_1h\030\024 \001(\005\022\030\n\020post_exp_cnt_24h\030\036 \001(\005\022\033\n\023" +
-      "post_3sview_cnt_24h\030\037 \001(\005\022\033\n\023post_8sview" +
-      "_cnt_24h\030  \001(\005\022\034\n\024post_12sview_cnt_24h\030!" +
-      " \001(\005\022\034\n\024post_20sview_cnt_24h\030\" \001(\005\022\034\n\024po" +
-      "st_5sstand_cnt_24h\030# \001(\005\022\035\n\025post_10sstan" +
-      "d_cnt_24h\030$ \001(\005\022\031\n\021post_like_cnt_24h\030% \001" +
-      "(\005\022\033\n\023post_follow_cnt_24h\030& \001(\005\022\034\n\024post_" +
-      "profile_cnt_24h\030\' \001(\005\022\035\n\025post_posinter_c" +
-      "nt_24h\030( \001(\005\022\030\n\020post_view_cnt_7d\030) \001(\005\022\035" +
-      "\n\025post_validview_cnt_7d\030* \001(\005\022 \n\030post_co" +
-      "mpleteview_cnt_7d\030+ \001(\005\022\035\n\025post_view_dur" +
-      "ation_7d\030, \001(\002\022\030\n\020post_like_cnt_7d\030- \001(\005" +
-      "\022\033\n\023post_comment_cnt_7d\030. \001(\005\022\017\n\007tag_ids" +
-      "\030/ \003(\005\022\'\n\037author_exp_distinct_post_cnt_7" +
-      "d\0300 \001(\005\022\036\n\026author_exp_post_cnt_7d\0301 \001(\005\022" +
-      "$\n\034author_validview_post_cnt_7d\0302 \001(\005\022$\n" +
-      "\034author_view_post_duration_7d\0303 \001(\002\022\032\n\022a" +
-      "uthor_like_cnt_7d\0304 \001(\005\022\035\n\025author_commen" +
-      "t_cnt_7d\0305 \001(\005\022\'\n\037author_completeview_po" +
-      "st_cnt_7d\0306 \001(\005\022#\n\033author_view_avg_durat" +
-      "ion_7d\0307 \001(\002\022#\n\033author_inter_profile_cnt" +
-      "_7d\0308 \001(\005\022\034\n\024author_follow_cnt_7d\0309 \001(\005\022" +
-      "\034\n\024author_followers_cnt\030: \001(\005\022\036\n\026post_va" +
-      "lidview_rate_7d\030< \001(\002\022!\n\031post_completevi" +
-      "ew_rate_7d\030= \001(\002\022!\n\031post_avg_view_durati" +
-      "on_7d\030> \001(\002\022\031\n\021post_like_rate_7d\030? \001(\002\022\034" +
-      "\n\024post_comment_rate_7d\030@ \001(\002\022\031\n\021post_ai_" +
-      "embedding\030F \003(\002\022\024\n\014post_ai_tags\030G \001(\t\022\025\n" +
-      "\rpost_asr_lang\030H \001(\t\022\031\n\021post_skip_cnt_24" +
-      "h\030d \001(\005\022\036\n\026post_compelete_cnt_24h\030e \001(\005\022" +
-      "\036\n\026post_progress_rate_24h\030f \001(\002\022\035\n\025post_" +
-      "20sstand_cnt_24h\030g \001(\005\022\033\n\023post_5splay_cn" +
-      "t_24h\030h \001(\005\022\034\n\024post_10splay_cnt_24h\030i \001(" +
-      "\005\022\034\n\024post_comment_cnt_24h\030j \001(\005\022\032\n\022post_" +
-      "share_cnt_24h\030k \001(\005\022\034\n\024post_collect_cnt_" +
-      "24h\030l \001(\005\022\033\n\023post_report_cnt_24h\030m \001(\005\022\034" +
-      "\n\024post_dislike_cnt_24h\030n \001(\005\022\030\n\020post_pay" +
-      "_cnt_24h\030o \001(\005\",\n\rFeedbackTagV2\022\013\n\003tag\030\001" +
-      " \001(\t\022\016\n\006weight\030\002 \001(\002\"5\n\020FeedbackAuthorId" +
-      "\022\021\n\tauthor_id\030\001 \001(\004\022\016\n\006weight\030\002 \001(\002\"\231\024\n\024" +
-      "RecUserAuthorFeature\022\017\n\007user_id\030\001 \001(\004\022\021\n" +
-      "\tauthor_id\030\002 \001(\004\022\035\n\025userauthor_exp_cnt_1" +
-      "h\030\n \001(\005\022 \n\030userauthor_3sview_cnt_1h\030\013 \001(" +
-      "\005\022 \n\030userauthor_8sview_cnt_1h\030\014 \001(\005\022!\n\031u" +
-      "serauthor_12sview_cnt_1h\030\r \001(\005\022!\n\031userau" +
-      "thor_20sview_cnt_1h\030\016 \001(\005\022!\n\031userauthor_" +
-      "5sstand_cnt_1h\030\017 \001(\005\022\"\n\032userauthor_10sst" +
-      "and_cnt_1h\030\020 \001(\005\022\036\n\026userauthor_like_cnt_" +
-      "1h\030\021 \001(\005\022\036\n\026userauthor_exp_cnt_24h\030\036 \001(\005" +
-      "\022!\n\031userauthor_3sview_cnt_24h\030\037 \001(\005\022!\n\031u" +
-      "serauthor_8sview_cnt_24h\030  \001(\005\022\"\n\032userau" +
-      "thor_12sview_cnt_24h\030! \001(\005\022\"\n\032userauthor" +
-      "_20sview_cnt_24h\030\" \001(\005\022\"\n\032userauthor_5ss" +
-      "tand_cnt_24h\030# \001(\005\022#\n\033userauthor_10sstan" +
-      "d_cnt_24h\030$ \001(\005\022\037\n\027userauthor_like_cnt_2" +
-      "4h\030% \001(\005\022\037\n\027user_author_view_cnt_7d\030( \001(" +
-      "\005\022$\n\034user_author_validview_cnt_7d\030) \001(\002\022" +
-      "(\n user_author_compeleteview_cnt_7d\030* \001(" +
-      "\005\022\037\n\027user_author_like_cnt_7d\030+ \001(\005\022\"\n\032us" +
-      "er_author_comment_cnt_7d\030, \001(\005\022(\n user_a" +
-      "uthor_avg_view_duration_7d\030- \001(\002\022&\n\036user" +
-      "_author_validview_tfidf_7d\030. \001(\002\022*\n\"user" +
-      "_author_compeleteview_tfidf_7d\030/ \001(\002\022(\n " +
-      "user_author_likecomment_tfidf_7d\0300 \001(\002\022\032" +
-      "\n\022user_tag11_is_like\0302 \001(\005\022\032\n\022user_tag11" +
-      "_is_play\0303 \001(\005\022\035\n\025user_tag11_is_comment\030" +
-      "4 \001(\005\022\032\n\022user_tag12_is_like\0305 \001(\005\022\032\n\022use" +
-      "r_tag12_is_play\0306 \001(\005\022\035\n\025user_tag12_is_c" +
-      "omment\0307 \001(\005\022\032\n\022user_tag13_is_like\0308 \001(\005" +
-      "\022\032\n\022user_tag13_is_play\0309 \001(\005\022\035\n\025user_tag" +
-      "13_is_comment\030: \001(\005\022\032\n\022user_tag14_is_lik" +
-      "e\030; \001(\005\022\032\n\022user_tag14_is_play\030< \001(\005\022\035\n\025u" +
-      "ser_tag14_is_comment\030= \001(\005\022\032\n\022user_tag15" +
-      "_is_like\030> \001(\005\022\032\n\022user_tag15_is_play\030? \001" +
-      "(\005\022\035\n\025user_tag15_is_comment\030@ \001(\005\022\032\n\022use" +
-      "r_tag16_is_like\030A \001(\005\022\032\n\022user_tag16_is_p" +
-      "lay\030B \001(\005\022\035\n\025user_tag16_is_comment\030C \001(\005" +
-      "\022\032\n\022user_tag17_is_like\030D \001(\005\022\032\n\022user_tag" +
-      "17_is_play\030E \001(\005\022\035\n\025user_tag17_is_commen" +
-      "t\030F \001(\005\022\033\n\023user_tag11_like_cnt\030G \001(\005\022\033\n\023" +
-      "user_tag11_play_cnt\030H \001(\005\022\036\n\026user_tag11_" +
-      "comment_cnt\030I \001(\005\022\033\n\023user_tag12_like_cnt" +
-      "\030J \001(\005\022\033\n\023user_tag12_play_cnt\030K \001(\005\022\036\n\026u" +
-      "ser_tag12_comment_cnt\030L \001(\005\022\033\n\023user_tag1" +
-      "3_like_cnt\030M \001(\005\022\033\n\023user_tag13_play_cnt\030" +
-      "N \001(\005\022\036\n\026user_tag13_comment_cnt\030O \001(\005\022\033\n" +
-      "\023user_tag14_like_cnt\030P \001(\005\022\033\n\023user_tag14" +
-      "_play_cnt\030Q \001(\005\022\036\n\026user_tag14_comment_cn" +
-      "t\030R \001(\005\022\033\n\023user_tag15_like_cnt\030S \001(\005\022\033\n\023" +
-      "user_tag15_play_cnt\030T \001(\005\022\036\n\026user_tag15_" +
-      "comment_cnt\030U \001(\005\022\033\n\023user_tag16_like_cnt" +
-      "\030V \001(\005\022\033\n\023user_tag16_play_cnt\030W \001(\005\022\036\n\026u" +
-      "ser_tag16_comment_cnt\030X \001(\005\022\033\n\023user_tag1" +
-      "7_like_cnt\030Y \001(\005\022\033\n\023user_tag17_play_cnt\030" +
-      "Z \001(\005\022\036\n\026user_tag17_comment_cnt\030[ \001(\005\022\037\n" +
-      "\027userauthor_skip_cnt_24h\030d \001(\005\022\"\n\032userau" +
-      "thor_12splay_cnt_24h\030e \001(\005\022#\n\033userauthor" +
-      "_20sstand_cnt_24h\030f \001(\005\022\"\n\032userauthor_co" +
-      "mment_cnt_24h\030g \001(\005\022 \n\030userauthor_share_" +
-      "cnt_24h\030h \001(\005\022!\n\031userauthor_follow_cnt_2" +
-      "4h\030i \001(\005\022\"\n\032userauthor_collect_cnt_24h\030j" +
-      " \001(\005\022\"\n\032userauthor_profile_cnt_24h\030k \001(\005" +
-      "\022!\n\031userauthor_report_cnt_24h\030l \001(\005\022\"\n\032u" +
-      "serauthor_dislike_cnt_24h\030m \001(\005\022\036\n\026usera" +
-      "uthor_pay_cnt_24h\030n \001(\005\"\374\005\n\025LiveUserAnch" +
-      "orFeature\022\017\n\007user_id\030\001 \001(\004\022\021\n\tanchor_id\030" +
-      "\002 \001(\004\022!\n\031user_anchor_exp_cnt_15min\030\n \001(\005" +
-      "\022$\n\034user_anchor_3squit_cnt_15min\030\013 \001(\005\022$" +
-      "\n\034user_anchor_6squit_cnt_15min\030\014 \001(\005\022\"\n\032" +
-      "user_anchor_like_cnt_15min\030\r \001(\005\022%\n\035user" +
-      "_anchor_comment_cnt_15min\030\016 \001(\005\022$\n\034user_" +
-      "anchor_follow_cnt_15min\030\017 \001(\005\022#\n\033user_an" +
-      "chor_share_cnt_15min\030\020 \001(\005\022\"\n\032user_ancho" +
-      "r_gift_cnt_15min\030\021 \001(\005\022%\n\035user_anchor_gi" +
-      "ft_amount_15min\030\022 \001(\005\022/\n\'user_anchor_neg" +
-      "ative_feedback_cnt_15min\030\023 \001(\005\022 \n\030user_a" +
-      "nchor_enter_cnt_7d\030\024 \001(\005\022\037\n\027user_anchor_" +
-      "quit_cnt_7d\030\025 \001(\005\022%\n\035user_anchor_stay_gt" +
-      "10s_cnt_7d\030\026 \001(\005\022%\n\035user_anchor_stay_gt3" +
-      "0s_cnt_7d\030\027 \001(\005\022(\n user_anchor_avg_view_" +
-      "duration_7d\030\030 \001(\002\022,\n$user_anchor_positiv" +
-      "e_feedback_cnt_7d\030\031 \001(\005\022,\n$user_anchor_n" +
-      "egative_feedback_cnt_7d\030\032 \001(\005\022\'\n\037user_an" +
-      "chor_active_enter_cnt_7d\030\033 \001(\005\"\335\n\n\024RecLi" +
-      "veAnchorFeature\022\021\n\tanchor_id\030\001 \001(\004\022\037\n\027li" +
-      "ve_enter_usernum_5min\030\n \001(\005\022\036\n\026live_quit" +
-      "_usernum_5min\030\013 \001(\005\022#\n\033live_quit_avg_dur" +
-      "ation_5min\030\014 \001(\005\022\"\n\032live_anchor_gift_coi" +
-      "n_5min\030\r \001(\005\022%\n\035live_anchor_gift_usernum" +
-      "_5min\030\016 \001(\005\022\'\n\037live_anchor_follow_usernu" +
-      "m_5min\030\017 \001(\005\022%\n\035live_anchor_chat_usernum" +
-      "_5min\030\020 \001(\005\022 \n\030live_enter_usernum_10min\030" +
-      "\024 \001(\005\022\037\n\027live_quit_usernum_10min\030\025 \001(\005\022$" +
-      "\n\034live_quit_avg_duration_10min\030\026 \001(\005\022#\n\033" +
-      "live_anchor_gift_coin_10min\030\027 \001(\005\022&\n\036liv" +
-      "e_anchor_gift_usernum_10min\030\030 \001(\005\022(\n liv" +
-      "e_anchor_follow_usernum_10min\030\031 \001(\005\022&\n\036l" +
-      "ive_anchor_chat_usernum_10min\030\032 \001(\005\022 \n\030l" +
-      "ive_enter_usernum_15min\030\036 \001(\005\022\037\n\027live_qu" +
-      "it_usernum_15min\030\037 \001(\005\022$\n\034live_quit_avg_" +
-      "duration_15min\030  \001(\005\022#\n\033live_anchor_gift" +
-      "_coin_15min\030! \001(\005\022&\n\036live_anchor_gift_us" +
-      "ernum_15min\030\" \001(\005\022(\n live_anchor_follow_" +
-      "usernum_15min\030# \001(\005\022&\n\036live_anchor_chat_" +
-      "usernum_15min\030$ \001(\005\022\033\n\023anchor_enter_cnt_" +
-      "7d\030( \001(\005\022\032\n\022anchor_quit_cnt_7d\030) \001(\005\022\037\n\027" +
-      "anchor_stay_gt3s_cnt_7d\030* \001(\005\022 \n\030anchor_" +
-      "stay_gt10s_cnt_7d\030+ \001(\005\022 \n\030anchor_stay_g" +
-      "t30s_cnt_7d\030, \001(\005\022#\n\033anchor_avg_view_dur" +
-      "ation_7d\030- \001(\002\022\034\n\024anchor_follow_cnt_7d\030." +
-      " \001(\005\022\'\n\037anchor_positive_feedback_cnt_7d\030" +
-      "/ \001(\005\022\'\n\037anchor_negative_feedback_cnt_7d" +
-      "\0300 \001(\005\022)\n!anchor_live_scene_exposure_cnt" +
-      "_7d\0301 \001(\005\022)\n!anchor_foru_scene_exposure_" +
-      "cnt_7d\0302 \001(\005\022&\n\036anchor_live_scene_enter_" +
-      "cnt_7d\0303 \001(\005\022&\n\036anchor_foru_scene_enter_" +
-      "cnt_7d\0304 \001(\005\022\032\n\022anchor_gift_cnt_7d\0305 \001(\005" +
-      "\022\023\n\013anchor_type\030< \001(\005\022\027\n\017anchor_rec_type" +
-      "\030= \001(\005\"\267\001\n\022RecLiveUserFeature\022\017\n\007user_id" +
-      "\030\001 \001(\004\022=\n\033user_stay_gt10s_anchor_list\030\n " +
-      "\003(\0132\030.com.gosh.entity.IdScore\022%\n\035user_ac" +
-      "tive_enter_anchor_list\030\013 \003(\005\022*\n\"user_pos" +
-      "itive_feedback_anchor_list\030\014 \003(\005\"$\n\007IdSc" +
-      "ore\022\n\n\002id\030\001 \001(\003\022\r\n\005score\030\002 \001(\002\"A\n\020RecLiv" +
-      "eIdFeature\022\017\n\007live_id\030\001 \001(\003\022\034\n\024live_id_e" +
-      "xp_cnt_5min\030\n \001(\005b\006proto3"
+      "e_author_list_24h\030t \003(\003\022\030\n\020viewer_live_h" +
+      "ise\030x \001(\005\"\244\016\n\016RecPostFeature\022\017\n\007post_id\030" +
+      "\001 \001(\004\022\027\n\017post_exp_cnt_1h\030\n \001(\005\022\032\n\022post_3" +
+      "sview_cnt_1h\030\013 \001(\005\022\032\n\022post_8sview_cnt_1h" +
+      "\030\014 \001(\005\022\033\n\023post_12sview_cnt_1h\030\r \001(\005\022\033\n\023p" +
+      "ost_20sview_cnt_1h\030\016 \001(\005\022\033\n\023post_5sstand" +
+      "_cnt_1h\030\017 \001(\005\022\034\n\024post_10sstand_cnt_1h\030\020 " +
+      "\001(\005\022\030\n\020post_like_cnt_1h\030\021 \001(\005\022\032\n\022post_fo" +
+      "llow_cnt_1h\030\022 \001(\005\022\033\n\023post_profile_cnt_1h" +
+      "\030\023 \001(\005\022\034\n\024post_posinter_cnt_1h\030\024 \001(\005\022\030\n\020" +
+      "post_exp_cnt_24h\030\036 \001(\005\022\033\n\023post_3sview_cn" +
+      "t_24h\030\037 \001(\005\022\033\n\023post_8sview_cnt_24h\030  \001(\005" +
+      "\022\034\n\024post_12sview_cnt_24h\030! \001(\005\022\034\n\024post_2" +
+      "0sview_cnt_24h\030\" \001(\005\022\034\n\024post_5sstand_cnt" +
+      "_24h\030# \001(\005\022\035\n\025post_10sstand_cnt_24h\030$ \001(" +
+      "\005\022\031\n\021post_like_cnt_24h\030% \001(\005\022\033\n\023post_fol" +
+      "low_cnt_24h\030& \001(\005\022\034\n\024post_profile_cnt_24" +
+      "h\030\' \001(\005\022\035\n\025post_posinter_cnt_24h\030( \001(\005\022\030" +
+      "\n\020post_view_cnt_7d\030) \001(\005\022\035\n\025post_validvi" +
+      "ew_cnt_7d\030* \001(\005\022 \n\030post_completeview_cnt" +
+      "_7d\030+ \001(\005\022\035\n\025post_view_duration_7d\030, \001(\002" +
+      "\022\030\n\020post_like_cnt_7d\030- \001(\005\022\033\n\023post_comme" +
+      "nt_cnt_7d\030. \001(\005\022\017\n\007tag_ids\030/ \003(\005\022\'\n\037auth" +
+      "or_exp_distinct_post_cnt_7d\0300 \001(\005\022\036\n\026aut" +
+      "hor_exp_post_cnt_7d\0301 \001(\005\022$\n\034author_vali" +
+      "dview_post_cnt_7d\0302 \001(\005\022$\n\034author_view_p" +
+      "ost_duration_7d\0303 \001(\002\022\032\n\022author_like_cnt" +
+      "_7d\0304 \001(\005\022\035\n\025author_comment_cnt_7d\0305 \001(\005" +
+      "\022\'\n\037author_completeview_post_cnt_7d\0306 \001(" +
+      "\005\022#\n\033author_view_avg_duration_7d\0307 \001(\002\022#" +
+      "\n\033author_inter_profile_cnt_7d\0308 \001(\005\022\034\n\024a" +
+      "uthor_follow_cnt_7d\0309 \001(\005\022\034\n\024author_foll" +
+      "owers_cnt\030: \001(\005\022\036\n\026post_validview_rate_7" +
+      "d\030< \001(\002\022!\n\031post_completeview_rate_7d\030= \001" +
+      "(\002\022!\n\031post_avg_view_duration_7d\030> \001(\002\022\031\n" +
+      "\021post_like_rate_7d\030? \001(\002\022\034\n\024post_comment" +
+      "_rate_7d\030@ \001(\002\022\031\n\021post_ai_embedding\030F \003(" +
+      "\002\022\024\n\014post_ai_tags\030G \001(\t\022\025\n\rpost_asr_lang" +
+      "\030H \001(\t\022\031\n\021post_skip_cnt_24h\030d \001(\005\022\036\n\026pos" +
+      "t_compelete_cnt_24h\030e \001(\005\022\036\n\026post_progre" +
+      "ss_rate_24h\030f \001(\002\022\035\n\025post_20sstand_cnt_2" +
+      "4h\030g \001(\005\022\033\n\023post_5splay_cnt_24h\030h \001(\005\022\034\n" +
+      "\024post_10splay_cnt_24h\030i \001(\005\022\034\n\024post_comm" +
+      "ent_cnt_24h\030j \001(\005\022\032\n\022post_share_cnt_24h\030" +
+      "k \001(\005\022\034\n\024post_collect_cnt_24h\030l \001(\005\022\033\n\023p" +
+      "ost_report_cnt_24h\030m \001(\005\022\034\n\024post_dislike" +
+      "_cnt_24h\030n \001(\005\022\030\n\020post_pay_cnt_24h\030o \001(\005" +
+      "\",\n\rFeedbackTagV2\022\013\n\003tag\030\001 \001(\t\022\016\n\006weight" +
+      "\030\002 \001(\002\"5\n\020FeedbackAuthorId\022\021\n\tauthor_id\030" +
+      "\001 \001(\004\022\016\n\006weight\030\002 \001(\002\"\231\024\n\024RecUserAuthorF" +
+      "eature\022\017\n\007user_id\030\001 \001(\004\022\021\n\tauthor_id\030\002 \001" +
+      "(\004\022\035\n\025userauthor_exp_cnt_1h\030\n \001(\005\022 \n\030use" +
+      "rauthor_3sview_cnt_1h\030\013 \001(\005\022 \n\030userautho" +
+      "r_8sview_cnt_1h\030\014 \001(\005\022!\n\031userauthor_12sv" +
+      "iew_cnt_1h\030\r \001(\005\022!\n\031userauthor_20sview_c" +
+      "nt_1h\030\016 \001(\005\022!\n\031userauthor_5sstand_cnt_1h" +
+      "\030\017 \001(\005\022\"\n\032userauthor_10sstand_cnt_1h\030\020 \001" +
+      "(\005\022\036\n\026userauthor_like_cnt_1h\030\021 \001(\005\022\036\n\026us" +
+      "erauthor_exp_cnt_24h\030\036 \001(\005\022!\n\031userauthor" +
+      "_3sview_cnt_24h\030\037 \001(\005\022!\n\031userauthor_8svi" +
+      "ew_cnt_24h\030  \001(\005\022\"\n\032userauthor_12sview_c" +
+      "nt_24h\030! \001(\005\022\"\n\032userauthor_20sview_cnt_2" +
+      "4h\030\" \001(\005\022\"\n\032userauthor_5sstand_cnt_24h\030#" +
+      " \001(\005\022#\n\033userauthor_10sstand_cnt_24h\030$ \001(" +
+      "\005\022\037\n\027userauthor_like_cnt_24h\030% \001(\005\022\037\n\027us" +
+      "er_author_view_cnt_7d\030( \001(\005\022$\n\034user_auth" +
+      "or_validview_cnt_7d\030) \001(\002\022(\n user_author" +
+      "_compeleteview_cnt_7d\030* \001(\005\022\037\n\027user_auth" +
+      "or_like_cnt_7d\030+ \001(\005\022\"\n\032user_author_comm" +
+      "ent_cnt_7d\030, \001(\005\022(\n user_author_avg_view" +
+      "_duration_7d\030- \001(\002\022&\n\036user_author_validv" +
+      "iew_tfidf_7d\030. \001(\002\022*\n\"user_author_compel" +
+      "eteview_tfidf_7d\030/ \001(\002\022(\n user_author_li" +
+      "kecomment_tfidf_7d\0300 \001(\002\022\032\n\022user_tag11_i" +
+      "s_like\0302 \001(\005\022\032\n\022user_tag11_is_play\0303 \001(\005" +
+      "\022\035\n\025user_tag11_is_comment\0304 \001(\005\022\032\n\022user_" +
+      "tag12_is_like\0305 \001(\005\022\032\n\022user_tag12_is_pla" +
+      "y\0306 \001(\005\022\035\n\025user_tag12_is_comment\0307 \001(\005\022\032" +
+      "\n\022user_tag13_is_like\0308 \001(\005\022\032\n\022user_tag13" +
+      "_is_play\0309 \001(\005\022\035\n\025user_tag13_is_comment\030" +
+      ": \001(\005\022\032\n\022user_tag14_is_like\030; \001(\005\022\032\n\022use" +
+      "r_tag14_is_play\030< \001(\005\022\035\n\025user_tag14_is_c" +
+      "omment\030= \001(\005\022\032\n\022user_tag15_is_like\030> \001(\005" +
+      "\022\032\n\022user_tag15_is_play\030? \001(\005\022\035\n\025user_tag" +
+      "15_is_comment\030@ \001(\005\022\032\n\022user_tag16_is_lik" +
+      "e\030A \001(\005\022\032\n\022user_tag16_is_play\030B \001(\005\022\035\n\025u" +
+      "ser_tag16_is_comment\030C \001(\005\022\032\n\022user_tag17" +
+      "_is_like\030D \001(\005\022\032\n\022user_tag17_is_play\030E \001" +
+      "(\005\022\035\n\025user_tag17_is_comment\030F \001(\005\022\033\n\023use" +
+      "r_tag11_like_cnt\030G \001(\005\022\033\n\023user_tag11_pla" +
+      "y_cnt\030H \001(\005\022\036\n\026user_tag11_comment_cnt\030I " +
+      "\001(\005\022\033\n\023user_tag12_like_cnt\030J \001(\005\022\033\n\023user" +
+      "_tag12_play_cnt\030K \001(\005\022\036\n\026user_tag12_comm" +
+      "ent_cnt\030L \001(\005\022\033\n\023user_tag13_like_cnt\030M \001" +
+      "(\005\022\033\n\023user_tag13_play_cnt\030N \001(\005\022\036\n\026user_" +
+      "tag13_comment_cnt\030O \001(\005\022\033\n\023user_tag14_li" +
+      "ke_cnt\030P \001(\005\022\033\n\023user_tag14_play_cnt\030Q \001(" +
+      "\005\022\036\n\026user_tag14_comment_cnt\030R \001(\005\022\033\n\023use" +
+      "r_tag15_like_cnt\030S \001(\005\022\033\n\023user_tag15_pla" +
+      "y_cnt\030T \001(\005\022\036\n\026user_tag15_comment_cnt\030U " +
+      "\001(\005\022\033\n\023user_tag16_like_cnt\030V \001(\005\022\033\n\023user" +
+      "_tag16_play_cnt\030W \001(\005\022\036\n\026user_tag16_comm" +
+      "ent_cnt\030X \001(\005\022\033\n\023user_tag17_like_cnt\030Y \001" +
+      "(\005\022\033\n\023user_tag17_play_cnt\030Z \001(\005\022\036\n\026user_" +
+      "tag17_comment_cnt\030[ \001(\005\022\037\n\027userauthor_sk" +
+      "ip_cnt_24h\030d \001(\005\022\"\n\032userauthor_12splay_c" +
+      "nt_24h\030e \001(\005\022#\n\033userauthor_20sstand_cnt_" +
+      "24h\030f \001(\005\022\"\n\032userauthor_comment_cnt_24h\030" +
+      "g \001(\005\022 \n\030userauthor_share_cnt_24h\030h \001(\005\022" +
+      "!\n\031userauthor_follow_cnt_24h\030i \001(\005\022\"\n\032us" +
+      "erauthor_collect_cnt_24h\030j \001(\005\022\"\n\032userau" +
+      "thor_profile_cnt_24h\030k \001(\005\022!\n\031userauthor" +
+      "_report_cnt_24h\030l \001(\005\022\"\n\032userauthor_disl" +
+      "ike_cnt_24h\030m \001(\005\022\036\n\026userauthor_pay_cnt_" +
+      "24h\030n \001(\005\"\374\005\n\025LiveUserAnchorFeature\022\017\n\007u" +
+      "ser_id\030\001 \001(\004\022\021\n\tanchor_id\030\002 \001(\004\022!\n\031user_" +
+      "anchor_exp_cnt_15min\030\n \001(\005\022$\n\034user_ancho" +
+      "r_3squit_cnt_15min\030\013 \001(\005\022$\n\034user_anchor_" +
+      "6squit_cnt_15min\030\014 \001(\005\022\"\n\032user_anchor_li" +
+      "ke_cnt_15min\030\r \001(\005\022%\n\035user_anchor_commen" +
+      "t_cnt_15min\030\016 \001(\005\022$\n\034user_anchor_follow_" +
+      "cnt_15min\030\017 \001(\005\022#\n\033user_anchor_share_cnt" +
+      "_15min\030\020 \001(\005\022\"\n\032user_anchor_gift_cnt_15m" +
+      "in\030\021 \001(\005\022%\n\035user_anchor_gift_amount_15mi" +
+      "n\030\022 \001(\005\022/\n\'user_anchor_negative_feedback" +
+      "_cnt_15min\030\023 \001(\005\022 \n\030user_anchor_enter_cn" +
+      "t_7d\030\024 \001(\005\022\037\n\027user_anchor_quit_cnt_7d\030\025 " +
+      "\001(\005\022%\n\035user_anchor_stay_gt10s_cnt_7d\030\026 \001" +
+      "(\005\022%\n\035user_anchor_stay_gt30s_cnt_7d\030\027 \001(" +
+      "\005\022(\n user_anchor_avg_view_duration_7d\030\030 " +
+      "\001(\002\022,\n$user_anchor_positive_feedback_cnt" +
+      "_7d\030\031 \001(\005\022,\n$user_anchor_negative_feedba" +
+      "ck_cnt_7d\030\032 \001(\005\022\'\n\037user_anchor_active_en" +
+      "ter_cnt_7d\030\033 \001(\005\"\335\n\n\024RecLiveAnchorFeatur" +
+      "e\022\021\n\tanchor_id\030\001 \001(\004\022\037\n\027live_enter_usern" +
+      "um_5min\030\n \001(\005\022\036\n\026live_quit_usernum_5min\030" +
+      "\013 \001(\005\022#\n\033live_quit_avg_duration_5min\030\014 \001" +
+      "(\005\022\"\n\032live_anchor_gift_coin_5min\030\r \001(\005\022%" +
+      "\n\035live_anchor_gift_usernum_5min\030\016 \001(\005\022\'\n" +
+      "\037live_anchor_follow_usernum_5min\030\017 \001(\005\022%" +
+      "\n\035live_anchor_chat_usernum_5min\030\020 \001(\005\022 \n" +
+      "\030live_enter_usernum_10min\030\024 \001(\005\022\037\n\027live_" +
+      "quit_usernum_10min\030\025 \001(\005\022$\n\034live_quit_av" +
+      "g_duration_10min\030\026 \001(\005\022#\n\033live_anchor_gi" +
+      "ft_coin_10min\030\027 \001(\005\022&\n\036live_anchor_gift_" +
+      "usernum_10min\030\030 \001(\005\022(\n live_anchor_follo" +
+      "w_usernum_10min\030\031 \001(\005\022&\n\036live_anchor_cha" +
+      "t_usernum_10min\030\032 \001(\005\022 \n\030live_enter_user" +
+      "num_15min\030\036 \001(\005\022\037\n\027live_quit_usernum_15m" +
+      "in\030\037 \001(\005\022$\n\034live_quit_avg_duration_15min" +
+      "\030  \001(\005\022#\n\033live_anchor_gift_coin_15min\030! " +
+      "\001(\005\022&\n\036live_anchor_gift_usernum_15min\030\" " +
+      "\001(\005\022(\n live_anchor_follow_usernum_15min\030" +
+      "# \001(\005\022&\n\036live_anchor_chat_usernum_15min\030" +
+      "$ \001(\005\022\033\n\023anchor_enter_cnt_7d\030( \001(\005\022\032\n\022an" +
+      "chor_quit_cnt_7d\030) \001(\005\022\037\n\027anchor_stay_gt" +
+      "3s_cnt_7d\030* \001(\005\022 \n\030anchor_stay_gt10s_cnt" +
+      "_7d\030+ \001(\005\022 \n\030anchor_stay_gt30s_cnt_7d\030, " +
+      "\001(\005\022#\n\033anchor_avg_view_duration_7d\030- \001(\002" +
+      "\022\034\n\024anchor_follow_cnt_7d\030. \001(\005\022\'\n\037anchor" +
+      "_positive_feedback_cnt_7d\030/ \001(\005\022\'\n\037ancho" +
+      "r_negative_feedback_cnt_7d\0300 \001(\005\022)\n!anch" +
+      "or_live_scene_exposure_cnt_7d\0301 \001(\005\022)\n!a" +
+      "nchor_foru_scene_exposure_cnt_7d\0302 \001(\005\022&" +
+      "\n\036anchor_live_scene_enter_cnt_7d\0303 \001(\005\022&" +
+      "\n\036anchor_foru_scene_enter_cnt_7d\0304 \001(\005\022\032" +
+      "\n\022anchor_gift_cnt_7d\0305 \001(\005\022\023\n\013anchor_typ" +
+      "e\030< \001(\005\022\027\n\017anchor_rec_type\030= \001(\005\"\267\001\n\022Rec" +
+      "LiveUserFeature\022\017\n\007user_id\030\001 \001(\004\022=\n\033user" +
+      "_stay_gt10s_anchor_list\030\n \003(\0132\030.com.gosh" +
+      ".entity.IdScore\022%\n\035user_active_enter_anc" +
+      "hor_list\030\013 \003(\005\022*\n\"user_positive_feedback" +
+      "_anchor_list\030\014 \003(\005\"$\n\007IdScore\022\n\n\002id\030\001 \001(" +
+      "\003\022\r\n\005score\030\002 \001(\002\"A\n\020RecLiveIdFeature\022\017\n\007" +
+      "live_id\030\001 \001(\003\022\034\n\024live_id_exp_cnt_5min\030\n " +
+      "\001(\005b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -41249,7 +41328,7 @@ public final class RecFeature {
     internal_static_com_gosh_entity_RecUserFeature_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_gosh_entity_RecUserFeature_descriptor,
-        new java.lang.String[] { "ViewerIsOld", "ViewerRegisterDays", "ViewerExppostCnt1H", "ViewerExp1PostCnt1H", "ViewerExp2PostCnt1H", "Viewer3SviewPostCnt1H", "Viewer3Sview1PostCnt1H", "Viewer3Sview2PostCnt1H", "Viewer3SviewPostHis1H", "Viewer5SstandPostHis1H", "ViewerLikePostHis1H", "ViewerFollowPostHis1H", "ViewerProfilePostHis1H", "ViewerPosinterPostHis1H", "Viewer3SviewPostHis24H", "Viewer5SstandPostHis24H", "ViewerLikePostHis24H", "ViewerFollowPostHis24H", "ViewerProfilePostHis24H", "ViewerPosinterPostHis24H", "ViewerLikeAuthorHis24H", "ViewerFollowAuthorHis24H", "ViewerProfileAuthorHis24H", "ViewerActiveDays7D", "ViewerViewCnt7D", "ViewerValidviewCnt7D", "ViewerCompleteViewCnt7D", "ViewerViewDuration7D", "ViewerLikeCnt7D", "ViewerCommentCnt7D", "ViewerValidviewRate7D", "UserDeepviewPostids7D", "UserInteractPostids7D", "UserGiftCount", "UserDailyWatchliveMinutes", "UserLiveFollowPreferAnchorIds", "PreferPosTag17DTop3", "PreferPosTag27DTop3", "PreferPosTag37DTop3", "PreferPosTag47DTop3", "PreferPosTag57DTop3", "PreferPosTag67DTop3", "PreferPosTag77DTop3", "PreferPosFtag17DTop3", "PreferPosFtag27DTop3", "PreferPosFtag37DTop3", "PreferPosFtag47DTop3", "PreferPosFtag57DTop3", "PreferPosFtag67DTop3", "PreferNegTag17DTop3", "PreferNegTag27DTop3", "PreferNegTag37DTop3", "PreferNegTag47DTop3", "PreferNegTag57DTop3", "PreferNegTag67DTop3", "PreferNegTag77DTop3", "PreferNegFtag17DTop3", "PreferNegFtag27DTop3", "PreferNegFtag37DTop3", "PreferNegFtag47DTop3", "PreferNegFtag57DTop3", "PreferNegFtag67DTop3", "FeedbackTags", "FeedbackAuthorIds", "ViewerIsHise", "ViewerGthyPrtag", "ViewerGthyScore", "ViewerExpPostCnt24H", "ViewerSkipPostCnt24H", "ViewerCompleteplayPostList24H", "ViewerSkipPostList24H", "Viewer10SstandPostList24H", "Viewer8SplayPostList24H", "ViewerLikePostList24H", "ViewerCommentPostList24H", "ViewerSharePostList24H", "ViewerCollectPostList24H", "ViewerPayPostList24H", "ViewerReportPostList24H", "ViewerDislikePostList24H", "ViewerPositivePostList24H", "ViewerNegetivePostList24H", "ViewerPositiveAuthorList24H", "ViewerNegetiveAuthorList24H", });
+        new java.lang.String[] { "ViewerIsOld", "ViewerRegisterDays", "ViewerExppostCnt1H", "ViewerExp1PostCnt1H", "ViewerExp2PostCnt1H", "Viewer3SviewPostCnt1H", "Viewer3Sview1PostCnt1H", "Viewer3Sview2PostCnt1H", "Viewer3SviewPostHis1H", "Viewer5SstandPostHis1H", "ViewerLikePostHis1H", "ViewerFollowPostHis1H", "ViewerProfilePostHis1H", "ViewerPosinterPostHis1H", "Viewer3SviewPostHis24H", "Viewer5SstandPostHis24H", "ViewerLikePostHis24H", "ViewerFollowPostHis24H", "ViewerProfilePostHis24H", "ViewerPosinterPostHis24H", "ViewerLikeAuthorHis24H", "ViewerFollowAuthorHis24H", "ViewerProfileAuthorHis24H", "ViewerActiveDays7D", "ViewerViewCnt7D", "ViewerValidviewCnt7D", "ViewerCompleteViewCnt7D", "ViewerViewDuration7D", "ViewerLikeCnt7D", "ViewerCommentCnt7D", "ViewerValidviewRate7D", "UserDeepviewPostids7D", "UserInteractPostids7D", "UserGiftCount", "UserDailyWatchliveMinutes", "UserLiveFollowPreferAnchorIds", "PreferPosTag17DTop3", "PreferPosTag27DTop3", "PreferPosTag37DTop3", "PreferPosTag47DTop3", "PreferPosTag57DTop3", "PreferPosTag67DTop3", "PreferPosTag77DTop3", "PreferPosFtag17DTop3", "PreferPosFtag27DTop3", "PreferPosFtag37DTop3", "PreferPosFtag47DTop3", "PreferPosFtag57DTop3", "PreferPosFtag67DTop3", "PreferNegTag17DTop3", "PreferNegTag27DTop3", "PreferNegTag37DTop3", "PreferNegTag47DTop3", "PreferNegTag57DTop3", "PreferNegTag67DTop3", "PreferNegTag77DTop3", "PreferNegFtag17DTop3", "PreferNegFtag27DTop3", "PreferNegFtag37DTop3", "PreferNegFtag47DTop3", "PreferNegFtag57DTop3", "PreferNegFtag67DTop3", "FeedbackTags", "FeedbackAuthorIds", "ViewerIsHise", "ViewerGthyPrtag", "ViewerGthyScore", "ViewerExpPostCnt24H", "ViewerSkipPostCnt24H", "ViewerCompleteplayPostList24H", "ViewerSkipPostList24H", "Viewer10SstandPostList24H", "Viewer8SplayPostList24H", "ViewerLikePostList24H", "ViewerCommentPostList24H", "ViewerSharePostList24H", "ViewerCollectPostList24H", "ViewerPayPostList24H", "ViewerReportPostList24H", "ViewerDislikePostList24H", "ViewerPositivePostList24H", "ViewerNegetivePostList24H", "ViewerPositiveAuthorList24H", "ViewerNegetiveAuthorList24H", "ViewerLiveHise", });
     internal_static_com_gosh_entity_RecPostFeature_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_com_gosh_entity_RecPostFeature_fieldAccessorTable = new
