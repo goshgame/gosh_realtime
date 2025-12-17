@@ -10,7 +10,6 @@ import com.gosh.util.FlinkEnvUtil;
 import com.gosh.util.KafkaEnvUtil;
 import com.gosh.util.RedisUtil;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
-import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.api.common.functions.RichMapFunction;
 import org.apache.flink.api.common.state.ListState;
 import org.apache.flink.api.common.state.ListStateDescriptor;
@@ -44,6 +43,9 @@ public class UserPornLabelJobV3 {
     // Redis Key 前缀和后缀
     private static final String REDIS_KEY_POS = "rec_post:{%d}:rtylevel_v3";               // key1: 正反馈最高等级
     private static final String REDIS_KEY_NEG = "rec_post:{%d}:rtylevel_v3_only_for_degree"; // key2: 负反馈最低等级
+    // 新增：新格式Redis Key（存储 label|postIdSet|timestamp）
+    private static final String REDIS_KEY_POS_META = "rec_post:{%d}:rtylevel_v3_meta";               // key1_meta: 正反馈新格式
+    private static final String REDIS_KEY_NEG_META = "rec_post:{%d}:rtylevel_v3_only_for_degree_meta"; // key2_meta: 负反馈新格式
 
     private static final String CleanTag = "clean";
     private static final int REDIS_TTL_POS = 3 * 3600;     // key1: 3小时
@@ -113,50 +115,52 @@ public class UserPornLabelJobV3 {
                     .map(new PornLabelCalculatorV3())
                     .name("calc-porn-label-v3");
 
+            // 正反馈写入流：同时写入旧格式key和新格式meta key
             DataStream<Tuple2<String, byte[]>> posStream = writeResultStream
                     .filter(r -> r != null && r.writePos)
-                    .map(r -> Tuple2.of(r.posKey, r.posValue.getBytes()))
-                    .returns(TypeInformation.of(new TypeHint<Tuple2<String, byte[]>>() {}))
-                    .filter(new FilterFunction<Tuple2<String, byte[]>>() {
+                    .flatMap(new org.apache.flink.api.common.functions.FlatMapFunction<RedisWriteResult, Tuple2<String, byte[]>>() {
                         @Override
-                        public boolean filter(Tuple2<String, byte[]> value) throws Exception {
-                            if (value == null || value.f1 == null) {
-                                return false;
+                        public void flatMap(RedisWriteResult r, org.apache.flink.util.Collector<Tuple2<String, byte[]>> out) throws Exception {
+                            // 写入旧格式key（只存储label，保持向后兼容）
+                            if (r.posKey != null && r.posValue != null) {
+                                String labelValue = r.posValue;
+                                // 过滤掉 u_ylevel_unk，只保留 explicit、high、mid
+                                if ("u_ylevel_explicit".equals(labelValue) || "u_ylevel_high".equals(labelValue)
+                                        || "u_ylevel_mid".equals(labelValue)) {
+                                    out.collect(Tuple2.of(r.posKey, r.posValue.getBytes()));
+                                }
                             }
-                            // 将 byte[] 转换回 String 进行比较
-                            String labelValue = new String(value.f1, java.nio.charset.StandardCharsets.UTF_8);
-                            // 过滤掉 u_ylevel_unk，只保留 explicit、high、mid
-                            if (!("u_ylevel_explicit".equals(labelValue) || "u_ylevel_high".equals(labelValue)
-                                    || "u_ylevel_mid".equals(labelValue))) {
-                                LOG.debug("过滤掉 非 u_ylevel_explicit｜u_ylevel_high｜u_ylevel_mid 标签，不写入 Redis: key={}", value.f0);
-                                return false;
+                            // 写入新格式meta key（存储 label|postIdSet|timestamp）
+                            if (r.posKeyMeta != null && r.posValueMeta != null) {
+                                out.collect(Tuple2.of(r.posKeyMeta, r.posValueMeta.getBytes()));
                             }
-                            return true;
                         }
                     })
+                    .returns(TypeInformation.of(new TypeHint<Tuple2<String, byte[]>>() {}))
                     .name("pos-redis-stream");
 
+            // 负反馈写入流：同时写入旧格式key和新格式meta key
             DataStream<Tuple2<String, byte[]>> negStream = writeResultStream
                     .filter(r -> r != null && r.writeNeg)
-                    .map(r -> Tuple2.of(r.negKey, r.negValue.getBytes()))
-                    .returns(TypeInformation.of(new TypeHint<Tuple2<String, byte[]>>() {}))
-                    .filter(new FilterFunction<Tuple2<String, byte[]>>() {
+                    .flatMap(new org.apache.flink.api.common.functions.FlatMapFunction<RedisWriteResult, Tuple2<String, byte[]>>() {
                         @Override
-                        public boolean filter(Tuple2<String, byte[]> value) throws Exception {
-                            if (value == null || value.f1 == null) {
-                                return false;
+                        public void flatMap(RedisWriteResult r, org.apache.flink.util.Collector<Tuple2<String, byte[]>> out) throws Exception {
+                            // 写入旧格式key（只存储label，保持向后兼容）
+                            if (r.negKey != null && r.negValue != null) {
+                                String labelValue = r.negValue;
+                                // 过滤掉 u_ylevel_unk，只保留 explicit、high、mid
+                                if ("u_ylevel_explicit".equals(labelValue) || "u_ylevel_high".equals(labelValue)
+                                        || "u_ylevel_mid".equals(labelValue)) {
+                                    out.collect(Tuple2.of(r.negKey, r.negValue.getBytes()));
+                                }
                             }
-                            // 将 byte[] 转换回 String 进行比较
-                            String labelValue = new String(value.f1, java.nio.charset.StandardCharsets.UTF_8);
-                            // 过滤掉 u_ylevel_unk，只保留 explicit、high、mid
-                            if (!("u_ylevel_explicit".equals(labelValue) || "u_ylevel_high".equals(labelValue)
-                                    || "u_ylevel_mid".equals(labelValue))) {
-                                LOG.debug("过滤掉 非 u_ylevel_explicit｜u_ylevel_high｜u_ylevel_mid 标签，不写入 Redis: key={}", value.f0);
-                                return false;
+                            // 写入新格式meta key（存储 label|postIdSet|timestamp）
+                            if (r.negKeyMeta != null && r.negValueMeta != null) {
+                                out.collect(Tuple2.of(r.negKeyMeta, r.negValueMeta.getBytes()));
                             }
-                            return true;
                         }
                     })
+                    .returns(TypeInformation.of(new TypeHint<Tuple2<String, byte[]>>() {}))
                     .name("neg-redis-stream");
 
             // 8. 创建 Redis Sink（正/负TTL分别设置）
@@ -222,11 +226,18 @@ public class UserPornLabelJobV3 {
         public boolean writePos;
         public boolean writeNeg;
         public String posKey;
-        public String posValue;
+        public String posValue;  // 旧格式：label 或 新格式：label|postIdSet|timestamp
         public String negKey;
-        public String negValue;
+        public String negValue;  // 旧格式：label 或 新格式：label|postIdSet|timestamp
         public long triggerPosPostId;  // 触发正反馈写入的postId
         public long triggerNegPostId;  // 触发负反馈写入的postId
+        public Set<Long> posPostIdSet;  // 触发正反馈写入的postId集合
+        public Set<Long> negPostIdSet;  // 触发负反馈写入的postId集合
+        // 新增：新格式Redis Key和Value
+        public String posKeyMeta;  // 新格式key1_meta
+        public String posValueMeta;  // 新格式value（label|postIdSet|timestamp）
+        public String negKeyMeta;  // 新格式key2_meta
+        public String negValueMeta;  // 新格式value（label|postIdSet|timestamp）
     }
 
     /**
@@ -268,6 +279,10 @@ public class UserPornLabelJobV3 {
             String currentPosInRedis = readLabelFromRedis(keyPos);
             String currentPosForUpdate = currentPosInRedis == null ? "u_ylevel_unk" : currentPosInRedis;
 
+            // 读取完整的Redis值（包括postId集合），用于去重判断
+            Tuple3<String, Set<Long>, Long> currentPosFull = readFullValueFromRedis(keyPos);
+            Tuple3<String, Set<Long>, Long> currentNegFull = readFullValueFromRedis(keyNeg);
+
             // 强制降级：当 key2 本次要写 explicit 或 high 时，如果当前 key1 存在且等级 >= mid，则强制设为 mid（降级或刷新TTL）
             // 如果 < mid，不处理（保持原逻辑）
             boolean negTriggeredPosUpdate = false;
@@ -293,6 +308,18 @@ public class UserPornLabelJobV3 {
                     || (currentNegInRedis != null && (currentNegInRedis.contains("explicit") || currentNegInRedis.contains("high")));
             final int MID_LEVEL = getLabelLevel("u_ylevel_mid");
 
+            // 提取正反馈相关的postId集合（用于去重判断）
+            Set<Long> newPosPostIdSet = new HashSet<>();
+            if (positiveStats != null) {
+                // 收集所有相关的postId：长播postId + 有正反馈行为的postId
+                for (PostBehaviorDetail detail : positiveStats.longPlayPostDetails) {
+                    newPosPostIdSet.add(detail.postId);
+                }
+                for (PostBehaviorDetail detail : positiveStats.positivePostDetails) {
+                    newPosPostIdSet.add(detail.postId);
+                }
+            }
+
             // key1（正反馈）写入判断：需要参考 key2 当前等级
             boolean writePos = false;
             if (!"u_ylevel_unk".equals(posLabel)) {
@@ -313,18 +340,66 @@ public class UserPornLabelJobV3 {
                     }
                 }
 
-                // 特殊情况：当负反馈为explicit或high触发强制降级时，如果正反馈已经是mid或更低，强制写入一次以刷新TTL
-                if (negTriggeredPosUpdate && posLevel <= MID_LEVEL && currentPosInRedis != null) {
-                    writePos = true;
-                    if (isMonitored) {
-                        LOG.info("[监控用户 {}] key2触发强制降级，强制刷新key1 TTL（posLabel={}），触发postId={}", 
-                                viewerId, posLabel, triggerNegPostId);
+                // 去重判断：如果标签相同且postId集合相同，则不写入
+                if (passNeg && passPos) {
+                    if (currentPosFull != null && currentPosFull.f0 != null && currentPosFull.f0.equals(posLabel)) {
+                        Set<Long> existingPosPostIdSet = currentPosFull.f1 != null ? currentPosFull.f1 : new HashSet<>();
+                        if (isPostIdSetEqual(newPosPostIdSet, existingPosPostIdSet)) {
+                            // 标签相同且postId集合相同，跳过写入
+                            if (isMonitored) {
+                                LOG.info("[监控用户 {}] key1 跳过写入（去重）：标签={}，postId集合相同={}", 
+                                        viewerId, posLabel, newPosPostIdSet);
+                            }
+                            writePos = false;
+                        } else {
+                            writePos = true;
+                        }
+                    } else {
+                        writePos = true;
                     }
-                } else if (passNeg && passPos) {
-                    writePos = true;
-                } else if (isMonitored) {
+                }
+
+                // 特殊情况：当负反馈为explicit或high触发强制降级时，如果正反馈已经是mid或更低，强制写入一次以刷新TTL
+                // 但如果之前已经用相同的postId集合触发过强制降级，就不应该继续刷新TTL了
+                if (negTriggeredPosUpdate && posLevel <= MID_LEVEL && currentPosInRedis != null) {
+                    // 检查postId集合是否相同
+                    if (currentPosFull != null && currentPosFull.f0 != null && currentPosFull.f0.equals(posLabel)) {
+                        Set<Long> existingPosPostIdSet = currentPosFull.f1 != null ? currentPosFull.f1 : new HashSet<>();
+                        if (isPostIdSetEqual(newPosPostIdSet, existingPosPostIdSet)) {
+                            // 标签相同且postId集合相同，跳过写入（避免重复刷新TTL）
+                            writePos = false;
+                            if (isMonitored) {
+                                LOG.info("[监控用户 {}] key2触发强制降级，但postId集合相同，跳过刷新TTL（posLabel={}），postId集合={}", 
+                                        viewerId, posLabel, newPosPostIdSet);
+                            }
+                        } else {
+                            // postId集合不同，需要写入
+                            writePos = true;
+                            if (isMonitored) {
+                                LOG.info("[监控用户 {}] key2触发强制降级，强制刷新key1 TTL（posLabel={}），触发postId={}，新postId集合={}", 
+                                        viewerId, posLabel, triggerNegPostId, newPosPostIdSet);
+                            }
+                        }
+                    } else {
+                        // Redis中没有完整值或标签不同，需要写入
+                        writePos = true;
+                        if (isMonitored) {
+                            LOG.info("[监控用户 {}] key2触发强制降级，强制刷新key1 TTL（posLabel={}），触发postId={}", 
+                                    viewerId, posLabel, triggerNegPostId);
+                        }
+                    }
+                } else if (!writePos && isMonitored) {
                     LOG.info("[监控用户 {}] key1 不更新：posLevel={} vs negLevel={}, oldPosLevel={}, explicitGuard={}, negTriggered={}, 条件A(passNeg)={}, 条件B(passPos)={}",
                             viewerId, posLevel, negLevel, posOldLevel, explicitGuardActive, negTriggeredPosUpdate, passNeg, passPos);
+                }
+            }
+
+            // 提取负反馈相关的postId集合（用于去重判断）
+            Set<Long> newNegPostIdSet = new HashSet<>();
+            if (negativeStats != null) {
+                // 收集所有负反馈相关的postId
+                for (PostBehaviorDetail detail : negativeStats.negativePostDetails) {
+                    newNegPostIdSet.add(detail.postId);
                 }
             }
 
@@ -338,7 +413,22 @@ public class UserPornLabelJobV3 {
                     int newNegLevel = getLabelLevel(negLabel);
                     int oldNegLevel = getLabelLevel(existingNeg);
                     if (newNegLevel <= oldNegLevel) {
-                        writeNeg = true;
+                        // 去重判断：如果标签相同且postId集合相同，则不写入
+                        if (newNegLevel == oldNegLevel && currentNegFull != null && currentNegFull.f0 != null && currentNegFull.f0.equals(negLabel)) {
+                            Set<Long> existingNegPostIdSet = currentNegFull.f1 != null ? currentNegFull.f1 : new HashSet<>();
+                            if (isPostIdSetEqual(newNegPostIdSet, existingNegPostIdSet)) {
+                                // 标签相同且postId集合相同，跳过写入
+                                if (isMonitored) {
+                                    LOG.info("[监控用户 {}] key2 跳过写入（去重）：标签={}，postId集合相同={}", 
+                                            viewerId, negLabel, newNegPostIdSet);
+                                }
+                                writeNeg = false;
+                            } else {
+                                writeNeg = true;
+                            }
+                        } else {
+                            writeNeg = true;
+                        }
                     } else if (isMonitored) {
                         LOG.info("[监控用户 {}] key2 不更新：newNegLevel={} > oldNegLevel={}", viewerId, newNegLevel, oldNegLevel);
                     }
@@ -410,14 +500,26 @@ public class UserPornLabelJobV3 {
             RedisWriteResult result = new RedisWriteResult();
             result.writePos = writePos;
             result.writeNeg = writeNeg;
+            result.posPostIdSet = newPosPostIdSet;
+            result.negPostIdSet = newNegPostIdSet;
+            long currentTime = System.currentTimeMillis();
+            
             if (writePos) {
                 result.posKey = keyPos;
+                // 旧格式：只存储label（保持向后兼容）
                 result.posValue = posLabel;
+                // 新格式：存储 label|postIdSet|timestamp
+                result.posKeyMeta = String.format(REDIS_KEY_POS_META, viewerId);
+                result.posValueMeta = buildRedisValueWithPostIdSet(posLabel, newPosPostIdSet, currentTime);
                 result.triggerPosPostId = triggerPosPostId;
             }
             if (writeNeg) {
                 result.negKey = keyNeg;
+                // 旧格式：只存储label（保持向后兼容）
                 result.negValue = negLabel;
+                // 新格式：存储 label|postIdSet|timestamp
+                result.negKeyMeta = String.format(REDIS_KEY_NEG_META, viewerId);
+                result.negValueMeta = buildRedisValueWithPostIdSet(negLabel, newNegPostIdSet, currentTime);
                 result.triggerNegPostId = triggerNegPostId;
             }
             return result;
@@ -647,16 +749,109 @@ public class UserPornLabelJobV3 {
             return Tuple3.of(worstTag, worstPostId, worstStats);
         }
 
+        /**
+         * 从Redis读取标签值（兼容旧格式和新格式）
+         * 新格式：label|postIdSet|timestamp
+         * 旧格式：label
+         * @return 标签值（如果是新格式，只返回label部分）
+         */
         private String readLabelFromRedis(String key) {
             try {
                 Tuple2<String, byte[]> tuple = redisManager.getStringCommands().get(key);
                 if (tuple != null && tuple.f1 != null && tuple.f1.length > 0) {
-                    return new String(tuple.f1, java.nio.charset.StandardCharsets.UTF_8);
+                    String value = new String(tuple.f1, java.nio.charset.StandardCharsets.UTF_8);
+                    // 尝试解析新格式：label|postIdSet|timestamp
+                    if (value.contains("|")) {
+                        String[] parts = value.split("\\|", 3);
+                        if (parts.length >= 1) {
+                            return parts[0];  // 返回label部分
+                        }
+                    }
+                    // 旧格式：直接返回
+                    return value;
                 }
             } catch (Exception e) {
                 LOG.warn("读Redis失败 key={}, err={}", key, e.getMessage());
             }
             return null;
+        }
+
+        /**
+         * 从Redis读取完整的值（包括postId集合和timestamp）
+         * @return Tuple3<label, postIdSet, timestamp>，如果不存在或格式错误则返回null
+         */
+        private Tuple3<String, Set<Long>, Long> readFullValueFromRedis(String key) {
+            try {
+                Tuple2<String, byte[]> tuple = redisManager.getStringCommands().get(key);
+                if (tuple != null && tuple.f1 != null && tuple.f1.length > 0) {
+                    String value = new String(tuple.f1, java.nio.charset.StandardCharsets.UTF_8);
+                    // 尝试解析新格式：label|postIdSet|timestamp
+                    if (value.contains("|")) {
+                        String[] parts = value.split("\\|", 3);
+                        if (parts.length >= 1) {
+                            String label = parts[0];
+                            Set<Long> postIdSet = new HashSet<>();
+                            Long timestamp = null;
+                            
+                            if (parts.length >= 2 && !parts[1].isEmpty()) {
+                                // 解析postId集合
+                                String[] postIds = parts[1].split(",");
+                                for (String postIdStr : postIds) {
+                                    try {
+                                        postIdSet.add(Long.parseLong(postIdStr.trim()));
+                                    } catch (NumberFormatException e) {
+                                        // 忽略无效的postId
+                                    }
+                                }
+                            }
+                            
+                            if (parts.length >= 3 && !parts[2].isEmpty()) {
+                                try {
+                                    timestamp = Long.parseLong(parts[2].trim());
+                                } catch (NumberFormatException e) {
+                                    // 忽略无效的timestamp
+                                }
+                            }
+                            
+                            return Tuple3.of(label, postIdSet, timestamp);
+                        }
+                    }
+                    // 旧格式：只有label，没有postIdSet和timestamp
+                    return Tuple3.of(value, new HashSet<>(), null);
+                }
+            } catch (Exception e) {
+                LOG.warn("读Redis完整值失败 key={}, err={}", key, e.getMessage());
+            }
+            return null;
+        }
+
+        /**
+         * 构建Redis值（新格式：label|postIdSet|timestamp）
+         */
+        private String buildRedisValueWithPostIdSet(String label, Set<Long> postIdSet, long timestamp) {
+            // 将postId集合排序后转为逗号分隔的字符串
+            List<Long> sortedPostIds = new ArrayList<>(postIdSet);
+            Collections.sort(sortedPostIds);
+            String postIdSetStr = String.join(",", sortedPostIds.stream()
+                    .map(String::valueOf)
+                    .toArray(String[]::new));
+            return String.format("%s|%s|%d", label, postIdSetStr, timestamp);
+        }
+
+        /**
+         * 比较两个postId集合是否相同（忽略顺序）
+         */
+        private boolean isPostIdSetEqual(Set<Long> set1, Set<Long> set2) {
+            if (set1 == null && set2 == null) {
+                return true;
+            }
+            if (set1 == null || set2 == null) {
+                return false;
+            }
+            if (set1.size() != set2.size()) {
+                return false;
+            }
+            return set1.containsAll(set2);
         }
     }
 
