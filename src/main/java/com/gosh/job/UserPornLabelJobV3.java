@@ -19,6 +19,7 @@ import org.apache.flink.api.common.time.Time;
 import org.apache.flink.api.common.typeinfo.TypeHint;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.tuple.Tuple2;
+import org.apache.flink.api.java.tuple.Tuple3;
 import org.apache.flink.api.java.tuple.Tuple4;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.connector.kafka.source.KafkaSource;
@@ -181,13 +182,37 @@ public class UserPornLabelJobV3 {
     /**
      * 每个标签的统计信息（窗口内/最近N条）
      */
+    /**
+     * PostId的详细行为信息（用于日志）
+     */
+    public static class PostBehaviorDetail implements Serializable {
+        public long postId;
+        public float standingTime;
+        public float progressTime;
+        public List<String> positiveActions = new ArrayList<>();  // 正反馈行为列表（如：点赞、评论等）
+        public List<String> negativeActions = new ArrayList<>();  // 负反馈行为列表（如：短播、dislike等）
+        
+        public PostBehaviorDetail(long postId, float standingTime, float progressTime) {
+            this.postId = postId;
+            this.standingTime = standingTime;
+            this.progressTime = progressTime;
+        }
+    }
+
     public static class TagStatistics implements Serializable {
-        public float standingTime = 0.0f;   // 总播放时长
+        public float standingTime = 0.0f;   // 总播放时长（所有postId的累加，保留字段）
+        public float maxStandingTime = 0.0f; // 该标签下所有postId的最大时长（保留字段，暂未使用）
+        public int shortPlayPostCount = 0;   // 该标签下时长<3秒的postId数量（用于负反馈判断）
         public int positiveCount = 0;       // 正反馈次数
         public int negativeCount = 0;       // 负反馈次数（包含短播 & dislike）
-        public int shortPlayCount = 0;      // 短播次数（<3s）
+        public int shortPlayCount = 0;      // 短播次数（<3s，保留用于兼容）
         public int dislikeCount = 0;        // dislike 次数（interaction==11）
         public long triggerPostId = 0;      // 触发该标签统计的postId（用于日志）
+        // 详细行为记录（用于日志）
+        public List<PostBehaviorDetail> allPostDetails = new ArrayList<>();  // 所有postId的详情
+        public List<PostBehaviorDetail> longPlayPostDetails = new ArrayList<>();  // standingTime >= 5秒的postId详情（用于正反馈判断）
+        public List<PostBehaviorDetail> positivePostDetails = new ArrayList<>();  // 有明确正反馈行为的postId详情（点赞、评论等）
+        public List<PostBehaviorDetail> negativePostDetails = new ArrayList<>();  // 有明确负反馈行为的postId详情（短播、dislike等）
     }
 
     /**
@@ -222,13 +247,15 @@ public class UserPornLabelJobV3 {
 
             Map<String, TagStatistics> statsMap = aggregateStats(event, isMonitored);
 
-            Tuple2<String, Long> positiveResult = pickHighestPositive(statsMap, isMonitored, viewerId);
+            Tuple3<String, Long, TagStatistics> positiveResult = pickHighestPositive(statsMap, isMonitored, viewerId);
             String positiveTag = positiveResult.f0;
             long triggerPosPostId = positiveResult.f1;
+            TagStatistics positiveStats = positiveResult.f2;
 
-            Tuple2<String, Long> negativeResult = pickLowestNegative(statsMap, isMonitored, viewerId);
+            Tuple3<String, Long, TagStatistics> negativeResult = pickLowestNegative(statsMap, isMonitored, viewerId);
             String negativeTag = negativeResult.f0;
             long triggerNegPostId = negativeResult.f1;
+            TagStatistics negativeStats = negativeResult.f2;
 
             String posLabel = buildLabel(positiveTag);
             String negLabel = negativeTag == null ? null : buildLabel(negativeTag);
@@ -321,13 +348,62 @@ public class UserPornLabelJobV3 {
             if (isMonitored) {
                 LOG.info("[监控用户 {}] 计算结果: posLabel={}, negLabel={}, writePos={}, writeNeg={}, keyPos={}, keyNeg={}",
                         viewerId, posLabel, negLabel, writePos, writeNeg, keyPos, keyNeg);
-                if (writePos) {
-                    LOG.info("[监控用户 {}] ✓ key1正反馈写入Redis: key={}, value={}, 触发postId={}", 
+                if (writePos && positiveStats != null) {
+                    // [色情标签写入] 统一关键字标识
+                    LOG.info("[色情标签写入][监控用户 {}] ✓ key1正反馈写入Redis: key={}, value={}, 触发postId={}", 
                             viewerId, keyPos, posLabel, triggerPosPostId);
+                    // 打印正反馈详细原因
+                    StringBuilder detail = new StringBuilder();
+                    detail.append("正反馈原因详情: ");
+                    
+                    // 如果有明确的正反馈行为（点赞、评论等），优先显示这些postId
+                    if (!positiveStats.positivePostDetails.isEmpty()) {
+                        detail.append("明确正反馈行为postId队列: ");
+                        for (PostBehaviorDetail detailItem : positiveStats.positivePostDetails) {
+                            detail.append(String.format("postId=%d(standingTime=%.2f秒, progressTime=%.2f秒", 
+                                    detailItem.postId, detailItem.standingTime, detailItem.progressTime));
+                            if (!detailItem.positiveActions.isEmpty()) {
+                                detail.append(", 行为=").append(String.join(",", detailItem.positiveActions));
+                            }
+                            detail.append("); ");
+                        }
+                    }
+                    
+                    // 如果是所有postId都>=5秒触发的，显示所有满足条件的postId队列
+                    boolean allPostLongPlay = !positiveStats.allPostDetails.isEmpty() && 
+                            positiveStats.allPostDetails.size() == positiveStats.longPlayPostDetails.size();
+                    if (allPostLongPlay && !positiveStats.longPlayPostDetails.isEmpty()) {
+                        if (!positiveStats.positivePostDetails.isEmpty()) {
+                            detail.append(" | ");
+                        }
+                        detail.append("长播postId队列(所有postId都>=5秒,共").append(positiveStats.longPlayPostDetails.size()).append("个): ");
+                        for (PostBehaviorDetail detailItem : positiveStats.longPlayPostDetails) {
+                            detail.append(String.format("postId=%d(standingTime=%.2f秒, progressTime=%.2f秒); ", 
+                                    detailItem.postId, detailItem.standingTime, detailItem.progressTime));
+                        }
+                    }
+                    
+                    LOG.info("[色情标签写入][监控用户 {}] {}", viewerId, detail.toString());
                 }
-                if (writeNeg) {
-                    LOG.info("[监控用户 {}] ✓ key2负反馈写入Redis: key={}, value={}, 触发postId={}", 
+                if (writeNeg && negativeStats != null) {
+                    // [色情标签写入] 统一关键字标识
+                    LOG.info("[色情标签写入][监控用户 {}] ✓ key2负反馈写入Redis: key={}, value={}, 触发postId={}", 
                             viewerId, keyNeg, negLabel, triggerNegPostId);
+                    // 打印负反馈详细原因：显示所有短播postId队列
+                    if (!negativeStats.negativePostDetails.isEmpty()) {
+                        StringBuilder detail = new StringBuilder();
+                        detail.append("负反馈原因详情: ");
+                        detail.append("短播postId队列(共").append(negativeStats.shortPlayPostCount).append("个): ");
+                        for (PostBehaviorDetail detailItem : negativeStats.negativePostDetails) {
+                            detail.append(String.format("postId=%d(standingTime=%.2f秒, progressTime=%.2f秒", 
+                                    detailItem.postId, detailItem.standingTime, detailItem.progressTime));
+                            if (!detailItem.negativeActions.isEmpty()) {
+                                detail.append(", 行为=").append(String.join(",", detailItem.negativeActions));
+                            }
+                            detail.append("); ");
+                        }
+                        LOG.info("[色情标签写入][监控用户 {}] {}", viewerId, detail.toString());
+                    }
                 }
             }
 
@@ -359,32 +435,121 @@ public class UserPornLabelJobV3 {
                     stats.triggerPostId = postId;
                 }
 
+                boolean hasPositiveBehavior = false;  // 标记当前postId是否有明确的正反馈行为（点赞、评论等）
+                boolean hasNegativeBehavior = false;  // 标记当前postId是否有明确的负反馈行为（dislike等）
+                boolean hasDislikeBehavior = false;  // 标记当前postId是否有dislike行为
+                PostBehaviorDetail postDetail = null;  // 当前postId的行为详情
+                float postTotalStandingTime = 0.0f;  // 当前postId的总时长（累加所有info的standingTime）
+                float postTotalProgressTime = 0.0f;  // 当前postId的总进度时长（累加所有info的progressTime）
+                
+                // 第一步：聚合postId下所有info的standingTime和progressTime，收集行为信息
                 for (PostViewInfo info : tuple.f0) {
                     if (info == null) {
                         continue;
                     }
+                    // 累加总播放时长（保留字段，用于统计）
                     stats.standingTime += info.standingTime;
+                    // 累加当前postId的总时长和总进度时长
+                    postTotalStandingTime += info.standingTime;
+                    postTotalProgressTime += info.progressTime;
 
-                    // 正反馈（沿用老规则）
+                    // 初始化postId详情（使用第一个info初始化，后续会更新为总时长）
+                    if (postDetail == null) {
+                        postDetail = new PostBehaviorDetail(postId, 0.0f, 0.0f);
+                    }
+
+                    // 收集正反馈行为（沿用老规则）
                     if (tuple.f2 > filterTime) {
                         if (info.interaction != null && !info.interaction.isEmpty()) {
                             for (int action : info.interaction) {
                                 if (isPositiveAction(action)) {
-                                    stats.positiveCount++;
+                                    // 只标记，不计数（避免重复计数）
+                                    hasPositiveBehavior = true;
+                                    String actionName = getActionName(action);
+                                    if (!postDetail.positiveActions.contains(actionName)) {
+                                        postDetail.positiveActions.add(actionName);
+                                    }
                                 } else if (action == 11 || action == 7 || action == 18) { // dislike / 不感兴趣
-                                    stats.negativeCount++;
+                                    // 只标记，不计数（避免重复计数）
+                                    hasNegativeBehavior = true;
                                     if (action == 11) {
-                                        stats.dislikeCount++;
+                                        hasDislikeBehavior = true;
+                                        if (!postDetail.negativeActions.contains("dislike")) {
+                                            postDetail.negativeActions.add("dislike");
+                                        }
+                                    } else if (action == 7) {
+                                        if (!postDetail.negativeActions.contains("不感兴趣")) {
+                                            postDetail.negativeActions.add("不感兴趣");
+                                        }
+                                    } else if (action == 18) {
+                                        if (!postDetail.negativeActions.contains("不感兴趣")) {
+                                            postDetail.negativeActions.add("不感兴趣");
+                                        }
                                     }
                                 }
                             }
                         }
                     }
-
-                    // 短播：播放时长 < 3s 且进度时长 < 3s 视为负反馈
-                    if (info.standingTime < 3.0f && info.progressTime < 3.0f) {
-                        stats.shortPlayCount++;
-                        stats.negativeCount++;
+                }
+                
+                // 第二步：更新postId的总时长（聚合后的值）
+                if (postDetail != null) {
+                    postDetail.standingTime = postTotalStandingTime;
+                    postDetail.progressTime = postTotalProgressTime;
+                }
+                
+                // 第三步：基于postId的总时长进行正负反馈判断，并按postId计数（避免重复计数）
+                boolean hasShortPlayInfo = false;  // 标记当前postId是否为短播（基于总时长判断）
+                
+                // 短播判断：使用postId的总时长（聚合后）< 3s 且总进度时长 < 3s 视为负反馈
+                if (postTotalStandingTime < 3.0f && postTotalProgressTime < 3.0f) {
+                    stats.shortPlayCount++;
+                    hasShortPlayInfo = true;
+                    hasNegativeBehavior = true;
+                    if (postDetail != null && !postDetail.negativeActions.contains("短播")) {
+                        postDetail.negativeActions.add("短播");
+                    }
+                }
+                
+                // 按postId计数（每个postId只计数一次，避免重复计数）
+                if (hasPositiveBehavior) {
+                    stats.positiveCount++;  // 该postId有正反馈行为，计数+1
+                }
+                if (hasNegativeBehavior) {
+                    stats.negativeCount++;  // 该postId有负反馈行为，计数+1
+                }
+                if (hasDislikeBehavior) {
+                    stats.dislikeCount++;  // 该postId有dislike行为，计数+1
+                }
+                
+                // 如果当前postId是短播，则计入短播postId数量（用于负反馈判断）
+                if (hasShortPlayInfo) {
+                    stats.shortPlayPostCount++;
+                }
+                
+                // 记录postId的详细行为信息（用于日志）
+                if (postDetail != null) {
+                    // 所有postId都记录
+                    stats.allPostDetails.add(postDetail);
+                    // 判断当前postId的总时长（累加所有info的standingTime）是否 >= 5秒
+                    // 用于正反馈判断：所有postId都 >= 5秒
+                    if (postDetail.standingTime >= 5.0f) {
+                        stats.longPlayPostDetails.add(postDetail);
+                    }
+                    // 有明确正反馈行为的postId（点赞、评论等）
+                    if (hasPositiveBehavior) {
+                        stats.positivePostDetails.add(postDetail);
+                    }
+                    // 有明确负反馈行为的postId（短播、dislike等）
+                    // 注意：所有短播的postId都需要记录，即使没有其他负反馈行为
+                    if (hasNegativeBehavior || hasShortPlayInfo) {
+                        // 如果是短播但没有其他负反馈行为，确保negativeActions包含"短播"
+                        if (hasShortPlayInfo && !hasNegativeBehavior) {
+                            if (!postDetail.negativeActions.contains("短播")) {
+                                postDetail.negativeActions.add("短播");
+                            }
+                        }
+                        stats.negativePostDetails.add(postDetail);
                     }
                 }
 
@@ -402,18 +567,41 @@ public class UserPornLabelJobV3 {
             return action == 1 || action == 3 || action == 5 || action == 6 || action == 9
                     || action == 10 || action == 13 || action == 15 || action == 16;
         }
+        
+        /**
+         * 获取行为名称（用于日志）
+         */
+        private String getActionName(int action) {
+            switch (action) {
+                case 1: return "点赞";
+                case 3: return "评论";
+                case 5: return "分享";
+                case 6: return "收藏";
+                case 9: return "下载";
+                case 10: return "购买";
+                case 13: return "关注";
+                case 15: return "查看主页";
+                case 16: return "订阅";
+                default: return "正反馈行为" + action;
+            }
+        }
 
-        private Tuple2<String, Long> pickHighestPositive(Map<String, TagStatistics> statsMap, boolean isMonitored, long uid) {
+        private Tuple3<String, Long, TagStatistics> pickHighestPositive(Map<String, TagStatistics> statsMap, boolean isMonitored, long uid) {
             String bestTag = null;
             long bestPostId = 0;
             int bestLevel = -1;
+            TagStatistics bestStats = null;
             for (Map.Entry<String, TagStatistics> entry : statsMap.entrySet()) {
                 String tag = entry.getKey();
                 TagStatistics s = entry.getValue();
                 if ("unk".equals(tag) || CleanTag.equals(tag)) {
                     continue;
                 }
-                boolean positive = (s.standingTime >= 10.0f) || (s.positiveCount > 0);
+                // 正反馈判断：所有postId的standingTime都 >= 5秒 或 有正反馈行为
+                // 检查是否所有postId都满足时长条件（>= 5秒）
+                boolean allPostLongPlay = !s.allPostDetails.isEmpty() && 
+                        s.allPostDetails.size() == s.longPlayPostDetails.size();
+                boolean positive = allPostLongPlay || (s.positiveCount > 0);
                 boolean noNegative = s.negativeCount <= 0;
                 if (positive && noNegative) {
                     int level = getTagLevel(tag);
@@ -421,39 +609,42 @@ public class UserPornLabelJobV3 {
                         bestLevel = level;
                         bestTag = tag;
                         bestPostId = s.triggerPostId;
+                        bestStats = s;
                     }
                 }
             }
             if (isMonitored) {
                 LOG.info("[监控用户 {}] 正反馈候选: bestTag={}, level={}, triggerPostId={}", uid, bestTag, bestLevel, bestPostId);
             }
-            return Tuple2.of(bestTag, bestPostId);
+            return Tuple3.of(bestTag, bestPostId, bestStats);
         }
 
-        private Tuple2<String, Long> pickLowestNegative(Map<String, TagStatistics> statsMap, boolean isMonitored, long uid) {
+        private Tuple3<String, Long, TagStatistics> pickLowestNegative(Map<String, TagStatistics> statsMap, boolean isMonitored, long uid) {
             String worstTag = null;
             long worstPostId = 0;
             int worstLevel = Integer.MAX_VALUE; // 越低越好（explicit高，unk低）
+            TagStatistics worstStats = null;
             for (Map.Entry<String, TagStatistics> entry : statsMap.entrySet()) {
                 String tag = entry.getKey();
                 TagStatistics s = entry.getValue();
                 if ("unk".equals(tag) || CleanTag.equals(tag)) {
                     continue;
                 }
-                // 负反馈触发条件：短播次数 >=5 或 dislike >=1
-                if (s.shortPlayCount >= 5 || s.dislikeCount >= 1) {
+                // 负反馈触发条件：该标签下有5个postId的时长<3秒 或 dislike >=1
+                if (s.shortPlayPostCount >= 5 || s.dislikeCount >= 1) {
                     int level = getTagLevel(tag);
                     if (level < worstLevel) {
                         worstLevel = level;
                         worstTag = tag;
                         worstPostId = s.triggerPostId;
+                        worstStats = s;
                     }
                 }
             }
             if (isMonitored) {
                 LOG.info("[监控用户 {}] 负反馈候选: worstTag={}, level={}, triggerPostId={}", uid, worstTag, worstLevel, worstPostId);
             }
-            return Tuple2.of(worstTag, worstPostId);
+            return Tuple3.of(worstTag, worstPostId, worstStats);
         }
 
         private String readLabelFromRedis(String key) {
