@@ -7,9 +7,6 @@ package com.gosh.entity;
 // option go_package = "github.com/goshgame/gosh_rec/biz/model/feature";
 
 
-// 用户侧特征
-// Redis Key: rec:user_feature:{user_id}:post1h, rec:user_feature:{user_id}:post24h
-//            rec:user_feature:{user_id}:offpic
 message RecUserFeature {
   // 用户状态特征
   int32 viewer_is_old = 1;                  // 用户是否是老用户(前一天的用户表存在即为老用户）
@@ -128,6 +125,9 @@ message RecUserFeature {
   repeated int64 viewer_negetive_post_list_24h = 114; // 用户最近24h负反馈post列表
   repeated int64 viewer_positive_author_list_24h = 115; // 用户最近24h正反馈作者列表
   repeated int64 viewer_negetive_author_list_24h = 116; // 用户最近24h负反馈作者列表
+
+  // sexy
+  int32 viewer_live_hise = 120;                  // 用户是否live重度sex
 }
 
 // Item侧特征 (Post特征)
