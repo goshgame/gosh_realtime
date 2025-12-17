@@ -134,7 +134,7 @@ public class DemoJob {
                 .map(byteArray -> {
                     return new Tuple2<>(byteArray.getKey(), byteArray.getResutls().toString().getBytes());
                 })
-                .returns(Types.TUPLE(Types.STRING,Types.BYTE))
+                .returns(Types.TUPLE(Types.STRING, Types.PRIMITIVE_ARRAY(Types.BYTE)))
                 .name("Byte Array to Tuple2");
 
 //        // 4.3 定义protobuf解析器和key提取逻辑
@@ -145,7 +145,7 @@ public class DemoJob {
         // 第五步：添加反压监控（在输出到Kafka前监控队列压力）
         SingleOutputStreamOperator<Tuple2<String, byte[]>> outDataStream =
                 dataStream.map(new BackpressureMonitor(JOB_NAME,"filter-operator"))
-                        .returns(Types.TUPLE(Types.STRING,Types.BYTE))
+                        .returns(Types.TUPLE(Types.STRING, Types.PRIMITIVE_ARRAY(Types.BYTE)))
                         .name("z Monitor");
 
 
