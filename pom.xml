@@ -28,11 +28,11 @@
 <!--            &lt;!&ndash;            <scope>${gosh.dependency.scope}</scope>&ndash;&gt;-->
 <!--        </dependency>-->
         <!-- 添加gosh-connector -->
-        <dependency>
-            <groupId>com.gosh</groupId>
-            <artifactId>gosh-connector-redis</artifactId>
-            <version>1.4.3</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.gosh</groupId>-->
+<!--            <artifactId>gosh-connector-redis</artifactId>-->
+<!--            <version>1.4.3</version>-->
+<!--        </dependency>-->
         <!-- 镜像plugins start -->
         <dependency>
             <groupId>org.apache.hadoop</groupId>
