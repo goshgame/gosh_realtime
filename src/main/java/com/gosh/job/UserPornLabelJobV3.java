@@ -280,8 +280,31 @@ public class UserPornLabelJobV3 {
             String currentPosForUpdate = currentPosInRedis == null ? "u_ylevel_unk" : currentPosInRedis;
 
             // 读取完整的Redis值（包括postId集合），用于去重判断
-            Tuple3<String, Set<Long>, Long> currentPosFull = readFullValueFromRedis(keyPos);
-            Tuple3<String, Set<Long>, Long> currentNegFull = readFullValueFromRedis(keyNeg);
+            // 优先读取meta key（新格式），如果不存在则读取旧格式key
+            String keyPosMeta = String.format(REDIS_KEY_POS_META, viewerId);
+            String keyNegMeta = String.format(REDIS_KEY_NEG_META, viewerId);
+            Tuple3<String, Set<Long>, Long> currentPosFull = readFullValueFromRedis(keyPosMeta);
+            if (currentPosFull == null) {
+                // 如果meta key不存在，尝试读取旧格式key
+                currentPosFull = readFullValueFromRedis(keyPos);
+                if (isMonitored && currentPosFull != null) {
+                    LOG.info("[监控用户 {}] 从旧格式key读取postId集合: key={}, postIdSet={}", viewerId, keyPos, currentPosFull.f1);
+                }
+            } else if (isMonitored) {
+                LOG.info("[监控用户 {}] 从meta key读取postId集合: key={}, postIdSet={}, timestamp={}", 
+                        viewerId, keyPosMeta, currentPosFull.f1, currentPosFull.f2);
+            }
+            Tuple3<String, Set<Long>, Long> currentNegFull = readFullValueFromRedis(keyNegMeta);
+            if (currentNegFull == null) {
+                // 如果meta key不存在，尝试读取旧格式key
+                currentNegFull = readFullValueFromRedis(keyNeg);
+                if (isMonitored && currentNegFull != null) {
+                    LOG.info("[监控用户 {}] 从旧格式key读取postId集合: key={}, postIdSet={}", viewerId, keyNeg, currentNegFull.f1);
+                }
+            } else if (isMonitored) {
+                LOG.info("[监控用户 {}] 从meta key读取postId集合: key={}, postIdSet={}, timestamp={}", 
+                        viewerId, keyNegMeta, currentNegFull.f1, currentNegFull.f2);
+            }
 
             // 强制降级：当 key2 本次要写 explicit 或 high 时，如果当前 key1 存在且等级 >= mid，则强制设为 mid（降级或刷新TTL）
             // 如果 < mid，不处理（保持原逻辑）
@@ -347,15 +370,23 @@ public class UserPornLabelJobV3 {
                         if (isPostIdSetEqual(newPosPostIdSet, existingPosPostIdSet)) {
                             // 标签相同且postId集合相同，跳过写入
                             if (isMonitored) {
-                                LOG.info("[监控用户 {}] key1 跳过写入（去重）：标签={}，postId集合相同={}", 
-                                        viewerId, posLabel, newPosPostIdSet);
+                                LOG.info("[监控用户 {}] key1 跳过写入（去重）：标签={}，postId集合相同={}，Redis中的postId集合={}", 
+                                        viewerId, posLabel, newPosPostIdSet, existingPosPostIdSet);
                             }
                             writePos = false;
                         } else {
                             writePos = true;
+                            if (isMonitored) {
+                                LOG.info("[监控用户 {}] key1 需要写入：postId集合不同，新集合={}，旧集合={}", 
+                                        viewerId, newPosPostIdSet, existingPosPostIdSet);
+                            }
                         }
                     } else {
                         writePos = true;
+                        if (isMonitored && currentPosFull != null) {
+                            LOG.info("[监控用户 {}] key1 需要写入：标签不同，新标签={}，旧标签={}", 
+                                    viewerId, posLabel, currentPosFull.f0);
+                        }
                     }
                 }
 
@@ -419,15 +450,23 @@ public class UserPornLabelJobV3 {
                             if (isPostIdSetEqual(newNegPostIdSet, existingNegPostIdSet)) {
                                 // 标签相同且postId集合相同，跳过写入
                                 if (isMonitored) {
-                                    LOG.info("[监控用户 {}] key2 跳过写入（去重）：标签={}，postId集合相同={}", 
-                                            viewerId, negLabel, newNegPostIdSet);
+                                    LOG.info("[监控用户 {}] key2 跳过写入（去重）：标签={}，postId集合相同={}，Redis中的postId集合={}", 
+                                            viewerId, negLabel, newNegPostIdSet, existingNegPostIdSet);
                                 }
                                 writeNeg = false;
                             } else {
                                 writeNeg = true;
+                                if (isMonitored) {
+                                    LOG.info("[监控用户 {}] key2 需要写入：postId集合不同，新集合={}，旧集合={}", 
+                                            viewerId, newNegPostIdSet, existingNegPostIdSet);
+                                }
                             }
                         } else {
                             writeNeg = true;
+                            if (isMonitored && currentNegFull != null) {
+                                LOG.info("[监控用户 {}] key2 需要写入：标签不同或等级不同，新标签={}，旧标签={}", 
+                                        viewerId, negLabel, currentNegFull.f0);
+                            }
                         }
                     } else if (isMonitored) {
                         LOG.info("[监控用户 {}] key2 不更新：newNegLevel={} > oldNegLevel={}", viewerId, newNegLevel, oldNegLevel);
