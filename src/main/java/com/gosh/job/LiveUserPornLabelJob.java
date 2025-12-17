@@ -8,15 +8,20 @@ import com.gosh.util.*;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.functions.AggregateFunction;
 import org.apache.flink.api.common.functions.FlatMapFunction;
-import org.apache.flink.api.common.functions.RichMapFunction;
+import org.apache.flink.api.common.state.BroadcastState;
+import org.apache.flink.api.common.state.MapStateDescriptor;
+import org.apache.flink.api.common.state.ReadOnlyBroadcastState;
+import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.functions.KeySelector;
 import org.apache.flink.api.java.tuple.Tuple2;
-import org.apache.flink.configuration.Configuration;
 import org.apache.flink.connector.kafka.source.KafkaSource;
+import org.apache.flink.streaming.api.datastream.BroadcastStream;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.functions.co.BroadcastProcessFunction;
+import org.apache.flink.streaming.api.functions.source.SourceFunction;
 import org.apache.flink.streaming.api.functions.windowing.ProcessWindowFunction;
 import org.apache.flink.streaming.api.windowing.assigners.EventTimeSessionWindows;
 import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
@@ -24,14 +29,8 @@ import org.apache.flink.util.Collector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.time.Duration;
 import java.util.*;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class LiveUserPornLabelJob {
     private static final Logger LOG = LoggerFactory.getLogger(LiveUserPornLabelJob.class);
@@ -48,8 +47,15 @@ public class LiveUserPornLabelJob {
     // 观看时长阈值：15秒
     private static final long WATCH_DURATION_THRESHOLD_SECONDS = 15;
     
-    // MySQL缓存更新间隔：60秒
+    // MySQL缓存更新间隔：60秒（1分钟）
     private static final long MYSQL_CACHE_UPDATE_INTERVAL_SECONDS = 60;
+    
+    // Broadcast State 描述符
+    private static final MapStateDescriptor<Void, Set<Long>> PORN_ANCHOR_STATE_DESCRIPTOR =
+            new MapStateDescriptor<>(
+                    "porn-anchor-broadcast-state",
+                    TypeInformation.of(Void.class),
+                    TypeInformation.of(new org.apache.flink.api.common.typeinfo.TypeHint<Set<Long>>(){}));
 
     public static void main(String[] args) throws Exception {
         LOG.info("========================================");
@@ -93,7 +99,18 @@ public class LiveUserPornLabelJob {
                     .withIdleness(Duration.ofMinutes(1))
             );
 
-        // 第四步：SessionWindow聚合：基于rec_token + anchor_id
+        // 第四步：创建MySQL Source数据流，用于查询色情主播列表
+        DataStream<Set<Long>> pornAnchorStream = env.addSource(
+            new PornAnchorSourceFunction(),
+            TypeInformation.of(new org.apache.flink.api.common.typeinfo.TypeHint<Set<Long>>(){})
+        )
+        .name("Porn Anchor MySQL Source");
+        
+        // 将MySQL数据流转换为BroadcastStream
+        BroadcastStream<Set<Long>> pornAnchorBroadcastStream = pornAnchorStream
+            .broadcast(PORN_ANCHOR_STATE_DESCRIPTOR);
+
+        // 第五步：SessionWindow聚合：基于rec_token + anchor_id
         SingleOutputStreamOperator<SessionSummary> sessionStream = eventStream
             .keyBy(new KeySelector<LiveUserAnchorEvent, String>() {
                 @Override
@@ -105,13 +122,14 @@ public class LiveUserPornLabelJob {
             .aggregate(new SessionAggregator(), new SessionWindowFunction())
             .name("Session Window Aggregation");
 
-        // 第五步：判断并生成特征
+        // 第六步：使用BroadcastProcessFunction判断并生成特征
         DataStream<Tuple2<String, byte[]>> featureStream = sessionStream
-            .map(new PornLabelFeatureMapper())
+            .connect(pornAnchorBroadcastStream)
+            .process(new PornLabelBroadcastProcessFunction())
             .filter(tuple -> tuple != null)
             .name("Generate Porn Label Feature");
 
-        // 第六步：创建sink，Redis环境（TTL=3天，SET）
+        // 第七步：创建sink，Redis环境（TTL=3天，SET）
         RedisConfig redisConfig = RedisConfig.fromProperties(RedisUtil.loadProperties());
         redisConfig.setTtl(60 * 60 * 24 * 3); // 3天
         redisConfig.setCommand("SET");
@@ -294,77 +312,85 @@ public class LiveUserPornLabelJob {
         }
     }
 
-    // ==================== 特征生成 ====================
+    // ==================== MySQL Source 和 Broadcast State ====================
     
     /**
-     * 色情主播缓存管理器
+     * 色情主播数据源：从MySQL定期查询并输出
      */
-    public static class PornAnchorCache {
-        private static volatile Set<Long> pornAnchorSet = new HashSet<>();
-        private static volatile long lastUpdateTime = 0;
-        private static final Object LOCK = new Object();
-        private static ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+    public static class PornAnchorSourceFunction implements SourceFunction<Set<Long>> {
+        private volatile boolean isRunning = true;
         
-        static {
-            // 启动定时更新任务
-            scheduler.scheduleAtFixedRate(() -> {
+        @Override
+        public void run(SourceContext<Set<Long>> ctx) throws Exception {
+            LOG.info("PornAnchorSourceFunction started");
+            
+            while (isRunning) {
                 try {
-                    updateCache();
-                } catch (Exception e) {
-                    LOG.error("Failed to update porn anchor cache", e);
-                }
-            }, 0, MYSQL_CACHE_UPDATE_INTERVAL_SECONDS, TimeUnit.SECONDS);
-        }
-        
-        public static void updateCache() {
-            try {
-                // 使用 gosh 数据库
-                String sql = "SELECT uid FROM gosh.agency_member WHERE anchor_type IN (11, 15)";
-                
-                Set<Long> newSet = new HashSet<>();
-                try (Connection conn = MySQLUtil.getConnection("db1")) {
-                    try (Statement stmt = conn.createStatement();
-                         ResultSet rs = stmt.executeQuery(sql)) {
-                        while (rs.next()) {
-                            long uid = rs.getLong("uid");
-                            newSet.add(uid);
+                    // 使用 MySQLFlinkUtil 查询数据
+                    String sql = "SELECT uid FROM gosh.agency_member WHERE anchor_type IN (11, 15)";
+                    
+                    Set<Long> anchorSet = new HashSet<>();
+                    // 直接使用 MySQLUtil 查询（因为这是 SourceFunction，不在 Flink 算子链中）
+                    MySQLUtil mysqlUtil = MySQLUtil.createNewInstance();
+                    try {
+                        java.sql.Connection conn = mysqlUtil.getConnectionInternal("db1");
+                        try (java.sql.Statement stmt = conn.createStatement();
+                             java.sql.ResultSet rs = stmt.executeQuery(sql)) {
+                            while (rs.next()) {
+                                long uid = rs.getLong("uid");
+                                anchorSet.add(uid);
+                            }
                         }
+                        conn.close();
+                    } finally {
+                        mysqlUtil.shutdownInternal();
                     }
+                    
+                    // 输出到 BroadcastStream
+                    ctx.collect(anchorSet);
+                    LOG.info("Porn anchor data updated, size={}", anchorSet.size());
+                    
+                    // 等待指定时间后再次查询
+                    Thread.sleep(MYSQL_CACHE_UPDATE_INTERVAL_SECONDS * 1000);
+                } catch (Exception e) {
+                    LOG.error("Error querying porn anchor data", e);
+                    // 出错后等待一段时间再重试
+                    Thread.sleep(MYSQL_CACHE_UPDATE_INTERVAL_SECONDS * 1000);
                 }
-                
-                synchronized (LOCK) {
-                    pornAnchorSet = newSet;
-                    lastUpdateTime = System.currentTimeMillis();
-                    LOG.info("Updated porn anchor cache, size={}, time={}", newSet.size(), lastUpdateTime);
-                }
-            } catch (Exception e) {
-                LOG.error("Error updating porn anchor cache", e);
             }
         }
         
-        public static boolean isPornAnchor(long anchorId) {
-            synchronized (LOCK) {
-                return pornAnchorSet.contains(anchorId);
-            }
+        @Override
+        public void cancel() {
+            isRunning = false;
+            LOG.info("PornAnchorSourceFunction cancelled");
         }
     }
     
     /**
-     * 特征生成器：判断是否写入色情标志特征
+     * BroadcastProcessFunction：处理主数据流和广播流
      */
-    public static class PornLabelFeatureMapper extends RichMapFunction<SessionSummary, Tuple2<String, byte[]>> {
-        @Override
-        public void open(Configuration parameters) throws Exception {
-            super.open(parameters);
-            // 初始化时更新一次缓存
-            PornAnchorCache.updateCache();
-        }
+    public static class PornLabelBroadcastProcessFunction 
+            extends BroadcastProcessFunction<SessionSummary, Set<Long>, Tuple2<String, byte[]>> {
         
         @Override
-        public Tuple2<String, byte[]> map(SessionSummary summary) throws Exception {
+        public void processElement(SessionSummary summary, 
+                                   ReadOnlyContext ctx, 
+                                   Collector<Tuple2<String, byte[]>> out) throws Exception {
+            // 从 BroadcastState 读取色情主播集合
+            ReadOnlyBroadcastState<Void, Set<Long>> broadcastState = 
+                    ctx.getBroadcastState(PORN_ANCHOR_STATE_DESCRIPTOR);
+            
+            Set<Long> pornAnchorSet = broadcastState.get(null);
+            
+            // 如果广播状态还没有数据，跳过
+            if (pornAnchorSet == null || pornAnchorSet.isEmpty()) {
+                return;
+            }
+            
             // 判断：观看时长 > 15秒 且 主播是色情主播
             if (summary.totalWatchDuration > WATCH_DURATION_THRESHOLD_SECONDS 
-                && PornAnchorCache.isPornAnchor(summary.anchorId)) {
+                && pornAnchorSet.contains(summary.anchorId)) {
                 
                 // 构建Protobuf特征
                 byte[] featureBytes = RecFeature.RecUserFeature.newBuilder()
@@ -373,10 +399,20 @@ public class LiveUserPornLabelJob {
                     .toByteArray();
                 
                 String redisKey = PREFIX + summary.uid + SUFFIX;
-                return new Tuple2<>(redisKey, featureBytes);
+                out.collect(new Tuple2<>(redisKey, featureBytes));
             }
+        }
+        
+        @Override
+        public void processBroadcastElement(Set<Long> anchorSet,
+                                           Context ctx,
+                                           Collector<Tuple2<String, byte[]>> out) throws Exception {
+            // 更新 BroadcastState
+            BroadcastState<Void, Set<Long>> broadcastState = 
+                    ctx.getBroadcastState(PORN_ANCHOR_STATE_DESCRIPTOR);
             
-            return null;
+            broadcastState.put(null, anchorSet);
+            LOG.info("BroadcastState updated with {} porn anchors", anchorSet.size());
         }
     }
 
