@@ -18,6 +18,7 @@ import org.apache.flink.api.common.time.Time;
 import org.apache.flink.api.common.typeinfo.TypeHint;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.tuple.Tuple2;
+import org.apache.flink.api.java.tuple.Tuple3;
 import org.apache.flink.api.java.tuple.Tuple4;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.connector.kafka.source.KafkaSource;
@@ -32,6 +33,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
@@ -41,10 +43,13 @@ public class UserPornLabelJobV3 {
     // Redis Key 前缀和后缀
     private static final String REDIS_KEY_POS = "rec_post:{%d}:rtylevel_v3";               // key1: 正反馈最高等级
     private static final String REDIS_KEY_NEG = "rec_post:{%d}:rtylevel_v3_only_for_degree"; // key2: 负反馈最低等级
+    // 新增：新格式Redis Key（存储 label|postIdSet|timestamp）
+    private static final String REDIS_KEY_POS_META = "rec_post:{%d}:rtylevel_v3_meta";               // key1_meta: 正反馈新格式
+    private static final String REDIS_KEY_NEG_META = "rec_post:{%d}:rtylevel_v3_only_for_degree_meta"; // key2_meta: 负反馈新格式
 
     private static final String CleanTag = "clean";
     private static final int REDIS_TTL_POS = 3 * 3600;     // key1: 3小时
-    private static final int REDIS_TTL_NEG = 15 * 60;      // key2: 15分钟
+    private static final int REDIS_TTL_NEG = 5 * 60;       // key2: 5分钟
 
     // Kafka Group ID
     private static final String KAFKA_GROUP_ID = "rec_porn_label_v3";
@@ -56,7 +61,9 @@ public class UserPornLabelJobV3 {
             13374748L,  // 非专区用户
             13661418L,   // 非专区用户（重度色情）
             13687026L,
-            13372756L
+            13372756L,
+            13131686L,
+            12103877L
     ));
 
     /**
@@ -108,14 +115,52 @@ public class UserPornLabelJobV3 {
                     .map(new PornLabelCalculatorV3())
                     .name("calc-porn-label-v3");
 
+            // 正反馈写入流：同时写入旧格式key和新格式meta key
             DataStream<Tuple2<String, byte[]>> posStream = writeResultStream
                     .filter(r -> r != null && r.writePos)
-                    .map(r -> Tuple2.of(r.posKey, r.posValue.getBytes()))
+                    .flatMap(new org.apache.flink.api.common.functions.FlatMapFunction<RedisWriteResult, Tuple2<String, byte[]>>() {
+                        @Override
+                        public void flatMap(RedisWriteResult r, org.apache.flink.util.Collector<Tuple2<String, byte[]>> out) throws Exception {
+                            // 写入旧格式key（只存储label，保持向后兼容）
+                            if (r.posKey != null && r.posValue != null) {
+                                String labelValue = r.posValue;
+                                // 过滤掉 u_ylevel_unk，只保留 explicit、high、mid
+                                if ("u_ylevel_explicit".equals(labelValue) || "u_ylevel_high".equals(labelValue)
+                                        || "u_ylevel_mid".equals(labelValue)) {
+                                    out.collect(Tuple2.of(r.posKey, r.posValue.getBytes()));
+                                }
+                            }
+                            // 写入新格式meta key（存储 label|postIdSet|timestamp）
+                            if (r.posKeyMeta != null && r.posValueMeta != null) {
+                                out.collect(Tuple2.of(r.posKeyMeta, r.posValueMeta.getBytes()));
+                            }
+                        }
+                    })
+                    .returns(TypeInformation.of(new TypeHint<Tuple2<String, byte[]>>() {}))
                     .name("pos-redis-stream");
 
+            // 负反馈写入流：同时写入旧格式key和新格式meta key
             DataStream<Tuple2<String, byte[]>> negStream = writeResultStream
                     .filter(r -> r != null && r.writeNeg)
-                    .map(r -> Tuple2.of(r.negKey, r.negValue.getBytes()))
+                    .flatMap(new org.apache.flink.api.common.functions.FlatMapFunction<RedisWriteResult, Tuple2<String, byte[]>>() {
+                        @Override
+                        public void flatMap(RedisWriteResult r, org.apache.flink.util.Collector<Tuple2<String, byte[]>> out) throws Exception {
+                            // 写入旧格式key（只存储label，保持向后兼容）
+                            if (r.negKey != null && r.negValue != null) {
+                                String labelValue = r.negValue;
+                                // 过滤掉 u_ylevel_unk，只保留 explicit、high、mid
+                                if ("u_ylevel_explicit".equals(labelValue) || "u_ylevel_high".equals(labelValue)
+                                        || "u_ylevel_mid".equals(labelValue)) {
+                                    out.collect(Tuple2.of(r.negKey, r.negValue.getBytes()));
+                                }
+                            }
+                            // 写入新格式meta key（存储 label|postIdSet|timestamp）
+                            if (r.negKeyMeta != null && r.negValueMeta != null) {
+                                out.collect(Tuple2.of(r.negKeyMeta, r.negValueMeta.getBytes()));
+                            }
+                        }
+                    })
+                    .returns(TypeInformation.of(new TypeHint<Tuple2<String, byte[]>>() {}))
                     .name("neg-redis-stream");
 
             // 8. 创建 Redis Sink（正/负TTL分别设置）
@@ -141,12 +186,37 @@ public class UserPornLabelJobV3 {
     /**
      * 每个标签的统计信息（窗口内/最近N条）
      */
+    /**
+     * PostId的详细行为信息（用于日志）
+     */
+    public static class PostBehaviorDetail implements Serializable {
+        public long postId;
+        public float standingTime;
+        public float progressTime;
+        public List<String> positiveActions = new ArrayList<>();  // 正反馈行为列表（如：点赞、评论等）
+        public List<String> negativeActions = new ArrayList<>();  // 负反馈行为列表（如：短播、dislike等）
+        
+        public PostBehaviorDetail(long postId, float standingTime, float progressTime) {
+            this.postId = postId;
+            this.standingTime = standingTime;
+            this.progressTime = progressTime;
+        }
+    }
+
     public static class TagStatistics implements Serializable {
-        public float standingTime = 0.0f;   // 总播放时长
+        public float standingTime = 0.0f;   // 总播放时长（所有postId的累加，保留字段）
+        public float maxStandingTime = 0.0f; // 该标签下所有postId的最大时长（保留字段，暂未使用）
+        public int shortPlayPostCount = 0;   // 该标签下时长<3秒的postId数量（用于负反馈判断）
         public int positiveCount = 0;       // 正反馈次数
         public int negativeCount = 0;       // 负反馈次数（包含短播 & dislike）
-        public int shortPlayCount = 0;      // 短播次数（<3s）
+        public int shortPlayCount = 0;      // 短播次数（<3s，保留用于兼容）
         public int dislikeCount = 0;        // dislike 次数（interaction==11）
+        public long triggerPostId = 0;      // 触发该标签统计的postId（用于日志）
+        // 详细行为记录（用于日志）
+        public List<PostBehaviorDetail> allPostDetails = new ArrayList<>();  // 所有postId的详情
+        public List<PostBehaviorDetail> longPlayPostDetails = new ArrayList<>();  // standingTime >= 5秒的postId详情（用于正反馈判断）
+        public List<PostBehaviorDetail> positivePostDetails = new ArrayList<>();  // 有明确正反馈行为的postId详情（点赞、评论等）
+        public List<PostBehaviorDetail> negativePostDetails = new ArrayList<>();  // 有明确负反馈行为的postId详情（短播、dislike等）
     }
 
     /**
@@ -156,9 +226,18 @@ public class UserPornLabelJobV3 {
         public boolean writePos;
         public boolean writeNeg;
         public String posKey;
-        public String posValue;
+        public String posValue;  // 旧格式：label 或 新格式：label|postIdSet|timestamp
         public String negKey;
-        public String negValue;
+        public String negValue;  // 旧格式：label 或 新格式：label|postIdSet|timestamp
+        public long triggerPosPostId;  // 触发正反馈写入的postId
+        public long triggerNegPostId;  // 触发负反馈写入的postId
+        public Set<Long> posPostIdSet;  // 触发正反馈写入的postId集合
+        public Set<Long> negPostIdSet;  // 触发负反馈写入的postId集合
+        // 新增：新格式Redis Key和Value
+        public String posKeyMeta;  // 新格式key1_meta
+        public String posValueMeta;  // 新格式value（label|postIdSet|timestamp）
+        public String negKeyMeta;  // 新格式key2_meta
+        public String negValueMeta;  // 新格式value（label|postIdSet|timestamp）
     }
 
     /**
@@ -179,8 +258,15 @@ public class UserPornLabelJobV3 {
 
             Map<String, TagStatistics> statsMap = aggregateStats(event, isMonitored);
 
-            String positiveTag = pickHighestPositive(statsMap, isMonitored, viewerId);
-            String negativeTag = pickLowestNegative(statsMap, isMonitored, viewerId);
+            Tuple3<String, Long, TagStatistics> positiveResult = pickHighestPositive(statsMap, isMonitored, viewerId);
+            String positiveTag = positiveResult.f0;
+            long triggerPosPostId = positiveResult.f1;
+            TagStatistics positiveStats = positiveResult.f2;
+
+            Tuple3<String, Long, TagStatistics> negativeResult = pickLowestNegative(statsMap, isMonitored, viewerId);
+            String negativeTag = negativeResult.f0;
+            long triggerNegPostId = negativeResult.f1;
+            TagStatistics negativeStats = negativeResult.f2;
 
             String posLabel = buildLabel(positiveTag);
             String negLabel = negativeTag == null ? null : buildLabel(negativeTag);
@@ -193,21 +279,69 @@ public class UserPornLabelJobV3 {
             String currentPosInRedis = readLabelFromRedis(keyPos);
             String currentPosForUpdate = currentPosInRedis == null ? "u_ylevel_unk" : currentPosInRedis;
 
-            // 强制降级：当 key2 本次要写 explicit 时，基于当前 key1 等级做处理
-            // 若当前 key1 等级 >= mid，则写 mid；否则写 unk
-            if (negLabel != null && negLabel.contains("explicit")) {
-                int currentPosLevel = getLabelLevel(currentPosForUpdate);
-                if (currentPosLevel >= getLabelLevel("u_ylevel_mid")) {
-                    posLabel = "u_ylevel_mid";
-                } else {
-                    posLabel = "u_ylevel_unk";
+            // 读取完整的Redis值（包括postId集合），用于去重判断
+            // 优先读取meta key（新格式），如果不存在则读取旧格式key
+            String keyPosMeta = String.format(REDIS_KEY_POS_META, viewerId);
+            String keyNegMeta = String.format(REDIS_KEY_NEG_META, viewerId);
+            Tuple3<String, Set<Long>, Long> currentPosFull = readFullValueFromRedis(keyPosMeta);
+            if (currentPosFull == null) {
+                // 如果meta key不存在，尝试读取旧格式key
+                currentPosFull = readFullValueFromRedis(keyPos);
+                if (isMonitored && currentPosFull != null) {
+                    LOG.info("[监控用户 {}] 从旧格式key读取postId集合: key={}, postIdSet={}", viewerId, keyPos, currentPosFull.f1);
+                }
+            } else if (isMonitored) {
+                LOG.info("[监控用户 {}] 从meta key读取postId集合: key={}, postIdSet={}, timestamp={}", 
+                        viewerId, keyPosMeta, currentPosFull.f1, currentPosFull.f2);
+            }
+            Tuple3<String, Set<Long>, Long> currentNegFull = readFullValueFromRedis(keyNegMeta);
+            if (currentNegFull == null) {
+                // 如果meta key不存在，尝试读取旧格式key
+                currentNegFull = readFullValueFromRedis(keyNeg);
+                if (isMonitored && currentNegFull != null) {
+                    LOG.info("[监控用户 {}] 从旧格式key读取postId集合: key={}, postIdSet={}", viewerId, keyNeg, currentNegFull.f1);
+                }
+            } else if (isMonitored) {
+                LOG.info("[监控用户 {}] 从meta key读取postId集合: key={}, postIdSet={}, timestamp={}", 
+                        viewerId, keyNegMeta, currentNegFull.f1, currentNegFull.f2);
+            }
+
+            // 强制降级：当 key2 本次要写 explicit 或 high 时，如果当前 key1 存在且等级 >= mid，则强制设为 mid（降级或刷新TTL）
+            // 如果 < mid，不处理（保持原逻辑）
+            boolean negTriggeredPosUpdate = false;
+            if (negLabel != null && currentPosInRedis != null) {
+                boolean isExplicit = negLabel.contains("explicit");
+                boolean isHigh = negLabel.contains("high");
+                if (isExplicit || isHigh) {
+                    int currentPosLevel = getLabelLevel(currentPosForUpdate);
+                    final int MID_LEVEL = getLabelLevel("u_ylevel_mid");
+                    if (currentPosLevel >= MID_LEVEL) {
+                        posLabel = "u_ylevel_mid";
+                        negTriggeredPosUpdate = true;
+                        if (isMonitored) {
+                            LOG.info("[监控用户 {}] key2={}触发，强制key1设为mid（原等级={}），触发postId={}", 
+                                    viewerId, isExplicit ? "explicit" : "high", currentPosInRedis, triggerNegPostId);
+                        }
+                    }
                 }
             }
 
-            // 显式防护窗口：key2 当前为 explicit（15min TTL 内）时，不允许 key1 升级到 high/explicit
-            boolean explicitGuardActive = (negLabel != null && negLabel.contains("explicit"))
-                    || (currentNegInRedis != null && currentNegInRedis.contains("explicit"));
+            // 防护窗口：key2 当前为 explicit 或 high（5min TTL 内）时，不允许 key1 升级到 high/explicit
+            boolean explicitGuardActive = (negLabel != null && (negLabel.contains("explicit") || negLabel.contains("high")))
+                    || (currentNegInRedis != null && (currentNegInRedis.contains("explicit") || currentNegInRedis.contains("high")));
             final int MID_LEVEL = getLabelLevel("u_ylevel_mid");
+
+            // 提取正反馈相关的postId集合（用于去重判断）
+            Set<Long> newPosPostIdSet = new HashSet<>();
+            if (positiveStats != null) {
+                // 收集所有相关的postId：长播postId + 有正反馈行为的postId
+                for (PostBehaviorDetail detail : positiveStats.longPlayPostDetails) {
+                    newPosPostIdSet.add(detail.postId);
+                }
+                for (PostBehaviorDetail detail : positiveStats.positivePostDetails) {
+                    newPosPostIdSet.add(detail.postId);
+                }
+            }
 
             // key1（正反馈）写入判断：需要参考 key2 当前等级
             boolean writePos = false;
@@ -220,7 +354,7 @@ public class UserPornLabelJobV3 {
                 // 条件B：与原key1比较，新等级不低于原值（允许持平或升级；若显式防护，允许降级到 mid）
                 boolean passPos = (currentPosInRedis == null) || (posLevel >= posOldLevel);
 
-                // 防护：key2 为 explicit 时，禁止 key1 写入 high/explicit；允许写 mid/unk，并允许将高等级降到 mid
+                // 防护：key2 为 explicit 或 high 时，禁止 key1 写入 high/explicit；允许写 mid/unk，并允许将高等级降到 mid
                 if (explicitGuardActive) {
                     if (posLevel <= MID_LEVEL) {
                         passPos = true; // 允许覆盖为 mid（即便会降级）
@@ -229,11 +363,74 @@ public class UserPornLabelJobV3 {
                     }
                 }
 
+                // 去重判断：如果标签相同且postId集合相同，则不写入
                 if (passNeg && passPos) {
-                    writePos = true;
-                } else if (isMonitored) {
-                    LOG.info("[监控用户 {}] key1 不更新：posLevel={} vs negLevel={}, oldPosLevel={}, explicitGuard={}, 条件A(passNeg)={}, 条件B(passPos)={}",
-                            viewerId, posLevel, negLevel, posOldLevel, explicitGuardActive, passNeg, passPos);
+                    if (currentPosFull != null && currentPosFull.f0 != null && currentPosFull.f0.equals(posLabel)) {
+                        Set<Long> existingPosPostIdSet = currentPosFull.f1 != null ? currentPosFull.f1 : new HashSet<>();
+                        if (isPostIdSetEqual(newPosPostIdSet, existingPosPostIdSet)) {
+                            // 标签相同且postId集合相同，跳过写入
+                            if (isMonitored) {
+                                LOG.info("[监控用户 {}] key1 跳过写入（去重）：标签={}，postId集合相同={}，Redis中的postId集合={}", 
+                                        viewerId, posLabel, newPosPostIdSet, existingPosPostIdSet);
+                            }
+                            writePos = false;
+                        } else {
+                            writePos = true;
+                            if (isMonitored) {
+                                LOG.info("[监控用户 {}] key1 需要写入：postId集合不同，新集合={}，旧集合={}", 
+                                        viewerId, newPosPostIdSet, existingPosPostIdSet);
+                            }
+                        }
+                    } else {
+                        writePos = true;
+                        if (isMonitored && currentPosFull != null) {
+                            LOG.info("[监控用户 {}] key1 需要写入：标签不同，新标签={}，旧标签={}", 
+                                    viewerId, posLabel, currentPosFull.f0);
+                        }
+                    }
+                }
+
+                // 特殊情况：当负反馈为explicit或high触发强制降级时，如果正反馈已经是mid或更低，强制写入一次以刷新TTL
+                // 但如果之前已经用相同的postId集合触发过强制降级，就不应该继续刷新TTL了
+                if (negTriggeredPosUpdate && posLevel <= MID_LEVEL && currentPosInRedis != null) {
+                    // 检查postId集合是否相同
+                    if (currentPosFull != null && currentPosFull.f0 != null && currentPosFull.f0.equals(posLabel)) {
+                        Set<Long> existingPosPostIdSet = currentPosFull.f1 != null ? currentPosFull.f1 : new HashSet<>();
+                        if (isPostIdSetEqual(newPosPostIdSet, existingPosPostIdSet)) {
+                            // 标签相同且postId集合相同，跳过写入（避免重复刷新TTL）
+                            writePos = false;
+                            if (isMonitored) {
+                                LOG.info("[监控用户 {}] key2触发强制降级，但postId集合相同，跳过刷新TTL（posLabel={}），postId集合={}", 
+                                        viewerId, posLabel, newPosPostIdSet);
+                            }
+                        } else {
+                            // postId集合不同，需要写入
+                            writePos = true;
+                            if (isMonitored) {
+                                LOG.info("[监控用户 {}] key2触发强制降级，强制刷新key1 TTL（posLabel={}），触发postId={}，新postId集合={}", 
+                                        viewerId, posLabel, triggerNegPostId, newPosPostIdSet);
+                            }
+                        }
+                    } else {
+                        // Redis中没有完整值或标签不同，需要写入
+                        writePos = true;
+                        if (isMonitored) {
+                            LOG.info("[监控用户 {}] key2触发强制降级，强制刷新key1 TTL（posLabel={}），触发postId={}", 
+                                    viewerId, posLabel, triggerNegPostId);
+                        }
+                    }
+                } else if (!writePos && isMonitored) {
+                    LOG.info("[监控用户 {}] key1 不更新：posLevel={} vs negLevel={}, oldPosLevel={}, explicitGuard={}, negTriggered={}, 条件A(passNeg)={}, 条件B(passPos)={}",
+                            viewerId, posLevel, negLevel, posOldLevel, explicitGuardActive, negTriggeredPosUpdate, passNeg, passPos);
+                }
+            }
+
+            // 提取负反馈相关的postId集合（用于去重判断）
+            Set<Long> newNegPostIdSet = new HashSet<>();
+            if (negativeStats != null) {
+                // 收集所有负反馈相关的postId
+                for (PostBehaviorDetail detail : negativeStats.negativePostDetails) {
+                    newNegPostIdSet.add(detail.postId);
                 }
             }
 
@@ -247,7 +444,30 @@ public class UserPornLabelJobV3 {
                     int newNegLevel = getLabelLevel(negLabel);
                     int oldNegLevel = getLabelLevel(existingNeg);
                     if (newNegLevel <= oldNegLevel) {
-                        writeNeg = true;
+                        // 去重判断：如果标签相同且postId集合相同，则不写入
+                        if (newNegLevel == oldNegLevel && currentNegFull != null && currentNegFull.f0 != null && currentNegFull.f0.equals(negLabel)) {
+                            Set<Long> existingNegPostIdSet = currentNegFull.f1 != null ? currentNegFull.f1 : new HashSet<>();
+                            if (isPostIdSetEqual(newNegPostIdSet, existingNegPostIdSet)) {
+                                // 标签相同且postId集合相同，跳过写入
+                                if (isMonitored) {
+                                    LOG.info("[监控用户 {}] key2 跳过写入（去重）：标签={}，postId集合相同={}，Redis中的postId集合={}", 
+                                            viewerId, negLabel, newNegPostIdSet, existingNegPostIdSet);
+                                }
+                                writeNeg = false;
+                            } else {
+                                writeNeg = true;
+                                if (isMonitored) {
+                                    LOG.info("[监控用户 {}] key2 需要写入：postId集合不同，新集合={}，旧集合={}", 
+                                            viewerId, newNegPostIdSet, existingNegPostIdSet);
+                                }
+                            }
+                        } else {
+                            writeNeg = true;
+                            if (isMonitored && currentNegFull != null) {
+                                LOG.info("[监控用户 {}] key2 需要写入：标签不同或等级不同，新标签={}，旧标签={}", 
+                                        viewerId, negLabel, currentNegFull.f0);
+                            }
+                        }
                     } else if (isMonitored) {
                         LOG.info("[监控用户 {}] key2 不更新：newNegLevel={} > oldNegLevel={}", viewerId, newNegLevel, oldNegLevel);
                     }
@@ -257,52 +477,244 @@ public class UserPornLabelJobV3 {
             if (isMonitored) {
                 LOG.info("[监控用户 {}] 计算结果: posLabel={}, negLabel={}, writePos={}, writeNeg={}, keyPos={}, keyNeg={}",
                         viewerId, posLabel, negLabel, writePos, writeNeg, keyPos, keyNeg);
+                if (writePos && positiveStats != null) {
+                    // [色情标签写入] 统一关键字标识
+                    LOG.info("[色情标签写入][监控用户 {}] ✓ key1正反馈写入Redis: key={}, value={}, 触发postId={}", 
+                            viewerId, keyPos, posLabel, triggerPosPostId);
+                    // 打印正反馈详细原因
+                    StringBuilder detail = new StringBuilder();
+                    detail.append("正反馈原因详情: ");
+                    
+                    // 如果有明确的正反馈行为（点赞、评论等），优先显示这些postId
+                    if (!positiveStats.positivePostDetails.isEmpty()) {
+                        detail.append("明确正反馈行为postId队列: ");
+                        for (PostBehaviorDetail detailItem : positiveStats.positivePostDetails) {
+                            detail.append(String.format("postId=%d(standingTime=%.2f秒, progressTime=%.2f秒", 
+                                    detailItem.postId, detailItem.standingTime, detailItem.progressTime));
+                            if (!detailItem.positiveActions.isEmpty()) {
+                                detail.append(", 行为=").append(String.join(",", detailItem.positiveActions));
+                            }
+                            detail.append("); ");
+                        }
+                    }
+                    
+                    // 如果是最大standingTime>=10秒触发的，显示最大standingTime和相关信息
+                    float maxStandingTime = 0.0f;
+                    PostBehaviorDetail maxPostDetail = null;
+                    for (PostBehaviorDetail detailItem : positiveStats.allPostDetails) {
+                        if (detailItem.standingTime > maxStandingTime) {
+                            maxStandingTime = detailItem.standingTime;
+                            maxPostDetail = detailItem;
+                        }
+                    }
+                    if (maxStandingTime >= 10.0f && maxPostDetail != null) {
+                        if (!positiveStats.positivePostDetails.isEmpty()) {
+                            detail.append(" | ");
+                        }
+                        detail.append("长播触发(最大standingTime=").append(String.format("%.2f", maxStandingTime)).append("秒, postId=").append(maxPostDetail.postId).append(")");
+                    }
+                    
+                    LOG.info("[色情标签写入][监控用户 {}] {}", viewerId, detail.toString());
+                    
+                    // 打印所有postId的播放时长记录（长播触发时）
+                    if (maxStandingTime >= 10.0f && !positiveStats.allPostDetails.isEmpty()) {
+                        StringBuilder allDetail = new StringBuilder();
+                        allDetail.append("所有postId播放时长记录(共").append(positiveStats.allPostDetails.size()).append("个): ");
+                        for (PostBehaviorDetail detailItem : positiveStats.allPostDetails) {
+                            allDetail.append(String.format("postId=%d(standingTime=%.2f秒, progressTime=%.2f秒); ", 
+                                    detailItem.postId, detailItem.standingTime, detailItem.progressTime));
+                        }
+                        LOG.info("[色情标签写入][监控用户 {}] {}", viewerId, allDetail.toString());
+                    }
+                }
+                if (writeNeg && negativeStats != null) {
+                    // [色情标签写入] 统一关键字标识
+                    LOG.info("[色情标签写入][监控用户 {}] ✓ key2负反馈写入Redis: key={}, value={}, 触发postId={}", 
+                            viewerId, keyNeg, negLabel, triggerNegPostId);
+                    // 打印负反馈详细原因：显示所有短播postId队列
+                    if (!negativeStats.negativePostDetails.isEmpty()) {
+                        StringBuilder detail = new StringBuilder();
+                        detail.append("负反馈原因详情: ");
+                        detail.append("短播postId队列(共").append(negativeStats.shortPlayPostCount).append("个): ");
+                        for (PostBehaviorDetail detailItem : negativeStats.negativePostDetails) {
+                            detail.append(String.format("postId=%d(standingTime=%.2f秒, progressTime=%.2f秒", 
+                                    detailItem.postId, detailItem.standingTime, detailItem.progressTime));
+                            if (!detailItem.negativeActions.isEmpty()) {
+                                detail.append(", 行为=").append(String.join(",", detailItem.negativeActions));
+                            }
+                            detail.append("); ");
+                        }
+                        LOG.info("[色情标签写入][监控用户 {}] {}", viewerId, detail.toString());
+                    }
+                    
+                    // 打印所有postId的播放时长记录（短播触发时）
+                    if (!negativeStats.allPostDetails.isEmpty()) {
+                        StringBuilder allDetail = new StringBuilder();
+                        allDetail.append("所有postId播放时长记录(共").append(negativeStats.allPostDetails.size()).append("个): ");
+                        for (PostBehaviorDetail detailItem : negativeStats.allPostDetails) {
+                            allDetail.append(String.format("postId=%d(standingTime=%.2f秒, progressTime=%.2f秒); ", 
+                                    detailItem.postId, detailItem.standingTime, detailItem.progressTime));
+                        }
+                        LOG.info("[色情标签写入][监控用户 {}] {}", viewerId, allDetail.toString());
+                    }
+                }
             }
 
             RedisWriteResult result = new RedisWriteResult();
             result.writePos = writePos;
             result.writeNeg = writeNeg;
+            result.posPostIdSet = newPosPostIdSet;
+            result.negPostIdSet = newNegPostIdSet;
+            long currentTime = System.currentTimeMillis();
+            
             if (writePos) {
                 result.posKey = keyPos;
+                // 旧格式：只存储label（保持向后兼容）
                 result.posValue = posLabel;
+                // 新格式：存储 label|postIdSet|timestamp
+                result.posKeyMeta = String.format(REDIS_KEY_POS_META, viewerId);
+                result.posValueMeta = buildRedisValueWithPostIdSet(posLabel, newPosPostIdSet, currentTime);
+                result.triggerPosPostId = triggerPosPostId;
             }
             if (writeNeg) {
                 result.negKey = keyNeg;
+                // 旧格式：只存储label（保持向后兼容）
                 result.negValue = negLabel;
+                // 新格式：存储 label|postIdSet|timestamp
+                result.negKeyMeta = String.format(REDIS_KEY_NEG_META, viewerId);
+                result.negValueMeta = buildRedisValueWithPostIdSet(negLabel, newNegPostIdSet, currentTime);
+                result.triggerNegPostId = triggerNegPostId;
             }
             return result;
         }
 
         private Map<String, TagStatistics> aggregateStats(UserNExposures event, boolean isMonitored) {
             Map<String, TagStatistics> statsMap = new HashMap<>();
+            long filterTime = Instant.now().getEpochSecond() - (5 * 60);
             for (Tuple4<List<PostViewInfo>, Long, Long, String> tuple : event.firstNExposures) {
                 String pornTag = tuple.f3;
+                long postId = tuple.f1;
                 TagStatistics stats = statsMap.getOrDefault(pornTag, new TagStatistics());
+                // 记录触发该标签的postId（取第一个遇到的postId）
+                if (stats.triggerPostId == 0) {
+                    stats.triggerPostId = postId;
+                }
 
+                boolean hasPositiveBehavior = false;  // 标记当前postId是否有明确的正反馈行为（点赞、评论等）
+                boolean hasNegativeBehavior = false;  // 标记当前postId是否有明确的负反馈行为（dislike等）
+                boolean hasDislikeBehavior = false;  // 标记当前postId是否有dislike行为
+                PostBehaviorDetail postDetail = null;  // 当前postId的行为详情
+                float postTotalStandingTime = 0.0f;  // 当前postId的总时长（累加所有info的standingTime）
+                float postTotalProgressTime = 0.0f;  // 当前postId的总进度时长（累加所有info的progressTime）
+                
+                // 第一步：聚合postId下所有info的standingTime和progressTime，收集行为信息
                 for (PostViewInfo info : tuple.f0) {
                     if (info == null) {
                         continue;
                     }
+                    // 累加总播放时长（保留字段，用于统计）
                     stats.standingTime += info.standingTime;
+                    // 累加当前postId的总时长和总进度时长
+                    postTotalStandingTime += info.standingTime;
+                    postTotalProgressTime += info.progressTime;
 
-                    // 正反馈（沿用老规则）
-                    if (info.interaction != null && !info.interaction.isEmpty()) {
-                        for (int action : info.interaction) {
-                            if (isPositiveAction(action)) {
-                                stats.positiveCount++;
-                            } else if (action == 11 || action == 7 || action == 18) { // dislike / 不感兴趣
-                                stats.negativeCount++;
-                                if (action == 11) {
-                                    stats.dislikeCount++;
+                    // 初始化postId详情（使用第一个info初始化，后续会更新为总时长）
+                    if (postDetail == null) {
+                        postDetail = new PostBehaviorDetail(postId, 0.0f, 0.0f);
+                    }
+
+                    // 收集正反馈行为（沿用老规则）
+                    if (tuple.f2 > filterTime) {
+                        if (info.interaction != null && !info.interaction.isEmpty()) {
+                            for (int action : info.interaction) {
+                                if (isPositiveAction(action)) {
+                                    // 只标记，不计数（避免重复计数）
+                                    hasPositiveBehavior = true;
+                                    String actionName = getActionName(action);
+                                    if (!postDetail.positiveActions.contains(actionName)) {
+                                        postDetail.positiveActions.add(actionName);
+                                    }
+                                } else if (action == 11 || action == 7 || action == 18) { // dislike / 不感兴趣
+                                    // 只标记，不计数（避免重复计数）
+                                    hasNegativeBehavior = true;
+                                    if (action == 11) {
+                                        hasDislikeBehavior = true;
+                                        if (!postDetail.negativeActions.contains("dislike")) {
+                                            postDetail.negativeActions.add("dislike");
+                                        }
+                                    } else if (action == 7) {
+                                        if (!postDetail.negativeActions.contains("不感兴趣")) {
+                                            postDetail.negativeActions.add("不感兴趣");
+                                        }
+                                    } else if (action == 18) {
+                                        if (!postDetail.negativeActions.contains("不感兴趣")) {
+                                            postDetail.negativeActions.add("不感兴趣");
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
-
-                    // 短播：播放时长 < 3s 视为负反馈
-                    if (info.standingTime > 0 && info.standingTime < 3.0f) {
-                        stats.shortPlayCount++;
-                        stats.negativeCount++;
+                }
+                
+                // 第二步：更新postId的总时长（聚合后的值）
+                if (postDetail != null) {
+                    postDetail.standingTime = postTotalStandingTime;
+                    postDetail.progressTime = postTotalProgressTime;
+                }
+                
+                // 第三步：基于postId的总时长进行正负反馈判断，并按postId计数（避免重复计数）
+                boolean hasShortPlayInfo = false;  // 标记当前postId是否为短播（基于总时长判断）
+                
+                // 短播判断：使用postId的总时长（聚合后）< 3s 且总进度时长 < 3s 视为负反馈
+                if (postTotalStandingTime < 3.0f && postTotalProgressTime < 3.0f) {
+                    stats.shortPlayCount++;
+                    hasShortPlayInfo = true;
+                    hasNegativeBehavior = true;
+                    if (postDetail != null && !postDetail.negativeActions.contains("短播")) {
+                        postDetail.negativeActions.add("短播");
+                    }
+                }
+                
+                // 按postId计数（每个postId只计数一次，避免重复计数）
+                if (hasPositiveBehavior) {
+                    stats.positiveCount++;  // 该postId有正反馈行为，计数+1
+                }
+                if (hasNegativeBehavior) {
+                    stats.negativeCount++;  // 该postId有负反馈行为，计数+1
+                }
+                if (hasDislikeBehavior) {
+                    stats.dislikeCount++;  // 该postId有dislike行为，计数+1
+                }
+                
+                // 如果当前postId是短播，则计入短播postId数量（用于负反馈判断）
+                if (hasShortPlayInfo) {
+                    stats.shortPlayPostCount++;
+                }
+                
+                // 记录postId的详细行为信息（用于日志）
+                if (postDetail != null) {
+                    // 所有postId都记录
+                    stats.allPostDetails.add(postDetail);
+                    // 记录所有postId的standingTime，用于后续计算最大值
+                    // 用于正反馈判断：该标签下所有postId中standingTime最大的 >= 10秒
+                    if (postDetail.standingTime >= 10.0f) {
+                        stats.longPlayPostDetails.add(postDetail);
+                    }
+                    // 有明确正反馈行为的postId（点赞、评论等）
+                    if (hasPositiveBehavior) {
+                        stats.positivePostDetails.add(postDetail);
+                    }
+                    // 有明确负反馈行为的postId（短播、dislike等）
+                    // 注意：所有短播的postId都需要记录，即使没有其他负反馈行为
+                    if (hasNegativeBehavior || hasShortPlayInfo) {
+                        // 如果是短播但没有其他负反馈行为，确保negativeActions包含"短播"
+                        if (hasShortPlayInfo && !hasNegativeBehavior) {
+                            if (!postDetail.negativeActions.contains("短播")) {
+                                postDetail.negativeActions.add("短播");
+                            }
+                        }
+                        stats.negativePostDetails.add(postDetail);
                     }
                 }
 
@@ -320,66 +732,195 @@ public class UserPornLabelJobV3 {
             return action == 1 || action == 3 || action == 5 || action == 6 || action == 9
                     || action == 10 || action == 13 || action == 15 || action == 16;
         }
+        
+        /**
+         * 获取行为名称（用于日志）
+         */
+        private String getActionName(int action) {
+            switch (action) {
+                case 1: return "点赞";
+                case 3: return "评论";
+                case 5: return "分享";
+                case 6: return "收藏";
+                case 9: return "下载";
+                case 10: return "购买";
+                case 13: return "关注";
+                case 15: return "查看主页";
+                case 16: return "订阅";
+                default: return "正反馈行为" + action;
+            }
+        }
 
-        private String pickHighestPositive(Map<String, TagStatistics> statsMap, boolean isMonitored, long uid) {
+        private Tuple3<String, Long, TagStatistics> pickHighestPositive(Map<String, TagStatistics> statsMap, boolean isMonitored, long uid) {
             String bestTag = null;
+            long bestPostId = 0;
             int bestLevel = -1;
+            TagStatistics bestStats = null;
             for (Map.Entry<String, TagStatistics> entry : statsMap.entrySet()) {
                 String tag = entry.getKey();
                 TagStatistics s = entry.getValue();
                 if ("unk".equals(tag) || CleanTag.equals(tag)) {
                     continue;
                 }
-                boolean positive = (s.standingTime >= 10.0f) || (s.positiveCount > 0);
+                // 正反馈判断：该标签下所有postId中standingTime最大的 >= 10秒 或 有正反馈行为
+                // 计算该标签下所有postId中standingTime的最大值
+                float maxStandingTime = 0.0f;
+                for (PostBehaviorDetail detail : s.allPostDetails) {
+                    if (detail.standingTime > maxStandingTime) {
+                        maxStandingTime = detail.standingTime;
+                    }
+                }
+                // 判断：最大standingTime >= 10秒 或 有正反馈行为
+                boolean hasLongPlay = maxStandingTime >= 10.0f;
+                boolean positive = hasLongPlay || (s.positiveCount > 0);
                 boolean noNegative = s.negativeCount <= 0;
                 if (positive && noNegative) {
                     int level = getTagLevel(tag);
                     if (level > bestLevel) {
                         bestLevel = level;
                         bestTag = tag;
+                        bestPostId = s.triggerPostId;
+                        bestStats = s;
                     }
                 }
             }
             if (isMonitored) {
-                LOG.info("[监控用户 {}] 正反馈候选: bestTag={}, level={}", uid, bestTag, bestLevel);
+                LOG.info("[监控用户 {}] 正反馈候选: bestTag={}, level={}, triggerPostId={}", uid, bestTag, bestLevel, bestPostId);
             }
-            return bestTag;
+            return Tuple3.of(bestTag, bestPostId, bestStats);
         }
 
-        private String pickLowestNegative(Map<String, TagStatistics> statsMap, boolean isMonitored, long uid) {
+        private Tuple3<String, Long, TagStatistics> pickLowestNegative(Map<String, TagStatistics> statsMap, boolean isMonitored, long uid) {
             String worstTag = null;
+            long worstPostId = 0;
             int worstLevel = Integer.MAX_VALUE; // 越低越好（explicit高，unk低）
+            TagStatistics worstStats = null;
             for (Map.Entry<String, TagStatistics> entry : statsMap.entrySet()) {
                 String tag = entry.getKey();
                 TagStatistics s = entry.getValue();
                 if ("unk".equals(tag) || CleanTag.equals(tag)) {
                     continue;
                 }
-                // 负反馈触发条件：短播次数 >=5 或 dislike >=1
-                if (s.shortPlayCount >= 5 || s.dislikeCount >= 1) {
+                // 负反馈触发条件：该标签下有5个postId的时长<3秒 或 dislike >=1
+                if (s.shortPlayPostCount >= 5 || s.dislikeCount >= 1) {
                     int level = getTagLevel(tag);
                     if (level < worstLevel) {
                         worstLevel = level;
                         worstTag = tag;
+                        worstPostId = s.triggerPostId;
+                        worstStats = s;
                     }
                 }
             }
             if (isMonitored) {
-                LOG.info("[监控用户 {}] 负反馈候选: worstTag={}, level={}", uid, worstTag, worstLevel);
+                LOG.info("[监控用户 {}] 负反馈候选: worstTag={}, level={}, triggerPostId={}", uid, worstTag, worstLevel, worstPostId);
             }
-            return worstTag;
+            return Tuple3.of(worstTag, worstPostId, worstStats);
         }
 
+        /**
+         * 从Redis读取标签值（兼容旧格式和新格式）
+         * 新格式：label|postIdSet|timestamp
+         * 旧格式：label
+         * @return 标签值（如果是新格式，只返回label部分）
+         */
         private String readLabelFromRedis(String key) {
             try {
                 Tuple2<String, byte[]> tuple = redisManager.getStringCommands().get(key);
                 if (tuple != null && tuple.f1 != null && tuple.f1.length > 0) {
-                    return new String(tuple.f1, java.nio.charset.StandardCharsets.UTF_8);
+                    String value = new String(tuple.f1, java.nio.charset.StandardCharsets.UTF_8);
+                    // 尝试解析新格式：label|postIdSet|timestamp
+                    if (value.contains("|")) {
+                        String[] parts = value.split("\\|", 3);
+                        if (parts.length >= 1) {
+                            return parts[0];  // 返回label部分
+                        }
+                    }
+                    // 旧格式：直接返回
+                    return value;
                 }
             } catch (Exception e) {
                 LOG.warn("读Redis失败 key={}, err={}", key, e.getMessage());
             }
             return null;
+        }
+
+        /**
+         * 从Redis读取完整的值（包括postId集合和timestamp）
+         * @return Tuple3<label, postIdSet, timestamp>，如果不存在或格式错误则返回null
+         */
+        private Tuple3<String, Set<Long>, Long> readFullValueFromRedis(String key) {
+            try {
+                Tuple2<String, byte[]> tuple = redisManager.getStringCommands().get(key);
+                if (tuple != null && tuple.f1 != null && tuple.f1.length > 0) {
+                    String value = new String(tuple.f1, java.nio.charset.StandardCharsets.UTF_8);
+                    // 尝试解析新格式：label|postIdSet|timestamp
+                    if (value.contains("|")) {
+                        String[] parts = value.split("\\|", 3);
+                        if (parts.length >= 1) {
+                            String label = parts[0];
+                            Set<Long> postIdSet = new HashSet<>();
+                            Long timestamp = null;
+                            
+                            if (parts.length >= 2 && !parts[1].isEmpty()) {
+                                // 解析postId集合
+                                String[] postIds = parts[1].split(",");
+                                for (String postIdStr : postIds) {
+                                    try {
+                                        postIdSet.add(Long.parseLong(postIdStr.trim()));
+                                    } catch (NumberFormatException e) {
+                                        // 忽略无效的postId
+                                    }
+                                }
+                            }
+                            
+                            if (parts.length >= 3 && !parts[2].isEmpty()) {
+                                try {
+                                    timestamp = Long.parseLong(parts[2].trim());
+                                } catch (NumberFormatException e) {
+                                    // 忽略无效的timestamp
+                                }
+                            }
+                            
+                            return Tuple3.of(label, postIdSet, timestamp);
+                        }
+                    }
+                    // 旧格式：只有label，没有postIdSet和timestamp
+                    return Tuple3.of(value, new HashSet<>(), null);
+                }
+            } catch (Exception e) {
+                LOG.warn("读Redis完整值失败 key={}, err={}", key, e.getMessage());
+            }
+            return null;
+        }
+
+        /**
+         * 构建Redis值（新格式：label|postIdSet|timestamp）
+         */
+        private String buildRedisValueWithPostIdSet(String label, Set<Long> postIdSet, long timestamp) {
+            // 将postId集合排序后转为逗号分隔的字符串
+            List<Long> sortedPostIds = new ArrayList<>(postIdSet);
+            Collections.sort(sortedPostIds);
+            String postIdSetStr = String.join(",", sortedPostIds.stream()
+                    .map(String::valueOf)
+                    .toArray(String[]::new));
+            return String.format("%s|%s|%d", label, postIdSetStr, timestamp);
+        }
+
+        /**
+         * 比较两个postId集合是否相同（忽略顺序）
+         */
+        private boolean isPostIdSetEqual(Set<Long> set1, Set<Long> set2) {
+            if (set1 == null && set2 == null) {
+                return true;
+            }
+            if (set1 == null || set2 == null) {
+                return false;
+            }
+            if (set1.size() != set2.size()) {
+                return false;
+            }
+            return set1.containsAll(set2);
         }
     }
 
