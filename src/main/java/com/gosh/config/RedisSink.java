@@ -28,6 +28,7 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
     private final RedisConfig config;
     private final boolean async;
     private final int batchSize;
+    private final String command; // 保存command字段的副本，避免序列化问题
     private transient RedisCommands<String, Tuple2<String, byte[]>> redisCommands;
     private transient RedisAdvancedClusterCommands<String, Tuple2<String, byte[]>> redisClusterCommands;
     private transient AtomicInteger pendingOperations;
@@ -39,24 +40,37 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
     private transient Map<String, List<byte[]>> setBatchBuffer; // 用于SADD的缓冲区：key -> values
     private transient AtomicInteger batchCount; // 批处理计数器
     private int maxPendingOperations;
+    private long batchIntervalMs; // 批处理时间间隔（毫秒）
+    private transient long lastFlushTime; // 上次flush的时间（毫秒）
 
     public RedisSink(RedisConfig config, boolean async, int batchSize) {
-        this(config, async, batchSize, 10); // 默认maxPendingOperations=10
+        this(config, async, batchSize, 10, 50000); // 默认maxPendingOperations=10，batchIntervalMs=60秒
     }
 
     public RedisSink(RedisConfig config, boolean async, int batchSize, int maxPendingOperations) {
+        this(config, async, batchSize, maxPendingOperations, 5000); // 默认batchIntervalMs=60秒
+    }
+
+    public RedisSink(RedisConfig config, boolean async, int batchSize, int maxPendingOperations, long batchIntervalMs) {
         this.config = config;
         this.async = async;
         this.batchSize = batchSize;
         this.maxPendingOperations = maxPendingOperations;
+        this.batchIntervalMs = batchIntervalMs;
+        // 保存command字段的副本，避免序列化问题
+        this.command = config.getCommand() != null ? config.getCommand().toUpperCase() : "SET";
     }
 
     public RedisSink(Properties props) {
-        this(RedisConfig.fromProperties(props), true, 100, 10);
+        this(RedisConfig.fromProperties(props), true, 100, 10, 50000);
     }
 
     public void setMaxPendingOperations(int maxPendingOperations) {
         this.maxPendingOperations = maxPendingOperations;
+    }
+
+    public void setBatchIntervalMs(long batchIntervalMs) {
+        this.batchIntervalMs = batchIntervalMs;
     }
 
     @Override
@@ -77,8 +91,9 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
         this.stringBatchBuffer = new ConcurrentHashMap<>(); // 用于SET等字符串命令
         this.setBatchBuffer = new ConcurrentHashMap<>(); // 用于SADD等集合命令
         this.batchCount = new AtomicInteger(0);
+        this.lastFlushTime = System.currentTimeMillis();
 
-        LOG.info("Redis Sink opened with config: {}, async: {}, batchSize: {}", config, async, batchSize);
+        LOG.info("Redis Sink opened with config: {}, async: {}, batchSize: {}, batchIntervalMs: {}", config, async, batchSize, batchIntervalMs);
     }
 
     private boolean isRunning() {
@@ -129,26 +144,31 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
             return;
         }
 
-        String command = config.getCommand().toUpperCase();
+        // 使用保存的command副本，避免序列化问题
+        String currentCommand = this.command;
         // if (isClusterMode) {
         //     executeClusterCommand(command, key, field, valueBytes, valueMap);
         // } else {
         //     executeSingleCommand(command, key, field, valueBytes, valueMap);
         // }
         // 将数据加入缓冲区
-        boolean added = isBatchBuffer(command, key, field, valueBytes, valueMap);
+        boolean added = isBatchBuffer(currentCommand, key, field, valueBytes, valueMap);
         if (added) {
             batchCount.incrementAndGet();
-            // 达到批处理大小则触发刷盘，同时确保pending操作数不超过最大值
-            if (batchCount.get() >= batchSize && pendingOperations.get() < maxPendingOperations) {
+            // 检查是否满足批量大小条件或时间条件，如果满足则触发刷盘
+            long currentTime = System.currentTimeMillis();
+            boolean sizeCondition = batchCount.get() >= batchSize;
+            boolean timeCondition = batchIntervalMs > 0 && (currentTime - lastFlushTime) >= batchIntervalMs;
+            
+            if ((sizeCondition || timeCondition) && pendingOperations.get() < maxPendingOperations) {
                 flushBatch();
             }
         } else {
             // 不支持批量处理的命令直接执行
             if (isClusterMode) {
-                executeClusterCommand(command, key, field, valueBytes, valueMap);
+                executeClusterCommand(currentCommand, key, field, valueBytes, valueMap);
             } else {
-                executeSingleCommand(command, key, field, valueBytes, valueMap);
+                executeSingleCommand(currentCommand, key, field, valueBytes, valueMap);
             }
         }
     }
@@ -216,6 +236,11 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
                 return false;
         }
     }
+
+    /**
+     * 按时间间隔刷新缓冲区数据到Redis（不考虑原有条件）
+     */
+
 
     /**
      * 刷新缓冲区数据到Redis
@@ -621,6 +646,8 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
         stringBatchBuffer.clear();
         setBatchBuffer.clear();
         batchCount.set(0);
+        // 更新上次flush的时间
+        lastFlushTime = System.currentTimeMillis();
     }
     
 
