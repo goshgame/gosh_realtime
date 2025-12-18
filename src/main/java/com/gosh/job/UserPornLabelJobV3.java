@@ -170,8 +170,8 @@ public class UserPornLabelJobV3 {
             RedisConfig redisConfigNeg = RedisConfig.fromProperties(RedisUtil.loadProperties());
             redisConfigNeg.setTtl(REDIS_TTL_NEG);
 
-            RedisUtil.addRedisSink(posStream, redisConfigPos, true, 100);
-            RedisUtil.addRedisSink(negStream, redisConfigNeg, true, 100);
+            RedisUtil.addRedisSink(posStream, redisConfigPos, true, 100, 10, 5000);
+            RedisUtil.addRedisSink(negStream, redisConfigNeg, true, 100, 10, 5000);
 
             // 执行任务
             env.execute("UserPornLabelJobV3");
