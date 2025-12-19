@@ -124,6 +124,10 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
 
         if (value instanceof Tuple2) {
             Tuple2<?, ?> tuple = (Tuple2<?, ?>) value;
+            if (tuple.f0 == null) {
+                LOG.error("Key is null in Tuple2 input");
+                return;
+            }
             key = tuple.f0.toString();
             if (tuple.f1 instanceof byte[]) {
                 valueBytes = (byte[]) tuple.f1;
@@ -134,8 +138,12 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
             }
         } else if (value instanceof Tuple3) {
             Tuple3<?, ?, ?> tuple = (Tuple3<?, ?, ?>) value;
+            if (tuple.f0 == null) {
+                LOG.error("Key is null in Tuple3 input");
+                return;
+            }
             key = tuple.f0.toString();
-            field = tuple.f1.toString();
+            field = tuple.f1 != null ? tuple.f1.toString() : null;
             valueBytes = (byte[]) tuple.f2;
         }
 
@@ -178,6 +186,13 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
      * @return 是否成功加入缓冲区（仅支持批量的命令返回true）
      */
     private boolean isBatchBuffer(String command, String key, String field, byte[] valueBytes, Map<String, byte[]> valueMap) {
+        // 检查批处理缓冲区是否已初始化
+        if (batchBuffer == null || stringBatchBuffer == null || listBatchBuffer == null || setBatchBuffer == null) {
+            LOG.warn("Batch buffers are not initialized, skipping batch processing,{},{},{},{}",
+                            batchBuffer,stringBatchBuffer,listBatchBuffer, setBatchBuffer );
+            return false;
+        }
+        LOG.warn("Sink Redis command:{},key:{},field:{},valueBytes:{},value:{}", command,key,field,valueBytes,valueMap );
         switch (command) {
             case "HSET":
             case "DEL_HSET":
@@ -289,6 +304,12 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
      * 同步执行批量写入
      */
     private void doSyncBatchWrite() {
+        // 检查缓冲区是否已初始化
+        if (batchBuffer == null || stringBatchBuffer == null || listBatchBuffer == null || setBatchBuffer == null) {
+            LOG.error("Batch buffers are not initialized, skipping sync batch write");
+            return;
+        }
+        
         // 检查是否所有缓冲区都为空
         boolean isAllBuffersEmpty = batchBuffer.isEmpty() && stringBatchBuffer.isEmpty() && listBatchBuffer.isEmpty() && setBatchBuffer.isEmpty();
         if (isAllBuffersEmpty) {
@@ -316,20 +337,20 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
 
                 if (isClusterMode) {
                     // 处理DEL_HSET和DEL_HMSET的删除逻辑
-                    if (("DEL_HSET".equals(command) || "DEL_HMSET".equals(command)) && config.getTtl() <= 0) {
+                    if ( ("DEL_HSET".equals(command) || "DEL_HMSET".equals(command)) && config != null && config.getTtl() <= 0) {
                         redisClusterCommands.del(key);
                     }
                     redisClusterCommands.hmset(key, wrappedMap);
-                    if (config.getTtl() > 0) {
+                    if (config != null && config.getTtl() > 0) {
                         redisClusterCommands.expire(key, config.getTtl());
                     }
                 } else {
                     // 处理DEL_HSET和DEL_HMSET的删除逻辑
-                    if (("DEL_HSET".equals(command) || "DEL_HMSET".equals(command)) && config.getTtl() <= 0) {
+                    if ( ("DEL_HSET".equals(command) || "DEL_HMSET".equals(command)) && config != null && config.getTtl() <= 0) {
                         redisCommands.del(key);
                     }
                     redisCommands.hmset(key, wrappedMap);
-                    if (config.getTtl() > 0) {
+                    if (config != null && config.getTtl() > 0) {
                         redisCommands.expire(key, config.getTtl());
                     }
                 }
@@ -348,14 +369,14 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
                     redisClusterCommands.mset(wrappedStrings);
                     // 批量设置过期时间
                     stringBatchBuffer.keySet().forEach(key -> {
-                        if (config.getTtl() > 0) {
+                        if (config != null && config.getTtl() > 0) {
                             redisClusterCommands.expire(key, config.getTtl());
                         }
                     });
                 } else {
                     redisCommands.mset(wrappedStrings);
                     stringBatchBuffer.keySet().forEach(key -> {
-                        if (config.getTtl() > 0) {
+                        if (config != null && config.getTtl() > 0) {
                             redisCommands.expire(key, config.getTtl());
                         }
                     });
@@ -365,7 +386,7 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
         }
 
         // 处理列表命令（LPUSH/RPUSH）
-        String currentCommand = config.getCommand().toUpperCase();
+        String currentCommand = this.command;
         if ((currentCommand.equals("LPUSH") || currentCommand.equals("RPUSH")) && !listBatchBuffer.isEmpty()) {
             for (Map.Entry<String, List<byte[]>> entry : listBatchBuffer.entrySet()) {
                 String key = entry.getKey();
@@ -386,7 +407,7 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
                     } else {
                         redisClusterCommands.rpush(key, tupleValues);
                     }
-                    if (config.getTtl() > 0) {
+                    if (config != null && config.getTtl() > 0) {
                         redisClusterCommands.expire(key, config.getTtl());
                     }
                 } else {
@@ -395,7 +416,7 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
                     } else {
                         redisCommands.rpush(key, tupleValues);
                     }
-                    if (config.getTtl() > 0) {
+                    if (config != null && config.getTtl() > 0) {
                         redisCommands.expire(key, config.getTtl());
                     }
                 }
@@ -420,12 +441,12 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
 
                 if (isClusterMode) {
                     redisClusterCommands.sadd(key, tupleValues);
-                    if (config.getTtl() > 0) {
+                    if (config != null && config.getTtl() > 0) {
                         redisClusterCommands.expire(key, config.getTtl());
                     }
                 } else {
                     redisCommands.sadd(key, tupleValues);
-                    if (config.getTtl() > 0) {
+                    if (config != null && config.getTtl() > 0) {
                         redisCommands.expire(key, config.getTtl());
                     }
                 }
@@ -438,6 +459,12 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
      * 异步执行批量写入
      */
     private CompletableFuture<Void> doAsyncBatchWrite() {
+        // 检查缓冲区是否已初始化
+        if (batchBuffer == null || stringBatchBuffer == null || listBatchBuffer == null || setBatchBuffer == null) {
+            LOG.error("Batch buffers are not initialized, skipping async batch write");
+            return CompletableFuture.completedFuture(null);
+        }
+        
         // 检查是否所有缓冲区都为空
         boolean isAllBuffersEmpty = batchBuffer.isEmpty() && stringBatchBuffer.isEmpty() && listBatchBuffer.isEmpty() && setBatchBuffer.isEmpty();
         if (isAllBuffersEmpty) {
@@ -477,11 +504,11 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
                 if (isClusterMode) {
                     future = connectionManager.executeClusterAsync(clusterCmd -> {
                         // 处理DEL_HSET和DEL_HMSET的删除逻辑
-                        if ( ("DEL_HSET".equals(cmd) || "DEL_HMSET".equals(cmd)) && config.getTtl() <= 0) {
+                        if ( ("DEL_HSET".equals(cmd) || "DEL_HMSET".equals(cmd)) && config != null && config.getTtl() <= 0) {
                             clusterCmd.del(currentKey);
                         }
                         clusterCmd.hmset(currentKey, finalWrappedMap);
-                        if (config.getTtl() > 0) {
+                        if (config != null && config.getTtl() > 0) {
                             clusterCmd.expire(currentKey, config.getTtl());
                         }
                         LOG.warn("Async batch {} to Redis Cluster - key: {}, fields: {}", cmd, currentKey, finalFieldCount);
@@ -490,11 +517,11 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
                 } else {
                     future = connectionManager.executeAsync(cmdObj -> {
                         // 处理DEL_HSET和DEL_HMSET的删除逻辑
-                        if ( ("DEL_HSET".equals(cmd) || "DEL_HMSET".equals(cmd)) && config.getTtl() <= 0) {
+                        if ( ("DEL_HSET".equals(cmd) || "DEL_HMSET".equals(cmd)) && config != null && config.getTtl() <= 0) {
                             cmdObj.del(currentKey);
                         }
                         cmdObj.hmset(currentKey, finalWrappedMap);
-                        if (config.getTtl() > 0) {
+                        if (config != null && config.getTtl() > 0) {
                             cmdObj.expire(currentKey, config.getTtl());
                         }
                         LOG.warn("Async batch {} to Redis - key: {}, fields: {}", cmd, currentKey, finalFieldCount);
@@ -519,7 +546,7 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
                     future = connectionManager.executeClusterAsync(cmd -> {
                         cmd.mset(wrappedStrings);
                         wrappedStrings.keySet().forEach(key -> {
-                            if (config.getTtl() > 0) {
+                            if (config != null && config.getTtl() > 0) {
                                 cmd.expire(key, config.getTtl());
                             }
                         });
@@ -530,7 +557,7 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
                     future = connectionManager.executeAsync(cmd -> {
                         cmd.mset(wrappedStrings);
                         wrappedStrings.keySet().forEach(key -> {
-                            if (config.getTtl() > 0) {
+                            if (config != null && config.getTtl() > 0) {
                                 cmd.expire(key, config.getTtl());
                             }
                         });
@@ -543,7 +570,7 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
         }
 
         // 处理列表命令（LPUSH/RPUSH）
-        String currentCommand = config.getCommand().toUpperCase();
+        String currentCommand = this.command;
         // 创建listBatchBuffer的副本，避免竞态条件
         Map<String, List<byte[]>> listBatchCopy = new HashMap<>(listBatchBuffer);
         if ((currentCommand.equals("LPUSH") || currentCommand.equals("RPUSH")) && !listBatchCopy.isEmpty()) {
@@ -568,7 +595,7 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
                         } else {
                             cmd.rpush(key, tupleValues);
                         }
-                        if (config.getTtl() > 0) {
+                        if (config != null && config.getTtl() > 0) {
                             cmd.expire(key, config.getTtl());
                         }
                         LOG.warn("Async batch {} to Redis Cluster - key: {}, elements: {}", currentCommand, key, values.size());
@@ -581,7 +608,7 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
                         } else {
                             cmd.rpush(key, tupleValues);
                         }
-                        if (config.getTtl() > 0) {
+                        if (config != null && config.getTtl() > 0) {
                             cmd.expire(key, config.getTtl());
                         }
                         LOG.warn("Async batch {} to Redis - key: {}, elements: {}", currentCommand, key, values.size());
@@ -613,7 +640,7 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
                 if (isClusterMode) {
                     future = connectionManager.executeClusterAsync(cmd -> {
                         cmd.sadd(key, tupleValues);
-                        if (config.getTtl() > 0) {
+                        if (config != null && config.getTtl() > 0) {
                             cmd.expire(key, config.getTtl());
                         }
                         LOG.warn("Async batch SADD to Redis Cluster - key: {}, elements: {}", key, values.size());
@@ -622,7 +649,7 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
                 } else {
                     future = connectionManager.executeAsync(cmd -> {
                         cmd.sadd(key, tupleValues);
-                        if (config.getTtl() > 0) {
+                        if (config != null && config.getTtl() > 0) {
                             cmd.expire(key, config.getTtl());
                         }
                         LOG.warn("Async batch SADD to Redis - key: {}, elements: {}", key, values.size());
@@ -641,11 +668,21 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
      * 清空所有缓冲区并重置计数
      */
     private void clearBatchBuffers() {
-        batchBuffer.clear();
-        listBatchBuffer.clear();
-        stringBatchBuffer.clear();
-        setBatchBuffer.clear();
-        batchCount.set(0);
+        if (batchBuffer != null) {
+            batchBuffer.clear();
+        }
+        if (listBatchBuffer != null) {
+            listBatchBuffer.clear();
+        }
+        if (stringBatchBuffer != null) {
+            stringBatchBuffer.clear();
+        }
+        if (setBatchBuffer != null) {
+            setBatchBuffer.clear();
+        }
+        if (batchCount != null) {
+            batchCount.set(0);
+        }
         // 更新上次flush的时间
         lastFlushTime = System.currentTimeMillis();
     }
@@ -654,9 +691,17 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
 
     private void executeSingleCommand(String command, String key, String field, byte[] valueBytes, Map<String, byte[]> valueMap) {
         try {
+            if (config == null || connectionManager == null) {
+                LOG.error("Config or connectionManager is null");
+                return;
+            }
             if (async) {
                 // 异步执行模式 - 使用重试机制
-                pendingOperations.incrementAndGet();
+                boolean incremented = false;
+                if (pendingOperations != null) {
+                    pendingOperations.incrementAndGet();
+                    incremented = true;
+                }
                 connectionManager.executeWithRetry(
                     () -> {
                         // 使用通用的executeAsync方法
@@ -668,7 +713,7 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
                                     }
                                     LOG.debug("Async SET to Redis - key: {}", key);
                                     cmd.set(key, new Tuple2<>("", valueBytes));
-                                    if (config.getTtl() > 0) {
+                                    if (config != null && config.getTtl() > 0) {
                                         cmd.expire(key, config.getTtl());
                                     }
                                     break;
@@ -678,7 +723,7 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
                                     }
                                     LOG.debug("Async HSET to Redis - key: {}, field: {}", key, field);
                                     cmd.hset(key, field, new Tuple2<>("", valueBytes));
-                                    if (config.getTtl() > 0) {
+                                    if (config != null && config.getTtl() > 0) {
                                         cmd.expire(key, config.getTtl());
                                     }
                                     break;
@@ -688,11 +733,11 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
                                     }
                                     LOG.debug("Async DEL then HSET to Redis - key: {}, field: {}", key, field);
                                     // 优化：如果TTL大于0，可以考虑使用HSET代替DEL+HSET，利用TTL自动过期
-                                    if (config.getTtl() <= 0) {
+                                    if (config != null && config.getTtl() <= 0) {
                                         cmd.del(key);
                                     }
                                     cmd.hset(key, field, new Tuple2<>("", valueBytes));
-                                    if (config.getTtl() > 0) {
+                                    if (config != null && config.getTtl() > 0) {
                                         cmd.expire(key, config.getTtl());
                                     }
                                     break;
@@ -702,7 +747,7 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
                                     }
                                     LOG.debug("Async DEL then HMSET to Redis - key: {}, fields: {}", key, valueMap.size());
                                     // 优化：如果TTL大于0，可以考虑使用HMSET代替DEL+HMSET，利用TTL自动过期
-                                    if (config.getTtl() <= 0) {
+                                    if (config != null && config.getTtl() <= 0) {
                                         cmd.del(key);
                                     }
                                     Map<String, Tuple2<String, byte[]>> wrappedMap = new HashMap<>();
@@ -840,7 +885,7 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
             }
         } catch (Exception e) {
             LOG.error("Failed to execute Redis command: " + command, e);
-            if (async) {
+            if (async && pendingOperations != null) {
                 pendingOperations.decrementAndGet();
             }
         }
@@ -848,9 +893,17 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
 
     private void executeClusterCommand(String command, String key, String field, byte[] valueBytes, Map<String, byte[]> valueMap) {
         try {
+            if (config == null || connectionManager == null) {
+                LOG.error("Config or connectionManager is null");
+                return;
+            }
             if (async) {
                 // 异步执行模式 - 使用重试机制
-                pendingOperations.incrementAndGet();
+                boolean incremented = false;
+                if (pendingOperations != null) {
+                    pendingOperations.incrementAndGet();
+                    incremented = true;
+                }
                 connectionManager.executeWithRetry(
                     () -> {
                         // 统一使用executeClusterAsync方法
@@ -862,7 +915,7 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
                                     }
                                     LOG.debug("Async SET to Redis Cluster - key: {}", key);
                                     cmd.set(key, new Tuple2<>("", valueBytes));
-                                    if (config.getTtl() > 0) {
+                                    if (config != null && config.getTtl() > 0) {
                                         cmd.expire(key, config.getTtl());
                                     }
                                     break;
@@ -872,7 +925,7 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
                                     }
                                     LOG.debug("Async HSET to Redis Cluster - key: {}, field: {}", key, field);
                                     cmd.hset(key, field, new Tuple2<>("", valueBytes));
-                                    if (config.getTtl() > 0) {
+                                    if (config != null && config.getTtl() > 0) {
                                         cmd.expire(key, config.getTtl());
                                     }
                                     break;
@@ -882,11 +935,11 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
                                     }
                                     LOG.debug("Async DEL then HSET to Redis Cluster - key: {}, field: {}", key, field);
                                     // 优化：如果TTL大于0，可以考虑使用HSET代替DEL+HSET
-                                    if (config.getTtl() <= 0) {
+                                    if (config != null && config.getTtl() <= 0) {
                                         cmd.del(key);
                                     }
                                     cmd.hset(key, field, new Tuple2<>("", valueBytes));
-                                    if (config.getTtl() > 0) {
+                                    if (config != null && config.getTtl() > 0) {
                                         cmd.expire(key, config.getTtl());
                                     }
                                     break;
@@ -1034,7 +1087,7 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
             }
         } catch (Exception e) {
             LOG.error("Failed to execute Redis Cluster command: " + command, e);
-            if (async) {
+            if (async && pendingOperations != null) {
                 pendingOperations.decrementAndGet();
             }
         }
@@ -1043,7 +1096,7 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
     @Override
     public void close() throws Exception {
         // 关闭前刷新批处理缓冲区中剩余的数据
-        if (batchCount.get() > 0) {
+        if (batchCount != null && batchCount.get() > 0) {
             LOG.info("关闭前刷新剩余的 {} 条批处理数据", batchCount.get());
             // 同步刷新剩余数据
             doSyncBatchWrite();
@@ -1051,7 +1104,7 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
         }
         
         // 等待所有异步操作完成
-        if (pendingOperations.get() > 0) {
+        if (pendingOperations != null && pendingOperations.get() > 0) {
             LOG.info("等待 {} 个未完成的操作完成...", pendingOperations.get());
             long timeout = 60000; // 增加超时时间到60秒
             long interval = 100;
@@ -1067,12 +1120,13 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
             }
         }
         
-        // 连接管理器的关闭由Flink框架自动处理
-        
-        LOG.info("Redis Sink closed");
-
         super.close();
-        connectionManager.shutdown();
+        
+        // 关闭连接管理器
+        if (connectionManager != null) {
+            connectionManager.shutdown();
+        }
+        
         LOG.info("Redis Sink closed");
     }
 }
