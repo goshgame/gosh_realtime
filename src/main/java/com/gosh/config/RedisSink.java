@@ -203,7 +203,7 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
                             batchBuffer,stringBatchBuffer,listBatchBuffer, setBatchBuffer );
             return false;
         }
-        LOG.warn("Sink Redis command:{},key:{},field:{},valueBytes:{},value:{}", command,key,field,valueBytes,valueMap );
+        LOG.info("Sink Redis command:{},key:{},field:{},valueBytes:{},value:{}", command,key,field,valueBytes,valueMap );
         switch (command) {
             case "HSET":
             case "DEL_HSET":
@@ -554,7 +554,7 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
                         if (config != null && config.getTtl() > 0) {
                             clusterCmd.expire(currentKey, config.getTtl());
                         }
-                        LOG.warn("Async batch {} to Redis Cluster - key: {}, fields: {}", cmd, currentKey, finalFieldCount);
+                        LOG.info("Async batch {} to Redis Cluster - key: {}, fields: {}", cmd, currentKey, finalFieldCount);
                         return null;
                     });
                 } else {
@@ -567,7 +567,7 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
                         if (config != null && config.getTtl() > 0) {
                             cmdObj.expire(currentKey, config.getTtl());
                         }
-                        LOG.warn("Async batch {} to Redis - key: {}, fields: {}", cmd, currentKey, finalFieldCount);
+                        LOG.info("Async batch {} to Redis - key: {}, fields: {}", cmd, currentKey, finalFieldCount);
                         return null;
                     });
                 }
@@ -591,7 +591,7 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
                                 cmd.expire(key, config.getTtl());
                             }
                         });
-                        LOG.warn("Async batch SET to Redis Cluster - keys: {}", wrappedStrings.size());
+                        LOG.info("Async batch SET to Redis Cluster - keys: {}", wrappedStrings.size());
                         return null;
                     });
                 } else {
@@ -602,7 +602,7 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
                                 cmd.expire(key, config.getTtl());
                             }
                         });
-                        LOG.warn("Async batch SET to Redis - keys: {}", wrappedStrings.size());
+                        LOG.info("Async batch SET to Redis - keys: {}", wrappedStrings.size());
                         return null;
                     });
                 }
@@ -637,7 +637,7 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
                         if (config != null && config.getTtl() > 0) {
                             cmd.expire(key, config.getTtl());
                         }
-                        LOG.warn("Async batch {} to Redis Cluster - key: {}, elements: {}", currentCommand, key, values.size());
+                        LOG.info("Async batch {} to Redis Cluster - key: {}, elements: {}", currentCommand, key, values.size());
                         return null;
                     });
                 } else {
@@ -650,7 +650,7 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
                         if (config != null && config.getTtl() > 0) {
                             cmd.expire(key, config.getTtl());
                         }
-                        LOG.warn("Async batch {} to Redis - key: {}, elements: {}", currentCommand, key, values.size());
+                        LOG.info("Async batch {} to Redis - key: {}, elements: {}", currentCommand, key, values.size());
                         return null;
                     });
                 }
@@ -680,7 +680,7 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
                         if (config != null && config.getTtl() > 0) {
                             cmd.expire(key, config.getTtl());
                         }
-                        LOG.warn("Async batch SADD to Redis Cluster - key: {}, elements: {}", key, values.size());
+                        LOG.info("Async batch SADD to Redis Cluster - key: {}, elements: {}", key, values.size());
                         return null;
                     });
                 } else {
@@ -689,7 +689,7 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
                         if (config != null && config.getTtl() > 0) {
                             cmd.expire(key, config.getTtl());
                         }
-                        LOG.warn("Async batch SADD to Redis - key: {}, elements: {}", key, values.size());
+                        LOG.info("Async batch SADD to Redis - key: {}, elements: {}", key, values.size());
                         return null;
                     });
                 }
