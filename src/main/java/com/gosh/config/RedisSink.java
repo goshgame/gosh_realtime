@@ -6,6 +6,9 @@ import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.api.java.tuple.Tuple3;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.functions.sink.RichSinkFunction;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.config.Configurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -79,6 +82,9 @@ public class RedisSink<T> extends RichSinkFunction<T> implements Serializable {
     @Override
     public void open(Configuration parameters) throws Exception {
         super.open(parameters);
+
+        // 动态设置日志级别，确保com.gosh包下的日志只输出WARN及以上级别
+        Configurator.setLevel("com.gosh", Level.WARN);
 
         this.connectionManager = RedisConnectionManager.getInstance(config);
         this.isClusterMode = config.isClusterMode();
