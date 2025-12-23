@@ -30,17 +30,17 @@ public class FlinkEnvUtil {
 
         // 应用配置
         env.configure(configuration, FlinkEnvUtil.class.getClassLoader());
-        try {
-            String stateBackend = configuration.getString("state.backend", "hashmap");
-            if ("rocksdb".equalsIgnoreCase(stateBackend)) {
-                // 对于 RocksDB，可以进一步配置
-                RocksDBStateBackend rocksDBStateBackend = new RocksDBStateBackend(
-                        configuration.getString("state.checkpoints.dir", "file:///tmp/flink-checkpoints"));
-                env.setStateBackend(rocksDBStateBackend);
-            }
-        } catch (Exception e) {
-            LOG.error("设置状态后端失败: {}", e.getMessage(), e);
-        }
+//        try {
+//            String stateBackend = configuration.getString("state.backend", "hashmap");
+//            if ("rocksdb".equalsIgnoreCase(stateBackend)) {
+//                // 对于 RocksDB，可以进一步配置
+//                RocksDBStateBackend rocksDBStateBackend = new RocksDBStateBackend(
+//                        configuration.getString("state.checkpoints.dir", "file:///tmp/flink-checkpoints"));
+//                env.setStateBackend(rocksDBStateBackend);
+//            }
+//        } catch (Exception e) {
+//            LOG.error("设置状态后端失败: {}", e.getMessage(), e);
+//        }
 
         return env;
     }
