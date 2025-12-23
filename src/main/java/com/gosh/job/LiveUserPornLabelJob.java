@@ -35,7 +35,7 @@ import java.util.*;
 public class LiveUserPornLabelJob {
     private static final Logger LOG = LoggerFactory.getLogger(LiveUserPornLabelJob.class);
     private static final String PREFIX = "rec:user_feature:{";
-    private static final String SUFFIX = "}:realpic";
+    private static final String SUFFIX = "}:livepic";
     
     // 事件类型常量
     private static final String EVENT_LIVE_VIEW = "live_view";
@@ -140,7 +140,9 @@ public class LiveUserPornLabelJob {
             featureStream,
             redisConfig,
             true,
-            100
+            10,
+                10,
+                1000
         );
 
         LOG.info("Job configured, starting execution...");
@@ -161,6 +163,7 @@ public class LiveUserPornLabelJob {
     // 解析器：解析 user_event_log.event 和 user_event_log.event_data
     public static class LiveEventParser implements FlatMapFunction<String, LiveUserAnchorEvent> {
         private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+        private static volatile long PARSED_EVENT_COUNT = 0L;
 
         @Override
         public void flatMap(String value, Collector<LiveUserAnchorEvent> out) throws Exception {
@@ -228,6 +231,13 @@ public class LiveUserPornLabelJob {
                 }
                 
                 out.collect(evt);
+
+                // 解析事件采样日志（每10万条打印一次）
+                long c = ++PARSED_EVENT_COUNT;
+                if (c <= 5 || c % 10000 == 0) {
+                    LOG.info("[LiveEventParser] parsed={} sample: uid={}, anchorId={}, event={}, watchDuration={}",
+                            c, evt.uid, evt.anchorId, evt.eventType, evt.watchDuration);
+                }
             } catch (Exception e) {
                 // 静默处理异常
             }
@@ -294,6 +304,8 @@ public class LiveUserPornLabelJob {
      * SessionWindow处理函数：输出SessionSummary
      */
     public static class SessionWindowFunction extends ProcessWindowFunction<SessionAccumulator, SessionSummary, String, TimeWindow> {
+        private static volatile long SESSION_COUNT = 0L;
+
         @Override
         public void process(String key, Context context, Iterable<SessionAccumulator> elements, Collector<SessionSummary> out) throws Exception {
             SessionAccumulator acc = elements.iterator().next();
@@ -307,7 +319,14 @@ public class LiveUserPornLabelJob {
             summary.anchorId = acc.anchorId;
             summary.totalWatchDuration = acc.totalWatchDuration;
             summary.eventTime = context.window().getEnd();
-            
+
+            long c = ++SESSION_COUNT;
+            // Session 聚合采样日志（前几条 + 每5万条）
+            if (c <= 5 || c % 5000 == 0) {
+                LOG.info("[SessionWindow] sessions={} sample: key={}, uid={}, anchorId={}, totalWatchDuration={}",
+                        c, key, summary.uid, summary.anchorId, summary.totalWatchDuration);
+            }
+
             out.collect(summary);
         }
     }
@@ -326,34 +345,64 @@ public class LiveUserPornLabelJob {
             
             while (isRunning) {
                 try {
-                    // 使用 MySQLFlinkUtil 查询数据
+                    // 使用 MySQL 查询数据
                     String sql = "SELECT uid FROM gosh.agency_member WHERE anchor_type IN (11, 15)";
                     
                     Set<Long> anchorSet = new HashSet<>();
                     // 直接使用 MySQLUtil 查询（因为这是 SourceFunction，不在 Flink 算子链中）
                     MySQLUtil mysqlUtil = MySQLUtil.createNewInstance();
+                    
                     try {
-                        java.sql.Connection conn = mysqlUtil.getConnectionInternal("db1");
-                        try (java.sql.Statement stmt = conn.createStatement();
-                             java.sql.ResultSet rs = stmt.executeQuery(sql)) {
-                            while (rs.next()) {
-                                long uid = rs.getLong("uid");
-                                anchorSet.add(uid);
+                        java.sql.Connection conn = null;
+                        try {
+                            conn = mysqlUtil.getConnectionInternal("db1");
+                            try (java.sql.Statement stmt = conn.createStatement();
+                                 java.sql.ResultSet rs = stmt.executeQuery(sql)) {
+                                int count = 0;
+                                while (rs.next()) {
+                                    long uid = rs.getLong("uid");
+                                    anchorSet.add(uid);
+                                    count++;
+                                }
+                                LOG.info("Query executed successfully, found {} records", count);
+                            }
+                        } finally {
+                            if (conn != null) {
+                                try {
+                                    conn.close();
+                                } catch (Exception ignore) {
+                                    // 忽略关闭异常
+                                }
                             }
                         }
-                        conn.close();
                     } finally {
-                        mysqlUtil.shutdownInternal();
+                        try {
+                            mysqlUtil.shutdownInternal();
+                        } catch (Exception e) {
+                            // 忽略关闭异常
+                        }
                     }
                     
                     // 输出到 BroadcastStream
                     ctx.collect(anchorSet);
-                    LOG.info("Porn anchor data updated, size={}", anchorSet.size());
+                    LOG.info("Porn anchor data updated and broadcasted, size={}", anchorSet.size());
                     
                     // 等待指定时间后再次查询
                     Thread.sleep(MYSQL_CACHE_UPDATE_INTERVAL_SECONDS * 1000);
                 } catch (Exception e) {
-                    LOG.error("Error querying porn anchor data", e);
+                    // 打印完整的错误信息，包括堆栈
+                    String errorMsg = e.getMessage();
+                    String errorClass = e.getClass().getName();
+                    LOG.error("Error querying porn anchor data. Error message: [{}], Error class: [{}]",
+                            errorMsg != null ? errorMsg : "null", errorClass);
+
+                    // 如果是特定异常，打印更多信息（单行）
+                    if (e instanceof java.sql.SQLException) {
+                        java.sql.SQLException sqlEx = (java.sql.SQLException) e;
+                        LOG.error("SQLException details - SQLState: {}, VendorError: {}",
+                                sqlEx.getSQLState(), sqlEx.getErrorCode());
+                    }
+                    
                     // 出错后等待一段时间再重试
                     Thread.sleep(MYSQL_CACHE_UPDATE_INTERVAL_SECONDS * 1000);
                 }
@@ -370,8 +419,11 @@ public class LiveUserPornLabelJob {
     /**
      * BroadcastProcessFunction：处理主数据流和广播流
      */
-    public static class PornLabelBroadcastProcessFunction 
+    public static class PornLabelBroadcastProcessFunction
             extends BroadcastProcessFunction<SessionSummary, Set<Long>, Tuple2<String, byte[]>> {
+
+        private static volatile long FEATURE_EMIT_COUNT = 0L;
+        private static volatile long NO_FEATURE_COUNT = 0L;
         
         @Override
         public void processElement(SessionSummary summary, 
@@ -385,21 +437,39 @@ public class LiveUserPornLabelJob {
             
             // 如果广播状态还没有数据，跳过
             if (pornAnchorSet == null || pornAnchorSet.isEmpty()) {
+                long c = ++NO_FEATURE_COUNT;
+                if (c <= 5 || c % 50000 == 0) {
+                    LOG.info("[PornLabel] skip because pornAnchorSet empty, totalSkipped={}", c);
+                }
                 return;
             }
             
             // 判断：观看时长 > 15秒 且 主播是色情主播
             if (summary.totalWatchDuration > WATCH_DURATION_THRESHOLD_SECONDS 
                 && pornAnchorSet.contains(summary.anchorId)) {
-                
+
                 // 构建Protobuf特征
-                byte[] featureBytes = RecFeature.RecUserFeature.newBuilder()
+                byte[] featureBytes = RecFeature.RecLiveUserFeature.newBuilder()
                     .setViewerLiveHise(1)
                     .build()
                     .toByteArray();
                 
                 String redisKey = PREFIX + summary.uid + SUFFIX;
+
+                long c = ++FEATURE_EMIT_COUNT;
+                if (c <= 5 || c % 10000 == 0) {
+                    LOG.info("[PornLabel] emit feature={}: uid={}, anchorId={}, totalWatchDuration={}, redisKey={}",
+                            c, summary.uid, summary.anchorId, summary.totalWatchDuration, redisKey);
+                }
+
                 out.collect(new Tuple2<>(redisKey, featureBytes));
+            } else {
+                long c = ++NO_FEATURE_COUNT;
+                if (c <= 5 || c % 100000 == 0) {
+                    LOG.info("[PornLabel] no feature, totalNoFeature={}, uid={}, anchorId={}, duration={}, inPornSet={}",
+                            c, summary.uid, summary.anchorId, summary.totalWatchDuration,
+                            pornAnchorSet.contains(summary.anchorId));
+                }
             }
         }
         
