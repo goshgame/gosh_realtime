@@ -113,7 +113,7 @@ public class UserFeatureRealtimeOriginalNegativeFeedbacks {
 
                             // 添加负反馈标签
                             for (String tag : queue.tags) {
-                                RecFeature.FeedbackTag.Builder tagBuilder = RecFeature.FeedbackTag.newBuilder();
+                                RecFeature.FeedbackTagV2.Builder tagBuilder = RecFeature.FeedbackTagV2.newBuilder();
                                 tagBuilder.setTag(tag);
                                 tagBuilder.setWeight(TAG_WEIGHT);
                                 builder.addFeedbackTags(tagBuilder.build());
@@ -339,8 +339,8 @@ public class UserFeatureRealtimeOriginalNegativeFeedbacks {
 
                     // 读取标签列表
                     try {
-                        java.util.List<RecFeature.FeedbackTag> feedbackTags = feature.getFeedbackTagsList();
-                        for (RecFeature.FeedbackTag feedbackTag : feedbackTags) {
+                        java.util.List<RecFeature.FeedbackTagV2> feedbackTags = feature.getFeedbackTagsList();
+                        for (RecFeature.FeedbackTagV2 feedbackTag : feedbackTags) {
                             String tag = feedbackTag.getTag();
                             state.tags.add(tag);
                         }

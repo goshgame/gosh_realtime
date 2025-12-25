@@ -1,16 +1,21 @@
 package com.gosh;
 
-import com.amazonaws.services.kinesisanalytics.runtime.KinesisAnalyticsRuntime;
+//import com.amazonaws.services.kinesisanalytics.runtime.KinesisAnalyticsRuntime;
 import org.apache.flink.api.java.utils.ParameterTool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.gosh.util.LogsUtil;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 public class FlinkLauncher {
+    // 先设置日志级别，再创建日志记录器
+    static {
+        LogsUtil.setAllLogLevels();
+    }
+    
     private static final Logger LOG = LoggerFactory.getLogger(FlinkLauncher.class);
     private static final String CLASS_NAME_PARAM = "className";
     private static final String JOB_PACKAGE_PREFIX = "com.gosh.job.";
@@ -23,15 +28,15 @@ public class FlinkLauncher {
         String className = parameterTool.get(CLASS_NAME_PARAM);
 
         // 3. 如果命令行未指定，从AWS Kinesis配置中获取
-        if (className == null || className.trim().isEmpty()) {
-            Map<String, Properties> applicationProperties = KinesisAnalyticsRuntime.getApplicationProperties();
-            Properties consumerProperties = applicationProperties.get("ConsumerConfigProperties");
-            LOG.info("从AWS获取的ConsumerConfigProperties: {}", consumerProperties);
-
-            if (consumerProperties != null) {
-                className = consumerProperties.getProperty(CLASS_NAME_PARAM);
-            }
-        }
+//        if (className == null || className.trim().isEmpty()) {
+//            Map<String, Properties> applicationProperties = KinesisAnalyticsRuntime.getApplicationProperties();
+//            Properties consumerProperties = applicationProperties.get("ConsumerConfigProperties");
+//            LOG.info("从AWS获取的ConsumerConfigProperties: {}", consumerProperties);
+//
+//            if (consumerProperties != null) {
+//                className = consumerProperties.getProperty(CLASS_NAME_PARAM);
+//            }
+//        }
 
         // 4. 验证类名
         if (className == null || className.trim().isEmpty()) {

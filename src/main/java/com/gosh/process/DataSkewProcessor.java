@@ -5,6 +5,7 @@ import com.gosh.monitor.KeyHeatMonitor;
 import com.gosh.process.skew.SkewDetector;
 import com.gosh.process.skew.SkewHandler;
 import com.gosh.process.skew.SkewStrategyFactory;
+import com.gosh.util.LogsUtil;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.common.functions.Partitioner;
 import org.apache.flink.api.java.functions.KeySelector;
@@ -34,6 +35,9 @@ import java.util.stream.Collectors;
  */
 public class DataSkewProcessor {
     private static final Logger LOG = LoggerFactory.getLogger(DataSkewProcessor.class);
+    static {
+        LogsUtil.setAllLogLevels();
+    }
     private static final Configuration config = ConfigurationUtil.loadConfigurationFromProperties(CommonConstants.FLINK_SKEW_CONF);
     private static final int RANDOM_PREFIX_RANGE = config.getInteger("skew.random.prefix.range", 10);
     private static final double SKEW_THRESHOLD = config.getDouble("skew.detection.threshold", 0.7);

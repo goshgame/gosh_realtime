@@ -68,7 +68,6 @@ public class FlinkMonitorUtil {
         boolean enableBackpressureMonitor = flinkConfig.getBoolean("flink.monitor.backpressure.enabled", true);
         if (enableBackpressureMonitor && operatorName != null && !operatorName.isEmpty()) {
             this.backpressureMonitor = new BackpressureMonitor<>(jobName, operatorName);
-            LOG.info("反压监控已启用，将监控算子: {}", operatorName);
         } else {
             this.backpressureMonitor = null;
             if (!enableBackpressureMonitor) {
@@ -155,7 +154,6 @@ public class FlinkMonitorUtil {
 
         try {
             JobClient jobClient = env.executeAsync(streamGraph);
-            LOG.info("作业[{}]已提交，JobID: {}", jobName, jobClient.getJobID());
             MessageUtil.sendLarkshuMsg(String.format("Flink作业[%s]已提交，JobID: %s", jobName, jobClient.getJobID()), null);
 
             monitorJobStatus(jobClient, jobName);
@@ -174,7 +172,6 @@ public class FlinkMonitorUtil {
      */
     private static void monitorJobStatus(JobClient jobClient, String jobName) throws Exception {
         if (jobClient instanceof WebSubmissionJobClient) {
-            LOG.info("检测到Web Submission模式，将使用REST API监控作业状态");
             String restAddress = flinkConfig.getString("rest.address", "localhost");
             int restPort = flinkConfig.getInteger("rest.port", 8081);
             String jobId = jobClient.getJobID().toString();
@@ -198,11 +195,9 @@ public class FlinkMonitorUtil {
                         Map<String, Object> statusJson = OBJECT_MAPPER.readValue(response.body(), Map.class);
                         String status = (String) statusJson.get("status");
                         JobStatus jobStatus = JobStatus.valueOf(status);
-                        LOG.info("作业[{}]当前状态: {}", jobName, jobStatus);
 
                         if (jobStatus.isTerminalState()) {
                             String msg = String.format("Flink作业[%s]已终止，状态: %s", jobName, jobStatus);
-                            LOG.info(msg);
                             MessageUtil.sendLarkshuMsg(msg, null);
                             statusMonitor.shutdown();
                         }
@@ -219,11 +214,9 @@ public class FlinkMonitorUtil {
             statusMonitor.scheduleAtFixedRate(() -> {
                 try {
                     JobStatus status = jobClient.getJobStatus().get();
-                    LOG.info("作业[{}]当前状态: {}", jobName, status);
 
                     if (status.isTerminalState()) {
                         String msg = String.format("Flink作业[%s]已终止，状态: %s", jobName, status);
-                        LOG.info(msg);
                         MessageUtil.sendLarkshuMsg(msg, null);
                         statusMonitor.shutdown();
                     }

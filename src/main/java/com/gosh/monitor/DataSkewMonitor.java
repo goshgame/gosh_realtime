@@ -2,6 +2,7 @@ package com.gosh.monitor;
 
 import com.gosh.cons.CommonConstants;
 import com.gosh.util.ConfigurationUtil;
+import com.gosh.util.LogsUtil;
 import com.gosh.util.MessageUtil;
 import org.apache.flink.configuration.Configuration;
 import org.slf4j.Logger;
@@ -16,6 +17,9 @@ import java.util.stream.Collectors;
  */
 public class DataSkewMonitor {
     private static final Logger LOG = LoggerFactory.getLogger(DataSkewMonitor.class);
+    static {
+        LogsUtil.setAllLogLevels();
+    }
     public final ConcurrentHashMap<String, Long> keyCountMap = new ConcurrentHashMap<>();
     private final ScheduledExecutorService skewMonitorScheduler = Executors.newSingleThreadScheduledExecutor();
 
@@ -75,7 +79,6 @@ public class DataSkewMonitor {
      * 检查数据倾斜并触发告警
      */
     private void checkDataSkew() {
-        System.out.println("checkDataSkew --> ");
         try {
             if (keyCountMap.isEmpty()) {
                 LOG.warn("无Key计数数据，跳过倾斜检查");

@@ -2,11 +2,12 @@ package com.gosh.job;
 
 import com.gosh.config.RedisConfig;
 import com.gosh.util.FlinkEnvUtil;
-import com.gosh.util.FlinkMonitorUtil;
+//import com.gosh.util.FlinkMonitorUtil;
 import com.gosh.util.KafkaEnvUtil;
 import com.gosh.util.MySQLFlinkUtil;
 import com.gosh.util.RedisUtil;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+import org.apache.flink.api.common.typeinfo.Types;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.connector.jdbc.JdbcStatementBuilder;
 import org.apache.flink.connector.kafka.source.KafkaSource;
@@ -37,7 +38,7 @@ public class MySQLFlinkDemoJob {
         StreamExecutionEnvironment env = FlinkEnvUtil.createStreamExecutionEnvironment();
         
         // 创建监控实例
-        FlinkMonitorUtil.create(JOB_NAME, "MySQLDemoOperator");
+        //FlinkMonitorUtil.create(JOB_NAME, "MySQLDemoOperator");
 
         // 第一部分：MySQL Source → Redis Sink
         // 实现MySQL读取数据，统计用户ID出现次数并写入Redis
@@ -45,10 +46,11 @@ public class MySQLFlinkDemoJob {
 
         // 第二部分：Kafka Source → MySQL Sink
         // 从Kafka读取数据，统计用户ID出现次数并写入MySQL
-        kafkaToMySQLProcessing(env);
+       //kafkaToMySQLProcessing(env);
 
         // 执行作业并监控
-        FlinkMonitorUtil.executeWithMonitor(env, JOB_NAME);
+        //FlinkMonitorUtil.executeWithMonitor(env, JOB_NAME);
+        env.execute(JOB_NAME);
     }
 
     /**
@@ -59,15 +61,26 @@ public class MySQLFlinkDemoJob {
         LOG.info("开始处理 MySQL Source → Redis Sink");
 
         // 定义查询SQL，实现用户ID统计
-        String query = "SELECT user_id, COUNT(*) as cnt FROM dual GROUP BY user_id";
+        String query = "SELECT uid user_id,count(*) cnt FROM agency_member WHERE anchor_type IN (11, 15) group by uid";
 
         // 使用MySQLFlinkUtil创建JdbcSource
-        DataStream<Row> mysqlStream = MySQLFlinkUtil.createJdbcSource(
+        // 指定 dbName，默认使用配置文件中的数据库名称
+        DataStream<Row> mysqlStream = MySQLFlinkUtil.createJdbcSourceWithPolling(
                 env,  // Flink执行环境
                 "db1", // 数据源名称，需要在配置文件中定义
+                "gosh", // 数据库名称
                 query, // SQL查询语句
-                100    // 批量获取大小
-        );
+                1000,  // 批量获取大小
+                50000  // 获取间隔
+        );  
+        //不指定 dbName，默认使用配置文件中的数据库名称
+        // DataStream<Row> mysqlStream = MySQLFlinkUtil.createJdbcSourceWithPolling(
+        //         env,  // Flink执行环境
+        //         "db1", // 数据源名称，需要在配置文件中定义
+        //         query, // SQL查询语句
+        //         1000,  // 批量获取大小
+        //         50000  // 获取间隔
+        // );
 
         // 转换数据格式为Redis需要的Tuple2<String, byte[]>
         DataStream<Tuple2<String, byte[]>> redisDataStream = mysqlStream
@@ -82,20 +95,22 @@ public class MySQLFlinkDemoJob {
                     
                     return new Tuple2<>(redisKey, valueBytes);
                 })
+                .returns(Types.TUPLE(Types.STRING, Types.PRIMITIVE_ARRAY(Types.BYTE)))
                 .name("MySQL数据转换为Redis格式");
-
+        
+        redisDataStream.print();
         // 创建Redis配置
-        RedisConfig redisConfig = RedisConfig.fromProperties(RedisUtil.loadProperties());
-        redisConfig.setCommand("SET"); // 使用SET命令
-        redisConfig.setTtl(3600); // 设置1小时过期时间
-
-        // 添加Redis Sink
-        RedisUtil.addRedisSink(
-                redisDataStream,
-                redisConfig,
-                true,  // 异步写入
-                100    // 批量大小
-        );
+//        RedisConfig redisConfig = RedisConfig.fromProperties(RedisUtil.loadProperties());
+//        redisConfig.setCommand("SET"); // 使用SET命令
+//        redisConfig.setTtl(3600); // 设置1小时过期时间
+//
+//        // 添加Redis Sink
+//        RedisUtil.addRedisSink(
+//                redisDataStream,
+//                redisConfig,
+//                true,  // 异步写入
+//                100    // 批量大小
+//        );
 
         LOG.info("MySQL Source → Redis Sink 处理逻辑配置完成");
     }
@@ -133,6 +148,7 @@ public class MySQLFlinkDemoJob {
                 .name("提取用户ID")
                 .keyBy(tuple -> tuple.f0)
                 .sum(1)
+                .returns(Types.TUPLE(Types.STRING,Types.LONG))
                 .name("按用户ID聚合计数");
 
         // 定义MySQL插入SQL

@@ -49,21 +49,43 @@ public class RedisUtil {
      * @param config Redis配置
      * @param async 是否异步写入
      * @param batchSize 批量写入大小
+     * @param maxPendingOperations 最大并发操作数，默认10
      */
     public static void addRedisSink(
             DataStream<Tuple2<String, byte[]>> stream,
             RedisConfig config,
             boolean async,
-            int batchSize) {
-        stream.addSink(new RedisSink<>(config, async, batchSize))
+            int batchSize,
+            int... maxPendingOperations) {
+        int maxOps = maxPendingOperations.length > 0 ? maxPendingOperations[0] : 10;
+        stream.addSink(new RedisSink<>(config, async, batchSize, maxOps))
+                .name("Redis Sink (Tuple2)");
+    }
+
+    /**
+     * 添加Redis Sink，接收key-value对的Tuple数据流（支持设置批处理时间间隔）
+     * @param stream 输入数据流（元素类型为Tuple2<String, byte[]>，key-value对）
+     * @param config Redis配置
+     * @param async 是否异步写入
+     * @param batchSize 批量写入大小
+     * @param maxPendingOperations 最大并发操作数，默认10
+     * @param batchIntervalMs 批处理时间间隔（毫秒），默认5000毫秒
+     */
+    public static void addRedisSink(
+            DataStream<Tuple2<String, byte[]>> stream,
+            RedisConfig config,
+            boolean async,
+            int batchSize,
+            int maxPendingOperations,
+            long batchIntervalMs) {
+        stream.addSink(new RedisSink<>(config, async, batchSize, maxPendingOperations, batchIntervalMs))
                 .name("Redis Sink (Tuple2)");
     }
 
     /**
      * 简化版：使用默认配置和批量参数
      */
-    public static void addRedisSink(
-            DataStream<Tuple2<String, byte[]>> stream) {
+    public static void addRedisSink(DataStream<Tuple2<String, byte[]>> stream) {
         Properties props = loadProperties();
         stream.addSink(new RedisSink<>(props))
                 .name("Redis Sink (Tuple2)");
@@ -75,13 +97,36 @@ public class RedisUtil {
      * @param config Redis配置
      * @param async 是否异步写入
      * @param batchSize 批量写入大小
+     * @param maxPendingOperations 最大并发操作数，默认10
      */
     public static void addRedisHashSink(
             DataStream<Tuple3<String, String, byte[]>> stream,
             RedisConfig config,
             boolean async,
-            int batchSize) {
-        stream.addSink(new RedisSink<>(config, async, batchSize))
+            int batchSize,
+            int... maxPendingOperations) {
+        int maxOps = maxPendingOperations.length > 0 ? maxPendingOperations[0] : 10;
+        stream.addSink(new RedisSink<>(config, async, batchSize, maxOps))
+                .name("Redis Hash Sink (Tuple3)");
+    }
+
+    /**
+     * 添加Redis Hash Sink，接收key-field-value对的Tuple数据流，用于HSET等操作（支持设置批处理时间间隔）
+     * @param stream 输入数据流（元素类型为Tuple3<String, String, byte[]>，key-field-value对）
+     * @param config Redis配置
+     * @param async 是否异步写入
+     * @param batchSize 批量写入大小
+     * @param maxPendingOperations 最大并发操作数
+     * @param batchIntervalMs 批处理时间间隔（毫秒）
+     */
+    public static void addRedisHashSink(
+            DataStream<Tuple3<String, String, byte[]>> stream,
+            RedisConfig config,
+            boolean async,
+            int batchSize,
+            int maxPendingOperations,
+            long batchIntervalMs) {
+        stream.addSink(new RedisSink<>(config, async, batchSize, maxPendingOperations, batchIntervalMs))
                 .name("Redis Hash Sink (Tuple3)");
     }
 
@@ -92,8 +137,30 @@ public class RedisUtil {
             DataStream<Tuple2<String, Map<String, byte[]>>> stream,
             RedisConfig config,
             boolean async,
-            int batchSize) {
-        stream.addSink(new RedisSink<>(config, async, batchSize))
+            int batchSize,
+            int... maxPendingOperations) {
+        int maxOps = maxPendingOperations.length > 0 ? maxPendingOperations[0] : 10;
+        stream.addSink(new RedisSink<>(config, async, batchSize, maxOps))
+                .name("Redis HashMap Sink (DEL_HMSET)");
+    }
+
+    /**
+     * 添加Redis HashMap Sink - 用于批量HMSET操作（支持设置批处理时间间隔）
+     * @param stream 输入数据流（元素类型为Tuple2<String, Map<String, byte[]>>，key-field-value map）
+     * @param config Redis配置
+     * @param async 是否异步写入
+     * @param batchSize 批量写入大小
+     * @param maxPendingOperations 最大并发操作数
+     * @param batchIntervalMs 批处理时间间隔（毫秒）
+     */
+    public static void addRedisHashMapSink(
+            DataStream<Tuple2<String, Map<String, byte[]>>> stream,
+            RedisConfig config,
+            boolean async,
+            int batchSize,
+            int maxPendingOperations,
+            long batchIntervalMs) {
+        stream.addSink(new RedisSink<>(config, async, batchSize, maxPendingOperations, batchIntervalMs))
                 .name("Redis HashMap Sink (DEL_HMSET)");
     }
 }

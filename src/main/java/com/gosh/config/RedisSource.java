@@ -1,5 +1,6 @@
 package com.gosh.config;
 
+import com.gosh.util.LogsUtil;
 import io.lettuce.core.api.sync.RedisCommands;
 import io.lettuce.core.cluster.api.sync.RedisAdvancedClusterCommands;
 import org.apache.flink.api.common.functions.OpenContext;
@@ -19,6 +20,9 @@ import java.util.concurrent.CompletableFuture;
  */
 public class RedisSource extends RichSourceFunction<Tuple2<String, byte[]>> {
     private static final Logger LOG = LoggerFactory.getLogger(RedisSource.class);
+    static {
+        LogsUtil.setAllLogLevels();
+    }
 
     private final RedisConfig config;
     private final boolean async;

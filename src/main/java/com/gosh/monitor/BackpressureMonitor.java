@@ -2,6 +2,7 @@ package com.gosh.monitor;
 
 import com.gosh.cons.CommonConstants;
 import com.gosh.util.ConfigurationUtil;
+import com.gosh.util.LogsUtil;
 import com.gosh.util.MessageUtil;
 import org.apache.flink.api.common.functions.RichMapFunction;
 import org.apache.flink.configuration.Configuration;
@@ -18,6 +19,9 @@ import java.util.concurrent.*;
  */
 public class BackpressureMonitor<T> extends RichMapFunction<T, T> {
     private static final Logger LOG = LoggerFactory.getLogger(BackpressureMonitor.class);
+    static {
+        LogsUtil.setAllLogLevels();
+    }
     private static final ThreadLocal<Long> currentQueueLength = ThreadLocal.withInitial(() -> 0L);
     private transient ScheduledExecutorService backpressureScheduler;
     private transient Map<String, Integer> highBackpressureCount;
@@ -107,8 +111,8 @@ public class BackpressureMonitor<T> extends RichMapFunction<T, T> {
             long currentQueueLength = getCurrentQueueLength();
             int currentCount = highBackpressureCount.getOrDefault(operatorName, 0);
 
-            LOG.warn("反压检查 - 算子[{}]：当前队列长度={}，阈值={}，累计超阈值次数={}/{}",
-                    operatorName, currentQueueLength, QUEUE_HIGH_THRESHOLD, currentCount, HIGH_BACKPRESSURE_THRESHOLD);
+//            LOG.warn("反压检查 - 算子[{}]：当前队列长度={}，阈值={}，累计超阈值次数={}/{}",
+//                    operatorName, currentQueueLength, QUEUE_HIGH_THRESHOLD, currentCount, HIGH_BACKPRESSURE_THRESHOLD);
 
             if (currentQueueLength >= QUEUE_HIGH_THRESHOLD) {
                 int updatedCount = currentCount + 1;

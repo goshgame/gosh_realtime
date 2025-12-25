@@ -111,3 +111,51 @@ protoc --java_out=./ ./com/gosh/entity/userMessage.proto # 生成java代码
 6、执行FlinkLauncher
     java -cp "target/classes:target/lib/*" com.gosh.FlinkLauncher --className RecUserFeatureSinkJob
 ```
+
+
+4、镜像支持
+```commandline
+
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/arm64/kubectl"
+chmod +x kubectl
+sudo mv kubectl /usr/local/bin/
+
+curl "https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+
+# su - ubuntu
+aws configure
+# AWS Access Key ID [None]: xxxx
+# AWS Secret Access Key [None]: xxxx
+# Default region name [None]: ap-southeast-1
+# Default output format [None]: json
+
+aws eks update-kubeconfig --region ap-southeast-1 --name gosh-prod-data-eks-cluster kubectl get nodes
+
+
+#构建
+cd /Users/dev/gosh_realtime
+mvn dependency:copy-dependencies \
+-DoutputDirectory=/Users/dev/flink-dinky-image/flink-dinky-image/lib \
+-DincludeScope=runtime \
+-DexcludeGroupIds=org.apache.hadoop,org.slf4j,log4j,zookeeper
+
+docker build --no-cache --platform linux/arm64 -t flink-rec-dinky:1.20 .
+
+
+# 登录ECR
+aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin 010526262381.dkr.ecr.ap-southeast-1.amazonaws.com
+
+# 上传镜像
+docker build -t gosh_bigdata .
+docker tag flink-rec-dinky:1.20 <ACCOUNT_ID>.dkr.ecr.ap-southeast-1.amazonaws.com/gosh_bigdata:flink-rec-dinky_1.20_v021
+docker push <ACCOUNT_ID>.dkr.ecr.ap-southeast-1.amazonaws.com/gosh_bigdata:flink-rec-dinky_1.20_v021
+
+#查看镜像
+docker run --rm flink-rec-dinky:1.20 ls /opt/flink/lib/
+
+
+docker run --rm 010526262381.dkr.ecr.ap-southeast-1.amazonaws.com/gosh_bigdata:flink-rec-dinky_1.20_v003 ls /opt/flink
+
+```
