@@ -9,7 +9,7 @@ package com.gosh.entity;
 
 // 用户侧特征
 // Redis Key: rec:user_feature:{user_id}:post1h, rec:user_feature:{user_id}:post24h
-//            rec:user_feature:{user_id}:offpic
+//            rec:user_feature:{user_id}:offpic, rec:user_feature:{user_id}:postlatest
 message RecUserFeature {
   // 用户状态特征
   int32 viewer_is_old = 1;                  // 用户是否是老用户(前一天的用户表存在即为老用户）
@@ -129,6 +129,51 @@ message RecUserFeature {
   repeated int64 viewer_positive_author_list_24h = 115; // 用户最近24h正反馈作者列表
   repeated int64 viewer_negetive_author_list_24h = 116; // 用户最近24h负反馈作者列表
 
+  float vv_ra_1 = 118;  // vv1
+  float vv_ra_2 = 119;  // vv2
+  float vv_ra_3 = 120;  // vv3
+  float vv_ra_4 = 121;  // vv4
+  float vv_ra_5 = 122;  // vv5
+  float cpv_ra_1 = 123;  // cpv1
+  float cpv_ra_2 = 124;  // cpv2
+  float cpv_ra_3 = 125;  // cpv3
+  float cpv_ra_4 = 126;  // cpv4
+  float cpv_ra_5 = 127;  // cpv5
+  float cpv_ra_6 = 128;  // cpv6
+  float lk_ra_1 = 129;  // lk1
+  float lk_ra_2 = 130;  // lk2
+  float lk_ra_3 = 131;  // lk3
+  float lk_ra_4 = 132;  // lk4
+  float lk_ra_5 = 133;  // lk5
+  float cm_ra_1 = 134;  // cm1
+  float cm_ra_2 = 135;  // cm2
+  float cm_ra_3 = 136;  // cm3
+  float cm_ra_4 = 137;  // cm4
+  float cm_ra_5 = 138;  // cm5
+  float sh_ra_1 = 139;  // sh1
+  float sh_ra_2 = 140;  // sh2
+  float sh_ra_3 = 141;  // sh3
+  float fv_ra_1 = 142;  // fv1
+  float fv_ra_2 = 143;  // fv2
+  float fv_ra_3 = 144;  // fv3
+  float pf_ra_1 = 145;  // pf1
+  float pf_ra_2 = 146;  // pf2
+  float pf_ra_3 = 147;  // pf3
+
+    repeated int64 viewer_completeplay_posts_latest = 151;  // 用户最近完播的post列表
+    repeated IdScore viewer_10sstand_posts_latest = 152;    // 用户最近停留10s以上的post列表
+    repeated IdScore viewer_8splay_posts_latest = 153;     // 用户最近观看8s以上的post列表
+    repeated int64 viewer_like_posts_latest = 154;    // 用户最近点赞post列表
+    repeated int64 viewer_comment_posts_latest = 155; // 用户最近评论post列表
+    repeated int64 viewer_share_posts_latest = 156;   // 用户最近分享post列表
+    repeated int64 viewer_collect_posts_latest = 157; // 用户最近收藏post列表
+    repeated int64 viewer_pay_posts_latest = 158;     // 用户最近付费post列表
+    repeated int64 viewer_report_posts_latest = 159;  // 用户最近举报post列表
+    repeated int64 viewer_dislike_posts_latest = 160;  // 用户最近不喜欢post列表
+    repeated int64 viewer_positive_posts_latest = 161; // 用户最近正反馈post列表
+    repeated int64 viewer_negetive_posts_latest = 162; // 用户最近负反馈post列表
+    repeated int64 viewer_positive_authors_latest = 163; // 用户最近正反馈作者列表
+    repeated int64 viewer_negetive_authors_latest = 164; // 用户最近负反馈作者列表
 }
 
 // Item侧特征 (Post特征)
@@ -224,6 +269,37 @@ message RecPostFeature {
   int32 post_report_cnt_24h = 109;            // post最近24h举报次数
   int32 post_dislike_cnt_24h = 110;           // post最近24h不喜欢次数
   int32 post_pay_cnt_24h = 111;               // post最近24h付费次数
+
+  float pvv_ra_1 = 112;  // pvv1
+  float pvv_ra_2 = 113;  // pvv2
+  float pvv_ra_3 = 114;  // pvv3
+  float pvv_ra_4 = 115;  // pvv4
+  float pvv_ra_5 = 116;  // pvv5
+  float pcpv_ra_1 = 117;  // pcpv1
+  float pcpv_ra_2 = 118;  // pcpv2
+  float pcpv_ra_3 = 119;  // pcpv3
+  float pcpv_ra_4 = 120;  // pcpv4
+  float pcpv_ra_5 = 121;  // pcpv5
+  float pcpv_ra_6 = 122;  // pcpv6
+  float plk_ra_1 = 123;  // plk1
+  float plk_ra_2 = 124;  // plk2
+  float plk_ra_3 = 125;  // plk3
+  float plk_ra_4 = 126;  // plk4
+  float plk_ra_5 = 127;  // plk5
+  float pcm_ra_1 = 128;  // pcm1
+  float pcm_ra_2 = 129;  // pcm2
+  float pcm_ra_3 = 130;  // pcm3
+  float pcm_ra_4 = 131;  // pcm4
+  float pcm_ra_5 = 132;  // pcm5
+  float psh_ra_1 = 133;  // psh1
+  float psh_ra_2 = 134;  // psh2
+  float psh_ra_3 = 135;  // psh3
+  float pfv_ra_1 = 136;  // pfv1
+  float pfv_ra_2 = 137;  // pfv2
+  float pfv_ra_3 = 138;  // pfv3
+  float ppf_ra_1 = 139;  // ppf1
+  float ppf_ra_2 = 140;  // ppf2
+  float ppf_ra_3 = 141;  // ppf3
 }
 
 

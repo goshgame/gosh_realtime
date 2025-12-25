@@ -1702,12 +1702,748 @@ public final class RecFeature {
      * @return The viewerNegetiveAuthorList24h at the given index.
      */
     long getViewerNegetiveAuthorList24H(int index);
+
+    /**
+     * <pre>
+     * vv1
+     * </pre>
+     *
+     * <code>float vv_ra_1 = 118;</code>
+     * @return The vvRa1.
+     */
+    float getVvRa1();
+
+    /**
+     * <pre>
+     * vv2
+     * </pre>
+     *
+     * <code>float vv_ra_2 = 119;</code>
+     * @return The vvRa2.
+     */
+    float getVvRa2();
+
+    /**
+     * <pre>
+     * vv3
+     * </pre>
+     *
+     * <code>float vv_ra_3 = 120;</code>
+     * @return The vvRa3.
+     */
+    float getVvRa3();
+
+    /**
+     * <pre>
+     * vv4
+     * </pre>
+     *
+     * <code>float vv_ra_4 = 121;</code>
+     * @return The vvRa4.
+     */
+    float getVvRa4();
+
+    /**
+     * <pre>
+     * vv5
+     * </pre>
+     *
+     * <code>float vv_ra_5 = 122;</code>
+     * @return The vvRa5.
+     */
+    float getVvRa5();
+
+    /**
+     * <pre>
+     * cpv1
+     * </pre>
+     *
+     * <code>float cpv_ra_1 = 123;</code>
+     * @return The cpvRa1.
+     */
+    float getCpvRa1();
+
+    /**
+     * <pre>
+     * cpv2
+     * </pre>
+     *
+     * <code>float cpv_ra_2 = 124;</code>
+     * @return The cpvRa2.
+     */
+    float getCpvRa2();
+
+    /**
+     * <pre>
+     * cpv3
+     * </pre>
+     *
+     * <code>float cpv_ra_3 = 125;</code>
+     * @return The cpvRa3.
+     */
+    float getCpvRa3();
+
+    /**
+     * <pre>
+     * cpv4
+     * </pre>
+     *
+     * <code>float cpv_ra_4 = 126;</code>
+     * @return The cpvRa4.
+     */
+    float getCpvRa4();
+
+    /**
+     * <pre>
+     * cpv5
+     * </pre>
+     *
+     * <code>float cpv_ra_5 = 127;</code>
+     * @return The cpvRa5.
+     */
+    float getCpvRa5();
+
+    /**
+     * <pre>
+     * cpv6
+     * </pre>
+     *
+     * <code>float cpv_ra_6 = 128;</code>
+     * @return The cpvRa6.
+     */
+    float getCpvRa6();
+
+    /**
+     * <pre>
+     * lk1
+     * </pre>
+     *
+     * <code>float lk_ra_1 = 129;</code>
+     * @return The lkRa1.
+     */
+    float getLkRa1();
+
+    /**
+     * <pre>
+     * lk2
+     * </pre>
+     *
+     * <code>float lk_ra_2 = 130;</code>
+     * @return The lkRa2.
+     */
+    float getLkRa2();
+
+    /**
+     * <pre>
+     * lk3
+     * </pre>
+     *
+     * <code>float lk_ra_3 = 131;</code>
+     * @return The lkRa3.
+     */
+    float getLkRa3();
+
+    /**
+     * <pre>
+     * lk4
+     * </pre>
+     *
+     * <code>float lk_ra_4 = 132;</code>
+     * @return The lkRa4.
+     */
+    float getLkRa4();
+
+    /**
+     * <pre>
+     * lk5
+     * </pre>
+     *
+     * <code>float lk_ra_5 = 133;</code>
+     * @return The lkRa5.
+     */
+    float getLkRa5();
+
+    /**
+     * <pre>
+     * cm1
+     * </pre>
+     *
+     * <code>float cm_ra_1 = 134;</code>
+     * @return The cmRa1.
+     */
+    float getCmRa1();
+
+    /**
+     * <pre>
+     * cm2
+     * </pre>
+     *
+     * <code>float cm_ra_2 = 135;</code>
+     * @return The cmRa2.
+     */
+    float getCmRa2();
+
+    /**
+     * <pre>
+     * cm3
+     * </pre>
+     *
+     * <code>float cm_ra_3 = 136;</code>
+     * @return The cmRa3.
+     */
+    float getCmRa3();
+
+    /**
+     * <pre>
+     * cm4
+     * </pre>
+     *
+     * <code>float cm_ra_4 = 137;</code>
+     * @return The cmRa4.
+     */
+    float getCmRa4();
+
+    /**
+     * <pre>
+     * cm5
+     * </pre>
+     *
+     * <code>float cm_ra_5 = 138;</code>
+     * @return The cmRa5.
+     */
+    float getCmRa5();
+
+    /**
+     * <pre>
+     * sh1
+     * </pre>
+     *
+     * <code>float sh_ra_1 = 139;</code>
+     * @return The shRa1.
+     */
+    float getShRa1();
+
+    /**
+     * <pre>
+     * sh2
+     * </pre>
+     *
+     * <code>float sh_ra_2 = 140;</code>
+     * @return The shRa2.
+     */
+    float getShRa2();
+
+    /**
+     * <pre>
+     * sh3
+     * </pre>
+     *
+     * <code>float sh_ra_3 = 141;</code>
+     * @return The shRa3.
+     */
+    float getShRa3();
+
+    /**
+     * <pre>
+     * fv1
+     * </pre>
+     *
+     * <code>float fv_ra_1 = 142;</code>
+     * @return The fvRa1.
+     */
+    float getFvRa1();
+
+    /**
+     * <pre>
+     * fv2
+     * </pre>
+     *
+     * <code>float fv_ra_2 = 143;</code>
+     * @return The fvRa2.
+     */
+    float getFvRa2();
+
+    /**
+     * <pre>
+     * fv3
+     * </pre>
+     *
+     * <code>float fv_ra_3 = 144;</code>
+     * @return The fvRa3.
+     */
+    float getFvRa3();
+
+    /**
+     * <pre>
+     * pf1
+     * </pre>
+     *
+     * <code>float pf_ra_1 = 145;</code>
+     * @return The pfRa1.
+     */
+    float getPfRa1();
+
+    /**
+     * <pre>
+     * pf2
+     * </pre>
+     *
+     * <code>float pf_ra_2 = 146;</code>
+     * @return The pfRa2.
+     */
+    float getPfRa2();
+
+    /**
+     * <pre>
+     * pf3
+     * </pre>
+     *
+     * <code>float pf_ra_3 = 147;</code>
+     * @return The pfRa3.
+     */
+    float getPfRa3();
+
+    /**
+     * <pre>
+     * 用户最近完播的post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_completeplay_posts_latest = 151;</code>
+     * @return A list containing the viewerCompleteplayPostsLatest.
+     */
+    java.util.List<java.lang.Long> getViewerCompleteplayPostsLatestList();
+    /**
+     * <pre>
+     * 用户最近完播的post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_completeplay_posts_latest = 151;</code>
+     * @return The count of viewerCompleteplayPostsLatest.
+     */
+    int getViewerCompleteplayPostsLatestCount();
+    /**
+     * <pre>
+     * 用户最近完播的post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_completeplay_posts_latest = 151;</code>
+     * @param index The index of the element to return.
+     * @return The viewerCompleteplayPostsLatest at the given index.
+     */
+    long getViewerCompleteplayPostsLatest(int index);
+
+    /**
+     * <pre>
+     * 用户最近停留10s以上的post列表
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore viewer_10sstand_posts_latest = 152;</code>
+     */
+    java.util.List<com.gosh.entity.RecFeature.IdScore> 
+        getViewer10SstandPostsLatestList();
+    /**
+     * <pre>
+     * 用户最近停留10s以上的post列表
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore viewer_10sstand_posts_latest = 152;</code>
+     */
+    com.gosh.entity.RecFeature.IdScore getViewer10SstandPostsLatest(int index);
+    /**
+     * <pre>
+     * 用户最近停留10s以上的post列表
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore viewer_10sstand_posts_latest = 152;</code>
+     */
+    int getViewer10SstandPostsLatestCount();
+    /**
+     * <pre>
+     * 用户最近停留10s以上的post列表
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore viewer_10sstand_posts_latest = 152;</code>
+     */
+    java.util.List<? extends com.gosh.entity.RecFeature.IdScoreOrBuilder> 
+        getViewer10SstandPostsLatestOrBuilderList();
+    /**
+     * <pre>
+     * 用户最近停留10s以上的post列表
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore viewer_10sstand_posts_latest = 152;</code>
+     */
+    com.gosh.entity.RecFeature.IdScoreOrBuilder getViewer10SstandPostsLatestOrBuilder(
+        int index);
+
+    /**
+     * <pre>
+     * 用户最近观看8s以上的post列表
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore viewer_8splay_posts_latest = 153;</code>
+     */
+    java.util.List<com.gosh.entity.RecFeature.IdScore> 
+        getViewer8SplayPostsLatestList();
+    /**
+     * <pre>
+     * 用户最近观看8s以上的post列表
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore viewer_8splay_posts_latest = 153;</code>
+     */
+    com.gosh.entity.RecFeature.IdScore getViewer8SplayPostsLatest(int index);
+    /**
+     * <pre>
+     * 用户最近观看8s以上的post列表
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore viewer_8splay_posts_latest = 153;</code>
+     */
+    int getViewer8SplayPostsLatestCount();
+    /**
+     * <pre>
+     * 用户最近观看8s以上的post列表
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore viewer_8splay_posts_latest = 153;</code>
+     */
+    java.util.List<? extends com.gosh.entity.RecFeature.IdScoreOrBuilder> 
+        getViewer8SplayPostsLatestOrBuilderList();
+    /**
+     * <pre>
+     * 用户最近观看8s以上的post列表
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore viewer_8splay_posts_latest = 153;</code>
+     */
+    com.gosh.entity.RecFeature.IdScoreOrBuilder getViewer8SplayPostsLatestOrBuilder(
+        int index);
+
+    /**
+     * <pre>
+     * 用户最近点赞post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_like_posts_latest = 154;</code>
+     * @return A list containing the viewerLikePostsLatest.
+     */
+    java.util.List<java.lang.Long> getViewerLikePostsLatestList();
+    /**
+     * <pre>
+     * 用户最近点赞post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_like_posts_latest = 154;</code>
+     * @return The count of viewerLikePostsLatest.
+     */
+    int getViewerLikePostsLatestCount();
+    /**
+     * <pre>
+     * 用户最近点赞post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_like_posts_latest = 154;</code>
+     * @param index The index of the element to return.
+     * @return The viewerLikePostsLatest at the given index.
+     */
+    long getViewerLikePostsLatest(int index);
+
+    /**
+     * <pre>
+     * 用户最近评论post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_comment_posts_latest = 155;</code>
+     * @return A list containing the viewerCommentPostsLatest.
+     */
+    java.util.List<java.lang.Long> getViewerCommentPostsLatestList();
+    /**
+     * <pre>
+     * 用户最近评论post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_comment_posts_latest = 155;</code>
+     * @return The count of viewerCommentPostsLatest.
+     */
+    int getViewerCommentPostsLatestCount();
+    /**
+     * <pre>
+     * 用户最近评论post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_comment_posts_latest = 155;</code>
+     * @param index The index of the element to return.
+     * @return The viewerCommentPostsLatest at the given index.
+     */
+    long getViewerCommentPostsLatest(int index);
+
+    /**
+     * <pre>
+     * 用户最近分享post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_share_posts_latest = 156;</code>
+     * @return A list containing the viewerSharePostsLatest.
+     */
+    java.util.List<java.lang.Long> getViewerSharePostsLatestList();
+    /**
+     * <pre>
+     * 用户最近分享post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_share_posts_latest = 156;</code>
+     * @return The count of viewerSharePostsLatest.
+     */
+    int getViewerSharePostsLatestCount();
+    /**
+     * <pre>
+     * 用户最近分享post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_share_posts_latest = 156;</code>
+     * @param index The index of the element to return.
+     * @return The viewerSharePostsLatest at the given index.
+     */
+    long getViewerSharePostsLatest(int index);
+
+    /**
+     * <pre>
+     * 用户最近收藏post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_collect_posts_latest = 157;</code>
+     * @return A list containing the viewerCollectPostsLatest.
+     */
+    java.util.List<java.lang.Long> getViewerCollectPostsLatestList();
+    /**
+     * <pre>
+     * 用户最近收藏post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_collect_posts_latest = 157;</code>
+     * @return The count of viewerCollectPostsLatest.
+     */
+    int getViewerCollectPostsLatestCount();
+    /**
+     * <pre>
+     * 用户最近收藏post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_collect_posts_latest = 157;</code>
+     * @param index The index of the element to return.
+     * @return The viewerCollectPostsLatest at the given index.
+     */
+    long getViewerCollectPostsLatest(int index);
+
+    /**
+     * <pre>
+     * 用户最近付费post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_pay_posts_latest = 158;</code>
+     * @return A list containing the viewerPayPostsLatest.
+     */
+    java.util.List<java.lang.Long> getViewerPayPostsLatestList();
+    /**
+     * <pre>
+     * 用户最近付费post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_pay_posts_latest = 158;</code>
+     * @return The count of viewerPayPostsLatest.
+     */
+    int getViewerPayPostsLatestCount();
+    /**
+     * <pre>
+     * 用户最近付费post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_pay_posts_latest = 158;</code>
+     * @param index The index of the element to return.
+     * @return The viewerPayPostsLatest at the given index.
+     */
+    long getViewerPayPostsLatest(int index);
+
+    /**
+     * <pre>
+     * 用户最近举报post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_report_posts_latest = 159;</code>
+     * @return A list containing the viewerReportPostsLatest.
+     */
+    java.util.List<java.lang.Long> getViewerReportPostsLatestList();
+    /**
+     * <pre>
+     * 用户最近举报post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_report_posts_latest = 159;</code>
+     * @return The count of viewerReportPostsLatest.
+     */
+    int getViewerReportPostsLatestCount();
+    /**
+     * <pre>
+     * 用户最近举报post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_report_posts_latest = 159;</code>
+     * @param index The index of the element to return.
+     * @return The viewerReportPostsLatest at the given index.
+     */
+    long getViewerReportPostsLatest(int index);
+
+    /**
+     * <pre>
+     * 用户最近不喜欢post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_dislike_posts_latest = 160;</code>
+     * @return A list containing the viewerDislikePostsLatest.
+     */
+    java.util.List<java.lang.Long> getViewerDislikePostsLatestList();
+    /**
+     * <pre>
+     * 用户最近不喜欢post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_dislike_posts_latest = 160;</code>
+     * @return The count of viewerDislikePostsLatest.
+     */
+    int getViewerDislikePostsLatestCount();
+    /**
+     * <pre>
+     * 用户最近不喜欢post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_dislike_posts_latest = 160;</code>
+     * @param index The index of the element to return.
+     * @return The viewerDislikePostsLatest at the given index.
+     */
+    long getViewerDislikePostsLatest(int index);
+
+    /**
+     * <pre>
+     * 用户最近正反馈post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_positive_posts_latest = 161;</code>
+     * @return A list containing the viewerPositivePostsLatest.
+     */
+    java.util.List<java.lang.Long> getViewerPositivePostsLatestList();
+    /**
+     * <pre>
+     * 用户最近正反馈post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_positive_posts_latest = 161;</code>
+     * @return The count of viewerPositivePostsLatest.
+     */
+    int getViewerPositivePostsLatestCount();
+    /**
+     * <pre>
+     * 用户最近正反馈post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_positive_posts_latest = 161;</code>
+     * @param index The index of the element to return.
+     * @return The viewerPositivePostsLatest at the given index.
+     */
+    long getViewerPositivePostsLatest(int index);
+
+    /**
+     * <pre>
+     * 用户最近负反馈post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_negetive_posts_latest = 162;</code>
+     * @return A list containing the viewerNegetivePostsLatest.
+     */
+    java.util.List<java.lang.Long> getViewerNegetivePostsLatestList();
+    /**
+     * <pre>
+     * 用户最近负反馈post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_negetive_posts_latest = 162;</code>
+     * @return The count of viewerNegetivePostsLatest.
+     */
+    int getViewerNegetivePostsLatestCount();
+    /**
+     * <pre>
+     * 用户最近负反馈post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_negetive_posts_latest = 162;</code>
+     * @param index The index of the element to return.
+     * @return The viewerNegetivePostsLatest at the given index.
+     */
+    long getViewerNegetivePostsLatest(int index);
+
+    /**
+     * <pre>
+     * 用户最近正反馈作者列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_positive_authors_latest = 163;</code>
+     * @return A list containing the viewerPositiveAuthorsLatest.
+     */
+    java.util.List<java.lang.Long> getViewerPositiveAuthorsLatestList();
+    /**
+     * <pre>
+     * 用户最近正反馈作者列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_positive_authors_latest = 163;</code>
+     * @return The count of viewerPositiveAuthorsLatest.
+     */
+    int getViewerPositiveAuthorsLatestCount();
+    /**
+     * <pre>
+     * 用户最近正反馈作者列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_positive_authors_latest = 163;</code>
+     * @param index The index of the element to return.
+     * @return The viewerPositiveAuthorsLatest at the given index.
+     */
+    long getViewerPositiveAuthorsLatest(int index);
+
+    /**
+     * <pre>
+     * 用户最近负反馈作者列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_negetive_authors_latest = 164;</code>
+     * @return A list containing the viewerNegetiveAuthorsLatest.
+     */
+    java.util.List<java.lang.Long> getViewerNegetiveAuthorsLatestList();
+    /**
+     * <pre>
+     * 用户最近负反馈作者列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_negetive_authors_latest = 164;</code>
+     * @return The count of viewerNegetiveAuthorsLatest.
+     */
+    int getViewerNegetiveAuthorsLatestCount();
+    /**
+     * <pre>
+     * 用户最近负反馈作者列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_negetive_authors_latest = 164;</code>
+     * @param index The index of the element to return.
+     * @return The viewerNegetiveAuthorsLatest at the given index.
+     */
+    long getViewerNegetiveAuthorsLatest(int index);
   }
   /**
    * <pre>
    * 用户侧特征
    * Redis Key: rec:user_feature:{user_id}:post1h, rec:user_feature:{user_id}:post24h
-   *            rec:user_feature:{user_id}:offpic
+   *            rec:user_feature:{user_id}:offpic, rec:user_feature:{user_id}:lastview
    * </pre>
    *
    * Protobuf type {@code com.gosh.entity.RecUserFeature}
@@ -1784,6 +2520,20 @@ public final class RecFeature {
       viewerNegetivePostList24H_ = emptyLongList();
       viewerPositiveAuthorList24H_ = emptyLongList();
       viewerNegetiveAuthorList24H_ = emptyLongList();
+      viewerCompleteplayPostsLatest_ = emptyLongList();
+      viewer10SstandPostsLatest_ = java.util.Collections.emptyList();
+      viewer8SplayPostsLatest_ = java.util.Collections.emptyList();
+      viewerLikePostsLatest_ = emptyLongList();
+      viewerCommentPostsLatest_ = emptyLongList();
+      viewerSharePostsLatest_ = emptyLongList();
+      viewerCollectPostsLatest_ = emptyLongList();
+      viewerPayPostsLatest_ = emptyLongList();
+      viewerReportPostsLatest_ = emptyLongList();
+      viewerDislikePostsLatest_ = emptyLongList();
+      viewerPositivePostsLatest_ = emptyLongList();
+      viewerNegetivePostsLatest_ = emptyLongList();
+      viewerPositiveAuthorsLatest_ = emptyLongList();
+      viewerNegetiveAuthorsLatest_ = emptyLongList();
     }
 
     @java.lang.Override
@@ -2729,6 +3479,426 @@ public final class RecFeature {
               viewerExpPostCnt24H_ = input.readInt32();
               break;
             }
+            case 949: {
+
+              vvRa1_ = input.readFloat();
+              break;
+            }
+            case 957: {
+
+              vvRa2_ = input.readFloat();
+              break;
+            }
+            case 965: {
+
+              vvRa3_ = input.readFloat();
+              break;
+            }
+            case 973: {
+
+              vvRa4_ = input.readFloat();
+              break;
+            }
+            case 981: {
+
+              vvRa5_ = input.readFloat();
+              break;
+            }
+            case 989: {
+
+              cpvRa1_ = input.readFloat();
+              break;
+            }
+            case 997: {
+
+              cpvRa2_ = input.readFloat();
+              break;
+            }
+            case 1005: {
+
+              cpvRa3_ = input.readFloat();
+              break;
+            }
+            case 1013: {
+
+              cpvRa4_ = input.readFloat();
+              break;
+            }
+            case 1021: {
+
+              cpvRa5_ = input.readFloat();
+              break;
+            }
+            case 1029: {
+
+              cpvRa6_ = input.readFloat();
+              break;
+            }
+            case 1037: {
+
+              lkRa1_ = input.readFloat();
+              break;
+            }
+            case 1045: {
+
+              lkRa2_ = input.readFloat();
+              break;
+            }
+            case 1053: {
+
+              lkRa3_ = input.readFloat();
+              break;
+            }
+            case 1061: {
+
+              lkRa4_ = input.readFloat();
+              break;
+            }
+            case 1069: {
+
+              lkRa5_ = input.readFloat();
+              break;
+            }
+            case 1077: {
+
+              cmRa1_ = input.readFloat();
+              break;
+            }
+            case 1085: {
+
+              cmRa2_ = input.readFloat();
+              break;
+            }
+            case 1093: {
+
+              cmRa3_ = input.readFloat();
+              break;
+            }
+            case 1101: {
+
+              cmRa4_ = input.readFloat();
+              break;
+            }
+            case 1109: {
+
+              cmRa5_ = input.readFloat();
+              break;
+            }
+            case 1117: {
+
+              shRa1_ = input.readFloat();
+              break;
+            }
+            case 1125: {
+
+              shRa2_ = input.readFloat();
+              break;
+            }
+            case 1133: {
+
+              shRa3_ = input.readFloat();
+              break;
+            }
+            case 1141: {
+
+              fvRa1_ = input.readFloat();
+              break;
+            }
+            case 1149: {
+
+              fvRa2_ = input.readFloat();
+              break;
+            }
+            case 1157: {
+
+              fvRa3_ = input.readFloat();
+              break;
+            }
+            case 1165: {
+
+              pfRa1_ = input.readFloat();
+              break;
+            }
+            case 1173: {
+
+              pfRa2_ = input.readFloat();
+              break;
+            }
+            case 1181: {
+
+              pfRa3_ = input.readFloat();
+              break;
+            }
+            case 1208: {
+              if (!((mutable_bitField1_ & 0x00000008) != 0)) {
+                viewerCompleteplayPostsLatest_ = newLongList();
+                mutable_bitField1_ |= 0x00000008;
+              }
+              viewerCompleteplayPostsLatest_.addLong(input.readInt64());
+              break;
+            }
+            case 1210: {
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField1_ & 0x00000008) != 0) && input.getBytesUntilLimit() > 0) {
+                viewerCompleteplayPostsLatest_ = newLongList();
+                mutable_bitField1_ |= 0x00000008;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                viewerCompleteplayPostsLatest_.addLong(input.readInt64());
+              }
+              input.popLimit(limit);
+              break;
+            }
+            case 1218: {
+              if (!((mutable_bitField1_ & 0x00000010) != 0)) {
+                viewer10SstandPostsLatest_ = new java.util.ArrayList<com.gosh.entity.RecFeature.IdScore>();
+                mutable_bitField1_ |= 0x00000010;
+              }
+              viewer10SstandPostsLatest_.add(
+                  input.readMessage(com.gosh.entity.RecFeature.IdScore.parser(), extensionRegistry));
+              break;
+            }
+            case 1226: {
+              if (!((mutable_bitField1_ & 0x00000020) != 0)) {
+                viewer8SplayPostsLatest_ = new java.util.ArrayList<com.gosh.entity.RecFeature.IdScore>();
+                mutable_bitField1_ |= 0x00000020;
+              }
+              viewer8SplayPostsLatest_.add(
+                  input.readMessage(com.gosh.entity.RecFeature.IdScore.parser(), extensionRegistry));
+              break;
+            }
+            case 1232: {
+              if (!((mutable_bitField1_ & 0x00000040) != 0)) {
+                viewerLikePostsLatest_ = newLongList();
+                mutable_bitField1_ |= 0x00000040;
+              }
+              viewerLikePostsLatest_.addLong(input.readInt64());
+              break;
+            }
+            case 1234: {
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField1_ & 0x00000040) != 0) && input.getBytesUntilLimit() > 0) {
+                viewerLikePostsLatest_ = newLongList();
+                mutable_bitField1_ |= 0x00000040;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                viewerLikePostsLatest_.addLong(input.readInt64());
+              }
+              input.popLimit(limit);
+              break;
+            }
+            case 1240: {
+              if (!((mutable_bitField1_ & 0x00000080) != 0)) {
+                viewerCommentPostsLatest_ = newLongList();
+                mutable_bitField1_ |= 0x00000080;
+              }
+              viewerCommentPostsLatest_.addLong(input.readInt64());
+              break;
+            }
+            case 1242: {
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField1_ & 0x00000080) != 0) && input.getBytesUntilLimit() > 0) {
+                viewerCommentPostsLatest_ = newLongList();
+                mutable_bitField1_ |= 0x00000080;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                viewerCommentPostsLatest_.addLong(input.readInt64());
+              }
+              input.popLimit(limit);
+              break;
+            }
+            case 1248: {
+              if (!((mutable_bitField1_ & 0x00000100) != 0)) {
+                viewerSharePostsLatest_ = newLongList();
+                mutable_bitField1_ |= 0x00000100;
+              }
+              viewerSharePostsLatest_.addLong(input.readInt64());
+              break;
+            }
+            case 1250: {
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField1_ & 0x00000100) != 0) && input.getBytesUntilLimit() > 0) {
+                viewerSharePostsLatest_ = newLongList();
+                mutable_bitField1_ |= 0x00000100;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                viewerSharePostsLatest_.addLong(input.readInt64());
+              }
+              input.popLimit(limit);
+              break;
+            }
+            case 1256: {
+              if (!((mutable_bitField1_ & 0x00000200) != 0)) {
+                viewerCollectPostsLatest_ = newLongList();
+                mutable_bitField1_ |= 0x00000200;
+              }
+              viewerCollectPostsLatest_.addLong(input.readInt64());
+              break;
+            }
+            case 1258: {
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField1_ & 0x00000200) != 0) && input.getBytesUntilLimit() > 0) {
+                viewerCollectPostsLatest_ = newLongList();
+                mutable_bitField1_ |= 0x00000200;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                viewerCollectPostsLatest_.addLong(input.readInt64());
+              }
+              input.popLimit(limit);
+              break;
+            }
+            case 1264: {
+              if (!((mutable_bitField1_ & 0x00000400) != 0)) {
+                viewerPayPostsLatest_ = newLongList();
+                mutable_bitField1_ |= 0x00000400;
+              }
+              viewerPayPostsLatest_.addLong(input.readInt64());
+              break;
+            }
+            case 1266: {
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField1_ & 0x00000400) != 0) && input.getBytesUntilLimit() > 0) {
+                viewerPayPostsLatest_ = newLongList();
+                mutable_bitField1_ |= 0x00000400;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                viewerPayPostsLatest_.addLong(input.readInt64());
+              }
+              input.popLimit(limit);
+              break;
+            }
+            case 1272: {
+              if (!((mutable_bitField1_ & 0x00000800) != 0)) {
+                viewerReportPostsLatest_ = newLongList();
+                mutable_bitField1_ |= 0x00000800;
+              }
+              viewerReportPostsLatest_.addLong(input.readInt64());
+              break;
+            }
+            case 1274: {
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField1_ & 0x00000800) != 0) && input.getBytesUntilLimit() > 0) {
+                viewerReportPostsLatest_ = newLongList();
+                mutable_bitField1_ |= 0x00000800;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                viewerReportPostsLatest_.addLong(input.readInt64());
+              }
+              input.popLimit(limit);
+              break;
+            }
+            case 1280: {
+              if (!((mutable_bitField1_ & 0x00001000) != 0)) {
+                viewerDislikePostsLatest_ = newLongList();
+                mutable_bitField1_ |= 0x00001000;
+              }
+              viewerDislikePostsLatest_.addLong(input.readInt64());
+              break;
+            }
+            case 1282: {
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField1_ & 0x00001000) != 0) && input.getBytesUntilLimit() > 0) {
+                viewerDislikePostsLatest_ = newLongList();
+                mutable_bitField1_ |= 0x00001000;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                viewerDislikePostsLatest_.addLong(input.readInt64());
+              }
+              input.popLimit(limit);
+              break;
+            }
+            case 1288: {
+              if (!((mutable_bitField1_ & 0x00002000) != 0)) {
+                viewerPositivePostsLatest_ = newLongList();
+                mutable_bitField1_ |= 0x00002000;
+              }
+              viewerPositivePostsLatest_.addLong(input.readInt64());
+              break;
+            }
+            case 1290: {
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField1_ & 0x00002000) != 0) && input.getBytesUntilLimit() > 0) {
+                viewerPositivePostsLatest_ = newLongList();
+                mutable_bitField1_ |= 0x00002000;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                viewerPositivePostsLatest_.addLong(input.readInt64());
+              }
+              input.popLimit(limit);
+              break;
+            }
+            case 1296: {
+              if (!((mutable_bitField1_ & 0x00004000) != 0)) {
+                viewerNegetivePostsLatest_ = newLongList();
+                mutable_bitField1_ |= 0x00004000;
+              }
+              viewerNegetivePostsLatest_.addLong(input.readInt64());
+              break;
+            }
+            case 1298: {
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField1_ & 0x00004000) != 0) && input.getBytesUntilLimit() > 0) {
+                viewerNegetivePostsLatest_ = newLongList();
+                mutable_bitField1_ |= 0x00004000;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                viewerNegetivePostsLatest_.addLong(input.readInt64());
+              }
+              input.popLimit(limit);
+              break;
+            }
+            case 1304: {
+              if (!((mutable_bitField1_ & 0x00008000) != 0)) {
+                viewerPositiveAuthorsLatest_ = newLongList();
+                mutable_bitField1_ |= 0x00008000;
+              }
+              viewerPositiveAuthorsLatest_.addLong(input.readInt64());
+              break;
+            }
+            case 1306: {
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField1_ & 0x00008000) != 0) && input.getBytesUntilLimit() > 0) {
+                viewerPositiveAuthorsLatest_ = newLongList();
+                mutable_bitField1_ |= 0x00008000;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                viewerPositiveAuthorsLatest_.addLong(input.readInt64());
+              }
+              input.popLimit(limit);
+              break;
+            }
+            case 1312: {
+              if (!((mutable_bitField1_ & 0x00010000) != 0)) {
+                viewerNegetiveAuthorsLatest_ = newLongList();
+                mutable_bitField1_ |= 0x00010000;
+              }
+              viewerNegetiveAuthorsLatest_.addLong(input.readInt64());
+              break;
+            }
+            case 1314: {
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField1_ & 0x00010000) != 0) && input.getBytesUntilLimit() > 0) {
+                viewerNegetiveAuthorsLatest_ = newLongList();
+                mutable_bitField1_ |= 0x00010000;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                viewerNegetiveAuthorsLatest_.addLong(input.readInt64());
+              }
+              input.popLimit(limit);
+              break;
+            }
             default: {
               if (!parseUnknownField(
                   input, unknownFields, extensionRegistry, tag)) {
@@ -2850,6 +4020,48 @@ public final class RecFeature {
         }
         if (((mutable_bitField1_ & 0x00000004) != 0)) {
           viewerNegetiveAuthorList24H_.makeImmutable(); // C
+        }
+        if (((mutable_bitField1_ & 0x00000008) != 0)) {
+          viewerCompleteplayPostsLatest_.makeImmutable(); // C
+        }
+        if (((mutable_bitField1_ & 0x00000010) != 0)) {
+          viewer10SstandPostsLatest_ = java.util.Collections.unmodifiableList(viewer10SstandPostsLatest_);
+        }
+        if (((mutable_bitField1_ & 0x00000020) != 0)) {
+          viewer8SplayPostsLatest_ = java.util.Collections.unmodifiableList(viewer8SplayPostsLatest_);
+        }
+        if (((mutable_bitField1_ & 0x00000040) != 0)) {
+          viewerLikePostsLatest_.makeImmutable(); // C
+        }
+        if (((mutable_bitField1_ & 0x00000080) != 0)) {
+          viewerCommentPostsLatest_.makeImmutable(); // C
+        }
+        if (((mutable_bitField1_ & 0x00000100) != 0)) {
+          viewerSharePostsLatest_.makeImmutable(); // C
+        }
+        if (((mutable_bitField1_ & 0x00000200) != 0)) {
+          viewerCollectPostsLatest_.makeImmutable(); // C
+        }
+        if (((mutable_bitField1_ & 0x00000400) != 0)) {
+          viewerPayPostsLatest_.makeImmutable(); // C
+        }
+        if (((mutable_bitField1_ & 0x00000800) != 0)) {
+          viewerReportPostsLatest_.makeImmutable(); // C
+        }
+        if (((mutable_bitField1_ & 0x00001000) != 0)) {
+          viewerDislikePostsLatest_.makeImmutable(); // C
+        }
+        if (((mutable_bitField1_ & 0x00002000) != 0)) {
+          viewerPositivePostsLatest_.makeImmutable(); // C
+        }
+        if (((mutable_bitField1_ & 0x00004000) != 0)) {
+          viewerNegetivePostsLatest_.makeImmutable(); // C
+        }
+        if (((mutable_bitField1_ & 0x00008000) != 0)) {
+          viewerPositiveAuthorsLatest_.makeImmutable(); // C
+        }
+        if (((mutable_bitField1_ & 0x00010000) != 0)) {
+          viewerNegetiveAuthorsLatest_.makeImmutable(); // C
         }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -5790,6 +7002,1056 @@ public final class RecFeature {
     }
     private int viewerNegetiveAuthorList24HMemoizedSerializedSize = -1;
 
+    public static final int VV_RA_1_FIELD_NUMBER = 118;
+    private float vvRa1_;
+    /**
+     * <pre>
+     * vv1
+     * </pre>
+     *
+     * <code>float vv_ra_1 = 118;</code>
+     * @return The vvRa1.
+     */
+    @java.lang.Override
+    public float getVvRa1() {
+      return vvRa1_;
+    }
+
+    public static final int VV_RA_2_FIELD_NUMBER = 119;
+    private float vvRa2_;
+    /**
+     * <pre>
+     * vv2
+     * </pre>
+     *
+     * <code>float vv_ra_2 = 119;</code>
+     * @return The vvRa2.
+     */
+    @java.lang.Override
+    public float getVvRa2() {
+      return vvRa2_;
+    }
+
+    public static final int VV_RA_3_FIELD_NUMBER = 120;
+    private float vvRa3_;
+    /**
+     * <pre>
+     * vv3
+     * </pre>
+     *
+     * <code>float vv_ra_3 = 120;</code>
+     * @return The vvRa3.
+     */
+    @java.lang.Override
+    public float getVvRa3() {
+      return vvRa3_;
+    }
+
+    public static final int VV_RA_4_FIELD_NUMBER = 121;
+    private float vvRa4_;
+    /**
+     * <pre>
+     * vv4
+     * </pre>
+     *
+     * <code>float vv_ra_4 = 121;</code>
+     * @return The vvRa4.
+     */
+    @java.lang.Override
+    public float getVvRa4() {
+      return vvRa4_;
+    }
+
+    public static final int VV_RA_5_FIELD_NUMBER = 122;
+    private float vvRa5_;
+    /**
+     * <pre>
+     * vv5
+     * </pre>
+     *
+     * <code>float vv_ra_5 = 122;</code>
+     * @return The vvRa5.
+     */
+    @java.lang.Override
+    public float getVvRa5() {
+      return vvRa5_;
+    }
+
+    public static final int CPV_RA_1_FIELD_NUMBER = 123;
+    private float cpvRa1_;
+    /**
+     * <pre>
+     * cpv1
+     * </pre>
+     *
+     * <code>float cpv_ra_1 = 123;</code>
+     * @return The cpvRa1.
+     */
+    @java.lang.Override
+    public float getCpvRa1() {
+      return cpvRa1_;
+    }
+
+    public static final int CPV_RA_2_FIELD_NUMBER = 124;
+    private float cpvRa2_;
+    /**
+     * <pre>
+     * cpv2
+     * </pre>
+     *
+     * <code>float cpv_ra_2 = 124;</code>
+     * @return The cpvRa2.
+     */
+    @java.lang.Override
+    public float getCpvRa2() {
+      return cpvRa2_;
+    }
+
+    public static final int CPV_RA_3_FIELD_NUMBER = 125;
+    private float cpvRa3_;
+    /**
+     * <pre>
+     * cpv3
+     * </pre>
+     *
+     * <code>float cpv_ra_3 = 125;</code>
+     * @return The cpvRa3.
+     */
+    @java.lang.Override
+    public float getCpvRa3() {
+      return cpvRa3_;
+    }
+
+    public static final int CPV_RA_4_FIELD_NUMBER = 126;
+    private float cpvRa4_;
+    /**
+     * <pre>
+     * cpv4
+     * </pre>
+     *
+     * <code>float cpv_ra_4 = 126;</code>
+     * @return The cpvRa4.
+     */
+    @java.lang.Override
+    public float getCpvRa4() {
+      return cpvRa4_;
+    }
+
+    public static final int CPV_RA_5_FIELD_NUMBER = 127;
+    private float cpvRa5_;
+    /**
+     * <pre>
+     * cpv5
+     * </pre>
+     *
+     * <code>float cpv_ra_5 = 127;</code>
+     * @return The cpvRa5.
+     */
+    @java.lang.Override
+    public float getCpvRa5() {
+      return cpvRa5_;
+    }
+
+    public static final int CPV_RA_6_FIELD_NUMBER = 128;
+    private float cpvRa6_;
+    /**
+     * <pre>
+     * cpv6
+     * </pre>
+     *
+     * <code>float cpv_ra_6 = 128;</code>
+     * @return The cpvRa6.
+     */
+    @java.lang.Override
+    public float getCpvRa6() {
+      return cpvRa6_;
+    }
+
+    public static final int LK_RA_1_FIELD_NUMBER = 129;
+    private float lkRa1_;
+    /**
+     * <pre>
+     * lk1
+     * </pre>
+     *
+     * <code>float lk_ra_1 = 129;</code>
+     * @return The lkRa1.
+     */
+    @java.lang.Override
+    public float getLkRa1() {
+      return lkRa1_;
+    }
+
+    public static final int LK_RA_2_FIELD_NUMBER = 130;
+    private float lkRa2_;
+    /**
+     * <pre>
+     * lk2
+     * </pre>
+     *
+     * <code>float lk_ra_2 = 130;</code>
+     * @return The lkRa2.
+     */
+    @java.lang.Override
+    public float getLkRa2() {
+      return lkRa2_;
+    }
+
+    public static final int LK_RA_3_FIELD_NUMBER = 131;
+    private float lkRa3_;
+    /**
+     * <pre>
+     * lk3
+     * </pre>
+     *
+     * <code>float lk_ra_3 = 131;</code>
+     * @return The lkRa3.
+     */
+    @java.lang.Override
+    public float getLkRa3() {
+      return lkRa3_;
+    }
+
+    public static final int LK_RA_4_FIELD_NUMBER = 132;
+    private float lkRa4_;
+    /**
+     * <pre>
+     * lk4
+     * </pre>
+     *
+     * <code>float lk_ra_4 = 132;</code>
+     * @return The lkRa4.
+     */
+    @java.lang.Override
+    public float getLkRa4() {
+      return lkRa4_;
+    }
+
+    public static final int LK_RA_5_FIELD_NUMBER = 133;
+    private float lkRa5_;
+    /**
+     * <pre>
+     * lk5
+     * </pre>
+     *
+     * <code>float lk_ra_5 = 133;</code>
+     * @return The lkRa5.
+     */
+    @java.lang.Override
+    public float getLkRa5() {
+      return lkRa5_;
+    }
+
+    public static final int CM_RA_1_FIELD_NUMBER = 134;
+    private float cmRa1_;
+    /**
+     * <pre>
+     * cm1
+     * </pre>
+     *
+     * <code>float cm_ra_1 = 134;</code>
+     * @return The cmRa1.
+     */
+    @java.lang.Override
+    public float getCmRa1() {
+      return cmRa1_;
+    }
+
+    public static final int CM_RA_2_FIELD_NUMBER = 135;
+    private float cmRa2_;
+    /**
+     * <pre>
+     * cm2
+     * </pre>
+     *
+     * <code>float cm_ra_2 = 135;</code>
+     * @return The cmRa2.
+     */
+    @java.lang.Override
+    public float getCmRa2() {
+      return cmRa2_;
+    }
+
+    public static final int CM_RA_3_FIELD_NUMBER = 136;
+    private float cmRa3_;
+    /**
+     * <pre>
+     * cm3
+     * </pre>
+     *
+     * <code>float cm_ra_3 = 136;</code>
+     * @return The cmRa3.
+     */
+    @java.lang.Override
+    public float getCmRa3() {
+      return cmRa3_;
+    }
+
+    public static final int CM_RA_4_FIELD_NUMBER = 137;
+    private float cmRa4_;
+    /**
+     * <pre>
+     * cm4
+     * </pre>
+     *
+     * <code>float cm_ra_4 = 137;</code>
+     * @return The cmRa4.
+     */
+    @java.lang.Override
+    public float getCmRa4() {
+      return cmRa4_;
+    }
+
+    public static final int CM_RA_5_FIELD_NUMBER = 138;
+    private float cmRa5_;
+    /**
+     * <pre>
+     * cm5
+     * </pre>
+     *
+     * <code>float cm_ra_5 = 138;</code>
+     * @return The cmRa5.
+     */
+    @java.lang.Override
+    public float getCmRa5() {
+      return cmRa5_;
+    }
+
+    public static final int SH_RA_1_FIELD_NUMBER = 139;
+    private float shRa1_;
+    /**
+     * <pre>
+     * sh1
+     * </pre>
+     *
+     * <code>float sh_ra_1 = 139;</code>
+     * @return The shRa1.
+     */
+    @java.lang.Override
+    public float getShRa1() {
+      return shRa1_;
+    }
+
+    public static final int SH_RA_2_FIELD_NUMBER = 140;
+    private float shRa2_;
+    /**
+     * <pre>
+     * sh2
+     * </pre>
+     *
+     * <code>float sh_ra_2 = 140;</code>
+     * @return The shRa2.
+     */
+    @java.lang.Override
+    public float getShRa2() {
+      return shRa2_;
+    }
+
+    public static final int SH_RA_3_FIELD_NUMBER = 141;
+    private float shRa3_;
+    /**
+     * <pre>
+     * sh3
+     * </pre>
+     *
+     * <code>float sh_ra_3 = 141;</code>
+     * @return The shRa3.
+     */
+    @java.lang.Override
+    public float getShRa3() {
+      return shRa3_;
+    }
+
+    public static final int FV_RA_1_FIELD_NUMBER = 142;
+    private float fvRa1_;
+    /**
+     * <pre>
+     * fv1
+     * </pre>
+     *
+     * <code>float fv_ra_1 = 142;</code>
+     * @return The fvRa1.
+     */
+    @java.lang.Override
+    public float getFvRa1() {
+      return fvRa1_;
+    }
+
+    public static final int FV_RA_2_FIELD_NUMBER = 143;
+    private float fvRa2_;
+    /**
+     * <pre>
+     * fv2
+     * </pre>
+     *
+     * <code>float fv_ra_2 = 143;</code>
+     * @return The fvRa2.
+     */
+    @java.lang.Override
+    public float getFvRa2() {
+      return fvRa2_;
+    }
+
+    public static final int FV_RA_3_FIELD_NUMBER = 144;
+    private float fvRa3_;
+    /**
+     * <pre>
+     * fv3
+     * </pre>
+     *
+     * <code>float fv_ra_3 = 144;</code>
+     * @return The fvRa3.
+     */
+    @java.lang.Override
+    public float getFvRa3() {
+      return fvRa3_;
+    }
+
+    public static final int PF_RA_1_FIELD_NUMBER = 145;
+    private float pfRa1_;
+    /**
+     * <pre>
+     * pf1
+     * </pre>
+     *
+     * <code>float pf_ra_1 = 145;</code>
+     * @return The pfRa1.
+     */
+    @java.lang.Override
+    public float getPfRa1() {
+      return pfRa1_;
+    }
+
+    public static final int PF_RA_2_FIELD_NUMBER = 146;
+    private float pfRa2_;
+    /**
+     * <pre>
+     * pf2
+     * </pre>
+     *
+     * <code>float pf_ra_2 = 146;</code>
+     * @return The pfRa2.
+     */
+    @java.lang.Override
+    public float getPfRa2() {
+      return pfRa2_;
+    }
+
+    public static final int PF_RA_3_FIELD_NUMBER = 147;
+    private float pfRa3_;
+    /**
+     * <pre>
+     * pf3
+     * </pre>
+     *
+     * <code>float pf_ra_3 = 147;</code>
+     * @return The pfRa3.
+     */
+    @java.lang.Override
+    public float getPfRa3() {
+      return pfRa3_;
+    }
+
+    public static final int VIEWER_COMPLETEPLAY_POSTS_LATEST_FIELD_NUMBER = 151;
+    private com.google.protobuf.Internal.LongList viewerCompleteplayPostsLatest_;
+    /**
+     * <pre>
+     * 用户最近完播的post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_completeplay_posts_latest = 151;</code>
+     * @return A list containing the viewerCompleteplayPostsLatest.
+     */
+    @java.lang.Override
+    public java.util.List<java.lang.Long>
+        getViewerCompleteplayPostsLatestList() {
+      return viewerCompleteplayPostsLatest_;
+    }
+    /**
+     * <pre>
+     * 用户最近完播的post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_completeplay_posts_latest = 151;</code>
+     * @return The count of viewerCompleteplayPostsLatest.
+     */
+    public int getViewerCompleteplayPostsLatestCount() {
+      return viewerCompleteplayPostsLatest_.size();
+    }
+    /**
+     * <pre>
+     * 用户最近完播的post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_completeplay_posts_latest = 151;</code>
+     * @param index The index of the element to return.
+     * @return The viewerCompleteplayPostsLatest at the given index.
+     */
+    public long getViewerCompleteplayPostsLatest(int index) {
+      return viewerCompleteplayPostsLatest_.getLong(index);
+    }
+    private int viewerCompleteplayPostsLatestMemoizedSerializedSize = -1;
+
+    public static final int VIEWER_10SSTAND_POSTS_LATEST_FIELD_NUMBER = 152;
+    private java.util.List<com.gosh.entity.RecFeature.IdScore> viewer10SstandPostsLatest_;
+    /**
+     * <pre>
+     * 用户最近停留10s以上的post列表
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore viewer_10sstand_posts_latest = 152;</code>
+     */
+    @java.lang.Override
+    public java.util.List<com.gosh.entity.RecFeature.IdScore> getViewer10SstandPostsLatestList() {
+      return viewer10SstandPostsLatest_;
+    }
+    /**
+     * <pre>
+     * 用户最近停留10s以上的post列表
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore viewer_10sstand_posts_latest = 152;</code>
+     */
+    @java.lang.Override
+    public java.util.List<? extends com.gosh.entity.RecFeature.IdScoreOrBuilder> 
+        getViewer10SstandPostsLatestOrBuilderList() {
+      return viewer10SstandPostsLatest_;
+    }
+    /**
+     * <pre>
+     * 用户最近停留10s以上的post列表
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore viewer_10sstand_posts_latest = 152;</code>
+     */
+    @java.lang.Override
+    public int getViewer10SstandPostsLatestCount() {
+      return viewer10SstandPostsLatest_.size();
+    }
+    /**
+     * <pre>
+     * 用户最近停留10s以上的post列表
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore viewer_10sstand_posts_latest = 152;</code>
+     */
+    @java.lang.Override
+    public com.gosh.entity.RecFeature.IdScore getViewer10SstandPostsLatest(int index) {
+      return viewer10SstandPostsLatest_.get(index);
+    }
+    /**
+     * <pre>
+     * 用户最近停留10s以上的post列表
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore viewer_10sstand_posts_latest = 152;</code>
+     */
+    @java.lang.Override
+    public com.gosh.entity.RecFeature.IdScoreOrBuilder getViewer10SstandPostsLatestOrBuilder(
+        int index) {
+      return viewer10SstandPostsLatest_.get(index);
+    }
+
+    public static final int VIEWER_8SPLAY_POSTS_LATEST_FIELD_NUMBER = 153;
+    private java.util.List<com.gosh.entity.RecFeature.IdScore> viewer8SplayPostsLatest_;
+    /**
+     * <pre>
+     * 用户最近观看8s以上的post列表
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore viewer_8splay_posts_latest = 153;</code>
+     */
+    @java.lang.Override
+    public java.util.List<com.gosh.entity.RecFeature.IdScore> getViewer8SplayPostsLatestList() {
+      return viewer8SplayPostsLatest_;
+    }
+    /**
+     * <pre>
+     * 用户最近观看8s以上的post列表
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore viewer_8splay_posts_latest = 153;</code>
+     */
+    @java.lang.Override
+    public java.util.List<? extends com.gosh.entity.RecFeature.IdScoreOrBuilder> 
+        getViewer8SplayPostsLatestOrBuilderList() {
+      return viewer8SplayPostsLatest_;
+    }
+    /**
+     * <pre>
+     * 用户最近观看8s以上的post列表
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore viewer_8splay_posts_latest = 153;</code>
+     */
+    @java.lang.Override
+    public int getViewer8SplayPostsLatestCount() {
+      return viewer8SplayPostsLatest_.size();
+    }
+    /**
+     * <pre>
+     * 用户最近观看8s以上的post列表
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore viewer_8splay_posts_latest = 153;</code>
+     */
+    @java.lang.Override
+    public com.gosh.entity.RecFeature.IdScore getViewer8SplayPostsLatest(int index) {
+      return viewer8SplayPostsLatest_.get(index);
+    }
+    /**
+     * <pre>
+     * 用户最近观看8s以上的post列表
+     * </pre>
+     *
+     * <code>repeated .com.gosh.entity.IdScore viewer_8splay_posts_latest = 153;</code>
+     */
+    @java.lang.Override
+    public com.gosh.entity.RecFeature.IdScoreOrBuilder getViewer8SplayPostsLatestOrBuilder(
+        int index) {
+      return viewer8SplayPostsLatest_.get(index);
+    }
+
+    public static final int VIEWER_LIKE_POSTS_LATEST_FIELD_NUMBER = 154;
+    private com.google.protobuf.Internal.LongList viewerLikePostsLatest_;
+    /**
+     * <pre>
+     * 用户最近点赞post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_like_posts_latest = 154;</code>
+     * @return A list containing the viewerLikePostsLatest.
+     */
+    @java.lang.Override
+    public java.util.List<java.lang.Long>
+        getViewerLikePostsLatestList() {
+      return viewerLikePostsLatest_;
+    }
+    /**
+     * <pre>
+     * 用户最近点赞post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_like_posts_latest = 154;</code>
+     * @return The count of viewerLikePostsLatest.
+     */
+    public int getViewerLikePostsLatestCount() {
+      return viewerLikePostsLatest_.size();
+    }
+    /**
+     * <pre>
+     * 用户最近点赞post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_like_posts_latest = 154;</code>
+     * @param index The index of the element to return.
+     * @return The viewerLikePostsLatest at the given index.
+     */
+    public long getViewerLikePostsLatest(int index) {
+      return viewerLikePostsLatest_.getLong(index);
+    }
+    private int viewerLikePostsLatestMemoizedSerializedSize = -1;
+
+    public static final int VIEWER_COMMENT_POSTS_LATEST_FIELD_NUMBER = 155;
+    private com.google.protobuf.Internal.LongList viewerCommentPostsLatest_;
+    /**
+     * <pre>
+     * 用户最近评论post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_comment_posts_latest = 155;</code>
+     * @return A list containing the viewerCommentPostsLatest.
+     */
+    @java.lang.Override
+    public java.util.List<java.lang.Long>
+        getViewerCommentPostsLatestList() {
+      return viewerCommentPostsLatest_;
+    }
+    /**
+     * <pre>
+     * 用户最近评论post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_comment_posts_latest = 155;</code>
+     * @return The count of viewerCommentPostsLatest.
+     */
+    public int getViewerCommentPostsLatestCount() {
+      return viewerCommentPostsLatest_.size();
+    }
+    /**
+     * <pre>
+     * 用户最近评论post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_comment_posts_latest = 155;</code>
+     * @param index The index of the element to return.
+     * @return The viewerCommentPostsLatest at the given index.
+     */
+    public long getViewerCommentPostsLatest(int index) {
+      return viewerCommentPostsLatest_.getLong(index);
+    }
+    private int viewerCommentPostsLatestMemoizedSerializedSize = -1;
+
+    public static final int VIEWER_SHARE_POSTS_LATEST_FIELD_NUMBER = 156;
+    private com.google.protobuf.Internal.LongList viewerSharePostsLatest_;
+    /**
+     * <pre>
+     * 用户最近分享post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_share_posts_latest = 156;</code>
+     * @return A list containing the viewerSharePostsLatest.
+     */
+    @java.lang.Override
+    public java.util.List<java.lang.Long>
+        getViewerSharePostsLatestList() {
+      return viewerSharePostsLatest_;
+    }
+    /**
+     * <pre>
+     * 用户最近分享post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_share_posts_latest = 156;</code>
+     * @return The count of viewerSharePostsLatest.
+     */
+    public int getViewerSharePostsLatestCount() {
+      return viewerSharePostsLatest_.size();
+    }
+    /**
+     * <pre>
+     * 用户最近分享post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_share_posts_latest = 156;</code>
+     * @param index The index of the element to return.
+     * @return The viewerSharePostsLatest at the given index.
+     */
+    public long getViewerSharePostsLatest(int index) {
+      return viewerSharePostsLatest_.getLong(index);
+    }
+    private int viewerSharePostsLatestMemoizedSerializedSize = -1;
+
+    public static final int VIEWER_COLLECT_POSTS_LATEST_FIELD_NUMBER = 157;
+    private com.google.protobuf.Internal.LongList viewerCollectPostsLatest_;
+    /**
+     * <pre>
+     * 用户最近收藏post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_collect_posts_latest = 157;</code>
+     * @return A list containing the viewerCollectPostsLatest.
+     */
+    @java.lang.Override
+    public java.util.List<java.lang.Long>
+        getViewerCollectPostsLatestList() {
+      return viewerCollectPostsLatest_;
+    }
+    /**
+     * <pre>
+     * 用户最近收藏post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_collect_posts_latest = 157;</code>
+     * @return The count of viewerCollectPostsLatest.
+     */
+    public int getViewerCollectPostsLatestCount() {
+      return viewerCollectPostsLatest_.size();
+    }
+    /**
+     * <pre>
+     * 用户最近收藏post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_collect_posts_latest = 157;</code>
+     * @param index The index of the element to return.
+     * @return The viewerCollectPostsLatest at the given index.
+     */
+    public long getViewerCollectPostsLatest(int index) {
+      return viewerCollectPostsLatest_.getLong(index);
+    }
+    private int viewerCollectPostsLatestMemoizedSerializedSize = -1;
+
+    public static final int VIEWER_PAY_POSTS_LATEST_FIELD_NUMBER = 158;
+    private com.google.protobuf.Internal.LongList viewerPayPostsLatest_;
+    /**
+     * <pre>
+     * 用户最近付费post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_pay_posts_latest = 158;</code>
+     * @return A list containing the viewerPayPostsLatest.
+     */
+    @java.lang.Override
+    public java.util.List<java.lang.Long>
+        getViewerPayPostsLatestList() {
+      return viewerPayPostsLatest_;
+    }
+    /**
+     * <pre>
+     * 用户最近付费post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_pay_posts_latest = 158;</code>
+     * @return The count of viewerPayPostsLatest.
+     */
+    public int getViewerPayPostsLatestCount() {
+      return viewerPayPostsLatest_.size();
+    }
+    /**
+     * <pre>
+     * 用户最近付费post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_pay_posts_latest = 158;</code>
+     * @param index The index of the element to return.
+     * @return The viewerPayPostsLatest at the given index.
+     */
+    public long getViewerPayPostsLatest(int index) {
+      return viewerPayPostsLatest_.getLong(index);
+    }
+    private int viewerPayPostsLatestMemoizedSerializedSize = -1;
+
+    public static final int VIEWER_REPORT_POSTS_LATEST_FIELD_NUMBER = 159;
+    private com.google.protobuf.Internal.LongList viewerReportPostsLatest_;
+    /**
+     * <pre>
+     * 用户最近举报post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_report_posts_latest = 159;</code>
+     * @return A list containing the viewerReportPostsLatest.
+     */
+    @java.lang.Override
+    public java.util.List<java.lang.Long>
+        getViewerReportPostsLatestList() {
+      return viewerReportPostsLatest_;
+    }
+    /**
+     * <pre>
+     * 用户最近举报post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_report_posts_latest = 159;</code>
+     * @return The count of viewerReportPostsLatest.
+     */
+    public int getViewerReportPostsLatestCount() {
+      return viewerReportPostsLatest_.size();
+    }
+    /**
+     * <pre>
+     * 用户最近举报post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_report_posts_latest = 159;</code>
+     * @param index The index of the element to return.
+     * @return The viewerReportPostsLatest at the given index.
+     */
+    public long getViewerReportPostsLatest(int index) {
+      return viewerReportPostsLatest_.getLong(index);
+    }
+    private int viewerReportPostsLatestMemoizedSerializedSize = -1;
+
+    public static final int VIEWER_DISLIKE_POSTS_LATEST_FIELD_NUMBER = 160;
+    private com.google.protobuf.Internal.LongList viewerDislikePostsLatest_;
+    /**
+     * <pre>
+     * 用户最近不喜欢post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_dislike_posts_latest = 160;</code>
+     * @return A list containing the viewerDislikePostsLatest.
+     */
+    @java.lang.Override
+    public java.util.List<java.lang.Long>
+        getViewerDislikePostsLatestList() {
+      return viewerDislikePostsLatest_;
+    }
+    /**
+     * <pre>
+     * 用户最近不喜欢post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_dislike_posts_latest = 160;</code>
+     * @return The count of viewerDislikePostsLatest.
+     */
+    public int getViewerDislikePostsLatestCount() {
+      return viewerDislikePostsLatest_.size();
+    }
+    /**
+     * <pre>
+     * 用户最近不喜欢post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_dislike_posts_latest = 160;</code>
+     * @param index The index of the element to return.
+     * @return The viewerDislikePostsLatest at the given index.
+     */
+    public long getViewerDislikePostsLatest(int index) {
+      return viewerDislikePostsLatest_.getLong(index);
+    }
+    private int viewerDislikePostsLatestMemoizedSerializedSize = -1;
+
+    public static final int VIEWER_POSITIVE_POSTS_LATEST_FIELD_NUMBER = 161;
+    private com.google.protobuf.Internal.LongList viewerPositivePostsLatest_;
+    /**
+     * <pre>
+     * 用户最近正反馈post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_positive_posts_latest = 161;</code>
+     * @return A list containing the viewerPositivePostsLatest.
+     */
+    @java.lang.Override
+    public java.util.List<java.lang.Long>
+        getViewerPositivePostsLatestList() {
+      return viewerPositivePostsLatest_;
+    }
+    /**
+     * <pre>
+     * 用户最近正反馈post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_positive_posts_latest = 161;</code>
+     * @return The count of viewerPositivePostsLatest.
+     */
+    public int getViewerPositivePostsLatestCount() {
+      return viewerPositivePostsLatest_.size();
+    }
+    /**
+     * <pre>
+     * 用户最近正反馈post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_positive_posts_latest = 161;</code>
+     * @param index The index of the element to return.
+     * @return The viewerPositivePostsLatest at the given index.
+     */
+    public long getViewerPositivePostsLatest(int index) {
+      return viewerPositivePostsLatest_.getLong(index);
+    }
+    private int viewerPositivePostsLatestMemoizedSerializedSize = -1;
+
+    public static final int VIEWER_NEGETIVE_POSTS_LATEST_FIELD_NUMBER = 162;
+    private com.google.protobuf.Internal.LongList viewerNegetivePostsLatest_;
+    /**
+     * <pre>
+     * 用户最近负反馈post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_negetive_posts_latest = 162;</code>
+     * @return A list containing the viewerNegetivePostsLatest.
+     */
+    @java.lang.Override
+    public java.util.List<java.lang.Long>
+        getViewerNegetivePostsLatestList() {
+      return viewerNegetivePostsLatest_;
+    }
+    /**
+     * <pre>
+     * 用户最近负反馈post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_negetive_posts_latest = 162;</code>
+     * @return The count of viewerNegetivePostsLatest.
+     */
+    public int getViewerNegetivePostsLatestCount() {
+      return viewerNegetivePostsLatest_.size();
+    }
+    /**
+     * <pre>
+     * 用户最近负反馈post列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_negetive_posts_latest = 162;</code>
+     * @param index The index of the element to return.
+     * @return The viewerNegetivePostsLatest at the given index.
+     */
+    public long getViewerNegetivePostsLatest(int index) {
+      return viewerNegetivePostsLatest_.getLong(index);
+    }
+    private int viewerNegetivePostsLatestMemoizedSerializedSize = -1;
+
+    public static final int VIEWER_POSITIVE_AUTHORS_LATEST_FIELD_NUMBER = 163;
+    private com.google.protobuf.Internal.LongList viewerPositiveAuthorsLatest_;
+    /**
+     * <pre>
+     * 用户最近正反馈作者列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_positive_authors_latest = 163;</code>
+     * @return A list containing the viewerPositiveAuthorsLatest.
+     */
+    @java.lang.Override
+    public java.util.List<java.lang.Long>
+        getViewerPositiveAuthorsLatestList() {
+      return viewerPositiveAuthorsLatest_;
+    }
+    /**
+     * <pre>
+     * 用户最近正反馈作者列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_positive_authors_latest = 163;</code>
+     * @return The count of viewerPositiveAuthorsLatest.
+     */
+    public int getViewerPositiveAuthorsLatestCount() {
+      return viewerPositiveAuthorsLatest_.size();
+    }
+    /**
+     * <pre>
+     * 用户最近正反馈作者列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_positive_authors_latest = 163;</code>
+     * @param index The index of the element to return.
+     * @return The viewerPositiveAuthorsLatest at the given index.
+     */
+    public long getViewerPositiveAuthorsLatest(int index) {
+      return viewerPositiveAuthorsLatest_.getLong(index);
+    }
+    private int viewerPositiveAuthorsLatestMemoizedSerializedSize = -1;
+
+    public static final int VIEWER_NEGETIVE_AUTHORS_LATEST_FIELD_NUMBER = 164;
+    private com.google.protobuf.Internal.LongList viewerNegetiveAuthorsLatest_;
+    /**
+     * <pre>
+     * 用户最近负反馈作者列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_negetive_authors_latest = 164;</code>
+     * @return A list containing the viewerNegetiveAuthorsLatest.
+     */
+    @java.lang.Override
+    public java.util.List<java.lang.Long>
+        getViewerNegetiveAuthorsLatestList() {
+      return viewerNegetiveAuthorsLatest_;
+    }
+    /**
+     * <pre>
+     * 用户最近负反馈作者列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_negetive_authors_latest = 164;</code>
+     * @return The count of viewerNegetiveAuthorsLatest.
+     */
+    public int getViewerNegetiveAuthorsLatestCount() {
+      return viewerNegetiveAuthorsLatest_.size();
+    }
+    /**
+     * <pre>
+     * 用户最近负反馈作者列表
+     * </pre>
+     *
+     * <code>repeated int64 viewer_negetive_authors_latest = 164;</code>
+     * @param index The index of the element to return.
+     * @return The viewerNegetiveAuthorsLatest at the given index.
+     */
+    public long getViewerNegetiveAuthorsLatest(int index) {
+      return viewerNegetiveAuthorsLatest_.getLong(index);
+    }
+    private int viewerNegetiveAuthorsLatestMemoizedSerializedSize = -1;
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -6164,6 +8426,186 @@ public final class RecFeature {
       }
       if (viewerExpPostCnt24H_ != 0) {
         output.writeInt32(117, viewerExpPostCnt24H_);
+      }
+      if (java.lang.Float.floatToRawIntBits(vvRa1_) != 0) {
+        output.writeFloat(118, vvRa1_);
+      }
+      if (java.lang.Float.floatToRawIntBits(vvRa2_) != 0) {
+        output.writeFloat(119, vvRa2_);
+      }
+      if (java.lang.Float.floatToRawIntBits(vvRa3_) != 0) {
+        output.writeFloat(120, vvRa3_);
+      }
+      if (java.lang.Float.floatToRawIntBits(vvRa4_) != 0) {
+        output.writeFloat(121, vvRa4_);
+      }
+      if (java.lang.Float.floatToRawIntBits(vvRa5_) != 0) {
+        output.writeFloat(122, vvRa5_);
+      }
+      if (java.lang.Float.floatToRawIntBits(cpvRa1_) != 0) {
+        output.writeFloat(123, cpvRa1_);
+      }
+      if (java.lang.Float.floatToRawIntBits(cpvRa2_) != 0) {
+        output.writeFloat(124, cpvRa2_);
+      }
+      if (java.lang.Float.floatToRawIntBits(cpvRa3_) != 0) {
+        output.writeFloat(125, cpvRa3_);
+      }
+      if (java.lang.Float.floatToRawIntBits(cpvRa4_) != 0) {
+        output.writeFloat(126, cpvRa4_);
+      }
+      if (java.lang.Float.floatToRawIntBits(cpvRa5_) != 0) {
+        output.writeFloat(127, cpvRa5_);
+      }
+      if (java.lang.Float.floatToRawIntBits(cpvRa6_) != 0) {
+        output.writeFloat(128, cpvRa6_);
+      }
+      if (java.lang.Float.floatToRawIntBits(lkRa1_) != 0) {
+        output.writeFloat(129, lkRa1_);
+      }
+      if (java.lang.Float.floatToRawIntBits(lkRa2_) != 0) {
+        output.writeFloat(130, lkRa2_);
+      }
+      if (java.lang.Float.floatToRawIntBits(lkRa3_) != 0) {
+        output.writeFloat(131, lkRa3_);
+      }
+      if (java.lang.Float.floatToRawIntBits(lkRa4_) != 0) {
+        output.writeFloat(132, lkRa4_);
+      }
+      if (java.lang.Float.floatToRawIntBits(lkRa5_) != 0) {
+        output.writeFloat(133, lkRa5_);
+      }
+      if (java.lang.Float.floatToRawIntBits(cmRa1_) != 0) {
+        output.writeFloat(134, cmRa1_);
+      }
+      if (java.lang.Float.floatToRawIntBits(cmRa2_) != 0) {
+        output.writeFloat(135, cmRa2_);
+      }
+      if (java.lang.Float.floatToRawIntBits(cmRa3_) != 0) {
+        output.writeFloat(136, cmRa3_);
+      }
+      if (java.lang.Float.floatToRawIntBits(cmRa4_) != 0) {
+        output.writeFloat(137, cmRa4_);
+      }
+      if (java.lang.Float.floatToRawIntBits(cmRa5_) != 0) {
+        output.writeFloat(138, cmRa5_);
+      }
+      if (java.lang.Float.floatToRawIntBits(shRa1_) != 0) {
+        output.writeFloat(139, shRa1_);
+      }
+      if (java.lang.Float.floatToRawIntBits(shRa2_) != 0) {
+        output.writeFloat(140, shRa2_);
+      }
+      if (java.lang.Float.floatToRawIntBits(shRa3_) != 0) {
+        output.writeFloat(141, shRa3_);
+      }
+      if (java.lang.Float.floatToRawIntBits(fvRa1_) != 0) {
+        output.writeFloat(142, fvRa1_);
+      }
+      if (java.lang.Float.floatToRawIntBits(fvRa2_) != 0) {
+        output.writeFloat(143, fvRa2_);
+      }
+      if (java.lang.Float.floatToRawIntBits(fvRa3_) != 0) {
+        output.writeFloat(144, fvRa3_);
+      }
+      if (java.lang.Float.floatToRawIntBits(pfRa1_) != 0) {
+        output.writeFloat(145, pfRa1_);
+      }
+      if (java.lang.Float.floatToRawIntBits(pfRa2_) != 0) {
+        output.writeFloat(146, pfRa2_);
+      }
+      if (java.lang.Float.floatToRawIntBits(pfRa3_) != 0) {
+        output.writeFloat(147, pfRa3_);
+      }
+      if (getViewerCompleteplayPostsLatestList().size() > 0) {
+        output.writeUInt32NoTag(1210);
+        output.writeUInt32NoTag(viewerCompleteplayPostsLatestMemoizedSerializedSize);
+      }
+      for (int i = 0; i < viewerCompleteplayPostsLatest_.size(); i++) {
+        output.writeInt64NoTag(viewerCompleteplayPostsLatest_.getLong(i));
+      }
+      for (int i = 0; i < viewer10SstandPostsLatest_.size(); i++) {
+        output.writeMessage(152, viewer10SstandPostsLatest_.get(i));
+      }
+      for (int i = 0; i < viewer8SplayPostsLatest_.size(); i++) {
+        output.writeMessage(153, viewer8SplayPostsLatest_.get(i));
+      }
+      if (getViewerLikePostsLatestList().size() > 0) {
+        output.writeUInt32NoTag(1234);
+        output.writeUInt32NoTag(viewerLikePostsLatestMemoizedSerializedSize);
+      }
+      for (int i = 0; i < viewerLikePostsLatest_.size(); i++) {
+        output.writeInt64NoTag(viewerLikePostsLatest_.getLong(i));
+      }
+      if (getViewerCommentPostsLatestList().size() > 0) {
+        output.writeUInt32NoTag(1242);
+        output.writeUInt32NoTag(viewerCommentPostsLatestMemoizedSerializedSize);
+      }
+      for (int i = 0; i < viewerCommentPostsLatest_.size(); i++) {
+        output.writeInt64NoTag(viewerCommentPostsLatest_.getLong(i));
+      }
+      if (getViewerSharePostsLatestList().size() > 0) {
+        output.writeUInt32NoTag(1250);
+        output.writeUInt32NoTag(viewerSharePostsLatestMemoizedSerializedSize);
+      }
+      for (int i = 0; i < viewerSharePostsLatest_.size(); i++) {
+        output.writeInt64NoTag(viewerSharePostsLatest_.getLong(i));
+      }
+      if (getViewerCollectPostsLatestList().size() > 0) {
+        output.writeUInt32NoTag(1258);
+        output.writeUInt32NoTag(viewerCollectPostsLatestMemoizedSerializedSize);
+      }
+      for (int i = 0; i < viewerCollectPostsLatest_.size(); i++) {
+        output.writeInt64NoTag(viewerCollectPostsLatest_.getLong(i));
+      }
+      if (getViewerPayPostsLatestList().size() > 0) {
+        output.writeUInt32NoTag(1266);
+        output.writeUInt32NoTag(viewerPayPostsLatestMemoizedSerializedSize);
+      }
+      for (int i = 0; i < viewerPayPostsLatest_.size(); i++) {
+        output.writeInt64NoTag(viewerPayPostsLatest_.getLong(i));
+      }
+      if (getViewerReportPostsLatestList().size() > 0) {
+        output.writeUInt32NoTag(1274);
+        output.writeUInt32NoTag(viewerReportPostsLatestMemoizedSerializedSize);
+      }
+      for (int i = 0; i < viewerReportPostsLatest_.size(); i++) {
+        output.writeInt64NoTag(viewerReportPostsLatest_.getLong(i));
+      }
+      if (getViewerDislikePostsLatestList().size() > 0) {
+        output.writeUInt32NoTag(1282);
+        output.writeUInt32NoTag(viewerDislikePostsLatestMemoizedSerializedSize);
+      }
+      for (int i = 0; i < viewerDislikePostsLatest_.size(); i++) {
+        output.writeInt64NoTag(viewerDislikePostsLatest_.getLong(i));
+      }
+      if (getViewerPositivePostsLatestList().size() > 0) {
+        output.writeUInt32NoTag(1290);
+        output.writeUInt32NoTag(viewerPositivePostsLatestMemoizedSerializedSize);
+      }
+      for (int i = 0; i < viewerPositivePostsLatest_.size(); i++) {
+        output.writeInt64NoTag(viewerPositivePostsLatest_.getLong(i));
+      }
+      if (getViewerNegetivePostsLatestList().size() > 0) {
+        output.writeUInt32NoTag(1298);
+        output.writeUInt32NoTag(viewerNegetivePostsLatestMemoizedSerializedSize);
+      }
+      for (int i = 0; i < viewerNegetivePostsLatest_.size(); i++) {
+        output.writeInt64NoTag(viewerNegetivePostsLatest_.getLong(i));
+      }
+      if (getViewerPositiveAuthorsLatestList().size() > 0) {
+        output.writeUInt32NoTag(1306);
+        output.writeUInt32NoTag(viewerPositiveAuthorsLatestMemoizedSerializedSize);
+      }
+      for (int i = 0; i < viewerPositiveAuthorsLatest_.size(); i++) {
+        output.writeInt64NoTag(viewerPositiveAuthorsLatest_.getLong(i));
+      }
+      if (getViewerNegetiveAuthorsLatestList().size() > 0) {
+        output.writeUInt32NoTag(1314);
+        output.writeUInt32NoTag(viewerNegetiveAuthorsLatestMemoizedSerializedSize);
+      }
+      for (int i = 0; i < viewerNegetiveAuthorsLatest_.size(); i++) {
+        output.writeInt64NoTag(viewerNegetiveAuthorsLatest_.getLong(i));
       }
       unknownFields.writeTo(output);
     }
@@ -6753,6 +9195,302 @@ public final class RecFeature {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(117, viewerExpPostCnt24H_);
       }
+      if (java.lang.Float.floatToRawIntBits(vvRa1_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(118, vvRa1_);
+      }
+      if (java.lang.Float.floatToRawIntBits(vvRa2_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(119, vvRa2_);
+      }
+      if (java.lang.Float.floatToRawIntBits(vvRa3_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(120, vvRa3_);
+      }
+      if (java.lang.Float.floatToRawIntBits(vvRa4_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(121, vvRa4_);
+      }
+      if (java.lang.Float.floatToRawIntBits(vvRa5_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(122, vvRa5_);
+      }
+      if (java.lang.Float.floatToRawIntBits(cpvRa1_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(123, cpvRa1_);
+      }
+      if (java.lang.Float.floatToRawIntBits(cpvRa2_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(124, cpvRa2_);
+      }
+      if (java.lang.Float.floatToRawIntBits(cpvRa3_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(125, cpvRa3_);
+      }
+      if (java.lang.Float.floatToRawIntBits(cpvRa4_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(126, cpvRa4_);
+      }
+      if (java.lang.Float.floatToRawIntBits(cpvRa5_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(127, cpvRa5_);
+      }
+      if (java.lang.Float.floatToRawIntBits(cpvRa6_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(128, cpvRa6_);
+      }
+      if (java.lang.Float.floatToRawIntBits(lkRa1_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(129, lkRa1_);
+      }
+      if (java.lang.Float.floatToRawIntBits(lkRa2_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(130, lkRa2_);
+      }
+      if (java.lang.Float.floatToRawIntBits(lkRa3_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(131, lkRa3_);
+      }
+      if (java.lang.Float.floatToRawIntBits(lkRa4_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(132, lkRa4_);
+      }
+      if (java.lang.Float.floatToRawIntBits(lkRa5_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(133, lkRa5_);
+      }
+      if (java.lang.Float.floatToRawIntBits(cmRa1_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(134, cmRa1_);
+      }
+      if (java.lang.Float.floatToRawIntBits(cmRa2_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(135, cmRa2_);
+      }
+      if (java.lang.Float.floatToRawIntBits(cmRa3_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(136, cmRa3_);
+      }
+      if (java.lang.Float.floatToRawIntBits(cmRa4_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(137, cmRa4_);
+      }
+      if (java.lang.Float.floatToRawIntBits(cmRa5_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(138, cmRa5_);
+      }
+      if (java.lang.Float.floatToRawIntBits(shRa1_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(139, shRa1_);
+      }
+      if (java.lang.Float.floatToRawIntBits(shRa2_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(140, shRa2_);
+      }
+      if (java.lang.Float.floatToRawIntBits(shRa3_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(141, shRa3_);
+      }
+      if (java.lang.Float.floatToRawIntBits(fvRa1_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(142, fvRa1_);
+      }
+      if (java.lang.Float.floatToRawIntBits(fvRa2_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(143, fvRa2_);
+      }
+      if (java.lang.Float.floatToRawIntBits(fvRa3_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(144, fvRa3_);
+      }
+      if (java.lang.Float.floatToRawIntBits(pfRa1_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(145, pfRa1_);
+      }
+      if (java.lang.Float.floatToRawIntBits(pfRa2_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(146, pfRa2_);
+      }
+      if (java.lang.Float.floatToRawIntBits(pfRa3_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(147, pfRa3_);
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < viewerCompleteplayPostsLatest_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeInt64SizeNoTag(viewerCompleteplayPostsLatest_.getLong(i));
+        }
+        size += dataSize;
+        if (!getViewerCompleteplayPostsLatestList().isEmpty()) {
+          size += 2;
+          size += com.google.protobuf.CodedOutputStream
+              .computeInt32SizeNoTag(dataSize);
+        }
+        viewerCompleteplayPostsLatestMemoizedSerializedSize = dataSize;
+      }
+      for (int i = 0; i < viewer10SstandPostsLatest_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(152, viewer10SstandPostsLatest_.get(i));
+      }
+      for (int i = 0; i < viewer8SplayPostsLatest_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(153, viewer8SplayPostsLatest_.get(i));
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < viewerLikePostsLatest_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeInt64SizeNoTag(viewerLikePostsLatest_.getLong(i));
+        }
+        size += dataSize;
+        if (!getViewerLikePostsLatestList().isEmpty()) {
+          size += 2;
+          size += com.google.protobuf.CodedOutputStream
+              .computeInt32SizeNoTag(dataSize);
+        }
+        viewerLikePostsLatestMemoizedSerializedSize = dataSize;
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < viewerCommentPostsLatest_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeInt64SizeNoTag(viewerCommentPostsLatest_.getLong(i));
+        }
+        size += dataSize;
+        if (!getViewerCommentPostsLatestList().isEmpty()) {
+          size += 2;
+          size += com.google.protobuf.CodedOutputStream
+              .computeInt32SizeNoTag(dataSize);
+        }
+        viewerCommentPostsLatestMemoizedSerializedSize = dataSize;
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < viewerSharePostsLatest_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeInt64SizeNoTag(viewerSharePostsLatest_.getLong(i));
+        }
+        size += dataSize;
+        if (!getViewerSharePostsLatestList().isEmpty()) {
+          size += 2;
+          size += com.google.protobuf.CodedOutputStream
+              .computeInt32SizeNoTag(dataSize);
+        }
+        viewerSharePostsLatestMemoizedSerializedSize = dataSize;
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < viewerCollectPostsLatest_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeInt64SizeNoTag(viewerCollectPostsLatest_.getLong(i));
+        }
+        size += dataSize;
+        if (!getViewerCollectPostsLatestList().isEmpty()) {
+          size += 2;
+          size += com.google.protobuf.CodedOutputStream
+              .computeInt32SizeNoTag(dataSize);
+        }
+        viewerCollectPostsLatestMemoizedSerializedSize = dataSize;
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < viewerPayPostsLatest_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeInt64SizeNoTag(viewerPayPostsLatest_.getLong(i));
+        }
+        size += dataSize;
+        if (!getViewerPayPostsLatestList().isEmpty()) {
+          size += 2;
+          size += com.google.protobuf.CodedOutputStream
+              .computeInt32SizeNoTag(dataSize);
+        }
+        viewerPayPostsLatestMemoizedSerializedSize = dataSize;
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < viewerReportPostsLatest_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeInt64SizeNoTag(viewerReportPostsLatest_.getLong(i));
+        }
+        size += dataSize;
+        if (!getViewerReportPostsLatestList().isEmpty()) {
+          size += 2;
+          size += com.google.protobuf.CodedOutputStream
+              .computeInt32SizeNoTag(dataSize);
+        }
+        viewerReportPostsLatestMemoizedSerializedSize = dataSize;
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < viewerDislikePostsLatest_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeInt64SizeNoTag(viewerDislikePostsLatest_.getLong(i));
+        }
+        size += dataSize;
+        if (!getViewerDislikePostsLatestList().isEmpty()) {
+          size += 2;
+          size += com.google.protobuf.CodedOutputStream
+              .computeInt32SizeNoTag(dataSize);
+        }
+        viewerDislikePostsLatestMemoizedSerializedSize = dataSize;
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < viewerPositivePostsLatest_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeInt64SizeNoTag(viewerPositivePostsLatest_.getLong(i));
+        }
+        size += dataSize;
+        if (!getViewerPositivePostsLatestList().isEmpty()) {
+          size += 2;
+          size += com.google.protobuf.CodedOutputStream
+              .computeInt32SizeNoTag(dataSize);
+        }
+        viewerPositivePostsLatestMemoizedSerializedSize = dataSize;
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < viewerNegetivePostsLatest_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeInt64SizeNoTag(viewerNegetivePostsLatest_.getLong(i));
+        }
+        size += dataSize;
+        if (!getViewerNegetivePostsLatestList().isEmpty()) {
+          size += 2;
+          size += com.google.protobuf.CodedOutputStream
+              .computeInt32SizeNoTag(dataSize);
+        }
+        viewerNegetivePostsLatestMemoizedSerializedSize = dataSize;
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < viewerPositiveAuthorsLatest_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeInt64SizeNoTag(viewerPositiveAuthorsLatest_.getLong(i));
+        }
+        size += dataSize;
+        if (!getViewerPositiveAuthorsLatestList().isEmpty()) {
+          size += 2;
+          size += com.google.protobuf.CodedOutputStream
+              .computeInt32SizeNoTag(dataSize);
+        }
+        viewerPositiveAuthorsLatestMemoizedSerializedSize = dataSize;
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < viewerNegetiveAuthorsLatest_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeInt64SizeNoTag(viewerNegetiveAuthorsLatest_.getLong(i));
+        }
+        size += dataSize;
+        if (!getViewerNegetiveAuthorsLatestList().isEmpty()) {
+          size += 2;
+          size += com.google.protobuf.CodedOutputStream
+              .computeInt32SizeNoTag(dataSize);
+        }
+        viewerNegetiveAuthorsLatestMemoizedSerializedSize = dataSize;
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -6940,6 +9678,124 @@ public final class RecFeature {
           .equals(other.getViewerPositiveAuthorList24HList())) return false;
       if (!getViewerNegetiveAuthorList24HList()
           .equals(other.getViewerNegetiveAuthorList24HList())) return false;
+      if (java.lang.Float.floatToIntBits(getVvRa1())
+          != java.lang.Float.floatToIntBits(
+              other.getVvRa1())) return false;
+      if (java.lang.Float.floatToIntBits(getVvRa2())
+          != java.lang.Float.floatToIntBits(
+              other.getVvRa2())) return false;
+      if (java.lang.Float.floatToIntBits(getVvRa3())
+          != java.lang.Float.floatToIntBits(
+              other.getVvRa3())) return false;
+      if (java.lang.Float.floatToIntBits(getVvRa4())
+          != java.lang.Float.floatToIntBits(
+              other.getVvRa4())) return false;
+      if (java.lang.Float.floatToIntBits(getVvRa5())
+          != java.lang.Float.floatToIntBits(
+              other.getVvRa5())) return false;
+      if (java.lang.Float.floatToIntBits(getCpvRa1())
+          != java.lang.Float.floatToIntBits(
+              other.getCpvRa1())) return false;
+      if (java.lang.Float.floatToIntBits(getCpvRa2())
+          != java.lang.Float.floatToIntBits(
+              other.getCpvRa2())) return false;
+      if (java.lang.Float.floatToIntBits(getCpvRa3())
+          != java.lang.Float.floatToIntBits(
+              other.getCpvRa3())) return false;
+      if (java.lang.Float.floatToIntBits(getCpvRa4())
+          != java.lang.Float.floatToIntBits(
+              other.getCpvRa4())) return false;
+      if (java.lang.Float.floatToIntBits(getCpvRa5())
+          != java.lang.Float.floatToIntBits(
+              other.getCpvRa5())) return false;
+      if (java.lang.Float.floatToIntBits(getCpvRa6())
+          != java.lang.Float.floatToIntBits(
+              other.getCpvRa6())) return false;
+      if (java.lang.Float.floatToIntBits(getLkRa1())
+          != java.lang.Float.floatToIntBits(
+              other.getLkRa1())) return false;
+      if (java.lang.Float.floatToIntBits(getLkRa2())
+          != java.lang.Float.floatToIntBits(
+              other.getLkRa2())) return false;
+      if (java.lang.Float.floatToIntBits(getLkRa3())
+          != java.lang.Float.floatToIntBits(
+              other.getLkRa3())) return false;
+      if (java.lang.Float.floatToIntBits(getLkRa4())
+          != java.lang.Float.floatToIntBits(
+              other.getLkRa4())) return false;
+      if (java.lang.Float.floatToIntBits(getLkRa5())
+          != java.lang.Float.floatToIntBits(
+              other.getLkRa5())) return false;
+      if (java.lang.Float.floatToIntBits(getCmRa1())
+          != java.lang.Float.floatToIntBits(
+              other.getCmRa1())) return false;
+      if (java.lang.Float.floatToIntBits(getCmRa2())
+          != java.lang.Float.floatToIntBits(
+              other.getCmRa2())) return false;
+      if (java.lang.Float.floatToIntBits(getCmRa3())
+          != java.lang.Float.floatToIntBits(
+              other.getCmRa3())) return false;
+      if (java.lang.Float.floatToIntBits(getCmRa4())
+          != java.lang.Float.floatToIntBits(
+              other.getCmRa4())) return false;
+      if (java.lang.Float.floatToIntBits(getCmRa5())
+          != java.lang.Float.floatToIntBits(
+              other.getCmRa5())) return false;
+      if (java.lang.Float.floatToIntBits(getShRa1())
+          != java.lang.Float.floatToIntBits(
+              other.getShRa1())) return false;
+      if (java.lang.Float.floatToIntBits(getShRa2())
+          != java.lang.Float.floatToIntBits(
+              other.getShRa2())) return false;
+      if (java.lang.Float.floatToIntBits(getShRa3())
+          != java.lang.Float.floatToIntBits(
+              other.getShRa3())) return false;
+      if (java.lang.Float.floatToIntBits(getFvRa1())
+          != java.lang.Float.floatToIntBits(
+              other.getFvRa1())) return false;
+      if (java.lang.Float.floatToIntBits(getFvRa2())
+          != java.lang.Float.floatToIntBits(
+              other.getFvRa2())) return false;
+      if (java.lang.Float.floatToIntBits(getFvRa3())
+          != java.lang.Float.floatToIntBits(
+              other.getFvRa3())) return false;
+      if (java.lang.Float.floatToIntBits(getPfRa1())
+          != java.lang.Float.floatToIntBits(
+              other.getPfRa1())) return false;
+      if (java.lang.Float.floatToIntBits(getPfRa2())
+          != java.lang.Float.floatToIntBits(
+              other.getPfRa2())) return false;
+      if (java.lang.Float.floatToIntBits(getPfRa3())
+          != java.lang.Float.floatToIntBits(
+              other.getPfRa3())) return false;
+      if (!getViewerCompleteplayPostsLatestList()
+          .equals(other.getViewerCompleteplayPostsLatestList())) return false;
+      if (!getViewer10SstandPostsLatestList()
+          .equals(other.getViewer10SstandPostsLatestList())) return false;
+      if (!getViewer8SplayPostsLatestList()
+          .equals(other.getViewer8SplayPostsLatestList())) return false;
+      if (!getViewerLikePostsLatestList()
+          .equals(other.getViewerLikePostsLatestList())) return false;
+      if (!getViewerCommentPostsLatestList()
+          .equals(other.getViewerCommentPostsLatestList())) return false;
+      if (!getViewerSharePostsLatestList()
+          .equals(other.getViewerSharePostsLatestList())) return false;
+      if (!getViewerCollectPostsLatestList()
+          .equals(other.getViewerCollectPostsLatestList())) return false;
+      if (!getViewerPayPostsLatestList()
+          .equals(other.getViewerPayPostsLatestList())) return false;
+      if (!getViewerReportPostsLatestList()
+          .equals(other.getViewerReportPostsLatestList())) return false;
+      if (!getViewerDislikePostsLatestList()
+          .equals(other.getViewerDislikePostsLatestList())) return false;
+      if (!getViewerPositivePostsLatestList()
+          .equals(other.getViewerPositivePostsLatestList())) return false;
+      if (!getViewerNegetivePostsLatestList()
+          .equals(other.getViewerNegetivePostsLatestList())) return false;
+      if (!getViewerPositiveAuthorsLatestList()
+          .equals(other.getViewerPositiveAuthorsLatestList())) return false;
+      if (!getViewerNegetiveAuthorsLatestList()
+          .equals(other.getViewerNegetiveAuthorsLatestList())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -7193,6 +10049,152 @@ public final class RecFeature {
         hash = (37 * hash) + VIEWER_NEGETIVE_AUTHOR_LIST_24H_FIELD_NUMBER;
         hash = (53 * hash) + getViewerNegetiveAuthorList24HList().hashCode();
       }
+      hash = (37 * hash) + VV_RA_1_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getVvRa1());
+      hash = (37 * hash) + VV_RA_2_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getVvRa2());
+      hash = (37 * hash) + VV_RA_3_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getVvRa3());
+      hash = (37 * hash) + VV_RA_4_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getVvRa4());
+      hash = (37 * hash) + VV_RA_5_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getVvRa5());
+      hash = (37 * hash) + CPV_RA_1_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getCpvRa1());
+      hash = (37 * hash) + CPV_RA_2_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getCpvRa2());
+      hash = (37 * hash) + CPV_RA_3_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getCpvRa3());
+      hash = (37 * hash) + CPV_RA_4_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getCpvRa4());
+      hash = (37 * hash) + CPV_RA_5_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getCpvRa5());
+      hash = (37 * hash) + CPV_RA_6_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getCpvRa6());
+      hash = (37 * hash) + LK_RA_1_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getLkRa1());
+      hash = (37 * hash) + LK_RA_2_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getLkRa2());
+      hash = (37 * hash) + LK_RA_3_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getLkRa3());
+      hash = (37 * hash) + LK_RA_4_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getLkRa4());
+      hash = (37 * hash) + LK_RA_5_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getLkRa5());
+      hash = (37 * hash) + CM_RA_1_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getCmRa1());
+      hash = (37 * hash) + CM_RA_2_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getCmRa2());
+      hash = (37 * hash) + CM_RA_3_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getCmRa3());
+      hash = (37 * hash) + CM_RA_4_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getCmRa4());
+      hash = (37 * hash) + CM_RA_5_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getCmRa5());
+      hash = (37 * hash) + SH_RA_1_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getShRa1());
+      hash = (37 * hash) + SH_RA_2_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getShRa2());
+      hash = (37 * hash) + SH_RA_3_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getShRa3());
+      hash = (37 * hash) + FV_RA_1_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getFvRa1());
+      hash = (37 * hash) + FV_RA_2_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getFvRa2());
+      hash = (37 * hash) + FV_RA_3_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getFvRa3());
+      hash = (37 * hash) + PF_RA_1_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getPfRa1());
+      hash = (37 * hash) + PF_RA_2_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getPfRa2());
+      hash = (37 * hash) + PF_RA_3_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getPfRa3());
+      if (getViewerCompleteplayPostsLatestCount() > 0) {
+        hash = (37 * hash) + VIEWER_COMPLETEPLAY_POSTS_LATEST_FIELD_NUMBER;
+        hash = (53 * hash) + getViewerCompleteplayPostsLatestList().hashCode();
+      }
+      if (getViewer10SstandPostsLatestCount() > 0) {
+        hash = (37 * hash) + VIEWER_10SSTAND_POSTS_LATEST_FIELD_NUMBER;
+        hash = (53 * hash) + getViewer10SstandPostsLatestList().hashCode();
+      }
+      if (getViewer8SplayPostsLatestCount() > 0) {
+        hash = (37 * hash) + VIEWER_8SPLAY_POSTS_LATEST_FIELD_NUMBER;
+        hash = (53 * hash) + getViewer8SplayPostsLatestList().hashCode();
+      }
+      if (getViewerLikePostsLatestCount() > 0) {
+        hash = (37 * hash) + VIEWER_LIKE_POSTS_LATEST_FIELD_NUMBER;
+        hash = (53 * hash) + getViewerLikePostsLatestList().hashCode();
+      }
+      if (getViewerCommentPostsLatestCount() > 0) {
+        hash = (37 * hash) + VIEWER_COMMENT_POSTS_LATEST_FIELD_NUMBER;
+        hash = (53 * hash) + getViewerCommentPostsLatestList().hashCode();
+      }
+      if (getViewerSharePostsLatestCount() > 0) {
+        hash = (37 * hash) + VIEWER_SHARE_POSTS_LATEST_FIELD_NUMBER;
+        hash = (53 * hash) + getViewerSharePostsLatestList().hashCode();
+      }
+      if (getViewerCollectPostsLatestCount() > 0) {
+        hash = (37 * hash) + VIEWER_COLLECT_POSTS_LATEST_FIELD_NUMBER;
+        hash = (53 * hash) + getViewerCollectPostsLatestList().hashCode();
+      }
+      if (getViewerPayPostsLatestCount() > 0) {
+        hash = (37 * hash) + VIEWER_PAY_POSTS_LATEST_FIELD_NUMBER;
+        hash = (53 * hash) + getViewerPayPostsLatestList().hashCode();
+      }
+      if (getViewerReportPostsLatestCount() > 0) {
+        hash = (37 * hash) + VIEWER_REPORT_POSTS_LATEST_FIELD_NUMBER;
+        hash = (53 * hash) + getViewerReportPostsLatestList().hashCode();
+      }
+      if (getViewerDislikePostsLatestCount() > 0) {
+        hash = (37 * hash) + VIEWER_DISLIKE_POSTS_LATEST_FIELD_NUMBER;
+        hash = (53 * hash) + getViewerDislikePostsLatestList().hashCode();
+      }
+      if (getViewerPositivePostsLatestCount() > 0) {
+        hash = (37 * hash) + VIEWER_POSITIVE_POSTS_LATEST_FIELD_NUMBER;
+        hash = (53 * hash) + getViewerPositivePostsLatestList().hashCode();
+      }
+      if (getViewerNegetivePostsLatestCount() > 0) {
+        hash = (37 * hash) + VIEWER_NEGETIVE_POSTS_LATEST_FIELD_NUMBER;
+        hash = (53 * hash) + getViewerNegetivePostsLatestList().hashCode();
+      }
+      if (getViewerPositiveAuthorsLatestCount() > 0) {
+        hash = (37 * hash) + VIEWER_POSITIVE_AUTHORS_LATEST_FIELD_NUMBER;
+        hash = (53 * hash) + getViewerPositiveAuthorsLatestList().hashCode();
+      }
+      if (getViewerNegetiveAuthorsLatestCount() > 0) {
+        hash = (37 * hash) + VIEWER_NEGETIVE_AUTHORS_LATEST_FIELD_NUMBER;
+        hash = (53 * hash) + getViewerNegetiveAuthorsLatestList().hashCode();
+      }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -7292,7 +10294,7 @@ public final class RecFeature {
      * <pre>
      * 用户侧特征
      * Redis Key: rec:user_feature:{user_id}:post1h, rec:user_feature:{user_id}:post24h
-     *            rec:user_feature:{user_id}:offpic
+     *            rec:user_feature:{user_id}:offpic, rec:user_feature:{user_id}:lastview
      * </pre>
      *
      * Protobuf type {@code com.gosh.entity.RecUserFeature}
@@ -7335,6 +10337,8 @@ public final class RecFeature {
           getFeedbackAuthorIdsFieldBuilder();
           getViewer10SstandPostList24HFieldBuilder();
           getViewer8SplayPostList24HFieldBuilder();
+          getViewer10SstandPostsLatestFieldBuilder();
+          getViewer8SplayPostsLatestFieldBuilder();
         }
       }
       @java.lang.Override
@@ -7540,6 +10544,102 @@ public final class RecFeature {
         bitField1_ = (bitField1_ & ~0x00000002);
         viewerNegetiveAuthorList24H_ = emptyLongList();
         bitField1_ = (bitField1_ & ~0x00000004);
+        vvRa1_ = 0F;
+
+        vvRa2_ = 0F;
+
+        vvRa3_ = 0F;
+
+        vvRa4_ = 0F;
+
+        vvRa5_ = 0F;
+
+        cpvRa1_ = 0F;
+
+        cpvRa2_ = 0F;
+
+        cpvRa3_ = 0F;
+
+        cpvRa4_ = 0F;
+
+        cpvRa5_ = 0F;
+
+        cpvRa6_ = 0F;
+
+        lkRa1_ = 0F;
+
+        lkRa2_ = 0F;
+
+        lkRa3_ = 0F;
+
+        lkRa4_ = 0F;
+
+        lkRa5_ = 0F;
+
+        cmRa1_ = 0F;
+
+        cmRa2_ = 0F;
+
+        cmRa3_ = 0F;
+
+        cmRa4_ = 0F;
+
+        cmRa5_ = 0F;
+
+        shRa1_ = 0F;
+
+        shRa2_ = 0F;
+
+        shRa3_ = 0F;
+
+        fvRa1_ = 0F;
+
+        fvRa2_ = 0F;
+
+        fvRa3_ = 0F;
+
+        pfRa1_ = 0F;
+
+        pfRa2_ = 0F;
+
+        pfRa3_ = 0F;
+
+        viewerCompleteplayPostsLatest_ = emptyLongList();
+        bitField1_ = (bitField1_ & ~0x00000008);
+        if (viewer10SstandPostsLatestBuilder_ == null) {
+          viewer10SstandPostsLatest_ = java.util.Collections.emptyList();
+          bitField1_ = (bitField1_ & ~0x00000010);
+        } else {
+          viewer10SstandPostsLatestBuilder_.clear();
+        }
+        if (viewer8SplayPostsLatestBuilder_ == null) {
+          viewer8SplayPostsLatest_ = java.util.Collections.emptyList();
+          bitField1_ = (bitField1_ & ~0x00000020);
+        } else {
+          viewer8SplayPostsLatestBuilder_.clear();
+        }
+        viewerLikePostsLatest_ = emptyLongList();
+        bitField1_ = (bitField1_ & ~0x00000040);
+        viewerCommentPostsLatest_ = emptyLongList();
+        bitField1_ = (bitField1_ & ~0x00000080);
+        viewerSharePostsLatest_ = emptyLongList();
+        bitField1_ = (bitField1_ & ~0x00000100);
+        viewerCollectPostsLatest_ = emptyLongList();
+        bitField1_ = (bitField1_ & ~0x00000200);
+        viewerPayPostsLatest_ = emptyLongList();
+        bitField1_ = (bitField1_ & ~0x00000400);
+        viewerReportPostsLatest_ = emptyLongList();
+        bitField1_ = (bitField1_ & ~0x00000800);
+        viewerDislikePostsLatest_ = emptyLongList();
+        bitField1_ = (bitField1_ & ~0x00001000);
+        viewerPositivePostsLatest_ = emptyLongList();
+        bitField1_ = (bitField1_ & ~0x00002000);
+        viewerNegetivePostsLatest_ = emptyLongList();
+        bitField1_ = (bitField1_ & ~0x00004000);
+        viewerPositiveAuthorsLatest_ = emptyLongList();
+        bitField1_ = (bitField1_ & ~0x00008000);
+        viewerNegetiveAuthorsLatest_ = emptyLongList();
+        bitField1_ = (bitField1_ & ~0x00010000);
         return this;
       }
 
@@ -7824,6 +10924,114 @@ public final class RecFeature {
           bitField1_ = (bitField1_ & ~0x00000004);
         }
         result.viewerNegetiveAuthorList24H_ = viewerNegetiveAuthorList24H_;
+        result.vvRa1_ = vvRa1_;
+        result.vvRa2_ = vvRa2_;
+        result.vvRa3_ = vvRa3_;
+        result.vvRa4_ = vvRa4_;
+        result.vvRa5_ = vvRa5_;
+        result.cpvRa1_ = cpvRa1_;
+        result.cpvRa2_ = cpvRa2_;
+        result.cpvRa3_ = cpvRa3_;
+        result.cpvRa4_ = cpvRa4_;
+        result.cpvRa5_ = cpvRa5_;
+        result.cpvRa6_ = cpvRa6_;
+        result.lkRa1_ = lkRa1_;
+        result.lkRa2_ = lkRa2_;
+        result.lkRa3_ = lkRa3_;
+        result.lkRa4_ = lkRa4_;
+        result.lkRa5_ = lkRa5_;
+        result.cmRa1_ = cmRa1_;
+        result.cmRa2_ = cmRa2_;
+        result.cmRa3_ = cmRa3_;
+        result.cmRa4_ = cmRa4_;
+        result.cmRa5_ = cmRa5_;
+        result.shRa1_ = shRa1_;
+        result.shRa2_ = shRa2_;
+        result.shRa3_ = shRa3_;
+        result.fvRa1_ = fvRa1_;
+        result.fvRa2_ = fvRa2_;
+        result.fvRa3_ = fvRa3_;
+        result.pfRa1_ = pfRa1_;
+        result.pfRa2_ = pfRa2_;
+        result.pfRa3_ = pfRa3_;
+        if (((bitField1_ & 0x00000008) != 0)) {
+          viewerCompleteplayPostsLatest_.makeImmutable();
+          bitField1_ = (bitField1_ & ~0x00000008);
+        }
+        result.viewerCompleteplayPostsLatest_ = viewerCompleteplayPostsLatest_;
+        if (viewer10SstandPostsLatestBuilder_ == null) {
+          if (((bitField1_ & 0x00000010) != 0)) {
+            viewer10SstandPostsLatest_ = java.util.Collections.unmodifiableList(viewer10SstandPostsLatest_);
+            bitField1_ = (bitField1_ & ~0x00000010);
+          }
+          result.viewer10SstandPostsLatest_ = viewer10SstandPostsLatest_;
+        } else {
+          result.viewer10SstandPostsLatest_ = viewer10SstandPostsLatestBuilder_.build();
+        }
+        if (viewer8SplayPostsLatestBuilder_ == null) {
+          if (((bitField1_ & 0x00000020) != 0)) {
+            viewer8SplayPostsLatest_ = java.util.Collections.unmodifiableList(viewer8SplayPostsLatest_);
+            bitField1_ = (bitField1_ & ~0x00000020);
+          }
+          result.viewer8SplayPostsLatest_ = viewer8SplayPostsLatest_;
+        } else {
+          result.viewer8SplayPostsLatest_ = viewer8SplayPostsLatestBuilder_.build();
+        }
+        if (((bitField1_ & 0x00000040) != 0)) {
+          viewerLikePostsLatest_.makeImmutable();
+          bitField1_ = (bitField1_ & ~0x00000040);
+        }
+        result.viewerLikePostsLatest_ = viewerLikePostsLatest_;
+        if (((bitField1_ & 0x00000080) != 0)) {
+          viewerCommentPostsLatest_.makeImmutable();
+          bitField1_ = (bitField1_ & ~0x00000080);
+        }
+        result.viewerCommentPostsLatest_ = viewerCommentPostsLatest_;
+        if (((bitField1_ & 0x00000100) != 0)) {
+          viewerSharePostsLatest_.makeImmutable();
+          bitField1_ = (bitField1_ & ~0x00000100);
+        }
+        result.viewerSharePostsLatest_ = viewerSharePostsLatest_;
+        if (((bitField1_ & 0x00000200) != 0)) {
+          viewerCollectPostsLatest_.makeImmutable();
+          bitField1_ = (bitField1_ & ~0x00000200);
+        }
+        result.viewerCollectPostsLatest_ = viewerCollectPostsLatest_;
+        if (((bitField1_ & 0x00000400) != 0)) {
+          viewerPayPostsLatest_.makeImmutable();
+          bitField1_ = (bitField1_ & ~0x00000400);
+        }
+        result.viewerPayPostsLatest_ = viewerPayPostsLatest_;
+        if (((bitField1_ & 0x00000800) != 0)) {
+          viewerReportPostsLatest_.makeImmutable();
+          bitField1_ = (bitField1_ & ~0x00000800);
+        }
+        result.viewerReportPostsLatest_ = viewerReportPostsLatest_;
+        if (((bitField1_ & 0x00001000) != 0)) {
+          viewerDislikePostsLatest_.makeImmutable();
+          bitField1_ = (bitField1_ & ~0x00001000);
+        }
+        result.viewerDislikePostsLatest_ = viewerDislikePostsLatest_;
+        if (((bitField1_ & 0x00002000) != 0)) {
+          viewerPositivePostsLatest_.makeImmutable();
+          bitField1_ = (bitField1_ & ~0x00002000);
+        }
+        result.viewerPositivePostsLatest_ = viewerPositivePostsLatest_;
+        if (((bitField1_ & 0x00004000) != 0)) {
+          viewerNegetivePostsLatest_.makeImmutable();
+          bitField1_ = (bitField1_ & ~0x00004000);
+        }
+        result.viewerNegetivePostsLatest_ = viewerNegetivePostsLatest_;
+        if (((bitField1_ & 0x00008000) != 0)) {
+          viewerPositiveAuthorsLatest_.makeImmutable();
+          bitField1_ = (bitField1_ & ~0x00008000);
+        }
+        result.viewerPositiveAuthorsLatest_ = viewerPositiveAuthorsLatest_;
+        if (((bitField1_ & 0x00010000) != 0)) {
+          viewerNegetiveAuthorsLatest_.makeImmutable();
+          bitField1_ = (bitField1_ & ~0x00010000);
+        }
+        result.viewerNegetiveAuthorsLatest_ = viewerNegetiveAuthorsLatest_;
         onBuilt();
         return result;
       }
@@ -8521,6 +11729,268 @@ public final class RecFeature {
           } else {
             ensureViewerNegetiveAuthorList24HIsMutable();
             viewerNegetiveAuthorList24H_.addAll(other.viewerNegetiveAuthorList24H_);
+          }
+          onChanged();
+        }
+        if (other.getVvRa1() != 0F) {
+          setVvRa1(other.getVvRa1());
+        }
+        if (other.getVvRa2() != 0F) {
+          setVvRa2(other.getVvRa2());
+        }
+        if (other.getVvRa3() != 0F) {
+          setVvRa3(other.getVvRa3());
+        }
+        if (other.getVvRa4() != 0F) {
+          setVvRa4(other.getVvRa4());
+        }
+        if (other.getVvRa5() != 0F) {
+          setVvRa5(other.getVvRa5());
+        }
+        if (other.getCpvRa1() != 0F) {
+          setCpvRa1(other.getCpvRa1());
+        }
+        if (other.getCpvRa2() != 0F) {
+          setCpvRa2(other.getCpvRa2());
+        }
+        if (other.getCpvRa3() != 0F) {
+          setCpvRa3(other.getCpvRa3());
+        }
+        if (other.getCpvRa4() != 0F) {
+          setCpvRa4(other.getCpvRa4());
+        }
+        if (other.getCpvRa5() != 0F) {
+          setCpvRa5(other.getCpvRa5());
+        }
+        if (other.getCpvRa6() != 0F) {
+          setCpvRa6(other.getCpvRa6());
+        }
+        if (other.getLkRa1() != 0F) {
+          setLkRa1(other.getLkRa1());
+        }
+        if (other.getLkRa2() != 0F) {
+          setLkRa2(other.getLkRa2());
+        }
+        if (other.getLkRa3() != 0F) {
+          setLkRa3(other.getLkRa3());
+        }
+        if (other.getLkRa4() != 0F) {
+          setLkRa4(other.getLkRa4());
+        }
+        if (other.getLkRa5() != 0F) {
+          setLkRa5(other.getLkRa5());
+        }
+        if (other.getCmRa1() != 0F) {
+          setCmRa1(other.getCmRa1());
+        }
+        if (other.getCmRa2() != 0F) {
+          setCmRa2(other.getCmRa2());
+        }
+        if (other.getCmRa3() != 0F) {
+          setCmRa3(other.getCmRa3());
+        }
+        if (other.getCmRa4() != 0F) {
+          setCmRa4(other.getCmRa4());
+        }
+        if (other.getCmRa5() != 0F) {
+          setCmRa5(other.getCmRa5());
+        }
+        if (other.getShRa1() != 0F) {
+          setShRa1(other.getShRa1());
+        }
+        if (other.getShRa2() != 0F) {
+          setShRa2(other.getShRa2());
+        }
+        if (other.getShRa3() != 0F) {
+          setShRa3(other.getShRa3());
+        }
+        if (other.getFvRa1() != 0F) {
+          setFvRa1(other.getFvRa1());
+        }
+        if (other.getFvRa2() != 0F) {
+          setFvRa2(other.getFvRa2());
+        }
+        if (other.getFvRa3() != 0F) {
+          setFvRa3(other.getFvRa3());
+        }
+        if (other.getPfRa1() != 0F) {
+          setPfRa1(other.getPfRa1());
+        }
+        if (other.getPfRa2() != 0F) {
+          setPfRa2(other.getPfRa2());
+        }
+        if (other.getPfRa3() != 0F) {
+          setPfRa3(other.getPfRa3());
+        }
+        if (!other.viewerCompleteplayPostsLatest_.isEmpty()) {
+          if (viewerCompleteplayPostsLatest_.isEmpty()) {
+            viewerCompleteplayPostsLatest_ = other.viewerCompleteplayPostsLatest_;
+            bitField1_ = (bitField1_ & ~0x00000008);
+          } else {
+            ensureViewerCompleteplayPostsLatestIsMutable();
+            viewerCompleteplayPostsLatest_.addAll(other.viewerCompleteplayPostsLatest_);
+          }
+          onChanged();
+        }
+        if (viewer10SstandPostsLatestBuilder_ == null) {
+          if (!other.viewer10SstandPostsLatest_.isEmpty()) {
+            if (viewer10SstandPostsLatest_.isEmpty()) {
+              viewer10SstandPostsLatest_ = other.viewer10SstandPostsLatest_;
+              bitField1_ = (bitField1_ & ~0x00000010);
+            } else {
+              ensureViewer10SstandPostsLatestIsMutable();
+              viewer10SstandPostsLatest_.addAll(other.viewer10SstandPostsLatest_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.viewer10SstandPostsLatest_.isEmpty()) {
+            if (viewer10SstandPostsLatestBuilder_.isEmpty()) {
+              viewer10SstandPostsLatestBuilder_.dispose();
+              viewer10SstandPostsLatestBuilder_ = null;
+              viewer10SstandPostsLatest_ = other.viewer10SstandPostsLatest_;
+              bitField1_ = (bitField1_ & ~0x00000010);
+              viewer10SstandPostsLatestBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getViewer10SstandPostsLatestFieldBuilder() : null;
+            } else {
+              viewer10SstandPostsLatestBuilder_.addAllMessages(other.viewer10SstandPostsLatest_);
+            }
+          }
+        }
+        if (viewer8SplayPostsLatestBuilder_ == null) {
+          if (!other.viewer8SplayPostsLatest_.isEmpty()) {
+            if (viewer8SplayPostsLatest_.isEmpty()) {
+              viewer8SplayPostsLatest_ = other.viewer8SplayPostsLatest_;
+              bitField1_ = (bitField1_ & ~0x00000020);
+            } else {
+              ensureViewer8SplayPostsLatestIsMutable();
+              viewer8SplayPostsLatest_.addAll(other.viewer8SplayPostsLatest_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.viewer8SplayPostsLatest_.isEmpty()) {
+            if (viewer8SplayPostsLatestBuilder_.isEmpty()) {
+              viewer8SplayPostsLatestBuilder_.dispose();
+              viewer8SplayPostsLatestBuilder_ = null;
+              viewer8SplayPostsLatest_ = other.viewer8SplayPostsLatest_;
+              bitField1_ = (bitField1_ & ~0x00000020);
+              viewer8SplayPostsLatestBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getViewer8SplayPostsLatestFieldBuilder() : null;
+            } else {
+              viewer8SplayPostsLatestBuilder_.addAllMessages(other.viewer8SplayPostsLatest_);
+            }
+          }
+        }
+        if (!other.viewerLikePostsLatest_.isEmpty()) {
+          if (viewerLikePostsLatest_.isEmpty()) {
+            viewerLikePostsLatest_ = other.viewerLikePostsLatest_;
+            bitField1_ = (bitField1_ & ~0x00000040);
+          } else {
+            ensureViewerLikePostsLatestIsMutable();
+            viewerLikePostsLatest_.addAll(other.viewerLikePostsLatest_);
+          }
+          onChanged();
+        }
+        if (!other.viewerCommentPostsLatest_.isEmpty()) {
+          if (viewerCommentPostsLatest_.isEmpty()) {
+            viewerCommentPostsLatest_ = other.viewerCommentPostsLatest_;
+            bitField1_ = (bitField1_ & ~0x00000080);
+          } else {
+            ensureViewerCommentPostsLatestIsMutable();
+            viewerCommentPostsLatest_.addAll(other.viewerCommentPostsLatest_);
+          }
+          onChanged();
+        }
+        if (!other.viewerSharePostsLatest_.isEmpty()) {
+          if (viewerSharePostsLatest_.isEmpty()) {
+            viewerSharePostsLatest_ = other.viewerSharePostsLatest_;
+            bitField1_ = (bitField1_ & ~0x00000100);
+          } else {
+            ensureViewerSharePostsLatestIsMutable();
+            viewerSharePostsLatest_.addAll(other.viewerSharePostsLatest_);
+          }
+          onChanged();
+        }
+        if (!other.viewerCollectPostsLatest_.isEmpty()) {
+          if (viewerCollectPostsLatest_.isEmpty()) {
+            viewerCollectPostsLatest_ = other.viewerCollectPostsLatest_;
+            bitField1_ = (bitField1_ & ~0x00000200);
+          } else {
+            ensureViewerCollectPostsLatestIsMutable();
+            viewerCollectPostsLatest_.addAll(other.viewerCollectPostsLatest_);
+          }
+          onChanged();
+        }
+        if (!other.viewerPayPostsLatest_.isEmpty()) {
+          if (viewerPayPostsLatest_.isEmpty()) {
+            viewerPayPostsLatest_ = other.viewerPayPostsLatest_;
+            bitField1_ = (bitField1_ & ~0x00000400);
+          } else {
+            ensureViewerPayPostsLatestIsMutable();
+            viewerPayPostsLatest_.addAll(other.viewerPayPostsLatest_);
+          }
+          onChanged();
+        }
+        if (!other.viewerReportPostsLatest_.isEmpty()) {
+          if (viewerReportPostsLatest_.isEmpty()) {
+            viewerReportPostsLatest_ = other.viewerReportPostsLatest_;
+            bitField1_ = (bitField1_ & ~0x00000800);
+          } else {
+            ensureViewerReportPostsLatestIsMutable();
+            viewerReportPostsLatest_.addAll(other.viewerReportPostsLatest_);
+          }
+          onChanged();
+        }
+        if (!other.viewerDislikePostsLatest_.isEmpty()) {
+          if (viewerDislikePostsLatest_.isEmpty()) {
+            viewerDislikePostsLatest_ = other.viewerDislikePostsLatest_;
+            bitField1_ = (bitField1_ & ~0x00001000);
+          } else {
+            ensureViewerDislikePostsLatestIsMutable();
+            viewerDislikePostsLatest_.addAll(other.viewerDislikePostsLatest_);
+          }
+          onChanged();
+        }
+        if (!other.viewerPositivePostsLatest_.isEmpty()) {
+          if (viewerPositivePostsLatest_.isEmpty()) {
+            viewerPositivePostsLatest_ = other.viewerPositivePostsLatest_;
+            bitField1_ = (bitField1_ & ~0x00002000);
+          } else {
+            ensureViewerPositivePostsLatestIsMutable();
+            viewerPositivePostsLatest_.addAll(other.viewerPositivePostsLatest_);
+          }
+          onChanged();
+        }
+        if (!other.viewerNegetivePostsLatest_.isEmpty()) {
+          if (viewerNegetivePostsLatest_.isEmpty()) {
+            viewerNegetivePostsLatest_ = other.viewerNegetivePostsLatest_;
+            bitField1_ = (bitField1_ & ~0x00004000);
+          } else {
+            ensureViewerNegetivePostsLatestIsMutable();
+            viewerNegetivePostsLatest_.addAll(other.viewerNegetivePostsLatest_);
+          }
+          onChanged();
+        }
+        if (!other.viewerPositiveAuthorsLatest_.isEmpty()) {
+          if (viewerPositiveAuthorsLatest_.isEmpty()) {
+            viewerPositiveAuthorsLatest_ = other.viewerPositiveAuthorsLatest_;
+            bitField1_ = (bitField1_ & ~0x00008000);
+          } else {
+            ensureViewerPositiveAuthorsLatestIsMutable();
+            viewerPositiveAuthorsLatest_.addAll(other.viewerPositiveAuthorsLatest_);
+          }
+          onChanged();
+        }
+        if (!other.viewerNegetiveAuthorsLatest_.isEmpty()) {
+          if (viewerNegetiveAuthorsLatest_.isEmpty()) {
+            viewerNegetiveAuthorsLatest_ = other.viewerNegetiveAuthorsLatest_;
+            bitField1_ = (bitField1_ & ~0x00010000);
+          } else {
+            ensureViewerNegetiveAuthorsLatestIsMutable();
+            viewerNegetiveAuthorsLatest_.addAll(other.viewerNegetiveAuthorsLatest_);
           }
           onChanged();
         }
@@ -16934,6 +20404,3204 @@ public final class RecFeature {
         onChanged();
         return this;
       }
+
+      private float vvRa1_ ;
+      /**
+       * <pre>
+       * vv1
+       * </pre>
+       *
+       * <code>float vv_ra_1 = 118;</code>
+       * @return The vvRa1.
+       */
+      @java.lang.Override
+      public float getVvRa1() {
+        return vvRa1_;
+      }
+      /**
+       * <pre>
+       * vv1
+       * </pre>
+       *
+       * <code>float vv_ra_1 = 118;</code>
+       * @param value The vvRa1 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setVvRa1(float value) {
+        
+        vvRa1_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * vv1
+       * </pre>
+       *
+       * <code>float vv_ra_1 = 118;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearVvRa1() {
+        
+        vvRa1_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float vvRa2_ ;
+      /**
+       * <pre>
+       * vv2
+       * </pre>
+       *
+       * <code>float vv_ra_2 = 119;</code>
+       * @return The vvRa2.
+       */
+      @java.lang.Override
+      public float getVvRa2() {
+        return vvRa2_;
+      }
+      /**
+       * <pre>
+       * vv2
+       * </pre>
+       *
+       * <code>float vv_ra_2 = 119;</code>
+       * @param value The vvRa2 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setVvRa2(float value) {
+        
+        vvRa2_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * vv2
+       * </pre>
+       *
+       * <code>float vv_ra_2 = 119;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearVvRa2() {
+        
+        vvRa2_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float vvRa3_ ;
+      /**
+       * <pre>
+       * vv3
+       * </pre>
+       *
+       * <code>float vv_ra_3 = 120;</code>
+       * @return The vvRa3.
+       */
+      @java.lang.Override
+      public float getVvRa3() {
+        return vvRa3_;
+      }
+      /**
+       * <pre>
+       * vv3
+       * </pre>
+       *
+       * <code>float vv_ra_3 = 120;</code>
+       * @param value The vvRa3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setVvRa3(float value) {
+        
+        vvRa3_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * vv3
+       * </pre>
+       *
+       * <code>float vv_ra_3 = 120;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearVvRa3() {
+        
+        vvRa3_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float vvRa4_ ;
+      /**
+       * <pre>
+       * vv4
+       * </pre>
+       *
+       * <code>float vv_ra_4 = 121;</code>
+       * @return The vvRa4.
+       */
+      @java.lang.Override
+      public float getVvRa4() {
+        return vvRa4_;
+      }
+      /**
+       * <pre>
+       * vv4
+       * </pre>
+       *
+       * <code>float vv_ra_4 = 121;</code>
+       * @param value The vvRa4 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setVvRa4(float value) {
+        
+        vvRa4_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * vv4
+       * </pre>
+       *
+       * <code>float vv_ra_4 = 121;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearVvRa4() {
+        
+        vvRa4_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float vvRa5_ ;
+      /**
+       * <pre>
+       * vv5
+       * </pre>
+       *
+       * <code>float vv_ra_5 = 122;</code>
+       * @return The vvRa5.
+       */
+      @java.lang.Override
+      public float getVvRa5() {
+        return vvRa5_;
+      }
+      /**
+       * <pre>
+       * vv5
+       * </pre>
+       *
+       * <code>float vv_ra_5 = 122;</code>
+       * @param value The vvRa5 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setVvRa5(float value) {
+        
+        vvRa5_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * vv5
+       * </pre>
+       *
+       * <code>float vv_ra_5 = 122;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearVvRa5() {
+        
+        vvRa5_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float cpvRa1_ ;
+      /**
+       * <pre>
+       * cpv1
+       * </pre>
+       *
+       * <code>float cpv_ra_1 = 123;</code>
+       * @return The cpvRa1.
+       */
+      @java.lang.Override
+      public float getCpvRa1() {
+        return cpvRa1_;
+      }
+      /**
+       * <pre>
+       * cpv1
+       * </pre>
+       *
+       * <code>float cpv_ra_1 = 123;</code>
+       * @param value The cpvRa1 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setCpvRa1(float value) {
+        
+        cpvRa1_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * cpv1
+       * </pre>
+       *
+       * <code>float cpv_ra_1 = 123;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearCpvRa1() {
+        
+        cpvRa1_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float cpvRa2_ ;
+      /**
+       * <pre>
+       * cpv2
+       * </pre>
+       *
+       * <code>float cpv_ra_2 = 124;</code>
+       * @return The cpvRa2.
+       */
+      @java.lang.Override
+      public float getCpvRa2() {
+        return cpvRa2_;
+      }
+      /**
+       * <pre>
+       * cpv2
+       * </pre>
+       *
+       * <code>float cpv_ra_2 = 124;</code>
+       * @param value The cpvRa2 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setCpvRa2(float value) {
+        
+        cpvRa2_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * cpv2
+       * </pre>
+       *
+       * <code>float cpv_ra_2 = 124;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearCpvRa2() {
+        
+        cpvRa2_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float cpvRa3_ ;
+      /**
+       * <pre>
+       * cpv3
+       * </pre>
+       *
+       * <code>float cpv_ra_3 = 125;</code>
+       * @return The cpvRa3.
+       */
+      @java.lang.Override
+      public float getCpvRa3() {
+        return cpvRa3_;
+      }
+      /**
+       * <pre>
+       * cpv3
+       * </pre>
+       *
+       * <code>float cpv_ra_3 = 125;</code>
+       * @param value The cpvRa3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setCpvRa3(float value) {
+        
+        cpvRa3_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * cpv3
+       * </pre>
+       *
+       * <code>float cpv_ra_3 = 125;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearCpvRa3() {
+        
+        cpvRa3_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float cpvRa4_ ;
+      /**
+       * <pre>
+       * cpv4
+       * </pre>
+       *
+       * <code>float cpv_ra_4 = 126;</code>
+       * @return The cpvRa4.
+       */
+      @java.lang.Override
+      public float getCpvRa4() {
+        return cpvRa4_;
+      }
+      /**
+       * <pre>
+       * cpv4
+       * </pre>
+       *
+       * <code>float cpv_ra_4 = 126;</code>
+       * @param value The cpvRa4 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setCpvRa4(float value) {
+        
+        cpvRa4_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * cpv4
+       * </pre>
+       *
+       * <code>float cpv_ra_4 = 126;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearCpvRa4() {
+        
+        cpvRa4_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float cpvRa5_ ;
+      /**
+       * <pre>
+       * cpv5
+       * </pre>
+       *
+       * <code>float cpv_ra_5 = 127;</code>
+       * @return The cpvRa5.
+       */
+      @java.lang.Override
+      public float getCpvRa5() {
+        return cpvRa5_;
+      }
+      /**
+       * <pre>
+       * cpv5
+       * </pre>
+       *
+       * <code>float cpv_ra_5 = 127;</code>
+       * @param value The cpvRa5 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setCpvRa5(float value) {
+        
+        cpvRa5_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * cpv5
+       * </pre>
+       *
+       * <code>float cpv_ra_5 = 127;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearCpvRa5() {
+        
+        cpvRa5_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float cpvRa6_ ;
+      /**
+       * <pre>
+       * cpv6
+       * </pre>
+       *
+       * <code>float cpv_ra_6 = 128;</code>
+       * @return The cpvRa6.
+       */
+      @java.lang.Override
+      public float getCpvRa6() {
+        return cpvRa6_;
+      }
+      /**
+       * <pre>
+       * cpv6
+       * </pre>
+       *
+       * <code>float cpv_ra_6 = 128;</code>
+       * @param value The cpvRa6 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setCpvRa6(float value) {
+        
+        cpvRa6_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * cpv6
+       * </pre>
+       *
+       * <code>float cpv_ra_6 = 128;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearCpvRa6() {
+        
+        cpvRa6_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float lkRa1_ ;
+      /**
+       * <pre>
+       * lk1
+       * </pre>
+       *
+       * <code>float lk_ra_1 = 129;</code>
+       * @return The lkRa1.
+       */
+      @java.lang.Override
+      public float getLkRa1() {
+        return lkRa1_;
+      }
+      /**
+       * <pre>
+       * lk1
+       * </pre>
+       *
+       * <code>float lk_ra_1 = 129;</code>
+       * @param value The lkRa1 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setLkRa1(float value) {
+        
+        lkRa1_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * lk1
+       * </pre>
+       *
+       * <code>float lk_ra_1 = 129;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearLkRa1() {
+        
+        lkRa1_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float lkRa2_ ;
+      /**
+       * <pre>
+       * lk2
+       * </pre>
+       *
+       * <code>float lk_ra_2 = 130;</code>
+       * @return The lkRa2.
+       */
+      @java.lang.Override
+      public float getLkRa2() {
+        return lkRa2_;
+      }
+      /**
+       * <pre>
+       * lk2
+       * </pre>
+       *
+       * <code>float lk_ra_2 = 130;</code>
+       * @param value The lkRa2 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setLkRa2(float value) {
+        
+        lkRa2_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * lk2
+       * </pre>
+       *
+       * <code>float lk_ra_2 = 130;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearLkRa2() {
+        
+        lkRa2_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float lkRa3_ ;
+      /**
+       * <pre>
+       * lk3
+       * </pre>
+       *
+       * <code>float lk_ra_3 = 131;</code>
+       * @return The lkRa3.
+       */
+      @java.lang.Override
+      public float getLkRa3() {
+        return lkRa3_;
+      }
+      /**
+       * <pre>
+       * lk3
+       * </pre>
+       *
+       * <code>float lk_ra_3 = 131;</code>
+       * @param value The lkRa3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setLkRa3(float value) {
+        
+        lkRa3_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * lk3
+       * </pre>
+       *
+       * <code>float lk_ra_3 = 131;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearLkRa3() {
+        
+        lkRa3_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float lkRa4_ ;
+      /**
+       * <pre>
+       * lk4
+       * </pre>
+       *
+       * <code>float lk_ra_4 = 132;</code>
+       * @return The lkRa4.
+       */
+      @java.lang.Override
+      public float getLkRa4() {
+        return lkRa4_;
+      }
+      /**
+       * <pre>
+       * lk4
+       * </pre>
+       *
+       * <code>float lk_ra_4 = 132;</code>
+       * @param value The lkRa4 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setLkRa4(float value) {
+        
+        lkRa4_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * lk4
+       * </pre>
+       *
+       * <code>float lk_ra_4 = 132;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearLkRa4() {
+        
+        lkRa4_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float lkRa5_ ;
+      /**
+       * <pre>
+       * lk5
+       * </pre>
+       *
+       * <code>float lk_ra_5 = 133;</code>
+       * @return The lkRa5.
+       */
+      @java.lang.Override
+      public float getLkRa5() {
+        return lkRa5_;
+      }
+      /**
+       * <pre>
+       * lk5
+       * </pre>
+       *
+       * <code>float lk_ra_5 = 133;</code>
+       * @param value The lkRa5 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setLkRa5(float value) {
+        
+        lkRa5_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * lk5
+       * </pre>
+       *
+       * <code>float lk_ra_5 = 133;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearLkRa5() {
+        
+        lkRa5_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float cmRa1_ ;
+      /**
+       * <pre>
+       * cm1
+       * </pre>
+       *
+       * <code>float cm_ra_1 = 134;</code>
+       * @return The cmRa1.
+       */
+      @java.lang.Override
+      public float getCmRa1() {
+        return cmRa1_;
+      }
+      /**
+       * <pre>
+       * cm1
+       * </pre>
+       *
+       * <code>float cm_ra_1 = 134;</code>
+       * @param value The cmRa1 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setCmRa1(float value) {
+        
+        cmRa1_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * cm1
+       * </pre>
+       *
+       * <code>float cm_ra_1 = 134;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearCmRa1() {
+        
+        cmRa1_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float cmRa2_ ;
+      /**
+       * <pre>
+       * cm2
+       * </pre>
+       *
+       * <code>float cm_ra_2 = 135;</code>
+       * @return The cmRa2.
+       */
+      @java.lang.Override
+      public float getCmRa2() {
+        return cmRa2_;
+      }
+      /**
+       * <pre>
+       * cm2
+       * </pre>
+       *
+       * <code>float cm_ra_2 = 135;</code>
+       * @param value The cmRa2 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setCmRa2(float value) {
+        
+        cmRa2_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * cm2
+       * </pre>
+       *
+       * <code>float cm_ra_2 = 135;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearCmRa2() {
+        
+        cmRa2_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float cmRa3_ ;
+      /**
+       * <pre>
+       * cm3
+       * </pre>
+       *
+       * <code>float cm_ra_3 = 136;</code>
+       * @return The cmRa3.
+       */
+      @java.lang.Override
+      public float getCmRa3() {
+        return cmRa3_;
+      }
+      /**
+       * <pre>
+       * cm3
+       * </pre>
+       *
+       * <code>float cm_ra_3 = 136;</code>
+       * @param value The cmRa3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setCmRa3(float value) {
+        
+        cmRa3_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * cm3
+       * </pre>
+       *
+       * <code>float cm_ra_3 = 136;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearCmRa3() {
+        
+        cmRa3_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float cmRa4_ ;
+      /**
+       * <pre>
+       * cm4
+       * </pre>
+       *
+       * <code>float cm_ra_4 = 137;</code>
+       * @return The cmRa4.
+       */
+      @java.lang.Override
+      public float getCmRa4() {
+        return cmRa4_;
+      }
+      /**
+       * <pre>
+       * cm4
+       * </pre>
+       *
+       * <code>float cm_ra_4 = 137;</code>
+       * @param value The cmRa4 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setCmRa4(float value) {
+        
+        cmRa4_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * cm4
+       * </pre>
+       *
+       * <code>float cm_ra_4 = 137;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearCmRa4() {
+        
+        cmRa4_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float cmRa5_ ;
+      /**
+       * <pre>
+       * cm5
+       * </pre>
+       *
+       * <code>float cm_ra_5 = 138;</code>
+       * @return The cmRa5.
+       */
+      @java.lang.Override
+      public float getCmRa5() {
+        return cmRa5_;
+      }
+      /**
+       * <pre>
+       * cm5
+       * </pre>
+       *
+       * <code>float cm_ra_5 = 138;</code>
+       * @param value The cmRa5 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setCmRa5(float value) {
+        
+        cmRa5_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * cm5
+       * </pre>
+       *
+       * <code>float cm_ra_5 = 138;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearCmRa5() {
+        
+        cmRa5_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float shRa1_ ;
+      /**
+       * <pre>
+       * sh1
+       * </pre>
+       *
+       * <code>float sh_ra_1 = 139;</code>
+       * @return The shRa1.
+       */
+      @java.lang.Override
+      public float getShRa1() {
+        return shRa1_;
+      }
+      /**
+       * <pre>
+       * sh1
+       * </pre>
+       *
+       * <code>float sh_ra_1 = 139;</code>
+       * @param value The shRa1 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setShRa1(float value) {
+        
+        shRa1_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * sh1
+       * </pre>
+       *
+       * <code>float sh_ra_1 = 139;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearShRa1() {
+        
+        shRa1_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float shRa2_ ;
+      /**
+       * <pre>
+       * sh2
+       * </pre>
+       *
+       * <code>float sh_ra_2 = 140;</code>
+       * @return The shRa2.
+       */
+      @java.lang.Override
+      public float getShRa2() {
+        return shRa2_;
+      }
+      /**
+       * <pre>
+       * sh2
+       * </pre>
+       *
+       * <code>float sh_ra_2 = 140;</code>
+       * @param value The shRa2 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setShRa2(float value) {
+        
+        shRa2_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * sh2
+       * </pre>
+       *
+       * <code>float sh_ra_2 = 140;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearShRa2() {
+        
+        shRa2_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float shRa3_ ;
+      /**
+       * <pre>
+       * sh3
+       * </pre>
+       *
+       * <code>float sh_ra_3 = 141;</code>
+       * @return The shRa3.
+       */
+      @java.lang.Override
+      public float getShRa3() {
+        return shRa3_;
+      }
+      /**
+       * <pre>
+       * sh3
+       * </pre>
+       *
+       * <code>float sh_ra_3 = 141;</code>
+       * @param value The shRa3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setShRa3(float value) {
+        
+        shRa3_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * sh3
+       * </pre>
+       *
+       * <code>float sh_ra_3 = 141;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearShRa3() {
+        
+        shRa3_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float fvRa1_ ;
+      /**
+       * <pre>
+       * fv1
+       * </pre>
+       *
+       * <code>float fv_ra_1 = 142;</code>
+       * @return The fvRa1.
+       */
+      @java.lang.Override
+      public float getFvRa1() {
+        return fvRa1_;
+      }
+      /**
+       * <pre>
+       * fv1
+       * </pre>
+       *
+       * <code>float fv_ra_1 = 142;</code>
+       * @param value The fvRa1 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setFvRa1(float value) {
+        
+        fvRa1_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * fv1
+       * </pre>
+       *
+       * <code>float fv_ra_1 = 142;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearFvRa1() {
+        
+        fvRa1_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float fvRa2_ ;
+      /**
+       * <pre>
+       * fv2
+       * </pre>
+       *
+       * <code>float fv_ra_2 = 143;</code>
+       * @return The fvRa2.
+       */
+      @java.lang.Override
+      public float getFvRa2() {
+        return fvRa2_;
+      }
+      /**
+       * <pre>
+       * fv2
+       * </pre>
+       *
+       * <code>float fv_ra_2 = 143;</code>
+       * @param value The fvRa2 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setFvRa2(float value) {
+        
+        fvRa2_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * fv2
+       * </pre>
+       *
+       * <code>float fv_ra_2 = 143;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearFvRa2() {
+        
+        fvRa2_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float fvRa3_ ;
+      /**
+       * <pre>
+       * fv3
+       * </pre>
+       *
+       * <code>float fv_ra_3 = 144;</code>
+       * @return The fvRa3.
+       */
+      @java.lang.Override
+      public float getFvRa3() {
+        return fvRa3_;
+      }
+      /**
+       * <pre>
+       * fv3
+       * </pre>
+       *
+       * <code>float fv_ra_3 = 144;</code>
+       * @param value The fvRa3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setFvRa3(float value) {
+        
+        fvRa3_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * fv3
+       * </pre>
+       *
+       * <code>float fv_ra_3 = 144;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearFvRa3() {
+        
+        fvRa3_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float pfRa1_ ;
+      /**
+       * <pre>
+       * pf1
+       * </pre>
+       *
+       * <code>float pf_ra_1 = 145;</code>
+       * @return The pfRa1.
+       */
+      @java.lang.Override
+      public float getPfRa1() {
+        return pfRa1_;
+      }
+      /**
+       * <pre>
+       * pf1
+       * </pre>
+       *
+       * <code>float pf_ra_1 = 145;</code>
+       * @param value The pfRa1 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPfRa1(float value) {
+        
+        pfRa1_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * pf1
+       * </pre>
+       *
+       * <code>float pf_ra_1 = 145;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPfRa1() {
+        
+        pfRa1_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float pfRa2_ ;
+      /**
+       * <pre>
+       * pf2
+       * </pre>
+       *
+       * <code>float pf_ra_2 = 146;</code>
+       * @return The pfRa2.
+       */
+      @java.lang.Override
+      public float getPfRa2() {
+        return pfRa2_;
+      }
+      /**
+       * <pre>
+       * pf2
+       * </pre>
+       *
+       * <code>float pf_ra_2 = 146;</code>
+       * @param value The pfRa2 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPfRa2(float value) {
+        
+        pfRa2_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * pf2
+       * </pre>
+       *
+       * <code>float pf_ra_2 = 146;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPfRa2() {
+        
+        pfRa2_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float pfRa3_ ;
+      /**
+       * <pre>
+       * pf3
+       * </pre>
+       *
+       * <code>float pf_ra_3 = 147;</code>
+       * @return The pfRa3.
+       */
+      @java.lang.Override
+      public float getPfRa3() {
+        return pfRa3_;
+      }
+      /**
+       * <pre>
+       * pf3
+       * </pre>
+       *
+       * <code>float pf_ra_3 = 147;</code>
+       * @param value The pfRa3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPfRa3(float value) {
+        
+        pfRa3_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * pf3
+       * </pre>
+       *
+       * <code>float pf_ra_3 = 147;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPfRa3() {
+        
+        pfRa3_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.Internal.LongList viewerCompleteplayPostsLatest_ = emptyLongList();
+      private void ensureViewerCompleteplayPostsLatestIsMutable() {
+        if (!((bitField1_ & 0x00000008) != 0)) {
+          viewerCompleteplayPostsLatest_ = mutableCopy(viewerCompleteplayPostsLatest_);
+          bitField1_ |= 0x00000008;
+         }
+      }
+      /**
+       * <pre>
+       * 用户最近完播的post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_completeplay_posts_latest = 151;</code>
+       * @return A list containing the viewerCompleteplayPostsLatest.
+       */
+      public java.util.List<java.lang.Long>
+          getViewerCompleteplayPostsLatestList() {
+        return ((bitField1_ & 0x00000008) != 0) ?
+                 java.util.Collections.unmodifiableList(viewerCompleteplayPostsLatest_) : viewerCompleteplayPostsLatest_;
+      }
+      /**
+       * <pre>
+       * 用户最近完播的post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_completeplay_posts_latest = 151;</code>
+       * @return The count of viewerCompleteplayPostsLatest.
+       */
+      public int getViewerCompleteplayPostsLatestCount() {
+        return viewerCompleteplayPostsLatest_.size();
+      }
+      /**
+       * <pre>
+       * 用户最近完播的post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_completeplay_posts_latest = 151;</code>
+       * @param index The index of the element to return.
+       * @return The viewerCompleteplayPostsLatest at the given index.
+       */
+      public long getViewerCompleteplayPostsLatest(int index) {
+        return viewerCompleteplayPostsLatest_.getLong(index);
+      }
+      /**
+       * <pre>
+       * 用户最近完播的post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_completeplay_posts_latest = 151;</code>
+       * @param index The index to set the value at.
+       * @param value The viewerCompleteplayPostsLatest to set.
+       * @return This builder for chaining.
+       */
+      public Builder setViewerCompleteplayPostsLatest(
+          int index, long value) {
+        ensureViewerCompleteplayPostsLatestIsMutable();
+        viewerCompleteplayPostsLatest_.setLong(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近完播的post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_completeplay_posts_latest = 151;</code>
+       * @param value The viewerCompleteplayPostsLatest to add.
+       * @return This builder for chaining.
+       */
+      public Builder addViewerCompleteplayPostsLatest(long value) {
+        ensureViewerCompleteplayPostsLatestIsMutable();
+        viewerCompleteplayPostsLatest_.addLong(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近完播的post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_completeplay_posts_latest = 151;</code>
+       * @param values The viewerCompleteplayPostsLatest to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAllViewerCompleteplayPostsLatest(
+          java.lang.Iterable<? extends java.lang.Long> values) {
+        ensureViewerCompleteplayPostsLatestIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, viewerCompleteplayPostsLatest_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近完播的post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_completeplay_posts_latest = 151;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearViewerCompleteplayPostsLatest() {
+        viewerCompleteplayPostsLatest_ = emptyLongList();
+        bitField1_ = (bitField1_ & ~0x00000008);
+        onChanged();
+        return this;
+      }
+
+      private java.util.List<com.gosh.entity.RecFeature.IdScore> viewer10SstandPostsLatest_ =
+        java.util.Collections.emptyList();
+      private void ensureViewer10SstandPostsLatestIsMutable() {
+        if (!((bitField1_ & 0x00000010) != 0)) {
+          viewer10SstandPostsLatest_ = new java.util.ArrayList<com.gosh.entity.RecFeature.IdScore>(viewer10SstandPostsLatest_);
+          bitField1_ |= 0x00000010;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          com.gosh.entity.RecFeature.IdScore, com.gosh.entity.RecFeature.IdScore.Builder, com.gosh.entity.RecFeature.IdScoreOrBuilder> viewer10SstandPostsLatestBuilder_;
+
+      /**
+       * <pre>
+       * 用户最近停留10s以上的post列表
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_10sstand_posts_latest = 152;</code>
+       */
+      public java.util.List<com.gosh.entity.RecFeature.IdScore> getViewer10SstandPostsLatestList() {
+        if (viewer10SstandPostsLatestBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(viewer10SstandPostsLatest_);
+        } else {
+          return viewer10SstandPostsLatestBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <pre>
+       * 用户最近停留10s以上的post列表
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_10sstand_posts_latest = 152;</code>
+       */
+      public int getViewer10SstandPostsLatestCount() {
+        if (viewer10SstandPostsLatestBuilder_ == null) {
+          return viewer10SstandPostsLatest_.size();
+        } else {
+          return viewer10SstandPostsLatestBuilder_.getCount();
+        }
+      }
+      /**
+       * <pre>
+       * 用户最近停留10s以上的post列表
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_10sstand_posts_latest = 152;</code>
+       */
+      public com.gosh.entity.RecFeature.IdScore getViewer10SstandPostsLatest(int index) {
+        if (viewer10SstandPostsLatestBuilder_ == null) {
+          return viewer10SstandPostsLatest_.get(index);
+        } else {
+          return viewer10SstandPostsLatestBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <pre>
+       * 用户最近停留10s以上的post列表
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_10sstand_posts_latest = 152;</code>
+       */
+      public Builder setViewer10SstandPostsLatest(
+          int index, com.gosh.entity.RecFeature.IdScore value) {
+        if (viewer10SstandPostsLatestBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureViewer10SstandPostsLatestIsMutable();
+          viewer10SstandPostsLatest_.set(index, value);
+          onChanged();
+        } else {
+          viewer10SstandPostsLatestBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近停留10s以上的post列表
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_10sstand_posts_latest = 152;</code>
+       */
+      public Builder setViewer10SstandPostsLatest(
+          int index, com.gosh.entity.RecFeature.IdScore.Builder builderForValue) {
+        if (viewer10SstandPostsLatestBuilder_ == null) {
+          ensureViewer10SstandPostsLatestIsMutable();
+          viewer10SstandPostsLatest_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          viewer10SstandPostsLatestBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近停留10s以上的post列表
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_10sstand_posts_latest = 152;</code>
+       */
+      public Builder addViewer10SstandPostsLatest(com.gosh.entity.RecFeature.IdScore value) {
+        if (viewer10SstandPostsLatestBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureViewer10SstandPostsLatestIsMutable();
+          viewer10SstandPostsLatest_.add(value);
+          onChanged();
+        } else {
+          viewer10SstandPostsLatestBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近停留10s以上的post列表
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_10sstand_posts_latest = 152;</code>
+       */
+      public Builder addViewer10SstandPostsLatest(
+          int index, com.gosh.entity.RecFeature.IdScore value) {
+        if (viewer10SstandPostsLatestBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureViewer10SstandPostsLatestIsMutable();
+          viewer10SstandPostsLatest_.add(index, value);
+          onChanged();
+        } else {
+          viewer10SstandPostsLatestBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近停留10s以上的post列表
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_10sstand_posts_latest = 152;</code>
+       */
+      public Builder addViewer10SstandPostsLatest(
+          com.gosh.entity.RecFeature.IdScore.Builder builderForValue) {
+        if (viewer10SstandPostsLatestBuilder_ == null) {
+          ensureViewer10SstandPostsLatestIsMutable();
+          viewer10SstandPostsLatest_.add(builderForValue.build());
+          onChanged();
+        } else {
+          viewer10SstandPostsLatestBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近停留10s以上的post列表
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_10sstand_posts_latest = 152;</code>
+       */
+      public Builder addViewer10SstandPostsLatest(
+          int index, com.gosh.entity.RecFeature.IdScore.Builder builderForValue) {
+        if (viewer10SstandPostsLatestBuilder_ == null) {
+          ensureViewer10SstandPostsLatestIsMutable();
+          viewer10SstandPostsLatest_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          viewer10SstandPostsLatestBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近停留10s以上的post列表
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_10sstand_posts_latest = 152;</code>
+       */
+      public Builder addAllViewer10SstandPostsLatest(
+          java.lang.Iterable<? extends com.gosh.entity.RecFeature.IdScore> values) {
+        if (viewer10SstandPostsLatestBuilder_ == null) {
+          ensureViewer10SstandPostsLatestIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, viewer10SstandPostsLatest_);
+          onChanged();
+        } else {
+          viewer10SstandPostsLatestBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近停留10s以上的post列表
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_10sstand_posts_latest = 152;</code>
+       */
+      public Builder clearViewer10SstandPostsLatest() {
+        if (viewer10SstandPostsLatestBuilder_ == null) {
+          viewer10SstandPostsLatest_ = java.util.Collections.emptyList();
+          bitField1_ = (bitField1_ & ~0x00000010);
+          onChanged();
+        } else {
+          viewer10SstandPostsLatestBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近停留10s以上的post列表
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_10sstand_posts_latest = 152;</code>
+       */
+      public Builder removeViewer10SstandPostsLatest(int index) {
+        if (viewer10SstandPostsLatestBuilder_ == null) {
+          ensureViewer10SstandPostsLatestIsMutable();
+          viewer10SstandPostsLatest_.remove(index);
+          onChanged();
+        } else {
+          viewer10SstandPostsLatestBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近停留10s以上的post列表
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_10sstand_posts_latest = 152;</code>
+       */
+      public com.gosh.entity.RecFeature.IdScore.Builder getViewer10SstandPostsLatestBuilder(
+          int index) {
+        return getViewer10SstandPostsLatestFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <pre>
+       * 用户最近停留10s以上的post列表
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_10sstand_posts_latest = 152;</code>
+       */
+      public com.gosh.entity.RecFeature.IdScoreOrBuilder getViewer10SstandPostsLatestOrBuilder(
+          int index) {
+        if (viewer10SstandPostsLatestBuilder_ == null) {
+          return viewer10SstandPostsLatest_.get(index);  } else {
+          return viewer10SstandPostsLatestBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <pre>
+       * 用户最近停留10s以上的post列表
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_10sstand_posts_latest = 152;</code>
+       */
+      public java.util.List<? extends com.gosh.entity.RecFeature.IdScoreOrBuilder> 
+           getViewer10SstandPostsLatestOrBuilderList() {
+        if (viewer10SstandPostsLatestBuilder_ != null) {
+          return viewer10SstandPostsLatestBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(viewer10SstandPostsLatest_);
+        }
+      }
+      /**
+       * <pre>
+       * 用户最近停留10s以上的post列表
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_10sstand_posts_latest = 152;</code>
+       */
+      public com.gosh.entity.RecFeature.IdScore.Builder addViewer10SstandPostsLatestBuilder() {
+        return getViewer10SstandPostsLatestFieldBuilder().addBuilder(
+            com.gosh.entity.RecFeature.IdScore.getDefaultInstance());
+      }
+      /**
+       * <pre>
+       * 用户最近停留10s以上的post列表
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_10sstand_posts_latest = 152;</code>
+       */
+      public com.gosh.entity.RecFeature.IdScore.Builder addViewer10SstandPostsLatestBuilder(
+          int index) {
+        return getViewer10SstandPostsLatestFieldBuilder().addBuilder(
+            index, com.gosh.entity.RecFeature.IdScore.getDefaultInstance());
+      }
+      /**
+       * <pre>
+       * 用户最近停留10s以上的post列表
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_10sstand_posts_latest = 152;</code>
+       */
+      public java.util.List<com.gosh.entity.RecFeature.IdScore.Builder> 
+           getViewer10SstandPostsLatestBuilderList() {
+        return getViewer10SstandPostsLatestFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          com.gosh.entity.RecFeature.IdScore, com.gosh.entity.RecFeature.IdScore.Builder, com.gosh.entity.RecFeature.IdScoreOrBuilder> 
+          getViewer10SstandPostsLatestFieldBuilder() {
+        if (viewer10SstandPostsLatestBuilder_ == null) {
+          viewer10SstandPostsLatestBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+              com.gosh.entity.RecFeature.IdScore, com.gosh.entity.RecFeature.IdScore.Builder, com.gosh.entity.RecFeature.IdScoreOrBuilder>(
+                  viewer10SstandPostsLatest_,
+                  ((bitField1_ & 0x00000010) != 0),
+                  getParentForChildren(),
+                  isClean());
+          viewer10SstandPostsLatest_ = null;
+        }
+        return viewer10SstandPostsLatestBuilder_;
+      }
+
+      private java.util.List<com.gosh.entity.RecFeature.IdScore> viewer8SplayPostsLatest_ =
+        java.util.Collections.emptyList();
+      private void ensureViewer8SplayPostsLatestIsMutable() {
+        if (!((bitField1_ & 0x00000020) != 0)) {
+          viewer8SplayPostsLatest_ = new java.util.ArrayList<com.gosh.entity.RecFeature.IdScore>(viewer8SplayPostsLatest_);
+          bitField1_ |= 0x00000020;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          com.gosh.entity.RecFeature.IdScore, com.gosh.entity.RecFeature.IdScore.Builder, com.gosh.entity.RecFeature.IdScoreOrBuilder> viewer8SplayPostsLatestBuilder_;
+
+      /**
+       * <pre>
+       * 用户最近观看8s以上的post列表
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_8splay_posts_latest = 153;</code>
+       */
+      public java.util.List<com.gosh.entity.RecFeature.IdScore> getViewer8SplayPostsLatestList() {
+        if (viewer8SplayPostsLatestBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(viewer8SplayPostsLatest_);
+        } else {
+          return viewer8SplayPostsLatestBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <pre>
+       * 用户最近观看8s以上的post列表
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_8splay_posts_latest = 153;</code>
+       */
+      public int getViewer8SplayPostsLatestCount() {
+        if (viewer8SplayPostsLatestBuilder_ == null) {
+          return viewer8SplayPostsLatest_.size();
+        } else {
+          return viewer8SplayPostsLatestBuilder_.getCount();
+        }
+      }
+      /**
+       * <pre>
+       * 用户最近观看8s以上的post列表
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_8splay_posts_latest = 153;</code>
+       */
+      public com.gosh.entity.RecFeature.IdScore getViewer8SplayPostsLatest(int index) {
+        if (viewer8SplayPostsLatestBuilder_ == null) {
+          return viewer8SplayPostsLatest_.get(index);
+        } else {
+          return viewer8SplayPostsLatestBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <pre>
+       * 用户最近观看8s以上的post列表
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_8splay_posts_latest = 153;</code>
+       */
+      public Builder setViewer8SplayPostsLatest(
+          int index, com.gosh.entity.RecFeature.IdScore value) {
+        if (viewer8SplayPostsLatestBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureViewer8SplayPostsLatestIsMutable();
+          viewer8SplayPostsLatest_.set(index, value);
+          onChanged();
+        } else {
+          viewer8SplayPostsLatestBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近观看8s以上的post列表
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_8splay_posts_latest = 153;</code>
+       */
+      public Builder setViewer8SplayPostsLatest(
+          int index, com.gosh.entity.RecFeature.IdScore.Builder builderForValue) {
+        if (viewer8SplayPostsLatestBuilder_ == null) {
+          ensureViewer8SplayPostsLatestIsMutable();
+          viewer8SplayPostsLatest_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          viewer8SplayPostsLatestBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近观看8s以上的post列表
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_8splay_posts_latest = 153;</code>
+       */
+      public Builder addViewer8SplayPostsLatest(com.gosh.entity.RecFeature.IdScore value) {
+        if (viewer8SplayPostsLatestBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureViewer8SplayPostsLatestIsMutable();
+          viewer8SplayPostsLatest_.add(value);
+          onChanged();
+        } else {
+          viewer8SplayPostsLatestBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近观看8s以上的post列表
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_8splay_posts_latest = 153;</code>
+       */
+      public Builder addViewer8SplayPostsLatest(
+          int index, com.gosh.entity.RecFeature.IdScore value) {
+        if (viewer8SplayPostsLatestBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureViewer8SplayPostsLatestIsMutable();
+          viewer8SplayPostsLatest_.add(index, value);
+          onChanged();
+        } else {
+          viewer8SplayPostsLatestBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近观看8s以上的post列表
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_8splay_posts_latest = 153;</code>
+       */
+      public Builder addViewer8SplayPostsLatest(
+          com.gosh.entity.RecFeature.IdScore.Builder builderForValue) {
+        if (viewer8SplayPostsLatestBuilder_ == null) {
+          ensureViewer8SplayPostsLatestIsMutable();
+          viewer8SplayPostsLatest_.add(builderForValue.build());
+          onChanged();
+        } else {
+          viewer8SplayPostsLatestBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近观看8s以上的post列表
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_8splay_posts_latest = 153;</code>
+       */
+      public Builder addViewer8SplayPostsLatest(
+          int index, com.gosh.entity.RecFeature.IdScore.Builder builderForValue) {
+        if (viewer8SplayPostsLatestBuilder_ == null) {
+          ensureViewer8SplayPostsLatestIsMutable();
+          viewer8SplayPostsLatest_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          viewer8SplayPostsLatestBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近观看8s以上的post列表
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_8splay_posts_latest = 153;</code>
+       */
+      public Builder addAllViewer8SplayPostsLatest(
+          java.lang.Iterable<? extends com.gosh.entity.RecFeature.IdScore> values) {
+        if (viewer8SplayPostsLatestBuilder_ == null) {
+          ensureViewer8SplayPostsLatestIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, viewer8SplayPostsLatest_);
+          onChanged();
+        } else {
+          viewer8SplayPostsLatestBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近观看8s以上的post列表
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_8splay_posts_latest = 153;</code>
+       */
+      public Builder clearViewer8SplayPostsLatest() {
+        if (viewer8SplayPostsLatestBuilder_ == null) {
+          viewer8SplayPostsLatest_ = java.util.Collections.emptyList();
+          bitField1_ = (bitField1_ & ~0x00000020);
+          onChanged();
+        } else {
+          viewer8SplayPostsLatestBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近观看8s以上的post列表
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_8splay_posts_latest = 153;</code>
+       */
+      public Builder removeViewer8SplayPostsLatest(int index) {
+        if (viewer8SplayPostsLatestBuilder_ == null) {
+          ensureViewer8SplayPostsLatestIsMutable();
+          viewer8SplayPostsLatest_.remove(index);
+          onChanged();
+        } else {
+          viewer8SplayPostsLatestBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近观看8s以上的post列表
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_8splay_posts_latest = 153;</code>
+       */
+      public com.gosh.entity.RecFeature.IdScore.Builder getViewer8SplayPostsLatestBuilder(
+          int index) {
+        return getViewer8SplayPostsLatestFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <pre>
+       * 用户最近观看8s以上的post列表
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_8splay_posts_latest = 153;</code>
+       */
+      public com.gosh.entity.RecFeature.IdScoreOrBuilder getViewer8SplayPostsLatestOrBuilder(
+          int index) {
+        if (viewer8SplayPostsLatestBuilder_ == null) {
+          return viewer8SplayPostsLatest_.get(index);  } else {
+          return viewer8SplayPostsLatestBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <pre>
+       * 用户最近观看8s以上的post列表
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_8splay_posts_latest = 153;</code>
+       */
+      public java.util.List<? extends com.gosh.entity.RecFeature.IdScoreOrBuilder> 
+           getViewer8SplayPostsLatestOrBuilderList() {
+        if (viewer8SplayPostsLatestBuilder_ != null) {
+          return viewer8SplayPostsLatestBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(viewer8SplayPostsLatest_);
+        }
+      }
+      /**
+       * <pre>
+       * 用户最近观看8s以上的post列表
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_8splay_posts_latest = 153;</code>
+       */
+      public com.gosh.entity.RecFeature.IdScore.Builder addViewer8SplayPostsLatestBuilder() {
+        return getViewer8SplayPostsLatestFieldBuilder().addBuilder(
+            com.gosh.entity.RecFeature.IdScore.getDefaultInstance());
+      }
+      /**
+       * <pre>
+       * 用户最近观看8s以上的post列表
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_8splay_posts_latest = 153;</code>
+       */
+      public com.gosh.entity.RecFeature.IdScore.Builder addViewer8SplayPostsLatestBuilder(
+          int index) {
+        return getViewer8SplayPostsLatestFieldBuilder().addBuilder(
+            index, com.gosh.entity.RecFeature.IdScore.getDefaultInstance());
+      }
+      /**
+       * <pre>
+       * 用户最近观看8s以上的post列表
+       * </pre>
+       *
+       * <code>repeated .com.gosh.entity.IdScore viewer_8splay_posts_latest = 153;</code>
+       */
+      public java.util.List<com.gosh.entity.RecFeature.IdScore.Builder> 
+           getViewer8SplayPostsLatestBuilderList() {
+        return getViewer8SplayPostsLatestFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          com.gosh.entity.RecFeature.IdScore, com.gosh.entity.RecFeature.IdScore.Builder, com.gosh.entity.RecFeature.IdScoreOrBuilder> 
+          getViewer8SplayPostsLatestFieldBuilder() {
+        if (viewer8SplayPostsLatestBuilder_ == null) {
+          viewer8SplayPostsLatestBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+              com.gosh.entity.RecFeature.IdScore, com.gosh.entity.RecFeature.IdScore.Builder, com.gosh.entity.RecFeature.IdScoreOrBuilder>(
+                  viewer8SplayPostsLatest_,
+                  ((bitField1_ & 0x00000020) != 0),
+                  getParentForChildren(),
+                  isClean());
+          viewer8SplayPostsLatest_ = null;
+        }
+        return viewer8SplayPostsLatestBuilder_;
+      }
+
+      private com.google.protobuf.Internal.LongList viewerLikePostsLatest_ = emptyLongList();
+      private void ensureViewerLikePostsLatestIsMutable() {
+        if (!((bitField1_ & 0x00000040) != 0)) {
+          viewerLikePostsLatest_ = mutableCopy(viewerLikePostsLatest_);
+          bitField1_ |= 0x00000040;
+         }
+      }
+      /**
+       * <pre>
+       * 用户最近点赞post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_like_posts_latest = 154;</code>
+       * @return A list containing the viewerLikePostsLatest.
+       */
+      public java.util.List<java.lang.Long>
+          getViewerLikePostsLatestList() {
+        return ((bitField1_ & 0x00000040) != 0) ?
+                 java.util.Collections.unmodifiableList(viewerLikePostsLatest_) : viewerLikePostsLatest_;
+      }
+      /**
+       * <pre>
+       * 用户最近点赞post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_like_posts_latest = 154;</code>
+       * @return The count of viewerLikePostsLatest.
+       */
+      public int getViewerLikePostsLatestCount() {
+        return viewerLikePostsLatest_.size();
+      }
+      /**
+       * <pre>
+       * 用户最近点赞post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_like_posts_latest = 154;</code>
+       * @param index The index of the element to return.
+       * @return The viewerLikePostsLatest at the given index.
+       */
+      public long getViewerLikePostsLatest(int index) {
+        return viewerLikePostsLatest_.getLong(index);
+      }
+      /**
+       * <pre>
+       * 用户最近点赞post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_like_posts_latest = 154;</code>
+       * @param index The index to set the value at.
+       * @param value The viewerLikePostsLatest to set.
+       * @return This builder for chaining.
+       */
+      public Builder setViewerLikePostsLatest(
+          int index, long value) {
+        ensureViewerLikePostsLatestIsMutable();
+        viewerLikePostsLatest_.setLong(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近点赞post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_like_posts_latest = 154;</code>
+       * @param value The viewerLikePostsLatest to add.
+       * @return This builder for chaining.
+       */
+      public Builder addViewerLikePostsLatest(long value) {
+        ensureViewerLikePostsLatestIsMutable();
+        viewerLikePostsLatest_.addLong(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近点赞post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_like_posts_latest = 154;</code>
+       * @param values The viewerLikePostsLatest to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAllViewerLikePostsLatest(
+          java.lang.Iterable<? extends java.lang.Long> values) {
+        ensureViewerLikePostsLatestIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, viewerLikePostsLatest_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近点赞post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_like_posts_latest = 154;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearViewerLikePostsLatest() {
+        viewerLikePostsLatest_ = emptyLongList();
+        bitField1_ = (bitField1_ & ~0x00000040);
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.Internal.LongList viewerCommentPostsLatest_ = emptyLongList();
+      private void ensureViewerCommentPostsLatestIsMutable() {
+        if (!((bitField1_ & 0x00000080) != 0)) {
+          viewerCommentPostsLatest_ = mutableCopy(viewerCommentPostsLatest_);
+          bitField1_ |= 0x00000080;
+         }
+      }
+      /**
+       * <pre>
+       * 用户最近评论post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_comment_posts_latest = 155;</code>
+       * @return A list containing the viewerCommentPostsLatest.
+       */
+      public java.util.List<java.lang.Long>
+          getViewerCommentPostsLatestList() {
+        return ((bitField1_ & 0x00000080) != 0) ?
+                 java.util.Collections.unmodifiableList(viewerCommentPostsLatest_) : viewerCommentPostsLatest_;
+      }
+      /**
+       * <pre>
+       * 用户最近评论post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_comment_posts_latest = 155;</code>
+       * @return The count of viewerCommentPostsLatest.
+       */
+      public int getViewerCommentPostsLatestCount() {
+        return viewerCommentPostsLatest_.size();
+      }
+      /**
+       * <pre>
+       * 用户最近评论post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_comment_posts_latest = 155;</code>
+       * @param index The index of the element to return.
+       * @return The viewerCommentPostsLatest at the given index.
+       */
+      public long getViewerCommentPostsLatest(int index) {
+        return viewerCommentPostsLatest_.getLong(index);
+      }
+      /**
+       * <pre>
+       * 用户最近评论post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_comment_posts_latest = 155;</code>
+       * @param index The index to set the value at.
+       * @param value The viewerCommentPostsLatest to set.
+       * @return This builder for chaining.
+       */
+      public Builder setViewerCommentPostsLatest(
+          int index, long value) {
+        ensureViewerCommentPostsLatestIsMutable();
+        viewerCommentPostsLatest_.setLong(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近评论post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_comment_posts_latest = 155;</code>
+       * @param value The viewerCommentPostsLatest to add.
+       * @return This builder for chaining.
+       */
+      public Builder addViewerCommentPostsLatest(long value) {
+        ensureViewerCommentPostsLatestIsMutable();
+        viewerCommentPostsLatest_.addLong(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近评论post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_comment_posts_latest = 155;</code>
+       * @param values The viewerCommentPostsLatest to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAllViewerCommentPostsLatest(
+          java.lang.Iterable<? extends java.lang.Long> values) {
+        ensureViewerCommentPostsLatestIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, viewerCommentPostsLatest_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近评论post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_comment_posts_latest = 155;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearViewerCommentPostsLatest() {
+        viewerCommentPostsLatest_ = emptyLongList();
+        bitField1_ = (bitField1_ & ~0x00000080);
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.Internal.LongList viewerSharePostsLatest_ = emptyLongList();
+      private void ensureViewerSharePostsLatestIsMutable() {
+        if (!((bitField1_ & 0x00000100) != 0)) {
+          viewerSharePostsLatest_ = mutableCopy(viewerSharePostsLatest_);
+          bitField1_ |= 0x00000100;
+         }
+      }
+      /**
+       * <pre>
+       * 用户最近分享post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_share_posts_latest = 156;</code>
+       * @return A list containing the viewerSharePostsLatest.
+       */
+      public java.util.List<java.lang.Long>
+          getViewerSharePostsLatestList() {
+        return ((bitField1_ & 0x00000100) != 0) ?
+                 java.util.Collections.unmodifiableList(viewerSharePostsLatest_) : viewerSharePostsLatest_;
+      }
+      /**
+       * <pre>
+       * 用户最近分享post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_share_posts_latest = 156;</code>
+       * @return The count of viewerSharePostsLatest.
+       */
+      public int getViewerSharePostsLatestCount() {
+        return viewerSharePostsLatest_.size();
+      }
+      /**
+       * <pre>
+       * 用户最近分享post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_share_posts_latest = 156;</code>
+       * @param index The index of the element to return.
+       * @return The viewerSharePostsLatest at the given index.
+       */
+      public long getViewerSharePostsLatest(int index) {
+        return viewerSharePostsLatest_.getLong(index);
+      }
+      /**
+       * <pre>
+       * 用户最近分享post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_share_posts_latest = 156;</code>
+       * @param index The index to set the value at.
+       * @param value The viewerSharePostsLatest to set.
+       * @return This builder for chaining.
+       */
+      public Builder setViewerSharePostsLatest(
+          int index, long value) {
+        ensureViewerSharePostsLatestIsMutable();
+        viewerSharePostsLatest_.setLong(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近分享post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_share_posts_latest = 156;</code>
+       * @param value The viewerSharePostsLatest to add.
+       * @return This builder for chaining.
+       */
+      public Builder addViewerSharePostsLatest(long value) {
+        ensureViewerSharePostsLatestIsMutable();
+        viewerSharePostsLatest_.addLong(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近分享post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_share_posts_latest = 156;</code>
+       * @param values The viewerSharePostsLatest to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAllViewerSharePostsLatest(
+          java.lang.Iterable<? extends java.lang.Long> values) {
+        ensureViewerSharePostsLatestIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, viewerSharePostsLatest_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近分享post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_share_posts_latest = 156;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearViewerSharePostsLatest() {
+        viewerSharePostsLatest_ = emptyLongList();
+        bitField1_ = (bitField1_ & ~0x00000100);
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.Internal.LongList viewerCollectPostsLatest_ = emptyLongList();
+      private void ensureViewerCollectPostsLatestIsMutable() {
+        if (!((bitField1_ & 0x00000200) != 0)) {
+          viewerCollectPostsLatest_ = mutableCopy(viewerCollectPostsLatest_);
+          bitField1_ |= 0x00000200;
+         }
+      }
+      /**
+       * <pre>
+       * 用户最近收藏post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_collect_posts_latest = 157;</code>
+       * @return A list containing the viewerCollectPostsLatest.
+       */
+      public java.util.List<java.lang.Long>
+          getViewerCollectPostsLatestList() {
+        return ((bitField1_ & 0x00000200) != 0) ?
+                 java.util.Collections.unmodifiableList(viewerCollectPostsLatest_) : viewerCollectPostsLatest_;
+      }
+      /**
+       * <pre>
+       * 用户最近收藏post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_collect_posts_latest = 157;</code>
+       * @return The count of viewerCollectPostsLatest.
+       */
+      public int getViewerCollectPostsLatestCount() {
+        return viewerCollectPostsLatest_.size();
+      }
+      /**
+       * <pre>
+       * 用户最近收藏post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_collect_posts_latest = 157;</code>
+       * @param index The index of the element to return.
+       * @return The viewerCollectPostsLatest at the given index.
+       */
+      public long getViewerCollectPostsLatest(int index) {
+        return viewerCollectPostsLatest_.getLong(index);
+      }
+      /**
+       * <pre>
+       * 用户最近收藏post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_collect_posts_latest = 157;</code>
+       * @param index The index to set the value at.
+       * @param value The viewerCollectPostsLatest to set.
+       * @return This builder for chaining.
+       */
+      public Builder setViewerCollectPostsLatest(
+          int index, long value) {
+        ensureViewerCollectPostsLatestIsMutable();
+        viewerCollectPostsLatest_.setLong(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近收藏post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_collect_posts_latest = 157;</code>
+       * @param value The viewerCollectPostsLatest to add.
+       * @return This builder for chaining.
+       */
+      public Builder addViewerCollectPostsLatest(long value) {
+        ensureViewerCollectPostsLatestIsMutable();
+        viewerCollectPostsLatest_.addLong(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近收藏post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_collect_posts_latest = 157;</code>
+       * @param values The viewerCollectPostsLatest to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAllViewerCollectPostsLatest(
+          java.lang.Iterable<? extends java.lang.Long> values) {
+        ensureViewerCollectPostsLatestIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, viewerCollectPostsLatest_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近收藏post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_collect_posts_latest = 157;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearViewerCollectPostsLatest() {
+        viewerCollectPostsLatest_ = emptyLongList();
+        bitField1_ = (bitField1_ & ~0x00000200);
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.Internal.LongList viewerPayPostsLatest_ = emptyLongList();
+      private void ensureViewerPayPostsLatestIsMutable() {
+        if (!((bitField1_ & 0x00000400) != 0)) {
+          viewerPayPostsLatest_ = mutableCopy(viewerPayPostsLatest_);
+          bitField1_ |= 0x00000400;
+         }
+      }
+      /**
+       * <pre>
+       * 用户最近付费post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_pay_posts_latest = 158;</code>
+       * @return A list containing the viewerPayPostsLatest.
+       */
+      public java.util.List<java.lang.Long>
+          getViewerPayPostsLatestList() {
+        return ((bitField1_ & 0x00000400) != 0) ?
+                 java.util.Collections.unmodifiableList(viewerPayPostsLatest_) : viewerPayPostsLatest_;
+      }
+      /**
+       * <pre>
+       * 用户最近付费post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_pay_posts_latest = 158;</code>
+       * @return The count of viewerPayPostsLatest.
+       */
+      public int getViewerPayPostsLatestCount() {
+        return viewerPayPostsLatest_.size();
+      }
+      /**
+       * <pre>
+       * 用户最近付费post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_pay_posts_latest = 158;</code>
+       * @param index The index of the element to return.
+       * @return The viewerPayPostsLatest at the given index.
+       */
+      public long getViewerPayPostsLatest(int index) {
+        return viewerPayPostsLatest_.getLong(index);
+      }
+      /**
+       * <pre>
+       * 用户最近付费post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_pay_posts_latest = 158;</code>
+       * @param index The index to set the value at.
+       * @param value The viewerPayPostsLatest to set.
+       * @return This builder for chaining.
+       */
+      public Builder setViewerPayPostsLatest(
+          int index, long value) {
+        ensureViewerPayPostsLatestIsMutable();
+        viewerPayPostsLatest_.setLong(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近付费post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_pay_posts_latest = 158;</code>
+       * @param value The viewerPayPostsLatest to add.
+       * @return This builder for chaining.
+       */
+      public Builder addViewerPayPostsLatest(long value) {
+        ensureViewerPayPostsLatestIsMutable();
+        viewerPayPostsLatest_.addLong(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近付费post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_pay_posts_latest = 158;</code>
+       * @param values The viewerPayPostsLatest to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAllViewerPayPostsLatest(
+          java.lang.Iterable<? extends java.lang.Long> values) {
+        ensureViewerPayPostsLatestIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, viewerPayPostsLatest_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近付费post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_pay_posts_latest = 158;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearViewerPayPostsLatest() {
+        viewerPayPostsLatest_ = emptyLongList();
+        bitField1_ = (bitField1_ & ~0x00000400);
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.Internal.LongList viewerReportPostsLatest_ = emptyLongList();
+      private void ensureViewerReportPostsLatestIsMutable() {
+        if (!((bitField1_ & 0x00000800) != 0)) {
+          viewerReportPostsLatest_ = mutableCopy(viewerReportPostsLatest_);
+          bitField1_ |= 0x00000800;
+         }
+      }
+      /**
+       * <pre>
+       * 用户最近举报post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_report_posts_latest = 159;</code>
+       * @return A list containing the viewerReportPostsLatest.
+       */
+      public java.util.List<java.lang.Long>
+          getViewerReportPostsLatestList() {
+        return ((bitField1_ & 0x00000800) != 0) ?
+                 java.util.Collections.unmodifiableList(viewerReportPostsLatest_) : viewerReportPostsLatest_;
+      }
+      /**
+       * <pre>
+       * 用户最近举报post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_report_posts_latest = 159;</code>
+       * @return The count of viewerReportPostsLatest.
+       */
+      public int getViewerReportPostsLatestCount() {
+        return viewerReportPostsLatest_.size();
+      }
+      /**
+       * <pre>
+       * 用户最近举报post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_report_posts_latest = 159;</code>
+       * @param index The index of the element to return.
+       * @return The viewerReportPostsLatest at the given index.
+       */
+      public long getViewerReportPostsLatest(int index) {
+        return viewerReportPostsLatest_.getLong(index);
+      }
+      /**
+       * <pre>
+       * 用户最近举报post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_report_posts_latest = 159;</code>
+       * @param index The index to set the value at.
+       * @param value The viewerReportPostsLatest to set.
+       * @return This builder for chaining.
+       */
+      public Builder setViewerReportPostsLatest(
+          int index, long value) {
+        ensureViewerReportPostsLatestIsMutable();
+        viewerReportPostsLatest_.setLong(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近举报post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_report_posts_latest = 159;</code>
+       * @param value The viewerReportPostsLatest to add.
+       * @return This builder for chaining.
+       */
+      public Builder addViewerReportPostsLatest(long value) {
+        ensureViewerReportPostsLatestIsMutable();
+        viewerReportPostsLatest_.addLong(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近举报post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_report_posts_latest = 159;</code>
+       * @param values The viewerReportPostsLatest to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAllViewerReportPostsLatest(
+          java.lang.Iterable<? extends java.lang.Long> values) {
+        ensureViewerReportPostsLatestIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, viewerReportPostsLatest_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近举报post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_report_posts_latest = 159;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearViewerReportPostsLatest() {
+        viewerReportPostsLatest_ = emptyLongList();
+        bitField1_ = (bitField1_ & ~0x00000800);
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.Internal.LongList viewerDislikePostsLatest_ = emptyLongList();
+      private void ensureViewerDislikePostsLatestIsMutable() {
+        if (!((bitField1_ & 0x00001000) != 0)) {
+          viewerDislikePostsLatest_ = mutableCopy(viewerDislikePostsLatest_);
+          bitField1_ |= 0x00001000;
+         }
+      }
+      /**
+       * <pre>
+       * 用户最近不喜欢post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_dislike_posts_latest = 160;</code>
+       * @return A list containing the viewerDislikePostsLatest.
+       */
+      public java.util.List<java.lang.Long>
+          getViewerDislikePostsLatestList() {
+        return ((bitField1_ & 0x00001000) != 0) ?
+                 java.util.Collections.unmodifiableList(viewerDislikePostsLatest_) : viewerDislikePostsLatest_;
+      }
+      /**
+       * <pre>
+       * 用户最近不喜欢post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_dislike_posts_latest = 160;</code>
+       * @return The count of viewerDislikePostsLatest.
+       */
+      public int getViewerDislikePostsLatestCount() {
+        return viewerDislikePostsLatest_.size();
+      }
+      /**
+       * <pre>
+       * 用户最近不喜欢post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_dislike_posts_latest = 160;</code>
+       * @param index The index of the element to return.
+       * @return The viewerDislikePostsLatest at the given index.
+       */
+      public long getViewerDislikePostsLatest(int index) {
+        return viewerDislikePostsLatest_.getLong(index);
+      }
+      /**
+       * <pre>
+       * 用户最近不喜欢post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_dislike_posts_latest = 160;</code>
+       * @param index The index to set the value at.
+       * @param value The viewerDislikePostsLatest to set.
+       * @return This builder for chaining.
+       */
+      public Builder setViewerDislikePostsLatest(
+          int index, long value) {
+        ensureViewerDislikePostsLatestIsMutable();
+        viewerDislikePostsLatest_.setLong(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近不喜欢post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_dislike_posts_latest = 160;</code>
+       * @param value The viewerDislikePostsLatest to add.
+       * @return This builder for chaining.
+       */
+      public Builder addViewerDislikePostsLatest(long value) {
+        ensureViewerDislikePostsLatestIsMutable();
+        viewerDislikePostsLatest_.addLong(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近不喜欢post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_dislike_posts_latest = 160;</code>
+       * @param values The viewerDislikePostsLatest to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAllViewerDislikePostsLatest(
+          java.lang.Iterable<? extends java.lang.Long> values) {
+        ensureViewerDislikePostsLatestIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, viewerDislikePostsLatest_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近不喜欢post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_dislike_posts_latest = 160;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearViewerDislikePostsLatest() {
+        viewerDislikePostsLatest_ = emptyLongList();
+        bitField1_ = (bitField1_ & ~0x00001000);
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.Internal.LongList viewerPositivePostsLatest_ = emptyLongList();
+      private void ensureViewerPositivePostsLatestIsMutable() {
+        if (!((bitField1_ & 0x00002000) != 0)) {
+          viewerPositivePostsLatest_ = mutableCopy(viewerPositivePostsLatest_);
+          bitField1_ |= 0x00002000;
+         }
+      }
+      /**
+       * <pre>
+       * 用户最近正反馈post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_positive_posts_latest = 161;</code>
+       * @return A list containing the viewerPositivePostsLatest.
+       */
+      public java.util.List<java.lang.Long>
+          getViewerPositivePostsLatestList() {
+        return ((bitField1_ & 0x00002000) != 0) ?
+                 java.util.Collections.unmodifiableList(viewerPositivePostsLatest_) : viewerPositivePostsLatest_;
+      }
+      /**
+       * <pre>
+       * 用户最近正反馈post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_positive_posts_latest = 161;</code>
+       * @return The count of viewerPositivePostsLatest.
+       */
+      public int getViewerPositivePostsLatestCount() {
+        return viewerPositivePostsLatest_.size();
+      }
+      /**
+       * <pre>
+       * 用户最近正反馈post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_positive_posts_latest = 161;</code>
+       * @param index The index of the element to return.
+       * @return The viewerPositivePostsLatest at the given index.
+       */
+      public long getViewerPositivePostsLatest(int index) {
+        return viewerPositivePostsLatest_.getLong(index);
+      }
+      /**
+       * <pre>
+       * 用户最近正反馈post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_positive_posts_latest = 161;</code>
+       * @param index The index to set the value at.
+       * @param value The viewerPositivePostsLatest to set.
+       * @return This builder for chaining.
+       */
+      public Builder setViewerPositivePostsLatest(
+          int index, long value) {
+        ensureViewerPositivePostsLatestIsMutable();
+        viewerPositivePostsLatest_.setLong(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近正反馈post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_positive_posts_latest = 161;</code>
+       * @param value The viewerPositivePostsLatest to add.
+       * @return This builder for chaining.
+       */
+      public Builder addViewerPositivePostsLatest(long value) {
+        ensureViewerPositivePostsLatestIsMutable();
+        viewerPositivePostsLatest_.addLong(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近正反馈post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_positive_posts_latest = 161;</code>
+       * @param values The viewerPositivePostsLatest to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAllViewerPositivePostsLatest(
+          java.lang.Iterable<? extends java.lang.Long> values) {
+        ensureViewerPositivePostsLatestIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, viewerPositivePostsLatest_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近正反馈post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_positive_posts_latest = 161;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearViewerPositivePostsLatest() {
+        viewerPositivePostsLatest_ = emptyLongList();
+        bitField1_ = (bitField1_ & ~0x00002000);
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.Internal.LongList viewerNegetivePostsLatest_ = emptyLongList();
+      private void ensureViewerNegetivePostsLatestIsMutable() {
+        if (!((bitField1_ & 0x00004000) != 0)) {
+          viewerNegetivePostsLatest_ = mutableCopy(viewerNegetivePostsLatest_);
+          bitField1_ |= 0x00004000;
+         }
+      }
+      /**
+       * <pre>
+       * 用户最近负反馈post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_negetive_posts_latest = 162;</code>
+       * @return A list containing the viewerNegetivePostsLatest.
+       */
+      public java.util.List<java.lang.Long>
+          getViewerNegetivePostsLatestList() {
+        return ((bitField1_ & 0x00004000) != 0) ?
+                 java.util.Collections.unmodifiableList(viewerNegetivePostsLatest_) : viewerNegetivePostsLatest_;
+      }
+      /**
+       * <pre>
+       * 用户最近负反馈post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_negetive_posts_latest = 162;</code>
+       * @return The count of viewerNegetivePostsLatest.
+       */
+      public int getViewerNegetivePostsLatestCount() {
+        return viewerNegetivePostsLatest_.size();
+      }
+      /**
+       * <pre>
+       * 用户最近负反馈post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_negetive_posts_latest = 162;</code>
+       * @param index The index of the element to return.
+       * @return The viewerNegetivePostsLatest at the given index.
+       */
+      public long getViewerNegetivePostsLatest(int index) {
+        return viewerNegetivePostsLatest_.getLong(index);
+      }
+      /**
+       * <pre>
+       * 用户最近负反馈post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_negetive_posts_latest = 162;</code>
+       * @param index The index to set the value at.
+       * @param value The viewerNegetivePostsLatest to set.
+       * @return This builder for chaining.
+       */
+      public Builder setViewerNegetivePostsLatest(
+          int index, long value) {
+        ensureViewerNegetivePostsLatestIsMutable();
+        viewerNegetivePostsLatest_.setLong(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近负反馈post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_negetive_posts_latest = 162;</code>
+       * @param value The viewerNegetivePostsLatest to add.
+       * @return This builder for chaining.
+       */
+      public Builder addViewerNegetivePostsLatest(long value) {
+        ensureViewerNegetivePostsLatestIsMutable();
+        viewerNegetivePostsLatest_.addLong(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近负反馈post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_negetive_posts_latest = 162;</code>
+       * @param values The viewerNegetivePostsLatest to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAllViewerNegetivePostsLatest(
+          java.lang.Iterable<? extends java.lang.Long> values) {
+        ensureViewerNegetivePostsLatestIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, viewerNegetivePostsLatest_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近负反馈post列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_negetive_posts_latest = 162;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearViewerNegetivePostsLatest() {
+        viewerNegetivePostsLatest_ = emptyLongList();
+        bitField1_ = (bitField1_ & ~0x00004000);
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.Internal.LongList viewerPositiveAuthorsLatest_ = emptyLongList();
+      private void ensureViewerPositiveAuthorsLatestIsMutable() {
+        if (!((bitField1_ & 0x00008000) != 0)) {
+          viewerPositiveAuthorsLatest_ = mutableCopy(viewerPositiveAuthorsLatest_);
+          bitField1_ |= 0x00008000;
+         }
+      }
+      /**
+       * <pre>
+       * 用户最近正反馈作者列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_positive_authors_latest = 163;</code>
+       * @return A list containing the viewerPositiveAuthorsLatest.
+       */
+      public java.util.List<java.lang.Long>
+          getViewerPositiveAuthorsLatestList() {
+        return ((bitField1_ & 0x00008000) != 0) ?
+                 java.util.Collections.unmodifiableList(viewerPositiveAuthorsLatest_) : viewerPositiveAuthorsLatest_;
+      }
+      /**
+       * <pre>
+       * 用户最近正反馈作者列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_positive_authors_latest = 163;</code>
+       * @return The count of viewerPositiveAuthorsLatest.
+       */
+      public int getViewerPositiveAuthorsLatestCount() {
+        return viewerPositiveAuthorsLatest_.size();
+      }
+      /**
+       * <pre>
+       * 用户最近正反馈作者列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_positive_authors_latest = 163;</code>
+       * @param index The index of the element to return.
+       * @return The viewerPositiveAuthorsLatest at the given index.
+       */
+      public long getViewerPositiveAuthorsLatest(int index) {
+        return viewerPositiveAuthorsLatest_.getLong(index);
+      }
+      /**
+       * <pre>
+       * 用户最近正反馈作者列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_positive_authors_latest = 163;</code>
+       * @param index The index to set the value at.
+       * @param value The viewerPositiveAuthorsLatest to set.
+       * @return This builder for chaining.
+       */
+      public Builder setViewerPositiveAuthorsLatest(
+          int index, long value) {
+        ensureViewerPositiveAuthorsLatestIsMutable();
+        viewerPositiveAuthorsLatest_.setLong(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近正反馈作者列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_positive_authors_latest = 163;</code>
+       * @param value The viewerPositiveAuthorsLatest to add.
+       * @return This builder for chaining.
+       */
+      public Builder addViewerPositiveAuthorsLatest(long value) {
+        ensureViewerPositiveAuthorsLatestIsMutable();
+        viewerPositiveAuthorsLatest_.addLong(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近正反馈作者列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_positive_authors_latest = 163;</code>
+       * @param values The viewerPositiveAuthorsLatest to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAllViewerPositiveAuthorsLatest(
+          java.lang.Iterable<? extends java.lang.Long> values) {
+        ensureViewerPositiveAuthorsLatestIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, viewerPositiveAuthorsLatest_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近正反馈作者列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_positive_authors_latest = 163;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearViewerPositiveAuthorsLatest() {
+        viewerPositiveAuthorsLatest_ = emptyLongList();
+        bitField1_ = (bitField1_ & ~0x00008000);
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.Internal.LongList viewerNegetiveAuthorsLatest_ = emptyLongList();
+      private void ensureViewerNegetiveAuthorsLatestIsMutable() {
+        if (!((bitField1_ & 0x00010000) != 0)) {
+          viewerNegetiveAuthorsLatest_ = mutableCopy(viewerNegetiveAuthorsLatest_);
+          bitField1_ |= 0x00010000;
+         }
+      }
+      /**
+       * <pre>
+       * 用户最近负反馈作者列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_negetive_authors_latest = 164;</code>
+       * @return A list containing the viewerNegetiveAuthorsLatest.
+       */
+      public java.util.List<java.lang.Long>
+          getViewerNegetiveAuthorsLatestList() {
+        return ((bitField1_ & 0x00010000) != 0) ?
+                 java.util.Collections.unmodifiableList(viewerNegetiveAuthorsLatest_) : viewerNegetiveAuthorsLatest_;
+      }
+      /**
+       * <pre>
+       * 用户最近负反馈作者列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_negetive_authors_latest = 164;</code>
+       * @return The count of viewerNegetiveAuthorsLatest.
+       */
+      public int getViewerNegetiveAuthorsLatestCount() {
+        return viewerNegetiveAuthorsLatest_.size();
+      }
+      /**
+       * <pre>
+       * 用户最近负反馈作者列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_negetive_authors_latest = 164;</code>
+       * @param index The index of the element to return.
+       * @return The viewerNegetiveAuthorsLatest at the given index.
+       */
+      public long getViewerNegetiveAuthorsLatest(int index) {
+        return viewerNegetiveAuthorsLatest_.getLong(index);
+      }
+      /**
+       * <pre>
+       * 用户最近负反馈作者列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_negetive_authors_latest = 164;</code>
+       * @param index The index to set the value at.
+       * @param value The viewerNegetiveAuthorsLatest to set.
+       * @return This builder for chaining.
+       */
+      public Builder setViewerNegetiveAuthorsLatest(
+          int index, long value) {
+        ensureViewerNegetiveAuthorsLatestIsMutable();
+        viewerNegetiveAuthorsLatest_.setLong(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近负反馈作者列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_negetive_authors_latest = 164;</code>
+       * @param value The viewerNegetiveAuthorsLatest to add.
+       * @return This builder for chaining.
+       */
+      public Builder addViewerNegetiveAuthorsLatest(long value) {
+        ensureViewerNegetiveAuthorsLatestIsMutable();
+        viewerNegetiveAuthorsLatest_.addLong(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近负反馈作者列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_negetive_authors_latest = 164;</code>
+       * @param values The viewerNegetiveAuthorsLatest to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAllViewerNegetiveAuthorsLatest(
+          java.lang.Iterable<? extends java.lang.Long> values) {
+        ensureViewerNegetiveAuthorsLatestIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, viewerNegetiveAuthorsLatest_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户最近负反馈作者列表
+       * </pre>
+       *
+       * <code>repeated int64 viewer_negetive_authors_latest = 164;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearViewerNegetiveAuthorsLatest() {
+        viewerNegetiveAuthorsLatest_ = emptyLongList();
+        bitField1_ = (bitField1_ & ~0x00010000);
+        onChanged();
+        return this;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -17660,6 +24328,306 @@ public final class RecFeature {
      * @return The postPayCnt24h.
      */
     int getPostPayCnt24H();
+
+    /**
+     * <pre>
+     * pvv1
+     * </pre>
+     *
+     * <code>float pvv_ra_1 = 112;</code>
+     * @return The pvvRa1.
+     */
+    float getPvvRa1();
+
+    /**
+     * <pre>
+     * pvv2
+     * </pre>
+     *
+     * <code>float pvv_ra_2 = 113;</code>
+     * @return The pvvRa2.
+     */
+    float getPvvRa2();
+
+    /**
+     * <pre>
+     * pvv3
+     * </pre>
+     *
+     * <code>float pvv_ra_3 = 114;</code>
+     * @return The pvvRa3.
+     */
+    float getPvvRa3();
+
+    /**
+     * <pre>
+     * pvv4
+     * </pre>
+     *
+     * <code>float pvv_ra_4 = 115;</code>
+     * @return The pvvRa4.
+     */
+    float getPvvRa4();
+
+    /**
+     * <pre>
+     * pvv5
+     * </pre>
+     *
+     * <code>float pvv_ra_5 = 116;</code>
+     * @return The pvvRa5.
+     */
+    float getPvvRa5();
+
+    /**
+     * <pre>
+     * pcpv1
+     * </pre>
+     *
+     * <code>float pcpv_ra_1 = 117;</code>
+     * @return The pcpvRa1.
+     */
+    float getPcpvRa1();
+
+    /**
+     * <pre>
+     * pcpv2
+     * </pre>
+     *
+     * <code>float pcpv_ra_2 = 118;</code>
+     * @return The pcpvRa2.
+     */
+    float getPcpvRa2();
+
+    /**
+     * <pre>
+     * pcpv3
+     * </pre>
+     *
+     * <code>float pcpv_ra_3 = 119;</code>
+     * @return The pcpvRa3.
+     */
+    float getPcpvRa3();
+
+    /**
+     * <pre>
+     * pcpv4
+     * </pre>
+     *
+     * <code>float pcpv_ra_4 = 120;</code>
+     * @return The pcpvRa4.
+     */
+    float getPcpvRa4();
+
+    /**
+     * <pre>
+     * pcpv5
+     * </pre>
+     *
+     * <code>float pcpv_ra_5 = 121;</code>
+     * @return The pcpvRa5.
+     */
+    float getPcpvRa5();
+
+    /**
+     * <pre>
+     * pcpv6
+     * </pre>
+     *
+     * <code>float pcpv_ra_6 = 122;</code>
+     * @return The pcpvRa6.
+     */
+    float getPcpvRa6();
+
+    /**
+     * <pre>
+     * plk1
+     * </pre>
+     *
+     * <code>float plk_ra_1 = 123;</code>
+     * @return The plkRa1.
+     */
+    float getPlkRa1();
+
+    /**
+     * <pre>
+     * plk2
+     * </pre>
+     *
+     * <code>float plk_ra_2 = 124;</code>
+     * @return The plkRa2.
+     */
+    float getPlkRa2();
+
+    /**
+     * <pre>
+     * plk3
+     * </pre>
+     *
+     * <code>float plk_ra_3 = 125;</code>
+     * @return The plkRa3.
+     */
+    float getPlkRa3();
+
+    /**
+     * <pre>
+     * plk4
+     * </pre>
+     *
+     * <code>float plk_ra_4 = 126;</code>
+     * @return The plkRa4.
+     */
+    float getPlkRa4();
+
+    /**
+     * <pre>
+     * plk5
+     * </pre>
+     *
+     * <code>float plk_ra_5 = 127;</code>
+     * @return The plkRa5.
+     */
+    float getPlkRa5();
+
+    /**
+     * <pre>
+     * pcm1
+     * </pre>
+     *
+     * <code>float pcm_ra_1 = 128;</code>
+     * @return The pcmRa1.
+     */
+    float getPcmRa1();
+
+    /**
+     * <pre>
+     * pcm2
+     * </pre>
+     *
+     * <code>float pcm_ra_2 = 129;</code>
+     * @return The pcmRa2.
+     */
+    float getPcmRa2();
+
+    /**
+     * <pre>
+     * pcm3
+     * </pre>
+     *
+     * <code>float pcm_ra_3 = 130;</code>
+     * @return The pcmRa3.
+     */
+    float getPcmRa3();
+
+    /**
+     * <pre>
+     * pcm4
+     * </pre>
+     *
+     * <code>float pcm_ra_4 = 131;</code>
+     * @return The pcmRa4.
+     */
+    float getPcmRa4();
+
+    /**
+     * <pre>
+     * pcm5
+     * </pre>
+     *
+     * <code>float pcm_ra_5 = 132;</code>
+     * @return The pcmRa5.
+     */
+    float getPcmRa5();
+
+    /**
+     * <pre>
+     * psh1
+     * </pre>
+     *
+     * <code>float psh_ra_1 = 133;</code>
+     * @return The pshRa1.
+     */
+    float getPshRa1();
+
+    /**
+     * <pre>
+     * psh2
+     * </pre>
+     *
+     * <code>float psh_ra_2 = 134;</code>
+     * @return The pshRa2.
+     */
+    float getPshRa2();
+
+    /**
+     * <pre>
+     * psh3
+     * </pre>
+     *
+     * <code>float psh_ra_3 = 135;</code>
+     * @return The pshRa3.
+     */
+    float getPshRa3();
+
+    /**
+     * <pre>
+     * pfv1
+     * </pre>
+     *
+     * <code>float pfv_ra_1 = 136;</code>
+     * @return The pfvRa1.
+     */
+    float getPfvRa1();
+
+    /**
+     * <pre>
+     * pfv2
+     * </pre>
+     *
+     * <code>float pfv_ra_2 = 137;</code>
+     * @return The pfvRa2.
+     */
+    float getPfvRa2();
+
+    /**
+     * <pre>
+     * pfv3
+     * </pre>
+     *
+     * <code>float pfv_ra_3 = 138;</code>
+     * @return The pfvRa3.
+     */
+    float getPfvRa3();
+
+    /**
+     * <pre>
+     * ppf1
+     * </pre>
+     *
+     * <code>float ppf_ra_1 = 139;</code>
+     * @return The ppfRa1.
+     */
+    float getPpfRa1();
+
+    /**
+     * <pre>
+     * ppf2
+     * </pre>
+     *
+     * <code>float ppf_ra_2 = 140;</code>
+     * @return The ppfRa2.
+     */
+    float getPpfRa2();
+
+    /**
+     * <pre>
+     * ppf3
+     * </pre>
+     *
+     * <code>float ppf_ra_3 = 141;</code>
+     * @return The ppfRa3.
+     */
+    float getPpfRa3();
   }
   /**
    * <pre>
@@ -18053,6 +25021,156 @@ public final class RecFeature {
             case 888: {
 
               postPayCnt24H_ = input.readInt32();
+              break;
+            }
+            case 901: {
+
+              pvvRa1_ = input.readFloat();
+              break;
+            }
+            case 909: {
+
+              pvvRa2_ = input.readFloat();
+              break;
+            }
+            case 917: {
+
+              pvvRa3_ = input.readFloat();
+              break;
+            }
+            case 925: {
+
+              pvvRa4_ = input.readFloat();
+              break;
+            }
+            case 933: {
+
+              pvvRa5_ = input.readFloat();
+              break;
+            }
+            case 941: {
+
+              pcpvRa1_ = input.readFloat();
+              break;
+            }
+            case 949: {
+
+              pcpvRa2_ = input.readFloat();
+              break;
+            }
+            case 957: {
+
+              pcpvRa3_ = input.readFloat();
+              break;
+            }
+            case 965: {
+
+              pcpvRa4_ = input.readFloat();
+              break;
+            }
+            case 973: {
+
+              pcpvRa5_ = input.readFloat();
+              break;
+            }
+            case 981: {
+
+              pcpvRa6_ = input.readFloat();
+              break;
+            }
+            case 989: {
+
+              plkRa1_ = input.readFloat();
+              break;
+            }
+            case 997: {
+
+              plkRa2_ = input.readFloat();
+              break;
+            }
+            case 1005: {
+
+              plkRa3_ = input.readFloat();
+              break;
+            }
+            case 1013: {
+
+              plkRa4_ = input.readFloat();
+              break;
+            }
+            case 1021: {
+
+              plkRa5_ = input.readFloat();
+              break;
+            }
+            case 1029: {
+
+              pcmRa1_ = input.readFloat();
+              break;
+            }
+            case 1037: {
+
+              pcmRa2_ = input.readFloat();
+              break;
+            }
+            case 1045: {
+
+              pcmRa3_ = input.readFloat();
+              break;
+            }
+            case 1053: {
+
+              pcmRa4_ = input.readFloat();
+              break;
+            }
+            case 1061: {
+
+              pcmRa5_ = input.readFloat();
+              break;
+            }
+            case 1069: {
+
+              pshRa1_ = input.readFloat();
+              break;
+            }
+            case 1077: {
+
+              pshRa2_ = input.readFloat();
+              break;
+            }
+            case 1085: {
+
+              pshRa3_ = input.readFloat();
+              break;
+            }
+            case 1093: {
+
+              pfvRa1_ = input.readFloat();
+              break;
+            }
+            case 1101: {
+
+              pfvRa2_ = input.readFloat();
+              break;
+            }
+            case 1109: {
+
+              pfvRa3_ = input.readFloat();
+              break;
+            }
+            case 1117: {
+
+              ppfRa1_ = input.readFloat();
+              break;
+            }
+            case 1125: {
+
+              ppfRa2_ = input.readFloat();
+              break;
+            }
+            case 1133: {
+
+              ppfRa3_ = input.readFloat();
               break;
             }
             default: {
@@ -19124,6 +26242,456 @@ public final class RecFeature {
       return postPayCnt24H_;
     }
 
+    public static final int PVV_RA_1_FIELD_NUMBER = 112;
+    private float pvvRa1_;
+    /**
+     * <pre>
+     * pvv1
+     * </pre>
+     *
+     * <code>float pvv_ra_1 = 112;</code>
+     * @return The pvvRa1.
+     */
+    @java.lang.Override
+    public float getPvvRa1() {
+      return pvvRa1_;
+    }
+
+    public static final int PVV_RA_2_FIELD_NUMBER = 113;
+    private float pvvRa2_;
+    /**
+     * <pre>
+     * pvv2
+     * </pre>
+     *
+     * <code>float pvv_ra_2 = 113;</code>
+     * @return The pvvRa2.
+     */
+    @java.lang.Override
+    public float getPvvRa2() {
+      return pvvRa2_;
+    }
+
+    public static final int PVV_RA_3_FIELD_NUMBER = 114;
+    private float pvvRa3_;
+    /**
+     * <pre>
+     * pvv3
+     * </pre>
+     *
+     * <code>float pvv_ra_3 = 114;</code>
+     * @return The pvvRa3.
+     */
+    @java.lang.Override
+    public float getPvvRa3() {
+      return pvvRa3_;
+    }
+
+    public static final int PVV_RA_4_FIELD_NUMBER = 115;
+    private float pvvRa4_;
+    /**
+     * <pre>
+     * pvv4
+     * </pre>
+     *
+     * <code>float pvv_ra_4 = 115;</code>
+     * @return The pvvRa4.
+     */
+    @java.lang.Override
+    public float getPvvRa4() {
+      return pvvRa4_;
+    }
+
+    public static final int PVV_RA_5_FIELD_NUMBER = 116;
+    private float pvvRa5_;
+    /**
+     * <pre>
+     * pvv5
+     * </pre>
+     *
+     * <code>float pvv_ra_5 = 116;</code>
+     * @return The pvvRa5.
+     */
+    @java.lang.Override
+    public float getPvvRa5() {
+      return pvvRa5_;
+    }
+
+    public static final int PCPV_RA_1_FIELD_NUMBER = 117;
+    private float pcpvRa1_;
+    /**
+     * <pre>
+     * pcpv1
+     * </pre>
+     *
+     * <code>float pcpv_ra_1 = 117;</code>
+     * @return The pcpvRa1.
+     */
+    @java.lang.Override
+    public float getPcpvRa1() {
+      return pcpvRa1_;
+    }
+
+    public static final int PCPV_RA_2_FIELD_NUMBER = 118;
+    private float pcpvRa2_;
+    /**
+     * <pre>
+     * pcpv2
+     * </pre>
+     *
+     * <code>float pcpv_ra_2 = 118;</code>
+     * @return The pcpvRa2.
+     */
+    @java.lang.Override
+    public float getPcpvRa2() {
+      return pcpvRa2_;
+    }
+
+    public static final int PCPV_RA_3_FIELD_NUMBER = 119;
+    private float pcpvRa3_;
+    /**
+     * <pre>
+     * pcpv3
+     * </pre>
+     *
+     * <code>float pcpv_ra_3 = 119;</code>
+     * @return The pcpvRa3.
+     */
+    @java.lang.Override
+    public float getPcpvRa3() {
+      return pcpvRa3_;
+    }
+
+    public static final int PCPV_RA_4_FIELD_NUMBER = 120;
+    private float pcpvRa4_;
+    /**
+     * <pre>
+     * pcpv4
+     * </pre>
+     *
+     * <code>float pcpv_ra_4 = 120;</code>
+     * @return The pcpvRa4.
+     */
+    @java.lang.Override
+    public float getPcpvRa4() {
+      return pcpvRa4_;
+    }
+
+    public static final int PCPV_RA_5_FIELD_NUMBER = 121;
+    private float pcpvRa5_;
+    /**
+     * <pre>
+     * pcpv5
+     * </pre>
+     *
+     * <code>float pcpv_ra_5 = 121;</code>
+     * @return The pcpvRa5.
+     */
+    @java.lang.Override
+    public float getPcpvRa5() {
+      return pcpvRa5_;
+    }
+
+    public static final int PCPV_RA_6_FIELD_NUMBER = 122;
+    private float pcpvRa6_;
+    /**
+     * <pre>
+     * pcpv6
+     * </pre>
+     *
+     * <code>float pcpv_ra_6 = 122;</code>
+     * @return The pcpvRa6.
+     */
+    @java.lang.Override
+    public float getPcpvRa6() {
+      return pcpvRa6_;
+    }
+
+    public static final int PLK_RA_1_FIELD_NUMBER = 123;
+    private float plkRa1_;
+    /**
+     * <pre>
+     * plk1
+     * </pre>
+     *
+     * <code>float plk_ra_1 = 123;</code>
+     * @return The plkRa1.
+     */
+    @java.lang.Override
+    public float getPlkRa1() {
+      return plkRa1_;
+    }
+
+    public static final int PLK_RA_2_FIELD_NUMBER = 124;
+    private float plkRa2_;
+    /**
+     * <pre>
+     * plk2
+     * </pre>
+     *
+     * <code>float plk_ra_2 = 124;</code>
+     * @return The plkRa2.
+     */
+    @java.lang.Override
+    public float getPlkRa2() {
+      return plkRa2_;
+    }
+
+    public static final int PLK_RA_3_FIELD_NUMBER = 125;
+    private float plkRa3_;
+    /**
+     * <pre>
+     * plk3
+     * </pre>
+     *
+     * <code>float plk_ra_3 = 125;</code>
+     * @return The plkRa3.
+     */
+    @java.lang.Override
+    public float getPlkRa3() {
+      return plkRa3_;
+    }
+
+    public static final int PLK_RA_4_FIELD_NUMBER = 126;
+    private float plkRa4_;
+    /**
+     * <pre>
+     * plk4
+     * </pre>
+     *
+     * <code>float plk_ra_4 = 126;</code>
+     * @return The plkRa4.
+     */
+    @java.lang.Override
+    public float getPlkRa4() {
+      return plkRa4_;
+    }
+
+    public static final int PLK_RA_5_FIELD_NUMBER = 127;
+    private float plkRa5_;
+    /**
+     * <pre>
+     * plk5
+     * </pre>
+     *
+     * <code>float plk_ra_5 = 127;</code>
+     * @return The plkRa5.
+     */
+    @java.lang.Override
+    public float getPlkRa5() {
+      return plkRa5_;
+    }
+
+    public static final int PCM_RA_1_FIELD_NUMBER = 128;
+    private float pcmRa1_;
+    /**
+     * <pre>
+     * pcm1
+     * </pre>
+     *
+     * <code>float pcm_ra_1 = 128;</code>
+     * @return The pcmRa1.
+     */
+    @java.lang.Override
+    public float getPcmRa1() {
+      return pcmRa1_;
+    }
+
+    public static final int PCM_RA_2_FIELD_NUMBER = 129;
+    private float pcmRa2_;
+    /**
+     * <pre>
+     * pcm2
+     * </pre>
+     *
+     * <code>float pcm_ra_2 = 129;</code>
+     * @return The pcmRa2.
+     */
+    @java.lang.Override
+    public float getPcmRa2() {
+      return pcmRa2_;
+    }
+
+    public static final int PCM_RA_3_FIELD_NUMBER = 130;
+    private float pcmRa3_;
+    /**
+     * <pre>
+     * pcm3
+     * </pre>
+     *
+     * <code>float pcm_ra_3 = 130;</code>
+     * @return The pcmRa3.
+     */
+    @java.lang.Override
+    public float getPcmRa3() {
+      return pcmRa3_;
+    }
+
+    public static final int PCM_RA_4_FIELD_NUMBER = 131;
+    private float pcmRa4_;
+    /**
+     * <pre>
+     * pcm4
+     * </pre>
+     *
+     * <code>float pcm_ra_4 = 131;</code>
+     * @return The pcmRa4.
+     */
+    @java.lang.Override
+    public float getPcmRa4() {
+      return pcmRa4_;
+    }
+
+    public static final int PCM_RA_5_FIELD_NUMBER = 132;
+    private float pcmRa5_;
+    /**
+     * <pre>
+     * pcm5
+     * </pre>
+     *
+     * <code>float pcm_ra_5 = 132;</code>
+     * @return The pcmRa5.
+     */
+    @java.lang.Override
+    public float getPcmRa5() {
+      return pcmRa5_;
+    }
+
+    public static final int PSH_RA_1_FIELD_NUMBER = 133;
+    private float pshRa1_;
+    /**
+     * <pre>
+     * psh1
+     * </pre>
+     *
+     * <code>float psh_ra_1 = 133;</code>
+     * @return The pshRa1.
+     */
+    @java.lang.Override
+    public float getPshRa1() {
+      return pshRa1_;
+    }
+
+    public static final int PSH_RA_2_FIELD_NUMBER = 134;
+    private float pshRa2_;
+    /**
+     * <pre>
+     * psh2
+     * </pre>
+     *
+     * <code>float psh_ra_2 = 134;</code>
+     * @return The pshRa2.
+     */
+    @java.lang.Override
+    public float getPshRa2() {
+      return pshRa2_;
+    }
+
+    public static final int PSH_RA_3_FIELD_NUMBER = 135;
+    private float pshRa3_;
+    /**
+     * <pre>
+     * psh3
+     * </pre>
+     *
+     * <code>float psh_ra_3 = 135;</code>
+     * @return The pshRa3.
+     */
+    @java.lang.Override
+    public float getPshRa3() {
+      return pshRa3_;
+    }
+
+    public static final int PFV_RA_1_FIELD_NUMBER = 136;
+    private float pfvRa1_;
+    /**
+     * <pre>
+     * pfv1
+     * </pre>
+     *
+     * <code>float pfv_ra_1 = 136;</code>
+     * @return The pfvRa1.
+     */
+    @java.lang.Override
+    public float getPfvRa1() {
+      return pfvRa1_;
+    }
+
+    public static final int PFV_RA_2_FIELD_NUMBER = 137;
+    private float pfvRa2_;
+    /**
+     * <pre>
+     * pfv2
+     * </pre>
+     *
+     * <code>float pfv_ra_2 = 137;</code>
+     * @return The pfvRa2.
+     */
+    @java.lang.Override
+    public float getPfvRa2() {
+      return pfvRa2_;
+    }
+
+    public static final int PFV_RA_3_FIELD_NUMBER = 138;
+    private float pfvRa3_;
+    /**
+     * <pre>
+     * pfv3
+     * </pre>
+     *
+     * <code>float pfv_ra_3 = 138;</code>
+     * @return The pfvRa3.
+     */
+    @java.lang.Override
+    public float getPfvRa3() {
+      return pfvRa3_;
+    }
+
+    public static final int PPF_RA_1_FIELD_NUMBER = 139;
+    private float ppfRa1_;
+    /**
+     * <pre>
+     * ppf1
+     * </pre>
+     *
+     * <code>float ppf_ra_1 = 139;</code>
+     * @return The ppfRa1.
+     */
+    @java.lang.Override
+    public float getPpfRa1() {
+      return ppfRa1_;
+    }
+
+    public static final int PPF_RA_2_FIELD_NUMBER = 140;
+    private float ppfRa2_;
+    /**
+     * <pre>
+     * ppf2
+     * </pre>
+     *
+     * <code>float ppf_ra_2 = 140;</code>
+     * @return The ppfRa2.
+     */
+    @java.lang.Override
+    public float getPpfRa2() {
+      return ppfRa2_;
+    }
+
+    public static final int PPF_RA_3_FIELD_NUMBER = 141;
+    private float ppfRa3_;
+    /**
+     * <pre>
+     * ppf3
+     * </pre>
+     *
+     * <code>float ppf_ra_3 = 141;</code>
+     * @return The ppfRa3.
+     */
+    @java.lang.Override
+    public float getPpfRa3() {
+      return ppfRa3_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -19329,6 +26897,96 @@ public final class RecFeature {
       }
       if (postPayCnt24H_ != 0) {
         output.writeInt32(111, postPayCnt24H_);
+      }
+      if (java.lang.Float.floatToRawIntBits(pvvRa1_) != 0) {
+        output.writeFloat(112, pvvRa1_);
+      }
+      if (java.lang.Float.floatToRawIntBits(pvvRa2_) != 0) {
+        output.writeFloat(113, pvvRa2_);
+      }
+      if (java.lang.Float.floatToRawIntBits(pvvRa3_) != 0) {
+        output.writeFloat(114, pvvRa3_);
+      }
+      if (java.lang.Float.floatToRawIntBits(pvvRa4_) != 0) {
+        output.writeFloat(115, pvvRa4_);
+      }
+      if (java.lang.Float.floatToRawIntBits(pvvRa5_) != 0) {
+        output.writeFloat(116, pvvRa5_);
+      }
+      if (java.lang.Float.floatToRawIntBits(pcpvRa1_) != 0) {
+        output.writeFloat(117, pcpvRa1_);
+      }
+      if (java.lang.Float.floatToRawIntBits(pcpvRa2_) != 0) {
+        output.writeFloat(118, pcpvRa2_);
+      }
+      if (java.lang.Float.floatToRawIntBits(pcpvRa3_) != 0) {
+        output.writeFloat(119, pcpvRa3_);
+      }
+      if (java.lang.Float.floatToRawIntBits(pcpvRa4_) != 0) {
+        output.writeFloat(120, pcpvRa4_);
+      }
+      if (java.lang.Float.floatToRawIntBits(pcpvRa5_) != 0) {
+        output.writeFloat(121, pcpvRa5_);
+      }
+      if (java.lang.Float.floatToRawIntBits(pcpvRa6_) != 0) {
+        output.writeFloat(122, pcpvRa6_);
+      }
+      if (java.lang.Float.floatToRawIntBits(plkRa1_) != 0) {
+        output.writeFloat(123, plkRa1_);
+      }
+      if (java.lang.Float.floatToRawIntBits(plkRa2_) != 0) {
+        output.writeFloat(124, plkRa2_);
+      }
+      if (java.lang.Float.floatToRawIntBits(plkRa3_) != 0) {
+        output.writeFloat(125, plkRa3_);
+      }
+      if (java.lang.Float.floatToRawIntBits(plkRa4_) != 0) {
+        output.writeFloat(126, plkRa4_);
+      }
+      if (java.lang.Float.floatToRawIntBits(plkRa5_) != 0) {
+        output.writeFloat(127, plkRa5_);
+      }
+      if (java.lang.Float.floatToRawIntBits(pcmRa1_) != 0) {
+        output.writeFloat(128, pcmRa1_);
+      }
+      if (java.lang.Float.floatToRawIntBits(pcmRa2_) != 0) {
+        output.writeFloat(129, pcmRa2_);
+      }
+      if (java.lang.Float.floatToRawIntBits(pcmRa3_) != 0) {
+        output.writeFloat(130, pcmRa3_);
+      }
+      if (java.lang.Float.floatToRawIntBits(pcmRa4_) != 0) {
+        output.writeFloat(131, pcmRa4_);
+      }
+      if (java.lang.Float.floatToRawIntBits(pcmRa5_) != 0) {
+        output.writeFloat(132, pcmRa5_);
+      }
+      if (java.lang.Float.floatToRawIntBits(pshRa1_) != 0) {
+        output.writeFloat(133, pshRa1_);
+      }
+      if (java.lang.Float.floatToRawIntBits(pshRa2_) != 0) {
+        output.writeFloat(134, pshRa2_);
+      }
+      if (java.lang.Float.floatToRawIntBits(pshRa3_) != 0) {
+        output.writeFloat(135, pshRa3_);
+      }
+      if (java.lang.Float.floatToRawIntBits(pfvRa1_) != 0) {
+        output.writeFloat(136, pfvRa1_);
+      }
+      if (java.lang.Float.floatToRawIntBits(pfvRa2_) != 0) {
+        output.writeFloat(137, pfvRa2_);
+      }
+      if (java.lang.Float.floatToRawIntBits(pfvRa3_) != 0) {
+        output.writeFloat(138, pfvRa3_);
+      }
+      if (java.lang.Float.floatToRawIntBits(ppfRa1_) != 0) {
+        output.writeFloat(139, ppfRa1_);
+      }
+      if (java.lang.Float.floatToRawIntBits(ppfRa2_) != 0) {
+        output.writeFloat(140, ppfRa2_);
+      }
+      if (java.lang.Float.floatToRawIntBits(ppfRa3_) != 0) {
+        output.writeFloat(141, ppfRa3_);
       }
       unknownFields.writeTo(output);
     }
@@ -19598,6 +27256,126 @@ public final class RecFeature {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(111, postPayCnt24H_);
       }
+      if (java.lang.Float.floatToRawIntBits(pvvRa1_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(112, pvvRa1_);
+      }
+      if (java.lang.Float.floatToRawIntBits(pvvRa2_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(113, pvvRa2_);
+      }
+      if (java.lang.Float.floatToRawIntBits(pvvRa3_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(114, pvvRa3_);
+      }
+      if (java.lang.Float.floatToRawIntBits(pvvRa4_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(115, pvvRa4_);
+      }
+      if (java.lang.Float.floatToRawIntBits(pvvRa5_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(116, pvvRa5_);
+      }
+      if (java.lang.Float.floatToRawIntBits(pcpvRa1_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(117, pcpvRa1_);
+      }
+      if (java.lang.Float.floatToRawIntBits(pcpvRa2_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(118, pcpvRa2_);
+      }
+      if (java.lang.Float.floatToRawIntBits(pcpvRa3_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(119, pcpvRa3_);
+      }
+      if (java.lang.Float.floatToRawIntBits(pcpvRa4_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(120, pcpvRa4_);
+      }
+      if (java.lang.Float.floatToRawIntBits(pcpvRa5_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(121, pcpvRa5_);
+      }
+      if (java.lang.Float.floatToRawIntBits(pcpvRa6_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(122, pcpvRa6_);
+      }
+      if (java.lang.Float.floatToRawIntBits(plkRa1_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(123, plkRa1_);
+      }
+      if (java.lang.Float.floatToRawIntBits(plkRa2_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(124, plkRa2_);
+      }
+      if (java.lang.Float.floatToRawIntBits(plkRa3_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(125, plkRa3_);
+      }
+      if (java.lang.Float.floatToRawIntBits(plkRa4_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(126, plkRa4_);
+      }
+      if (java.lang.Float.floatToRawIntBits(plkRa5_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(127, plkRa5_);
+      }
+      if (java.lang.Float.floatToRawIntBits(pcmRa1_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(128, pcmRa1_);
+      }
+      if (java.lang.Float.floatToRawIntBits(pcmRa2_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(129, pcmRa2_);
+      }
+      if (java.lang.Float.floatToRawIntBits(pcmRa3_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(130, pcmRa3_);
+      }
+      if (java.lang.Float.floatToRawIntBits(pcmRa4_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(131, pcmRa4_);
+      }
+      if (java.lang.Float.floatToRawIntBits(pcmRa5_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(132, pcmRa5_);
+      }
+      if (java.lang.Float.floatToRawIntBits(pshRa1_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(133, pshRa1_);
+      }
+      if (java.lang.Float.floatToRawIntBits(pshRa2_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(134, pshRa2_);
+      }
+      if (java.lang.Float.floatToRawIntBits(pshRa3_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(135, pshRa3_);
+      }
+      if (java.lang.Float.floatToRawIntBits(pfvRa1_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(136, pfvRa1_);
+      }
+      if (java.lang.Float.floatToRawIntBits(pfvRa2_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(137, pfvRa2_);
+      }
+      if (java.lang.Float.floatToRawIntBits(pfvRa3_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(138, pfvRa3_);
+      }
+      if (java.lang.Float.floatToRawIntBits(ppfRa1_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(139, ppfRa1_);
+      }
+      if (java.lang.Float.floatToRawIntBits(ppfRa2_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(140, ppfRa2_);
+      }
+      if (java.lang.Float.floatToRawIntBits(ppfRa3_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(141, ppfRa3_);
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -19744,6 +27522,96 @@ public final class RecFeature {
           != other.getPostDislikeCnt24H()) return false;
       if (getPostPayCnt24H()
           != other.getPostPayCnt24H()) return false;
+      if (java.lang.Float.floatToIntBits(getPvvRa1())
+          != java.lang.Float.floatToIntBits(
+              other.getPvvRa1())) return false;
+      if (java.lang.Float.floatToIntBits(getPvvRa2())
+          != java.lang.Float.floatToIntBits(
+              other.getPvvRa2())) return false;
+      if (java.lang.Float.floatToIntBits(getPvvRa3())
+          != java.lang.Float.floatToIntBits(
+              other.getPvvRa3())) return false;
+      if (java.lang.Float.floatToIntBits(getPvvRa4())
+          != java.lang.Float.floatToIntBits(
+              other.getPvvRa4())) return false;
+      if (java.lang.Float.floatToIntBits(getPvvRa5())
+          != java.lang.Float.floatToIntBits(
+              other.getPvvRa5())) return false;
+      if (java.lang.Float.floatToIntBits(getPcpvRa1())
+          != java.lang.Float.floatToIntBits(
+              other.getPcpvRa1())) return false;
+      if (java.lang.Float.floatToIntBits(getPcpvRa2())
+          != java.lang.Float.floatToIntBits(
+              other.getPcpvRa2())) return false;
+      if (java.lang.Float.floatToIntBits(getPcpvRa3())
+          != java.lang.Float.floatToIntBits(
+              other.getPcpvRa3())) return false;
+      if (java.lang.Float.floatToIntBits(getPcpvRa4())
+          != java.lang.Float.floatToIntBits(
+              other.getPcpvRa4())) return false;
+      if (java.lang.Float.floatToIntBits(getPcpvRa5())
+          != java.lang.Float.floatToIntBits(
+              other.getPcpvRa5())) return false;
+      if (java.lang.Float.floatToIntBits(getPcpvRa6())
+          != java.lang.Float.floatToIntBits(
+              other.getPcpvRa6())) return false;
+      if (java.lang.Float.floatToIntBits(getPlkRa1())
+          != java.lang.Float.floatToIntBits(
+              other.getPlkRa1())) return false;
+      if (java.lang.Float.floatToIntBits(getPlkRa2())
+          != java.lang.Float.floatToIntBits(
+              other.getPlkRa2())) return false;
+      if (java.lang.Float.floatToIntBits(getPlkRa3())
+          != java.lang.Float.floatToIntBits(
+              other.getPlkRa3())) return false;
+      if (java.lang.Float.floatToIntBits(getPlkRa4())
+          != java.lang.Float.floatToIntBits(
+              other.getPlkRa4())) return false;
+      if (java.lang.Float.floatToIntBits(getPlkRa5())
+          != java.lang.Float.floatToIntBits(
+              other.getPlkRa5())) return false;
+      if (java.lang.Float.floatToIntBits(getPcmRa1())
+          != java.lang.Float.floatToIntBits(
+              other.getPcmRa1())) return false;
+      if (java.lang.Float.floatToIntBits(getPcmRa2())
+          != java.lang.Float.floatToIntBits(
+              other.getPcmRa2())) return false;
+      if (java.lang.Float.floatToIntBits(getPcmRa3())
+          != java.lang.Float.floatToIntBits(
+              other.getPcmRa3())) return false;
+      if (java.lang.Float.floatToIntBits(getPcmRa4())
+          != java.lang.Float.floatToIntBits(
+              other.getPcmRa4())) return false;
+      if (java.lang.Float.floatToIntBits(getPcmRa5())
+          != java.lang.Float.floatToIntBits(
+              other.getPcmRa5())) return false;
+      if (java.lang.Float.floatToIntBits(getPshRa1())
+          != java.lang.Float.floatToIntBits(
+              other.getPshRa1())) return false;
+      if (java.lang.Float.floatToIntBits(getPshRa2())
+          != java.lang.Float.floatToIntBits(
+              other.getPshRa2())) return false;
+      if (java.lang.Float.floatToIntBits(getPshRa3())
+          != java.lang.Float.floatToIntBits(
+              other.getPshRa3())) return false;
+      if (java.lang.Float.floatToIntBits(getPfvRa1())
+          != java.lang.Float.floatToIntBits(
+              other.getPfvRa1())) return false;
+      if (java.lang.Float.floatToIntBits(getPfvRa2())
+          != java.lang.Float.floatToIntBits(
+              other.getPfvRa2())) return false;
+      if (java.lang.Float.floatToIntBits(getPfvRa3())
+          != java.lang.Float.floatToIntBits(
+              other.getPfvRa3())) return false;
+      if (java.lang.Float.floatToIntBits(getPpfRa1())
+          != java.lang.Float.floatToIntBits(
+              other.getPpfRa1())) return false;
+      if (java.lang.Float.floatToIntBits(getPpfRa2())
+          != java.lang.Float.floatToIntBits(
+              other.getPpfRa2())) return false;
+      if (java.lang.Float.floatToIntBits(getPpfRa3())
+          != java.lang.Float.floatToIntBits(
+              other.getPpfRa3())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -19891,6 +27759,96 @@ public final class RecFeature {
       hash = (53 * hash) + getPostDislikeCnt24H();
       hash = (37 * hash) + POST_PAY_CNT_24H_FIELD_NUMBER;
       hash = (53 * hash) + getPostPayCnt24H();
+      hash = (37 * hash) + PVV_RA_1_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getPvvRa1());
+      hash = (37 * hash) + PVV_RA_2_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getPvvRa2());
+      hash = (37 * hash) + PVV_RA_3_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getPvvRa3());
+      hash = (37 * hash) + PVV_RA_4_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getPvvRa4());
+      hash = (37 * hash) + PVV_RA_5_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getPvvRa5());
+      hash = (37 * hash) + PCPV_RA_1_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getPcpvRa1());
+      hash = (37 * hash) + PCPV_RA_2_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getPcpvRa2());
+      hash = (37 * hash) + PCPV_RA_3_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getPcpvRa3());
+      hash = (37 * hash) + PCPV_RA_4_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getPcpvRa4());
+      hash = (37 * hash) + PCPV_RA_5_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getPcpvRa5());
+      hash = (37 * hash) + PCPV_RA_6_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getPcpvRa6());
+      hash = (37 * hash) + PLK_RA_1_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getPlkRa1());
+      hash = (37 * hash) + PLK_RA_2_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getPlkRa2());
+      hash = (37 * hash) + PLK_RA_3_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getPlkRa3());
+      hash = (37 * hash) + PLK_RA_4_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getPlkRa4());
+      hash = (37 * hash) + PLK_RA_5_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getPlkRa5());
+      hash = (37 * hash) + PCM_RA_1_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getPcmRa1());
+      hash = (37 * hash) + PCM_RA_2_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getPcmRa2());
+      hash = (37 * hash) + PCM_RA_3_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getPcmRa3());
+      hash = (37 * hash) + PCM_RA_4_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getPcmRa4());
+      hash = (37 * hash) + PCM_RA_5_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getPcmRa5());
+      hash = (37 * hash) + PSH_RA_1_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getPshRa1());
+      hash = (37 * hash) + PSH_RA_2_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getPshRa2());
+      hash = (37 * hash) + PSH_RA_3_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getPshRa3());
+      hash = (37 * hash) + PFV_RA_1_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getPfvRa1());
+      hash = (37 * hash) + PFV_RA_2_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getPfvRa2());
+      hash = (37 * hash) + PFV_RA_3_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getPfvRa3());
+      hash = (37 * hash) + PPF_RA_1_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getPpfRa1());
+      hash = (37 * hash) + PPF_RA_2_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getPpfRa2());
+      hash = (37 * hash) + PPF_RA_3_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getPpfRa3());
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -20151,6 +28109,66 @@ public final class RecFeature {
 
         postPayCnt24H_ = 0;
 
+        pvvRa1_ = 0F;
+
+        pvvRa2_ = 0F;
+
+        pvvRa3_ = 0F;
+
+        pvvRa4_ = 0F;
+
+        pvvRa5_ = 0F;
+
+        pcpvRa1_ = 0F;
+
+        pcpvRa2_ = 0F;
+
+        pcpvRa3_ = 0F;
+
+        pcpvRa4_ = 0F;
+
+        pcpvRa5_ = 0F;
+
+        pcpvRa6_ = 0F;
+
+        plkRa1_ = 0F;
+
+        plkRa2_ = 0F;
+
+        plkRa3_ = 0F;
+
+        plkRa4_ = 0F;
+
+        plkRa5_ = 0F;
+
+        pcmRa1_ = 0F;
+
+        pcmRa2_ = 0F;
+
+        pcmRa3_ = 0F;
+
+        pcmRa4_ = 0F;
+
+        pcmRa5_ = 0F;
+
+        pshRa1_ = 0F;
+
+        pshRa2_ = 0F;
+
+        pshRa3_ = 0F;
+
+        pfvRa1_ = 0F;
+
+        pfvRa2_ = 0F;
+
+        pfvRa3_ = 0F;
+
+        ppfRa1_ = 0F;
+
+        ppfRa2_ = 0F;
+
+        ppfRa3_ = 0F;
+
         return this;
       }
 
@@ -20247,6 +28265,36 @@ public final class RecFeature {
         result.postReportCnt24H_ = postReportCnt24H_;
         result.postDislikeCnt24H_ = postDislikeCnt24H_;
         result.postPayCnt24H_ = postPayCnt24H_;
+        result.pvvRa1_ = pvvRa1_;
+        result.pvvRa2_ = pvvRa2_;
+        result.pvvRa3_ = pvvRa3_;
+        result.pvvRa4_ = pvvRa4_;
+        result.pvvRa5_ = pvvRa5_;
+        result.pcpvRa1_ = pcpvRa1_;
+        result.pcpvRa2_ = pcpvRa2_;
+        result.pcpvRa3_ = pcpvRa3_;
+        result.pcpvRa4_ = pcpvRa4_;
+        result.pcpvRa5_ = pcpvRa5_;
+        result.pcpvRa6_ = pcpvRa6_;
+        result.plkRa1_ = plkRa1_;
+        result.plkRa2_ = plkRa2_;
+        result.plkRa3_ = plkRa3_;
+        result.plkRa4_ = plkRa4_;
+        result.plkRa5_ = plkRa5_;
+        result.pcmRa1_ = pcmRa1_;
+        result.pcmRa2_ = pcmRa2_;
+        result.pcmRa3_ = pcmRa3_;
+        result.pcmRa4_ = pcmRa4_;
+        result.pcmRa5_ = pcmRa5_;
+        result.pshRa1_ = pshRa1_;
+        result.pshRa2_ = pshRa2_;
+        result.pshRa3_ = pshRa3_;
+        result.pfvRa1_ = pfvRa1_;
+        result.pfvRa2_ = pfvRa2_;
+        result.pfvRa3_ = pfvRa3_;
+        result.ppfRa1_ = ppfRa1_;
+        result.ppfRa2_ = ppfRa2_;
+        result.ppfRa3_ = ppfRa3_;
         onBuilt();
         return result;
       }
@@ -20493,6 +28541,96 @@ public final class RecFeature {
         }
         if (other.getPostPayCnt24H() != 0) {
           setPostPayCnt24H(other.getPostPayCnt24H());
+        }
+        if (other.getPvvRa1() != 0F) {
+          setPvvRa1(other.getPvvRa1());
+        }
+        if (other.getPvvRa2() != 0F) {
+          setPvvRa2(other.getPvvRa2());
+        }
+        if (other.getPvvRa3() != 0F) {
+          setPvvRa3(other.getPvvRa3());
+        }
+        if (other.getPvvRa4() != 0F) {
+          setPvvRa4(other.getPvvRa4());
+        }
+        if (other.getPvvRa5() != 0F) {
+          setPvvRa5(other.getPvvRa5());
+        }
+        if (other.getPcpvRa1() != 0F) {
+          setPcpvRa1(other.getPcpvRa1());
+        }
+        if (other.getPcpvRa2() != 0F) {
+          setPcpvRa2(other.getPcpvRa2());
+        }
+        if (other.getPcpvRa3() != 0F) {
+          setPcpvRa3(other.getPcpvRa3());
+        }
+        if (other.getPcpvRa4() != 0F) {
+          setPcpvRa4(other.getPcpvRa4());
+        }
+        if (other.getPcpvRa5() != 0F) {
+          setPcpvRa5(other.getPcpvRa5());
+        }
+        if (other.getPcpvRa6() != 0F) {
+          setPcpvRa6(other.getPcpvRa6());
+        }
+        if (other.getPlkRa1() != 0F) {
+          setPlkRa1(other.getPlkRa1());
+        }
+        if (other.getPlkRa2() != 0F) {
+          setPlkRa2(other.getPlkRa2());
+        }
+        if (other.getPlkRa3() != 0F) {
+          setPlkRa3(other.getPlkRa3());
+        }
+        if (other.getPlkRa4() != 0F) {
+          setPlkRa4(other.getPlkRa4());
+        }
+        if (other.getPlkRa5() != 0F) {
+          setPlkRa5(other.getPlkRa5());
+        }
+        if (other.getPcmRa1() != 0F) {
+          setPcmRa1(other.getPcmRa1());
+        }
+        if (other.getPcmRa2() != 0F) {
+          setPcmRa2(other.getPcmRa2());
+        }
+        if (other.getPcmRa3() != 0F) {
+          setPcmRa3(other.getPcmRa3());
+        }
+        if (other.getPcmRa4() != 0F) {
+          setPcmRa4(other.getPcmRa4());
+        }
+        if (other.getPcmRa5() != 0F) {
+          setPcmRa5(other.getPcmRa5());
+        }
+        if (other.getPshRa1() != 0F) {
+          setPshRa1(other.getPshRa1());
+        }
+        if (other.getPshRa2() != 0F) {
+          setPshRa2(other.getPshRa2());
+        }
+        if (other.getPshRa3() != 0F) {
+          setPshRa3(other.getPshRa3());
+        }
+        if (other.getPfvRa1() != 0F) {
+          setPfvRa1(other.getPfvRa1());
+        }
+        if (other.getPfvRa2() != 0F) {
+          setPfvRa2(other.getPfvRa2());
+        }
+        if (other.getPfvRa3() != 0F) {
+          setPfvRa3(other.getPfvRa3());
+        }
+        if (other.getPpfRa1() != 0F) {
+          setPpfRa1(other.getPpfRa1());
+        }
+        if (other.getPpfRa2() != 0F) {
+          setPpfRa2(other.getPpfRa2());
+        }
+        if (other.getPpfRa3() != 0F) {
+          setPpfRa3(other.getPpfRa3());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -23383,6 +31521,1296 @@ public final class RecFeature {
       public Builder clearPostPayCnt24H() {
         
         postPayCnt24H_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private float pvvRa1_ ;
+      /**
+       * <pre>
+       * pvv1
+       * </pre>
+       *
+       * <code>float pvv_ra_1 = 112;</code>
+       * @return The pvvRa1.
+       */
+      @java.lang.Override
+      public float getPvvRa1() {
+        return pvvRa1_;
+      }
+      /**
+       * <pre>
+       * pvv1
+       * </pre>
+       *
+       * <code>float pvv_ra_1 = 112;</code>
+       * @param value The pvvRa1 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPvvRa1(float value) {
+        
+        pvvRa1_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * pvv1
+       * </pre>
+       *
+       * <code>float pvv_ra_1 = 112;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPvvRa1() {
+        
+        pvvRa1_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float pvvRa2_ ;
+      /**
+       * <pre>
+       * pvv2
+       * </pre>
+       *
+       * <code>float pvv_ra_2 = 113;</code>
+       * @return The pvvRa2.
+       */
+      @java.lang.Override
+      public float getPvvRa2() {
+        return pvvRa2_;
+      }
+      /**
+       * <pre>
+       * pvv2
+       * </pre>
+       *
+       * <code>float pvv_ra_2 = 113;</code>
+       * @param value The pvvRa2 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPvvRa2(float value) {
+        
+        pvvRa2_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * pvv2
+       * </pre>
+       *
+       * <code>float pvv_ra_2 = 113;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPvvRa2() {
+        
+        pvvRa2_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float pvvRa3_ ;
+      /**
+       * <pre>
+       * pvv3
+       * </pre>
+       *
+       * <code>float pvv_ra_3 = 114;</code>
+       * @return The pvvRa3.
+       */
+      @java.lang.Override
+      public float getPvvRa3() {
+        return pvvRa3_;
+      }
+      /**
+       * <pre>
+       * pvv3
+       * </pre>
+       *
+       * <code>float pvv_ra_3 = 114;</code>
+       * @param value The pvvRa3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPvvRa3(float value) {
+        
+        pvvRa3_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * pvv3
+       * </pre>
+       *
+       * <code>float pvv_ra_3 = 114;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPvvRa3() {
+        
+        pvvRa3_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float pvvRa4_ ;
+      /**
+       * <pre>
+       * pvv4
+       * </pre>
+       *
+       * <code>float pvv_ra_4 = 115;</code>
+       * @return The pvvRa4.
+       */
+      @java.lang.Override
+      public float getPvvRa4() {
+        return pvvRa4_;
+      }
+      /**
+       * <pre>
+       * pvv4
+       * </pre>
+       *
+       * <code>float pvv_ra_4 = 115;</code>
+       * @param value The pvvRa4 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPvvRa4(float value) {
+        
+        pvvRa4_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * pvv4
+       * </pre>
+       *
+       * <code>float pvv_ra_4 = 115;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPvvRa4() {
+        
+        pvvRa4_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float pvvRa5_ ;
+      /**
+       * <pre>
+       * pvv5
+       * </pre>
+       *
+       * <code>float pvv_ra_5 = 116;</code>
+       * @return The pvvRa5.
+       */
+      @java.lang.Override
+      public float getPvvRa5() {
+        return pvvRa5_;
+      }
+      /**
+       * <pre>
+       * pvv5
+       * </pre>
+       *
+       * <code>float pvv_ra_5 = 116;</code>
+       * @param value The pvvRa5 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPvvRa5(float value) {
+        
+        pvvRa5_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * pvv5
+       * </pre>
+       *
+       * <code>float pvv_ra_5 = 116;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPvvRa5() {
+        
+        pvvRa5_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float pcpvRa1_ ;
+      /**
+       * <pre>
+       * pcpv1
+       * </pre>
+       *
+       * <code>float pcpv_ra_1 = 117;</code>
+       * @return The pcpvRa1.
+       */
+      @java.lang.Override
+      public float getPcpvRa1() {
+        return pcpvRa1_;
+      }
+      /**
+       * <pre>
+       * pcpv1
+       * </pre>
+       *
+       * <code>float pcpv_ra_1 = 117;</code>
+       * @param value The pcpvRa1 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPcpvRa1(float value) {
+        
+        pcpvRa1_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * pcpv1
+       * </pre>
+       *
+       * <code>float pcpv_ra_1 = 117;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPcpvRa1() {
+        
+        pcpvRa1_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float pcpvRa2_ ;
+      /**
+       * <pre>
+       * pcpv2
+       * </pre>
+       *
+       * <code>float pcpv_ra_2 = 118;</code>
+       * @return The pcpvRa2.
+       */
+      @java.lang.Override
+      public float getPcpvRa2() {
+        return pcpvRa2_;
+      }
+      /**
+       * <pre>
+       * pcpv2
+       * </pre>
+       *
+       * <code>float pcpv_ra_2 = 118;</code>
+       * @param value The pcpvRa2 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPcpvRa2(float value) {
+        
+        pcpvRa2_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * pcpv2
+       * </pre>
+       *
+       * <code>float pcpv_ra_2 = 118;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPcpvRa2() {
+        
+        pcpvRa2_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float pcpvRa3_ ;
+      /**
+       * <pre>
+       * pcpv3
+       * </pre>
+       *
+       * <code>float pcpv_ra_3 = 119;</code>
+       * @return The pcpvRa3.
+       */
+      @java.lang.Override
+      public float getPcpvRa3() {
+        return pcpvRa3_;
+      }
+      /**
+       * <pre>
+       * pcpv3
+       * </pre>
+       *
+       * <code>float pcpv_ra_3 = 119;</code>
+       * @param value The pcpvRa3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPcpvRa3(float value) {
+        
+        pcpvRa3_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * pcpv3
+       * </pre>
+       *
+       * <code>float pcpv_ra_3 = 119;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPcpvRa3() {
+        
+        pcpvRa3_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float pcpvRa4_ ;
+      /**
+       * <pre>
+       * pcpv4
+       * </pre>
+       *
+       * <code>float pcpv_ra_4 = 120;</code>
+       * @return The pcpvRa4.
+       */
+      @java.lang.Override
+      public float getPcpvRa4() {
+        return pcpvRa4_;
+      }
+      /**
+       * <pre>
+       * pcpv4
+       * </pre>
+       *
+       * <code>float pcpv_ra_4 = 120;</code>
+       * @param value The pcpvRa4 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPcpvRa4(float value) {
+        
+        pcpvRa4_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * pcpv4
+       * </pre>
+       *
+       * <code>float pcpv_ra_4 = 120;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPcpvRa4() {
+        
+        pcpvRa4_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float pcpvRa5_ ;
+      /**
+       * <pre>
+       * pcpv5
+       * </pre>
+       *
+       * <code>float pcpv_ra_5 = 121;</code>
+       * @return The pcpvRa5.
+       */
+      @java.lang.Override
+      public float getPcpvRa5() {
+        return pcpvRa5_;
+      }
+      /**
+       * <pre>
+       * pcpv5
+       * </pre>
+       *
+       * <code>float pcpv_ra_5 = 121;</code>
+       * @param value The pcpvRa5 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPcpvRa5(float value) {
+        
+        pcpvRa5_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * pcpv5
+       * </pre>
+       *
+       * <code>float pcpv_ra_5 = 121;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPcpvRa5() {
+        
+        pcpvRa5_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float pcpvRa6_ ;
+      /**
+       * <pre>
+       * pcpv6
+       * </pre>
+       *
+       * <code>float pcpv_ra_6 = 122;</code>
+       * @return The pcpvRa6.
+       */
+      @java.lang.Override
+      public float getPcpvRa6() {
+        return pcpvRa6_;
+      }
+      /**
+       * <pre>
+       * pcpv6
+       * </pre>
+       *
+       * <code>float pcpv_ra_6 = 122;</code>
+       * @param value The pcpvRa6 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPcpvRa6(float value) {
+        
+        pcpvRa6_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * pcpv6
+       * </pre>
+       *
+       * <code>float pcpv_ra_6 = 122;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPcpvRa6() {
+        
+        pcpvRa6_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float plkRa1_ ;
+      /**
+       * <pre>
+       * plk1
+       * </pre>
+       *
+       * <code>float plk_ra_1 = 123;</code>
+       * @return The plkRa1.
+       */
+      @java.lang.Override
+      public float getPlkRa1() {
+        return plkRa1_;
+      }
+      /**
+       * <pre>
+       * plk1
+       * </pre>
+       *
+       * <code>float plk_ra_1 = 123;</code>
+       * @param value The plkRa1 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPlkRa1(float value) {
+        
+        plkRa1_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * plk1
+       * </pre>
+       *
+       * <code>float plk_ra_1 = 123;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPlkRa1() {
+        
+        plkRa1_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float plkRa2_ ;
+      /**
+       * <pre>
+       * plk2
+       * </pre>
+       *
+       * <code>float plk_ra_2 = 124;</code>
+       * @return The plkRa2.
+       */
+      @java.lang.Override
+      public float getPlkRa2() {
+        return plkRa2_;
+      }
+      /**
+       * <pre>
+       * plk2
+       * </pre>
+       *
+       * <code>float plk_ra_2 = 124;</code>
+       * @param value The plkRa2 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPlkRa2(float value) {
+        
+        plkRa2_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * plk2
+       * </pre>
+       *
+       * <code>float plk_ra_2 = 124;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPlkRa2() {
+        
+        plkRa2_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float plkRa3_ ;
+      /**
+       * <pre>
+       * plk3
+       * </pre>
+       *
+       * <code>float plk_ra_3 = 125;</code>
+       * @return The plkRa3.
+       */
+      @java.lang.Override
+      public float getPlkRa3() {
+        return plkRa3_;
+      }
+      /**
+       * <pre>
+       * plk3
+       * </pre>
+       *
+       * <code>float plk_ra_3 = 125;</code>
+       * @param value The plkRa3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPlkRa3(float value) {
+        
+        plkRa3_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * plk3
+       * </pre>
+       *
+       * <code>float plk_ra_3 = 125;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPlkRa3() {
+        
+        plkRa3_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float plkRa4_ ;
+      /**
+       * <pre>
+       * plk4
+       * </pre>
+       *
+       * <code>float plk_ra_4 = 126;</code>
+       * @return The plkRa4.
+       */
+      @java.lang.Override
+      public float getPlkRa4() {
+        return plkRa4_;
+      }
+      /**
+       * <pre>
+       * plk4
+       * </pre>
+       *
+       * <code>float plk_ra_4 = 126;</code>
+       * @param value The plkRa4 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPlkRa4(float value) {
+        
+        plkRa4_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * plk4
+       * </pre>
+       *
+       * <code>float plk_ra_4 = 126;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPlkRa4() {
+        
+        plkRa4_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float plkRa5_ ;
+      /**
+       * <pre>
+       * plk5
+       * </pre>
+       *
+       * <code>float plk_ra_5 = 127;</code>
+       * @return The plkRa5.
+       */
+      @java.lang.Override
+      public float getPlkRa5() {
+        return plkRa5_;
+      }
+      /**
+       * <pre>
+       * plk5
+       * </pre>
+       *
+       * <code>float plk_ra_5 = 127;</code>
+       * @param value The plkRa5 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPlkRa5(float value) {
+        
+        plkRa5_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * plk5
+       * </pre>
+       *
+       * <code>float plk_ra_5 = 127;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPlkRa5() {
+        
+        plkRa5_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float pcmRa1_ ;
+      /**
+       * <pre>
+       * pcm1
+       * </pre>
+       *
+       * <code>float pcm_ra_1 = 128;</code>
+       * @return The pcmRa1.
+       */
+      @java.lang.Override
+      public float getPcmRa1() {
+        return pcmRa1_;
+      }
+      /**
+       * <pre>
+       * pcm1
+       * </pre>
+       *
+       * <code>float pcm_ra_1 = 128;</code>
+       * @param value The pcmRa1 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPcmRa1(float value) {
+        
+        pcmRa1_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * pcm1
+       * </pre>
+       *
+       * <code>float pcm_ra_1 = 128;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPcmRa1() {
+        
+        pcmRa1_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float pcmRa2_ ;
+      /**
+       * <pre>
+       * pcm2
+       * </pre>
+       *
+       * <code>float pcm_ra_2 = 129;</code>
+       * @return The pcmRa2.
+       */
+      @java.lang.Override
+      public float getPcmRa2() {
+        return pcmRa2_;
+      }
+      /**
+       * <pre>
+       * pcm2
+       * </pre>
+       *
+       * <code>float pcm_ra_2 = 129;</code>
+       * @param value The pcmRa2 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPcmRa2(float value) {
+        
+        pcmRa2_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * pcm2
+       * </pre>
+       *
+       * <code>float pcm_ra_2 = 129;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPcmRa2() {
+        
+        pcmRa2_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float pcmRa3_ ;
+      /**
+       * <pre>
+       * pcm3
+       * </pre>
+       *
+       * <code>float pcm_ra_3 = 130;</code>
+       * @return The pcmRa3.
+       */
+      @java.lang.Override
+      public float getPcmRa3() {
+        return pcmRa3_;
+      }
+      /**
+       * <pre>
+       * pcm3
+       * </pre>
+       *
+       * <code>float pcm_ra_3 = 130;</code>
+       * @param value The pcmRa3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPcmRa3(float value) {
+        
+        pcmRa3_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * pcm3
+       * </pre>
+       *
+       * <code>float pcm_ra_3 = 130;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPcmRa3() {
+        
+        pcmRa3_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float pcmRa4_ ;
+      /**
+       * <pre>
+       * pcm4
+       * </pre>
+       *
+       * <code>float pcm_ra_4 = 131;</code>
+       * @return The pcmRa4.
+       */
+      @java.lang.Override
+      public float getPcmRa4() {
+        return pcmRa4_;
+      }
+      /**
+       * <pre>
+       * pcm4
+       * </pre>
+       *
+       * <code>float pcm_ra_4 = 131;</code>
+       * @param value The pcmRa4 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPcmRa4(float value) {
+        
+        pcmRa4_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * pcm4
+       * </pre>
+       *
+       * <code>float pcm_ra_4 = 131;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPcmRa4() {
+        
+        pcmRa4_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float pcmRa5_ ;
+      /**
+       * <pre>
+       * pcm5
+       * </pre>
+       *
+       * <code>float pcm_ra_5 = 132;</code>
+       * @return The pcmRa5.
+       */
+      @java.lang.Override
+      public float getPcmRa5() {
+        return pcmRa5_;
+      }
+      /**
+       * <pre>
+       * pcm5
+       * </pre>
+       *
+       * <code>float pcm_ra_5 = 132;</code>
+       * @param value The pcmRa5 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPcmRa5(float value) {
+        
+        pcmRa5_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * pcm5
+       * </pre>
+       *
+       * <code>float pcm_ra_5 = 132;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPcmRa5() {
+        
+        pcmRa5_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float pshRa1_ ;
+      /**
+       * <pre>
+       * psh1
+       * </pre>
+       *
+       * <code>float psh_ra_1 = 133;</code>
+       * @return The pshRa1.
+       */
+      @java.lang.Override
+      public float getPshRa1() {
+        return pshRa1_;
+      }
+      /**
+       * <pre>
+       * psh1
+       * </pre>
+       *
+       * <code>float psh_ra_1 = 133;</code>
+       * @param value The pshRa1 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPshRa1(float value) {
+        
+        pshRa1_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * psh1
+       * </pre>
+       *
+       * <code>float psh_ra_1 = 133;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPshRa1() {
+        
+        pshRa1_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float pshRa2_ ;
+      /**
+       * <pre>
+       * psh2
+       * </pre>
+       *
+       * <code>float psh_ra_2 = 134;</code>
+       * @return The pshRa2.
+       */
+      @java.lang.Override
+      public float getPshRa2() {
+        return pshRa2_;
+      }
+      /**
+       * <pre>
+       * psh2
+       * </pre>
+       *
+       * <code>float psh_ra_2 = 134;</code>
+       * @param value The pshRa2 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPshRa2(float value) {
+        
+        pshRa2_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * psh2
+       * </pre>
+       *
+       * <code>float psh_ra_2 = 134;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPshRa2() {
+        
+        pshRa2_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float pshRa3_ ;
+      /**
+       * <pre>
+       * psh3
+       * </pre>
+       *
+       * <code>float psh_ra_3 = 135;</code>
+       * @return The pshRa3.
+       */
+      @java.lang.Override
+      public float getPshRa3() {
+        return pshRa3_;
+      }
+      /**
+       * <pre>
+       * psh3
+       * </pre>
+       *
+       * <code>float psh_ra_3 = 135;</code>
+       * @param value The pshRa3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPshRa3(float value) {
+        
+        pshRa3_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * psh3
+       * </pre>
+       *
+       * <code>float psh_ra_3 = 135;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPshRa3() {
+        
+        pshRa3_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float pfvRa1_ ;
+      /**
+       * <pre>
+       * pfv1
+       * </pre>
+       *
+       * <code>float pfv_ra_1 = 136;</code>
+       * @return The pfvRa1.
+       */
+      @java.lang.Override
+      public float getPfvRa1() {
+        return pfvRa1_;
+      }
+      /**
+       * <pre>
+       * pfv1
+       * </pre>
+       *
+       * <code>float pfv_ra_1 = 136;</code>
+       * @param value The pfvRa1 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPfvRa1(float value) {
+        
+        pfvRa1_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * pfv1
+       * </pre>
+       *
+       * <code>float pfv_ra_1 = 136;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPfvRa1() {
+        
+        pfvRa1_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float pfvRa2_ ;
+      /**
+       * <pre>
+       * pfv2
+       * </pre>
+       *
+       * <code>float pfv_ra_2 = 137;</code>
+       * @return The pfvRa2.
+       */
+      @java.lang.Override
+      public float getPfvRa2() {
+        return pfvRa2_;
+      }
+      /**
+       * <pre>
+       * pfv2
+       * </pre>
+       *
+       * <code>float pfv_ra_2 = 137;</code>
+       * @param value The pfvRa2 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPfvRa2(float value) {
+        
+        pfvRa2_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * pfv2
+       * </pre>
+       *
+       * <code>float pfv_ra_2 = 137;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPfvRa2() {
+        
+        pfvRa2_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float pfvRa3_ ;
+      /**
+       * <pre>
+       * pfv3
+       * </pre>
+       *
+       * <code>float pfv_ra_3 = 138;</code>
+       * @return The pfvRa3.
+       */
+      @java.lang.Override
+      public float getPfvRa3() {
+        return pfvRa3_;
+      }
+      /**
+       * <pre>
+       * pfv3
+       * </pre>
+       *
+       * <code>float pfv_ra_3 = 138;</code>
+       * @param value The pfvRa3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPfvRa3(float value) {
+        
+        pfvRa3_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * pfv3
+       * </pre>
+       *
+       * <code>float pfv_ra_3 = 138;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPfvRa3() {
+        
+        pfvRa3_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float ppfRa1_ ;
+      /**
+       * <pre>
+       * ppf1
+       * </pre>
+       *
+       * <code>float ppf_ra_1 = 139;</code>
+       * @return The ppfRa1.
+       */
+      @java.lang.Override
+      public float getPpfRa1() {
+        return ppfRa1_;
+      }
+      /**
+       * <pre>
+       * ppf1
+       * </pre>
+       *
+       * <code>float ppf_ra_1 = 139;</code>
+       * @param value The ppfRa1 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPpfRa1(float value) {
+        
+        ppfRa1_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * ppf1
+       * </pre>
+       *
+       * <code>float ppf_ra_1 = 139;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPpfRa1() {
+        
+        ppfRa1_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float ppfRa2_ ;
+      /**
+       * <pre>
+       * ppf2
+       * </pre>
+       *
+       * <code>float ppf_ra_2 = 140;</code>
+       * @return The ppfRa2.
+       */
+      @java.lang.Override
+      public float getPpfRa2() {
+        return ppfRa2_;
+      }
+      /**
+       * <pre>
+       * ppf2
+       * </pre>
+       *
+       * <code>float ppf_ra_2 = 140;</code>
+       * @param value The ppfRa2 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPpfRa2(float value) {
+        
+        ppfRa2_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * ppf2
+       * </pre>
+       *
+       * <code>float ppf_ra_2 = 140;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPpfRa2() {
+        
+        ppfRa2_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float ppfRa3_ ;
+      /**
+       * <pre>
+       * ppf3
+       * </pre>
+       *
+       * <code>float ppf_ra_3 = 141;</code>
+       * @return The ppfRa3.
+       */
+      @java.lang.Override
+      public float getPpfRa3() {
+        return ppfRa3_;
+      }
+      /**
+       * <pre>
+       * ppf3
+       * </pre>
+       *
+       * <code>float ppf_ra_3 = 141;</code>
+       * @param value The ppfRa3 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPpfRa3(float value) {
+        
+        ppfRa3_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * ppf3
+       * </pre>
+       *
+       * <code>float ppf_ra_3 = 141;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPpfRa3() {
+        
+        ppfRa3_ = 0F;
         onChanged();
         return this;
       }
@@ -41076,7 +50504,7 @@ public final class RecFeature {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\020RecFeature.proto\022\017com.gosh.entity\"\241\030\n\016" +
+      "\n\020RecFeature.proto\022\017com.gosh.entity\"\204!\n\016" +
       "RecUserFeature\022\025\n\rviewer_is_old\030\001 \001(\005\022\034\n" +
       "\024viewer_register_days\030\002 \001(\005\022\035\n\025viewer_ex" +
       "ppost_cnt_1h\030\n \001(\005\022\037\n\027viewer_exp1_post_c" +
@@ -41154,182 +50582,224 @@ public final class RecFeature {
       "ve_post_list_24h\030q \003(\003\022%\n\035viewer_negetiv" +
       "e_post_list_24h\030r \003(\003\022\'\n\037viewer_positive" +
       "_author_list_24h\030s \003(\003\022\'\n\037viewer_negetiv" +
-      "e_author_list_24h\030t \003(\003\"\244\016\n\016RecPostFeatu" +
-      "re\022\017\n\007post_id\030\001 \001(\004\022\027\n\017post_exp_cnt_1h\030\n" +
-      " \001(\005\022\032\n\022post_3sview_cnt_1h\030\013 \001(\005\022\032\n\022post" +
-      "_8sview_cnt_1h\030\014 \001(\005\022\033\n\023post_12sview_cnt" +
-      "_1h\030\r \001(\005\022\033\n\023post_20sview_cnt_1h\030\016 \001(\005\022\033" +
-      "\n\023post_5sstand_cnt_1h\030\017 \001(\005\022\034\n\024post_10ss" +
-      "tand_cnt_1h\030\020 \001(\005\022\030\n\020post_like_cnt_1h\030\021 " +
-      "\001(\005\022\032\n\022post_follow_cnt_1h\030\022 \001(\005\022\033\n\023post_" +
-      "profile_cnt_1h\030\023 \001(\005\022\034\n\024post_posinter_cn" +
-      "t_1h\030\024 \001(\005\022\030\n\020post_exp_cnt_24h\030\036 \001(\005\022\033\n\023" +
-      "post_3sview_cnt_24h\030\037 \001(\005\022\033\n\023post_8sview" +
-      "_cnt_24h\030  \001(\005\022\034\n\024post_12sview_cnt_24h\030!" +
-      " \001(\005\022\034\n\024post_20sview_cnt_24h\030\" \001(\005\022\034\n\024po" +
-      "st_5sstand_cnt_24h\030# \001(\005\022\035\n\025post_10sstan" +
-      "d_cnt_24h\030$ \001(\005\022\031\n\021post_like_cnt_24h\030% \001" +
-      "(\005\022\033\n\023post_follow_cnt_24h\030& \001(\005\022\034\n\024post_" +
-      "profile_cnt_24h\030\' \001(\005\022\035\n\025post_posinter_c" +
-      "nt_24h\030( \001(\005\022\030\n\020post_view_cnt_7d\030) \001(\005\022\035" +
-      "\n\025post_validview_cnt_7d\030* \001(\005\022 \n\030post_co" +
-      "mpleteview_cnt_7d\030+ \001(\005\022\035\n\025post_view_dur" +
-      "ation_7d\030, \001(\002\022\030\n\020post_like_cnt_7d\030- \001(\005" +
-      "\022\033\n\023post_comment_cnt_7d\030. \001(\005\022\017\n\007tag_ids" +
-      "\030/ \003(\005\022\'\n\037author_exp_distinct_post_cnt_7" +
-      "d\0300 \001(\005\022\036\n\026author_exp_post_cnt_7d\0301 \001(\005\022" +
-      "$\n\034author_validview_post_cnt_7d\0302 \001(\005\022$\n" +
-      "\034author_view_post_duration_7d\0303 \001(\002\022\032\n\022a" +
-      "uthor_like_cnt_7d\0304 \001(\005\022\035\n\025author_commen" +
-      "t_cnt_7d\0305 \001(\005\022\'\n\037author_completeview_po" +
-      "st_cnt_7d\0306 \001(\005\022#\n\033author_view_avg_durat" +
-      "ion_7d\0307 \001(\002\022#\n\033author_inter_profile_cnt" +
-      "_7d\0308 \001(\005\022\034\n\024author_follow_cnt_7d\0309 \001(\005\022" +
-      "\034\n\024author_followers_cnt\030: \001(\005\022\036\n\026post_va" +
-      "lidview_rate_7d\030< \001(\002\022!\n\031post_completevi" +
-      "ew_rate_7d\030= \001(\002\022!\n\031post_avg_view_durati" +
-      "on_7d\030> \001(\002\022\031\n\021post_like_rate_7d\030? \001(\002\022\034" +
-      "\n\024post_comment_rate_7d\030@ \001(\002\022\031\n\021post_ai_" +
-      "embedding\030F \003(\002\022\024\n\014post_ai_tags\030G \001(\t\022\025\n" +
-      "\rpost_asr_lang\030H \001(\t\022\031\n\021post_skip_cnt_24" +
-      "h\030d \001(\005\022\036\n\026post_compelete_cnt_24h\030e \001(\005\022" +
-      "\036\n\026post_progress_rate_24h\030f \001(\002\022\035\n\025post_" +
-      "20sstand_cnt_24h\030g \001(\005\022\033\n\023post_5splay_cn" +
-      "t_24h\030h \001(\005\022\034\n\024post_10splay_cnt_24h\030i \001(" +
-      "\005\022\034\n\024post_comment_cnt_24h\030j \001(\005\022\032\n\022post_" +
-      "share_cnt_24h\030k \001(\005\022\034\n\024post_collect_cnt_" +
-      "24h\030l \001(\005\022\033\n\023post_report_cnt_24h\030m \001(\005\022\034" +
-      "\n\024post_dislike_cnt_24h\030n \001(\005\022\030\n\020post_pay" +
-      "_cnt_24h\030o \001(\005\",\n\rFeedbackTagV2\022\013\n\003tag\030\001" +
-      " \001(\t\022\016\n\006weight\030\002 \001(\002\"5\n\020FeedbackAuthorId" +
-      "\022\021\n\tauthor_id\030\001 \001(\004\022\016\n\006weight\030\002 \001(\002\"\231\024\n\024" +
-      "RecUserAuthorFeature\022\017\n\007user_id\030\001 \001(\004\022\021\n" +
-      "\tauthor_id\030\002 \001(\004\022\035\n\025userauthor_exp_cnt_1" +
-      "h\030\n \001(\005\022 \n\030userauthor_3sview_cnt_1h\030\013 \001(" +
-      "\005\022 \n\030userauthor_8sview_cnt_1h\030\014 \001(\005\022!\n\031u" +
-      "serauthor_12sview_cnt_1h\030\r \001(\005\022!\n\031userau" +
-      "thor_20sview_cnt_1h\030\016 \001(\005\022!\n\031userauthor_" +
-      "5sstand_cnt_1h\030\017 \001(\005\022\"\n\032userauthor_10sst" +
-      "and_cnt_1h\030\020 \001(\005\022\036\n\026userauthor_like_cnt_" +
-      "1h\030\021 \001(\005\022\036\n\026userauthor_exp_cnt_24h\030\036 \001(\005" +
-      "\022!\n\031userauthor_3sview_cnt_24h\030\037 \001(\005\022!\n\031u" +
-      "serauthor_8sview_cnt_24h\030  \001(\005\022\"\n\032userau" +
-      "thor_12sview_cnt_24h\030! \001(\005\022\"\n\032userauthor" +
-      "_20sview_cnt_24h\030\" \001(\005\022\"\n\032userauthor_5ss" +
-      "tand_cnt_24h\030# \001(\005\022#\n\033userauthor_10sstan" +
-      "d_cnt_24h\030$ \001(\005\022\037\n\027userauthor_like_cnt_2" +
-      "4h\030% \001(\005\022\037\n\027user_author_view_cnt_7d\030( \001(" +
-      "\005\022$\n\034user_author_validview_cnt_7d\030) \001(\002\022" +
-      "(\n user_author_compeleteview_cnt_7d\030* \001(" +
-      "\005\022\037\n\027user_author_like_cnt_7d\030+ \001(\005\022\"\n\032us" +
-      "er_author_comment_cnt_7d\030, \001(\005\022(\n user_a" +
-      "uthor_avg_view_duration_7d\030- \001(\002\022&\n\036user" +
-      "_author_validview_tfidf_7d\030. \001(\002\022*\n\"user" +
-      "_author_compeleteview_tfidf_7d\030/ \001(\002\022(\n " +
-      "user_author_likecomment_tfidf_7d\0300 \001(\002\022\032" +
-      "\n\022user_tag11_is_like\0302 \001(\005\022\032\n\022user_tag11" +
-      "_is_play\0303 \001(\005\022\035\n\025user_tag11_is_comment\030" +
-      "4 \001(\005\022\032\n\022user_tag12_is_like\0305 \001(\005\022\032\n\022use" +
-      "r_tag12_is_play\0306 \001(\005\022\035\n\025user_tag12_is_c" +
-      "omment\0307 \001(\005\022\032\n\022user_tag13_is_like\0308 \001(\005" +
-      "\022\032\n\022user_tag13_is_play\0309 \001(\005\022\035\n\025user_tag" +
-      "13_is_comment\030: \001(\005\022\032\n\022user_tag14_is_lik" +
-      "e\030; \001(\005\022\032\n\022user_tag14_is_play\030< \001(\005\022\035\n\025u" +
-      "ser_tag14_is_comment\030= \001(\005\022\032\n\022user_tag15" +
-      "_is_like\030> \001(\005\022\032\n\022user_tag15_is_play\030? \001" +
-      "(\005\022\035\n\025user_tag15_is_comment\030@ \001(\005\022\032\n\022use" +
-      "r_tag16_is_like\030A \001(\005\022\032\n\022user_tag16_is_p" +
-      "lay\030B \001(\005\022\035\n\025user_tag16_is_comment\030C \001(\005" +
-      "\022\032\n\022user_tag17_is_like\030D \001(\005\022\032\n\022user_tag" +
-      "17_is_play\030E \001(\005\022\035\n\025user_tag17_is_commen" +
-      "t\030F \001(\005\022\033\n\023user_tag11_like_cnt\030G \001(\005\022\033\n\023" +
-      "user_tag11_play_cnt\030H \001(\005\022\036\n\026user_tag11_" +
-      "comment_cnt\030I \001(\005\022\033\n\023user_tag12_like_cnt" +
-      "\030J \001(\005\022\033\n\023user_tag12_play_cnt\030K \001(\005\022\036\n\026u" +
-      "ser_tag12_comment_cnt\030L \001(\005\022\033\n\023user_tag1" +
-      "3_like_cnt\030M \001(\005\022\033\n\023user_tag13_play_cnt\030" +
-      "N \001(\005\022\036\n\026user_tag13_comment_cnt\030O \001(\005\022\033\n" +
-      "\023user_tag14_like_cnt\030P \001(\005\022\033\n\023user_tag14" +
-      "_play_cnt\030Q \001(\005\022\036\n\026user_tag14_comment_cn" +
-      "t\030R \001(\005\022\033\n\023user_tag15_like_cnt\030S \001(\005\022\033\n\023" +
-      "user_tag15_play_cnt\030T \001(\005\022\036\n\026user_tag15_" +
-      "comment_cnt\030U \001(\005\022\033\n\023user_tag16_like_cnt" +
-      "\030V \001(\005\022\033\n\023user_tag16_play_cnt\030W \001(\005\022\036\n\026u" +
-      "ser_tag16_comment_cnt\030X \001(\005\022\033\n\023user_tag1" +
-      "7_like_cnt\030Y \001(\005\022\033\n\023user_tag17_play_cnt\030" +
-      "Z \001(\005\022\036\n\026user_tag17_comment_cnt\030[ \001(\005\022\037\n" +
-      "\027userauthor_skip_cnt_24h\030d \001(\005\022\"\n\032userau" +
-      "thor_12splay_cnt_24h\030e \001(\005\022#\n\033userauthor" +
-      "_20sstand_cnt_24h\030f \001(\005\022\"\n\032userauthor_co" +
-      "mment_cnt_24h\030g \001(\005\022 \n\030userauthor_share_" +
-      "cnt_24h\030h \001(\005\022!\n\031userauthor_follow_cnt_2" +
-      "4h\030i \001(\005\022\"\n\032userauthor_collect_cnt_24h\030j" +
-      " \001(\005\022\"\n\032userauthor_profile_cnt_24h\030k \001(\005" +
-      "\022!\n\031userauthor_report_cnt_24h\030l \001(\005\022\"\n\032u" +
-      "serauthor_dislike_cnt_24h\030m \001(\005\022\036\n\026usera" +
-      "uthor_pay_cnt_24h\030n \001(\005\"\374\005\n\025LiveUserAnch" +
-      "orFeature\022\017\n\007user_id\030\001 \001(\004\022\021\n\tanchor_id\030" +
-      "\002 \001(\004\022!\n\031user_anchor_exp_cnt_15min\030\n \001(\005" +
-      "\022$\n\034user_anchor_3squit_cnt_15min\030\013 \001(\005\022$" +
-      "\n\034user_anchor_6squit_cnt_15min\030\014 \001(\005\022\"\n\032" +
-      "user_anchor_like_cnt_15min\030\r \001(\005\022%\n\035user" +
-      "_anchor_comment_cnt_15min\030\016 \001(\005\022$\n\034user_" +
-      "anchor_follow_cnt_15min\030\017 \001(\005\022#\n\033user_an" +
-      "chor_share_cnt_15min\030\020 \001(\005\022\"\n\032user_ancho" +
-      "r_gift_cnt_15min\030\021 \001(\005\022%\n\035user_anchor_gi" +
-      "ft_amount_15min\030\022 \001(\005\022/\n\'user_anchor_neg" +
-      "ative_feedback_cnt_15min\030\023 \001(\005\022 \n\030user_a" +
-      "nchor_enter_cnt_7d\030\024 \001(\005\022\037\n\027user_anchor_" +
-      "quit_cnt_7d\030\025 \001(\005\022%\n\035user_anchor_stay_gt" +
-      "10s_cnt_7d\030\026 \001(\005\022%\n\035user_anchor_stay_gt3" +
-      "0s_cnt_7d\030\027 \001(\005\022(\n user_anchor_avg_view_" +
-      "duration_7d\030\030 \001(\002\022,\n$user_anchor_positiv" +
-      "e_feedback_cnt_7d\030\031 \001(\005\022,\n$user_anchor_n" +
-      "egative_feedback_cnt_7d\030\032 \001(\005\022\'\n\037user_an" +
-      "chor_active_enter_cnt_7d\030\033 \001(\005\"\335\n\n\024RecLi" +
-      "veAnchorFeature\022\021\n\tanchor_id\030\001 \001(\004\022\037\n\027li" +
-      "ve_enter_usernum_5min\030\n \001(\005\022\036\n\026live_quit" +
-      "_usernum_5min\030\013 \001(\005\022#\n\033live_quit_avg_dur" +
-      "ation_5min\030\014 \001(\005\022\"\n\032live_anchor_gift_coi" +
-      "n_5min\030\r \001(\005\022%\n\035live_anchor_gift_usernum" +
-      "_5min\030\016 \001(\005\022\'\n\037live_anchor_follow_usernu" +
-      "m_5min\030\017 \001(\005\022%\n\035live_anchor_chat_usernum" +
-      "_5min\030\020 \001(\005\022 \n\030live_enter_usernum_10min\030" +
-      "\024 \001(\005\022\037\n\027live_quit_usernum_10min\030\025 \001(\005\022$" +
-      "\n\034live_quit_avg_duration_10min\030\026 \001(\005\022#\n\033" +
-      "live_anchor_gift_coin_10min\030\027 \001(\005\022&\n\036liv" +
-      "e_anchor_gift_usernum_10min\030\030 \001(\005\022(\n liv" +
-      "e_anchor_follow_usernum_10min\030\031 \001(\005\022&\n\036l" +
-      "ive_anchor_chat_usernum_10min\030\032 \001(\005\022 \n\030l" +
-      "ive_enter_usernum_15min\030\036 \001(\005\022\037\n\027live_qu" +
-      "it_usernum_15min\030\037 \001(\005\022$\n\034live_quit_avg_" +
-      "duration_15min\030  \001(\005\022#\n\033live_anchor_gift" +
-      "_coin_15min\030! \001(\005\022&\n\036live_anchor_gift_us" +
-      "ernum_15min\030\" \001(\005\022(\n live_anchor_follow_" +
-      "usernum_15min\030# \001(\005\022&\n\036live_anchor_chat_" +
-      "usernum_15min\030$ \001(\005\022\033\n\023anchor_enter_cnt_" +
-      "7d\030( \001(\005\022\032\n\022anchor_quit_cnt_7d\030) \001(\005\022\037\n\027" +
-      "anchor_stay_gt3s_cnt_7d\030* \001(\005\022 \n\030anchor_" +
-      "stay_gt10s_cnt_7d\030+ \001(\005\022 \n\030anchor_stay_g" +
-      "t30s_cnt_7d\030, \001(\005\022#\n\033anchor_avg_view_dur" +
-      "ation_7d\030- \001(\002\022\034\n\024anchor_follow_cnt_7d\030." +
-      " \001(\005\022\'\n\037anchor_positive_feedback_cnt_7d\030" +
-      "/ \001(\005\022\'\n\037anchor_negative_feedback_cnt_7d" +
-      "\0300 \001(\005\022)\n!anchor_live_scene_exposure_cnt" +
-      "_7d\0301 \001(\005\022)\n!anchor_foru_scene_exposure_" +
-      "cnt_7d\0302 \001(\005\022&\n\036anchor_live_scene_enter_" +
-      "cnt_7d\0303 \001(\005\022&\n\036anchor_foru_scene_enter_" +
-      "cnt_7d\0304 \001(\005\022\032\n\022anchor_gift_cnt_7d\0305 \001(\005" +
-      "\022\023\n\013anchor_type\030< \001(\005\022\027\n\017anchor_rec_type" +
-      "\030= \001(\005\"\321\001\n\022RecLiveUserFeature\022\017\n\007user_id" +
-      "\030\001 \001(\004\022\030\n\020viewer_live_hise\030\002 \001(\005\022=\n\033user" +
-      "_stay_gt10s_anchor_list\030\n \003(\0132\030.com.gosh" +
-      ".entity.IdScore\022%\n\035user_active_enter_anc" +
-      "hor_list\030\013 \003(\005\022*\n\"user_positive_feedback" +
-      "_anchor_list\030\014 \003(\005\"$\n\007IdScore\022\n\n\002id\030\001 \001(" +
-      "\003\022\r\n\005score\030\002 \001(\002\"A\n\020RecLiveIdFeature\022\017\n\007" +
-      "live_id\030\001 \001(\003\022\034\n\024live_id_exp_cnt_5min\030\n " +
-      "\001(\005b\006proto3"
+      "e_author_list_24h\030t \003(\003\022\017\n\007vv_ra_1\030v \001(\002" +
+      "\022\017\n\007vv_ra_2\030w \001(\002\022\017\n\007vv_ra_3\030x \001(\002\022\017\n\007vv" +
+      "_ra_4\030y \001(\002\022\017\n\007vv_ra_5\030z \001(\002\022\020\n\010cpv_ra_1" +
+      "\030{ \001(\002\022\020\n\010cpv_ra_2\030| \001(\002\022\020\n\010cpv_ra_3\030} \001" +
+      "(\002\022\020\n\010cpv_ra_4\030~ \001(\002\022\020\n\010cpv_ra_5\030\177 \001(\002\022\021" +
+      "\n\010cpv_ra_6\030\200\001 \001(\002\022\020\n\007lk_ra_1\030\201\001 \001(\002\022\020\n\007l" +
+      "k_ra_2\030\202\001 \001(\002\022\020\n\007lk_ra_3\030\203\001 \001(\002\022\020\n\007lk_ra" +
+      "_4\030\204\001 \001(\002\022\020\n\007lk_ra_5\030\205\001 \001(\002\022\020\n\007cm_ra_1\030\206" +
+      "\001 \001(\002\022\020\n\007cm_ra_2\030\207\001 \001(\002\022\020\n\007cm_ra_3\030\210\001 \001(" +
+      "\002\022\020\n\007cm_ra_4\030\211\001 \001(\002\022\020\n\007cm_ra_5\030\212\001 \001(\002\022\020\n" +
+      "\007sh_ra_1\030\213\001 \001(\002\022\020\n\007sh_ra_2\030\214\001 \001(\002\022\020\n\007sh_" +
+      "ra_3\030\215\001 \001(\002\022\020\n\007fv_ra_1\030\216\001 \001(\002\022\020\n\007fv_ra_2" +
+      "\030\217\001 \001(\002\022\020\n\007fv_ra_3\030\220\001 \001(\002\022\020\n\007pf_ra_1\030\221\001 " +
+      "\001(\002\022\020\n\007pf_ra_2\030\222\001 \001(\002\022\020\n\007pf_ra_3\030\223\001 \001(\002\022" +
+      ")\n viewer_completeplay_posts_latest\030\227\001 \003" +
+      "(\003\022?\n\034viewer_10sstand_posts_latest\030\230\001 \003(" +
+      "\0132\030.com.gosh.entity.IdScore\022=\n\032viewer_8s" +
+      "play_posts_latest\030\231\001 \003(\0132\030.com.gosh.enti" +
+      "ty.IdScore\022!\n\030viewer_like_posts_latest\030\232" +
+      "\001 \003(\003\022$\n\033viewer_comment_posts_latest\030\233\001 " +
+      "\003(\003\022\"\n\031viewer_share_posts_latest\030\234\001 \003(\003\022" +
+      "$\n\033viewer_collect_posts_latest\030\235\001 \003(\003\022 \n" +
+      "\027viewer_pay_posts_latest\030\236\001 \003(\003\022#\n\032viewe" +
+      "r_report_posts_latest\030\237\001 \003(\003\022$\n\033viewer_d" +
+      "islike_posts_latest\030\240\001 \003(\003\022%\n\034viewer_pos" +
+      "itive_posts_latest\030\241\001 \003(\003\022%\n\034viewer_nege" +
+      "tive_posts_latest\030\242\001 \003(\003\022\'\n\036viewer_posit" +
+      "ive_authors_latest\030\243\001 \003(\003\022\'\n\036viewer_nege" +
+      "tive_authors_latest\030\244\001 \003(\003\"\324\022\n\016RecPostFe" +
+      "ature\022\017\n\007post_id\030\001 \001(\004\022\027\n\017post_exp_cnt_1" +
+      "h\030\n \001(\005\022\032\n\022post_3sview_cnt_1h\030\013 \001(\005\022\032\n\022p" +
+      "ost_8sview_cnt_1h\030\014 \001(\005\022\033\n\023post_12sview_" +
+      "cnt_1h\030\r \001(\005\022\033\n\023post_20sview_cnt_1h\030\016 \001(" +
+      "\005\022\033\n\023post_5sstand_cnt_1h\030\017 \001(\005\022\034\n\024post_1" +
+      "0sstand_cnt_1h\030\020 \001(\005\022\030\n\020post_like_cnt_1h" +
+      "\030\021 \001(\005\022\032\n\022post_follow_cnt_1h\030\022 \001(\005\022\033\n\023po" +
+      "st_profile_cnt_1h\030\023 \001(\005\022\034\n\024post_posinter" +
+      "_cnt_1h\030\024 \001(\005\022\030\n\020post_exp_cnt_24h\030\036 \001(\005\022" +
+      "\033\n\023post_3sview_cnt_24h\030\037 \001(\005\022\033\n\023post_8sv" +
+      "iew_cnt_24h\030  \001(\005\022\034\n\024post_12sview_cnt_24" +
+      "h\030! \001(\005\022\034\n\024post_20sview_cnt_24h\030\" \001(\005\022\034\n" +
+      "\024post_5sstand_cnt_24h\030# \001(\005\022\035\n\025post_10ss" +
+      "tand_cnt_24h\030$ \001(\005\022\031\n\021post_like_cnt_24h\030" +
+      "% \001(\005\022\033\n\023post_follow_cnt_24h\030& \001(\005\022\034\n\024po" +
+      "st_profile_cnt_24h\030\' \001(\005\022\035\n\025post_posinte" +
+      "r_cnt_24h\030( \001(\005\022\030\n\020post_view_cnt_7d\030) \001(" +
+      "\005\022\035\n\025post_validview_cnt_7d\030* \001(\005\022 \n\030post" +
+      "_completeview_cnt_7d\030+ \001(\005\022\035\n\025post_view_" +
+      "duration_7d\030, \001(\002\022\030\n\020post_like_cnt_7d\030- " +
+      "\001(\005\022\033\n\023post_comment_cnt_7d\030. \001(\005\022\017\n\007tag_" +
+      "ids\030/ \003(\005\022\'\n\037author_exp_distinct_post_cn" +
+      "t_7d\0300 \001(\005\022\036\n\026author_exp_post_cnt_7d\0301 \001" +
+      "(\005\022$\n\034author_validview_post_cnt_7d\0302 \001(\005" +
+      "\022$\n\034author_view_post_duration_7d\0303 \001(\002\022\032" +
+      "\n\022author_like_cnt_7d\0304 \001(\005\022\035\n\025author_com" +
+      "ment_cnt_7d\0305 \001(\005\022\'\n\037author_completeview" +
+      "_post_cnt_7d\0306 \001(\005\022#\n\033author_view_avg_du" +
+      "ration_7d\0307 \001(\002\022#\n\033author_inter_profile_" +
+      "cnt_7d\0308 \001(\005\022\034\n\024author_follow_cnt_7d\0309 \001" +
+      "(\005\022\034\n\024author_followers_cnt\030: \001(\005\022\036\n\026post" +
+      "_validview_rate_7d\030< \001(\002\022!\n\031post_complet" +
+      "eview_rate_7d\030= \001(\002\022!\n\031post_avg_view_dur" +
+      "ation_7d\030> \001(\002\022\031\n\021post_like_rate_7d\030? \001(" +
+      "\002\022\034\n\024post_comment_rate_7d\030@ \001(\002\022\031\n\021post_" +
+      "ai_embedding\030F \003(\002\022\024\n\014post_ai_tags\030G \001(\t" +
+      "\022\025\n\rpost_asr_lang\030H \001(\t\022\031\n\021post_skip_cnt" +
+      "_24h\030d \001(\005\022\036\n\026post_compelete_cnt_24h\030e \001" +
+      "(\005\022\036\n\026post_progress_rate_24h\030f \001(\002\022\035\n\025po" +
+      "st_20sstand_cnt_24h\030g \001(\005\022\033\n\023post_5splay" +
+      "_cnt_24h\030h \001(\005\022\034\n\024post_10splay_cnt_24h\030i" +
+      " \001(\005\022\034\n\024post_comment_cnt_24h\030j \001(\005\022\032\n\022po" +
+      "st_share_cnt_24h\030k \001(\005\022\034\n\024post_collect_c" +
+      "nt_24h\030l \001(\005\022\033\n\023post_report_cnt_24h\030m \001(" +
+      "\005\022\034\n\024post_dislike_cnt_24h\030n \001(\005\022\030\n\020post_" +
+      "pay_cnt_24h\030o \001(\005\022\020\n\010pvv_ra_1\030p \001(\002\022\020\n\010p" +
+      "vv_ra_2\030q \001(\002\022\020\n\010pvv_ra_3\030r \001(\002\022\020\n\010pvv_r" +
+      "a_4\030s \001(\002\022\020\n\010pvv_ra_5\030t \001(\002\022\021\n\tpcpv_ra_1" +
+      "\030u \001(\002\022\021\n\tpcpv_ra_2\030v \001(\002\022\021\n\tpcpv_ra_3\030w" +
+      " \001(\002\022\021\n\tpcpv_ra_4\030x \001(\002\022\021\n\tpcpv_ra_5\030y \001" +
+      "(\002\022\021\n\tpcpv_ra_6\030z \001(\002\022\020\n\010plk_ra_1\030{ \001(\002\022" +
+      "\020\n\010plk_ra_2\030| \001(\002\022\020\n\010plk_ra_3\030} \001(\002\022\020\n\010p" +
+      "lk_ra_4\030~ \001(\002\022\020\n\010plk_ra_5\030\177 \001(\002\022\021\n\010pcm_r" +
+      "a_1\030\200\001 \001(\002\022\021\n\010pcm_ra_2\030\201\001 \001(\002\022\021\n\010pcm_ra_" +
+      "3\030\202\001 \001(\002\022\021\n\010pcm_ra_4\030\203\001 \001(\002\022\021\n\010pcm_ra_5\030" +
+      "\204\001 \001(\002\022\021\n\010psh_ra_1\030\205\001 \001(\002\022\021\n\010psh_ra_2\030\206\001" +
+      " \001(\002\022\021\n\010psh_ra_3\030\207\001 \001(\002\022\021\n\010pfv_ra_1\030\210\001 \001" +
+      "(\002\022\021\n\010pfv_ra_2\030\211\001 \001(\002\022\021\n\010pfv_ra_3\030\212\001 \001(\002" +
+      "\022\021\n\010ppf_ra_1\030\213\001 \001(\002\022\021\n\010ppf_ra_2\030\214\001 \001(\002\022\021" +
+      "\n\010ppf_ra_3\030\215\001 \001(\002\",\n\rFeedbackTagV2\022\013\n\003ta" +
+      "g\030\001 \001(\t\022\016\n\006weight\030\002 \001(\002\"5\n\020FeedbackAutho" +
+      "rId\022\021\n\tauthor_id\030\001 \001(\004\022\016\n\006weight\030\002 \001(\002\"\231" +
+      "\024\n\024RecUserAuthorFeature\022\017\n\007user_id\030\001 \001(\004" +
+      "\022\021\n\tauthor_id\030\002 \001(\004\022\035\n\025userauthor_exp_cn" +
+      "t_1h\030\n \001(\005\022 \n\030userauthor_3sview_cnt_1h\030\013" +
+      " \001(\005\022 \n\030userauthor_8sview_cnt_1h\030\014 \001(\005\022!" +
+      "\n\031userauthor_12sview_cnt_1h\030\r \001(\005\022!\n\031use" +
+      "rauthor_20sview_cnt_1h\030\016 \001(\005\022!\n\031userauth" +
+      "or_5sstand_cnt_1h\030\017 \001(\005\022\"\n\032userauthor_10" +
+      "sstand_cnt_1h\030\020 \001(\005\022\036\n\026userauthor_like_c" +
+      "nt_1h\030\021 \001(\005\022\036\n\026userauthor_exp_cnt_24h\030\036 " +
+      "\001(\005\022!\n\031userauthor_3sview_cnt_24h\030\037 \001(\005\022!" +
+      "\n\031userauthor_8sview_cnt_24h\030  \001(\005\022\"\n\032use" +
+      "rauthor_12sview_cnt_24h\030! \001(\005\022\"\n\032useraut" +
+      "hor_20sview_cnt_24h\030\" \001(\005\022\"\n\032userauthor_" +
+      "5sstand_cnt_24h\030# \001(\005\022#\n\033userauthor_10ss" +
+      "tand_cnt_24h\030$ \001(\005\022\037\n\027userauthor_like_cn" +
+      "t_24h\030% \001(\005\022\037\n\027user_author_view_cnt_7d\030(" +
+      " \001(\005\022$\n\034user_author_validview_cnt_7d\030) \001" +
+      "(\002\022(\n user_author_compeleteview_cnt_7d\030*" +
+      " \001(\005\022\037\n\027user_author_like_cnt_7d\030+ \001(\005\022\"\n" +
+      "\032user_author_comment_cnt_7d\030, \001(\005\022(\n use" +
+      "r_author_avg_view_duration_7d\030- \001(\002\022&\n\036u" +
+      "ser_author_validview_tfidf_7d\030. \001(\002\022*\n\"u" +
+      "ser_author_compeleteview_tfidf_7d\030/ \001(\002\022" +
+      "(\n user_author_likecomment_tfidf_7d\0300 \001(" +
+      "\002\022\032\n\022user_tag11_is_like\0302 \001(\005\022\032\n\022user_ta" +
+      "g11_is_play\0303 \001(\005\022\035\n\025user_tag11_is_comme" +
+      "nt\0304 \001(\005\022\032\n\022user_tag12_is_like\0305 \001(\005\022\032\n\022" +
+      "user_tag12_is_play\0306 \001(\005\022\035\n\025user_tag12_i" +
+      "s_comment\0307 \001(\005\022\032\n\022user_tag13_is_like\0308 " +
+      "\001(\005\022\032\n\022user_tag13_is_play\0309 \001(\005\022\035\n\025user_" +
+      "tag13_is_comment\030: \001(\005\022\032\n\022user_tag14_is_" +
+      "like\030; \001(\005\022\032\n\022user_tag14_is_play\030< \001(\005\022\035" +
+      "\n\025user_tag14_is_comment\030= \001(\005\022\032\n\022user_ta" +
+      "g15_is_like\030> \001(\005\022\032\n\022user_tag15_is_play\030" +
+      "? \001(\005\022\035\n\025user_tag15_is_comment\030@ \001(\005\022\032\n\022" +
+      "user_tag16_is_like\030A \001(\005\022\032\n\022user_tag16_i" +
+      "s_play\030B \001(\005\022\035\n\025user_tag16_is_comment\030C " +
+      "\001(\005\022\032\n\022user_tag17_is_like\030D \001(\005\022\032\n\022user_" +
+      "tag17_is_play\030E \001(\005\022\035\n\025user_tag17_is_com" +
+      "ment\030F \001(\005\022\033\n\023user_tag11_like_cnt\030G \001(\005\022" +
+      "\033\n\023user_tag11_play_cnt\030H \001(\005\022\036\n\026user_tag" +
+      "11_comment_cnt\030I \001(\005\022\033\n\023user_tag12_like_" +
+      "cnt\030J \001(\005\022\033\n\023user_tag12_play_cnt\030K \001(\005\022\036" +
+      "\n\026user_tag12_comment_cnt\030L \001(\005\022\033\n\023user_t" +
+      "ag13_like_cnt\030M \001(\005\022\033\n\023user_tag13_play_c" +
+      "nt\030N \001(\005\022\036\n\026user_tag13_comment_cnt\030O \001(\005" +
+      "\022\033\n\023user_tag14_like_cnt\030P \001(\005\022\033\n\023user_ta" +
+      "g14_play_cnt\030Q \001(\005\022\036\n\026user_tag14_comment" +
+      "_cnt\030R \001(\005\022\033\n\023user_tag15_like_cnt\030S \001(\005\022" +
+      "\033\n\023user_tag15_play_cnt\030T \001(\005\022\036\n\026user_tag" +
+      "15_comment_cnt\030U \001(\005\022\033\n\023user_tag16_like_" +
+      "cnt\030V \001(\005\022\033\n\023user_tag16_play_cnt\030W \001(\005\022\036" +
+      "\n\026user_tag16_comment_cnt\030X \001(\005\022\033\n\023user_t" +
+      "ag17_like_cnt\030Y \001(\005\022\033\n\023user_tag17_play_c" +
+      "nt\030Z \001(\005\022\036\n\026user_tag17_comment_cnt\030[ \001(\005" +
+      "\022\037\n\027userauthor_skip_cnt_24h\030d \001(\005\022\"\n\032use" +
+      "rauthor_12splay_cnt_24h\030e \001(\005\022#\n\033useraut" +
+      "hor_20sstand_cnt_24h\030f \001(\005\022\"\n\032userauthor" +
+      "_comment_cnt_24h\030g \001(\005\022 \n\030userauthor_sha" +
+      "re_cnt_24h\030h \001(\005\022!\n\031userauthor_follow_cn" +
+      "t_24h\030i \001(\005\022\"\n\032userauthor_collect_cnt_24" +
+      "h\030j \001(\005\022\"\n\032userauthor_profile_cnt_24h\030k " +
+      "\001(\005\022!\n\031userauthor_report_cnt_24h\030l \001(\005\022\"" +
+      "\n\032userauthor_dislike_cnt_24h\030m \001(\005\022\036\n\026us" +
+      "erauthor_pay_cnt_24h\030n \001(\005\"\374\005\n\025LiveUserA" +
+      "nchorFeature\022\017\n\007user_id\030\001 \001(\004\022\021\n\tanchor_" +
+      "id\030\002 \001(\004\022!\n\031user_anchor_exp_cnt_15min\030\n " +
+      "\001(\005\022$\n\034user_anchor_3squit_cnt_15min\030\013 \001(" +
+      "\005\022$\n\034user_anchor_6squit_cnt_15min\030\014 \001(\005\022" +
+      "\"\n\032user_anchor_like_cnt_15min\030\r \001(\005\022%\n\035u" +
+      "ser_anchor_comment_cnt_15min\030\016 \001(\005\022$\n\034us" +
+      "er_anchor_follow_cnt_15min\030\017 \001(\005\022#\n\033user" +
+      "_anchor_share_cnt_15min\030\020 \001(\005\022\"\n\032user_an" +
+      "chor_gift_cnt_15min\030\021 \001(\005\022%\n\035user_anchor" +
+      "_gift_amount_15min\030\022 \001(\005\022/\n\'user_anchor_" +
+      "negative_feedback_cnt_15min\030\023 \001(\005\022 \n\030use" +
+      "r_anchor_enter_cnt_7d\030\024 \001(\005\022\037\n\027user_anch" +
+      "or_quit_cnt_7d\030\025 \001(\005\022%\n\035user_anchor_stay" +
+      "_gt10s_cnt_7d\030\026 \001(\005\022%\n\035user_anchor_stay_" +
+      "gt30s_cnt_7d\030\027 \001(\005\022(\n user_anchor_avg_vi" +
+      "ew_duration_7d\030\030 \001(\002\022,\n$user_anchor_posi" +
+      "tive_feedback_cnt_7d\030\031 \001(\005\022,\n$user_ancho" +
+      "r_negative_feedback_cnt_7d\030\032 \001(\005\022\'\n\037user" +
+      "_anchor_active_enter_cnt_7d\030\033 \001(\005\"\335\n\n\024Re" +
+      "cLiveAnchorFeature\022\021\n\tanchor_id\030\001 \001(\004\022\037\n" +
+      "\027live_enter_usernum_5min\030\n \001(\005\022\036\n\026live_q" +
+      "uit_usernum_5min\030\013 \001(\005\022#\n\033live_quit_avg_" +
+      "duration_5min\030\014 \001(\005\022\"\n\032live_anchor_gift_" +
+      "coin_5min\030\r \001(\005\022%\n\035live_anchor_gift_user" +
+      "num_5min\030\016 \001(\005\022\'\n\037live_anchor_follow_use" +
+      "rnum_5min\030\017 \001(\005\022%\n\035live_anchor_chat_user" +
+      "num_5min\030\020 \001(\005\022 \n\030live_enter_usernum_10m" +
+      "in\030\024 \001(\005\022\037\n\027live_quit_usernum_10min\030\025 \001(" +
+      "\005\022$\n\034live_quit_avg_duration_10min\030\026 \001(\005\022" +
+      "#\n\033live_anchor_gift_coin_10min\030\027 \001(\005\022&\n\036" +
+      "live_anchor_gift_usernum_10min\030\030 \001(\005\022(\n " +
+      "live_anchor_follow_usernum_10min\030\031 \001(\005\022&" +
+      "\n\036live_anchor_chat_usernum_10min\030\032 \001(\005\022 " +
+      "\n\030live_enter_usernum_15min\030\036 \001(\005\022\037\n\027live" +
+      "_quit_usernum_15min\030\037 \001(\005\022$\n\034live_quit_a" +
+      "vg_duration_15min\030  \001(\005\022#\n\033live_anchor_g" +
+      "ift_coin_15min\030! \001(\005\022&\n\036live_anchor_gift" +
+      "_usernum_15min\030\" \001(\005\022(\n live_anchor_foll" +
+      "ow_usernum_15min\030# \001(\005\022&\n\036live_anchor_ch" +
+      "at_usernum_15min\030$ \001(\005\022\033\n\023anchor_enter_c" +
+      "nt_7d\030( \001(\005\022\032\n\022anchor_quit_cnt_7d\030) \001(\005\022" +
+      "\037\n\027anchor_stay_gt3s_cnt_7d\030* \001(\005\022 \n\030anch" +
+      "or_stay_gt10s_cnt_7d\030+ \001(\005\022 \n\030anchor_sta" +
+      "y_gt30s_cnt_7d\030, \001(\005\022#\n\033anchor_avg_view_" +
+      "duration_7d\030- \001(\002\022\034\n\024anchor_follow_cnt_7" +
+      "d\030. \001(\005\022\'\n\037anchor_positive_feedback_cnt_" +
+      "7d\030/ \001(\005\022\'\n\037anchor_negative_feedback_cnt" +
+      "_7d\0300 \001(\005\022)\n!anchor_live_scene_exposure_" +
+      "cnt_7d\0301 \001(\005\022)\n!anchor_foru_scene_exposu" +
+      "re_cnt_7d\0302 \001(\005\022&\n\036anchor_live_scene_ent" +
+      "er_cnt_7d\0303 \001(\005\022&\n\036anchor_foru_scene_ent" +
+      "er_cnt_7d\0304 \001(\005\022\032\n\022anchor_gift_cnt_7d\0305 " +
+      "\001(\005\022\023\n\013anchor_type\030< \001(\005\022\027\n\017anchor_rec_t" +
+      "ype\030= \001(\005\"\321\001\n\022RecLiveUserFeature\022\017\n\007user" +
+      "_id\030\001 \001(\004\022\030\n\020viewer_live_hise\030\002 \001(\005\022=\n\033u" +
+      "ser_stay_gt10s_anchor_list\030\n \003(\0132\030.com.g" +
+      "osh.entity.IdScore\022%\n\035user_active_enter_" +
+      "anchor_list\030\013 \003(\005\022*\n\"user_positive_feedb" +
+      "ack_anchor_list\030\014 \003(\005\"$\n\007IdScore\022\n\n\002id\030\001" +
+      " \001(\003\022\r\n\005score\030\002 \001(\002\"A\n\020RecLiveIdFeature\022" +
+      "\017\n\007live_id\030\001 \001(\003\022\034\n\024live_id_exp_cnt_5min" +
+      "\030\n \001(\005b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -41340,13 +50810,13 @@ public final class RecFeature {
     internal_static_com_gosh_entity_RecUserFeature_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_gosh_entity_RecUserFeature_descriptor,
-        new java.lang.String[] { "ViewerIsOld", "ViewerRegisterDays", "ViewerExppostCnt1H", "ViewerExp1PostCnt1H", "ViewerExp2PostCnt1H", "Viewer3SviewPostCnt1H", "Viewer3Sview1PostCnt1H", "Viewer3Sview2PostCnt1H", "Viewer3SviewPostHis1H", "Viewer5SstandPostHis1H", "ViewerLikePostHis1H", "ViewerFollowPostHis1H", "ViewerProfilePostHis1H", "ViewerPosinterPostHis1H", "Viewer3SviewPostHis24H", "Viewer5SstandPostHis24H", "ViewerLikePostHis24H", "ViewerFollowPostHis24H", "ViewerProfilePostHis24H", "ViewerPosinterPostHis24H", "ViewerLikeAuthorHis24H", "ViewerFollowAuthorHis24H", "ViewerProfileAuthorHis24H", "ViewerActiveDays7D", "ViewerViewCnt7D", "ViewerValidviewCnt7D", "ViewerCompleteViewCnt7D", "ViewerViewDuration7D", "ViewerLikeCnt7D", "ViewerCommentCnt7D", "ViewerValidviewRate7D", "UserDeepviewPostids7D", "UserInteractPostids7D", "UserGiftCount", "UserDailyWatchliveMinutes", "UserLiveFollowPreferAnchorIds", "PreferPosTag17DTop3", "PreferPosTag27DTop3", "PreferPosTag37DTop3", "PreferPosTag47DTop3", "PreferPosTag57DTop3", "PreferPosTag67DTop3", "PreferPosTag77DTop3", "PreferPosFtag17DTop3", "PreferPosFtag27DTop3", "PreferPosFtag37DTop3", "PreferPosFtag47DTop3", "PreferPosFtag57DTop3", "PreferPosFtag67DTop3", "PreferNegTag17DTop3", "PreferNegTag27DTop3", "PreferNegTag37DTop3", "PreferNegTag47DTop3", "PreferNegTag57DTop3", "PreferNegTag67DTop3", "PreferNegTag77DTop3", "PreferNegFtag17DTop3", "PreferNegFtag27DTop3", "PreferNegFtag37DTop3", "PreferNegFtag47DTop3", "PreferNegFtag57DTop3", "PreferNegFtag67DTop3", "FeedbackTags", "FeedbackAuthorIds", "ViewerIsHise", "ViewerGthyPrtag", "ViewerGthyScore", "ViewerExpPostCnt24H", "ViewerSkipPostCnt24H", "ViewerCompleteplayPostList24H", "ViewerSkipPostList24H", "Viewer10SstandPostList24H", "Viewer8SplayPostList24H", "ViewerLikePostList24H", "ViewerCommentPostList24H", "ViewerSharePostList24H", "ViewerCollectPostList24H", "ViewerPayPostList24H", "ViewerReportPostList24H", "ViewerDislikePostList24H", "ViewerPositivePostList24H", "ViewerNegetivePostList24H", "ViewerPositiveAuthorList24H", "ViewerNegetiveAuthorList24H", });
+        new java.lang.String[] { "ViewerIsOld", "ViewerRegisterDays", "ViewerExppostCnt1H", "ViewerExp1PostCnt1H", "ViewerExp2PostCnt1H", "Viewer3SviewPostCnt1H", "Viewer3Sview1PostCnt1H", "Viewer3Sview2PostCnt1H", "Viewer3SviewPostHis1H", "Viewer5SstandPostHis1H", "ViewerLikePostHis1H", "ViewerFollowPostHis1H", "ViewerProfilePostHis1H", "ViewerPosinterPostHis1H", "Viewer3SviewPostHis24H", "Viewer5SstandPostHis24H", "ViewerLikePostHis24H", "ViewerFollowPostHis24H", "ViewerProfilePostHis24H", "ViewerPosinterPostHis24H", "ViewerLikeAuthorHis24H", "ViewerFollowAuthorHis24H", "ViewerProfileAuthorHis24H", "ViewerActiveDays7D", "ViewerViewCnt7D", "ViewerValidviewCnt7D", "ViewerCompleteViewCnt7D", "ViewerViewDuration7D", "ViewerLikeCnt7D", "ViewerCommentCnt7D", "ViewerValidviewRate7D", "UserDeepviewPostids7D", "UserInteractPostids7D", "UserGiftCount", "UserDailyWatchliveMinutes", "UserLiveFollowPreferAnchorIds", "PreferPosTag17DTop3", "PreferPosTag27DTop3", "PreferPosTag37DTop3", "PreferPosTag47DTop3", "PreferPosTag57DTop3", "PreferPosTag67DTop3", "PreferPosTag77DTop3", "PreferPosFtag17DTop3", "PreferPosFtag27DTop3", "PreferPosFtag37DTop3", "PreferPosFtag47DTop3", "PreferPosFtag57DTop3", "PreferPosFtag67DTop3", "PreferNegTag17DTop3", "PreferNegTag27DTop3", "PreferNegTag37DTop3", "PreferNegTag47DTop3", "PreferNegTag57DTop3", "PreferNegTag67DTop3", "PreferNegTag77DTop3", "PreferNegFtag17DTop3", "PreferNegFtag27DTop3", "PreferNegFtag37DTop3", "PreferNegFtag47DTop3", "PreferNegFtag57DTop3", "PreferNegFtag67DTop3", "FeedbackTags", "FeedbackAuthorIds", "ViewerIsHise", "ViewerGthyPrtag", "ViewerGthyScore", "ViewerExpPostCnt24H", "ViewerSkipPostCnt24H", "ViewerCompleteplayPostList24H", "ViewerSkipPostList24H", "Viewer10SstandPostList24H", "Viewer8SplayPostList24H", "ViewerLikePostList24H", "ViewerCommentPostList24H", "ViewerSharePostList24H", "ViewerCollectPostList24H", "ViewerPayPostList24H", "ViewerReportPostList24H", "ViewerDislikePostList24H", "ViewerPositivePostList24H", "ViewerNegetivePostList24H", "ViewerPositiveAuthorList24H", "ViewerNegetiveAuthorList24H", "VvRa1", "VvRa2", "VvRa3", "VvRa4", "VvRa5", "CpvRa1", "CpvRa2", "CpvRa3", "CpvRa4", "CpvRa5", "CpvRa6", "LkRa1", "LkRa2", "LkRa3", "LkRa4", "LkRa5", "CmRa1", "CmRa2", "CmRa3", "CmRa4", "CmRa5", "ShRa1", "ShRa2", "ShRa3", "FvRa1", "FvRa2", "FvRa3", "PfRa1", "PfRa2", "PfRa3", "ViewerCompleteplayPostsLatest", "Viewer10SstandPostsLatest", "Viewer8SplayPostsLatest", "ViewerLikePostsLatest", "ViewerCommentPostsLatest", "ViewerSharePostsLatest", "ViewerCollectPostsLatest", "ViewerPayPostsLatest", "ViewerReportPostsLatest", "ViewerDislikePostsLatest", "ViewerPositivePostsLatest", "ViewerNegetivePostsLatest", "ViewerPositiveAuthorsLatest", "ViewerNegetiveAuthorsLatest", });
     internal_static_com_gosh_entity_RecPostFeature_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_com_gosh_entity_RecPostFeature_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_gosh_entity_RecPostFeature_descriptor,
-        new java.lang.String[] { "PostId", "PostExpCnt1H", "Post3SviewCnt1H", "Post8SviewCnt1H", "Post12SviewCnt1H", "Post20SviewCnt1H", "Post5SstandCnt1H", "Post10SstandCnt1H", "PostLikeCnt1H", "PostFollowCnt1H", "PostProfileCnt1H", "PostPosinterCnt1H", "PostExpCnt24H", "Post3SviewCnt24H", "Post8SviewCnt24H", "Post12SviewCnt24H", "Post20SviewCnt24H", "Post5SstandCnt24H", "Post10SstandCnt24H", "PostLikeCnt24H", "PostFollowCnt24H", "PostProfileCnt24H", "PostPosinterCnt24H", "PostViewCnt7D", "PostValidviewCnt7D", "PostCompleteviewCnt7D", "PostViewDuration7D", "PostLikeCnt7D", "PostCommentCnt7D", "TagIds", "AuthorExpDistinctPostCnt7D", "AuthorExpPostCnt7D", "AuthorValidviewPostCnt7D", "AuthorViewPostDuration7D", "AuthorLikeCnt7D", "AuthorCommentCnt7D", "AuthorCompleteviewPostCnt7D", "AuthorViewAvgDuration7D", "AuthorInterProfileCnt7D", "AuthorFollowCnt7D", "AuthorFollowersCnt", "PostValidviewRate7D", "PostCompleteviewRate7D", "PostAvgViewDuration7D", "PostLikeRate7D", "PostCommentRate7D", "PostAiEmbedding", "PostAiTags", "PostAsrLang", "PostSkipCnt24H", "PostCompeleteCnt24H", "PostProgressRate24H", "Post20SstandCnt24H", "Post5SplayCnt24H", "Post10SplayCnt24H", "PostCommentCnt24H", "PostShareCnt24H", "PostCollectCnt24H", "PostReportCnt24H", "PostDislikeCnt24H", "PostPayCnt24H", });
+        new java.lang.String[] { "PostId", "PostExpCnt1H", "Post3SviewCnt1H", "Post8SviewCnt1H", "Post12SviewCnt1H", "Post20SviewCnt1H", "Post5SstandCnt1H", "Post10SstandCnt1H", "PostLikeCnt1H", "PostFollowCnt1H", "PostProfileCnt1H", "PostPosinterCnt1H", "PostExpCnt24H", "Post3SviewCnt24H", "Post8SviewCnt24H", "Post12SviewCnt24H", "Post20SviewCnt24H", "Post5SstandCnt24H", "Post10SstandCnt24H", "PostLikeCnt24H", "PostFollowCnt24H", "PostProfileCnt24H", "PostPosinterCnt24H", "PostViewCnt7D", "PostValidviewCnt7D", "PostCompleteviewCnt7D", "PostViewDuration7D", "PostLikeCnt7D", "PostCommentCnt7D", "TagIds", "AuthorExpDistinctPostCnt7D", "AuthorExpPostCnt7D", "AuthorValidviewPostCnt7D", "AuthorViewPostDuration7D", "AuthorLikeCnt7D", "AuthorCommentCnt7D", "AuthorCompleteviewPostCnt7D", "AuthorViewAvgDuration7D", "AuthorInterProfileCnt7D", "AuthorFollowCnt7D", "AuthorFollowersCnt", "PostValidviewRate7D", "PostCompleteviewRate7D", "PostAvgViewDuration7D", "PostLikeRate7D", "PostCommentRate7D", "PostAiEmbedding", "PostAiTags", "PostAsrLang", "PostSkipCnt24H", "PostCompeleteCnt24H", "PostProgressRate24H", "Post20SstandCnt24H", "Post5SplayCnt24H", "Post10SplayCnt24H", "PostCommentCnt24H", "PostShareCnt24H", "PostCollectCnt24H", "PostReportCnt24H", "PostDislikeCnt24H", "PostPayCnt24H", "PvvRa1", "PvvRa2", "PvvRa3", "PvvRa4", "PvvRa5", "PcpvRa1", "PcpvRa2", "PcpvRa3", "PcpvRa4", "PcpvRa5", "PcpvRa6", "PlkRa1", "PlkRa2", "PlkRa3", "PlkRa4", "PlkRa5", "PcmRa1", "PcmRa2", "PcmRa3", "PcmRa4", "PcmRa5", "PshRa1", "PshRa2", "PshRa3", "PfvRa1", "PfvRa2", "PfvRa3", "PpfRa1", "PpfRa2", "PpfRa3", });
     internal_static_com_gosh_entity_FeedbackTagV2_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_com_gosh_entity_FeedbackTagV2_fieldAccessorTable = new
