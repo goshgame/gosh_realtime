@@ -1,6 +1,7 @@
 package com.gosh.monitor;
 
 import com.gosh.util.ConfigurationUtil;
+import com.gosh.util.LogsUtil;
 import org.apache.flink.configuration.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,9 @@ import com.gosh.cons.CommonConstants;
  */
 public class KeyHeatMonitor {
     private static final Logger LOG = LoggerFactory.getLogger(KeyHeatMonitor.class);
+    static {
+        LogsUtil.setAllLogLevels();
+    }
     private static final KeyHeatMonitor INSTANCE = new KeyHeatMonitor();
 
     private static final Configuration config = ConfigurationUtil.loadConfigurationFromProperties(CommonConstants.FLINK_SKEW_CONF);

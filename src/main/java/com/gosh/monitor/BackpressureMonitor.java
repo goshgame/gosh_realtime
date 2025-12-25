@@ -2,6 +2,7 @@ package com.gosh.monitor;
 
 import com.gosh.cons.CommonConstants;
 import com.gosh.util.ConfigurationUtil;
+import com.gosh.util.LogsUtil;
 import com.gosh.util.MessageUtil;
 import org.apache.flink.api.common.functions.RichMapFunction;
 import org.apache.flink.configuration.Configuration;
@@ -18,6 +19,9 @@ import java.util.concurrent.*;
  */
 public class BackpressureMonitor<T> extends RichMapFunction<T, T> {
     private static final Logger LOG = LoggerFactory.getLogger(BackpressureMonitor.class);
+    static {
+        LogsUtil.setAllLogLevels();
+    }
     private static final ThreadLocal<Long> currentQueueLength = ThreadLocal.withInitial(() -> 0L);
     private transient ScheduledExecutorService backpressureScheduler;
     private transient Map<String, Integer> highBackpressureCount;
