@@ -45,37 +45,66 @@
     </Appenders>
     
     <Loggers>
-        <!-- 项目包日志级别：WARN -->
-        <Logger name="com.gosh" level="WARN" additivity="false">
+        <!-- 项目包日志级别：ERROR -->
+        <Logger name="com.gosh" level="ERROR" additivity="false">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="MainFile"/>
             <AppenderRef ref="ErrorFile"/>
         </Logger>
         
-        
-        <!-- Flink相关日志级别：WARN -->
-        <Logger name="org.apache.flink" level="WARN" additivity="false">
+        <Logger name="com.gosh.job" level="ERROR" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="MainFile"/>
+            <AppenderRef ref="ErrorFile"/>
+        </Logger>
+
+        <Logger name="com.gosh.config" level="ERROR" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="MainFile"/>
+            <AppenderRef ref="ErrorFile"/>
+        </Logger>
+
+        <Logger name="com.gosh.process" level="ERROR" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="MainFile"/>
+            <AppenderRef ref="ErrorFile"/>
+        </Logger>
+
+        <Logger name="com.gosh.monitor" level="ERROR" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="MainFile"/>
+            <AppenderRef ref="ErrorFile"/>
+        </Logger>
+
+        <Logger name="com.gosh.process" level="ERROR" additivity="false">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="MainFile"/>
             <AppenderRef ref="ErrorFile"/>
         </Logger>
         
-        <!-- Kafka相关日志级别：WARN -->
-        <Logger name="org.apache.kafka" level="WARN" additivity="false">
+        <!-- Flink相关日志级别：ERROR -->
+        <Logger name="org.apache.flink" level="ERROR" additivity="false">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="MainFile"/>
             <AppenderRef ref="ErrorFile"/>
         </Logger>
         
-        <!-- Redis相关日志级别：WARN -->
-        <Logger name="redis.clients" level="WARN" additivity="false">
+        <!-- Kafka相关日志级别：ERROR -->
+        <Logger name="org.apache.kafka" level="ERROR" additivity="false">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="MainFile"/>
             <AppenderRef ref="ErrorFile"/>
         </Logger>
         
-        <!-- 根日志级别：WARN -->
-        <Root level="WARN">
+        <!-- Redis相关日志级别：ERROR -->
+        <Logger name="redis.clients" level="ERROR" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="MainFile"/>
+            <AppenderRef ref="ErrorFile"/>
+        </Logger>
+        
+        <!-- 根日志级别：ERROR -->
+        <Root level="ERROR">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="MainFile"/>
             <AppenderRef ref="ErrorFile"/>

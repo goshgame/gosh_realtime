@@ -5,7 +5,6 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.EnvironmentSettings;
 import org.apache.flink.table.api.TableEnvironment;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
-import org.apache.flink.contrib.streaming.state.RocksDBStateBackend;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,6 +15,11 @@ import com.gosh.cons.CommonConstants;
  * 提供创建 DataStream API 和 Table API 环境的公共方法
  */
 public class FlinkEnvUtil {
+    // 先设置日志级别，再创建日志记录器
+    static {
+        LogsUtil.setAllLogLevels();
+    }
+    
     private static final Logger LOG = LoggerFactory.getLogger(FlinkEnvUtil.class);
 
     /**

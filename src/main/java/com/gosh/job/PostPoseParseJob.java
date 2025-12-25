@@ -2,7 +2,7 @@ package com.gosh.job;
 
 import com.gosh.entity.*;
 import com.gosh.util.FlinkEnvUtil;
-//import com.gosh.util.FlinkMonitorUtil;
+import com.gosh.util.LogsUtil;
 import com.gosh.util.KafkaEnvUtil;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.functions.FilterFunction;
@@ -15,12 +15,18 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.util.Collector;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 
 public class PostPoseParseJob {
+    // 先设置日志级别，再创建日志记录器
+    static {
+        LogsUtil.setAllLogLevels();
+    }
+    
     private static final Logger LOG = LoggerFactory.getLogger(PostPoseParseJob.class);
     private static final String JOB_NAME = "Kafka Post Event Processing Job"; // 统一作业名称
 
@@ -55,7 +61,7 @@ public class PostPoseParseJob {
                         LOG.info("解析后的数据：{}",postEvent);
                         return postEvent;
                     } catch (Exception e) {
-                        LOG.info("异常解析数据：{}",kafkaRawEvent);
+                        //LOG.info("异常解析数据：{}",kafkaRawEvent);
                         return null;
                     }
                 })
@@ -73,7 +79,7 @@ public class PostPoseParseJob {
                     public void flatMap(PostEvent event, Collector<ParsedPostEvent> collector) {
                         // 检查必要字段是否存在
                         if (event.getPostExpose() == null || event.getPostExpose().getList() == null) {
-                            LOG.info("PostEvent缺少必要的post_expose或list字段");
+                            //LOG.info("PostEvent缺少必要的post_expose或list字段");
                             return;
                         }
 
@@ -128,10 +134,10 @@ public class PostPoseParseJob {
                 .map(parsedEvent -> {
                     try {
                         String jsonString = objectMapper.writeValueAsString(parsedEvent);
-                        LOG.info("最终输出结果：{}"  , jsonString);
+                        //LOG.info("最终输出结果：{}"  , jsonString);
                         return jsonString;
                     } catch (Exception e) {
-                        LOG.info("对象转JSON失败: {}" , e.getMessage());
+                        //LOG.info("对象转JSON失败: {}" , e.getMessage());
                         return null;
                     }
                 })

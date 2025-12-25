@@ -426,15 +426,10 @@ public class MySQLFlinkUtil {
                     
                     // 等待下一次轮询
                     if (isRunning) {
-                        LOG.info("完成本次MySQL轮询，等待 {} 毫秒后开始下一次轮询", pollingIntervalMs);
                         try {
                             Thread.sleep(pollingIntervalMs);
-                            LOG.info("开始新一轮MySQL轮询");
                         } catch (InterruptedException e) {
-                            LOG.info("轮询线程被中断，准备退出轮询");
-                            // 恢复中断状态
                             Thread.currentThread().interrupt();
-                            // 退出轮询循环
                             isRunning = false;
                         }
                     }

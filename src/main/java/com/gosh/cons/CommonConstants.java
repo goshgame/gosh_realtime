@@ -8,4 +8,5 @@ public final class CommonConstants {
     public static final String MYSQL_DEFAULT_CONF = "mysql-config.properties";
     public static final String LARK_DEFAULT_CONF = "lark-config.properties";
     public static final String FLINK_SKEW_CONF = "flink-skew-config.properties";
+    public static final String LOG_CONFIG = "log-config.properties";
 }

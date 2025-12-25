@@ -4,13 +4,18 @@ package com.gosh;
 import org.apache.flink.api.java.utils.ParameterTool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.gosh.util.LogsUtil;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 public class FlinkLauncher {
+    // 先设置日志级别，再创建日志记录器
+    static {
+        LogsUtil.setAllLogLevels();
+    }
+    
     private static final Logger LOG = LoggerFactory.getLogger(FlinkLauncher.class);
     private static final String CLASS_NAME_PARAM = "className";
     private static final String JOB_PACKAGE_PREFIX = "com.gosh.job.";
