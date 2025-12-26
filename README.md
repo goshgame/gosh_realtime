@@ -135,27 +135,24 @@ aws eks update-kubeconfig --region ap-southeast-1 --name gosh-prod-data-eks-clus
 
 
 #构建
-cd /Users/dev/gosh_realtime
-mvn dependency:copy-dependencies \
--DoutputDirectory=/Users/dev/flink-dinky-image/flink-dinky-image/lib \
--DincludeScope=runtime \
--DexcludeGroupIds=org.apache.hadoop,org.slf4j,log4j,zookeeper
-
 docker build --no-cache --platform linux/arm64 -t flink-rec-dinky:1.20 .
 
 
 # 登录ECR
-aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin 010526262381.dkr.ecr.ap-southeast-1.amazonaws.com
+aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin <ACCOUNT_ID>.dkr.ecr.ap-southeast-1.amazonaws.com
 
-# 上传镜像
+# 上传镜像到ECR
 docker build -t gosh_bigdata .
-docker tag flink-rec-dinky:1.20 <ACCOUNT_ID>.dkr.ecr.ap-southeast-1.amazonaws.com/gosh_bigdata:flink-rec-dinky_1.20_v021
-docker push <ACCOUNT_ID>.dkr.ecr.ap-southeast-1.amazonaws.com/gosh_bigdata:flink-rec-dinky_1.20_v021
+docker tag flink-rec-dinky:1.20 <ACCOUNT_ID>.dkr.ecr.ap-southeast-1.amazonaws.com/gosh_bigdata:flink-rec-dinky_1.20_${版本号}
+docker push <ACCOUNT_ID>.dkr.ecr.ap-southeast-1.amazonaws.com/gosh_bigdata:flink-rec-dinky_1.20_${版本号}
 
 #查看镜像
 docker run --rm flink-rec-dinky:1.20 ls /opt/flink/lib/
 
+docker run --rm <ACCOUNT_ID>.dkr.ecr.ap-southeast-1.amazonaws.com/gosh_bigdata:flink-rec-dinky_1.20_${版本号} ls /opt/flink
 
-docker run --rm 010526262381.dkr.ecr.ap-southeast-1.amazonaws.com/gosh_bigdata:flink-rec-dinky_1.20_v003 ls /opt/flink
 
+其中版本号根据实际情况填写即可
+<ACCOUNT_ID> 为自己的AWS账号ID
+Access Key/Secret Access Key 请找管理员申请
 ```
