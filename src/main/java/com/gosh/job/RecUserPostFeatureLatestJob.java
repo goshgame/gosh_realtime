@@ -6,6 +6,7 @@ import com.gosh.config.RedisConfig;
 import com.gosh.entity.RecFeature;
 import com.gosh.util.*;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+import org.apache.flink.api.common.typeinfo.Types;
 import org.apache.flink.api.common.functions.AggregateFunction;
 import org.apache.flink.api.common.functions.FlatMapFunction;
  
@@ -713,7 +714,7 @@ public class RecUserPostFeatureLatestJob {
         private static final long serialVersionUID = 1L;
 
         private final org.apache.flink.api.common.state.ValueStateDescriptor<Boolean> firedDesc =
-            new org.apache.flink.api.common.state.ValueStateDescriptor<>("sessionFired", Boolean.class, false);
+            new org.apache.flink.api.common.state.ValueStateDescriptor<>("sessionFired", Types.BOOLEAN);
 
         @Override
         public org.apache.flink.streaming.api.windowing.triggers.TriggerResult onElement(PostEvent element, long timestamp, TimeWindow window, TriggerContext ctx) throws Exception {
@@ -760,6 +761,17 @@ public class RecUserPostFeatureLatestJob {
         public void clear(TimeWindow window, TriggerContext ctx) throws Exception {
             org.apache.flink.api.common.state.ValueState<Boolean> firedState = ctx.getPartitionedState(firedDesc);
             firedState.clear();
+        }
+
+        @Override
+        public boolean canMerge() {
+            return true;
+        }
+
+        @Override
+        public void onMerge(TimeWindow window, org.apache.flink.streaming.api.windowing.triggers.Trigger.OnMergeContext ctx) throws Exception {
+            // Merge partitioned fired state using framework merge helper.
+            ctx.mergePartitionedState((org.apache.flink.api.common.state.StateDescriptor) firedDesc);
         }
     }
 
