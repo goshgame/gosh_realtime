@@ -18,8 +18,6 @@ import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.windowing.ProcessWindowFunction;
-import org.apache.flink.streaming.api.windowing.assigners.EventTimeSessionWindows;
- 
 import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 import org.apache.flink.util.Collector;
 import org.slf4j.Logger;
@@ -104,7 +102,8 @@ public class RecUserPostFeatureLatestJob {
                     .withIdleness(Duration.ofMinutes(1)) // 添加空闲检测，避免水位线停滞
             );
 
-        // 3.2 SessionWindow聚合：基于rec_token + post_id
+        // 3.2 Session-style processing：基于rec_token + post_id，使用自定义 KeyedProcessFunction 模拟 session 窗口，
+        // 支持单条事件即时触发且避免使用会合并的 WindowAssigners（解决 Trigger 合并兼容问题）
         SingleOutputStreamOperator<SessionSummary> sessionStream = eventStream
             .keyBy(new KeySelector<PostEvent, String>() {
                 @Override
@@ -112,10 +111,8 @@ public class RecUserPostFeatureLatestJob {
                     return value.recToken + "|" + value.postId;
                 }
             })
-            .window(EventTimeSessionWindows.withGap(org.apache.flink.streaming.api.windowing.time.Time.seconds(SESSION_GAP_SECONDES)))
-            .trigger(new SessionFeatureTrigger())
-            .aggregate(new SessionAggregator(), new SessionWindowFunction())
-            .name("Session Window Aggregation");
+            .process(new SessionKeyedProcessFunction())
+            .name("Session Keyed Process (session gap handling)");
 
         // 4.1 User侧特征：使用自定义 process 窗口（按 uid key），保存每个特征队列并及时写入 Redis
         SingleOutputStreamOperator<Tuple2<String, byte[]>> userFeatureProtoStream = sessionStream
@@ -707,73 +704,131 @@ public class RecUserPostFeatureLatestJob {
     }
 
     /**
-     * Custom Trigger that fires (without purging) when an incoming PostEvent satisfies session feature conditions.
-     * It also tracks a per-window fired flag to avoid repeated fires for the same session window.
+     * KeyedProcessFunction 替代 SessionWindow，用于实现 session gap 行为并支持单条早触发（不依赖可合并触发器）
+     * Key: recToken|postId
      */
-    public static class SessionFeatureTrigger extends org.apache.flink.streaming.api.windowing.triggers.Trigger<PostEvent, TimeWindow> {
-        private static final long serialVersionUID = 1L;
-
-        private final org.apache.flink.api.common.state.ValueStateDescriptor<Boolean> firedDesc =
-            new org.apache.flink.api.common.state.ValueStateDescriptor<>("sessionFired", Types.BOOLEAN);
+    public static class SessionKeyedProcessFunction extends org.apache.flink.streaming.api.functions.KeyedProcessFunction<String, PostEvent, SessionSummary> {
+        private transient org.apache.flink.api.common.state.ValueState<SessionAccumulator> accState;
+        private transient org.apache.flink.api.common.state.ValueState<Long> lastEventState;
+        private transient org.apache.flink.api.common.state.ValueState<Boolean> firedState;
 
         @Override
-        public org.apache.flink.streaming.api.windowing.triggers.TriggerResult onElement(PostEvent element, long timestamp, TimeWindow window, TriggerContext ctx) throws Exception {
-            org.apache.flink.api.common.state.ValueState<Boolean> firedState = ctx.getPartitionedState(firedDesc);
-            Boolean alreadyFired = firedState.value();
-            if (Boolean.TRUE.equals(alreadyFired)) {
-                return org.apache.flink.streaming.api.windowing.triggers.TriggerResult.CONTINUE;
-            }
+        public void open(org.apache.flink.configuration.Configuration parameters) throws Exception {
+            accState = getRuntimeContext().getState(new org.apache.flink.api.common.state.ValueStateDescriptor<>("sessionAcc", SessionAccumulator.class));
+            lastEventState = getRuntimeContext().getState(new org.apache.flink.api.common.state.ValueStateDescriptor<>("lastEvent", Long.class));
+            firedState = getRuntimeContext().getState(new org.apache.flink.api.common.state.ValueStateDescriptor<>("sessionFired", Types.BOOLEAN));
+        }
 
-            // Trigger conditions (same semantics as downstream): full play / standing >10s / playback >8s / explicit feedback flags
+        @Override
+        public void processElement(PostEvent value, Context ctx, Collector<SessionSummary> out) throws Exception {
+            long eventTime = value.eventTime;
+            SessionAccumulator acc = accState.value();
+            if (acc == null) acc = new SessionAccumulator();
+
+            // 聚合逻辑（复用原 SessionAggregator 的行为）
+            if (acc.recToken == null) {
+                acc.recToken = value.recToken;
+                acc.uid = value.uid;
+                acc.postId = value.postId;
+            }
+            if (acc.authorId == 0 && value.authorId > 0) acc.authorId = value.authorId;
+            if (acc.postLength == 0 && value.postLength > 0) acc.postLength = value.postLength;
+            acc.standingTime += value.standingTime;
+            acc.progressTime = Math.max(acc.progressTime, value.progressTime);
+            acc.playbackTime += value.playbackTime;
+            acc.isFullPlay = acc.isFullPlay || value.isCompletePlay;
+            acc.isLike = acc.isLike || value.isLike;
+            acc.isComment = acc.isComment || value.isComment;
+            acc.isDislike = acc.isDislike || value.isNotInterest;
+            acc.isShare = acc.isShare || value.isShare;
+            acc.isFollow = acc.isFollow || value.isFollow;
+            acc.isProfile = acc.isProfile || value.isProfile;
+            acc.isPay = acc.isPay || value.isPay;
+            acc.isFavor = acc.isFavor || value.isFavor;
+            acc.isReport = acc.isReport || value.isReport;
+            acc.isNotInterest = acc.isNotInterest || value.isNotInterest;
+
+            accState.update(acc);
+
+            Long prevLast = lastEventState.value();
+            long newLast = prevLast == null ? eventTime : Math.max(prevLast, eventTime);
+            lastEventState.update(newLast);
+
+            long timerTs = newLast + SESSION_GAP_SECONDES * 1000L;
+            ctx.timerService().registerEventTimeTimer(timerTs);
+
+            // 单条元素触发判断（与之前 Trigger 语义一致）
+            Boolean fired = firedState.value();
+            if (fired == null) fired = false;
             boolean shouldFire = false;
-            if (element != null) {
-                if (element.isCompletePlay) shouldFire = true;
-                if (element.standingTime > 10) shouldFire = true;
-                if (element.playbackTime > 8) shouldFire = true;
-                if (element.isLike || element.isComment || element.isShare || element.isFollow ||
-                    element.isFavor || element.isProfile || element.isPay || element.isReport || element.isNotInterest) {
+            if (value != null) {
+                if (value.isCompletePlay) shouldFire = true;
+                if (value.standingTime > 10) shouldFire = true;
+                if (value.playbackTime > 8) shouldFire = true;
+                if (value.isLike || value.isComment || value.isShare || value.isFollow ||
+                    value.isFavor || value.isProfile || value.isPay || value.isReport || value.isNotInterest) {
                     shouldFire = true;
                 }
             }
 
-            if (shouldFire) {
+            if (shouldFire && !fired) {
+                // 标记已触发并输出当前聚合摘要（不清窗）
                 firedState.update(true);
-                return org.apache.flink.streaming.api.windowing.triggers.TriggerResult.FIRE;
+                SessionSummary summary = buildSummaryFromAccumulator(acc, newLast);
+                out.collect(summary);
             }
-            return org.apache.flink.streaming.api.windowing.triggers.TriggerResult.CONTINUE;
         }
 
         @Override
-        public org.apache.flink.streaming.api.windowing.triggers.TriggerResult onEventTime(long time, TimeWindow window, TriggerContext ctx) throws Exception {
-            // Fire when window's max timestamp is reached (normal session close)
-            if (time >= window.maxTimestamp()) {
-                return org.apache.flink.streaming.api.windowing.triggers.TriggerResult.FIRE;
+        public void onTimer(long timestamp, OnTimerContext ctx, Collector<SessionSummary> out) throws Exception {
+            Long last = lastEventState.value();
+            if (last == null) return;
+            long expectedTimer = last + SESSION_GAP_SECONDES * 1000L;
+            if (timestamp != expectedTimer) {
+                return;
             }
-            return org.apache.flink.streaming.api.windowing.triggers.TriggerResult.CONTINUE;
-        }
 
-        @Override
-        public org.apache.flink.streaming.api.windowing.triggers.TriggerResult onProcessingTime(long time, TimeWindow window, TriggerContext ctx) throws Exception {
-            return org.apache.flink.streaming.api.windowing.triggers.TriggerResult.CONTINUE;
-        }
+            SessionAccumulator acc = accState.value();
+            if (acc == null || acc.recToken == null) return;
 
-        @Override
-        public void clear(TimeWindow window, TriggerContext ctx) throws Exception {
-            org.apache.flink.api.common.state.ValueState<Boolean> firedState = ctx.getPartitionedState(firedDesc);
+            // 窗口最终关闭，输出最终 summary 并清理状态
+            SessionSummary summary = buildSummaryFromAccumulator(acc, timestamp);
+            out.collect(summary);
+
+            // clear state
+            accState.clear();
+            lastEventState.clear();
             firedState.clear();
         }
 
-        @Override
-        public boolean canMerge() {
-            return true;
-        }
-
-        @Override
-        public void onMerge(TimeWindow window, org.apache.flink.streaming.api.windowing.triggers.Trigger.OnMergeContext ctx) throws Exception {
-            // Merge partitioned fired state using framework merge helper.
-            ctx.mergePartitionedState((org.apache.flink.api.common.state.StateDescriptor) firedDesc);
+        private SessionSummary buildSummaryFromAccumulator(SessionAccumulator acc, long eventTime) {
+            SessionSummary s = new SessionSummary();
+            s.recToken = acc.recToken;
+            s.uid = acc.uid;
+            s.postId = acc.postId;
+            s.authorId = acc.authorId;
+            s.postLength = acc.postLength;
+            s.standingTime = acc.standingTime;
+            s.progressTime = acc.progressTime;
+            s.playbackTime = acc.playbackTime;
+            s.progressRate = acc.postLength > 0 ? acc.progressTime / acc.postLength : 0;
+            s.isFullPlay = acc.isFullPlay;
+            s.isLike = acc.isLike;
+            s.isComment = acc.isComment;
+            s.isDislike = acc.isDislike;
+            s.isShare = acc.isShare;
+            s.isFollow = acc.isFollow;
+            s.isProfile = acc.isProfile;
+            s.isPay = acc.isPay;
+            s.isFavor = acc.isFavor;
+            s.isReport = acc.isReport;
+            s.isNotInterest = acc.isNotInterest;
+            s.eventTime = eventTime;
+            return s;
         }
     }
+
+    // SessionFeatureTrigger removed — replaced by SessionKeyedProcessFunction implementation above.
 
     // ==================== User侧特征聚合 ====================
     
