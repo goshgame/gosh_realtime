@@ -2,7 +2,7 @@ package com.gosh.job;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gosh.entity.RecFeature;
+import com.gosh.feature.RecFeature;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.util.Collector;
 import org.slf4j.Logger;

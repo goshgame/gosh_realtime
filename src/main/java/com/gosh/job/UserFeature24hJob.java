@@ -1,7 +1,7 @@
 package com.gosh.job;
 
 import com.gosh.config.RedisConfig;
-import com.gosh.entity.RecFeature;
+import com.gosh.feature.RecFeature;
 import com.gosh.job.UserFeatureCommon.*;
 import com.gosh.util.EventFilterUtil;
 import com.gosh.util.FlinkEnvUtil;

@@ -2,7 +2,7 @@ package com.gosh.job;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gosh.config.RedisConfig;
-import com.gosh.entity.RecFeature;
+import com.gosh.feature.RecFeature;
 import com.gosh.job.UserFeatureCommon.*;
 import com.gosh.job.ItemFeatureCommon.*;
 import com.gosh.util.EventFilterUtil;
@@ -88,7 +88,7 @@ public class ItemFeature1hJob {
         DataStream<UserFeatureEvent> unifiedStream = exposeFeatureStream
             .union(viewFeatureStream)
             .assignTimestampsAndWatermarks(
-                WatermarkStrategy.<UserFeatureEvent>forBoundedOutOfOrderness(Duration.ofSeconds(20))
+                WatermarkStrategy.<UserFeatureEvent>forBoundedOutOfOrderness(Duration.ofSeconds(5))
                     .withTimestampAssigner((event, recordTimestamp) -> event.getTimestamp())
                         .withIdleness(Duration.ofMinutes(5))
             );
@@ -105,47 +105,45 @@ public class ItemFeature1hJob {
                 Time.hours(1), // 窗口大小1小时
                 Time.minutes(5) // 滑动间隔5分钟
             ))
-                .allowedLateness(Time.minutes(1))  //允许迟到1分钟的数据
-                .sideOutputLateData(LATE_DATA_TAG)
             .aggregate(new ItemFeature1hAggregator())
             .name("Item Feature 1h Aggregation");
 
         // // 打印聚合结果用于调试（采样）
-         aggregatedStream
-             .process(new ProcessFunction<ItemFeature1hAggregation, ItemFeature1hAggregation>() {
-                 private static final long SAMPLE_INTERVAL = 60000; // 采样间隔1分钟
-                 private static final int SAMPLE_COUNT = 3; // 每次采样3条
-                 private transient long lastSampleTime;
-                 private transient int sampleCount;
-
-                 @Override
-                 public void open(Configuration parameters) throws Exception {
-                     lastSampleTime = 0;
-                     sampleCount = 0;
-                 }
-
-                 @Override
-                 public void processElement(ItemFeature1hAggregation value, Context ctx, Collector<ItemFeature1hAggregation> out) throws Exception {
-                     long now = System.currentTimeMillis();
-                     if (now - lastSampleTime > SAMPLE_INTERVAL) {
-                         lastSampleTime = now - (now % SAMPLE_INTERVAL);
-                         sampleCount = 0;
-                     }
-                     if (sampleCount < SAMPLE_COUNT) {
-                         sampleCount++;
-                         LOG.info("[Sample {}/{}] postId {} at {}: exp1h={}, 3sview1h={}, 8sview1h={}, like1h={}",
-                             sampleCount,
-                             SAMPLE_COUNT,
-                             value.postId,
-                             new SimpleDateFormat("HH:mm:ss").format(new Date()),
-                             value.postExpCnt1h,
-                             value.post3sviewCnt1h,
-                             value.post8sviewCnt1h,
-                             value.postLikeCnt1h);
-                     }
-                 }
-             })
-             .name("Debug Sampling");
+//         aggregatedStream
+//             .process(new ProcessFunction<ItemFeature1hAggregation, ItemFeature1hAggregation>() {
+//                 private static final long SAMPLE_INTERVAL = 60000; // 采样间隔1分钟
+//                 private static final int SAMPLE_COUNT = 3; // 每次采样3条
+//                 private transient long lastSampleTime;
+//                 private transient int sampleCount;
+//
+//                 @Override
+//                 public void open(Configuration parameters) throws Exception {
+//                     lastSampleTime = 0;
+//                     sampleCount = 0;
+//                 }
+//
+//                 @Override
+//                 public void processElement(ItemFeature1hAggregation value, Context ctx, Collector<ItemFeature1hAggregation> out) throws Exception {
+//                     long now = System.currentTimeMillis();
+//                     if (now - lastSampleTime > SAMPLE_INTERVAL) {
+//                         lastSampleTime = now - (now % SAMPLE_INTERVAL);
+//                         sampleCount = 0;
+//                     }
+//                     if (sampleCount < SAMPLE_COUNT) {
+//                         sampleCount++;
+//                         LOG.info("[Sample {}/{}] postId {} at {}: exp1h={}, 3sview1h={}, 8sview1h={}, like1h={}",
+//                             sampleCount,
+//                             SAMPLE_COUNT,
+//                             value.postId,
+//                             new SimpleDateFormat("HH:mm:ss").format(new Date()),
+//                             value.postExpCnt1h,
+//                             value.post3sviewCnt1h,
+//                             value.post8sviewCnt1h,
+//                             value.postLikeCnt1h);
+//                     }
+//                 }
+//             })
+//             .name("Debug Sampling");
 
         // 第五步：转换为Protobuf并写入Redis
         DataStream<Tuple2<String, byte[]>> dataStream = aggregatedStream
@@ -186,7 +184,7 @@ public class ItemFeature1hJob {
         RedisUtil.addRedisSink(
             dataStream,
             redisConfig,
-            false, // 异步写入
+            true, // 异步写入
             100   // 批量大小
         );
 

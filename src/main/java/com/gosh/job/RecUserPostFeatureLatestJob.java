@@ -3,7 +3,7 @@ package com.gosh.job;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gosh.config.RedisConfig;
-import com.gosh.entity.RecFeature;
+import com.gosh.feature.RecFeature;
 import com.gosh.util.*;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.typeinfo.Types;

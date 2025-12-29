@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gosh.config.RedisConfig;
 import com.gosh.config.RedisConnectionManager;
-import com.gosh.entity.RecFeature;
+import com.gosh.feature.RecFeature;
 import com.gosh.entity.RecTagColdFeature;
 import com.gosh.job.UserFeatureCommon.ExposeEventParser;
 import com.gosh.job.UserFeatureCommon.ExposeToFeatureMapper;
