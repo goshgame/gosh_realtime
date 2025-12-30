@@ -122,7 +122,7 @@ public class LiveAnchorFeatureHotJob {
             })
             .window(SlidingProcessingTimeWindows.of(
                 Time.minutes(windowMinutes),
-                Time.seconds(30)
+                Time.seconds(30 * windowMinutes / 5 )
             ))
             .aggregate(new AnchorHotFeatureAggregator(windowMinutes))
             .name("Anchor Hot Feature Aggregation " + windowMinutes + "min");

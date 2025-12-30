@@ -138,6 +138,9 @@
             </exclusions>
         </dependency>
 
+        <!-- Ensure protobuf runtime is available in the job JAR -->
+        <!-- Keep the compile-time dependency above; we'll shade it into the final JAR below -->
+
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-parquet</artifactId>
@@ -959,6 +962,37 @@
                     <encoding>UTF-8</encoding>
                     <showWarnings>false</showWarnings>
                 </configuration>
+            </plugin>
+            
+            <!-- Shade plugin: 包含并 relocate protobuf 到 shaded 包，避免与集群已有 protobuf 冲突 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.4.1</version>
+                <executions>
+                    <execution>
+                        <id>shade-protobuf</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <artifactSet>
+                                <includes>
+                                    <include>com.google.protobuf:protobuf-java</include>
+                                </includes>
+                            </artifactSet>
+                            <relocations>
+                                <relocation>
+                                    <pattern>com.google.protobuf</pattern>
+                                    <shadedPattern>shaded.com.google.protobuf</shadedPattern>
+                                </relocation>
+                            </relocations>
+                            <!-- 保留其他资源变换器默认行为 -->
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
 

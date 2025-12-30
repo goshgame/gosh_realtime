@@ -103,7 +103,7 @@ public class ItemFeature1hJob {
             })
             .window(SlidingProcessingTimeWindows.of(
                 Time.hours(1), // 窗口大小1小时
-                Time.minutes(5) // 滑动间隔5分钟
+                Time.minutes(10) // 滑动间隔10分钟
             ))
             .aggregate(new ItemFeature1hAggregator())
             .name("Item Feature 1h Aggregation");

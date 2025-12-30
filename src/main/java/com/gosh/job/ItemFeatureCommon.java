@@ -9,9 +9,7 @@ import java.util.*;
  */
 public class ItemFeatureCommon {
     // HyperLogLog的log2m参数，控制精度
-    // log2m=14时，标准误差约为0.81%
-    // 使用的内存约为2^14 * 6 / 8 字节 = 12KB
-    private static final int HLL_LOG2M = 14;
+    private static final int HLL_LOG2M = 12;
 
     /**
      * Redis数据结构，包含key和value
