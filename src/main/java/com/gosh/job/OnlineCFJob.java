@@ -14,6 +14,7 @@ import com.gosh.job.UserFeatureCommon.ViewToFeatureMapper;
 import com.gosh.util.KafkaEnvUtil;
 import com.gosh.util.RedisUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.flink.api.common.functions.RichMapFunction;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.api.common.typeinfo.Types;
@@ -149,9 +150,24 @@ public class OnlineCFJob {
                 .name("pair-decay-merge")
                 .filter((FilterFunction<PairScoreEvent>) pair -> pair.score >= config.getPairMinScore());
 
-        // 写入 pair 计数（用于时间衰减）
-        pairWithDecayStream.addSink(new PairCountRedisSink(config, pairRedisConfig))
-                .name("redis-pair-count-sink");
+        // 写入 pair 计数（用于时间衰减）- 使用批量写入方案
+        DataStream<Tuple2<String, byte[]>> pairCountStream = pairWithDecayStream
+                .map((MapFunction<PairScoreEvent, Tuple2<String, byte[]>>) pair -> {
+                    if (pair == null || pair.leftItemId <= 0 || pair.rightItemId <= 0) {
+                        return null;
+                    }
+                    long currentMinute = TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis());
+                    String pairKey = config.getPairKeyPrefix() + pair.leftItemId + "_" + pair.rightItemId;
+                    String pairValue = pair.score + ":" + currentMinute;
+                    return Tuple2.of(pairKey, pairValue.getBytes(StandardCharsets.UTF_8));
+                })
+                .returns(Types.TUPLE(Types.STRING, Types.PRIMITIVE_ARRAY(Types.BYTE)))
+                .filter((FilterFunction<Tuple2<String, byte[]>>) tuple -> tuple != null)
+                .name("pair-count-to-tuple");
+
+        // 配置 Redis 并设置命令类型
+        pairRedisConfig.setCommand("SET");
+        RedisUtil.addRedisSink(pairCountStream, pairRedisConfig, true, 100, 10, 5000);
 
         // 按 leftItem 聚合所有 rightItem，然后批量写入 index
         DataStream<Tuple2<Long, List<Tuple2<Long, Long>>>> leftItemAggregatedStream = pairWithDecayStream
@@ -166,8 +182,16 @@ public class OnlineCFJob {
                 })
                 .name("left-item-aggregate");
 
-        leftItemAggregatedStream.addSink(new IndexTopKRedisSink(config, pairRedisConfig))
-                .name("redis-index-topk-sink");
+        // 使用 RichMapFunction 处理 Top-K 的读取、合并和序列化，然后使用批量写入方案
+        DataStream<Tuple2<String, byte[]>> indexTopKStream = leftItemAggregatedStream
+                .map(new IndexTopKMapFunction(config, pairRedisConfig))
+                .returns(Types.TUPLE(Types.STRING, Types.PRIMITIVE_ARRAY(Types.BYTE)))
+                .filter((FilterFunction<Tuple2<String, byte[]>>) tuple -> tuple != null && tuple.f0 != null)
+                .name("index-topk-to-tuple");
+
+        // 配置 Redis 并设置命令类型和 TTL
+        pairRedisConfig.setCommand("SET");
+        RedisUtil.addRedisSink(indexTopKStream, pairRedisConfig, true, 50, 10, 1000);
 
         env.execute("gosh-onlinecf");
     }
@@ -727,7 +751,9 @@ public class OnlineCFJob {
     /**
      * 写入 pair 计数到 Redis（用于时间衰减计算）
      * 使用批量写入优化性能
+     * @deprecated 已替换为直接使用 RedisUtil.addRedisSink
      */
+    @Deprecated
     private static class PairCountRedisSink extends RichSinkFunction<PairScoreEvent> {
 
         private final OnlineCFConfig config;
@@ -792,10 +818,102 @@ public class OnlineCFJob {
     }
 
     /**
+     * 将 Top-K 数据转换为 Tuple2<String, byte[]> 格式（用于批量写入）
+     * 读取现有 Top-K，合并新数据，排序后序列化为 Protobuf
+     */
+    private static class IndexTopKMapFunction extends RichMapFunction<Tuple2<Long, List<Tuple2<Long, Long>>>, Tuple2<String, byte[]>> {
+        private final OnlineCFConfig config;
+        private final RedisConfig redisConfig;
+        private transient RedisHelper redisHelper;
+
+        IndexTopKMapFunction(OnlineCFConfig config, RedisConfig redisConfig) {
+            this.config = config;
+            this.redisConfig = redisConfig;
+        }
+
+        @Override
+        public void open(org.apache.flink.configuration.Configuration parameters) {
+            this.redisHelper = new RedisHelper(redisConfig);
+            this.redisHelper.open();
+        }
+
+        @Override
+        public Tuple2<String, byte[]> map(Tuple2<Long, List<Tuple2<Long, Long>>> value) throws Exception {
+            if (value == null || value.f0 == null || value.f1 == null || value.f1.isEmpty()) {
+                return null;
+            }
+            long leftItemId = value.f0;
+            String indexKey = config.getIndexKey(leftItemId);
+
+            // 1. 读取现有的 Top-K（Protobuf 格式），用于合并历史数据
+            List<Long> newRightItemIds = value.f1.stream()
+                    .map(pair -> pair.f0)
+                    .collect(Collectors.toList());
+
+            List<Tuple2<Long, Long>> existingPairs = new ArrayList<>();
+            byte[] existingData = redisHelper.getValue(indexKey);
+            if (existingData != null && existingData.length > 0) {
+                try {
+                    RecTagColdFeature.PostItemList existingList = RecTagColdFeature.PostItemList.parseFrom(existingData);
+                    for (RecTagColdFeature.PostItem item : existingList.getItemsList()) {
+                        long rightItemId = item.getPostId();
+                        // 排除新数据中已存在的 rightItem（新数据会覆盖）
+                        if (!newRightItemIds.contains(rightItemId)) {
+                            long score = Math.round(item.getScore());
+                            existingPairs.add(Tuple2.of(rightItemId, score));
+                        }
+                    }
+                } catch (Exception e) {
+                    LOG.warn("Failed to parse existing PostItemList from Redis key: {}, error: {}", indexKey, e.getMessage());
+                }
+            }
+
+            // 2. 合并新数据和历史数据
+            List<Tuple2<Long, Long>> allPairs = new ArrayList<>(value.f1);
+            allPairs.addAll(existingPairs);
+
+            // 3. 按 score 从高到低排序，去重并保留最高分
+            Map<Long, Long> scoreMap = new HashMap<>();
+            for (Tuple2<Long, Long> pair : allPairs) {
+                long rightItemId = pair.f0;
+                long score = pair.f1;
+                scoreMap.merge(rightItemId, score, Math::max);
+            }
+
+            // 4. 按 score 从高到低排序，过滤并限制 Top-K
+            List<Map.Entry<Long, Long>> sorted = scoreMap.entrySet().stream()
+                    .filter(entry -> entry.getValue() >= config.getIndexMinScore())
+                    .sorted(Map.Entry.<Long, Long>comparingByValue().reversed())
+                    .limit(config.getIndexLimit())
+                    .collect(Collectors.toList());
+
+            // 5. 构建 Protobuf PostItemList
+            RecTagColdFeature.PostItemList.Builder listBuilder = RecTagColdFeature.PostItemList.newBuilder();
+            for (Map.Entry<Long, Long> entry : sorted) {
+                RecTagColdFeature.PostItem.Builder itemBuilder = RecTagColdFeature.PostItem.newBuilder();
+                itemBuilder.setPostId(entry.getKey());
+                itemBuilder.setScore(entry.getValue().floatValue());
+                listBuilder.addItems(itemBuilder.build());
+            }
+
+            // 6. 序列化并返回 Tuple2<String, byte[]>
+            byte[] protobufBytes = listBuilder.build().toByteArray();
+            return Tuple2.of(indexKey, protobufBytes);
+        }
+
+        @Override
+        public void close() {
+            Optional.ofNullable(redisHelper).ifPresent(RedisHelper::close);
+        }
+    }
+
+    /**
      * 批量写入 index Top-K 到 Redis（Protobuf 格式）
      * 读取现有 Top-K，合并新数据，排序后重新写入
      * 使用批量缓冲区和异步写入优化性能
+     * @deprecated 已替换为 IndexTopKMapFunction + RedisUtil.addRedisSink
      */
+    @Deprecated
     private static class IndexTopKRedisSink extends RichSinkFunction<Tuple2<Long, List<Tuple2<Long, Long>>>> {
 
         private final OnlineCFConfig config;
