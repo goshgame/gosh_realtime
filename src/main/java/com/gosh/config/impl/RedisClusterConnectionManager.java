@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import com.gosh.util.TimerUtil;
 
 import java.io.Serializable;
+import java.nio.channels.ClosedChannelException;
 import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.*;
@@ -34,6 +35,7 @@ public class RedisClusterConnectionManager implements RedisConnectionManager, Se
     private final String connectionKey;
     private transient final Timer sharedTimer;
     private transient StatefulRedisClusterConnection<String, Tuple2<String, byte[]>> connection;
+    private transient int connectionRetryCount = 0; // 连接重试计数器
 
 
     public RedisClusterConnectionManager(RedisConfig config) {
@@ -84,9 +86,21 @@ public class RedisClusterConnectionManager implements RedisConnectionManager, Se
     public <T> CompletableFuture<T> executeListAsync(Function<RedisListCommands<String, Tuple2<String, byte[]>>, T> operation) {
         return CompletableFuture.supplyAsync(() -> {
             try {
+                ensureConnectionValid(); // 确保连接有效
                 RedisListCommands<String, Tuple2<String, byte[]>> commands = connection.sync();
                 return operation.apply(commands);
             } catch (Exception e) {
+                if (e instanceof ClosedChannelException || (e.getCause() != null && e.getCause() instanceof ClosedChannelException)) {
+                    LOG.warn("Redis connection was closed, will retry with new connection", e);
+                    // 连接已关闭，重新建立连接后重试
+                    ensureConnectionValid();
+                    RedisListCommands<String, Tuple2<String, byte[]>> commands = connection.sync();
+                    return operation.apply(commands);
+                } else if (e instanceof UnsupportedOperationException && e.getMessage() != null && e.getMessage().contains("StatusOutput does not support set(long)")) {
+                    // 特殊处理这个错误，防止应用崩溃
+                    LOG.error("Unsupported operation: " + e.getMessage() + ", returning null to prevent application crash");
+                    return null;
+                }
                 LOG.error("Async cluster list operation failed", e);
                 throw new CompletionException(e);
             }
@@ -96,10 +110,22 @@ public class RedisClusterConnectionManager implements RedisConnectionManager, Se
     @Override
     public <T> CompletableFuture<T> executeStringAsync(Function<RedisStringCommands<String, Tuple2<String, byte[]>>, T> operation) {
         return CompletableFuture.supplyAsync(() -> {
-            try{
+            try {
+                ensureConnectionValid(); // 确保连接有效
                 RedisStringCommands<String, Tuple2<String, byte[]>> stringCommands = connection.sync();
                 return operation.apply(stringCommands); // 执行String操作（集群自动分片）
             } catch (Exception e) {
+                if (e instanceof ClosedChannelException || (e.getCause() != null && e.getCause() instanceof ClosedChannelException)) {
+                    LOG.warn("Redis connection was closed, will retry with new connection", e);
+                    // 连接已关闭，重新建立连接后重试
+                    ensureConnectionValid();
+                    RedisStringCommands<String, Tuple2<String, byte[]>> stringCommands = connection.sync();
+                    return operation.apply(stringCommands);
+                } else if (e instanceof UnsupportedOperationException && e.getMessage() != null && e.getMessage().contains("StatusOutput does not support set(long)")) {
+                    // 特殊处理这个错误，防止应用崩溃
+                    LOG.error("Unsupported operation: " + e.getMessage() + ", returning null to prevent application crash");
+                    return null;
+                }
                 LOG.error("Async String operation failed (cluster mode)", e);
                 throw new CompletionException("Async String operation error", e);
             }
@@ -109,12 +135,24 @@ public class RedisClusterConnectionManager implements RedisConnectionManager, Se
     @Override
     public <T> CompletableFuture<T> executeSetAsync(Function<RedisSetCommands<String, Tuple2<String, byte[]>>, T> operation) {
         return CompletableFuture.supplyAsync(() -> {
-            try{
-                RedisSetCommands<String, Tuple2<String, byte[]>> stringCommands = connection.sync();
-                return operation.apply(stringCommands); // 执行String操作（集群自动分片）
+            try {
+                ensureConnectionValid(); // 确保连接有效
+                RedisSetCommands<String, Tuple2<String, byte[]>> setCommands = connection.sync();
+                return operation.apply(setCommands); // 执行Set操作（集群自动分片）
             } catch (Exception e) {
-                LOG.error("Async String operation failed (cluster mode)", e);
-                throw new CompletionException("Async String operation error", e);
+                if (e instanceof ClosedChannelException || (e.getCause() != null && e.getCause() instanceof ClosedChannelException)) {
+                    LOG.warn("Redis connection was closed, will retry with new connection", e);
+                    // 连接已关闭，重新建立连接后重试
+                    ensureConnectionValid();
+                    RedisSetCommands<String, Tuple2<String, byte[]>> setCommands = connection.sync();
+                    return operation.apply(setCommands);
+                } else if (e instanceof UnsupportedOperationException && e.getMessage() != null && e.getMessage().contains("StatusOutput does not support set(long)")) {
+                    // 特殊处理这个错误，防止应用崩溃
+                    LOG.error("Unsupported operation: " + e.getMessage() + ", returning null to prevent application crash");
+                    return null;
+                }
+                LOG.error("Async Set operation failed (cluster mode)", e);
+                throw new CompletionException("Async Set operation error", e);
             }
         }, threadPool);
     }
@@ -122,12 +160,24 @@ public class RedisClusterConnectionManager implements RedisConnectionManager, Se
     @Override
     public <T> CompletableFuture<T> executeHashAsync(Function<RedisHashCommands<String, Tuple2<String, byte[]>>, T> operation) {
         return CompletableFuture.supplyAsync(() -> {
-            try{
-                RedisHashCommands<String, Tuple2<String, byte[]>> stringCommands = connection.sync();
-                return operation.apply(stringCommands); // 执行String操作（集群自动分片）
+            try {
+                ensureConnectionValid(); // 确保连接有效
+                RedisHashCommands<String, Tuple2<String, byte[]>> hashCommands = connection.sync();
+                return operation.apply(hashCommands); // 执行Hash操作
             } catch (Exception e) {
-                LOG.error("Async String operation failed (cluster mode)", e);
-                throw new CompletionException("Async String operation error", e);
+                if (e instanceof ClosedChannelException || (e.getCause() != null && e.getCause() instanceof ClosedChannelException)) {
+                    LOG.warn("Redis connection was closed, will retry with new connection", e);
+                    // 连接已关闭，重新建立连接后重试
+                    ensureConnectionValid();
+                    RedisHashCommands<String, Tuple2<String, byte[]>> hashCommands = connection.sync();
+                    return operation.apply(hashCommands);
+                } else if (e instanceof UnsupportedOperationException && e.getMessage() != null && e.getMessage().contains("StatusOutput does not support set(long)")) {
+                    // 特殊处理这个错误，防止应用崩溃
+                    LOG.error("Unsupported operation: " + e.getMessage() + ", returning null to prevent application crash");
+                    return null;
+                }
+                LOG.error("Async Hash operation failed (cluster mode)", e);
+                throw new CompletionException("Async Hash operation error", e);
             }
         }, threadPool);
     }
@@ -149,12 +199,12 @@ public class RedisClusterConnectionManager implements RedisConnectionManager, Se
 
     @Override
     public <T> CompletableFuture<T> executeAsync(Function<RedisCommands<String, Tuple2<String, byte[]>>, T> operation) {
-        return executeAsync(operation, null);
+        throw new UnsupportedOperationException("Single node operations not supported in cluster mode");
     }
 
     @Override
     public <T> CompletableFuture<T> executeAsync(Function<RedisCommands<String, Tuple2<String, byte[]>>, T> operation, String threadPoolName) {
-        return null;
+        throw new UnsupportedOperationException("Single node operations not supported in cluster mode");
     }
 
     @Override
@@ -166,10 +216,22 @@ public class RedisClusterConnectionManager implements RedisConnectionManager, Se
     public <T> CompletableFuture<T> executeClusterAsync(Function<RedisAdvancedClusterCommands<String, Tuple2<String, byte[]>>, T> operation, String threadPoolName) {
         String poolName = threadPoolName != null ? threadPoolName : connectionKey;
         return CompletableFuture.supplyAsync(() -> {
-            try{
-                RedisAdvancedClusterCommands<String, Tuple2<String, byte[]>> commands = connection.sync();
-                return operation.apply(commands);
+            try {
+                ensureConnectionValid(); // 确保连接有效
+                RedisAdvancedClusterCommands<String, Tuple2<String, byte[]>> clusterCommands = connection.sync();
+                return operation.apply(clusterCommands);
             } catch (Exception e) {
+                if (e instanceof ClosedChannelException || (e.getCause() != null && e.getCause() instanceof ClosedChannelException)) {
+                    LOG.warn("Redis connection was closed, will retry with new connection", e);
+                    // 连接已关闭，重新建立连接后重试
+                    ensureConnectionValid();
+                    RedisAdvancedClusterCommands<String, Tuple2<String, byte[]>> clusterCommands = connection.sync();
+                    return operation.apply(clusterCommands);
+                } else if (e instanceof UnsupportedOperationException && e.getMessage() != null && e.getMessage().contains("StatusOutput does not support set(long)")) {
+                    // 特殊处理这个错误，防止应用崩溃
+                    LOG.error("Unsupported operation: " + e.getMessage() + ", returning null to prevent application crash");
+                    return null;
+                }
                 LOG.error("Async Redis cluster operation failed: {}", e.getMessage(), e);
                 throw new CompletionException(e);
             }
@@ -211,7 +273,7 @@ public class RedisClusterConnectionManager implements RedisConnectionManager, Se
                 .exceptionally(ex -> {
                     if (currentAttempt < maxRetries) {
                         long backoff = (long) (Math.pow(2, currentAttempt) * 100); // 指数退避
-                        LOG.warn("Operation failed, retrying in {}ms (attempt {}/{})", backoff, currentAttempt + 1, maxRetries, ex);
+                        LOG.warn(String.format("Operation failed, retrying in %dms (attempt %d/%d)", backoff, currentAttempt + 1, maxRetries), ex);
 
                         sharedTimer.newTimeout(timeout -> {
                             retryOperation(operation, maxRetries, currentAttempt + 1, resultFuture);
@@ -291,4 +353,62 @@ public class RedisClusterConnectionManager implements RedisConnectionManager, Se
         }
     }
 
+    private void ensureConnectionValid() {
+        try {
+            // 检查连接是否有效
+            if (connection == null || !connection.isOpen()) {
+                LOG.info("Redis connection is invalid, reconnecting...");
+                reconnect();
+            }
+            // 发送ping命令检查连接是否可用
+            connection.sync().ping();
+            // 连接成功，重置重试计数器
+            connectionRetryCount = 0;
+        } catch (Exception e) {
+            LOG.warn("Redis connection is invalid, reconnecting...", e);
+            reconnect();
+        }
+    }
+
+    /**
+     * 检查重试次数是否超过限制，如果超过则抛出异常
+     * @param cause 异常原因，如果有的话
+     */
+    private void checkRetryLimitAndThrowIfNeeded(Exception cause) {
+        if (connectionRetryCount >= 5) {
+            connectionRetryCount = 0;
+            String errorMsg = String.format("Failed to reconnect Redis connection (attempt %d/5)", connectionRetryCount);
+            LOG.error(errorMsg);
+            if (cause != null) {
+                throw new RuntimeException(errorMsg, cause);
+            } else {
+                throw new RuntimeException(errorMsg);
+            }
+        }
+    }
+
+    private synchronized void reconnect() {
+        try {
+            // 检查重试次数是否超过限制
+            checkRetryLimitAndThrowIfNeeded(null);
+            
+            // 关闭旧连接
+            if (connection != null) {
+                connection.close();
+            }
+            // 重新建立连接
+            connection = clusterClient.connect(new StringTupleCodec());
+            LOG.info("Redis connection reestablished successfully");
+            // 连接成功，重置重试计数器
+            connectionRetryCount = 0;
+        } catch (RuntimeException e) {
+            // 重新抛出运行时异常
+            throw e;
+        } catch (Exception e) {
+            // 连接失败，增加重试计数器
+            connectionRetryCount++;
+            // 当重试次数超过限制时才抛出异常，否则允许继续重试
+            checkRetryLimitAndThrowIfNeeded(e);
+        }
+    }
 }
