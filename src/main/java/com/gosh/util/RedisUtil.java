@@ -190,6 +190,7 @@ public class RedisUtil {
             );
             // 替换为 kvRocks 的 node，其他配置保持不变
             kvRocksConfig.setClusterNodes(List.of("kvrocks-prod-internal-nlb-f1afef52de25c89f.elb.ap-southeast-1.amazonaws.com:6666"));
+            kvRocksConfig.setSsl(false);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
