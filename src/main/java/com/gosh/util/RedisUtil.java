@@ -1,5 +1,6 @@
 package com.gosh.util;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gosh.config.*;
 import com.gosh.cons.CommonConstants;
 import org.apache.flink.api.java.tuple.Tuple2;
@@ -7,7 +8,9 @@ import org.apache.flink.api.java.tuple.Tuple3;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -60,6 +63,10 @@ public class RedisUtil {
         int maxOps = maxPendingOperations.length > 0 ? maxPendingOperations[0] : 10;
         stream.addSink(new RedisSink<>(config, async, batchSize, maxOps))
                 .name("Redis Sink (Tuple2)");
+
+        // 双写 kvrocks
+        stream.addSink(new RedisSink<>(getKvRocksConfig(config), async, batchSize, maxOps))
+                .name("KvRocks Sink (Tuple2)");
     }
 
     /**
@@ -80,6 +87,8 @@ public class RedisUtil {
             long batchIntervalMs) {
         stream.addSink(new RedisSink<>(config, async, batchSize, maxPendingOperations, batchIntervalMs))
                 .name("Redis Sink (Tuple2)");
+        stream.addSink(new RedisSink<>(getKvRocksConfig(config), async, batchSize, maxPendingOperations, batchIntervalMs))
+                .name("KvRocks Sink (Tuple2)");
     }
 
     /**
@@ -128,6 +137,8 @@ public class RedisUtil {
             long batchIntervalMs) {
         stream.addSink(new RedisSink<>(config, async, batchSize, maxPendingOperations, batchIntervalMs))
                 .name("Redis Hash Sink (Tuple3)");
+        stream.addSink(new RedisSink<>(getKvRocksConfig(config), async, batchSize, maxPendingOperations, batchIntervalMs))
+                .name("KvRocks Hash Sink (Tuple3)");
     }
 
     /**
@@ -142,6 +153,10 @@ public class RedisUtil {
         int maxOps = maxPendingOperations.length > 0 ? maxPendingOperations[0] : 10;
         stream.addSink(new RedisSink<>(config, async, batchSize, maxOps))
                 .name("Redis HashMap Sink (DEL_HMSET)");
+
+        // 双写 kvrocks
+        stream.addSink(new RedisSink<>(getKvRocksConfig(config), async, batchSize, maxOps))
+                .name("KvRocks HashMap Sink (DEL_HMSET)");
     }
 
     /**
@@ -162,5 +177,24 @@ public class RedisUtil {
             long batchIntervalMs) {
         stream.addSink(new RedisSink<>(config, async, batchSize, maxPendingOperations, batchIntervalMs))
                 .name("Redis HashMap Sink (DEL_HMSET)");
+    }
+
+    private static RedisConfig getKvRocksConfig(RedisConfig config) {
+        ObjectMapper mapper = new ObjectMapper();
+        RedisConfig kvRocksConfig = null;
+        try {
+            // 深拷贝
+            kvRocksConfig = mapper.readValue(
+                    mapper.writeValueAsBytes(config),
+                    RedisConfig.class
+            );
+            // 替换为 kvRocks 的 node，其他配置保持不变
+            kvRocksConfig.setClusterNodes(List.of("kvrocks-prod-internal-nlb-f1afef52de25c89f.elb.ap-southeast-1.amazonaws.com:6666"));
+            kvRocksConfig.setSsl(false);
+            kvRocksConfig.setSslEnabled(false);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return kvRocksConfig;
     }
 }
