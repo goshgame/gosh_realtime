@@ -72,9 +72,9 @@ public class LiveUserPornLabelJob {
         
         env.getConfig().setAutoWatermarkInterval(1000);
 
-        // 第二步：创建Source，Kafka环境（topic=advertise）
+        // 第二步：创建Source，Kafka环境（topic=event_live）
         KafkaSource<String> inputTopic = KafkaEnvUtil.createKafkaSource(
-            KafkaEnvUtil.loadProperties(), "advertise"
+            KafkaEnvUtil.loadProperties(), "event_live"
         );
 
         // 第三步：使用KafkaSource创建DataStream

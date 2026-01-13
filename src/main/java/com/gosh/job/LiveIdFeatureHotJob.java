@@ -27,7 +27,7 @@ import java.time.Duration;
 
 /**
  * 直播间曝光特征任务：
- *  - 数据源：Kafka topic=advertise, event_type=1
+ *  - 数据源：Kafka topic=event_live, event_type=1
  *  - 处理事件：live_exposure
  *  - 输出特征：按 live_id 聚合最近5分钟曝光次数
  *  - 时间窗口：5min，滑动间隔30秒
@@ -50,9 +50,9 @@ public class LiveIdFeatureHotJob {
         LOG.info("Flink environment created");
 
         KafkaSource<String> inputTopic = KafkaEnvUtil.createKafkaSource(
-            KafkaEnvUtil.loadProperties(), "advertise"
+            KafkaEnvUtil.loadProperties(), "event_live"
         );
-        LOG.info("Kafka source created for topic: advertise");
+        LOG.info("Kafka source created for topic: event_live");
 
         DataStreamSource<String> kafkaSource = env.fromSource(
             inputTopic,

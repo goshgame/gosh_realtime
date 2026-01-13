@@ -26,7 +26,7 @@ import java.util.*;
 
 /**
  * 直播主播特征生产任务（包含热度等特征）
- * 数据源：Kafka topic=advertise, event_type=1
+ * 数据源：Kafka topic=event_live, event_type=1
  * 处理5种事件：进房、退房、聊天、送礼、关注
  * 生成特征：按anchor_id聚合，统计7组热度指标
  * 时间窗口：5min/10min/15min，滑动间隔10秒
@@ -62,11 +62,11 @@ public class LiveAnchorFeatureHotJob {
         StreamExecutionEnvironment env = FlinkEnvUtil.createStreamExecutionEnvironment();
         LOG.info("Flink environment created");
 
-        // 第二步：创建Kafka Source（topic=advertise）
+        // 第二步：创建Kafka Source（topic=event_live
         KafkaSource<String> inputTopic = KafkaEnvUtil.createKafkaSource(
-            KafkaEnvUtil.loadProperties(), "advertise"
+            KafkaEnvUtil.loadProperties(), "event_live"
         );
-        LOG.info("Kafka source created for topic: advertise");
+        LOG.info("Kafka source created for topic: event_live");
 
         // 第三步：使用KafkaSource创建DataStream
         DataStreamSource<String> kafkaSource = env.fromSource(

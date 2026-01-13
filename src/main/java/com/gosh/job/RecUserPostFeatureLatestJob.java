@@ -62,7 +62,7 @@ public class RecUserPostFeatureLatestJob {
         System.out.println("LOG instance: " + LOG.getClass().getName());
         LOG.info("========================================");
         LOG.info("Starting RecUserPostFeatureLatestJob");
-        LOG.info("Processing post events from advertise topic");
+        LOG.info("Processing post events from event_post topic");
         LOG.info("SessionWindow gap: {} seconds", SESSION_GAP_SECONDES);
         LOG.info("========================================");
         System.out.println("=== RecUserPostFeatureLatestJob Logs Printed ===");
@@ -73,9 +73,9 @@ public class RecUserPostFeatureLatestJob {
         
         env.getConfig().setAutoWatermarkInterval(1000);
 
-        // 第二步：创建Source，Kafka环境（topic=advertise）
+        // 第二步：创建Source，Kafka环境（topic=event_post）
         KafkaSource<String> inputTopic = KafkaEnvUtil.createKafkaSource(
-            KafkaEnvUtil.loadProperties(), "advertise"
+            KafkaEnvUtil.loadProperties(), "event_post"
         );
 
         // 第三步：使用KafkaSource创建DataStream
