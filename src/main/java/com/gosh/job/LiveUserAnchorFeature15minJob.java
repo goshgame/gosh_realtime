@@ -54,9 +54,9 @@ public class LiveUserAnchorFeature15minJob {
         // 确保Kafka消费者并行度与分区数匹配
         env.getConfig().setAutoWatermarkInterval(1000); // 降低Watermark生成间隔
 
-        // 第二步：创建Source，Kafka环境（topic=advertise）
+        // 第二步：创建Source，Kafka环境（topic=event_live）
         KafkaSource<String> inputTopic = KafkaEnvUtil.createKafkaSource(
-            KafkaEnvUtil.loadProperties(), "advertise"
+            KafkaEnvUtil.loadProperties(), "event_live"
         );
 
         // 第三步：使用KafkaSource创建DataStream
