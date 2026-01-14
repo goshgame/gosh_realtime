@@ -26,10 +26,10 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LiveUserAnchorFeature15minJob {
-    private static final Logger LOG = LoggerFactory.getLogger(LiveUserAnchorFeature15minJob.class);
+public class LiveUserAnchorRealExpJob {
+    private static final Logger LOG = LoggerFactory.getLogger(LiveUserAnchorRealExpJob.class);
     private static final String PREFIX = "rec:user_anchor_feature:{";
-    private static final String SUFFIX = "}:live15min";
+    private static final String SUFFIX = "}:livereal";
     // 每个窗口内每个用户的最大事件数限制
     private static final int MAX_EVENTS_PER_WINDOW = 500;
     
@@ -59,27 +59,10 @@ public class LiveUserAnchorFeature15minJob {
             KafkaEnvUtil.loadProperties(), "event_live"
         );
 
-        // 第三步：使用KafkaSource创建DataStream
+        // 第三步：使用KafkaSource创建DataStream（使用 processing-time，不使用 watermarks）
         DataStreamSource<String> kafkaSource = env.fromSource(
             inputTopic,
-            // 添加时间戳提取和Watermark生成
-            WatermarkStrategy.<String>forBoundedOutOfOrderness(Duration.ofSeconds(5))
-                .withTimestampAssigner((element, recordTimestamp) -> {
-                    // 尝试从Kafka消息中提取时间戳
-                    try {
-                        ObjectMapper mapper = new ObjectMapper();
-                        JsonNode root = mapper.readTree(element);
-                        JsonNode userEventLog = root.path("user_event_log");
-                        // 检查是否有明确的时间戳字段
-                        if (userEventLog.has("timestamp")) {
-                            return userEventLog.get("timestamp").asLong(System.currentTimeMillis());
-                        }
-                    } catch (Exception e) {
-                        // 解析失败时使用当前系统时间
-                    }
-                    // 默认使用处理时间，避免Watermark延迟
-                    return System.currentTimeMillis();
-                }),
+            WatermarkStrategy.noWatermarks(),
             "Kafka Source"
         );
 
@@ -91,41 +74,18 @@ public class LiveUserAnchorFeature15minJob {
         // 3.1 解析 user_event_log 为 Live 用户-主播 事件
         SingleOutputStreamOperator<LiveUserAnchorEvent> eventStream = filteredStream
             .flatMap(new LiveEventParser())
-            .name("Parse Live User-Anchor Events")
-            // 为解析后的事件再次确认时间戳，确保后续处理使用正确的事件时间
-            .assignTimestampsAndWatermarks(
-                WatermarkStrategy.<LiveUserAnchorEvent>forBoundedOutOfOrderness(Duration.ofSeconds(3))
-                    .withTimestampAssigner((event, recordTimestamp) -> System.currentTimeMillis())
-            );
+            .name("Parse Live User-Anchor Events");
 
-        // 第四步：原有的实现（按uid分组，会导致数据倾斜）- 已注释保留
-        DataStream<UserAnchorFeatureAggregation> aggregatedStream = eventStream
+        // 第四步：使用自定义 per-uid 窗口（最近接触主播队列），每次新事件到来即触发下游写 Redis（负反馈计数固定为 1）
+        SingleOutputStreamOperator<Tuple2<String, Map<String, byte[]>>> dataStream = eventStream
             .keyBy(new KeySelector<LiveUserAnchorEvent, Long>() {
                 @Override
                 public Long getKey(LiveUserAnchorEvent value) throws Exception {
                     return value.uid;
                 }
             })
-            .window(SlidingProcessingTimeWindows.of(
-                Time.minutes(15),
-                Time.seconds(30)
-            ))
-            .aggregate(new UserAnchorFeatureAggregator())
-            .name("User-Anchor Feature Aggregation");
-
-        // 第五步：转换为Protobuf并写入Redis（HashMap：key=uid，field=anchorId）
-        DataStream<Tuple2<String, Map<String, byte[]>>> dataStream = aggregatedStream
-            .filter(agg -> agg != null && agg.anchorFeatures != null && !agg.anchorFeatures.isEmpty())
-            // 增加shuffle操作，进一步均衡数据分布
-            .shuffle()
-            .map(new MapFunction<UserAnchorFeatureAggregation, Tuple2<String, Map<String, byte[]>>>() {
-                @Override
-                public Tuple2<String, Map<String, byte[]>> map(UserAnchorFeatureAggregation agg) throws Exception {
-                    String redisKey = PREFIX + agg.uid + SUFFIX;
-                    return new Tuple2<>(redisKey, agg.anchorFeatures);
-                }
-            })
-            .name("Aggregation to Protobuf Bytes");
+            .process(new UserRecentAnchorProcess())
+            .name("User Recent Anchor Process");
 
         // 第六步：创建sink，Redis环境（TTL=20分钟，DEL_HMSET）
         RedisConfig redisConfig = RedisConfig.fromProperties(RedisUtil.loadProperties());
@@ -185,11 +145,9 @@ public class LiveUserAnchorFeature15minJob {
                 }
                 String event = eventNode.asText();
                 
-                // 只处理4种事件
+                // 只处理2种事件
                 if (!EVENT_LIVE_EXPOSURE.equals(event) && 
-                    !EVENT_LIVE_VIEW.equals(event) && 
-                    !EVENT_ENTER_LIVEROOM.equals(event) && 
-                    !EVENT_EXIT_LIVEROOM.equals(event)) {
+                    !EVENT_ENTER_LIVEROOM.equals(event) ) {
                     return;
                 }
                 
@@ -211,27 +169,26 @@ public class LiveUserAnchorFeature15minJob {
                 long anchorId = data.path("anchor_id").asLong(0);
                 
                 // 提取 scene：不同事件字段名不同
-                int scene = 0;
-                if (EVENT_ENTER_LIVEROOM.equals(event) || EVENT_EXIT_LIVEROOM.equals(event)) {
-                    scene = data.path("from_scene").asInt(0);  // 进房/退房用 from_scene
-                } else {
-                    scene = data.path("scene").asInt(0);        // 曝光/浏览用 scene
-                }
+                // int scene = 0;
+                // if (EVENT_ENTER_LIVEROOM.equals(event) || EVENT_EXIT_LIVEROOM.equals(event)) {
+                //     scene = data.path("from_scene").asInt(0);  // 进房/退房用 from_scene
+                // } else {
+                //     scene = data.path("scene").asInt(0);        // 曝光/浏览用 scene
+                // }
                 
                 if (uid <= 0 || anchorId <= 0) {
                     return;
                 }
                 
                 // 过滤 scene：只保留 1, 3, 4, 5
-                if (scene != 1 && scene != 3 && scene != 4 && scene != 5) {
-                    return;
-                }
+                // if (scene != 1 && scene != 3 && scene != 4 && scene != 5) {
+                //     return;
+                // }
                 
                 LiveUserAnchorEvent evt = new LiveUserAnchorEvent();
                 evt.uid = uid;
                 evt.anchorId = anchorId;
                 evt.eventType = event;
-                evt.scene = scene;
                 
                 // 从user_event_log中提取事件时间戳
                 long eventTimeMillis = System.currentTimeMillis();
@@ -347,12 +304,16 @@ public class LiveUserAnchorFeature15minJob {
                 int exposureCount = c.exposureCount;
                 int watch6sPlusCount = c.watch6sPlusCount;
                 
+                // 负反馈次数 = 曝光次数 - 6s+观看次数
+                int negative = Math.max(0, exposureCount - watch6sPlusCount);
+                
                 byte[] bytes = RecFeature.LiveUserAnchorFeature.newBuilder()
                     .setUserId(acc.uid)
                     .setAnchorId(anchorId)
                     .setUserAnchorExpCnt15Min(exposureCount)
                     .setUserAnchor3SquitCnt15Min(c.watch3sPlusCount)
                     .setUserAnchor6SquitCnt15Min(watch6sPlusCount)
+                    .setUserAnchorNegativeFeedbackCnt15Min(negative)
                     .build()
                     .toByteArray();
                 result.anchorFeatures.put(String.valueOf(anchorId), bytes);
@@ -453,15 +414,12 @@ public class LiveUserAnchorFeature15minJob {
                 int watch6sPlusCount = c.watch6sPlusCount;
                 
                 // 负反馈次数 = 曝光次数 - 6s+观看次数
-                int negative = Math.max(0, exposureCount - watch6sPlusCount);
-                
                 byte[] bytes = RecFeature.LiveUserAnchorFeature.newBuilder()
                     .setUserId(accumulator.uid)
                     .setAnchorId(anchorId)
                     .setUserAnchorExpCnt15Min(exposureCount)
                     .setUserAnchor3SquitCnt15Min(c.watch3sPlusCount)
                     .setUserAnchor6SquitCnt15Min(watch6sPlusCount)
-                    .setUserAnchorNegativeFeedbackCnt15Min(negative)
                     .build()
                     .toByteArray();
                 result.anchorFeatures.put(String.valueOf(anchorId), bytes);
@@ -487,6 +445,111 @@ public class LiveUserAnchorFeature15minJob {
             }
             
             return a;
+        }
+    }
+    /**
+     * Per-uid recent anchor process: maintain a recent-anchor queue (exposure or enter events),
+     * max size = 20, expire = 15 minutes. On each new event update, emit a Tuple2<redisKey, map<anchorId, bytes>>
+     * where each anchor's protobuf has negative feedback count = 1.
+     */
+    public static class UserRecentAnchorProcess extends org.apache.flink.streaming.api.functions.KeyedProcessFunction<Long, LiveUserAnchorEvent, Tuple2<String, Map<String, byte[]>>> {
+        private transient org.apache.flink.api.common.state.ListState<RecentAnchorEntry> anchorState;
+        private final long expireMs = 15L * 60L * 1000L; // 15 minutes
+        private final int maxSize = 20;
+
+        @Override
+        public void open(org.apache.flink.configuration.Configuration parameters) throws Exception {
+            anchorState = getRuntimeContext().getListState(
+                new org.apache.flink.api.common.state.ListStateDescriptor<>("recentAnchors", RecentAnchorEntry.class)
+            );
+        }
+
+        @Override
+        public void processElement(LiveUserAnchorEvent value, Context ctx, Collector<Tuple2<String, Map<String, byte[]>>> out) throws Exception {
+            if (value == null) return;
+
+            // only treat exposure or enter events as "contact"
+            if (!EVENT_LIVE_EXPOSURE.equals(value.eventType) && !EVENT_ENTER_LIVEROOM.equals(value.eventType)) {
+                return;
+            }
+
+            long now = ctx.timerService().currentProcessingTime();
+
+            java.util.LinkedHashMap<Long, RecentAnchorEntry> map = listStateToAnchorMap(anchorState, now);
+
+            // remove duplicate if exists
+            if (map.containsKey(value.anchorId)) {
+                map.remove(value.anchorId);
+            }
+
+            // append to end
+            RecentAnchorEntry entry = new RecentAnchorEntry();
+            entry.anchorId = value.anchorId;
+            entry.timestamp = now;
+            map.put(value.anchorId, entry);
+
+            // remove expired entries
+            java.util.Iterator<java.util.Map.Entry<Long, RecentAnchorEntry>> itExp = map.entrySet().iterator();
+            while (itExp.hasNext()) {
+                java.util.Map.Entry<Long, RecentAnchorEntry> e = itExp.next();
+                if (e.getValue().timestamp + expireMs < now) {
+                    itExp.remove();
+                }
+            }
+
+            // trim by size
+            while (map.size() > maxSize) {
+                java.util.Iterator<Long> it = map.keySet().iterator();
+                if (it.hasNext()) {
+                    it.next();
+                    it.remove();
+                } else {
+                    break;
+                }
+            }
+
+            // write back to state
+            writeAnchorMapToListState(anchorState, map);
+
+            // build protobuf bytes: negative feedback count = 1 for each anchor
+            Map<String, byte[]> anchorFeatures = new HashMap<>();
+            Long currentKey = ctx.getCurrentKey();
+            if (currentKey == null) return;
+            for (RecentAnchorEntry a : map.values()) {
+                byte[] bytes = RecFeature.LiveUserAnchorFeature.newBuilder()
+                    .setUserAnchorNegativeFeedbackCnt15Min(1)
+                    .build()
+                    .toByteArray();
+                anchorFeatures.put(String.valueOf(a.anchorId), bytes);
+            }
+
+            if (!anchorFeatures.isEmpty()) {
+                String redisKey = PREFIX + currentKey + SUFFIX;
+                out.collect(new Tuple2<>(redisKey, anchorFeatures));
+            }
+        }
+
+        private java.util.LinkedHashMap<Long, RecentAnchorEntry> listStateToAnchorMap(org.apache.flink.api.common.state.ListState<RecentAnchorEntry> state, long now) throws Exception {
+            java.util.LinkedHashMap<Long, RecentAnchorEntry> map = new java.util.LinkedHashMap<>();
+            if (state == null) return map;
+            for (RecentAnchorEntry e : state.get()) {
+                if (e == null) continue;
+                if (e.timestamp + expireMs < now) continue;
+                map.put(e.anchorId, e);
+            }
+            return map;
+        }
+
+        private void writeAnchorMapToListState(org.apache.flink.api.common.state.ListState<RecentAnchorEntry> state, java.util.LinkedHashMap<Long, RecentAnchorEntry> map) throws Exception {
+            state.clear();
+            for (RecentAnchorEntry e : map.values()) {
+                state.add(e);
+            }
+        }
+
+        public static class RecentAnchorEntry {
+            public long anchorId;
+            public long timestamp;
         }
     }
 
