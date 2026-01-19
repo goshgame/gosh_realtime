@@ -45,6 +45,8 @@ public class ItemFeature48hJob {
         // 48小时的毫秒数
         // 窗口大小
         private static final long WINDOW_SIZE_MS = 48 * 60 * 60 * 1000L;
+        // 新增：周期性写入Redis的间隔
+        private static final long FLUSH_INTERVAL_MS = Time.minutes(1).toMilliseconds();
 
         public static void main(String[] args) throws Exception {
                 StreamExecutionEnvironment env = FlinkEnvUtil.createStreamExecutionEnvironment();
@@ -138,12 +140,12 @@ public class ItemFeature48hJob {
 
                 // 存储 Post 创建时间
                 private ValueState<Long> createdAtState;
-                // 存储累计特征
-                // 注意：ItemFeatureAccumulator 必须是可序列化的
-                // 并且其内部的 HyperLogLog 也是可序列化的
+                // 存储累计特征 (ItemFeatureAccumulator 及其中的 HyperLogLog 必须是可序列化的)
                 private ValueState<ItemFeatureAccumulator> accumulatorState;
-                // 标记是否已注册定时器
-                private ValueState<Boolean> timerRegisteredState;
+                // 存储48小时清理定时器的时间戳
+                private ValueState<Long> cleanupTimerState;
+                // 存储下一次Redis写入的ProcessingTime时间戳
+                private ValueState<Long> flushTimerState;
 
                 @Override
                 public void open(Configuration parameters) {
@@ -185,13 +187,13 @@ public class ItemFeature48hJob {
                                 accumulatorState.update(acc);
 
                                 // 注册或更新ProcessingTime定时器，用于周期性写入Redis
-                                // 避免为每个事件都注册定时器，只在没有定时器或当前定时器已过期时注册
-                                Long scheduledFlushTime = flushTimerState.value();
-                                if (scheduledFlushTime == null || scheduledFlushTime <= currentProcessingTime) {
-                                        long nextFlushTime = currentProcessingTime + FLUSH_INTERVAL_MS;
+                                // 只有在没有定时器时才注册，避免重复注册
+                                if (flushTimerState.value() == null) {
+                                        long nextFlushTime = ctx.timerService().currentProcessingTime()
+                                                        + FLUSH_INTERVAL_MS;
                                         ctx.timerService().registerProcessingTimeTimer(nextFlushTime);
                                         flushTimerState.update(nextFlushTime);
-                                        LOG.debug("Registered processing time flush timer for postId {} at {}",
+                                        LOG.debug("Registered periodic flush timer for postId {} at {}",
                                                         ctx.getCurrentKey(), nextFlushTime);
                                 }
                         }
@@ -206,81 +208,98 @@ public class ItemFeature48hJob {
                         createdAtState.update(createdAtMillis);
 
                         // 注册 48 小时后的定时器，用于清理状态
-                        if (timerRegisteredState.value() == null) {
+                        if (cleanupTimerState.value() == null) {
                                 long cleanupTime = createdAtMillis + WINDOW_SIZE_MS;
                                 ctx.timerService().registerEventTimeTimer(cleanupTime);
-                                timerRegisteredState.update(true);
+                                cleanupTimerState.update(cleanupTime);
                                 LOG.info("Registered event time cleanup timer for postId {} at {}", ctx.getCurrentKey(),
                                                 cleanupTime);
                         }
 
                         // 如果没有ProcessingTime定时器，也注册一个，确保即使没有交互事件也能周期性刷新
-                        Long scheduledFlushTime = flushTimerState.value();
-                        long currentProcessingTime = ctx.timerService().currentProcessingTime();
-                        if (scheduledFlushTime == null || scheduledFlushTime <= currentProcessingTime) {
-                                long nextFlushTime = currentProcessingTime + FLUSH_INTERVAL_MS;
+                        if (flushTimerState.value() == null) {
+                                long nextFlushTime = ctx.timerService().currentProcessingTime() + FLUSH_INTERVAL_MS;
                                 ctx.timerService().registerProcessingTimeTimer(nextFlushTime);
                                 flushTimerState.update(nextFlushTime);
-                                LOG.debug("Registered initial processing time flush timer for postId {} at {}",
+                                LOG.debug("Registered initial periodic flush timer for postId {} at {}",
                                                 ctx.getCurrentKey(), nextFlushTime);
                         }
                 }
 
-                // 定时器触发：窗口结束，清理状态
+                // 定时器触发：区分处理时间定时器（刷新）和事件时间定时器（清理）
                 @Override
                 public void onTimer(long timestamp, OnTimerContext ctx, Collector<Tuple2<String, byte[]>> out)
                                 throws Exception {
-                        long currentProcessingTime = ctx.timerService().currentProcessingTime();
-                        Long scheduledFlushTime = flushTimerState.value();
 
-                        // 判断是ProcessingTime定时器还是EventTime定时器
-                        if (scheduledFlushTime != null && timestamp == scheduledFlushTime) {
-                                // ProcessingTime定时器触发，执行周期性Redis写入
+                        Long cleanupTime = cleanupTimerState.value();
+                        Long flushTime = flushTimerState.value();
+
+                        if (cleanupTime != null && timestamp == cleanupTime) {
+                                // EventTime定时器触发，表示48小时窗口结束
+                                LOG.info("Event time cleanup timer fired for postId {} at {}. Performing final flush and cleanup.",
+                                                ctx.getCurrentKey(), timestamp);
+
+                                // 在清理前执行最后一次写入
                                 ItemFeatureAccumulator acc = accumulatorState.value();
                                 if (acc != null) {
                                         emitResult(acc, out);
                                 }
-                                // 重新注册下一个ProcessingTime定时器，直到EventTime窗口关闭
-                                long nextFlushTime = currentProcessingTime + FLUSH_INTERVAL_MS;
-                                ctx.timerService().registerProcessingTimeTimer(nextFlushTime);
-                                flushTimerState.update(nextFlushTime);
-                                LOG.debug("Processing time flush timer fired for postId {} at {}, next flush at {}",
-                                                ctx.getCurrentKey(), timestamp, nextFlushTime);
-                                return; // 处理完ProcessingTime定时器后返回
-                        }
 
-                        // 48小时窗口结束，清理所有状态
-                        createdAtState.clear();
-                        accumulatorState.clear();
-                        timerRegisteredState.clear();
-                        flushTimerState.clear(); // 清理ProcessingTime定时器状态
-                        LOG.info("Event time cleanup timer fired for postId {} at {}, all states cleared.",
-                                        ctx.getCurrentKey(), timestamp);
+                                // 清理所有状态
+                                createdAtState.clear();
+                                accumulatorState.clear();
+                                cleanupTimerState.clear();
+
+                                // 删除 processing time timer
+                                if (flushTime != null) {
+                                        ctx.timerService().deleteProcessingTimeTimer(flushTime);
+                                        flushTimerState.clear();
+                                }
+                        } else if (flushTime != null && timestamp == flushTime) {
+                                // ProcessingTime定时器触发，执行周期性Redis写入
+                                LOG.debug("Processing time flush timer fired for postId {} at {}", ctx.getCurrentKey(),
+                                                timestamp);
+
+                                ItemFeatureAccumulator acc = accumulatorState.value();
+                                if (acc != null) {
+                                        emitResult(acc, out);
+                                }
+
+                                // 重新注册下一个ProcessingTime定时器，直到EventTime窗口关闭
+                                if (cleanupTimerState.value() != null) {
+                                        long nextFlushTime = ctx.timerService().currentProcessingTime()
+                                                        + FLUSH_INTERVAL_MS;
+                                        ctx.timerService().registerProcessingTimeTimer(nextFlushTime);
+                                        flushTimerState.update(nextFlushTime);
+                                        LOG.debug("Re-registered periodic flush timer for postId {} at {}",
+                                                        ctx.getCurrentKey(), nextFlushTime);
+                                } else {
+                                        flushTimerState.clear();
+                                }
+                        }
                 }
 
                 private void emitResult(ItemFeatureAccumulator acc, Collector<Tuple2<String, byte[]>> out) {
                         String redisKey = PREFIX + acc.postId + SUFFIX;
 
-                        // 构建 Protobuf (复用 RecPostFeature，将 48h 数据映射到现有字段或假设已有新字段)
-                        // 这里为了演示，我们将 48h 的数据填充到 RecPostFeature 中
-                        // 注意：实际生产中建议在 .proto 文件中添加 _48h 后缀的字段
+                        // 构建 Protobuf，使用 48h 特征字段
                         RecFeature.RecPostFeature.Builder builder = RecFeature.RecPostFeature.newBuilder()
                                         .setPostId(acc.postId)
                                         // 曝光
-                                        .setPostExpCnt24H((int) acc.exposeHLL.cardinality())
+                                        .setPostExpCnt48H((int) acc.exposeHLL.cardinality())
                                         // 观看
-                                        .setPost3SviewCnt24H((int) acc.view3sHLL.cardinality())
-                                        .setPost8SviewCnt24H((int) acc.view8sHLL.cardinality())
-                                        .setPost12SviewCnt24H((int) acc.view12sHLL.cardinality())
-                                        .setPost20SviewCnt24H((int) acc.view20sHLL.cardinality())
+                                        .setPost3SviewCnt48H((int) acc.view3sHLL.cardinality())
+                                        .setPost8SviewCnt48H((int) acc.view8sHLL.cardinality())
+                                        .setPost12SviewCnt48H((int) acc.view12sHLL.cardinality())
+                                        .setPost20SviewCnt48H((int) acc.view20sHLL.cardinality())
                                         // 停留
-                                        .setPost5SstandCnt24H((int) acc.stand5sHLL.cardinality())
-                                        .setPost10SstandCnt24H((int) acc.stand10sHLL.cardinality())
+                                        .setPost5SstandCnt48H((int) acc.stand5sHLL.cardinality())
+                                        .setPost10SstandCnt48H((int) acc.stand10sHLL.cardinality())
                                         // 互动
-                                        .setPostLikeCnt24H((int) acc.likeHLL.cardinality())
-                                        .setPostFollowCnt24H((int) acc.followHLL.cardinality())
-                                        .setPostProfileCnt24H((int) acc.profileHLL.cardinality())
-                                        .setPostPosinterCnt24H((int) acc.posinterHLL.cardinality());
+                                        .setPostLikeCnt48H((int) acc.likeHLL.cardinality())
+                                        .setPostFollowCnt48H((int) acc.followHLL.cardinality())
+                                        .setPostProfileCnt48H((int) acc.profileHLL.cardinality())
+                                        .setPostPosinterCnt48H((int) acc.posinterHLL.cardinality());
 
                         out.collect(new Tuple2<>(redisKey, builder.build().toByteArray()));
                 }
