@@ -61,6 +61,7 @@ public class PostRecFeature24hJob {
     // 滑动窗口：24小时窗口，10分钟更新
     private static final long WINDOW_SIZE_HOURS = 24;
     private static final long SLIDE_INTERVAL_MINUTES = 60;
+    private static final int REDIS_TTL_MINUTES = 90;
     // 单用户/用户作者窗口内事件上限
     private static final int MAX_EVENTS_PER_USER_WINDOW = 300;
 
@@ -222,19 +223,19 @@ public class PostRecFeature24hJob {
         
         // User特征sink（使用SET命令，key-value结构）
         RedisConfig userRedisConfig = RedisConfig.fromProperties(redisProps);
-        userRedisConfig.setTtl(4200); // 20分钟TTL
+        userRedisConfig.setTtl(REDIS_TTL_MINUTES * 60); //
         userRedisConfig.setCommand("SET"); // 明确设置为SET命令
         RedisUtil.addRedisSink(userDataStream, userRedisConfig, true, 100);
         
         // Post特征sink（使用SET命令，key-value结构）
         RedisConfig postRedisConfig = RedisConfig.fromProperties(redisProps);
-        postRedisConfig.setTtl(4200); // 20分钟TTL
+        postRedisConfig.setTtl(REDIS_TTL_MINUTES * 60); //
         postRedisConfig.setCommand("SET"); // 明确设置为SET命令
         RedisUtil.addRedisSink(postDataStream, postRedisConfig, true, 100);
         
         // UserAuthor特征sink（HashMap格式，使用DEL_HMSET命令）
         RedisConfig userAuthorRedisConfig = RedisConfig.fromProperties(redisProps);
-        userAuthorRedisConfig.setTtl(4200); // 20分钟TTL
+        userAuthorRedisConfig.setTtl(REDIS_TTL_MINUTES * 60); //
         userAuthorRedisConfig.setCommand("DEL_HMSET"); // HashMap结构使用DEL_HMSET命令
         RedisUtil.addRedisHashMapSink(userAuthorDataStream, userAuthorRedisConfig, true, 100);
 
