@@ -5,6 +5,8 @@ import com.gosh.feature.RecFeature;
 import com.gosh.job.AiTagParseCommon.PostInfoEvent;
 import com.gosh.job.AiTagParseCommon.PostTagsEventParser;
 import com.gosh.job.AiTagParseCommon.PostTagsToPostInfoMapper;
+import com.gosh.job.RecValidPostParseCommon.RecValidPostEvent;
+import com.gosh.job.RecValidPostParseCommon.RecValidPostEventParser;
 import com.gosh.job.ItemFeatureCommon.ItemFeatureAccumulator;
 import com.gosh.job.UserFeatureCommon.ExposeEventParser;
 import com.gosh.job.UserFeatureCommon.ExposeToFeatureMapper;
@@ -37,6 +39,7 @@ public class ItemFeature48hJob {
         private static final Logger LOG = LoggerFactory.getLogger(ItemFeature48hJob.class);
         private static final String PREFIX = "rec:item_feature:{";
         private static final String SUFFIX = "}:post48h";
+        private static final int keepEventType = 17;
 
         // 48小时的毫秒数
         // 窗口大小
@@ -85,10 +88,13 @@ public class ItemFeature48hJob {
                                                 .withIdleness(Duration.ofMinutes(5)),
                                 "Rec Kafka Source");
 
+                DataStream<String> filteredRecStream = recSource
+                                .filter(EventFilterUtil.createFastEventTypeFilter(keepEventType)) // event_type=17
+                                .name("Pre-filter Events");
+
                 // 2.1 解析创建流 (获取 PostInfoEvent.createdAt)
-                DataStream<PostInfoEvent> creationStream = recSource
-                                .flatMap(new PostTagsEventParser()) // 解析 event_type=11
-                                .flatMap(new PostTagsToPostInfoMapper())
+                DataStream<PostInfoEvent> creationStream = filteredRecStream
+                                .flatMap(new RecValidPostParseCommon.RecValidPostEventParser()) // 解析为 RecValidPostEvent
                                 .assignTimestampsAndWatermarks(
                                                 WatermarkStrategy
                                                                 .<PostInfoEvent>forBoundedOutOfOrderness(
