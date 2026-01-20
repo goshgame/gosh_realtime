@@ -1,7 +1,7 @@
 package com.gosh.job;
 
 import com.gosh.config.RedisConfig;
-import com.gosh.feature.RecFeature;
+import com.gosh.entity.RecFeature;
 import com.gosh.job.AiTagParseCommon.PostInfoEvent;
 import com.gosh.job.AiTagParseCommon.PostTagsEventParser;
 import com.gosh.job.AiTagParseCommon.PostTagsToPostInfoMapper;
@@ -135,13 +135,13 @@ public class ItemFeature48hJob {
                         extends KeyedCoProcessFunction<Long, UserFeatureEvent, PostInfoEvent, Tuple2<String, byte[]>> {
 
                 // 存储 Post 创建时间
-                private ValueState<Long> createdAtState;
+                public ValueState<Long> createdAtState;
                 // 存储累计特征 (ItemFeatureAccumulator 及其中的 HyperLogLog 必须是可序列化的)
-                private ValueState<ItemFeatureAccumulator> accumulatorState;
+                public ValueState<ItemFeatureAccumulator> accumulatorState;
                 // 存储48小时清理定时器的时间戳
-                private ValueState<Long> cleanupTimerState;
+                public ValueState<Long> cleanupTimerState;
                 // 存储下一次Redis写入的ProcessingTime时间戳
-                private ValueState<Long> flushTimerState;
+                public ValueState<Long> flushTimerState;
 
                 @Override
                 public void open(Configuration parameters) {

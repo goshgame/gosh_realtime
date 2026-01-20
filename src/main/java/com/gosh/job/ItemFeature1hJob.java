@@ -2,7 +2,7 @@ package com.gosh.job;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gosh.config.RedisConfig;
-import com.gosh.feature.RecFeature;
+import com.gosh.entity.RecFeature;
 import com.gosh.job.UserFeatureCommon.*;
 import com.gosh.job.ItemFeatureCommon.*;
 import com.gosh.util.EventFilterUtil;

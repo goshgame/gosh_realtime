@@ -2,7 +2,7 @@ package com.gosh.job;
 
 import com.gosh.config.RedisConfig;
 import com.gosh.config.RedisConnectionManager;
-import com.gosh.feature.RecFeature;
+import com.gosh.entity.RecFeature;
 import com.gosh.util.EventFilterUtil;
 import com.gosh.util.FlinkEnvUtil;
 import com.gosh.util.KafkaEnvUtil;
