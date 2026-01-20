@@ -67,17 +67,17 @@ public class ItemFeature48hJobTest {
         harness.processElement2(new StreamRecord<>(creationEvent, createdAtMillis));
 
         // 验证 createdAtState
-        assertEquals(createdAtMillis, harness.getCoProcessFunction().createdAtState.value());
+        assertEquals(createdAtMillis, function.createdAtState.value());
 
         // 验证 cleanupTimerState
         long expectedCleanupTime = createdAtMillis + WINDOW_SIZE_MS;
-        assertEquals(expectedCleanupTime, harness.getCoProcessFunction().cleanupTimerState.value());
+        assertEquals(expectedCleanupTime, function.cleanupTimerState.value());
         assertTrue(harness.getEventTimeTimers(postId).contains(expectedCleanupTime));
 
         // 验证 flushTimerState
         long currentProcessingTime = harness.getProcessingTime();
         long expectedFlushTime = currentProcessingTime + FLUSH_INTERVAL_MS;
-        assertEquals(expectedFlushTime, harness.getCoProcessFunction().flushTimerState.value());
+        assertEquals(expectedFlushTime, function.flushTimerState.value());
         assertTrue(harness.getProcessingTimeTimers(postId).contains(expectedFlushTime));
 
         // 验证没有输出
@@ -110,13 +110,13 @@ public class ItemFeature48hJobTest {
         harness.processElement1(new StreamRecord<>(exposeEvent, eventTimeMillis));
 
         // 验证 accumulatorState
-        ItemFeatureAccumulator acc = harness.getCoProcessFunction().accumulatorState.value();
+        ItemFeatureAccumulator acc = function.accumulatorState.value();
         assertNotNull(acc);
         assertEquals(postId, acc.postId);
         assertEquals(1, acc.exposeHLL.cardinality());
 
         // 验证 flushTimerState (应该已经注册)
-        assertNotNull(harness.getCoProcessFunction().flushTimerState.value());
+        assertNotNull(function.flushTimerState.value());
 
         // 验证没有输出
         assertTrue(harness.getOutput().isEmpty());
@@ -149,7 +149,7 @@ public class ItemFeature48hJobTest {
         harness.processElement1(new StreamRecord<>(viewEvent, eventTimeMillis));
 
         // 3. 模拟 ProcessingTime 推进，触发 flushTimer
-        long flushTimerTimestamp = harness.getCoProcessFunction().flushTimerState.value();
+        long flushTimerTimestamp = function.flushTimerState.value();
         harness.setProcessingTime(flushTimerTimestamp);
         harness.fireProcessingTime();
 
@@ -172,7 +172,7 @@ public class ItemFeature48hJobTest {
         assertEquals(0, feature.getPostFollowCnt48H());
 
         // 5. 验证新的 flushTimer 是否注册
-        assertNotNull(harness.getCoProcessFunction().flushTimerState.value());
+        assertNotNull(function.flushTimerState.value());
         assertTrue(harness.getProcessingTimeTimers(postId).contains(flushTimerTimestamp + FLUSH_INTERVAL_MS));
     }
 
@@ -200,7 +200,7 @@ public class ItemFeature48hJobTest {
         harness.processElement1(new StreamRecord<>(exposeEvent, eventTimeMillis));
 
         // 3. 模拟 EventTime 推进，触发 cleanupTimer
-        long cleanupTimerTimestamp = harness.getCoProcessFunction().cleanupTimerState.value();
+        long cleanupTimerTimestamp = function.cleanupTimerState.value();
         harness.setOutput(new ArrayList<>()); // 清空之前的输出
         harness.processWatermark(new Watermark(cleanupTimerTimestamp)); // Watermark 推进到清理时间
         harness.fireEventTime();
@@ -214,10 +214,10 @@ public class ItemFeature48hJobTest {
         assertEquals(1, feature.getPostExpCnt48H()); // 曝光计数：exposeHLL 中有 1 个用户
 
         // 5. 验证所有状态是否已清除
-        assertNull(harness.getCoProcessFunction().createdAtState.value());
-        assertNull(harness.getCoProcessFunction().accumulatorState.value());
-        assertNull(harness.getCoProcessFunction().cleanupTimerState.value());
-        assertNull(harness.getCoProcessFunction().flushTimerState.value());
+        assertNull(function.createdAtState.value());
+        assertNull(function.accumulatorState.value());
+        assertNull(function.cleanupTimerState.value());
+        assertNull(function.flushTimerState.value());
 
         // 验证没有剩余的定时器
         assertTrue(harness.getEventTimeTimers(postId).isEmpty());
@@ -240,16 +240,16 @@ public class ItemFeature48hJobTest {
         harness.processElement1(new StreamRecord<>(exposeEvent, eventTimeMillis));
 
         // 验证 accumulatorState 应该被更新
-        ItemFeatureAccumulator acc = harness.getCoProcessFunction().accumulatorState.value();
+        ItemFeatureAccumulator acc = function.accumulatorState.value();
         assertNotNull(acc);
         assertEquals(postId, acc.postId);
         assertEquals(1, acc.exposeHLL.cardinality());
 
         // 验证 createdAtState 应该为 null
-        assertNull(harness.getCoProcessFunction().createdAtState.value());
+        assertNull(function.createdAtState.value());
 
         // 验证 flushTimerState 应该已注册
-        assertNotNull(harness.getCoProcessFunction().flushTimerState.value());
+        assertNotNull(function.flushTimerState.value());
 
         // 2. 稍后发送创建事件
         long createdAtSec = eventTimeMillis / 1000 - 100; // 假设创建时间在交互事件之前100秒
@@ -261,10 +261,10 @@ public class ItemFeature48hJobTest {
         harness.processElement2(new StreamRecord<>(creationEvent, createdAtMillis));
 
         // 验证 createdAtState 应该被更新
-        assertEquals(createdAtMillis, harness.getCoProcessFunction().createdAtState.value());
+        assertEquals(createdAtMillis, function.createdAtState.value());
 
         // 验证 cleanupTimerState 应该已注册
-        assertNotNull(harness.getCoProcessFunction().cleanupTimerState.value());
+        assertNotNull(function.cleanupTimerState.value());
     }
 
     @Test
@@ -291,13 +291,13 @@ public class ItemFeature48hJobTest {
         harness.processElement1(new StreamRecord<>(exposeEvent, eventTimeOutsideWindow));
 
         // 验证 accumulatorState 应该没有更新 (仍然是空的，因为没有其他事件)
-        ItemFeatureAccumulator acc = harness.getCoProcessFunction().accumulatorState.value();
+        ItemFeatureAccumulator acc = function.accumulatorState.value();
         assertNull(acc); // 或者如果之前有事件，则检查其值未改变
 
         // 验证 flushTimerState 应该没有重新注册 (如果之前没有交互事件)
         // 如果之前有交互事件，则 flushTimerState 应该保持不变，不会因为这个超窗事件而更新
         // 在这个测试场景中，由于这是第一个交互事件，且它在窗口外，所以不应该触发累加和定时器更新
-        assertNotNull(harness.getCoProcessFunction().flushTimerState.value()); // 仍然是由于 creationEvent 注册的
+        assertNotNull(function.flushTimerState.value()); // 仍然是由于 creationEvent 注册的
         // 确认没有新的 timer 被注册
         assertEquals(1, harness.getProcessingTimeTimers(postId).size()); // 只有 creationEvent 注册的那个
 
