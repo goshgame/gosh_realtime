@@ -301,21 +301,24 @@ message RecPostFeature {
   float ppf_ra_2 = 140;  // ppf2
   float ppf_ra_3 = 141;  // ppf3
 
+  // 曝光特征（创建后48小时）
+  int32 post_exp_cnt_48h = 142;                 // post创建后48小时曝光次数
+
   // 观看特征（创建后48小时）
-  int32 post_3sview_cnt_48h = 142;             // post创建后48小时观看3s次数
-  int32 post_8sview_cnt_48h = 143;             // post创建后48小时观看8s次数
-  int32 post_12sview_cnt_48h = 144;            // post创建后48小时观看12s次数
-  int32 post_20sview_cnt_48h = 145;            // post创建后48小时观看20s次数
+  int32 post_3sview_cnt_48h = 143;              // post创建后48小时观看3s次数
+  int32 post_8sview_cnt_48h = 144;              // post创建后48小时观看8s次数
+  int32 post_12sview_cnt_48h = 145;             // post创建后48小时观看12s次数
+  int32 post_20sview_cnt_48h = 146;             // post创建后48小时观看20s次数
 
   // 停留特征（创建后48小时）
-  int32 post_5sstand_cnt_48h = 146;            // post创建后48小时停留5s次数
-  int32 post_10sstand_cnt_48h = 147;           // post创建后48小时停留10s次数
+  int32 post_5sstand_cnt_48h = 147;             // post创建后48小时停留5s次数
+  int32 post_10sstand_cnt_48h = 148;            // post创建后48小时停留10s次数
 
   // 互动特征（创建后48小时）
-  int32 post_like_cnt_48h = 148;               // post创建后48小时被点赞次数2
-  int32 post_follow_cnt_48h = 149;             // post创建后48小时被关注次数
-  int32 post_profile_cnt_48h = 150;            // post创建后48小时被点主页次数
-  int32 post_posinter_cnt_48h = 151;           // post创建后48小时被评论收藏分享次数
+  int32 post_like_cnt_48h = 149;                // post创建后48小时被点赞次数
+  int32 post_follow_cnt_48h = 150;              // post创建后48小时被关注次数
+  int32 post_profile_cnt_48h = 151;             // post创建后48小时被点主页次数
+  int32 post_posinter_cnt_48h = 152;            // post创建后48小时被评论收藏分享次数
 }
 
 

@@ -127,7 +127,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
      *
      * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_1h = 16;</code>
      */
-    com.gosh.entity.RecFeature.IdScore getViewer3SviewPostHis1H(int index);
+    com.gosh.entity.IdScore getViewer3SviewPostHis1H(int index);
     /**
      * <pre>
      * 历史记录特征 (1小时)
@@ -152,7 +152,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
      *
      * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_1h = 16;</code>
      */
-    com.gosh.entity.RecFeature.IdScoreOrBuilder getViewer3SviewPostHis1HOrBuilder(
+    com.gosh.entity.IdScoreOrBuilder getViewer3SviewPostHis1HOrBuilder(
         int index);
 
     /**
@@ -171,7 +171,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
      *
      * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_1h = 17;</code>
      */
-    com.gosh.entity.RecFeature.IdScore getViewer5SstandPostHis1H(int index);
+    com.gosh.entity.IdScore getViewer5SstandPostHis1H(int index);
     /**
      * <pre>
      * 用户最近1h停留5s以上视频post列表带停留时长
@@ -196,7 +196,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
      *
      * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_1h = 17;</code>
      */
-    com.gosh.entity.RecFeature.IdScoreOrBuilder getViewer5SstandPostHis1HOrBuilder(
+    com.gosh.entity.IdScoreOrBuilder getViewer5SstandPostHis1HOrBuilder(
         int index);
 
     /**
@@ -333,7 +333,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
      *
      * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_24h = 30;</code>
      */
-    com.gosh.entity.RecFeature.IdScore getViewer3SviewPostHis24H(int index);
+    com.gosh.entity.IdScore getViewer3SviewPostHis24H(int index);
     /**
      * <pre>
      * 24小时窗口特征
@@ -361,7 +361,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
      *
      * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_24h = 30;</code>
      */
-    com.gosh.entity.RecFeature.IdScoreOrBuilder getViewer3SviewPostHis24HOrBuilder(
+    com.gosh.entity.IdScoreOrBuilder getViewer3SviewPostHis24HOrBuilder(
         int index);
 
     /**
@@ -380,7 +380,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
      *
      * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_24h = 31;</code>
      */
-    com.gosh.entity.RecFeature.IdScore getViewer5SstandPostHis24H(int index);
+    com.gosh.entity.IdScore getViewer5SstandPostHis24H(int index);
     /**
      * <pre>
      * 用户最近24h停留5s以上视频post列表带停留时长
@@ -405,7 +405,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
      *
      * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_24h = 31;</code>
      */
-    com.gosh.entity.RecFeature.IdScoreOrBuilder getViewer5SstandPostHis24HOrBuilder(
+    com.gosh.entity.IdScoreOrBuilder getViewer5SstandPostHis24HOrBuilder(
         int index);
 
     /**
@@ -1138,7 +1138,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
      *
      * <code>repeated .com.gosh.entity.FeedbackTagV2 FeedbackTags = 96;</code>
      */
-    com.gosh.entity.RecFeature.FeedbackTagV2 getFeedbackTags(int index);
+    com.gosh.entity.FeedbackTagV2 getFeedbackTags(int index);
     /**
      * <pre>
      * 负反馈
@@ -1163,7 +1163,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
      *
      * <code>repeated .com.gosh.entity.FeedbackTagV2 FeedbackTags = 96;</code>
      */
-    com.gosh.entity.RecFeature.FeedbackTagV2OrBuilder getFeedbackTagsOrBuilder(
+    com.gosh.entity.FeedbackTagV2OrBuilder getFeedbackTagsOrBuilder(
         int index);
 
     /**
@@ -1174,7 +1174,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
     /**
      * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
      */
-    com.gosh.entity.RecFeature.FeedbackAuthorId getFeedbackAuthorIds(int index);
+    com.gosh.entity.FeedbackAuthorId getFeedbackAuthorIds(int index);
     /**
      * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
      */
@@ -1187,7 +1187,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
     /**
      * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
      */
-    com.gosh.entity.RecFeature.FeedbackAuthorIdOrBuilder getFeedbackAuthorIdsOrBuilder(
+    com.gosh.entity.FeedbackAuthorIdOrBuilder getFeedbackAuthorIdsOrBuilder(
         int index);
 
     /**
@@ -1324,7 +1324,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
      *
      * <code>repeated .com.gosh.entity.IdScore viewer_10sstand_post_list_24h = 104;</code>
      */
-    com.gosh.entity.RecFeature.IdScore getViewer10SstandPostList24H(int index);
+    com.gosh.entity.IdScore getViewer10SstandPostList24H(int index);
     /**
      * <pre>
      * 用户最近24h停留10s以上的post列表
@@ -1349,7 +1349,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
      *
      * <code>repeated .com.gosh.entity.IdScore viewer_10sstand_post_list_24h = 104;</code>
      */
-    com.gosh.entity.RecFeature.IdScoreOrBuilder getViewer10SstandPostList24HOrBuilder(
+    com.gosh.entity.IdScoreOrBuilder getViewer10SstandPostList24HOrBuilder(
         int index);
 
     /**
@@ -1368,7 +1368,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
      *
      * <code>repeated .com.gosh.entity.IdScore viewer_8splay_post_list_24h = 105;</code>
      */
-    com.gosh.entity.RecFeature.IdScore getViewer8SplayPostList24H(int index);
+    com.gosh.entity.IdScore getViewer8SplayPostList24H(int index);
     /**
      * <pre>
      * 用户最近24h观看8s以上的post列表
@@ -1393,7 +1393,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
      *
      * <code>repeated .com.gosh.entity.IdScore viewer_8splay_post_list_24h = 105;</code>
      */
-    com.gosh.entity.RecFeature.IdScoreOrBuilder getViewer8SplayPostList24HOrBuilder(
+    com.gosh.entity.IdScoreOrBuilder getViewer8SplayPostList24HOrBuilder(
         int index);
 
     /**
@@ -2060,7 +2060,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
      *
      * <code>repeated .com.gosh.entity.IdScore viewer_10sstand_posts_latest = 152;</code>
      */
-    com.gosh.entity.RecFeature.IdScore getViewer10SstandPostsLatest(int index);
+    com.gosh.entity.IdScore getViewer10SstandPostsLatest(int index);
     /**
      * <pre>
      * 用户最近停留10s以上的post列表
@@ -2085,7 +2085,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
      *
      * <code>repeated .com.gosh.entity.IdScore viewer_10sstand_posts_latest = 152;</code>
      */
-    com.gosh.entity.RecFeature.IdScoreOrBuilder getViewer10SstandPostsLatestOrBuilder(
+    com.gosh.entity.IdScoreOrBuilder getViewer10SstandPostsLatestOrBuilder(
         int index);
 
     /**
@@ -2104,7 +2104,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
      *
      * <code>repeated .com.gosh.entity.IdScore viewer_8splay_posts_latest = 153;</code>
      */
-    com.gosh.entity.RecFeature.IdScore getViewer8SplayPostsLatest(int index);
+    com.gosh.entity.IdScore getViewer8SplayPostsLatest(int index);
     /**
      * <pre>
      * 用户最近观看8s以上的post列表
@@ -2129,7 +2129,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
      *
      * <code>repeated .com.gosh.entity.IdScore viewer_8splay_posts_latest = 153;</code>
      */
-    com.gosh.entity.RecFeature.IdScoreOrBuilder getViewer8SplayPostsLatestOrBuilder(
+    com.gosh.entity.IdScoreOrBuilder getViewer8SplayPostsLatestOrBuilder(
         int index);
 
     /**
@@ -2736,7 +2736,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
      * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_1h = 16;</code>
      */
     @java.lang.Override
-    public com.gosh.entity.RecFeature.IdScore getViewer3SviewPostHis1H(int index) {
+    public com.gosh.entity.IdScore getViewer3SviewPostHis1H(int index) {
       return viewer3SviewPostHis1H_.get(index);
     }
     /**
@@ -2747,7 +2747,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
      * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_1h = 16;</code>
      */
     @java.lang.Override
-    public com.gosh.entity.RecFeature.IdScoreOrBuilder getViewer3SviewPostHis1HOrBuilder(
+    public com.gosh.entity.IdScoreOrBuilder getViewer3SviewPostHis1HOrBuilder(
         int index) {
       return viewer3SviewPostHis1H_.get(index);
     }
@@ -2797,7 +2797,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
      * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_1h = 17;</code>
      */
     @java.lang.Override
-    public com.gosh.entity.RecFeature.IdScore getViewer5SstandPostHis1H(int index) {
+    public com.gosh.entity.IdScore getViewer5SstandPostHis1H(int index) {
       return viewer5SstandPostHis1H_.get(index);
     }
     /**
@@ -2808,7 +2808,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
      * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_1h = 17;</code>
      */
     @java.lang.Override
-    public com.gosh.entity.RecFeature.IdScoreOrBuilder getViewer5SstandPostHis1HOrBuilder(
+    public com.gosh.entity.IdScoreOrBuilder getViewer5SstandPostHis1HOrBuilder(
         int index) {
       return viewer5SstandPostHis1H_.get(index);
     }
@@ -3030,7 +3030,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
      * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_24h = 30;</code>
      */
     @java.lang.Override
-    public com.gosh.entity.RecFeature.IdScore getViewer3SviewPostHis24H(int index) {
+    public com.gosh.entity.IdScore getViewer3SviewPostHis24H(int index) {
       return viewer3SviewPostHis24H_.get(index);
     }
     /**
@@ -3042,7 +3042,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
      * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_24h = 30;</code>
      */
     @java.lang.Override
-    public com.gosh.entity.RecFeature.IdScoreOrBuilder getViewer3SviewPostHis24HOrBuilder(
+    public com.gosh.entity.IdScoreOrBuilder getViewer3SviewPostHis24HOrBuilder(
         int index) {
       return viewer3SviewPostHis24H_.get(index);
     }
@@ -3092,7 +3092,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
      * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_24h = 31;</code>
      */
     @java.lang.Override
-    public com.gosh.entity.RecFeature.IdScore getViewer5SstandPostHis24H(int index) {
+    public com.gosh.entity.IdScore getViewer5SstandPostHis24H(int index) {
       return viewer5SstandPostHis24H_.get(index);
     }
     /**
@@ -3103,7 +3103,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
      * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_24h = 31;</code>
      */
     @java.lang.Override
-    public com.gosh.entity.RecFeature.IdScoreOrBuilder getViewer5SstandPostHis24HOrBuilder(
+    public com.gosh.entity.IdScoreOrBuilder getViewer5SstandPostHis24HOrBuilder(
         int index) {
       return viewer5SstandPostHis24H_.get(index);
     }
@@ -4749,7 +4749,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
      * <code>repeated .com.gosh.entity.FeedbackTagV2 FeedbackTags = 96;</code>
      */
     @java.lang.Override
-    public com.gosh.entity.RecFeature.FeedbackTagV2 getFeedbackTags(int index) {
+    public com.gosh.entity.FeedbackTagV2 getFeedbackTags(int index) {
       return feedbackTags_.get(index);
     }
     /**
@@ -4760,7 +4760,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
      * <code>repeated .com.gosh.entity.FeedbackTagV2 FeedbackTags = 96;</code>
      */
     @java.lang.Override
-    public com.gosh.entity.RecFeature.FeedbackTagV2OrBuilder getFeedbackTagsOrBuilder(
+    public com.gosh.entity.FeedbackTagV2OrBuilder getFeedbackTagsOrBuilder(
         int index) {
       return feedbackTags_.get(index);
     }
@@ -4794,14 +4794,14 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
      * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
      */
     @java.lang.Override
-    public com.gosh.entity.RecFeature.FeedbackAuthorId getFeedbackAuthorIds(int index) {
+    public com.gosh.entity.FeedbackAuthorId getFeedbackAuthorIds(int index) {
       return feedbackAuthorIds_.get(index);
     }
     /**
      * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
      */
     @java.lang.Override
-    public com.gosh.entity.RecFeature.FeedbackAuthorIdOrBuilder getFeedbackAuthorIdsOrBuilder(
+    public com.gosh.entity.FeedbackAuthorIdOrBuilder getFeedbackAuthorIdsOrBuilder(
         int index) {
       return feedbackAuthorIds_.get(index);
     }
@@ -5042,7 +5042,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
      * <code>repeated .com.gosh.entity.IdScore viewer_10sstand_post_list_24h = 104;</code>
      */
     @java.lang.Override
-    public com.gosh.entity.RecFeature.IdScore getViewer10SstandPostList24H(int index) {
+    public com.gosh.entity.IdScore getViewer10SstandPostList24H(int index) {
       return viewer10SstandPostList24H_.get(index);
     }
     /**
@@ -5053,7 +5053,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
      * <code>repeated .com.gosh.entity.IdScore viewer_10sstand_post_list_24h = 104;</code>
      */
     @java.lang.Override
-    public com.gosh.entity.RecFeature.IdScoreOrBuilder getViewer10SstandPostList24HOrBuilder(
+    public com.gosh.entity.IdScoreOrBuilder getViewer10SstandPostList24HOrBuilder(
         int index) {
       return viewer10SstandPostList24H_.get(index);
     }
@@ -5103,7 +5103,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
      * <code>repeated .com.gosh.entity.IdScore viewer_8splay_post_list_24h = 105;</code>
      */
     @java.lang.Override
-    public com.gosh.entity.RecFeature.IdScore getViewer8SplayPostList24H(int index) {
+    public com.gosh.entity.IdScore getViewer8SplayPostList24H(int index) {
       return viewer8SplayPostList24H_.get(index);
     }
     /**
@@ -5114,7 +5114,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
      * <code>repeated .com.gosh.entity.IdScore viewer_8splay_post_list_24h = 105;</code>
      */
     @java.lang.Override
-    public com.gosh.entity.RecFeature.IdScoreOrBuilder getViewer8SplayPostList24HOrBuilder(
+    public com.gosh.entity.IdScoreOrBuilder getViewer8SplayPostList24HOrBuilder(
         int index) {
       return viewer8SplayPostList24H_.get(index);
     }
@@ -6118,7 +6118,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
      * <code>repeated .com.gosh.entity.IdScore viewer_10sstand_posts_latest = 152;</code>
      */
     @java.lang.Override
-    public com.gosh.entity.RecFeature.IdScore getViewer10SstandPostsLatest(int index) {
+    public com.gosh.entity.IdScore getViewer10SstandPostsLatest(int index) {
       return viewer10SstandPostsLatest_.get(index);
     }
     /**
@@ -6129,7 +6129,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
      * <code>repeated .com.gosh.entity.IdScore viewer_10sstand_posts_latest = 152;</code>
      */
     @java.lang.Override
-    public com.gosh.entity.RecFeature.IdScoreOrBuilder getViewer10SstandPostsLatestOrBuilder(
+    public com.gosh.entity.IdScoreOrBuilder getViewer10SstandPostsLatestOrBuilder(
         int index) {
       return viewer10SstandPostsLatest_.get(index);
     }
@@ -6179,7 +6179,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
      * <code>repeated .com.gosh.entity.IdScore viewer_8splay_posts_latest = 153;</code>
      */
     @java.lang.Override
-    public com.gosh.entity.RecFeature.IdScore getViewer8SplayPostsLatest(int index) {
+    public com.gosh.entity.IdScore getViewer8SplayPostsLatest(int index) {
       return viewer8SplayPostsLatest_.get(index);
     }
     /**
@@ -6190,7 +6190,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
      * <code>repeated .com.gosh.entity.IdScore viewer_8splay_posts_latest = 153;</code>
      */
     @java.lang.Override
-    public com.gosh.entity.RecFeature.IdScoreOrBuilder getViewer8SplayPostsLatestOrBuilder(
+    public com.gosh.entity.IdScoreOrBuilder getViewer8SplayPostsLatestOrBuilder(
         int index) {
       return viewer8SplayPostsLatest_.get(index);
     }
@@ -8805,44 +8805,44 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
       return hash;
     }
 
-    public static com.gosh.entity.RecFeature.RecUserFeature parseFrom(
+    public static com.gosh.entity.RecUserFeature parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.gosh.entity.RecFeature.RecUserFeature parseFrom(
+    public static com.gosh.entity.RecUserFeature parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.gosh.entity.RecFeature.RecUserFeature parseFrom(
+    public static com.gosh.entity.RecUserFeature parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.gosh.entity.RecFeature.RecUserFeature parseFrom(
+    public static com.gosh.entity.RecUserFeature parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.gosh.entity.RecFeature.RecUserFeature parseFrom(byte[] data)
+    public static com.gosh.entity.RecUserFeature parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.gosh.entity.RecFeature.RecUserFeature parseFrom(
+    public static com.gosh.entity.RecUserFeature parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.gosh.entity.RecFeature.RecUserFeature parseFrom(java.io.InputStream input)
+    public static com.gosh.entity.RecUserFeature parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessage
           .parseWithIOException(PARSER, input);
     }
-    public static com.gosh.entity.RecFeature.RecUserFeature parseFrom(
+    public static com.gosh.entity.RecUserFeature parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -8850,26 +8850,26 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
-    public static com.gosh.entity.RecFeature.RecUserFeature parseDelimitedFrom(java.io.InputStream input)
+    public static com.gosh.entity.RecUserFeature parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessage
           .parseDelimitedWithIOException(PARSER, input);
     }
 
-    public static com.gosh.entity.RecFeature.RecUserFeature parseDelimitedFrom(
+    public static com.gosh.entity.RecUserFeature parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessage
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.gosh.entity.RecFeature.RecUserFeature parseFrom(
+    public static com.gosh.entity.RecUserFeature parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessage
           .parseWithIOException(PARSER, input);
     }
-    public static com.gosh.entity.RecFeature.RecUserFeature parseFrom(
+    public static com.gosh.entity.RecUserFeature parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -9138,12 +9138,12 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
       }
 
       @java.lang.Override
-      public com.gosh.entity.RecFeature.RecUserFeature getDefaultInstanceForType() {
+      public com.gosh.entity.RecUserFeature getDefaultInstanceForType() {
         return com.gosh.entity.RecFeature.RecUserFeature.getDefaultInstance();
       }
 
       @java.lang.Override
-      public com.gosh.entity.RecFeature.RecUserFeature build() {
+      public com.gosh.entity.RecUserFeature build() {
         com.gosh.entity.RecFeature.RecUserFeature result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
@@ -9152,7 +9152,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
       }
 
       @java.lang.Override
-      public com.gosh.entity.RecFeature.RecUserFeature buildPartial() {
+      public com.gosh.entity.RecUserFeature buildPartial() {
         com.gosh.entity.RecFeature.RecUserFeature result = new com.gosh.entity.RecFeature.RecUserFeature(this);
         buildPartialRepeatedFields(result);
         if (bitField0_ != 0) { buildPartial0(result); }
@@ -12254,7 +12254,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        *
        * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_1h = 16;</code>
        */
-      public com.gosh.entity.RecFeature.IdScore getViewer3SviewPostHis1H(int index) {
+      public com.gosh.entity.IdScore getViewer3SviewPostHis1H(int index) {
         if (viewer3SviewPostHis1HBuilder_ == null) {
           return viewer3SviewPostHis1H_.get(index);
         } else {
@@ -12437,7 +12437,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        *
        * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_1h = 16;</code>
        */
-      public com.gosh.entity.RecFeature.IdScore.Builder getViewer3SviewPostHis1HBuilder(
+      public com.gosh.entity.Builder getViewer3SviewPostHis1HBuilder(
           int index) {
         return internalGetViewer3SviewPostHis1HFieldBuilder().getBuilder(index);
       }
@@ -12448,7 +12448,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        *
        * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_1h = 16;</code>
        */
-      public com.gosh.entity.RecFeature.IdScoreOrBuilder getViewer3SviewPostHis1HOrBuilder(
+      public com.gosh.entity.IdScoreOrBuilder getViewer3SviewPostHis1HOrBuilder(
           int index) {
         if (viewer3SviewPostHis1HBuilder_ == null) {
           return viewer3SviewPostHis1H_.get(index);  } else {
@@ -12477,7 +12477,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        *
        * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_1h = 16;</code>
        */
-      public com.gosh.entity.RecFeature.IdScore.Builder addViewer3SviewPostHis1HBuilder() {
+      public com.gosh.entity.Builder addViewer3SviewPostHis1HBuilder() {
         return internalGetViewer3SviewPostHis1HFieldBuilder().addBuilder(
             com.gosh.entity.RecFeature.IdScore.getDefaultInstance());
       }
@@ -12488,7 +12488,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        *
        * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_1h = 16;</code>
        */
-      public com.gosh.entity.RecFeature.IdScore.Builder addViewer3SviewPostHis1HBuilder(
+      public com.gosh.entity.Builder addViewer3SviewPostHis1HBuilder(
           int index) {
         return internalGetViewer3SviewPostHis1HFieldBuilder().addBuilder(
             index, com.gosh.entity.RecFeature.IdScore.getDefaultInstance());
@@ -12566,7 +12566,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        *
        * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_1h = 17;</code>
        */
-      public com.gosh.entity.RecFeature.IdScore getViewer5SstandPostHis1H(int index) {
+      public com.gosh.entity.IdScore getViewer5SstandPostHis1H(int index) {
         if (viewer5SstandPostHis1HBuilder_ == null) {
           return viewer5SstandPostHis1H_.get(index);
         } else {
@@ -12749,7 +12749,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        *
        * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_1h = 17;</code>
        */
-      public com.gosh.entity.RecFeature.IdScore.Builder getViewer5SstandPostHis1HBuilder(
+      public com.gosh.entity.Builder getViewer5SstandPostHis1HBuilder(
           int index) {
         return internalGetViewer5SstandPostHis1HFieldBuilder().getBuilder(index);
       }
@@ -12760,7 +12760,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        *
        * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_1h = 17;</code>
        */
-      public com.gosh.entity.RecFeature.IdScoreOrBuilder getViewer5SstandPostHis1HOrBuilder(
+      public com.gosh.entity.IdScoreOrBuilder getViewer5SstandPostHis1HOrBuilder(
           int index) {
         if (viewer5SstandPostHis1HBuilder_ == null) {
           return viewer5SstandPostHis1H_.get(index);  } else {
@@ -12789,7 +12789,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        *
        * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_1h = 17;</code>
        */
-      public com.gosh.entity.RecFeature.IdScore.Builder addViewer5SstandPostHis1HBuilder() {
+      public com.gosh.entity.Builder addViewer5SstandPostHis1HBuilder() {
         return internalGetViewer5SstandPostHis1HFieldBuilder().addBuilder(
             com.gosh.entity.RecFeature.IdScore.getDefaultInstance());
       }
@@ -12800,7 +12800,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        *
        * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_1h = 17;</code>
        */
-      public com.gosh.entity.RecFeature.IdScore.Builder addViewer5SstandPostHis1HBuilder(
+      public com.gosh.entity.Builder addViewer5SstandPostHis1HBuilder(
           int index) {
         return internalGetViewer5SstandPostHis1HFieldBuilder().addBuilder(
             index, com.gosh.entity.RecFeature.IdScore.getDefaultInstance());
@@ -13329,7 +13329,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        *
        * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_24h = 30;</code>
        */
-      public com.gosh.entity.RecFeature.IdScore getViewer3SviewPostHis24H(int index) {
+      public com.gosh.entity.IdScore getViewer3SviewPostHis24H(int index) {
         if (viewer3SviewPostHis24HBuilder_ == null) {
           return viewer3SviewPostHis24H_.get(index);
         } else {
@@ -13522,7 +13522,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        *
        * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_24h = 30;</code>
        */
-      public com.gosh.entity.RecFeature.IdScore.Builder getViewer3SviewPostHis24HBuilder(
+      public com.gosh.entity.Builder getViewer3SviewPostHis24HBuilder(
           int index) {
         return internalGetViewer3SviewPostHis24HFieldBuilder().getBuilder(index);
       }
@@ -13534,7 +13534,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        *
        * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_24h = 30;</code>
        */
-      public com.gosh.entity.RecFeature.IdScoreOrBuilder getViewer3SviewPostHis24HOrBuilder(
+      public com.gosh.entity.IdScoreOrBuilder getViewer3SviewPostHis24HOrBuilder(
           int index) {
         if (viewer3SviewPostHis24HBuilder_ == null) {
           return viewer3SviewPostHis24H_.get(index);  } else {
@@ -13565,7 +13565,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        *
        * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_24h = 30;</code>
        */
-      public com.gosh.entity.RecFeature.IdScore.Builder addViewer3SviewPostHis24HBuilder() {
+      public com.gosh.entity.Builder addViewer3SviewPostHis24HBuilder() {
         return internalGetViewer3SviewPostHis24HFieldBuilder().addBuilder(
             com.gosh.entity.RecFeature.IdScore.getDefaultInstance());
       }
@@ -13577,7 +13577,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        *
        * <code>repeated .com.gosh.entity.IdScore viewer_3sview_post_his_24h = 30;</code>
        */
-      public com.gosh.entity.RecFeature.IdScore.Builder addViewer3SviewPostHis24HBuilder(
+      public com.gosh.entity.Builder addViewer3SviewPostHis24HBuilder(
           int index) {
         return internalGetViewer3SviewPostHis24HFieldBuilder().addBuilder(
             index, com.gosh.entity.RecFeature.IdScore.getDefaultInstance());
@@ -13656,7 +13656,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        *
        * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_24h = 31;</code>
        */
-      public com.gosh.entity.RecFeature.IdScore getViewer5SstandPostHis24H(int index) {
+      public com.gosh.entity.IdScore getViewer5SstandPostHis24H(int index) {
         if (viewer5SstandPostHis24HBuilder_ == null) {
           return viewer5SstandPostHis24H_.get(index);
         } else {
@@ -13839,7 +13839,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        *
        * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_24h = 31;</code>
        */
-      public com.gosh.entity.RecFeature.IdScore.Builder getViewer5SstandPostHis24HBuilder(
+      public com.gosh.entity.Builder getViewer5SstandPostHis24HBuilder(
           int index) {
         return internalGetViewer5SstandPostHis24HFieldBuilder().getBuilder(index);
       }
@@ -13850,7 +13850,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        *
        * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_24h = 31;</code>
        */
-      public com.gosh.entity.RecFeature.IdScoreOrBuilder getViewer5SstandPostHis24HOrBuilder(
+      public com.gosh.entity.IdScoreOrBuilder getViewer5SstandPostHis24HOrBuilder(
           int index) {
         if (viewer5SstandPostHis24HBuilder_ == null) {
           return viewer5SstandPostHis24H_.get(index);  } else {
@@ -13879,7 +13879,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        *
        * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_24h = 31;</code>
        */
-      public com.gosh.entity.RecFeature.IdScore.Builder addViewer5SstandPostHis24HBuilder() {
+      public com.gosh.entity.Builder addViewer5SstandPostHis24HBuilder() {
         return internalGetViewer5SstandPostHis24HFieldBuilder().addBuilder(
             com.gosh.entity.RecFeature.IdScore.getDefaultInstance());
       }
@@ -13890,7 +13890,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        *
        * <code>repeated .com.gosh.entity.IdScore viewer_5sstand_post_his_24h = 31;</code>
        */
-      public com.gosh.entity.RecFeature.IdScore.Builder addViewer5SstandPostHis24HBuilder(
+      public com.gosh.entity.Builder addViewer5SstandPostHis24HBuilder(
           int index) {
         return internalGetViewer5SstandPostHis24HFieldBuilder().addBuilder(
             index, com.gosh.entity.RecFeature.IdScore.getDefaultInstance());
@@ -17428,7 +17428,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        *
        * <code>repeated .com.gosh.entity.FeedbackTagV2 FeedbackTags = 96;</code>
        */
-      public com.gosh.entity.RecFeature.FeedbackTagV2 getFeedbackTags(int index) {
+      public com.gosh.entity.FeedbackTagV2 getFeedbackTags(int index) {
         if (feedbackTagsBuilder_ == null) {
           return feedbackTags_.get(index);
         } else {
@@ -17611,7 +17611,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        *
        * <code>repeated .com.gosh.entity.FeedbackTagV2 FeedbackTags = 96;</code>
        */
-      public com.gosh.entity.RecFeature.FeedbackTagV2.Builder getFeedbackTagsBuilder(
+      public com.gosh.entity.Builder getFeedbackTagsBuilder(
           int index) {
         return internalGetFeedbackTagsFieldBuilder().getBuilder(index);
       }
@@ -17622,7 +17622,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        *
        * <code>repeated .com.gosh.entity.FeedbackTagV2 FeedbackTags = 96;</code>
        */
-      public com.gosh.entity.RecFeature.FeedbackTagV2OrBuilder getFeedbackTagsOrBuilder(
+      public com.gosh.entity.FeedbackTagV2OrBuilder getFeedbackTagsOrBuilder(
           int index) {
         if (feedbackTagsBuilder_ == null) {
           return feedbackTags_.get(index);  } else {
@@ -17651,7 +17651,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        *
        * <code>repeated .com.gosh.entity.FeedbackTagV2 FeedbackTags = 96;</code>
        */
-      public com.gosh.entity.RecFeature.FeedbackTagV2.Builder addFeedbackTagsBuilder() {
+      public com.gosh.entity.Builder addFeedbackTagsBuilder() {
         return internalGetFeedbackTagsFieldBuilder().addBuilder(
             com.gosh.entity.RecFeature.FeedbackTagV2.getDefaultInstance());
       }
@@ -17662,7 +17662,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        *
        * <code>repeated .com.gosh.entity.FeedbackTagV2 FeedbackTags = 96;</code>
        */
-      public com.gosh.entity.RecFeature.FeedbackTagV2.Builder addFeedbackTagsBuilder(
+      public com.gosh.entity.Builder addFeedbackTagsBuilder(
           int index) {
         return internalGetFeedbackTagsFieldBuilder().addBuilder(
             index, com.gosh.entity.RecFeature.FeedbackTagV2.getDefaultInstance());
@@ -17728,7 +17728,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
       /**
        * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
        */
-      public com.gosh.entity.RecFeature.FeedbackAuthorId getFeedbackAuthorIds(int index) {
+      public com.gosh.entity.FeedbackAuthorId getFeedbackAuthorIds(int index) {
         if (feedbackAuthorIdsBuilder_ == null) {
           return feedbackAuthorIds_.get(index);
         } else {
@@ -17871,14 +17871,14 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
       /**
        * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
        */
-      public com.gosh.entity.RecFeature.FeedbackAuthorId.Builder getFeedbackAuthorIdsBuilder(
+      public com.gosh.entity.Builder getFeedbackAuthorIdsBuilder(
           int index) {
         return internalGetFeedbackAuthorIdsFieldBuilder().getBuilder(index);
       }
       /**
        * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
        */
-      public com.gosh.entity.RecFeature.FeedbackAuthorIdOrBuilder getFeedbackAuthorIdsOrBuilder(
+      public com.gosh.entity.FeedbackAuthorIdOrBuilder getFeedbackAuthorIdsOrBuilder(
           int index) {
         if (feedbackAuthorIdsBuilder_ == null) {
           return feedbackAuthorIds_.get(index);  } else {
@@ -17899,14 +17899,14 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
       /**
        * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
        */
-      public com.gosh.entity.RecFeature.FeedbackAuthorId.Builder addFeedbackAuthorIdsBuilder() {
+      public com.gosh.entity.Builder addFeedbackAuthorIdsBuilder() {
         return internalGetFeedbackAuthorIdsFieldBuilder().addBuilder(
             com.gosh.entity.RecFeature.FeedbackAuthorId.getDefaultInstance());
       }
       /**
        * <code>repeated .com.gosh.entity.FeedbackAuthorId feedback_author_ids = 97;</code>
        */
-      public com.gosh.entity.RecFeature.FeedbackAuthorId.Builder addFeedbackAuthorIdsBuilder(
+      public com.gosh.entity.Builder addFeedbackAuthorIdsBuilder(
           int index) {
         return internalGetFeedbackAuthorIdsFieldBuilder().addBuilder(
             index, com.gosh.entity.RecFeature.FeedbackAuthorId.getDefaultInstance());
@@ -18472,7 +18472,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        *
        * <code>repeated .com.gosh.entity.IdScore viewer_10sstand_post_list_24h = 104;</code>
        */
-      public com.gosh.entity.RecFeature.IdScore getViewer10SstandPostList24H(int index) {
+      public com.gosh.entity.IdScore getViewer10SstandPostList24H(int index) {
         if (viewer10SstandPostList24HBuilder_ == null) {
           return viewer10SstandPostList24H_.get(index);
         } else {
@@ -18655,7 +18655,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        *
        * <code>repeated .com.gosh.entity.IdScore viewer_10sstand_post_list_24h = 104;</code>
        */
-      public com.gosh.entity.RecFeature.IdScore.Builder getViewer10SstandPostList24HBuilder(
+      public com.gosh.entity.Builder getViewer10SstandPostList24HBuilder(
           int index) {
         return internalGetViewer10SstandPostList24HFieldBuilder().getBuilder(index);
       }
@@ -18666,7 +18666,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        *
        * <code>repeated .com.gosh.entity.IdScore viewer_10sstand_post_list_24h = 104;</code>
        */
-      public com.gosh.entity.RecFeature.IdScoreOrBuilder getViewer10SstandPostList24HOrBuilder(
+      public com.gosh.entity.IdScoreOrBuilder getViewer10SstandPostList24HOrBuilder(
           int index) {
         if (viewer10SstandPostList24HBuilder_ == null) {
           return viewer10SstandPostList24H_.get(index);  } else {
@@ -18695,7 +18695,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        *
        * <code>repeated .com.gosh.entity.IdScore viewer_10sstand_post_list_24h = 104;</code>
        */
-      public com.gosh.entity.RecFeature.IdScore.Builder addViewer10SstandPostList24HBuilder() {
+      public com.gosh.entity.Builder addViewer10SstandPostList24HBuilder() {
         return internalGetViewer10SstandPostList24HFieldBuilder().addBuilder(
             com.gosh.entity.RecFeature.IdScore.getDefaultInstance());
       }
@@ -18706,7 +18706,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        *
        * <code>repeated .com.gosh.entity.IdScore viewer_10sstand_post_list_24h = 104;</code>
        */
-      public com.gosh.entity.RecFeature.IdScore.Builder addViewer10SstandPostList24HBuilder(
+      public com.gosh.entity.Builder addViewer10SstandPostList24HBuilder(
           int index) {
         return internalGetViewer10SstandPostList24HFieldBuilder().addBuilder(
             index, com.gosh.entity.RecFeature.IdScore.getDefaultInstance());
@@ -18784,7 +18784,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        *
        * <code>repeated .com.gosh.entity.IdScore viewer_8splay_post_list_24h = 105;</code>
        */
-      public com.gosh.entity.RecFeature.IdScore getViewer8SplayPostList24H(int index) {
+      public com.gosh.entity.IdScore getViewer8SplayPostList24H(int index) {
         if (viewer8SplayPostList24HBuilder_ == null) {
           return viewer8SplayPostList24H_.get(index);
         } else {
@@ -18967,7 +18967,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        *
        * <code>repeated .com.gosh.entity.IdScore viewer_8splay_post_list_24h = 105;</code>
        */
-      public com.gosh.entity.RecFeature.IdScore.Builder getViewer8SplayPostList24HBuilder(
+      public com.gosh.entity.Builder getViewer8SplayPostList24HBuilder(
           int index) {
         return internalGetViewer8SplayPostList24HFieldBuilder().getBuilder(index);
       }
@@ -18978,7 +18978,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        *
        * <code>repeated .com.gosh.entity.IdScore viewer_8splay_post_list_24h = 105;</code>
        */
-      public com.gosh.entity.RecFeature.IdScoreOrBuilder getViewer8SplayPostList24HOrBuilder(
+      public com.gosh.entity.IdScoreOrBuilder getViewer8SplayPostList24HOrBuilder(
           int index) {
         if (viewer8SplayPostList24HBuilder_ == null) {
           return viewer8SplayPostList24H_.get(index);  } else {
@@ -19007,7 +19007,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        *
        * <code>repeated .com.gosh.entity.IdScore viewer_8splay_post_list_24h = 105;</code>
        */
-      public com.gosh.entity.RecFeature.IdScore.Builder addViewer8SplayPostList24HBuilder() {
+      public com.gosh.entity.Builder addViewer8SplayPostList24HBuilder() {
         return internalGetViewer8SplayPostList24HFieldBuilder().addBuilder(
             com.gosh.entity.RecFeature.IdScore.getDefaultInstance());
       }
@@ -19018,7 +19018,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        *
        * <code>repeated .com.gosh.entity.IdScore viewer_8splay_post_list_24h = 105;</code>
        */
-      public com.gosh.entity.RecFeature.IdScore.Builder addViewer8SplayPostList24HBuilder(
+      public com.gosh.entity.Builder addViewer8SplayPostList24HBuilder(
           int index) {
         return internalGetViewer8SplayPostList24HFieldBuilder().addBuilder(
             index, com.gosh.entity.RecFeature.IdScore.getDefaultInstance());
@@ -21760,7 +21760,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        *
        * <code>repeated .com.gosh.entity.IdScore viewer_10sstand_posts_latest = 152;</code>
        */
-      public com.gosh.entity.RecFeature.IdScore getViewer10SstandPostsLatest(int index) {
+      public com.gosh.entity.IdScore getViewer10SstandPostsLatest(int index) {
         if (viewer10SstandPostsLatestBuilder_ == null) {
           return viewer10SstandPostsLatest_.get(index);
         } else {
@@ -21943,7 +21943,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        *
        * <code>repeated .com.gosh.entity.IdScore viewer_10sstand_posts_latest = 152;</code>
        */
-      public com.gosh.entity.RecFeature.IdScore.Builder getViewer10SstandPostsLatestBuilder(
+      public com.gosh.entity.Builder getViewer10SstandPostsLatestBuilder(
           int index) {
         return internalGetViewer10SstandPostsLatestFieldBuilder().getBuilder(index);
       }
@@ -21954,7 +21954,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        *
        * <code>repeated .com.gosh.entity.IdScore viewer_10sstand_posts_latest = 152;</code>
        */
-      public com.gosh.entity.RecFeature.IdScoreOrBuilder getViewer10SstandPostsLatestOrBuilder(
+      public com.gosh.entity.IdScoreOrBuilder getViewer10SstandPostsLatestOrBuilder(
           int index) {
         if (viewer10SstandPostsLatestBuilder_ == null) {
           return viewer10SstandPostsLatest_.get(index);  } else {
@@ -21983,7 +21983,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        *
        * <code>repeated .com.gosh.entity.IdScore viewer_10sstand_posts_latest = 152;</code>
        */
-      public com.gosh.entity.RecFeature.IdScore.Builder addViewer10SstandPostsLatestBuilder() {
+      public com.gosh.entity.Builder addViewer10SstandPostsLatestBuilder() {
         return internalGetViewer10SstandPostsLatestFieldBuilder().addBuilder(
             com.gosh.entity.RecFeature.IdScore.getDefaultInstance());
       }
@@ -21994,7 +21994,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        *
        * <code>repeated .com.gosh.entity.IdScore viewer_10sstand_posts_latest = 152;</code>
        */
-      public com.gosh.entity.RecFeature.IdScore.Builder addViewer10SstandPostsLatestBuilder(
+      public com.gosh.entity.Builder addViewer10SstandPostsLatestBuilder(
           int index) {
         return internalGetViewer10SstandPostsLatestFieldBuilder().addBuilder(
             index, com.gosh.entity.RecFeature.IdScore.getDefaultInstance());
@@ -22072,7 +22072,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        *
        * <code>repeated .com.gosh.entity.IdScore viewer_8splay_posts_latest = 153;</code>
        */
-      public com.gosh.entity.RecFeature.IdScore getViewer8SplayPostsLatest(int index) {
+      public com.gosh.entity.IdScore getViewer8SplayPostsLatest(int index) {
         if (viewer8SplayPostsLatestBuilder_ == null) {
           return viewer8SplayPostsLatest_.get(index);
         } else {
@@ -22255,7 +22255,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        *
        * <code>repeated .com.gosh.entity.IdScore viewer_8splay_posts_latest = 153;</code>
        */
-      public com.gosh.entity.RecFeature.IdScore.Builder getViewer8SplayPostsLatestBuilder(
+      public com.gosh.entity.Builder getViewer8SplayPostsLatestBuilder(
           int index) {
         return internalGetViewer8SplayPostsLatestFieldBuilder().getBuilder(index);
       }
@@ -22266,7 +22266,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        *
        * <code>repeated .com.gosh.entity.IdScore viewer_8splay_posts_latest = 153;</code>
        */
-      public com.gosh.entity.RecFeature.IdScoreOrBuilder getViewer8SplayPostsLatestOrBuilder(
+      public com.gosh.entity.IdScoreOrBuilder getViewer8SplayPostsLatestOrBuilder(
           int index) {
         if (viewer8SplayPostsLatestBuilder_ == null) {
           return viewer8SplayPostsLatest_.get(index);  } else {
@@ -22295,7 +22295,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        *
        * <code>repeated .com.gosh.entity.IdScore viewer_8splay_posts_latest = 153;</code>
        */
-      public com.gosh.entity.RecFeature.IdScore.Builder addViewer8SplayPostsLatestBuilder() {
+      public com.gosh.entity.Builder addViewer8SplayPostsLatestBuilder() {
         return internalGetViewer8SplayPostsLatestFieldBuilder().addBuilder(
             com.gosh.entity.RecFeature.IdScore.getDefaultInstance());
       }
@@ -22306,7 +22306,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        *
        * <code>repeated .com.gosh.entity.IdScore viewer_8splay_posts_latest = 153;</code>
        */
-      public com.gosh.entity.RecFeature.IdScore.Builder addViewer8SplayPostsLatestBuilder(
+      public com.gosh.entity.Builder addViewer8SplayPostsLatestBuilder(
           int index) {
         return internalGetViewer8SplayPostsLatestFieldBuilder().addBuilder(
             index, com.gosh.entity.RecFeature.IdScore.getDefaultInstance());
@@ -23573,12 +23573,12 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
     }
 
     // @@protoc_insertion_point(class_scope:com.gosh.entity.RecUserFeature)
-    private static final com.gosh.entity.RecFeature.RecUserFeature DEFAULT_INSTANCE;
+    private static final com.gosh.entity.RecUserFeature DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.gosh.entity.RecFeature.RecUserFeature();
     }
 
-    public static com.gosh.entity.RecFeature.RecUserFeature getDefaultInstance() {
+    public static com.gosh.entity.RecUserFeature getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
@@ -23614,7 +23614,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
     }
 
     @java.lang.Override
-    public com.gosh.entity.RecFeature.RecUserFeature getDefaultInstanceForType() {
+    public com.gosh.entity.RecUserFeature getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -24596,10 +24596,20 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
 
     /**
      * <pre>
+     * 曝光特征（创建后48小时）
+     * </pre>
+     *
+     * <code>int32 post_exp_cnt_48h = 142;</code>
+     * @return The postExpCnt48h.
+     */
+    int getPostExpCnt48H();
+
+    /**
+     * <pre>
      * 观看特征（创建后48小时）
      * </pre>
      *
-     * <code>int32 post_3sview_cnt_48h = 142;</code>
+     * <code>int32 post_3sview_cnt_48h = 143;</code>
      * @return The post3sviewCnt48h.
      */
     int getPost3SviewCnt48H();
@@ -24609,7 +24619,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
      * post创建后48小时观看8s次数
      * </pre>
      *
-     * <code>int32 post_8sview_cnt_48h = 143;</code>
+     * <code>int32 post_8sview_cnt_48h = 144;</code>
      * @return The post8sviewCnt48h.
      */
     int getPost8SviewCnt48H();
@@ -24619,7 +24629,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
      * post创建后48小时观看12s次数
      * </pre>
      *
-     * <code>int32 post_12sview_cnt_48h = 144;</code>
+     * <code>int32 post_12sview_cnt_48h = 145;</code>
      * @return The post12sviewCnt48h.
      */
     int getPost12SviewCnt48H();
@@ -24629,7 +24639,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
      * post创建后48小时观看20s次数
      * </pre>
      *
-     * <code>int32 post_20sview_cnt_48h = 145;</code>
+     * <code>int32 post_20sview_cnt_48h = 146;</code>
      * @return The post20sviewCnt48h.
      */
     int getPost20SviewCnt48H();
@@ -24639,7 +24649,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
      * 停留特征（创建后48小时）
      * </pre>
      *
-     * <code>int32 post_5sstand_cnt_48h = 146;</code>
+     * <code>int32 post_5sstand_cnt_48h = 147;</code>
      * @return The post5sstandCnt48h.
      */
     int getPost5SstandCnt48H();
@@ -24649,7 +24659,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
      * post创建后48小时停留10s次数
      * </pre>
      *
-     * <code>int32 post_10sstand_cnt_48h = 147;</code>
+     * <code>int32 post_10sstand_cnt_48h = 148;</code>
      * @return The post10sstandCnt48h.
      */
     int getPost10SstandCnt48H();
@@ -24659,7 +24669,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
      * 互动特征（创建后48小时）
      * </pre>
      *
-     * <code>int32 post_like_cnt_48h = 148;</code>
+     * <code>int32 post_like_cnt_48h = 149;</code>
      * @return The postLikeCnt48h.
      */
     int getPostLikeCnt48H();
@@ -24669,7 +24679,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
      * post创建后48小时被关注次数
      * </pre>
      *
-     * <code>int32 post_follow_cnt_48h = 149;</code>
+     * <code>int32 post_follow_cnt_48h = 150;</code>
      * @return The postFollowCnt48h.
      */
     int getPostFollowCnt48H();
@@ -24679,7 +24689,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
      * post创建后48小时被点主页次数
      * </pre>
      *
-     * <code>int32 post_profile_cnt_48h = 150;</code>
+     * <code>int32 post_profile_cnt_48h = 151;</code>
      * @return The postProfileCnt48h.
      */
     int getPostProfileCnt48H();
@@ -24689,7 +24699,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
      * post创建后48小时被评论收藏分享次数
      * </pre>
      *
-     * <code>int32 post_posinter_cnt_48h = 151;</code>
+     * <code>int32 post_posinter_cnt_48h = 152;</code>
      * @return The postPosinterCnt48h.
      */
     int getPostPosinterCnt48H();
@@ -26225,14 +26235,29 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
       return ppfRa3_;
     }
 
-    public static final int POST_3SVIEW_CNT_48H_FIELD_NUMBER = 142;
+    public static final int POST_EXP_CNT_48H_FIELD_NUMBER = 142;
+    private int postExpCnt48H_ = 0;
+    /**
+     * <pre>
+     * 曝光特征（创建后48小时）
+     * </pre>
+     *
+     * <code>int32 post_exp_cnt_48h = 142;</code>
+     * @return The postExpCnt48h.
+     */
+    @java.lang.Override
+    public int getPostExpCnt48H() {
+      return postExpCnt48H_;
+    }
+
+    public static final int POST_3SVIEW_CNT_48H_FIELD_NUMBER = 143;
     private int post3SviewCnt48H_ = 0;
     /**
      * <pre>
      * 观看特征（创建后48小时）
      * </pre>
      *
-     * <code>int32 post_3sview_cnt_48h = 142;</code>
+     * <code>int32 post_3sview_cnt_48h = 143;</code>
      * @return The post3sviewCnt48h.
      */
     @java.lang.Override
@@ -26240,14 +26265,14 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
       return post3SviewCnt48H_;
     }
 
-    public static final int POST_8SVIEW_CNT_48H_FIELD_NUMBER = 143;
+    public static final int POST_8SVIEW_CNT_48H_FIELD_NUMBER = 144;
     private int post8SviewCnt48H_ = 0;
     /**
      * <pre>
      * post创建后48小时观看8s次数
      * </pre>
      *
-     * <code>int32 post_8sview_cnt_48h = 143;</code>
+     * <code>int32 post_8sview_cnt_48h = 144;</code>
      * @return The post8sviewCnt48h.
      */
     @java.lang.Override
@@ -26255,14 +26280,14 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
       return post8SviewCnt48H_;
     }
 
-    public static final int POST_12SVIEW_CNT_48H_FIELD_NUMBER = 144;
+    public static final int POST_12SVIEW_CNT_48H_FIELD_NUMBER = 145;
     private int post12SviewCnt48H_ = 0;
     /**
      * <pre>
      * post创建后48小时观看12s次数
      * </pre>
      *
-     * <code>int32 post_12sview_cnt_48h = 144;</code>
+     * <code>int32 post_12sview_cnt_48h = 145;</code>
      * @return The post12sviewCnt48h.
      */
     @java.lang.Override
@@ -26270,14 +26295,14 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
       return post12SviewCnt48H_;
     }
 
-    public static final int POST_20SVIEW_CNT_48H_FIELD_NUMBER = 145;
+    public static final int POST_20SVIEW_CNT_48H_FIELD_NUMBER = 146;
     private int post20SviewCnt48H_ = 0;
     /**
      * <pre>
      * post创建后48小时观看20s次数
      * </pre>
      *
-     * <code>int32 post_20sview_cnt_48h = 145;</code>
+     * <code>int32 post_20sview_cnt_48h = 146;</code>
      * @return The post20sviewCnt48h.
      */
     @java.lang.Override
@@ -26285,14 +26310,14 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
       return post20SviewCnt48H_;
     }
 
-    public static final int POST_5SSTAND_CNT_48H_FIELD_NUMBER = 146;
+    public static final int POST_5SSTAND_CNT_48H_FIELD_NUMBER = 147;
     private int post5SstandCnt48H_ = 0;
     /**
      * <pre>
      * 停留特征（创建后48小时）
      * </pre>
      *
-     * <code>int32 post_5sstand_cnt_48h = 146;</code>
+     * <code>int32 post_5sstand_cnt_48h = 147;</code>
      * @return The post5sstandCnt48h.
      */
     @java.lang.Override
@@ -26300,14 +26325,14 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
       return post5SstandCnt48H_;
     }
 
-    public static final int POST_10SSTAND_CNT_48H_FIELD_NUMBER = 147;
+    public static final int POST_10SSTAND_CNT_48H_FIELD_NUMBER = 148;
     private int post10SstandCnt48H_ = 0;
     /**
      * <pre>
      * post创建后48小时停留10s次数
      * </pre>
      *
-     * <code>int32 post_10sstand_cnt_48h = 147;</code>
+     * <code>int32 post_10sstand_cnt_48h = 148;</code>
      * @return The post10sstandCnt48h.
      */
     @java.lang.Override
@@ -26315,14 +26340,14 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
       return post10SstandCnt48H_;
     }
 
-    public static final int POST_LIKE_CNT_48H_FIELD_NUMBER = 148;
+    public static final int POST_LIKE_CNT_48H_FIELD_NUMBER = 149;
     private int postLikeCnt48H_ = 0;
     /**
      * <pre>
      * 互动特征（创建后48小时）
      * </pre>
      *
-     * <code>int32 post_like_cnt_48h = 148;</code>
+     * <code>int32 post_like_cnt_48h = 149;</code>
      * @return The postLikeCnt48h.
      */
     @java.lang.Override
@@ -26330,14 +26355,14 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
       return postLikeCnt48H_;
     }
 
-    public static final int POST_FOLLOW_CNT_48H_FIELD_NUMBER = 149;
+    public static final int POST_FOLLOW_CNT_48H_FIELD_NUMBER = 150;
     private int postFollowCnt48H_ = 0;
     /**
      * <pre>
      * post创建后48小时被关注次数
      * </pre>
      *
-     * <code>int32 post_follow_cnt_48h = 149;</code>
+     * <code>int32 post_follow_cnt_48h = 150;</code>
      * @return The postFollowCnt48h.
      */
     @java.lang.Override
@@ -26345,14 +26370,14 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
       return postFollowCnt48H_;
     }
 
-    public static final int POST_PROFILE_CNT_48H_FIELD_NUMBER = 150;
+    public static final int POST_PROFILE_CNT_48H_FIELD_NUMBER = 151;
     private int postProfileCnt48H_ = 0;
     /**
      * <pre>
      * post创建后48小时被点主页次数
      * </pre>
      *
-     * <code>int32 post_profile_cnt_48h = 150;</code>
+     * <code>int32 post_profile_cnt_48h = 151;</code>
      * @return The postProfileCnt48h.
      */
     @java.lang.Override
@@ -26360,14 +26385,14 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
       return postProfileCnt48H_;
     }
 
-    public static final int POST_POSINTER_CNT_48H_FIELD_NUMBER = 151;
+    public static final int POST_POSINTER_CNT_48H_FIELD_NUMBER = 152;
     private int postPosinterCnt48H_ = 0;
     /**
      * <pre>
      * post创建后48小时被评论收藏分享次数
      * </pre>
      *
-     * <code>int32 post_posinter_cnt_48h = 151;</code>
+     * <code>int32 post_posinter_cnt_48h = 152;</code>
      * @return The postPosinterCnt48h.
      */
     @java.lang.Override
@@ -26671,35 +26696,38 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
       if (java.lang.Float.floatToRawIntBits(ppfRa3_) != 0) {
         output.writeFloat(141, ppfRa3_);
       }
+      if (postExpCnt48H_ != 0) {
+        output.writeInt32(142, postExpCnt48H_);
+      }
       if (post3SviewCnt48H_ != 0) {
-        output.writeInt32(142, post3SviewCnt48H_);
+        output.writeInt32(143, post3SviewCnt48H_);
       }
       if (post8SviewCnt48H_ != 0) {
-        output.writeInt32(143, post8SviewCnt48H_);
+        output.writeInt32(144, post8SviewCnt48H_);
       }
       if (post12SviewCnt48H_ != 0) {
-        output.writeInt32(144, post12SviewCnt48H_);
+        output.writeInt32(145, post12SviewCnt48H_);
       }
       if (post20SviewCnt48H_ != 0) {
-        output.writeInt32(145, post20SviewCnt48H_);
+        output.writeInt32(146, post20SviewCnt48H_);
       }
       if (post5SstandCnt48H_ != 0) {
-        output.writeInt32(146, post5SstandCnt48H_);
+        output.writeInt32(147, post5SstandCnt48H_);
       }
       if (post10SstandCnt48H_ != 0) {
-        output.writeInt32(147, post10SstandCnt48H_);
+        output.writeInt32(148, post10SstandCnt48H_);
       }
       if (postLikeCnt48H_ != 0) {
-        output.writeInt32(148, postLikeCnt48H_);
+        output.writeInt32(149, postLikeCnt48H_);
       }
       if (postFollowCnt48H_ != 0) {
-        output.writeInt32(149, postFollowCnt48H_);
+        output.writeInt32(150, postFollowCnt48H_);
       }
       if (postProfileCnt48H_ != 0) {
-        output.writeInt32(150, postProfileCnt48H_);
+        output.writeInt32(151, postProfileCnt48H_);
       }
       if (postPosinterCnt48H_ != 0) {
-        output.writeInt32(151, postPosinterCnt48H_);
+        output.writeInt32(152, postPosinterCnt48H_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -27089,45 +27117,49 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
         size += com.google.protobuf.CodedOutputStream
           .computeFloatSize(141, ppfRa3_);
       }
+      if (postExpCnt48H_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(142, postExpCnt48H_);
+      }
       if (post3SviewCnt48H_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(142, post3SviewCnt48H_);
+          .computeInt32Size(143, post3SviewCnt48H_);
       }
       if (post8SviewCnt48H_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(143, post8SviewCnt48H_);
+          .computeInt32Size(144, post8SviewCnt48H_);
       }
       if (post12SviewCnt48H_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(144, post12SviewCnt48H_);
+          .computeInt32Size(145, post12SviewCnt48H_);
       }
       if (post20SviewCnt48H_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(145, post20SviewCnt48H_);
+          .computeInt32Size(146, post20SviewCnt48H_);
       }
       if (post5SstandCnt48H_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(146, post5SstandCnt48H_);
+          .computeInt32Size(147, post5SstandCnt48H_);
       }
       if (post10SstandCnt48H_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(147, post10SstandCnt48H_);
+          .computeInt32Size(148, post10SstandCnt48H_);
       }
       if (postLikeCnt48H_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(148, postLikeCnt48H_);
+          .computeInt32Size(149, postLikeCnt48H_);
       }
       if (postFollowCnt48H_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(149, postFollowCnt48H_);
+          .computeInt32Size(150, postFollowCnt48H_);
       }
       if (postProfileCnt48H_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(150, postProfileCnt48H_);
+          .computeInt32Size(151, postProfileCnt48H_);
       }
       if (postPosinterCnt48H_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(151, postPosinterCnt48H_);
+          .computeInt32Size(152, postPosinterCnt48H_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
@@ -27365,6 +27397,8 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
       if (java.lang.Float.floatToIntBits(getPpfRa3())
           != java.lang.Float.floatToIntBits(
               other.getPpfRa3())) return false;
+      if (getPostExpCnt48H()
+          != other.getPostExpCnt48H()) return false;
       if (getPost3SviewCnt48H()
           != other.getPost3SviewCnt48H()) return false;
       if (getPost8SviewCnt48H()
@@ -27622,6 +27656,8 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
       hash = (37 * hash) + PPF_RA_3_FIELD_NUMBER;
       hash = (53 * hash) + java.lang.Float.floatToIntBits(
           getPpfRa3());
+      hash = (37 * hash) + POST_EXP_CNT_48H_FIELD_NUMBER;
+      hash = (53 * hash) + getPostExpCnt48H();
       hash = (37 * hash) + POST_3SVIEW_CNT_48H_FIELD_NUMBER;
       hash = (53 * hash) + getPost3SviewCnt48H();
       hash = (37 * hash) + POST_8SVIEW_CNT_48H_FIELD_NUMBER;
@@ -27647,44 +27683,44 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
       return hash;
     }
 
-    public static com.gosh.entity.RecFeature.RecPostFeature parseFrom(
+    public static com.gosh.entity.RecPostFeature parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.gosh.entity.RecFeature.RecPostFeature parseFrom(
+    public static com.gosh.entity.RecPostFeature parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.gosh.entity.RecFeature.RecPostFeature parseFrom(
+    public static com.gosh.entity.RecPostFeature parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.gosh.entity.RecFeature.RecPostFeature parseFrom(
+    public static com.gosh.entity.RecPostFeature parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.gosh.entity.RecFeature.RecPostFeature parseFrom(byte[] data)
+    public static com.gosh.entity.RecPostFeature parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.gosh.entity.RecFeature.RecPostFeature parseFrom(
+    public static com.gosh.entity.RecPostFeature parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.gosh.entity.RecFeature.RecPostFeature parseFrom(java.io.InputStream input)
+    public static com.gosh.entity.RecPostFeature parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessage
           .parseWithIOException(PARSER, input);
     }
-    public static com.gosh.entity.RecFeature.RecPostFeature parseFrom(
+    public static com.gosh.entity.RecPostFeature parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -27692,26 +27728,26 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
-    public static com.gosh.entity.RecFeature.RecPostFeature parseDelimitedFrom(java.io.InputStream input)
+    public static com.gosh.entity.RecPostFeature parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessage
           .parseDelimitedWithIOException(PARSER, input);
     }
 
-    public static com.gosh.entity.RecFeature.RecPostFeature parseDelimitedFrom(
+    public static com.gosh.entity.RecPostFeature parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessage
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.gosh.entity.RecFeature.RecPostFeature parseFrom(
+    public static com.gosh.entity.RecPostFeature parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessage
           .parseWithIOException(PARSER, input);
     }
-    public static com.gosh.entity.RecFeature.RecPostFeature parseFrom(
+    public static com.gosh.entity.RecPostFeature parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -27872,6 +27908,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
         ppfRa1_ = 0F;
         ppfRa2_ = 0F;
         ppfRa3_ = 0F;
+        postExpCnt48H_ = 0;
         post3SviewCnt48H_ = 0;
         post8SviewCnt48H_ = 0;
         post12SviewCnt48H_ = 0;
@@ -27892,12 +27929,12 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
       }
 
       @java.lang.Override
-      public com.gosh.entity.RecFeature.RecPostFeature getDefaultInstanceForType() {
+      public com.gosh.entity.RecPostFeature getDefaultInstanceForType() {
         return com.gosh.entity.RecFeature.RecPostFeature.getDefaultInstance();
       }
 
       @java.lang.Override
-      public com.gosh.entity.RecFeature.RecPostFeature build() {
+      public com.gosh.entity.RecPostFeature build() {
         com.gosh.entity.RecFeature.RecPostFeature result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
@@ -27906,7 +27943,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
       }
 
       @java.lang.Override
-      public com.gosh.entity.RecFeature.RecPostFeature buildPartial() {
+      public com.gosh.entity.RecPostFeature buildPartial() {
         com.gosh.entity.RecFeature.RecPostFeature result = new com.gosh.entity.RecFeature.RecPostFeature(this);
         if (bitField0_ != 0) { buildPartial0(result); }
         if (bitField1_ != 0) { buildPartial1(result); }
@@ -28202,37 +28239,40 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
           result.ppfRa3_ = ppfRa3_;
         }
         if (((from_bitField2_ & 0x08000000) != 0)) {
-          result.post3SviewCnt48H_ = post3SviewCnt48H_;
+          result.postExpCnt48H_ = postExpCnt48H_;
         }
         if (((from_bitField2_ & 0x10000000) != 0)) {
-          result.post8SviewCnt48H_ = post8SviewCnt48H_;
+          result.post3SviewCnt48H_ = post3SviewCnt48H_;
         }
         if (((from_bitField2_ & 0x20000000) != 0)) {
-          result.post12SviewCnt48H_ = post12SviewCnt48H_;
+          result.post8SviewCnt48H_ = post8SviewCnt48H_;
         }
         if (((from_bitField2_ & 0x40000000) != 0)) {
-          result.post20SviewCnt48H_ = post20SviewCnt48H_;
+          result.post12SviewCnt48H_ = post12SviewCnt48H_;
         }
         if (((from_bitField2_ & 0x80000000) != 0)) {
-          result.post5SstandCnt48H_ = post5SstandCnt48H_;
+          result.post20SviewCnt48H_ = post20SviewCnt48H_;
         }
       }
 
       private void buildPartial3(com.gosh.entity.RecFeature.RecPostFeature result) {
         int from_bitField3_ = bitField3_;
         if (((from_bitField3_ & 0x00000001) != 0)) {
-          result.post10SstandCnt48H_ = post10SstandCnt48H_;
+          result.post5SstandCnt48H_ = post5SstandCnt48H_;
         }
         if (((from_bitField3_ & 0x00000002) != 0)) {
-          result.postLikeCnt48H_ = postLikeCnt48H_;
+          result.post10SstandCnt48H_ = post10SstandCnt48H_;
         }
         if (((from_bitField3_ & 0x00000004) != 0)) {
-          result.postFollowCnt48H_ = postFollowCnt48H_;
+          result.postLikeCnt48H_ = postLikeCnt48H_;
         }
         if (((from_bitField3_ & 0x00000008) != 0)) {
-          result.postProfileCnt48H_ = postProfileCnt48H_;
+          result.postFollowCnt48H_ = postFollowCnt48H_;
         }
         if (((from_bitField3_ & 0x00000010) != 0)) {
+          result.postProfileCnt48H_ = postProfileCnt48H_;
+        }
+        if (((from_bitField3_ & 0x00000020) != 0)) {
           result.postPosinterCnt48H_ = postPosinterCnt48H_;
         }
       }
@@ -28541,6 +28581,9 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
         }
         if (java.lang.Float.floatToRawIntBits(other.getPpfRa3()) != 0) {
           setPpfRa3(other.getPpfRa3());
+        }
+        if (other.getPostExpCnt48H() != 0) {
+          setPostExpCnt48H(other.getPostExpCnt48H());
         }
         if (other.getPost3SviewCnt48H() != 0) {
           setPost3SviewCnt48H(other.getPost3SviewCnt48H());
@@ -29077,55 +29120,60 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
                 break;
               } // case 1133
               case 1136: {
-                post3SviewCnt48H_ = input.readInt32();
+                postExpCnt48H_ = input.readInt32();
                 bitField2_ |= 0x08000000;
                 break;
               } // case 1136
               case 1144: {
-                post8SviewCnt48H_ = input.readInt32();
+                post3SviewCnt48H_ = input.readInt32();
                 bitField2_ |= 0x10000000;
                 break;
               } // case 1144
               case 1152: {
-                post12SviewCnt48H_ = input.readInt32();
+                post8SviewCnt48H_ = input.readInt32();
                 bitField2_ |= 0x20000000;
                 break;
               } // case 1152
               case 1160: {
-                post20SviewCnt48H_ = input.readInt32();
+                post12SviewCnt48H_ = input.readInt32();
                 bitField2_ |= 0x40000000;
                 break;
               } // case 1160
               case 1168: {
-                post5SstandCnt48H_ = input.readInt32();
+                post20SviewCnt48H_ = input.readInt32();
                 bitField2_ |= 0x80000000;
                 break;
               } // case 1168
               case 1176: {
-                post10SstandCnt48H_ = input.readInt32();
+                post5SstandCnt48H_ = input.readInt32();
                 bitField3_ |= 0x00000001;
                 break;
               } // case 1176
               case 1184: {
-                postLikeCnt48H_ = input.readInt32();
+                post10SstandCnt48H_ = input.readInt32();
                 bitField3_ |= 0x00000002;
                 break;
               } // case 1184
               case 1192: {
-                postFollowCnt48H_ = input.readInt32();
+                postLikeCnt48H_ = input.readInt32();
                 bitField3_ |= 0x00000004;
                 break;
               } // case 1192
               case 1200: {
-                postProfileCnt48H_ = input.readInt32();
+                postFollowCnt48H_ = input.readInt32();
                 bitField3_ |= 0x00000008;
                 break;
               } // case 1200
               case 1208: {
-                postPosinterCnt48H_ = input.readInt32();
+                postProfileCnt48H_ = input.readInt32();
                 bitField3_ |= 0x00000010;
                 break;
               } // case 1208
+              case 1216: {
+                postPosinterCnt48H_ = input.readInt32();
+                bitField3_ |= 0x00000020;
+                break;
+              } // case 1216
               default: {
                 if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                   done = true; // was an endgroup tag
@@ -33394,13 +33442,57 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
         return this;
       }
 
+      private int postExpCnt48H_ ;
+      /**
+       * <pre>
+       * 曝光特征（创建后48小时）
+       * </pre>
+       *
+       * <code>int32 post_exp_cnt_48h = 142;</code>
+       * @return The postExpCnt48h.
+       */
+      @java.lang.Override
+      public int getPostExpCnt48H() {
+        return postExpCnt48H_;
+      }
+      /**
+       * <pre>
+       * 曝光特征（创建后48小时）
+       * </pre>
+       *
+       * <code>int32 post_exp_cnt_48h = 142;</code>
+       * @param value The postExpCnt48h to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPostExpCnt48H(int value) {
+
+        postExpCnt48H_ = value;
+        bitField2_ |= 0x08000000;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 曝光特征（创建后48小时）
+       * </pre>
+       *
+       * <code>int32 post_exp_cnt_48h = 142;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPostExpCnt48H() {
+        bitField2_ = (bitField2_ & ~0x08000000);
+        postExpCnt48H_ = 0;
+        onChanged();
+        return this;
+      }
+
       private int post3SviewCnt48H_ ;
       /**
        * <pre>
        * 观看特征（创建后48小时）
        * </pre>
        *
-       * <code>int32 post_3sview_cnt_48h = 142;</code>
+       * <code>int32 post_3sview_cnt_48h = 143;</code>
        * @return The post3sviewCnt48h.
        */
       @java.lang.Override
@@ -33412,14 +33504,14 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        * 观看特征（创建后48小时）
        * </pre>
        *
-       * <code>int32 post_3sview_cnt_48h = 142;</code>
+       * <code>int32 post_3sview_cnt_48h = 143;</code>
        * @param value The post3sviewCnt48h to set.
        * @return This builder for chaining.
        */
       public Builder setPost3SviewCnt48H(int value) {
 
         post3SviewCnt48H_ = value;
-        bitField2_ |= 0x08000000;
+        bitField2_ |= 0x10000000;
         onChanged();
         return this;
       }
@@ -33428,11 +33520,11 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        * 观看特征（创建后48小时）
        * </pre>
        *
-       * <code>int32 post_3sview_cnt_48h = 142;</code>
+       * <code>int32 post_3sview_cnt_48h = 143;</code>
        * @return This builder for chaining.
        */
       public Builder clearPost3SviewCnt48H() {
-        bitField2_ = (bitField2_ & ~0x08000000);
+        bitField2_ = (bitField2_ & ~0x10000000);
         post3SviewCnt48H_ = 0;
         onChanged();
         return this;
@@ -33444,7 +33536,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        * post创建后48小时观看8s次数
        * </pre>
        *
-       * <code>int32 post_8sview_cnt_48h = 143;</code>
+       * <code>int32 post_8sview_cnt_48h = 144;</code>
        * @return The post8sviewCnt48h.
        */
       @java.lang.Override
@@ -33456,14 +33548,14 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        * post创建后48小时观看8s次数
        * </pre>
        *
-       * <code>int32 post_8sview_cnt_48h = 143;</code>
+       * <code>int32 post_8sview_cnt_48h = 144;</code>
        * @param value The post8sviewCnt48h to set.
        * @return This builder for chaining.
        */
       public Builder setPost8SviewCnt48H(int value) {
 
         post8SviewCnt48H_ = value;
-        bitField2_ |= 0x10000000;
+        bitField2_ |= 0x20000000;
         onChanged();
         return this;
       }
@@ -33472,11 +33564,11 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        * post创建后48小时观看8s次数
        * </pre>
        *
-       * <code>int32 post_8sview_cnt_48h = 143;</code>
+       * <code>int32 post_8sview_cnt_48h = 144;</code>
        * @return This builder for chaining.
        */
       public Builder clearPost8SviewCnt48H() {
-        bitField2_ = (bitField2_ & ~0x10000000);
+        bitField2_ = (bitField2_ & ~0x20000000);
         post8SviewCnt48H_ = 0;
         onChanged();
         return this;
@@ -33488,7 +33580,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        * post创建后48小时观看12s次数
        * </pre>
        *
-       * <code>int32 post_12sview_cnt_48h = 144;</code>
+       * <code>int32 post_12sview_cnt_48h = 145;</code>
        * @return The post12sviewCnt48h.
        */
       @java.lang.Override
@@ -33500,14 +33592,14 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        * post创建后48小时观看12s次数
        * </pre>
        *
-       * <code>int32 post_12sview_cnt_48h = 144;</code>
+       * <code>int32 post_12sview_cnt_48h = 145;</code>
        * @param value The post12sviewCnt48h to set.
        * @return This builder for chaining.
        */
       public Builder setPost12SviewCnt48H(int value) {
 
         post12SviewCnt48H_ = value;
-        bitField2_ |= 0x20000000;
+        bitField2_ |= 0x40000000;
         onChanged();
         return this;
       }
@@ -33516,11 +33608,11 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        * post创建后48小时观看12s次数
        * </pre>
        *
-       * <code>int32 post_12sview_cnt_48h = 144;</code>
+       * <code>int32 post_12sview_cnt_48h = 145;</code>
        * @return This builder for chaining.
        */
       public Builder clearPost12SviewCnt48H() {
-        bitField2_ = (bitField2_ & ~0x20000000);
+        bitField2_ = (bitField2_ & ~0x40000000);
         post12SviewCnt48H_ = 0;
         onChanged();
         return this;
@@ -33532,7 +33624,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        * post创建后48小时观看20s次数
        * </pre>
        *
-       * <code>int32 post_20sview_cnt_48h = 145;</code>
+       * <code>int32 post_20sview_cnt_48h = 146;</code>
        * @return The post20sviewCnt48h.
        */
       @java.lang.Override
@@ -33544,14 +33636,14 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        * post创建后48小时观看20s次数
        * </pre>
        *
-       * <code>int32 post_20sview_cnt_48h = 145;</code>
+       * <code>int32 post_20sview_cnt_48h = 146;</code>
        * @param value The post20sviewCnt48h to set.
        * @return This builder for chaining.
        */
       public Builder setPost20SviewCnt48H(int value) {
 
         post20SviewCnt48H_ = value;
-        bitField2_ |= 0x40000000;
+        bitField2_ |= 0x80000000;
         onChanged();
         return this;
       }
@@ -33560,11 +33652,11 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        * post创建后48小时观看20s次数
        * </pre>
        *
-       * <code>int32 post_20sview_cnt_48h = 145;</code>
+       * <code>int32 post_20sview_cnt_48h = 146;</code>
        * @return This builder for chaining.
        */
       public Builder clearPost20SviewCnt48H() {
-        bitField2_ = (bitField2_ & ~0x40000000);
+        bitField2_ = (bitField2_ & ~0x80000000);
         post20SviewCnt48H_ = 0;
         onChanged();
         return this;
@@ -33576,7 +33668,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        * 停留特征（创建后48小时）
        * </pre>
        *
-       * <code>int32 post_5sstand_cnt_48h = 146;</code>
+       * <code>int32 post_5sstand_cnt_48h = 147;</code>
        * @return The post5sstandCnt48h.
        */
       @java.lang.Override
@@ -33588,14 +33680,14 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        * 停留特征（创建后48小时）
        * </pre>
        *
-       * <code>int32 post_5sstand_cnt_48h = 146;</code>
+       * <code>int32 post_5sstand_cnt_48h = 147;</code>
        * @param value The post5sstandCnt48h to set.
        * @return This builder for chaining.
        */
       public Builder setPost5SstandCnt48H(int value) {
 
         post5SstandCnt48H_ = value;
-        bitField2_ |= 0x80000000;
+        bitField3_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -33604,11 +33696,11 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        * 停留特征（创建后48小时）
        * </pre>
        *
-       * <code>int32 post_5sstand_cnt_48h = 146;</code>
+       * <code>int32 post_5sstand_cnt_48h = 147;</code>
        * @return This builder for chaining.
        */
       public Builder clearPost5SstandCnt48H() {
-        bitField2_ = (bitField2_ & ~0x80000000);
+        bitField3_ = (bitField3_ & ~0x00000001);
         post5SstandCnt48H_ = 0;
         onChanged();
         return this;
@@ -33620,7 +33712,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        * post创建后48小时停留10s次数
        * </pre>
        *
-       * <code>int32 post_10sstand_cnt_48h = 147;</code>
+       * <code>int32 post_10sstand_cnt_48h = 148;</code>
        * @return The post10sstandCnt48h.
        */
       @java.lang.Override
@@ -33632,14 +33724,14 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        * post创建后48小时停留10s次数
        * </pre>
        *
-       * <code>int32 post_10sstand_cnt_48h = 147;</code>
+       * <code>int32 post_10sstand_cnt_48h = 148;</code>
        * @param value The post10sstandCnt48h to set.
        * @return This builder for chaining.
        */
       public Builder setPost10SstandCnt48H(int value) {
 
         post10SstandCnt48H_ = value;
-        bitField3_ |= 0x00000001;
+        bitField3_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -33648,11 +33740,11 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        * post创建后48小时停留10s次数
        * </pre>
        *
-       * <code>int32 post_10sstand_cnt_48h = 147;</code>
+       * <code>int32 post_10sstand_cnt_48h = 148;</code>
        * @return This builder for chaining.
        */
       public Builder clearPost10SstandCnt48H() {
-        bitField3_ = (bitField3_ & ~0x00000001);
+        bitField3_ = (bitField3_ & ~0x00000002);
         post10SstandCnt48H_ = 0;
         onChanged();
         return this;
@@ -33664,7 +33756,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        * 互动特征（创建后48小时）
        * </pre>
        *
-       * <code>int32 post_like_cnt_48h = 148;</code>
+       * <code>int32 post_like_cnt_48h = 149;</code>
        * @return The postLikeCnt48h.
        */
       @java.lang.Override
@@ -33676,14 +33768,14 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        * 互动特征（创建后48小时）
        * </pre>
        *
-       * <code>int32 post_like_cnt_48h = 148;</code>
+       * <code>int32 post_like_cnt_48h = 149;</code>
        * @param value The postLikeCnt48h to set.
        * @return This builder for chaining.
        */
       public Builder setPostLikeCnt48H(int value) {
 
         postLikeCnt48H_ = value;
-        bitField3_ |= 0x00000002;
+        bitField3_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -33692,11 +33784,11 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        * 互动特征（创建后48小时）
        * </pre>
        *
-       * <code>int32 post_like_cnt_48h = 148;</code>
+       * <code>int32 post_like_cnt_48h = 149;</code>
        * @return This builder for chaining.
        */
       public Builder clearPostLikeCnt48H() {
-        bitField3_ = (bitField3_ & ~0x00000002);
+        bitField3_ = (bitField3_ & ~0x00000004);
         postLikeCnt48H_ = 0;
         onChanged();
         return this;
@@ -33708,7 +33800,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        * post创建后48小时被关注次数
        * </pre>
        *
-       * <code>int32 post_follow_cnt_48h = 149;</code>
+       * <code>int32 post_follow_cnt_48h = 150;</code>
        * @return The postFollowCnt48h.
        */
       @java.lang.Override
@@ -33720,14 +33812,14 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        * post创建后48小时被关注次数
        * </pre>
        *
-       * <code>int32 post_follow_cnt_48h = 149;</code>
+       * <code>int32 post_follow_cnt_48h = 150;</code>
        * @param value The postFollowCnt48h to set.
        * @return This builder for chaining.
        */
       public Builder setPostFollowCnt48H(int value) {
 
         postFollowCnt48H_ = value;
-        bitField3_ |= 0x00000004;
+        bitField3_ |= 0x00000008;
         onChanged();
         return this;
       }
@@ -33736,11 +33828,11 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        * post创建后48小时被关注次数
        * </pre>
        *
-       * <code>int32 post_follow_cnt_48h = 149;</code>
+       * <code>int32 post_follow_cnt_48h = 150;</code>
        * @return This builder for chaining.
        */
       public Builder clearPostFollowCnt48H() {
-        bitField3_ = (bitField3_ & ~0x00000004);
+        bitField3_ = (bitField3_ & ~0x00000008);
         postFollowCnt48H_ = 0;
         onChanged();
         return this;
@@ -33752,7 +33844,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        * post创建后48小时被点主页次数
        * </pre>
        *
-       * <code>int32 post_profile_cnt_48h = 150;</code>
+       * <code>int32 post_profile_cnt_48h = 151;</code>
        * @return The postProfileCnt48h.
        */
       @java.lang.Override
@@ -33764,14 +33856,14 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        * post创建后48小时被点主页次数
        * </pre>
        *
-       * <code>int32 post_profile_cnt_48h = 150;</code>
+       * <code>int32 post_profile_cnt_48h = 151;</code>
        * @param value The postProfileCnt48h to set.
        * @return This builder for chaining.
        */
       public Builder setPostProfileCnt48H(int value) {
 
         postProfileCnt48H_ = value;
-        bitField3_ |= 0x00000008;
+        bitField3_ |= 0x00000010;
         onChanged();
         return this;
       }
@@ -33780,11 +33872,11 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        * post创建后48小时被点主页次数
        * </pre>
        *
-       * <code>int32 post_profile_cnt_48h = 150;</code>
+       * <code>int32 post_profile_cnt_48h = 151;</code>
        * @return This builder for chaining.
        */
       public Builder clearPostProfileCnt48H() {
-        bitField3_ = (bitField3_ & ~0x00000008);
+        bitField3_ = (bitField3_ & ~0x00000010);
         postProfileCnt48H_ = 0;
         onChanged();
         return this;
@@ -33796,7 +33888,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        * post创建后48小时被评论收藏分享次数
        * </pre>
        *
-       * <code>int32 post_posinter_cnt_48h = 151;</code>
+       * <code>int32 post_posinter_cnt_48h = 152;</code>
        * @return The postPosinterCnt48h.
        */
       @java.lang.Override
@@ -33808,14 +33900,14 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        * post创建后48小时被评论收藏分享次数
        * </pre>
        *
-       * <code>int32 post_posinter_cnt_48h = 151;</code>
+       * <code>int32 post_posinter_cnt_48h = 152;</code>
        * @param value The postPosinterCnt48h to set.
        * @return This builder for chaining.
        */
       public Builder setPostPosinterCnt48H(int value) {
 
         postPosinterCnt48H_ = value;
-        bitField3_ |= 0x00000010;
+        bitField3_ |= 0x00000020;
         onChanged();
         return this;
       }
@@ -33824,11 +33916,11 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        * post创建后48小时被评论收藏分享次数
        * </pre>
        *
-       * <code>int32 post_posinter_cnt_48h = 151;</code>
+       * <code>int32 post_posinter_cnt_48h = 152;</code>
        * @return This builder for chaining.
        */
       public Builder clearPostPosinterCnt48H() {
-        bitField3_ = (bitField3_ & ~0x00000010);
+        bitField3_ = (bitField3_ & ~0x00000020);
         postPosinterCnt48H_ = 0;
         onChanged();
         return this;
@@ -33838,12 +33930,12 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
     }
 
     // @@protoc_insertion_point(class_scope:com.gosh.entity.RecPostFeature)
-    private static final com.gosh.entity.RecFeature.RecPostFeature DEFAULT_INSTANCE;
+    private static final com.gosh.entity.RecPostFeature DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.gosh.entity.RecFeature.RecPostFeature();
     }
 
-    public static com.gosh.entity.RecFeature.RecPostFeature getDefaultInstance() {
+    public static com.gosh.entity.RecPostFeature getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
@@ -33879,7 +33971,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
     }
 
     @java.lang.Override
-    public com.gosh.entity.RecFeature.RecPostFeature getDefaultInstanceForType() {
+    public com.gosh.entity.RecPostFeature getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -34072,44 +34164,44 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
       return hash;
     }
 
-    public static com.gosh.entity.RecFeature.FeedbackTagV2 parseFrom(
+    public static com.gosh.entity.FeedbackTagV2 parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.gosh.entity.RecFeature.FeedbackTagV2 parseFrom(
+    public static com.gosh.entity.FeedbackTagV2 parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.gosh.entity.RecFeature.FeedbackTagV2 parseFrom(
+    public static com.gosh.entity.FeedbackTagV2 parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.gosh.entity.RecFeature.FeedbackTagV2 parseFrom(
+    public static com.gosh.entity.FeedbackTagV2 parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.gosh.entity.RecFeature.FeedbackTagV2 parseFrom(byte[] data)
+    public static com.gosh.entity.FeedbackTagV2 parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.gosh.entity.RecFeature.FeedbackTagV2 parseFrom(
+    public static com.gosh.entity.FeedbackTagV2 parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.gosh.entity.RecFeature.FeedbackTagV2 parseFrom(java.io.InputStream input)
+    public static com.gosh.entity.FeedbackTagV2 parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessage
           .parseWithIOException(PARSER, input);
     }
-    public static com.gosh.entity.RecFeature.FeedbackTagV2 parseFrom(
+    public static com.gosh.entity.FeedbackTagV2 parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -34117,26 +34209,26 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
-    public static com.gosh.entity.RecFeature.FeedbackTagV2 parseDelimitedFrom(java.io.InputStream input)
+    public static com.gosh.entity.FeedbackTagV2 parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessage
           .parseDelimitedWithIOException(PARSER, input);
     }
 
-    public static com.gosh.entity.RecFeature.FeedbackTagV2 parseDelimitedFrom(
+    public static com.gosh.entity.FeedbackTagV2 parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessage
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.gosh.entity.RecFeature.FeedbackTagV2 parseFrom(
+    public static com.gosh.entity.FeedbackTagV2 parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessage
           .parseWithIOException(PARSER, input);
     }
-    public static com.gosh.entity.RecFeature.FeedbackTagV2 parseFrom(
+    public static com.gosh.entity.FeedbackTagV2 parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -34210,12 +34302,12 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
       }
 
       @java.lang.Override
-      public com.gosh.entity.RecFeature.FeedbackTagV2 getDefaultInstanceForType() {
+      public com.gosh.entity.FeedbackTagV2 getDefaultInstanceForType() {
         return com.gosh.entity.RecFeature.FeedbackTagV2.getDefaultInstance();
       }
 
       @java.lang.Override
-      public com.gosh.entity.RecFeature.FeedbackTagV2 build() {
+      public com.gosh.entity.FeedbackTagV2 build() {
         com.gosh.entity.RecFeature.FeedbackTagV2 result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
@@ -34224,7 +34316,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
       }
 
       @java.lang.Override
-      public com.gosh.entity.RecFeature.FeedbackTagV2 buildPartial() {
+      public com.gosh.entity.FeedbackTagV2 buildPartial() {
         com.gosh.entity.RecFeature.FeedbackTagV2 result = new com.gosh.entity.RecFeature.FeedbackTagV2(this);
         if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
@@ -34422,12 +34514,12 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
     }
 
     // @@protoc_insertion_point(class_scope:com.gosh.entity.FeedbackTagV2)
-    private static final com.gosh.entity.RecFeature.FeedbackTagV2 DEFAULT_INSTANCE;
+    private static final com.gosh.entity.FeedbackTagV2 DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.gosh.entity.RecFeature.FeedbackTagV2();
     }
 
-    public static com.gosh.entity.RecFeature.FeedbackTagV2 getDefaultInstance() {
+    public static com.gosh.entity.FeedbackTagV2 getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
@@ -34463,7 +34555,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
     }
 
     @java.lang.Override
-    public com.gosh.entity.RecFeature.FeedbackTagV2 getDefaultInstanceForType() {
+    public com.gosh.entity.FeedbackTagV2 getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -34627,44 +34719,44 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
       return hash;
     }
 
-    public static com.gosh.entity.RecFeature.FeedbackAuthorId parseFrom(
+    public static com.gosh.entity.FeedbackAuthorId parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.gosh.entity.RecFeature.FeedbackAuthorId parseFrom(
+    public static com.gosh.entity.FeedbackAuthorId parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.gosh.entity.RecFeature.FeedbackAuthorId parseFrom(
+    public static com.gosh.entity.FeedbackAuthorId parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.gosh.entity.RecFeature.FeedbackAuthorId parseFrom(
+    public static com.gosh.entity.FeedbackAuthorId parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.gosh.entity.RecFeature.FeedbackAuthorId parseFrom(byte[] data)
+    public static com.gosh.entity.FeedbackAuthorId parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.gosh.entity.RecFeature.FeedbackAuthorId parseFrom(
+    public static com.gosh.entity.FeedbackAuthorId parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.gosh.entity.RecFeature.FeedbackAuthorId parseFrom(java.io.InputStream input)
+    public static com.gosh.entity.FeedbackAuthorId parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessage
           .parseWithIOException(PARSER, input);
     }
-    public static com.gosh.entity.RecFeature.FeedbackAuthorId parseFrom(
+    public static com.gosh.entity.FeedbackAuthorId parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -34672,26 +34764,26 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
-    public static com.gosh.entity.RecFeature.FeedbackAuthorId parseDelimitedFrom(java.io.InputStream input)
+    public static com.gosh.entity.FeedbackAuthorId parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessage
           .parseDelimitedWithIOException(PARSER, input);
     }
 
-    public static com.gosh.entity.RecFeature.FeedbackAuthorId parseDelimitedFrom(
+    public static com.gosh.entity.FeedbackAuthorId parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessage
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.gosh.entity.RecFeature.FeedbackAuthorId parseFrom(
+    public static com.gosh.entity.FeedbackAuthorId parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessage
           .parseWithIOException(PARSER, input);
     }
-    public static com.gosh.entity.RecFeature.FeedbackAuthorId parseFrom(
+    public static com.gosh.entity.FeedbackAuthorId parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -34769,12 +34861,12 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
       }
 
       @java.lang.Override
-      public com.gosh.entity.RecFeature.FeedbackAuthorId getDefaultInstanceForType() {
+      public com.gosh.entity.FeedbackAuthorId getDefaultInstanceForType() {
         return com.gosh.entity.RecFeature.FeedbackAuthorId.getDefaultInstance();
       }
 
       @java.lang.Override
-      public com.gosh.entity.RecFeature.FeedbackAuthorId build() {
+      public com.gosh.entity.FeedbackAuthorId build() {
         com.gosh.entity.RecFeature.FeedbackAuthorId result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
@@ -34783,7 +34875,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
       }
 
       @java.lang.Override
-      public com.gosh.entity.RecFeature.FeedbackAuthorId buildPartial() {
+      public com.gosh.entity.FeedbackAuthorId buildPartial() {
         com.gosh.entity.RecFeature.FeedbackAuthorId result = new com.gosh.entity.RecFeature.FeedbackAuthorId(this);
         if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
@@ -34939,12 +35031,12 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
     }
 
     // @@protoc_insertion_point(class_scope:com.gosh.entity.FeedbackAuthorId)
-    private static final com.gosh.entity.RecFeature.FeedbackAuthorId DEFAULT_INSTANCE;
+    private static final com.gosh.entity.FeedbackAuthorId DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.gosh.entity.RecFeature.FeedbackAuthorId();
     }
 
-    public static com.gosh.entity.RecFeature.FeedbackAuthorId getDefaultInstance() {
+    public static com.gosh.entity.FeedbackAuthorId getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
@@ -34980,7 +35072,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
     }
 
     @java.lang.Override
-    public com.gosh.entity.RecFeature.FeedbackAuthorId getDefaultInstanceForType() {
+    public com.gosh.entity.FeedbackAuthorId getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -37968,44 +38060,44 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
       return hash;
     }
 
-    public static com.gosh.entity.RecFeature.RecUserAuthorFeature parseFrom(
+    public static com.gosh.entity.RecUserAuthorFeature parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.gosh.entity.RecFeature.RecUserAuthorFeature parseFrom(
+    public static com.gosh.entity.RecUserAuthorFeature parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.gosh.entity.RecFeature.RecUserAuthorFeature parseFrom(
+    public static com.gosh.entity.RecUserAuthorFeature parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.gosh.entity.RecFeature.RecUserAuthorFeature parseFrom(
+    public static com.gosh.entity.RecUserAuthorFeature parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.gosh.entity.RecFeature.RecUserAuthorFeature parseFrom(byte[] data)
+    public static com.gosh.entity.RecUserAuthorFeature parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.gosh.entity.RecFeature.RecUserAuthorFeature parseFrom(
+    public static com.gosh.entity.RecUserAuthorFeature parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.gosh.entity.RecFeature.RecUserAuthorFeature parseFrom(java.io.InputStream input)
+    public static com.gosh.entity.RecUserAuthorFeature parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessage
           .parseWithIOException(PARSER, input);
     }
-    public static com.gosh.entity.RecFeature.RecUserAuthorFeature parseFrom(
+    public static com.gosh.entity.RecUserAuthorFeature parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -38013,26 +38105,26 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
-    public static com.gosh.entity.RecFeature.RecUserAuthorFeature parseDelimitedFrom(java.io.InputStream input)
+    public static com.gosh.entity.RecUserAuthorFeature parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessage
           .parseDelimitedWithIOException(PARSER, input);
     }
 
-    public static com.gosh.entity.RecFeature.RecUserAuthorFeature parseDelimitedFrom(
+    public static com.gosh.entity.RecUserAuthorFeature parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessage
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.gosh.entity.RecFeature.RecUserAuthorFeature parseFrom(
+    public static com.gosh.entity.RecUserAuthorFeature parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessage
           .parseWithIOException(PARSER, input);
     }
-    public static com.gosh.entity.RecFeature.RecUserAuthorFeature parseFrom(
+    public static com.gosh.entity.RecUserAuthorFeature parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -38191,12 +38283,12 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
       }
 
       @java.lang.Override
-      public com.gosh.entity.RecFeature.RecUserAuthorFeature getDefaultInstanceForType() {
+      public com.gosh.entity.RecUserAuthorFeature getDefaultInstanceForType() {
         return com.gosh.entity.RecFeature.RecUserAuthorFeature.getDefaultInstance();
       }
 
       @java.lang.Override
-      public com.gosh.entity.RecFeature.RecUserAuthorFeature build() {
+      public com.gosh.entity.RecUserAuthorFeature build() {
         com.gosh.entity.RecFeature.RecUserAuthorFeature result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
@@ -38205,7 +38297,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
       }
 
       @java.lang.Override
-      public com.gosh.entity.RecFeature.RecUserAuthorFeature buildPartial() {
+      public com.gosh.entity.RecUserAuthorFeature buildPartial() {
         com.gosh.entity.RecFeature.RecUserAuthorFeature result = new com.gosh.entity.RecFeature.RecUserAuthorFeature(this);
         if (bitField0_ != 0) { buildPartial0(result); }
         if (bitField1_ != 0) { buildPartial1(result); }
@@ -42672,12 +42764,12 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
     }
 
     // @@protoc_insertion_point(class_scope:com.gosh.entity.RecUserAuthorFeature)
-    private static final com.gosh.entity.RecFeature.RecUserAuthorFeature DEFAULT_INSTANCE;
+    private static final com.gosh.entity.RecUserAuthorFeature DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.gosh.entity.RecFeature.RecUserAuthorFeature();
     }
 
-    public static com.gosh.entity.RecFeature.RecUserAuthorFeature getDefaultInstance() {
+    public static com.gosh.entity.RecUserAuthorFeature getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
@@ -42713,7 +42805,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
     }
 
     @java.lang.Override
-    public com.gosh.entity.RecFeature.RecUserAuthorFeature getDefaultInstanceForType() {
+    public com.gosh.entity.RecUserAuthorFeature getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -43529,44 +43621,44 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
       return hash;
     }
 
-    public static com.gosh.entity.RecFeature.LiveUserAnchorFeature parseFrom(
+    public static com.gosh.entity.LiveUserAnchorFeature parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.gosh.entity.RecFeature.LiveUserAnchorFeature parseFrom(
+    public static com.gosh.entity.LiveUserAnchorFeature parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.gosh.entity.RecFeature.LiveUserAnchorFeature parseFrom(
+    public static com.gosh.entity.LiveUserAnchorFeature parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.gosh.entity.RecFeature.LiveUserAnchorFeature parseFrom(
+    public static com.gosh.entity.LiveUserAnchorFeature parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.gosh.entity.RecFeature.LiveUserAnchorFeature parseFrom(byte[] data)
+    public static com.gosh.entity.LiveUserAnchorFeature parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.gosh.entity.RecFeature.LiveUserAnchorFeature parseFrom(
+    public static com.gosh.entity.LiveUserAnchorFeature parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.gosh.entity.RecFeature.LiveUserAnchorFeature parseFrom(java.io.InputStream input)
+    public static com.gosh.entity.LiveUserAnchorFeature parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessage
           .parseWithIOException(PARSER, input);
     }
-    public static com.gosh.entity.RecFeature.LiveUserAnchorFeature parseFrom(
+    public static com.gosh.entity.LiveUserAnchorFeature parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -43574,26 +43666,26 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
-    public static com.gosh.entity.RecFeature.LiveUserAnchorFeature parseDelimitedFrom(java.io.InputStream input)
+    public static com.gosh.entity.LiveUserAnchorFeature parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessage
           .parseDelimitedWithIOException(PARSER, input);
     }
 
-    public static com.gosh.entity.RecFeature.LiveUserAnchorFeature parseDelimitedFrom(
+    public static com.gosh.entity.LiveUserAnchorFeature parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessage
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.gosh.entity.RecFeature.LiveUserAnchorFeature parseFrom(
+    public static com.gosh.entity.LiveUserAnchorFeature parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessage
           .parseWithIOException(PARSER, input);
     }
-    public static com.gosh.entity.RecFeature.LiveUserAnchorFeature parseFrom(
+    public static com.gosh.entity.LiveUserAnchorFeature parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -43690,12 +43782,12 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
       }
 
       @java.lang.Override
-      public com.gosh.entity.RecFeature.LiveUserAnchorFeature getDefaultInstanceForType() {
+      public com.gosh.entity.LiveUserAnchorFeature getDefaultInstanceForType() {
         return com.gosh.entity.RecFeature.LiveUserAnchorFeature.getDefaultInstance();
       }
 
       @java.lang.Override
-      public com.gosh.entity.RecFeature.LiveUserAnchorFeature build() {
+      public com.gosh.entity.LiveUserAnchorFeature build() {
         com.gosh.entity.RecFeature.LiveUserAnchorFeature result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
@@ -43704,7 +43796,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
       }
 
       @java.lang.Override
-      public com.gosh.entity.RecFeature.LiveUserAnchorFeature buildPartial() {
+      public com.gosh.entity.LiveUserAnchorFeature buildPartial() {
         com.gosh.entity.RecFeature.LiveUserAnchorFeature result = new com.gosh.entity.RecFeature.LiveUserAnchorFeature(this);
         if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
@@ -44853,12 +44945,12 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
     }
 
     // @@protoc_insertion_point(class_scope:com.gosh.entity.LiveUserAnchorFeature)
-    private static final com.gosh.entity.RecFeature.LiveUserAnchorFeature DEFAULT_INSTANCE;
+    private static final com.gosh.entity.LiveUserAnchorFeature DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.gosh.entity.RecFeature.LiveUserAnchorFeature();
     }
 
-    public static com.gosh.entity.RecFeature.LiveUserAnchorFeature getDefaultInstance() {
+    public static com.gosh.entity.LiveUserAnchorFeature getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
@@ -44894,7 +44986,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
     }
 
     @java.lang.Override
-    public com.gosh.entity.RecFeature.LiveUserAnchorFeature getDefaultInstanceForType() {
+    public com.gosh.entity.LiveUserAnchorFeature getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -46355,44 +46447,44 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
       return hash;
     }
 
-    public static com.gosh.entity.RecFeature.RecLiveAnchorFeature parseFrom(
+    public static com.gosh.entity.RecLiveAnchorFeature parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.gosh.entity.RecFeature.RecLiveAnchorFeature parseFrom(
+    public static com.gosh.entity.RecLiveAnchorFeature parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.gosh.entity.RecFeature.RecLiveAnchorFeature parseFrom(
+    public static com.gosh.entity.RecLiveAnchorFeature parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.gosh.entity.RecFeature.RecLiveAnchorFeature parseFrom(
+    public static com.gosh.entity.RecLiveAnchorFeature parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.gosh.entity.RecFeature.RecLiveAnchorFeature parseFrom(byte[] data)
+    public static com.gosh.entity.RecLiveAnchorFeature parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.gosh.entity.RecFeature.RecLiveAnchorFeature parseFrom(
+    public static com.gosh.entity.RecLiveAnchorFeature parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.gosh.entity.RecFeature.RecLiveAnchorFeature parseFrom(java.io.InputStream input)
+    public static com.gosh.entity.RecLiveAnchorFeature parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessage
           .parseWithIOException(PARSER, input);
     }
-    public static com.gosh.entity.RecFeature.RecLiveAnchorFeature parseFrom(
+    public static com.gosh.entity.RecLiveAnchorFeature parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -46400,26 +46492,26 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
-    public static com.gosh.entity.RecFeature.RecLiveAnchorFeature parseDelimitedFrom(java.io.InputStream input)
+    public static com.gosh.entity.RecLiveAnchorFeature parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessage
           .parseDelimitedWithIOException(PARSER, input);
     }
 
-    public static com.gosh.entity.RecFeature.RecLiveAnchorFeature parseDelimitedFrom(
+    public static com.gosh.entity.RecLiveAnchorFeature parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessage
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.gosh.entity.RecFeature.RecLiveAnchorFeature parseFrom(
+    public static com.gosh.entity.RecLiveAnchorFeature parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessage
           .parseWithIOException(PARSER, input);
     }
-    public static com.gosh.entity.RecFeature.RecLiveAnchorFeature parseFrom(
+    public static com.gosh.entity.RecLiveAnchorFeature parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -46535,12 +46627,12 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
       }
 
       @java.lang.Override
-      public com.gosh.entity.RecFeature.RecLiveAnchorFeature getDefaultInstanceForType() {
+      public com.gosh.entity.RecLiveAnchorFeature getDefaultInstanceForType() {
         return com.gosh.entity.RecFeature.RecLiveAnchorFeature.getDefaultInstance();
       }
 
       @java.lang.Override
-      public com.gosh.entity.RecFeature.RecLiveAnchorFeature build() {
+      public com.gosh.entity.RecLiveAnchorFeature build() {
         com.gosh.entity.RecFeature.RecLiveAnchorFeature result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
@@ -46549,7 +46641,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
       }
 
       @java.lang.Override
-      public com.gosh.entity.RecFeature.RecLiveAnchorFeature buildPartial() {
+      public com.gosh.entity.RecLiveAnchorFeature buildPartial() {
         com.gosh.entity.RecFeature.RecLiveAnchorFeature result = new com.gosh.entity.RecFeature.RecLiveAnchorFeature(this);
         if (bitField0_ != 0) { buildPartial0(result); }
         if (bitField1_ != 0) { buildPartial1(result); }
@@ -48691,12 +48783,12 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
     }
 
     // @@protoc_insertion_point(class_scope:com.gosh.entity.RecLiveAnchorFeature)
-    private static final com.gosh.entity.RecFeature.RecLiveAnchorFeature DEFAULT_INSTANCE;
+    private static final com.gosh.entity.RecLiveAnchorFeature DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.gosh.entity.RecFeature.RecLiveAnchorFeature();
     }
 
-    public static com.gosh.entity.RecFeature.RecLiveAnchorFeature getDefaultInstance() {
+    public static com.gosh.entity.RecLiveAnchorFeature getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
@@ -48732,7 +48824,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
     }
 
     @java.lang.Override
-    public com.gosh.entity.RecFeature.RecLiveAnchorFeature getDefaultInstanceForType() {
+    public com.gosh.entity.RecLiveAnchorFeature getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -48774,7 +48866,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
      *
      * <code>repeated .com.gosh.entity.IdScore user_stay_gt10s_anchor_list = 10;</code>
      */
-    com.gosh.entity.RecFeature.IdScore getUserStayGt10SAnchorList(int index);
+    com.gosh.entity.IdScore getUserStayGt10SAnchorList(int index);
     /**
      * <pre>
      * 7天窗口特征 - 主播列表相关
@@ -48799,7 +48891,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
      *
      * <code>repeated .com.gosh.entity.IdScore user_stay_gt10s_anchor_list = 10;</code>
      */
-    com.gosh.entity.RecFeature.IdScoreOrBuilder getUserStayGt10SAnchorListOrBuilder(
+    com.gosh.entity.IdScoreOrBuilder getUserStayGt10SAnchorListOrBuilder(
         int index);
 
     /**
@@ -48976,7 +49068,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
      * <code>repeated .com.gosh.entity.IdScore user_stay_gt10s_anchor_list = 10;</code>
      */
     @java.lang.Override
-    public com.gosh.entity.RecFeature.IdScore getUserStayGt10SAnchorList(int index) {
+    public com.gosh.entity.IdScore getUserStayGt10SAnchorList(int index) {
       return userStayGt10SAnchorList_.get(index);
     }
     /**
@@ -48987,7 +49079,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
      * <code>repeated .com.gosh.entity.IdScore user_stay_gt10s_anchor_list = 10;</code>
      */
     @java.lang.Override
-    public com.gosh.entity.RecFeature.IdScoreOrBuilder getUserStayGt10SAnchorListOrBuilder(
+    public com.gosh.entity.IdScoreOrBuilder getUserStayGt10SAnchorListOrBuilder(
         int index) {
       return userStayGt10SAnchorList_.get(index);
     }
@@ -49221,44 +49313,44 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
       return hash;
     }
 
-    public static com.gosh.entity.RecFeature.RecLiveUserFeature parseFrom(
+    public static com.gosh.entity.RecLiveUserFeature parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.gosh.entity.RecFeature.RecLiveUserFeature parseFrom(
+    public static com.gosh.entity.RecLiveUserFeature parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.gosh.entity.RecFeature.RecLiveUserFeature parseFrom(
+    public static com.gosh.entity.RecLiveUserFeature parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.gosh.entity.RecFeature.RecLiveUserFeature parseFrom(
+    public static com.gosh.entity.RecLiveUserFeature parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.gosh.entity.RecFeature.RecLiveUserFeature parseFrom(byte[] data)
+    public static com.gosh.entity.RecLiveUserFeature parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.gosh.entity.RecFeature.RecLiveUserFeature parseFrom(
+    public static com.gosh.entity.RecLiveUserFeature parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.gosh.entity.RecFeature.RecLiveUserFeature parseFrom(java.io.InputStream input)
+    public static com.gosh.entity.RecLiveUserFeature parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessage
           .parseWithIOException(PARSER, input);
     }
-    public static com.gosh.entity.RecFeature.RecLiveUserFeature parseFrom(
+    public static com.gosh.entity.RecLiveUserFeature parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -49266,26 +49358,26 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
-    public static com.gosh.entity.RecFeature.RecLiveUserFeature parseDelimitedFrom(java.io.InputStream input)
+    public static com.gosh.entity.RecLiveUserFeature parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessage
           .parseDelimitedWithIOException(PARSER, input);
     }
 
-    public static com.gosh.entity.RecFeature.RecLiveUserFeature parseDelimitedFrom(
+    public static com.gosh.entity.RecLiveUserFeature parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessage
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.gosh.entity.RecFeature.RecLiveUserFeature parseFrom(
+    public static com.gosh.entity.RecLiveUserFeature parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessage
           .parseWithIOException(PARSER, input);
     }
-    public static com.gosh.entity.RecFeature.RecLiveUserFeature parseFrom(
+    public static com.gosh.entity.RecLiveUserFeature parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -49373,12 +49465,12 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
       }
 
       @java.lang.Override
-      public com.gosh.entity.RecFeature.RecLiveUserFeature getDefaultInstanceForType() {
+      public com.gosh.entity.RecLiveUserFeature getDefaultInstanceForType() {
         return com.gosh.entity.RecFeature.RecLiveUserFeature.getDefaultInstance();
       }
 
       @java.lang.Override
-      public com.gosh.entity.RecFeature.RecLiveUserFeature build() {
+      public com.gosh.entity.RecLiveUserFeature build() {
         com.gosh.entity.RecFeature.RecLiveUserFeature result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
@@ -49387,7 +49479,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
       }
 
       @java.lang.Override
-      public com.gosh.entity.RecFeature.RecLiveUserFeature buildPartial() {
+      public com.gosh.entity.RecLiveUserFeature buildPartial() {
         com.gosh.entity.RecFeature.RecLiveUserFeature result = new com.gosh.entity.RecFeature.RecLiveUserFeature(this);
         buildPartialRepeatedFields(result);
         if (bitField0_ != 0) { buildPartial0(result); }
@@ -49712,7 +49804,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        *
        * <code>repeated .com.gosh.entity.IdScore user_stay_gt10s_anchor_list = 10;</code>
        */
-      public com.gosh.entity.RecFeature.IdScore getUserStayGt10SAnchorList(int index) {
+      public com.gosh.entity.IdScore getUserStayGt10SAnchorList(int index) {
         if (userStayGt10SAnchorListBuilder_ == null) {
           return userStayGt10SAnchorList_.get(index);
         } else {
@@ -49895,7 +49987,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        *
        * <code>repeated .com.gosh.entity.IdScore user_stay_gt10s_anchor_list = 10;</code>
        */
-      public com.gosh.entity.RecFeature.IdScore.Builder getUserStayGt10SAnchorListBuilder(
+      public com.gosh.entity.Builder getUserStayGt10SAnchorListBuilder(
           int index) {
         return internalGetUserStayGt10SAnchorListFieldBuilder().getBuilder(index);
       }
@@ -49906,7 +49998,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        *
        * <code>repeated .com.gosh.entity.IdScore user_stay_gt10s_anchor_list = 10;</code>
        */
-      public com.gosh.entity.RecFeature.IdScoreOrBuilder getUserStayGt10SAnchorListOrBuilder(
+      public com.gosh.entity.IdScoreOrBuilder getUserStayGt10SAnchorListOrBuilder(
           int index) {
         if (userStayGt10SAnchorListBuilder_ == null) {
           return userStayGt10SAnchorList_.get(index);  } else {
@@ -49935,7 +50027,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        *
        * <code>repeated .com.gosh.entity.IdScore user_stay_gt10s_anchor_list = 10;</code>
        */
-      public com.gosh.entity.RecFeature.IdScore.Builder addUserStayGt10SAnchorListBuilder() {
+      public com.gosh.entity.Builder addUserStayGt10SAnchorListBuilder() {
         return internalGetUserStayGt10SAnchorListFieldBuilder().addBuilder(
             com.gosh.entity.RecFeature.IdScore.getDefaultInstance());
       }
@@ -49946,7 +50038,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
        *
        * <code>repeated .com.gosh.entity.IdScore user_stay_gt10s_anchor_list = 10;</code>
        */
-      public com.gosh.entity.RecFeature.IdScore.Builder addUserStayGt10SAnchorListBuilder(
+      public com.gosh.entity.Builder addUserStayGt10SAnchorListBuilder(
           int index) {
         return internalGetUserStayGt10SAnchorListFieldBuilder().addBuilder(
             index, com.gosh.entity.RecFeature.IdScore.getDefaultInstance());
@@ -50205,12 +50297,12 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
     }
 
     // @@protoc_insertion_point(class_scope:com.gosh.entity.RecLiveUserFeature)
-    private static final com.gosh.entity.RecFeature.RecLiveUserFeature DEFAULT_INSTANCE;
+    private static final com.gosh.entity.RecLiveUserFeature DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.gosh.entity.RecFeature.RecLiveUserFeature();
     }
 
-    public static com.gosh.entity.RecFeature.RecLiveUserFeature getDefaultInstance() {
+    public static com.gosh.entity.RecLiveUserFeature getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
@@ -50246,7 +50338,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
     }
 
     @java.lang.Override
-    public com.gosh.entity.RecFeature.RecLiveUserFeature getDefaultInstanceForType() {
+    public com.gosh.entity.RecLiveUserFeature getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -50410,44 +50502,44 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
       return hash;
     }
 
-    public static com.gosh.entity.RecFeature.IdScore parseFrom(
+    public static com.gosh.entity.IdScore parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.gosh.entity.RecFeature.IdScore parseFrom(
+    public static com.gosh.entity.IdScore parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.gosh.entity.RecFeature.IdScore parseFrom(
+    public static com.gosh.entity.IdScore parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.gosh.entity.RecFeature.IdScore parseFrom(
+    public static com.gosh.entity.IdScore parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.gosh.entity.RecFeature.IdScore parseFrom(byte[] data)
+    public static com.gosh.entity.IdScore parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.gosh.entity.RecFeature.IdScore parseFrom(
+    public static com.gosh.entity.IdScore parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.gosh.entity.RecFeature.IdScore parseFrom(java.io.InputStream input)
+    public static com.gosh.entity.IdScore parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessage
           .parseWithIOException(PARSER, input);
     }
-    public static com.gosh.entity.RecFeature.IdScore parseFrom(
+    public static com.gosh.entity.IdScore parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -50455,26 +50547,26 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
-    public static com.gosh.entity.RecFeature.IdScore parseDelimitedFrom(java.io.InputStream input)
+    public static com.gosh.entity.IdScore parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessage
           .parseDelimitedWithIOException(PARSER, input);
     }
 
-    public static com.gosh.entity.RecFeature.IdScore parseDelimitedFrom(
+    public static com.gosh.entity.IdScore parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessage
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.gosh.entity.RecFeature.IdScore parseFrom(
+    public static com.gosh.entity.IdScore parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessage
           .parseWithIOException(PARSER, input);
     }
-    public static com.gosh.entity.RecFeature.IdScore parseFrom(
+    public static com.gosh.entity.IdScore parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -50552,12 +50644,12 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
       }
 
       @java.lang.Override
-      public com.gosh.entity.RecFeature.IdScore getDefaultInstanceForType() {
+      public com.gosh.entity.IdScore getDefaultInstanceForType() {
         return com.gosh.entity.RecFeature.IdScore.getDefaultInstance();
       }
 
       @java.lang.Override
-      public com.gosh.entity.RecFeature.IdScore build() {
+      public com.gosh.entity.IdScore build() {
         com.gosh.entity.RecFeature.IdScore result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
@@ -50566,7 +50658,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
       }
 
       @java.lang.Override
-      public com.gosh.entity.RecFeature.IdScore buildPartial() {
+      public com.gosh.entity.IdScore buildPartial() {
         com.gosh.entity.RecFeature.IdScore result = new com.gosh.entity.RecFeature.IdScore(this);
         if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
@@ -50722,12 +50814,12 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
     }
 
     // @@protoc_insertion_point(class_scope:com.gosh.entity.IdScore)
-    private static final com.gosh.entity.RecFeature.IdScore DEFAULT_INSTANCE;
+    private static final com.gosh.entity.IdScore DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.gosh.entity.RecFeature.IdScore();
     }
 
-    public static com.gosh.entity.RecFeature.IdScore getDefaultInstance() {
+    public static com.gosh.entity.IdScore getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
@@ -50763,7 +50855,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
     }
 
     @java.lang.Override
-    public com.gosh.entity.RecFeature.IdScore getDefaultInstanceForType() {
+    public com.gosh.entity.IdScore getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -50936,44 +51028,44 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
       return hash;
     }
 
-    public static com.gosh.entity.RecFeature.RecLiveIdFeature parseFrom(
+    public static com.gosh.entity.RecLiveIdFeature parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.gosh.entity.RecFeature.RecLiveIdFeature parseFrom(
+    public static com.gosh.entity.RecLiveIdFeature parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.gosh.entity.RecFeature.RecLiveIdFeature parseFrom(
+    public static com.gosh.entity.RecLiveIdFeature parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.gosh.entity.RecFeature.RecLiveIdFeature parseFrom(
+    public static com.gosh.entity.RecLiveIdFeature parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.gosh.entity.RecFeature.RecLiveIdFeature parseFrom(byte[] data)
+    public static com.gosh.entity.RecLiveIdFeature parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.gosh.entity.RecFeature.RecLiveIdFeature parseFrom(
+    public static com.gosh.entity.RecLiveIdFeature parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.gosh.entity.RecFeature.RecLiveIdFeature parseFrom(java.io.InputStream input)
+    public static com.gosh.entity.RecLiveIdFeature parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessage
           .parseWithIOException(PARSER, input);
     }
-    public static com.gosh.entity.RecFeature.RecLiveIdFeature parseFrom(
+    public static com.gosh.entity.RecLiveIdFeature parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -50981,26 +51073,26 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
-    public static com.gosh.entity.RecFeature.RecLiveIdFeature parseDelimitedFrom(java.io.InputStream input)
+    public static com.gosh.entity.RecLiveIdFeature parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessage
           .parseDelimitedWithIOException(PARSER, input);
     }
 
-    public static com.gosh.entity.RecFeature.RecLiveIdFeature parseDelimitedFrom(
+    public static com.gosh.entity.RecLiveIdFeature parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessage
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.gosh.entity.RecFeature.RecLiveIdFeature parseFrom(
+    public static com.gosh.entity.RecLiveIdFeature parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessage
           .parseWithIOException(PARSER, input);
     }
-    public static com.gosh.entity.RecFeature.RecLiveIdFeature parseFrom(
+    public static com.gosh.entity.RecLiveIdFeature parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -51079,12 +51171,12 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
       }
 
       @java.lang.Override
-      public com.gosh.entity.RecFeature.RecLiveIdFeature getDefaultInstanceForType() {
+      public com.gosh.entity.RecLiveIdFeature getDefaultInstanceForType() {
         return com.gosh.entity.RecFeature.RecLiveIdFeature.getDefaultInstance();
       }
 
       @java.lang.Override
-      public com.gosh.entity.RecFeature.RecLiveIdFeature build() {
+      public com.gosh.entity.RecLiveIdFeature build() {
         com.gosh.entity.RecFeature.RecLiveIdFeature result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
@@ -51093,7 +51185,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
       }
 
       @java.lang.Override
-      public com.gosh.entity.RecFeature.RecLiveIdFeature buildPartial() {
+      public com.gosh.entity.RecLiveIdFeature buildPartial() {
         com.gosh.entity.RecFeature.RecLiveIdFeature result = new com.gosh.entity.RecFeature.RecLiveIdFeature(this);
         if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
@@ -51264,12 +51356,12 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
     }
 
     // @@protoc_insertion_point(class_scope:com.gosh.entity.RecLiveIdFeature)
-    private static final com.gosh.entity.RecFeature.RecLiveIdFeature DEFAULT_INSTANCE;
+    private static final com.gosh.entity.RecLiveIdFeature DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.gosh.entity.RecFeature.RecLiveIdFeature();
     }
 
-    public static com.gosh.entity.RecFeature.RecLiveIdFeature getDefaultInstance() {
+    public static com.gosh.entity.RecLiveIdFeature getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
@@ -51305,7 +51397,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
     }
 
     @java.lang.Override
-    public com.gosh.entity.RecFeature.RecLiveIdFeature getDefaultInstanceForType() {
+    public com.gosh.entity.RecLiveIdFeature getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -51476,7 +51568,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
       "itive_posts_latest\030\241\001 \003(\003\022%\n\034viewer_nege" +
       "tive_posts_latest\030\242\001 \003(\003\022\'\n\036viewer_posit" +
       "ive_authors_latest\030\243\001 \003(\003\022\'\n\036viewer_nege" +
-      "tive_authors_latest\030\244\001 \003(\003\"\206\025\n\016RecPostFe" +
+      "tive_authors_latest\030\244\001 \003(\003\"\241\025\n\016RecPostFe" +
       "ature\022\017\n\007post_id\030\001 \001(\004\022\027\n\017post_exp_cnt_1" +
       "h\030\n \001(\005\022\032\n\022post_3sview_cnt_1h\030\013 \001(\005\022\032\n\022p" +
       "ost_8sview_cnt_1h\030\014 \001(\005\022\033\n\023post_12sview_" +
@@ -51536,143 +51628,144 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
       " \001(\002\022\021\n\010psh_ra_3\030\207\001 \001(\002\022\021\n\010pfv_ra_1\030\210\001 \001" +
       "(\002\022\021\n\010pfv_ra_2\030\211\001 \001(\002\022\021\n\010pfv_ra_3\030\212\001 \001(\002" +
       "\022\021\n\010ppf_ra_1\030\213\001 \001(\002\022\021\n\010ppf_ra_2\030\214\001 \001(\002\022\021" +
-      "\n\010ppf_ra_3\030\215\001 \001(\002\022\034\n\023post_3sview_cnt_48h" +
-      "\030\216\001 \001(\005\022\034\n\023post_8sview_cnt_48h\030\217\001 \001(\005\022\035\n" +
-      "\024post_12sview_cnt_48h\030\220\001 \001(\005\022\035\n\024post_20s" +
-      "view_cnt_48h\030\221\001 \001(\005\022\035\n\024post_5sstand_cnt_" +
-      "48h\030\222\001 \001(\005\022\036\n\025post_10sstand_cnt_48h\030\223\001 \001" +
-      "(\005\022\032\n\021post_like_cnt_48h\030\224\001 \001(\005\022\034\n\023post_f" +
-      "ollow_cnt_48h\030\225\001 \001(\005\022\035\n\024post_profile_cnt" +
-      "_48h\030\226\001 \001(\005\022\036\n\025post_posinter_cnt_48h\030\227\001 " +
-      "\001(\005\",\n\rFeedbackTagV2\022\013\n\003tag\030\001 \001(\t\022\016\n\006wei" +
-      "ght\030\002 \001(\002\"5\n\020FeedbackAuthorId\022\021\n\tauthor_" +
-      "id\030\001 \001(\004\022\016\n\006weight\030\002 \001(\002\"\231\024\n\024RecUserAuth" +
-      "orFeature\022\017\n\007user_id\030\001 \001(\004\022\021\n\tauthor_id\030" +
-      "\002 \001(\004\022\035\n\025userauthor_exp_cnt_1h\030\n \001(\005\022 \n\030" +
-      "userauthor_3sview_cnt_1h\030\013 \001(\005\022 \n\030userau" +
-      "thor_8sview_cnt_1h\030\014 \001(\005\022!\n\031userauthor_1" +
-      "2sview_cnt_1h\030\r \001(\005\022!\n\031userauthor_20svie" +
-      "w_cnt_1h\030\016 \001(\005\022!\n\031userauthor_5sstand_cnt" +
-      "_1h\030\017 \001(\005\022\"\n\032userauthor_10sstand_cnt_1h\030" +
-      "\020 \001(\005\022\036\n\026userauthor_like_cnt_1h\030\021 \001(\005\022\036\n" +
-      "\026userauthor_exp_cnt_24h\030\036 \001(\005\022!\n\031useraut" +
-      "hor_3sview_cnt_24h\030\037 \001(\005\022!\n\031userauthor_8" +
-      "sview_cnt_24h\030  \001(\005\022\"\n\032userauthor_12svie" +
-      "w_cnt_24h\030! \001(\005\022\"\n\032userauthor_20sview_cn" +
-      "t_24h\030\" \001(\005\022\"\n\032userauthor_5sstand_cnt_24" +
-      "h\030# \001(\005\022#\n\033userauthor_10sstand_cnt_24h\030$" +
-      " \001(\005\022\037\n\027userauthor_like_cnt_24h\030% \001(\005\022\037\n" +
-      "\027user_author_view_cnt_7d\030( \001(\005\022$\n\034user_a" +
-      "uthor_validview_cnt_7d\030) \001(\002\022(\n user_aut" +
-      "hor_compeleteview_cnt_7d\030* \001(\005\022\037\n\027user_a" +
-      "uthor_like_cnt_7d\030+ \001(\005\022\"\n\032user_author_c" +
-      "omment_cnt_7d\030, \001(\005\022(\n user_author_avg_v" +
-      "iew_duration_7d\030- \001(\002\022&\n\036user_author_val" +
-      "idview_tfidf_7d\030. \001(\002\022*\n\"user_author_com" +
-      "peleteview_tfidf_7d\030/ \001(\002\022(\n user_author" +
-      "_likecomment_tfidf_7d\0300 \001(\002\022\032\n\022user_tag1" +
-      "1_is_like\0302 \001(\005\022\032\n\022user_tag11_is_play\0303 " +
-      "\001(\005\022\035\n\025user_tag11_is_comment\0304 \001(\005\022\032\n\022us" +
-      "er_tag12_is_like\0305 \001(\005\022\032\n\022user_tag12_is_" +
-      "play\0306 \001(\005\022\035\n\025user_tag12_is_comment\0307 \001(" +
-      "\005\022\032\n\022user_tag13_is_like\0308 \001(\005\022\032\n\022user_ta" +
-      "g13_is_play\0309 \001(\005\022\035\n\025user_tag13_is_comme" +
-      "nt\030: \001(\005\022\032\n\022user_tag14_is_like\030; \001(\005\022\032\n\022" +
-      "user_tag14_is_play\030< \001(\005\022\035\n\025user_tag14_i" +
-      "s_comment\030= \001(\005\022\032\n\022user_tag15_is_like\030> " +
-      "\001(\005\022\032\n\022user_tag15_is_play\030? \001(\005\022\035\n\025user_" +
-      "tag15_is_comment\030@ \001(\005\022\032\n\022user_tag16_is_" +
-      "like\030A \001(\005\022\032\n\022user_tag16_is_play\030B \001(\005\022\035" +
-      "\n\025user_tag16_is_comment\030C \001(\005\022\032\n\022user_ta" +
-      "g17_is_like\030D \001(\005\022\032\n\022user_tag17_is_play\030" +
-      "E \001(\005\022\035\n\025user_tag17_is_comment\030F \001(\005\022\033\n\023" +
-      "user_tag11_like_cnt\030G \001(\005\022\033\n\023user_tag11_" +
-      "play_cnt\030H \001(\005\022\036\n\026user_tag11_comment_cnt" +
-      "\030I \001(\005\022\033\n\023user_tag12_like_cnt\030J \001(\005\022\033\n\023u" +
-      "ser_tag12_play_cnt\030K \001(\005\022\036\n\026user_tag12_c" +
-      "omment_cnt\030L \001(\005\022\033\n\023user_tag13_like_cnt\030" +
-      "M \001(\005\022\033\n\023user_tag13_play_cnt\030N \001(\005\022\036\n\026us" +
-      "er_tag13_comment_cnt\030O \001(\005\022\033\n\023user_tag14" +
-      "_like_cnt\030P \001(\005\022\033\n\023user_tag14_play_cnt\030Q" +
-      " \001(\005\022\036\n\026user_tag14_comment_cnt\030R \001(\005\022\033\n\023" +
-      "user_tag15_like_cnt\030S \001(\005\022\033\n\023user_tag15_" +
-      "play_cnt\030T \001(\005\022\036\n\026user_tag15_comment_cnt" +
-      "\030U \001(\005\022\033\n\023user_tag16_like_cnt\030V \001(\005\022\033\n\023u" +
-      "ser_tag16_play_cnt\030W \001(\005\022\036\n\026user_tag16_c" +
-      "omment_cnt\030X \001(\005\022\033\n\023user_tag17_like_cnt\030" +
-      "Y \001(\005\022\033\n\023user_tag17_play_cnt\030Z \001(\005\022\036\n\026us" +
-      "er_tag17_comment_cnt\030[ \001(\005\022\037\n\027userauthor" +
-      "_skip_cnt_24h\030d \001(\005\022\"\n\032userauthor_12spla" +
-      "y_cnt_24h\030e \001(\005\022#\n\033userauthor_20sstand_c" +
-      "nt_24h\030f \001(\005\022\"\n\032userauthor_comment_cnt_2" +
-      "4h\030g \001(\005\022 \n\030userauthor_share_cnt_24h\030h \001" +
-      "(\005\022!\n\031userauthor_follow_cnt_24h\030i \001(\005\022\"\n" +
-      "\032userauthor_collect_cnt_24h\030j \001(\005\022\"\n\032use" +
-      "rauthor_profile_cnt_24h\030k \001(\005\022!\n\031useraut" +
-      "hor_report_cnt_24h\030l \001(\005\022\"\n\032userauthor_d" +
-      "islike_cnt_24h\030m \001(\005\022\036\n\026userauthor_pay_c" +
-      "nt_24h\030n \001(\005\"\374\005\n\025LiveUserAnchorFeature\022\017" +
-      "\n\007user_id\030\001 \001(\004\022\021\n\tanchor_id\030\002 \001(\004\022!\n\031us" +
-      "er_anchor_exp_cnt_15min\030\n \001(\005\022$\n\034user_an" +
-      "chor_3squit_cnt_15min\030\013 \001(\005\022$\n\034user_anch" +
-      "or_6squit_cnt_15min\030\014 \001(\005\022\"\n\032user_anchor" +
-      "_like_cnt_15min\030\r \001(\005\022%\n\035user_anchor_com" +
-      "ment_cnt_15min\030\016 \001(\005\022$\n\034user_anchor_foll" +
-      "ow_cnt_15min\030\017 \001(\005\022#\n\033user_anchor_share_" +
-      "cnt_15min\030\020 \001(\005\022\"\n\032user_anchor_gift_cnt_" +
-      "15min\030\021 \001(\005\022%\n\035user_anchor_gift_amount_1" +
-      "5min\030\022 \001(\005\022/\n\'user_anchor_negative_feedb" +
-      "ack_cnt_15min\030\023 \001(\005\022 \n\030user_anchor_enter" +
-      "_cnt_7d\030\024 \001(\005\022\037\n\027user_anchor_quit_cnt_7d" +
-      "\030\025 \001(\005\022%\n\035user_anchor_stay_gt10s_cnt_7d\030" +
-      "\026 \001(\005\022%\n\035user_anchor_stay_gt30s_cnt_7d\030\027" +
-      " \001(\005\022(\n user_anchor_avg_view_duration_7d" +
-      "\030\030 \001(\002\022,\n$user_anchor_positive_feedback_" +
-      "cnt_7d\030\031 \001(\005\022,\n$user_anchor_negative_fee" +
-      "dback_cnt_7d\030\032 \001(\005\022\'\n\037user_anchor_active" +
-      "_enter_cnt_7d\030\033 \001(\005\"\335\n\n\024RecLiveAnchorFea" +
-      "ture\022\021\n\tanchor_id\030\001 \001(\004\022\037\n\027live_enter_us" +
-      "ernum_5min\030\n \001(\005\022\036\n\026live_quit_usernum_5m" +
-      "in\030\013 \001(\005\022#\n\033live_quit_avg_duration_5min\030" +
-      "\014 \001(\005\022\"\n\032live_anchor_gift_coin_5min\030\r \001(" +
-      "\005\022%\n\035live_anchor_gift_usernum_5min\030\016 \001(\005" +
-      "\022\'\n\037live_anchor_follow_usernum_5min\030\017 \001(" +
-      "\005\022%\n\035live_anchor_chat_usernum_5min\030\020 \001(\005" +
-      "\022 \n\030live_enter_usernum_10min\030\024 \001(\005\022\037\n\027li" +
-      "ve_quit_usernum_10min\030\025 \001(\005\022$\n\034live_quit" +
-      "_avg_duration_10min\030\026 \001(\005\022#\n\033live_anchor" +
-      "_gift_coin_10min\030\027 \001(\005\022&\n\036live_anchor_gi" +
-      "ft_usernum_10min\030\030 \001(\005\022(\n live_anchor_fo" +
-      "llow_usernum_10min\030\031 \001(\005\022&\n\036live_anchor_" +
-      "chat_usernum_10min\030\032 \001(\005\022 \n\030live_enter_u" +
-      "sernum_15min\030\036 \001(\005\022\037\n\027live_quit_usernum_" +
-      "15min\030\037 \001(\005\022$\n\034live_quit_avg_duration_15" +
-      "min\030  \001(\005\022#\n\033live_anchor_gift_coin_15min" +
-      "\030! \001(\005\022&\n\036live_anchor_gift_usernum_15min" +
-      "\030\" \001(\005\022(\n live_anchor_follow_usernum_15m" +
-      "in\030# \001(\005\022&\n\036live_anchor_chat_usernum_15m" +
-      "in\030$ \001(\005\022\033\n\023anchor_enter_cnt_7d\030( \001(\005\022\032\n" +
-      "\022anchor_quit_cnt_7d\030) \001(\005\022\037\n\027anchor_stay" +
-      "_gt3s_cnt_7d\030* \001(\005\022 \n\030anchor_stay_gt10s_" +
-      "cnt_7d\030+ \001(\005\022 \n\030anchor_stay_gt30s_cnt_7d" +
-      "\030, \001(\005\022#\n\033anchor_avg_view_duration_7d\030- " +
-      "\001(\002\022\034\n\024anchor_follow_cnt_7d\030. \001(\005\022\'\n\037anc" +
-      "hor_positive_feedback_cnt_7d\030/ \001(\005\022\'\n\037an" +
-      "chor_negative_feedback_cnt_7d\0300 \001(\005\022)\n!a" +
-      "nchor_live_scene_exposure_cnt_7d\0301 \001(\005\022)" +
-      "\n!anchor_foru_scene_exposure_cnt_7d\0302 \001(" +
-      "\005\022&\n\036anchor_live_scene_enter_cnt_7d\0303 \001(" +
-      "\005\022&\n\036anchor_foru_scene_enter_cnt_7d\0304 \001(" +
-      "\005\022\032\n\022anchor_gift_cnt_7d\0305 \001(\005\022\023\n\013anchor_" +
-      "type\030< \001(\005\022\027\n\017anchor_rec_type\030= \001(\005\"\321\001\n\022" +
-      "RecLiveUserFeature\022\017\n\007user_id\030\001 \001(\004\022\030\n\020v" +
-      "iewer_live_hise\030\002 \001(\005\022=\n\033user_stay_gt10s" +
-      "_anchor_list\030\n \003(\0132\030.com.gosh.entity.IdS" +
-      "core\022%\n\035user_active_enter_anchor_list\030\013 " +
-      "\003(\005\022*\n\"user_positive_feedback_anchor_lis" +
-      "t\030\014 \003(\005\"$\n\007IdScore\022\n\n\002id\030\001 \001(\003\022\r\n\005score\030" +
-      "\002 \001(\002\"A\n\020RecLiveIdFeature\022\017\n\007live_id\030\001 \001" +
-      "(\003\022\034\n\024live_id_exp_cnt_5min\030\n \001(\005b\006proto3"
+      "\n\010ppf_ra_3\030\215\001 \001(\002\022\031\n\020post_exp_cnt_48h\030\216\001" +
+      " \001(\005\022\034\n\023post_3sview_cnt_48h\030\217\001 \001(\005\022\034\n\023po" +
+      "st_8sview_cnt_48h\030\220\001 \001(\005\022\035\n\024post_12sview" +
+      "_cnt_48h\030\221\001 \001(\005\022\035\n\024post_20sview_cnt_48h\030" +
+      "\222\001 \001(\005\022\035\n\024post_5sstand_cnt_48h\030\223\001 \001(\005\022\036\n" +
+      "\025post_10sstand_cnt_48h\030\224\001 \001(\005\022\032\n\021post_li" +
+      "ke_cnt_48h\030\225\001 \001(\005\022\034\n\023post_follow_cnt_48h" +
+      "\030\226\001 \001(\005\022\035\n\024post_profile_cnt_48h\030\227\001 \001(\005\022\036" +
+      "\n\025post_posinter_cnt_48h\030\230\001 \001(\005\",\n\rFeedba" +
+      "ckTagV2\022\013\n\003tag\030\001 \001(\t\022\016\n\006weight\030\002 \001(\002\"5\n\020" +
+      "FeedbackAuthorId\022\021\n\tauthor_id\030\001 \001(\004\022\016\n\006w" +
+      "eight\030\002 \001(\002\"\231\024\n\024RecUserAuthorFeature\022\017\n\007" +
+      "user_id\030\001 \001(\004\022\021\n\tauthor_id\030\002 \001(\004\022\035\n\025user" +
+      "author_exp_cnt_1h\030\n \001(\005\022 \n\030userauthor_3s" +
+      "view_cnt_1h\030\013 \001(\005\022 \n\030userauthor_8sview_c" +
+      "nt_1h\030\014 \001(\005\022!\n\031userauthor_12sview_cnt_1h" +
+      "\030\r \001(\005\022!\n\031userauthor_20sview_cnt_1h\030\016 \001(" +
+      "\005\022!\n\031userauthor_5sstand_cnt_1h\030\017 \001(\005\022\"\n\032" +
+      "userauthor_10sstand_cnt_1h\030\020 \001(\005\022\036\n\026user" +
+      "author_like_cnt_1h\030\021 \001(\005\022\036\n\026userauthor_e" +
+      "xp_cnt_24h\030\036 \001(\005\022!\n\031userauthor_3sview_cn" +
+      "t_24h\030\037 \001(\005\022!\n\031userauthor_8sview_cnt_24h" +
+      "\030  \001(\005\022\"\n\032userauthor_12sview_cnt_24h\030! \001" +
+      "(\005\022\"\n\032userauthor_20sview_cnt_24h\030\" \001(\005\022\"" +
+      "\n\032userauthor_5sstand_cnt_24h\030# \001(\005\022#\n\033us" +
+      "erauthor_10sstand_cnt_24h\030$ \001(\005\022\037\n\027usera" +
+      "uthor_like_cnt_24h\030% \001(\005\022\037\n\027user_author_" +
+      "view_cnt_7d\030( \001(\005\022$\n\034user_author_validvi" +
+      "ew_cnt_7d\030) \001(\002\022(\n user_author_compelete" +
+      "view_cnt_7d\030* \001(\005\022\037\n\027user_author_like_cn" +
+      "t_7d\030+ \001(\005\022\"\n\032user_author_comment_cnt_7d" +
+      "\030, \001(\005\022(\n user_author_avg_view_duration_" +
+      "7d\030- \001(\002\022&\n\036user_author_validview_tfidf_" +
+      "7d\030. \001(\002\022*\n\"user_author_compeleteview_tf" +
+      "idf_7d\030/ \001(\002\022(\n user_author_likecomment_" +
+      "tfidf_7d\0300 \001(\002\022\032\n\022user_tag11_is_like\0302 \001" +
+      "(\005\022\032\n\022user_tag11_is_play\0303 \001(\005\022\035\n\025user_t" +
+      "ag11_is_comment\0304 \001(\005\022\032\n\022user_tag12_is_l" +
+      "ike\0305 \001(\005\022\032\n\022user_tag12_is_play\0306 \001(\005\022\035\n" +
+      "\025user_tag12_is_comment\0307 \001(\005\022\032\n\022user_tag" +
+      "13_is_like\0308 \001(\005\022\032\n\022user_tag13_is_play\0309" +
+      " \001(\005\022\035\n\025user_tag13_is_comment\030: \001(\005\022\032\n\022u" +
+      "ser_tag14_is_like\030; \001(\005\022\032\n\022user_tag14_is" +
+      "_play\030< \001(\005\022\035\n\025user_tag14_is_comment\030= \001" +
+      "(\005\022\032\n\022user_tag15_is_like\030> \001(\005\022\032\n\022user_t" +
+      "ag15_is_play\030? \001(\005\022\035\n\025user_tag15_is_comm" +
+      "ent\030@ \001(\005\022\032\n\022user_tag16_is_like\030A \001(\005\022\032\n" +
+      "\022user_tag16_is_play\030B \001(\005\022\035\n\025user_tag16_" +
+      "is_comment\030C \001(\005\022\032\n\022user_tag17_is_like\030D" +
+      " \001(\005\022\032\n\022user_tag17_is_play\030E \001(\005\022\035\n\025user" +
+      "_tag17_is_comment\030F \001(\005\022\033\n\023user_tag11_li" +
+      "ke_cnt\030G \001(\005\022\033\n\023user_tag11_play_cnt\030H \001(" +
+      "\005\022\036\n\026user_tag11_comment_cnt\030I \001(\005\022\033\n\023use" +
+      "r_tag12_like_cnt\030J \001(\005\022\033\n\023user_tag12_pla" +
+      "y_cnt\030K \001(\005\022\036\n\026user_tag12_comment_cnt\030L " +
+      "\001(\005\022\033\n\023user_tag13_like_cnt\030M \001(\005\022\033\n\023user" +
+      "_tag13_play_cnt\030N \001(\005\022\036\n\026user_tag13_comm" +
+      "ent_cnt\030O \001(\005\022\033\n\023user_tag14_like_cnt\030P \001" +
+      "(\005\022\033\n\023user_tag14_play_cnt\030Q \001(\005\022\036\n\026user_" +
+      "tag14_comment_cnt\030R \001(\005\022\033\n\023user_tag15_li" +
+      "ke_cnt\030S \001(\005\022\033\n\023user_tag15_play_cnt\030T \001(" +
+      "\005\022\036\n\026user_tag15_comment_cnt\030U \001(\005\022\033\n\023use" +
+      "r_tag16_like_cnt\030V \001(\005\022\033\n\023user_tag16_pla" +
+      "y_cnt\030W \001(\005\022\036\n\026user_tag16_comment_cnt\030X " +
+      "\001(\005\022\033\n\023user_tag17_like_cnt\030Y \001(\005\022\033\n\023user" +
+      "_tag17_play_cnt\030Z \001(\005\022\036\n\026user_tag17_comm" +
+      "ent_cnt\030[ \001(\005\022\037\n\027userauthor_skip_cnt_24h" +
+      "\030d \001(\005\022\"\n\032userauthor_12splay_cnt_24h\030e \001" +
+      "(\005\022#\n\033userauthor_20sstand_cnt_24h\030f \001(\005\022" +
+      "\"\n\032userauthor_comment_cnt_24h\030g \001(\005\022 \n\030u" +
+      "serauthor_share_cnt_24h\030h \001(\005\022!\n\031useraut" +
+      "hor_follow_cnt_24h\030i \001(\005\022\"\n\032userauthor_c" +
+      "ollect_cnt_24h\030j \001(\005\022\"\n\032userauthor_profi" +
+      "le_cnt_24h\030k \001(\005\022!\n\031userauthor_report_cn" +
+      "t_24h\030l \001(\005\022\"\n\032userauthor_dislike_cnt_24" +
+      "h\030m \001(\005\022\036\n\026userauthor_pay_cnt_24h\030n \001(\005\"" +
+      "\374\005\n\025LiveUserAnchorFeature\022\017\n\007user_id\030\001 \001" +
+      "(\004\022\021\n\tanchor_id\030\002 \001(\004\022!\n\031user_anchor_exp" +
+      "_cnt_15min\030\n \001(\005\022$\n\034user_anchor_3squit_c" +
+      "nt_15min\030\013 \001(\005\022$\n\034user_anchor_6squit_cnt" +
+      "_15min\030\014 \001(\005\022\"\n\032user_anchor_like_cnt_15m" +
+      "in\030\r \001(\005\022%\n\035user_anchor_comment_cnt_15mi" +
+      "n\030\016 \001(\005\022$\n\034user_anchor_follow_cnt_15min\030" +
+      "\017 \001(\005\022#\n\033user_anchor_share_cnt_15min\030\020 \001" +
+      "(\005\022\"\n\032user_anchor_gift_cnt_15min\030\021 \001(\005\022%" +
+      "\n\035user_anchor_gift_amount_15min\030\022 \001(\005\022/\n" +
+      "\'user_anchor_negative_feedback_cnt_15min" +
+      "\030\023 \001(\005\022 \n\030user_anchor_enter_cnt_7d\030\024 \001(\005" +
+      "\022\037\n\027user_anchor_quit_cnt_7d\030\025 \001(\005\022%\n\035use" +
+      "r_anchor_stay_gt10s_cnt_7d\030\026 \001(\005\022%\n\035user" +
+      "_anchor_stay_gt30s_cnt_7d\030\027 \001(\005\022(\n user_" +
+      "anchor_avg_view_duration_7d\030\030 \001(\002\022,\n$use" +
+      "r_anchor_positive_feedback_cnt_7d\030\031 \001(\005\022" +
+      ",\n$user_anchor_negative_feedback_cnt_7d\030" +
+      "\032 \001(\005\022\'\n\037user_anchor_active_enter_cnt_7d" +
+      "\030\033 \001(\005\"\335\n\n\024RecLiveAnchorFeature\022\021\n\tancho" +
+      "r_id\030\001 \001(\004\022\037\n\027live_enter_usernum_5min\030\n " +
+      "\001(\005\022\036\n\026live_quit_usernum_5min\030\013 \001(\005\022#\n\033l" +
+      "ive_quit_avg_duration_5min\030\014 \001(\005\022\"\n\032live" +
+      "_anchor_gift_coin_5min\030\r \001(\005\022%\n\035live_anc" +
+      "hor_gift_usernum_5min\030\016 \001(\005\022\'\n\037live_anch" +
+      "or_follow_usernum_5min\030\017 \001(\005\022%\n\035live_anc" +
+      "hor_chat_usernum_5min\030\020 \001(\005\022 \n\030live_ente" +
+      "r_usernum_10min\030\024 \001(\005\022\037\n\027live_quit_usern" +
+      "um_10min\030\025 \001(\005\022$\n\034live_quit_avg_duration" +
+      "_10min\030\026 \001(\005\022#\n\033live_anchor_gift_coin_10" +
+      "min\030\027 \001(\005\022&\n\036live_anchor_gift_usernum_10" +
+      "min\030\030 \001(\005\022(\n live_anchor_follow_usernum_" +
+      "10min\030\031 \001(\005\022&\n\036live_anchor_chat_usernum_" +
+      "10min\030\032 \001(\005\022 \n\030live_enter_usernum_15min\030" +
+      "\036 \001(\005\022\037\n\027live_quit_usernum_15min\030\037 \001(\005\022$" +
+      "\n\034live_quit_avg_duration_15min\030  \001(\005\022#\n\033" +
+      "live_anchor_gift_coin_15min\030! \001(\005\022&\n\036liv" +
+      "e_anchor_gift_usernum_15min\030\" \001(\005\022(\n liv" +
+      "e_anchor_follow_usernum_15min\030# \001(\005\022&\n\036l" +
+      "ive_anchor_chat_usernum_15min\030$ \001(\005\022\033\n\023a" +
+      "nchor_enter_cnt_7d\030( \001(\005\022\032\n\022anchor_quit_" +
+      "cnt_7d\030) \001(\005\022\037\n\027anchor_stay_gt3s_cnt_7d\030" +
+      "* \001(\005\022 \n\030anchor_stay_gt10s_cnt_7d\030+ \001(\005\022" +
+      " \n\030anchor_stay_gt30s_cnt_7d\030, \001(\005\022#\n\033anc" +
+      "hor_avg_view_duration_7d\030- \001(\002\022\034\n\024anchor" +
+      "_follow_cnt_7d\030. \001(\005\022\'\n\037anchor_positive_" +
+      "feedback_cnt_7d\030/ \001(\005\022\'\n\037anchor_negative" +
+      "_feedback_cnt_7d\0300 \001(\005\022)\n!anchor_live_sc" +
+      "ene_exposure_cnt_7d\0301 \001(\005\022)\n!anchor_foru" +
+      "_scene_exposure_cnt_7d\0302 \001(\005\022&\n\036anchor_l" +
+      "ive_scene_enter_cnt_7d\0303 \001(\005\022&\n\036anchor_f" +
+      "oru_scene_enter_cnt_7d\0304 \001(\005\022\032\n\022anchor_g" +
+      "ift_cnt_7d\0305 \001(\005\022\023\n\013anchor_type\030< \001(\005\022\027\n" +
+      "\017anchor_rec_type\030= \001(\005\"\321\001\n\022RecLiveUserFe" +
+      "ature\022\017\n\007user_id\030\001 \001(\004\022\030\n\020viewer_live_hi" +
+      "se\030\002 \001(\005\022=\n\033user_stay_gt10s_anchor_list\030" +
+      "\n \003(\0132\030.com.gosh.entity.IdScore\022%\n\035user_" +
+      "active_enter_anchor_list\030\013 \003(\005\022*\n\"user_p" +
+      "ositive_feedback_anchor_list\030\014 \003(\005\"$\n\007Id" +
+      "Score\022\n\n\002id\030\001 \001(\003\022\r\n\005score\030\002 \001(\002\"A\n\020RecL" +
+      "iveIdFeature\022\017\n\007live_id\030\001 \001(\003\022\034\n\024live_id" +
+      "_exp_cnt_5min\030\n \001(\005b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -51689,7 +51782,7 @@ public final class RecFeature extends com.google.protobuf.GeneratedFile {
     internal_static_com_gosh_entity_RecPostFeature_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_gosh_entity_RecPostFeature_descriptor,
-        new java.lang.String[] { "PostId", "PostExpCnt1H", "Post3SviewCnt1H", "Post8SviewCnt1H", "Post12SviewCnt1H", "Post20SviewCnt1H", "Post5SstandCnt1H", "Post10SstandCnt1H", "PostLikeCnt1H", "PostFollowCnt1H", "PostProfileCnt1H", "PostPosinterCnt1H", "PostExpCnt24H", "Post3SviewCnt24H", "Post8SviewCnt24H", "Post12SviewCnt24H", "Post20SviewCnt24H", "Post5SstandCnt24H", "Post10SstandCnt24H", "PostLikeCnt24H", "PostFollowCnt24H", "PostProfileCnt24H", "PostPosinterCnt24H", "PostViewCnt7D", "PostValidviewCnt7D", "PostCompleteviewCnt7D", "PostViewDuration7D", "PostLikeCnt7D", "PostCommentCnt7D", "TagIds", "AuthorExpDistinctPostCnt7D", "AuthorExpPostCnt7D", "AuthorValidviewPostCnt7D", "AuthorViewPostDuration7D", "AuthorLikeCnt7D", "AuthorCommentCnt7D", "AuthorCompleteviewPostCnt7D", "AuthorViewAvgDuration7D", "AuthorInterProfileCnt7D", "AuthorFollowCnt7D", "AuthorFollowersCnt", "PostValidviewRate7D", "PostCompleteviewRate7D", "PostAvgViewDuration7D", "PostLikeRate7D", "PostCommentRate7D", "PostAiEmbedding", "PostAiTags", "PostAsrLang", "PostSkipCnt24H", "PostCompeleteCnt24H", "PostProgressRate24H", "Post20SstandCnt24H", "Post5SplayCnt24H", "Post10SplayCnt24H", "PostCommentCnt24H", "PostShareCnt24H", "PostCollectCnt24H", "PostReportCnt24H", "PostDislikeCnt24H", "PostPayCnt24H", "PvvRa1", "PvvRa2", "PvvRa3", "PvvRa4", "PvvRa5", "PcpvRa1", "PcpvRa2", "PcpvRa3", "PcpvRa4", "PcpvRa5", "PcpvRa6", "PlkRa1", "PlkRa2", "PlkRa3", "PlkRa4", "PlkRa5", "PcmRa1", "PcmRa2", "PcmRa3", "PcmRa4", "PcmRa5", "PshRa1", "PshRa2", "PshRa3", "PfvRa1", "PfvRa2", "PfvRa3", "PpfRa1", "PpfRa2", "PpfRa3", "Post3SviewCnt48H", "Post8SviewCnt48H", "Post12SviewCnt48H", "Post20SviewCnt48H", "Post5SstandCnt48H", "Post10SstandCnt48H", "PostLikeCnt48H", "PostFollowCnt48H", "PostProfileCnt48H", "PostPosinterCnt48H", });
+        new java.lang.String[] { "PostId", "PostExpCnt1H", "Post3SviewCnt1H", "Post8SviewCnt1H", "Post12SviewCnt1H", "Post20SviewCnt1H", "Post5SstandCnt1H", "Post10SstandCnt1H", "PostLikeCnt1H", "PostFollowCnt1H", "PostProfileCnt1H", "PostPosinterCnt1H", "PostExpCnt24H", "Post3SviewCnt24H", "Post8SviewCnt24H", "Post12SviewCnt24H", "Post20SviewCnt24H", "Post5SstandCnt24H", "Post10SstandCnt24H", "PostLikeCnt24H", "PostFollowCnt24H", "PostProfileCnt24H", "PostPosinterCnt24H", "PostViewCnt7D", "PostValidviewCnt7D", "PostCompleteviewCnt7D", "PostViewDuration7D", "PostLikeCnt7D", "PostCommentCnt7D", "TagIds", "AuthorExpDistinctPostCnt7D", "AuthorExpPostCnt7D", "AuthorValidviewPostCnt7D", "AuthorViewPostDuration7D", "AuthorLikeCnt7D", "AuthorCommentCnt7D", "AuthorCompleteviewPostCnt7D", "AuthorViewAvgDuration7D", "AuthorInterProfileCnt7D", "AuthorFollowCnt7D", "AuthorFollowersCnt", "PostValidviewRate7D", "PostCompleteviewRate7D", "PostAvgViewDuration7D", "PostLikeRate7D", "PostCommentRate7D", "PostAiEmbedding", "PostAiTags", "PostAsrLang", "PostSkipCnt24H", "PostCompeleteCnt24H", "PostProgressRate24H", "Post20SstandCnt24H", "Post5SplayCnt24H", "Post10SplayCnt24H", "PostCommentCnt24H", "PostShareCnt24H", "PostCollectCnt24H", "PostReportCnt24H", "PostDislikeCnt24H", "PostPayCnt24H", "PvvRa1", "PvvRa2", "PvvRa3", "PvvRa4", "PvvRa5", "PcpvRa1", "PcpvRa2", "PcpvRa3", "PcpvRa4", "PcpvRa5", "PcpvRa6", "PlkRa1", "PlkRa2", "PlkRa3", "PlkRa4", "PlkRa5", "PcmRa1", "PcmRa2", "PcmRa3", "PcmRa4", "PcmRa5", "PshRa1", "PshRa2", "PshRa3", "PfvRa1", "PfvRa2", "PfvRa3", "PpfRa1", "PpfRa2", "PpfRa3", "PostExpCnt48H", "Post3SviewCnt48H", "Post8SviewCnt48H", "Post12SviewCnt48H", "Post20SviewCnt48H", "Post5SstandCnt48H", "Post10SstandCnt48H", "PostLikeCnt48H", "PostFollowCnt48H", "PostProfileCnt48H", "PostPosinterCnt48H", });
     internal_static_com_gosh_entity_FeedbackTagV2_descriptor =
       getDescriptor().getMessageType(2);
     internal_static_com_gosh_entity_FeedbackTagV2_fieldAccessorTable = new

@@ -1,15 +1,13 @@
 package com.gosh.job;
 
 import com.gosh.config.RedisConfig;
-import com.gosh.feature.RecFeature;
+import com.gosh.entity.RecFeature;
 import com.gosh.job.AiTagParseCommon.PostInfoEvent;
 import com.gosh.job.AiTagParseCommon.PostTagsEventParser;
 import com.gosh.job.AiTagParseCommon.PostTagsToPostInfoMapper;
 import com.gosh.job.ItemFeatureCommon.ItemFeatureAccumulator;
 import com.gosh.job.UserFeatureCommon.ExposeEventParser;
 import com.gosh.job.UserFeatureCommon.ExposeToFeatureMapper;
-import com.gosh.job.UserFeatureCommon.PostExposeEvent;
-import com.gosh.job.UserFeatureCommon.PostViewEvent;
 import com.gosh.job.UserFeatureCommon.UserFeatureEvent;
 import com.gosh.job.UserFeatureCommon.ViewEventParser;
 import com.gosh.job.UserFeatureCommon.ViewToFeatureMapper;
@@ -20,7 +18,6 @@ import com.gosh.util.RedisUtil;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.state.ValueState;
 import org.apache.flink.api.common.state.ValueStateDescriptor;
-import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.functions.KeySelector;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.configuration.Configuration;
@@ -31,7 +28,6 @@ import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.co.KeyedCoProcessFunction;
 import org.apache.flink.util.Collector;
-import org.apache.flink.streaming.api.windowing.time.Time;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,8 +41,8 @@ public class ItemFeature48hJob {
         // 48小时的毫秒数
         // 窗口大小
         private static final long WINDOW_SIZE_MS = 48 * 60 * 60 * 1000L;
-        // 新增：周期性写入Redis的间隔
-        private static final long FLUSH_INTERVAL_MS = Time.minutes(1).toMilliseconds();
+        // 新增：周期性写入Redis的间隔（1分钟）
+        private static final long FLUSH_INTERVAL_MS = 60 * 1000L;
 
         public static void main(String[] args) throws Exception {
                 StreamExecutionEnvironment env = FlinkEnvUtil.createStreamExecutionEnvironment();
@@ -153,8 +149,8 @@ public class ItemFeature48hJob {
                                         .getState(new ValueStateDescriptor<>("createdAt", Long.class));
                         accumulatorState = getRuntimeContext().getState(
                                         new ValueStateDescriptor<>("accumulator", ItemFeatureAccumulator.class));
-                        timerRegisteredState = getRuntimeContext().getState(
-                                        new ValueStateDescriptor<>("timerRegistered", Boolean.class));
+                        cleanupTimerState = getRuntimeContext().getState(
+                                        new ValueStateDescriptor<>("cleanupTimer", Long.class));
 
                         // 新增：用于周期性写入Redis的ProcessingTime定时器状态
                         // 存储下一次Redis写入的ProcessingTime时间戳
@@ -169,7 +165,6 @@ public class ItemFeature48hJob {
                 public void processElement1(UserFeatureEvent event, Context ctx, Collector<Tuple2<String, byte[]>> out)
                                 throws Exception {
                         Long createdAt = createdAtState.value();
-                        long currentProcessingTime = ctx.timerService().currentProcessingTime();
 
                         // 如果还没有收到创建时间，或者事件时间在 [createdAt, createdAt + 48h] 范围内
                         // 如果 createdAt 为空，我们暂时也进行累加，防止 rec 流延迟导致数据丢失。
@@ -285,8 +280,6 @@ public class ItemFeature48hJob {
                         // 构建 Protobuf，使用 48h 特征字段
                         RecFeature.RecPostFeature.Builder builder = RecFeature.RecPostFeature.newBuilder()
                                         .setPostId(acc.postId)
-                                        // 曝光
-                                        .setPostExpCnt48H((int) acc.exposeHLL.cardinality())
                                         // 观看
                                         .setPost3SviewCnt48H((int) acc.view3sHLL.cardinality())
                                         .setPost8SviewCnt48H((int) acc.view8sHLL.cardinality())
