@@ -45,6 +45,7 @@ public class ItemFeature48hJob {
         private static final long FLUSH_INTERVAL_MS = 60 * 1000L;
 
         public static void main(String[] args) throws Exception {
+                // 创建flink环境
                 StreamExecutionEnvironment env = FlinkEnvUtil.createStreamExecutionEnvironment();
 
                 // 1. 交互流 Source (Topic: post)
@@ -54,7 +55,7 @@ public class ItemFeature48hJob {
                 DataStreamSource<String> postSource = env.fromSource(
                                 postTopic,
                                 WatermarkStrategy.<String>forBoundedOutOfOrderness(Duration.ofSeconds(30))
-                                                .withIdleness(Duration.ofMinutes(1)),
+                                                .withIdleness(Duration.ofMinutes(5)),
                                 "Post Kafka Source");
 
                 // 1.1 解析交互流
