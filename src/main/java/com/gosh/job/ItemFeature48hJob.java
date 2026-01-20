@@ -93,15 +93,15 @@ public class ItemFeature48hJob {
                                 .name("Pre-filter Events");
 
                 // 2.1 解析创建流 (获取 PostInfoEvent.createdAt)
-                DataStream<PostInfoEvent> creationStream = filteredRecStream
+                DataStream<RecValidPostEvent> creationStream = filteredRecStream
                                 .flatMap(new RecValidPostParseCommon.RecValidPostEventParser()) // 解析为 RecValidPostEvent
                                 .assignTimestampsAndWatermarks(
                                                 WatermarkStrategy
-                                                                .<PostInfoEvent>forBoundedOutOfOrderness(
+                                                                .<RecValidPostEvent>forBoundedOutOfOrderness(
                                                                                 Duration.ofSeconds(30))
                                                                 .withTimestampAssigner((event,
-                                                                                recordTimestamp) -> event.createdAt
-                                                                                                * 1000) // createdAt是秒，转毫秒
+                                                                                recordTimestamp) -> event.taggingAt
+                                                                                                * 1000) // taggingAt是秒，转毫秒
                                 );
 
                 // 3. 双流 Connect 并处理
@@ -114,10 +114,10 @@ public class ItemFeature48hJob {
                                                                 return value.postId;
                                                         }
                                                 },
-                                                new KeySelector<PostInfoEvent, Long>() {
+                                                new KeySelector<RecValidPostEvent, Long>() {
                                                         @Override
-                                                        public Long getKey(PostInfoEvent value) {
-                                                                return value.postId;
+                                                        public Long getKey(RecValidPostEvent value) {
+                                                                return value.id;
                                                         }
                                                 })
                                 .process(new Post48hCumulativeProcessFunction());
@@ -139,7 +139,8 @@ public class ItemFeature48hJob {
          * 自定义处理函数：统计 Post 创建后 48 小时内的累计特征
          */
         public static class Post48hCumulativeProcessFunction
-                        extends KeyedCoProcessFunction<Long, UserFeatureEvent, PostInfoEvent, Tuple2<String, byte[]>> {
+                        extends
+                        KeyedCoProcessFunction<Long, UserFeatureEvent, RecValidPostEvent, Tuple2<String, byte[]>> {
 
                 // 存储 Post 创建时间
                 private ValueState<Long> createdAtState;
@@ -203,10 +204,10 @@ public class ItemFeature48hJob {
 
                 // 处理创建事件 (PostInfoEvent)
                 @Override
-                public void processElement2(PostInfoEvent event, Context ctx, Collector<Tuple2<String, byte[]>> out)
+                public void processElement2(RecValidPostEvent event, Context ctx, Collector<Tuple2<String, byte[]>> out)
                                 throws Exception {
                         // 更新创建时间
-                        long createdAtMillis = event.createdAt * 1000;
+                        long createdAtMillis = event.taggingAt * 1000;
                         createdAtState.update(createdAtMillis);
 
                         // 注册 48 小时后的定时器，用于清理状态
