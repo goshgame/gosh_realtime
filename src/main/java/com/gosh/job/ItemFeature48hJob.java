@@ -280,6 +280,8 @@ public class ItemFeature48hJob {
                         // 构建 Protobuf，使用 48h 特征字段
                         RecFeature.RecPostFeature.Builder builder = RecFeature.RecPostFeature.newBuilder()
                                         .setPostId(acc.postId)
+                                        // 曝光
+                                        .setPostExpCnt48H((int) acc.exposeHLL.cardinality())
                                         // 观看
                                         .setPost3SviewCnt48H((int) acc.view3sHLL.cardinality())
                                         .setPost8SviewCnt48H((int) acc.view8sHLL.cardinality())
