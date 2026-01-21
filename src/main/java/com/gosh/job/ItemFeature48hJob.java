@@ -13,6 +13,7 @@ import com.gosh.util.EventFilterUtil;
 import com.gosh.util.FlinkEnvUtil;
 import com.gosh.util.KafkaEnvUtil;
 import com.gosh.util.RedisUtil;
+
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.state.ValueState;
 import org.apache.flink.api.common.state.ValueStateDescriptor;
@@ -303,24 +304,8 @@ public class ItemFeature48hJob {
                                         .setPostPosinterCnt48H((int) acc.posinterHLL.cardinality());
 
                         out.collect(new Tuple2<>(redisKey, builder.build().toByteArray()));
+                        LOG.debug("post 48h emitResult: key={}, value={}", redisKey, builder.build().toString());
                 }
         }
 
-        /**
-         * 48小时聚合结果 POJO (与 ItemFeature1hAggregation 结构保持一致)
-         */
-        public static class ItemFeature48hAggregation {
-                public long postId;
-                public int postExpCnt48h;
-                public int post3sviewCnt48h;
-                public int post8sviewCnt48h;
-                public int post12sviewCnt48h;
-                public int post20sviewCnt48h;
-                public int post5sstandCnt48h;
-                public int post10sstandCnt48h;
-                public int postLikeCnt48h;
-                public int postFollowCnt48h;
-                public int postProfileCnt48h;
-                public int postPosinterCnt48h;
-        }
 }
