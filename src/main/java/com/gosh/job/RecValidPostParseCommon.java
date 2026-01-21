@@ -79,9 +79,9 @@ public class RecValidPostParseCommon {
                     LOG.warn("RecValidPost 'tagging_at' is invalid or missing for id {}: {}", event.id, value);
                     return;
                 }
-                // tag 时间超过 10 天，则不处理
-                if (System.currentTimeMillis() - event.taggingAt > 10 * 24 * 60 * 60 * 1000) {
-                    LOG.warn("RecValidPost 'tagging_at' is more than 10 days for id {}: {}", event.id, value);
+                // tag 时间超过 6 天，则不处理
+                if (System.currentTimeMillis() - event.taggingAt > 6 * 24 * 60 * 60 * 1000) {
+                    LOG.warn("RecValidPost 'tagging_at' is more than 6 days for id {}: {}", event.id, value);
                     return;
                 }
                 // CreatedAt (int64)

@@ -2,11 +2,7 @@ package com.gosh.job;
 
 import com.gosh.config.RedisConfig;
 import com.gosh.feature.RecFeature;
-import com.gosh.job.AiTagParseCommon.PostInfoEvent;
-import com.gosh.job.AiTagParseCommon.PostTagsEventParser;
-import com.gosh.job.AiTagParseCommon.PostTagsToPostInfoMapper;
 import com.gosh.job.RecValidPostParseCommon.RecValidPostEvent;
-import com.gosh.job.RecValidPostParseCommon.RecValidPostEventParser;
 import com.gosh.job.ItemFeatureCommon.ItemFeatureAccumulator;
 import com.gosh.job.UserFeatureCommon.ExposeEventParser;
 import com.gosh.job.UserFeatureCommon.ExposeToFeatureMapper;
@@ -124,7 +120,9 @@ public class ItemFeature48hJob {
 
                 // 4. Sink 到 Redis
                 RedisConfig redisConfig = RedisConfig.fromProperties(RedisUtil.loadProperties());
-                redisConfig.setTtl(7 * 24 * 60 * 60); // TTL 设置为 7 天，略大于 48h
+                // TODO: 测试时间一个小时，需要修改
+                // redisConfig.setTtl(7 * 24 * 60 * 60); // TTL 设置为 7 天，略大于 48h
+                redisConfig.setTtl(1 * 60 * 60); // TTL 设置为 1 小时
 
                 RedisUtil.addRedisSink(
                                 resultStream,
@@ -202,7 +200,7 @@ public class ItemFeature48hJob {
                         }
                 }
 
-                // 处理创建事件 (PostInfoEvent)
+                // 处理创建事件 (RecValidPostEvent)
                 @Override
                 public void processElement2(RecValidPostEvent event, Context ctx, Collector<Tuple2<String, byte[]>> out)
                                 throws Exception {
