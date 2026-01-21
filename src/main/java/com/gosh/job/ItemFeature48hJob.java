@@ -89,10 +89,10 @@ public class ItemFeature48hJob {
                                 .filter(EventFilterUtil.createFastEventTypeFilter(keepEventType)) // event_type=17
                                 .name("Pre-filter Events");
 
-                // 2.1 解析创建流 (获取 PostInfoEvent.createdAt)
+                // 2.1 解析创建流 (获取 RecValidPostEvent.taggingAt 作为 Post 的起始时间)
                 DataStream<RecValidPostEvent> creationStream = filteredRecStream
                                 .flatMap(new RecValidPostParseCommon.RecValidPostEventParser()) // 解析为 RecValidPostEvent
-                                .assignTimestampsAndWatermarks(
+                                .assignTimestampsAndWatermarks( // 为 RecValidPostEvent 分配时间戳和水位线
                                                 WatermarkStrategy
                                                                 .<RecValidPostEvent>forBoundedOutOfOrderness(
                                                                                 Duration.ofSeconds(30))
@@ -140,10 +140,10 @@ public class ItemFeature48hJob {
         public static class Post48hCumulativeProcessFunction
                         extends
                         KeyedCoProcessFunction<Long, UserFeatureEvent, RecValidPostEvent, Tuple2<String, byte[]>> {
-
-                // 存储 Post 创建时间
-                private ValueState<Long> createdAtState;
-                // 存储累计特征 (ItemFeatureAccumulator 及其中的 HyperLogLog 必须是可序列化的)
+                // 存储 Post 的起始时间（taggingAt），作为 48 小时窗口的起点
+                private ValueState<Long> postStartTimeState;
+                // 存储累计特征 (ItemFeatureAccumulator 及其中的 HyperLogLog 必须是可序列化的，
+                // 且 ItemFeatureAccumulator 必须是 Flink 能够序列化的 POJO)
                 private ValueState<ItemFeatureAccumulator> accumulatorState;
                 // 存储48小时清理定时器的时间戳
                 private ValueState<Long> cleanupTimerState;
@@ -152,7 +152,7 @@ public class ItemFeature48hJob {
 
                 @Override
                 public void open(Configuration parameters) {
-                        createdAtState = getRuntimeContext()
+                        postStartTimeState = getRuntimeContext()
                                         .getState(new ValueStateDescriptor<>("createdAt", Long.class));
                         accumulatorState = getRuntimeContext().getState(
                                         new ValueStateDescriptor<>("accumulator", ItemFeatureAccumulator.class));
@@ -171,12 +171,18 @@ public class ItemFeature48hJob {
                 @Override
                 public void processElement1(UserFeatureEvent event, Context ctx, Collector<Tuple2<String, byte[]>> out)
                                 throws Exception {
-                        Long createdAt = createdAtState.value();
+                        Long postStartTime = postStartTimeState.value();
 
-                        // 如果还没有收到创建时间，或者事件时间在 [createdAt, createdAt + 48h] 范围内
-                        // 如果 createdAt 为空，我们暂时也进行累加，防止 rec 流延迟导致数据丢失。
-                        if (createdAt == null || (event.timestamp >= createdAt
-                                        && event.timestamp <= createdAt + WINDOW_SIZE_MS)) {
+                        // 只有当 Post 的起始时间（taggingAt）已知时才处理交互事件
+                        // 且事件时间必须在 [postStartTime, postStartTime + 48h] 范围内
+                        if (postStartTime != null && event.timestamp >= postStartTime
+                                        && event.timestamp <= postStartTime + WINDOW_SIZE_MS) {
+
+                                // 确保 postId 匹配，尽管 keyBy 已经保证了这一点，但作为防御性编程
+                                if (!ctx.getCurrentKey().equals(event.postId)) {
+                                        LOG.warn("Key mismatch: current key {} != event postId {}", ctx.getCurrentKey(),
+                                                        event.postId);
+                                }
 
                                 ItemFeatureAccumulator acc = accumulatorState.value();
                                 if (acc == null) {
@@ -207,7 +213,7 @@ public class ItemFeature48hJob {
                                 throws Exception {
                         // 更新创建时间
                         long createdAtMillis = event.taggingAt * 1000;
-                        createdAtState.update(createdAtMillis);
+                        postStartTimeState.update(createdAtMillis);
 
                         // 注册 48 小时后的定时器，用于清理状态
                         if (cleanupTimerState.value() == null) {
@@ -242,15 +248,15 @@ public class ItemFeature48hJob {
                                                 ctx.getCurrentKey(), timestamp);
 
                                 // 在清理前执行最后一次写入
-                                ItemFeatureAccumulator acc = accumulatorState.value();
+                                ItemFeatureAccumulator acc = accumulatorState.value(); // 获取最终累加器
                                 if (acc != null) {
                                         emitResult(acc, out);
                                 }
 
                                 // 清理所有状态
-                                createdAtState.clear();
+                                postStartTimeState.clear();
                                 accumulatorState.clear();
-                                cleanupTimerState.clear();
+                                cleanupTimerState.clear(); // 清理事件时间定时器状态
 
                                 // 删除 processing time timer
                                 if (flushTime != null) {
@@ -263,7 +269,7 @@ public class ItemFeature48hJob {
                                                 timestamp);
 
                                 ItemFeatureAccumulator acc = accumulatorState.value();
-                                if (acc != null) {
+                                if (acc != null && cleanupTimerState.value() != null) { // 只有在 48h 窗口未关闭时才刷新
                                         emitResult(acc, out);
                                 }
 
@@ -272,7 +278,7 @@ public class ItemFeature48hJob {
                                         long nextFlushTime = ctx.timerService().currentProcessingTime()
                                                         + FLUSH_INTERVAL_MS;
                                         ctx.timerService().registerProcessingTimeTimer(nextFlushTime);
-                                        flushTimerState.update(nextFlushTime);
+                                        flushTimerState.update(nextFlushTime); // 更新下一次刷新时间
                                         LOG.debug("Re-registered periodic flush timer for postId {} at {}",
                                                         ctx.getCurrentKey(), nextFlushTime);
                                 } else {

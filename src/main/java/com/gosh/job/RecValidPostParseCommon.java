@@ -80,7 +80,8 @@ public class RecValidPostParseCommon {
                     return;
                 }
                 // tag 时间超过 6 天，则不处理
-                if (System.currentTimeMillis() - event.taggingAt > 6 * 24 * 60 * 60 * 1000) {
+                if (System.currentTimeMillis() - event.taggingAt * 1000 > 6 * 24 * 60 * 60 * 1000L) { // taggingAt
+                                                                                                      // 是秒，需转为毫秒
                     LOG.warn("RecValidPost 'tagging_at' is more than 6 days for id {}: {}", event.id, value);
                     return;
                 }
