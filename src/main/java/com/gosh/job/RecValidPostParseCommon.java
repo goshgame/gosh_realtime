@@ -43,6 +43,7 @@ public class RecValidPostParseCommon {
 
             try {
                 JsonNode rootNode = objectMapper.readTree(value);
+                LOG.info("RecValidPostEventParser: value={}", rootNode.toString());
 
                 // 检查event_type
                 if (!rootNode.has("event_type")) {

@@ -45,6 +45,7 @@ public class ItemFeature48hJob {
         private static final long FLUSH_INTERVAL_MS = 60 * 1000L;
 
         public static void main(String[] args) throws Exception {
+                LOG.info("ItemFeature48hJob start");
                 // 创建flink环境
                 StreamExecutionEnvironment env = FlinkEnvUtil.createStreamExecutionEnvironment();
 
@@ -201,7 +202,7 @@ public class ItemFeature48hJob {
                                                         + FLUSH_INTERVAL_MS;
                                         ctx.timerService().registerProcessingTimeTimer(nextFlushTime);
                                         flushTimerState.update(nextFlushTime);
-                                        LOG.debug("Registered periodic flush timer for postId {} at {}",
+                                        LOG.warn("Registered periodic flush timer for postId {} at {}",
                                                         ctx.getCurrentKey(), nextFlushTime);
                                 }
                         }
@@ -229,7 +230,7 @@ public class ItemFeature48hJob {
                                 long nextFlushTime = ctx.timerService().currentProcessingTime() + FLUSH_INTERVAL_MS;
                                 ctx.timerService().registerProcessingTimeTimer(nextFlushTime);
                                 flushTimerState.update(nextFlushTime);
-                                LOG.debug("Registered initial periodic flush timer for postId {} at {}",
+                                LOG.info("Registered initial periodic flush timer for postId {} at {}",
                                                 ctx.getCurrentKey(), nextFlushTime);
                         }
                 }
@@ -265,7 +266,7 @@ public class ItemFeature48hJob {
                                 }
                         } else if (flushTime != null && timestamp == flushTime) {
                                 // ProcessingTime定时器触发，执行周期性Redis写入
-                                LOG.debug("Processing time flush timer fired for postId {} at {}", ctx.getCurrentKey(),
+                                LOG.info("Processing time flush timer fired for postId {} at {}", ctx.getCurrentKey(),
                                                 timestamp);
 
                                 ItemFeatureAccumulator acc = accumulatorState.value();
@@ -310,7 +311,7 @@ public class ItemFeature48hJob {
                                         .setPostPosinterCnt48H((int) acc.posinterHLL.cardinality());
 
                         out.collect(new Tuple2<>(redisKey, builder.build().toByteArray()));
-                        LOG.debug("post 48h emitResult: key={}, value={}", redisKey, builder.build().toString());
+                        LOG.info("post 48h emitResult: key={}, value={}", redisKey, builder.build().toString());
                 }
         }
 
