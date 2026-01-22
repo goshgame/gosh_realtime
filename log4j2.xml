@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="INFO">
+<Configuration status="WARN">
     <Properties>
         <!-- 日志文件路径 -->
         <Property name="LOG_HOME">./logs</Property>
@@ -46,12 +46,12 @@
     
     <Loggers>
         <!-- 项目包日志级别：ERROR -->
-        <Logger name="com.gosh" level="INFO" additivity="false">
+        <Logger name="com.gosh" level="ERROR" additivity="false">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="MainFile"/>
             <AppenderRef ref="ErrorFile"/>
         </Logger>
-        <Logger name="com.gosh.job" level="INFO" additivity="false">
+        <Logger name="com.gosh.job" level="ERROR" additivity="false">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="MainFile"/>
             <AppenderRef ref="ErrorFile"/>
