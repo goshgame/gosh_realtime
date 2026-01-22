@@ -41,8 +41,6 @@ public class ItemFeature48hJob {
         // 48小时的毫秒数
         // 窗口大小
         private static final long WINDOW_SIZE_MS = 48 * 60 * 60 * 1000L;
-        // 新增：周期性写入Redis的间隔（1分钟）
-        private static final long FLUSH_INTERVAL_MS = 60 * 1000L;
 
         public static void main(String[] args) throws Exception {
                 LOG.info("ItemFeature48hJob start");
@@ -82,8 +80,7 @@ public class ItemFeature48hJob {
 
                 DataStreamSource<String> recSource = env.fromSource(
                                 recTopic,
-                                WatermarkStrategy.<String>forBoundedOutOfOrderness(Duration.ofSeconds(30))
-                                                .withIdleness(Duration.ofMinutes(5)),
+                                WatermarkStrategy.<String>forBoundedOutOfOrderness(Duration.ofSeconds(5)),
                                 "Rec Kafka Source");
 
                 DataStream<String> filteredRecStream = recSource
@@ -93,14 +90,7 @@ public class ItemFeature48hJob {
                 // 2.1 解析创建流 (获取 RecValidPostEvent.taggingAt 作为 Post 的起始时间)
                 DataStream<RecValidPostEvent> creationStream = filteredRecStream
                                 .flatMap(new RecValidPostParseCommon.RecValidPostEventParser()) // 解析为 RecValidPostEvent
-                                .assignTimestampsAndWatermarks( // 为 RecValidPostEvent 分配时间戳和水位线
-                                                WatermarkStrategy
-                                                                .<RecValidPostEvent>forBoundedOutOfOrderness(
-                                                                                Duration.ofSeconds(30))
-                                                                .withTimestampAssigner((event,
-                                                                                recordTimestamp) -> event.taggingAt
-                                                                                                * 1000) // taggingAt是秒，转毫秒
-                                );
+                                .name("Parse RecValidPostEvents");
 
                 // 3. 双流 Connect 并处理
                 SingleOutputStreamOperator<Tuple2<String, byte[]>> resultStream = interactionStream
@@ -148,8 +138,6 @@ public class ItemFeature48hJob {
                 private ValueState<ItemFeatureAccumulator> accumulatorState;
                 // 存储48小时清理定时器的时间戳
                 private ValueState<Long> cleanupTimerState;
-                // 存储下一次Redis写入的ProcessingTime时间戳
-                private ValueState<Long> flushTimerState;
 
                 @Override
                 public void open(Configuration parameters) {
@@ -159,13 +147,6 @@ public class ItemFeature48hJob {
                                         new ValueStateDescriptor<>("accumulator", ItemFeatureAccumulator.class));
                         cleanupTimerState = getRuntimeContext().getState(
                                         new ValueStateDescriptor<>("cleanupTimer", Long.class));
-
-                        // 新增：用于周期性写入Redis的ProcessingTime定时器状态
-                        // 存储下一次Redis写入的ProcessingTime时间戳
-                        flushTimerState = getRuntimeContext().getState(
-                                        new ValueStateDescriptor<>("flushTimer", Long.class));
-
-                        LOG.info("Post48hCumulativeProcessFunction opened.");
                 }
 
                 // 处理交互事件 (UserFeatureEvent)
@@ -173,15 +154,16 @@ public class ItemFeature48hJob {
                 public void processElement1(UserFeatureEvent event, Context ctx, Collector<Tuple2<String, byte[]>> out)
                                 throws Exception {
                         Long postStartTime = postStartTimeState.value();
-
                         // 只有当 Post 的起始时间（taggingAt）已知时才处理交互事件
                         // 且事件时间必须在 [postStartTime, postStartTime + 48h] 范围内
                         if (postStartTime != null && event.timestamp >= postStartTime
                                         && event.timestamp <= postStartTime + WINDOW_SIZE_MS) {
 
+                                LOG.error("processElement1: acc event={}", event.postId);
                                 // 确保 postId 匹配，尽管 keyBy 已经保证了这一点，但作为防御性编程
                                 if (!ctx.getCurrentKey().equals(event.postId)) {
-                                        LOG.warn("Key mismatch: current key {} != event postId {}", ctx.getCurrentKey(),
+                                        LOG.error("processElement1 Key mismatch: current key {} != event postId {}",
+                                                        ctx.getCurrentKey(),
                                                         event.postId);
                                 }
 
@@ -194,17 +176,8 @@ public class ItemFeature48hJob {
                                 // 使用通用逻辑累加特征
                                 ItemFeatureCommon.addEventToAccumulator(event, acc);
                                 accumulatorState.update(acc);
-
-                                // 注册或更新ProcessingTime定时器，用于周期性写入Redis
-                                // 只有在没有定时器时才注册，避免重复注册
-                                if (flushTimerState.value() == null) {
-                                        long nextFlushTime = ctx.timerService().currentProcessingTime()
-                                                        + FLUSH_INTERVAL_MS;
-                                        ctx.timerService().registerProcessingTimeTimer(nextFlushTime);
-                                        flushTimerState.update(nextFlushTime);
-                                        LOG.warn("Registered periodic flush timer for postId {} at {}",
-                                                        ctx.getCurrentKey(), nextFlushTime);
-                                }
+                                LOG.error("processElement1: acc after addEventToAccumulator={}", acc.postId);
+                                emitResult(acc, out);
                         }
                 }
 
@@ -215,23 +188,17 @@ public class ItemFeature48hJob {
                         // 更新创建时间
                         long createdAtMillis = event.taggingAt * 1000;
                         postStartTimeState.update(createdAtMillis);
+                        LOG.error("processElement2: postId {} createdAtMillis={}", ctx.getCurrentKey(),
+                                        createdAtMillis);
 
                         // 注册 48 小时后的定时器，用于清理状态
                         if (cleanupTimerState.value() == null) {
                                 long cleanupTime = createdAtMillis + WINDOW_SIZE_MS;
                                 ctx.timerService().registerEventTimeTimer(cleanupTime);
                                 cleanupTimerState.update(cleanupTime);
-                                LOG.info("Registered event time cleanup timer for postId {} at {}", ctx.getCurrentKey(),
+                                LOG.error("processElement2 Registered event time cleanup timer for postId {} at {}",
+                                                ctx.getCurrentKey(),
                                                 cleanupTime);
-                        }
-
-                        // 如果没有ProcessingTime定时器，也注册一个，确保即使没有交互事件也能周期性刷新
-                        if (flushTimerState.value() == null) {
-                                long nextFlushTime = ctx.timerService().currentProcessingTime() + FLUSH_INTERVAL_MS;
-                                ctx.timerService().registerProcessingTimeTimer(nextFlushTime);
-                                flushTimerState.update(nextFlushTime);
-                                LOG.info("Registered initial periodic flush timer for postId {} at {}",
-                                                ctx.getCurrentKey(), nextFlushTime);
                         }
                 }
 
@@ -241,11 +208,12 @@ public class ItemFeature48hJob {
                                 throws Exception {
 
                         Long cleanupTime = cleanupTimerState.value();
-                        Long flushTime = flushTimerState.value();
 
+                        LOG.error("onTimer: postId {} timestamp={}, cleanupTime={}", ctx.getCurrentKey(),
+                                        timestamp, cleanupTime);
                         if (cleanupTime != null && timestamp == cleanupTime) {
                                 // EventTime定时器触发，表示48小时窗口结束
-                                LOG.info("Event time cleanup timer fired for postId {} at {}. Performing final flush and cleanup.",
+                                LOG.error("onTimer Event time cleanup timer fired for postId {} at {}. Performing final flush and cleanup.",
                                                 ctx.getCurrentKey(), timestamp);
 
                                 // 在清理前执行最后一次写入
@@ -258,39 +226,11 @@ public class ItemFeature48hJob {
                                 postStartTimeState.clear();
                                 accumulatorState.clear();
                                 cleanupTimerState.clear(); // 清理事件时间定时器状态
-
-                                // 删除 processing time timer
-                                if (flushTime != null) {
-                                        ctx.timerService().deleteProcessingTimeTimer(flushTime);
-                                        flushTimerState.clear();
-                                }
-                        } else if (flushTime != null && timestamp == flushTime) {
-                                // ProcessingTime定时器触发，执行周期性Redis写入
-                                LOG.info("Processing time flush timer fired for postId {} at {}", ctx.getCurrentKey(),
-                                                timestamp);
-
-                                ItemFeatureAccumulator acc = accumulatorState.value();
-                                if (acc != null && cleanupTimerState.value() != null) { // 只有在 48h 窗口未关闭时才刷新
-                                        emitResult(acc, out);
-                                }
-
-                                // 重新注册下一个ProcessingTime定时器，直到EventTime窗口关闭
-                                if (cleanupTimerState.value() != null) {
-                                        long nextFlushTime = ctx.timerService().currentProcessingTime()
-                                                        + FLUSH_INTERVAL_MS;
-                                        ctx.timerService().registerProcessingTimeTimer(nextFlushTime);
-                                        flushTimerState.update(nextFlushTime); // 更新下一次刷新时间
-                                        LOG.debug("Re-registered periodic flush timer for postId {} at {}",
-                                                        ctx.getCurrentKey(), nextFlushTime);
-                                } else {
-                                        flushTimerState.clear();
-                                }
                         }
                 }
 
                 private void emitResult(ItemFeatureAccumulator acc, Collector<Tuple2<String, byte[]>> out) {
                         String redisKey = PREFIX + acc.postId + SUFFIX;
-
                         // 构建 Protobuf，使用 48h 特征字段
                         RecFeature.RecPostFeature.Builder builder = RecFeature.RecPostFeature.newBuilder()
                                         .setPostId(acc.postId)
@@ -311,7 +251,7 @@ public class ItemFeature48hJob {
                                         .setPostPosinterCnt48H((int) acc.posinterHLL.cardinality());
 
                         out.collect(new Tuple2<>(redisKey, builder.build().toByteArray()));
-                        LOG.info("post 48h emitResult: key={}, value={}", redisKey, builder.build().toString());
+                        LOG.error("post 48h emitResult: key={}, value={}", redisKey, builder.build().toString());
                 }
         }
 

@@ -37,67 +37,75 @@ public class RecValidPostParseCommon {
     public static class RecValidPostEventParser implements FlatMapFunction<String, RecValidPostEvent> {
         @Override
         public void flatMap(String value, Collector<RecValidPostEvent> out) throws Exception {
+            LOG.info("RecValidPostEventParser: raw value={}", value);
             if (value == null || value.isEmpty()) {
                 return;
             }
 
             try {
                 JsonNode rootNode = objectMapper.readTree(value);
-                LOG.info("RecValidPostEventParser: value={}", rootNode.toString());
+                LOG.info("RecValidPostEventParser: json value={}", rootNode.toString());
 
                 // 检查event_type
                 if (!rootNode.has("event_type")) {
-                    LOG.warn("RecValidPost 'event_type' is missing in: {}", value);
+                    LOG.error("RecValidPost 'event_type' is missing in: {}", value);
                     return;
                 }
 
                 int eventType = rootNode.get("event_type").asInt();
                 if (eventType != recValidPostEventType) {
                     // Not the event type we are interested in
+                    LOG.error("RecValidPost 'event_type' is not 17 for value {}", eventType);
+                    return;
+                }
+
+                JsonNode recValidPostNode = rootNode.path("rec_valid_post_event");
+                if (recValidPostNode.isMissingNode()) {
+                    LOG.error("RecValidPost 'rec_valid_post_event' is missing in: {}", value);
                     return;
                 }
 
                 RecValidPostEvent event = new RecValidPostEvent();
-
                 // ID (uint64, string in JSON)
-                JsonNode idNode = rootNode.path("id");
+                JsonNode idNode = recValidPostNode.path("id");
                 if (idNode.isMissingNode()) {
-                    LOG.warn("RecValidPost 'id' is missing in: {}", value);
+                    LOG.error("RecValidPost 'id' is missing in: {}", value);
                     return;
                 }
                 event.id = Long.parseLong(idNode.asText()); // Parse as string then to long
 
                 // UID (int64)
-                event.uid = rootNode.path("uid").asLong(0);
+                event.uid = recValidPostNode.path("uid").asLong(0);
                 if (event.uid <= 0) {
-                    LOG.warn("RecValidPost 'uid' is invalid or missing for id {}: {}", event.id, value);
+                    LOG.error("RecValidPost 'uid' is invalid or missing for id {}: {}", event.id, value);
                     return;
                 }
 
                 // TaggingAt (int64)
-                event.taggingAt = rootNode.path("tagging_at").asLong(0);
+                event.taggingAt = recValidPostNode.path("tagging_at").asLong(0);
                 if (event.taggingAt <= 0) {
-                    LOG.warn("RecValidPost 'tagging_at' is invalid or missing for id {}: {}", event.id, value);
+                    LOG.error("RecValidPost 'tagging_at' is invalid or missing for id {}: {}", event.id, value);
                     return;
                 }
                 // tag 时间超过 6 天，则不处理
                 if (System.currentTimeMillis() - event.taggingAt * 1000 > 6 * 24 * 60 * 60 * 1000L) { // taggingAt
                                                                                                       // 是秒，需转为毫秒
-                    LOG.warn("RecValidPost 'tagging_at' is more than 6 days for id {}: {}", event.id, value);
+                    LOG.info("RecValidPost 'tagging_at' is more than 6 days for id {}: {}", event.id, value);
                     return;
                 }
                 // CreatedAt (int64)
-                event.createdAt = rootNode.path("created_at").asLong(0);
+                event.createdAt = recValidPostNode.path("created_at").asLong(0);
                 // UpdatedAt (int64)
-                event.updatedAt = rootNode.path("updated_at").asLong(0);
+                event.updatedAt = recValidPostNode.path("updated_at").asLong(0);
                 // DeletedAt (int64)
-                event.deletedAt = rootNode.path("deleted_at").asLong(0);
+                event.deletedAt = recValidPostNode.path("deleted_at").asLong(0);
                 if (event.deletedAt > 0) {
-                    LOG.warn("RecValidPost 'deleted_at' is not zero for id {}: {}", event.id, value);
+                    LOG.error("RecValidPost 'deleted_at' is not zero for id {}: {}", event.id, value);
                     return;
                 }
 
                 // Emit the parsed event
+                LOG.info("RecValidPostEventParser: collect event={}", event.toString());
                 out.collect(event);
 
             } catch (Exception e) {
