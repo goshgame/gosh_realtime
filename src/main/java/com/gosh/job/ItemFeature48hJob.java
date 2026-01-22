@@ -113,8 +113,8 @@ public class ItemFeature48hJob {
                 // 4. Sink 到 Redis
                 RedisConfig redisConfig = RedisConfig.fromProperties(RedisUtil.loadProperties());
                 // TODO: 测试时间一个小时，需要修改
-                // redisConfig.setTtl(7 * 24 * 60 * 60); // TTL 设置为 7 天，略大于 48h
-                redisConfig.setTtl(1 * 60 * 60); // TTL 设置为 1 小时
+                redisConfig.setTtl(7 * 24 * 60 * 60); // TTL 设置为 7 天，略大于 48h
+                // redisConfig.setTtl(1 * 60 * 60); // TTL 设置为 1 小时
 
                 RedisUtil.addRedisSink(
                                 resultStream,
@@ -159,7 +159,7 @@ public class ItemFeature48hJob {
                         if (postStartTime != null && event.timestamp >= postStartTime
                                         && event.timestamp <= postStartTime + WINDOW_SIZE_MS) {
 
-                                LOG.error("processElement1: acc event={}, timestamp={}, postStartTime={}, postEndTime={}",
+                                LOG.info("processElement1: acc event={}, timestamp={}, postStartTime={}, postEndTime={}",
                                                 event.postId, event.timestamp, postStartTime,
                                                 postStartTime + WINDOW_SIZE_MS);
                                 ItemFeatureAccumulator acc = accumulatorState.value();
@@ -182,7 +182,7 @@ public class ItemFeature48hJob {
                         // 更新创建时间
                         long createdAtMillis = event.taggingAt * 1000;
                         postStartTimeState.update(createdAtMillis);
-                        LOG.error("processElement2: postId {} createdAtMillis={}", ctx.getCurrentKey(),
+                        LOG.info("processElement2: postId {} createdAtMillis={}", ctx.getCurrentKey(),
                                         createdAtMillis);
 
                         // 注册 48 小时后的定时器，用于清理状态
@@ -246,7 +246,7 @@ public class ItemFeature48hJob {
                                         .setPostPosinterCnt48H((int) acc.posinterHLL.cardinality());
 
                         out.collect(new Tuple2<>(redisKey, builder.build().toByteArray()));
-                        LOG.error("post 48h emitResult: key={}, value={}", redisKey, builder.build().toString());
+                        LOG.info("post 48h emitResult: key={}, value={}", redisKey, builder.build().toString());
                 }
         }
 
