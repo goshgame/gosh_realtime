@@ -159,14 +159,9 @@ public class ItemFeature48hJob {
                         if (postStartTime != null && event.timestamp >= postStartTime
                                         && event.timestamp <= postStartTime + WINDOW_SIZE_MS) {
 
-                                LOG.error("processElement1: acc event={}", event.postId);
-                                // 确保 postId 匹配，尽管 keyBy 已经保证了这一点，但作为防御性编程
-                                if (!ctx.getCurrentKey().equals(event.postId)) {
-                                        LOG.error("processElement1 Key mismatch: current key {} != event postId {}",
-                                                        ctx.getCurrentKey(),
-                                                        event.postId);
-                                }
-
+                                LOG.error("processElement1: acc event={}, timestamp={}, postStartTime={}, postEndTime={}",
+                                                event.postId, event.timestamp, postStartTime,
+                                                postStartTime + WINDOW_SIZE_MS);
                                 ItemFeatureAccumulator acc = accumulatorState.value();
                                 if (acc == null) {
                                         acc = new ItemFeatureAccumulator();
@@ -176,7 +171,6 @@ public class ItemFeature48hJob {
                                 // 使用通用逻辑累加特征
                                 ItemFeatureCommon.addEventToAccumulator(event, acc);
                                 accumulatorState.update(acc);
-                                LOG.error("processElement1: acc after addEventToAccumulator={}", acc.postId);
                                 emitResult(acc, out);
                         }
                 }
@@ -208,9 +202,10 @@ public class ItemFeature48hJob {
                                 throws Exception {
 
                         Long cleanupTime = cleanupTimerState.value();
-
-                        LOG.error("onTimer: postId {} timestamp={}, cleanupTime={}", ctx.getCurrentKey(),
-                                        timestamp, cleanupTime);
+                        Long postStartTime = postStartTimeState.value();
+                        LOG.error("onTimer: postId {} timestamp={}, cleanupTime={}, postStartTime={}",
+                                        ctx.getCurrentKey(),
+                                        timestamp, cleanupTime, postStartTime);
                         if (cleanupTime != null && timestamp == cleanupTime) {
                                 // EventTime定时器触发，表示48小时窗口结束
                                 LOG.error("onTimer Event time cleanup timer fired for postId {} at {}. Performing final flush and cleanup.",
