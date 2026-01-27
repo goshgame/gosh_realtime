@@ -19,7 +19,8 @@ public class FeastApiTest {
 
     public static void main(String[] args) {
         // testGetToken();
-        testWriteToOnlineStore();
+        // testWriteToOnlineStore();
+        addMultiFeatures();
     }
 
     public static void testGetToken() {
@@ -73,6 +74,33 @@ public class FeastApiTest {
 
         dataList.add(feastData);
 
+        request.setData(dataList);
+        request.setTtl(3600);
+        ApiResponse<Map<String, Object>> response = FeastApi.writeToOnlineStore(request);
+        LOG.info("写入在线存储响应: {}", response.toString());
+    }
+
+    // add multi features
+    public static void addMultiFeatures() {
+        Map<String, FeastRequest.FeatureValue> features = new HashMap<>();
+        FeastApi.addFeature(features, "post_view_cnt_7d", FeastRequest.ValueType.INT64, 100L);
+        FeastApi.addFeature(features, "post_validview_cnt_7d", FeastRequest.ValueType.INT64, 100L);
+        FeastApi.addFeature(features, "post_completeview_cnt_7d", FeastRequest.ValueType.INT64, 100L);
+        FeastApi.addFeature(features, "post_like_cnt_7d", FeastRequest.ValueType.INT64, 100L);
+
+        FeastRequest.FeastData feastData = new FeastRequest.FeastData();
+        FeastRequest.EntityKey entityKey = new FeastRequest.EntityKey();
+        entityKey.setJoinKeys(List.of("item_id"));
+        entityKey.setEntityValues(List.of(499032450000015800L));
+        feastData.setEntityKey(entityKey);
+
+        feastData.setFeatures(features);
+        feastData.setEventTimestamp(1769514248L);
+        FeastRequest request = new FeastRequest();
+        request.setProject("gosh_feature_store");
+        request.setFeatureViewName("post_stats_7d");
+        List<FeastRequest.FeastData> dataList = new ArrayList<>();
+        dataList.add(feastData);
         request.setData(dataList);
         request.setTtl(3600);
         ApiResponse<Map<String, Object>> response = FeastApi.writeToOnlineStore(request);

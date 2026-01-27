@@ -16,3 +16,5 @@ target/*
 
 # 忽略plugins目录
 plugins/
+
+*.log
