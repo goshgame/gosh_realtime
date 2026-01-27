@@ -51,7 +51,7 @@ public class HttpUtil {
             if (response.statusCode() >= 200 && response.statusCode() < 300) {
                 return response.body();
             } else {
-                LOG.warn("HTTP GET failed. URL: {}, Status: {}, Body: {}", url, response.statusCode(), response.body());
+                LOG.error("HTTP GET failed. URL: {}, Status: {}, Body: {}", url, response.statusCode(), response.body());
             }
         } catch (Exception e) {
             LOG.error("HTTP GET error. URL: {}", url, e);
@@ -91,7 +91,7 @@ public class HttpUtil {
             if (response.statusCode() >= 200 && response.statusCode() < 300) {
                 return response.body();
             } else {
-                LOG.warn("HTTP POST failed. URL: {}, Status: {}, Body: {}", url, response.statusCode(),
+                LOG.error("HTTP POST failed. URL: {}, Status: {}, Body: {}", url, response.statusCode(),
                         response.body());
             }
         } catch (Exception e) {
@@ -143,7 +143,7 @@ public class HttpUtil {
             if (response.statusCode() >= 200 && response.statusCode() < 300) {
                 return response.body();
             } else {
-                LOG.warn("HTTP POST failed. URL: {}, Status: {}, Body: {}", url, response.statusCode(),
+                LOG.error("HTTP POST failed. URL: {}, Status: {}, Body: {}", url, response.statusCode(),
                         response.body());
             }
         } catch (Exception e) {

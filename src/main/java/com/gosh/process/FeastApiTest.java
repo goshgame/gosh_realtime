@@ -8,6 +8,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.gosh.entity.ApiResponse;
 import com.gosh.entity.FeastRequest;
 
 /**
@@ -62,19 +63,19 @@ public class FeastApiTest {
         Map<String, FeastRequest.FeatureValue> features = new HashMap<>();
         FeastRequest.FeatureValue postViewCntFeature = new FeastRequest.FeatureValue();
         postViewCntFeature.setValueType(FeastRequest.ValueType.INT64);
-        postViewCntFeature.setInt64Val(99L);
+        postViewCntFeature.setInt64Val(100L);
         features.put("post_view_cnt_7d", postViewCntFeature);
 
         FeastRequest.FeastData feastData = new FeastRequest.FeastData();
         feastData.setEntityKey(entityKey);
         feastData.setFeatures(features);
-        feastData.setEventTimestamp(1769499432L);
+        feastData.setEventTimestamp(1769502221L);
 
         dataList.add(feastData);
 
         request.setData(dataList);
         request.setTtl(3600);
-        String response = FeastApi.writeToOnlineStore(request);
-        LOG.info("写入在线存储响应: {}", response);
+        ApiResponse<Map<String, Object>> response = FeastApi.writeToOnlineStore(request);
+        LOG.info("写入在线存储响应: {}", response.toString());
     }
 }

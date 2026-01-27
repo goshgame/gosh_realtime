@@ -2,6 +2,7 @@ package com.gosh.process;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gosh.entity.ApiResponse;
 import com.gosh.entity.FeastRequest;
 import com.gosh.util.HttpUtil;
 import org.slf4j.Logger;
@@ -48,6 +49,8 @@ public class FeastApi {
             } catch (Exception e) {
                 LOG.error("解析登录响应失败, uid: {}", uid, e);
             }
+        } else {
+            LOG.error("登录响应为空, uid: {}", uid);
         }
         return null;
     }
@@ -72,8 +75,13 @@ public class FeastApi {
         return HttpUtil.post(url, headers, jsonBody);
     }
 
-    // write to online store
-    public static String writeToOnlineStore(FeastRequest request) {
+    /**
+     * 写入在线存储并返回结构化响应
+     * 
+     * @param request Feast 请求体
+     * @return 解析后的 API 响应，包含 code/data/serverTime
+     */
+    public static ApiResponse<Map<String, Object>> writeToOnlineStore(FeastRequest request) {
         String token = getToken(LOGIN_UID);
         if (token == null) {
             LOG.error("获取Token失败, uid: {}", LOGIN_UID);
@@ -95,9 +103,30 @@ public class FeastApi {
 
         try {
             String jsonBody = OBJECT_MAPPER.writeValueAsString(request);
-            return HttpUtil.post(url, headers, jsonBody);
+            String jsonResponse = HttpUtil.post(url, headers, jsonBody);
+
+            if (jsonResponse == null) {
+                LOG.error("API 响应为空");
+                return null;
+            }
+
+            // 关键：解析响应 JSON 为 ApiResponse 对象
+            ApiResponse<Map<String, Object>> response = OBJECT_MAPPER.readValue(
+                    jsonResponse,
+                    OBJECT_MAPPER.getTypeFactory().constructParametricType(
+                            ApiResponse.class,
+                            Map.class));
+
+            if (!response.isSuccess()) {
+                LOG.error("FEAST API 返回错误, code: {}, response: {}", response.getCode(), jsonResponse);
+                return response;
+            }
+
+            LOG.info("FEAST API 请求成功, serverTime: {}", response.getServerTime());
+            return response;
+
         } catch (Exception e) {
-            LOG.error("序列化请求体失败", e);
+            LOG.error("FEAST API 序列化请求体或解析响应失败", e);
             return null;
         }
     }
