@@ -181,7 +181,7 @@ public class ItemFeature1hJob {
         // 第六步：创建sink，Redis环境
         RedisConfig redisConfig = RedisConfig.fromProperties(RedisUtil.loadProperties());
         redisConfig.setTtl(600);
-        RedisUtil.addRedisSink(
+        RedisUtil.addKvRocksSink(
             dataStream,
             redisConfig,
             true, // 异步写入

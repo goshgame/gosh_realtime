@@ -116,7 +116,7 @@ public class ItemFeature48hJob {
                 redisConfig.setTtl(7 * 24 * 60 * 60); // TTL 设置为 7 天，略大于 48h
                 // redisConfig.setTtl(1 * 60 * 60); // TTL 设置为 1 小时
 
-                RedisUtil.addRedisSink(
+                RedisUtil.addKvRocksSink(
                                 resultStream,
                                 redisConfig,
                                 true,

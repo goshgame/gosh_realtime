@@ -70,6 +70,27 @@ public class RedisUtil {
     }
 
     /**
+     * 添加Redis Sink，接收key-value对的Tuple数据流
+     * @param stream 输入数据流（元素类型为Tuple2<String, byte[]>，key-value对）
+     * @param config Redis配置
+     * @param async 是否异步写入
+     * @param batchSize 批量写入大小
+     * @param maxPendingOperations 最大并发操作数，默认10
+     */
+    public static void addKvRocksSink(
+            DataStream<Tuple2<String, byte[]>> stream,
+            RedisConfig config,
+            boolean async,
+            int batchSize,
+            int... maxPendingOperations) {
+        int maxOps = maxPendingOperations.length > 0 ? maxPendingOperations[0] : 10;
+
+        // 双写 kvrocks
+        stream.addSink(new RedisSink<>(getKvRocksConfig(config), async, batchSize, maxOps))
+                .name("KvRocks Sink (Tuple2)");
+    }
+
+    /**
      * 添加Redis Sink，接收key-value对的Tuple数据流（支持设置批处理时间间隔）
      * @param stream 输入数据流（元素类型为Tuple2<String, byte[]>，key-value对）
      * @param config Redis配置
