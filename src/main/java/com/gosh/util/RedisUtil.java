@@ -218,4 +218,12 @@ public class RedisUtil {
         }
         return kvRocksConfig;
     }
+
+    // get kvrocks instance
+    public static RedisConnectionManager getKvRocksInstance() {
+        RedisConfig redisConfig = RedisConfig.fromProperties(RedisUtil.loadProperties());
+        RedisConfig kvRocksConfig = getKvRocksConfig(redisConfig);
+        return RedisConnectionManager.getInstance(kvRocksConfig);
+    }
+
 }

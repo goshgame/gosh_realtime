@@ -244,11 +244,11 @@ public class UserPornLabelJobV3 {
      * 计算色情标签并根据规则决定 key1/key2 的写入
      */
     public static class PornLabelCalculatorV3 extends RichMapFunction<UserNExposures, RedisWriteResult> {
-        private transient RedisConnectionManager redisManager;
+        private transient RedisConnectionManager kvrocks;
 
         @Override
         public void open(Configuration parameters) {
-            redisManager = RedisConnectionManager.getInstance(RedisConfig.fromProperties(RedisUtil.loadProperties()));
+            kvrocks = RedisUtil.getKvRocksInstance();
         }
 
         @Override
@@ -826,7 +826,7 @@ public class UserPornLabelJobV3 {
          */
         private String readLabelFromRedis(String key) {
             try {
-                Tuple2<String, byte[]> tuple = redisManager.getStringCommands().get(key);
+                Tuple2<String, byte[]> tuple = kvrocks.getStringCommands().get(key);
                 if (tuple != null && tuple.f1 != null && tuple.f1.length > 0) {
                     String value = new String(tuple.f1, java.nio.charset.StandardCharsets.UTF_8);
                     // 尝试解析新格式：label|postIdSet|timestamp
@@ -851,7 +851,7 @@ public class UserPornLabelJobV3 {
          */
         private Tuple3<String, Set<Long>, Long> readFullValueFromRedis(String key) {
             try {
-                Tuple2<String, byte[]> tuple = redisManager.getStringCommands().get(key);
+                Tuple2<String, byte[]> tuple = kvrocks.getStringCommands().get(key);
                 if (tuple != null && tuple.f1 != null && tuple.f1.length > 0) {
                     String value = new String(tuple.f1, java.nio.charset.StandardCharsets.UTF_8);
                     // 尝试解析新格式：label|postIdSet|timestamp
@@ -974,11 +974,12 @@ public class UserPornLabelJobV3 {
         private static final int N = 30;  // 保留最近30次
         private static final int CalNum = 2;  // 满足 2 条就
         private transient ListState<Tuple4<List<PostViewInfo>, Long, Long, String>> recentViewEventState;  //
-        private transient RedisConnectionManager redisManager;
+        private transient RedisConnectionManager kvrocks;
 
         @Override
         public void open(Configuration parameters) {
-            redisManager = RedisConnectionManager.getInstance(RedisConfig.fromProperties(RedisUtil.loadProperties()));
+            // 初始化 KvRocks 连接
+            kvrocks = RedisUtil.getKvRocksInstance();
 //            recentViewEventState = getRuntimeContext().getListState(
 //                    new ListStateDescriptor<>("recentViewEvent",
 //                            org.apache.flink.api.common.typeinfo.Types.TUPLE(
@@ -1012,8 +1013,8 @@ public class UserPornLabelJobV3 {
         }
         @Override
         public void close() throws Exception {
-            if (redisManager != null) {
-                redisManager.shutdown();
+            if (kvrocks != null) {
+                kvrocks.shutdown();
             }
             super.close();
         }
@@ -1136,6 +1137,26 @@ public class UserPornLabelJobV3 {
                 }
             }
         }
+        
+        private RedisConfig getKvRocksConfig(RedisConfig config) {
+            com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+            RedisConfig kvRocksConfig = null;
+            try {
+                // 深拷贝
+                kvRocksConfig = mapper.readValue(
+                        mapper.writeValueAsBytes(config),
+                        RedisConfig.class
+                );
+                // 替换为 kvRocks 的 node，其他配置保持不变
+                kvRocksConfig.setClusterNodes(java.util.List.of("kvrocks-prod-internal-nlb-f1afef52de25c89f.elb.ap-southeast-1.amazonaws.com:6666"));
+                kvRocksConfig.setSsl(false);
+                kvRocksConfig.setSslEnabled(false);
+            } catch (java.io.IOException e) {
+                throw new RuntimeException(e);
+            }
+            return kvRocksConfig;
+        }
+        
         String UNK = "unk";
         private CompletableFuture<String> getPostTagFromRedis(long postId) {
             return getPostTagFromRedis(postId, false);
@@ -1149,7 +1170,7 @@ public class UserPornLabelJobV3 {
                 LOG.info("Redis Key: {}", redisKey);
             }
             
-            return redisManager.executeStringAsync(
+            return kvrocks.executeStringAsync(
                     commands -> {
                         try {
                             Tuple2<String, byte[]> tuple = commands.get(redisKey);
