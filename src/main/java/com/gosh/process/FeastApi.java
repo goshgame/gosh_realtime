@@ -16,6 +16,14 @@ public class FeastApi {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     // 简单的内存缓存：uid -> token
     private static final Map<Integer, String> TOKEN_CACHE = new ConcurrentHashMap<>();
+    // test host
+    private static final String TEST_HOST = "https://test-api.gosh0.com";
+    // live host
+    private static final String LIVE_HOST = "https://api.gosh.com";
+    // host
+    private static final String HOST = TEST_HOST;
+    // login uid
+    private static final int LOGIN_UID = 1;
 
     /**
      * 获取用户Token（带缓存）
@@ -45,7 +53,7 @@ public class FeastApi {
     }
 
     public static String mockUserLogin(int uid) {
-        String url = "https://api.gosh.com/gosh_admin/admin/dev/mock_user_login?uid=" + uid
+        String url = HOST + "/gosh_admin/admin/dev/mock_user_login?uid=" + uid
                 + "&did=did-123&lang=en&ctry=in&app=hotya&vsn=3.2.0&ch=google&pf=android&br=redmi&os=Android%2013&mod=21091116c&us=1&seq&adid&gaid&idfa&nw=wifi&ts=1769495283";
 
         Map<String, String> headers = new HashMap<>();
@@ -65,19 +73,19 @@ public class FeastApi {
     }
 
     // write to online store
-    public static String writeToOnlineStore(int uid, FeastRequest request) {
-        String token = getToken(uid);
+    public static String writeToOnlineStore(FeastRequest request) {
+        String token = getToken(LOGIN_UID);
         if (token == null) {
-            LOG.error("获取Token失败, uid: {}", uid);
+            LOG.error("获取Token失败, uid: {}", LOGIN_UID);
             return null;
         }
 
-        String url = "https://test-api.gosh0.com/gosh_features/admin/write_to_online_store?uid=" + uid
+        String url = HOST + "/gosh_features/admin/write_to_online_store?uid=" + LOGIN_UID
                 + "&did=did-123&lang=en&ctry=in&app=hotya&vsn=3.2.0&ch=google&pf=android&br=redmi&os=Android%2013&mod=21091116c&us=1&seq&adid&gaid&idfa&nw=wifi&ts=1769496861";
 
         Map<String, String> headers = new HashMap<>();
         headers.put("Authorization", token);
-        headers.put("uid", String.valueOf(uid));
+        headers.put("uid", String.valueOf(LOGIN_UID));
         headers.put("us", "1");
         headers.put("zmd", "1");
         headers.put("X-Signature", "{{default_sign}}");

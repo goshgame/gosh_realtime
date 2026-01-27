@@ -1,7 +1,14 @@
 package com.gosh.process;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.gosh.entity.FeastRequest;
 
 /**
  * FeastApi 测试类
@@ -10,7 +17,8 @@ public class FeastApiTest {
     private static final Logger LOG = LoggerFactory.getLogger(FeastApiTest.class);
 
     public static void main(String[] args) {
-        testGetToken();
+        // testGetToken();
+        testWriteToOnlineStore();
     }
 
     public static void testGetToken() {
@@ -40,5 +48,33 @@ public class FeastApiTest {
         } else {
             LOG.error("缓存验证失败");
         }
+    }
+
+    public static void testWriteToOnlineStore() {
+        FeastRequest request = new FeastRequest();
+        request.setProject("gosh_feature_store");
+        request.setFeatureViewName("post_stats_7d");
+        List<FeastRequest.FeastData> dataList = new ArrayList<>();
+        FeastRequest.EntityKey entityKey = new FeastRequest.EntityKey();
+        entityKey.setJoinKeys(List.of("item_id"));
+        entityKey.setEntityValues(List.of(399032450000015800L));
+
+        Map<String, FeastRequest.FeatureValue> features = new HashMap<>();
+        FeastRequest.FeatureValue postViewCntFeature = new FeastRequest.FeatureValue();
+        postViewCntFeature.setValueType(FeastRequest.ValueType.INT64);
+        postViewCntFeature.setInt64Val(99L);
+        features.put("post_view_cnt_7d", postViewCntFeature);
+
+        FeastRequest.FeastData feastData = new FeastRequest.FeastData();
+        feastData.setEntityKey(entityKey);
+        feastData.setFeatures(features);
+        feastData.setEventTimestamp(1769499432L);
+
+        dataList.add(feastData);
+
+        request.setData(dataList);
+        request.setTtl(3600);
+        String response = FeastApi.writeToOnlineStore(request);
+        LOG.info("写入在线存储响应: {}", response);
     }
 }
