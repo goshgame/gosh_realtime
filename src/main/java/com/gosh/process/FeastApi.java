@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gosh.entity.ApiResponse;
 import com.gosh.entity.FeastRequest;
+import com.gosh.entity.FeastRequest.FeatureValue;
 import com.gosh.util.HttpUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -129,5 +130,73 @@ public class FeastApi {
             LOG.error("FEAST API 序列化请求体或解析响应失败", e);
             return null;
         }
+    }
+
+    /**
+     * 辅助方法：向features Map中添加一个FeatureValue
+     *
+     * @param features Map of feature name to FeatureValue
+     * @param name     Feature name
+     * @param type     ValueType enum
+     * @param value    Feature value (must match the ValueType)
+     */
+    public static void addFeature(Map<String, FeatureValue> features, String name, FeastRequest.ValueType type,
+            Object value) {
+        FeatureValue featureValue = new FeatureValue();
+        featureValue.setValueType(type);
+        if (value == null) {
+            LOG.warn("Feature '{}': Value is null for type {}, skipping setting specific value.", name, type);
+            features.put(name, featureValue); // Still add with type, but no value
+            return;
+        }
+        switch (type) {
+            case INT64:
+                if (value instanceof Long)
+                    featureValue.setInt64Val((Long) value);
+                else
+                    LOG.warn("Feature '{}': Expected Long for INT64, got {} ({})", name,
+                            value.getClass().getSimpleName(), value);
+                break;
+            case INT32:
+                if (value instanceof Integer)
+                    featureValue.setInt32Val((Integer) value);
+                else
+                    LOG.warn("Feature '{}': Expected Integer for INT32, got {} ({})", name,
+                            value.getClass().getSimpleName(), value);
+                break;
+            case FLOAT32:
+                if (value instanceof Float)
+                    featureValue.setFloat32Val((Float) value);
+                else
+                    LOG.warn("Feature '{}': Expected Float for FLOAT32, got {} ({})", name,
+                            value.getClass().getSimpleName(), value);
+                break;
+            case FLOAT64:
+                if (value instanceof Double)
+                    featureValue.setFloat64Val((Double) value);
+                else
+                    LOG.warn("Feature '{}': Expected Double for FLOAT64, got {} ({})", name,
+                            value.getClass().getSimpleName(), value);
+                break;
+            case STRING:
+                if (value instanceof String)
+                    featureValue.setStringVal((String) value);
+                else
+                    LOG.warn("Feature '{}': Expected String for STRING, got {} ({})", name,
+                            value.getClass().getSimpleName(), value);
+                break;
+            case BOOL:
+                if (value instanceof Boolean)
+                    featureValue.setBoolVal((Boolean) value);
+                else
+                    LOG.warn("Feature '{}': Expected Boolean for BOOL, got {} ({})", name,
+                            value.getClass().getSimpleName(), value);
+                break;
+            // Add other types (slices, bytes) as needed
+            default:
+                LOG.warn("Unsupported Feast FeatureValue type: {} for feature {}", type, name);
+                break;
+        }
+        features.put(name, featureValue);
     }
 }
