@@ -36,9 +36,9 @@ public class RedisConfig implements Serializable {
     private String sslKeyPassword;   // 新增：密钥密码（可能与密钥库密码不同）
 
 
-    private int connectTimeout = 5000; // 连接超时（毫秒），默认5秒
-    private int readTimeout = 3000;    // 读取超时（毫秒），默认3秒
-    private int clusterTopologyTimeout = 10000; // 集群拓扑发现超时（毫秒），默认10秒
+    private int connectTimeout = 30000; // 连接超时（毫秒），默认15秒
+    private int readTimeout = 30000;    // 读取超时（毫秒），默认10秒
+    private int clusterTopologyTimeout = 30000; // 集群拓扑发现超时（毫秒），默认10秒
 
 
     // 序列化配置
@@ -57,7 +57,7 @@ public class RedisConfig implements Serializable {
         this.hostname = "localhost";
         this.port = 6379;
         this.database = 0;
-        this.timeout = 2000;
+        this.timeout = 30000; // 调大超时时间，默认15秒
         this.ssl = true;
         //this.cluster = true;
 
@@ -89,15 +89,15 @@ public class RedisConfig implements Serializable {
         config.keyPattern = props.getProperty("key-pattern", "*");
         config.valueType = props.getProperty("value-type", "string");
         config.command = props.getProperty("command", "SET");
-        config.timeout = Integer.parseInt(props.getProperty("timeout", "2000"));
+        config.timeout = Integer.parseInt(props.getProperty("timeout", "30000"));
         config.ssl = Boolean.parseBoolean(props.getProperty("ssl", "false"));
         //config.cluster = Boolean.parseBoolean(props.getProperty("cluster", "false"));
 
         // 线程池配置
-        config.threadPoolCoreSize = Integer.parseInt(props.getProperty("thread.pool.core.size", "5"));
-        config.threadPoolMaxSize = Integer.parseInt(props.getProperty("thread.pool.max.size", "20"));
-        config.threadPoolKeepAliveTime = Long.parseLong(props.getProperty("thread.pool.keepalive.time", "60"));
-        config.threadPoolQueueCapacity = Integer.parseInt(props.getProperty("thread.pool.queue.capacity", "1000"));
+        config.threadPoolCoreSize = Integer.parseInt(props.getProperty("thread.pool.core.size", "10"));
+        config.threadPoolMaxSize = Integer.parseInt(props.getProperty("thread.pool.max.size", "50"));
+        config.threadPoolKeepAliveTime = Long.parseLong(props.getProperty("thread.pool.keepalive.time", "300"));
+        config.threadPoolQueueCapacity = Integer.parseInt(props.getProperty("thread.pool.queue.capacity", "2000"));
 
         // 2. 集群模式配置
         config.clusterMode = Boolean.parseBoolean(props.getProperty("redis.cluster.mode", "false"));
@@ -123,9 +123,9 @@ public class RedisConfig implements Serializable {
         config.sslKeyStorePassword = props.getProperty("redis.ssl.keyStorePassword");
         config.sslKeyPassword = props.getProperty("redis.ssl.keyPassword");
 
-        config.connectTimeout = Integer.parseInt(props.getProperty("redis.connect.timeout", "5000"));
-        config.readTimeout = Integer.parseInt(props.getProperty("redis.read.timeout", "3000"));
-        config.clusterTopologyTimeout = Integer.parseInt(props.getProperty("redis.cluster.topology.timeout", "10000"));
+        config.connectTimeout = Integer.parseInt(props.getProperty("redis.connect.timeout", "30000"));
+        config.readTimeout = Integer.parseInt(props.getProperty("redis.read.timeout", "30000"));
+        config.clusterTopologyTimeout = Integer.parseInt(props.getProperty("redis.cluster.topology.timeout", "30000"));
 
 
         config.ttl = Integer.parseInt(props.getProperty("ttl", "3600"));
