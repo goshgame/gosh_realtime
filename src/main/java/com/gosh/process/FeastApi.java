@@ -2,6 +2,7 @@ package com.gosh.process;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gosh.entity.FeastRequest;
 import com.gosh.util.HttpUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,11 +58,39 @@ public class FeastApi {
         headers.put("User-Agent", "Apifox/1.0.0 (https://apifox.com)");
         headers.put("Content-Type", "application/json");
         headers.put("Accept", "*/*");
-        headers.put("Host", "api.gosh.com");
-        headers.put("Connection", "keep-alive");
 
         String jsonBody = "{\"id\": " + uid + "}";
 
         return HttpUtil.post(url, headers, jsonBody);
+    }
+
+    // write to online store
+    public static String writeToOnlineStore(int uid, FeastRequest request) {
+        String token = getToken(uid);
+        if (token == null) {
+            LOG.error("获取Token失败, uid: {}", uid);
+            return null;
+        }
+
+        String url = "https://test-api.gosh0.com/gosh_features/admin/write_to_online_store?uid=" + uid
+                + "&did=did-123&lang=en&ctry=in&app=hotya&vsn=3.2.0&ch=google&pf=android&br=redmi&os=Android%2013&mod=21091116c&us=1&seq&adid&gaid&idfa&nw=wifi&ts=1769496861";
+
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization", token);
+        headers.put("uid", String.valueOf(uid));
+        headers.put("us", "1");
+        headers.put("zmd", "1");
+        headers.put("X-Signature", "{{default_sign}}");
+        headers.put("User-Agent", "Apifox/1.0.0 (https://apifox.com)");
+        headers.put("Content-Type", "application/json");
+        headers.put("Accept", "*/*");
+
+        try {
+            String jsonBody = OBJECT_MAPPER.writeValueAsString(request);
+            return HttpUtil.post(url, headers, jsonBody);
+        } catch (Exception e) {
+            LOG.error("序列化请求体失败", e);
+            return null;
+        }
     }
 }
