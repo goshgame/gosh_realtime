@@ -208,7 +208,7 @@ public class UserPornLabelJob {
 
         @Override
         public void open(Configuration parameters) {
-            redisManager = RedisConnectionManager.getInstance(RedisConfig.fromProperties(RedisUtil.loadProperties()));
+            redisManager = RedisUtil.getKvRocksInstance();
 //            recentViewEventState = getRuntimeContext().getListState(
 //                    new ListStateDescriptor<>("recentViewEvent",
 //                            org.apache.flink.api.common.typeinfo.Types.TUPLE(
