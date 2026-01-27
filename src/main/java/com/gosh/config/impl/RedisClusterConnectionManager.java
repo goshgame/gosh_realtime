@@ -478,6 +478,14 @@ public class RedisClusterConnectionManager implements RedisConnectionManager, Se
             connectionRetryCount++;
             // 当重试次数超过限制时才抛出异常，否则允许继续重试
             checkRetryLimitAndThrowIfNeeded(e);
+            // 连接失败时，延迟5秒后再重试
+            try {
+                LOG.info("Sleeping for 5 seconds before retry...");
+                Thread.sleep(5000);
+            } catch (InterruptedException ie) {
+                Thread.currentThread().interrupt();
+                LOG.warn("Sleep interrupted", ie);
+            }
         }
     }
 }
