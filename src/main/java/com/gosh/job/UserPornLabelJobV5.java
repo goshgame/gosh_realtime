@@ -8,6 +8,7 @@ import com.gosh.job.UserFeatureCommon.ViewEventParser;
 import com.gosh.util.EventFilterUtil;
 import com.gosh.util.FlinkEnvUtil;
 import com.gosh.util.KafkaEnvUtil;
+import com.gosh.util.MySQLUtil;
 import com.gosh.util.RedisUtil;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.functions.RichMapFunction;
@@ -32,11 +33,16 @@ import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * UserPornLabelJobV5
@@ -166,6 +172,118 @@ public class UserPornLabelJobV5 {
         }
     }
 
+    /**
+     * MySQL 用户类型解析器（带本地缓存，1小时 TTL）
+     *
+     * 从 MySQL 的 post_user_setting 表查询 zone_mode_type：
+     * - zone_mode_type=1 → ZONE_USER（有专区）
+     * - zone_mode_type=2 → BLOCK_ZONE_USER（关闭专区）
+     * - zone_mode_type=0 或不在表中 → NO_ZONE_USER（未创建专区）
+     */
+    public static class MySQLUserTypeResolver implements UserTypeResolver {
+        private static final String DS_NAME = "db2";  // 数据源名称
+        private static final String DB_NAME = "gosh_social";  // 数据库名称
+        private static final String QUERY_SQL = "SELECT zone_mode_type FROM post_user_setting WHERE uid = ? LIMIT 1";
+        private static final long CACHE_TTL_MS = 3600 * 1000L;  // 1小时缓存
+
+        // 本地缓存：uid -> (userType, expireTime)
+        private final Map<Long, CacheEntry> cache = new ConcurrentHashMap<>();
+        private static final int MAX_CACHE_SIZE = 100000;  // 最大缓存条目数（防止内存溢出）
+        private volatile long lastCleanupTime = 0L;
+        private static final long CLEANUP_INTERVAL_MS = 300000L;  // 每5分钟清理一次过期缓存
+
+        @Override
+        public UserTypeV5 resolve(long uid, RedisConnectionManager redis) {
+            long now = System.currentTimeMillis();
+            
+            // 1. 先查缓存
+            CacheEntry cached = cache.get(uid);
+            if (cached != null && cached.expireTime > now) {
+                // 缓存命中，定期清理过期缓存（避免频繁清理）
+                if (now - lastCleanupTime > CLEANUP_INTERVAL_MS) {
+                    cleanupExpiredCache(now);
+                    lastCleanupTime = now;
+                }
+                return cached.userType;
+            }
+
+            // 2. 缓存未命中或过期，查询 MySQL
+            UserTypeV5 userType = queryFromMySQL(uid);
+
+            // 3. 更新缓存（如果缓存未满或已过期可替换）
+            if (cache.size() < MAX_CACHE_SIZE || cached != null) {
+                cache.put(uid, new CacheEntry(userType, now + CACHE_TTL_MS));
+            } else if (cache.size() >= MAX_CACHE_SIZE) {
+                // 缓存已满且不是替换过期项，先清理过期缓存再尝试添加
+                cleanupExpiredCache(now);
+                if (cache.size() < MAX_CACHE_SIZE) {
+                    cache.put(uid, new CacheEntry(userType, now + CACHE_TTL_MS));
+                }
+            }
+
+            // 4. 定期清理过期缓存
+            if (now - lastCleanupTime > CLEANUP_INTERVAL_MS) {
+                cleanupExpiredCache(now);
+                lastCleanupTime = now;
+            }
+
+            return userType;
+        }
+
+        /**
+         * 从 MySQL 查询用户专区类型
+         */
+        private UserTypeV5 queryFromMySQL(long uid) {
+            try (Connection conn = MySQLUtil.getConnection(DS_NAME, DB_NAME);
+                 PreparedStatement stmt = conn.prepareStatement(QUERY_SQL)) {
+                
+                stmt.setLong(1, uid);
+                try (ResultSet rs = stmt.executeQuery()) {
+                    if (rs.next()) {
+                        int zoneModeType = rs.getInt("zone_mode_type");
+                        // zone_mode_type=1 → ZONE_USER（有专区）
+                        if (zoneModeType == 1) {
+                            return UserTypeV5.ZONE_USER;
+                        }
+                        // zone_mode_type=2 → BLOCK_ZONE_USER（关闭专区）
+                        if (zoneModeType == 2) {
+                            return UserTypeV5.BLOCK_ZONE_USER;
+                        }
+                        // zone_mode_type=0 或其他值 → NO_ZONE_USER（未创建专区）
+                        return UserTypeV5.NO_ZONE_USER;
+                    } else {
+                        // 不在表中 → NO_ZONE_USER（未创建专区）
+                        return UserTypeV5.NO_ZONE_USER;
+                    }
+                }
+            } catch (SQLException | ClassNotFoundException e) {
+                LOG.warn("[MySQLUserTypeResolver] 查询用户专区类型失败, uid={}, err={}", uid, e.getMessage());
+                // 查询失败时返回 UNKNOWN，让上层降级处理
+                return UserTypeV5.UNKNOWN;
+            }
+        }
+
+        /**
+         * 清理过期缓存
+         */
+        private void cleanupExpiredCache(long now) {
+            cache.entrySet().removeIf(entry -> entry.getValue().expireTime <= now);
+        }
+
+        /**
+         * 缓存条目
+         */
+        private static class CacheEntry implements Serializable {
+            final UserTypeV5 userType;
+            final long expireTime;
+
+            CacheEntry(UserTypeV5 userType, long expireTime) {
+                this.userType = userType;
+                this.expireTime = expireTime;
+            }
+        }
+    }
+
     // =========================
     // 5) Flink Job 主流程（复用 V3 的 RecentNExposures + 聚合逻辑）
     // =========================
@@ -195,8 +313,9 @@ public class UserPornLabelJobV5 {
                 .process(new RecentNExposures())
                 .name("recent-exposure-statistics-v5");
 
+        // 使用 MySQL 用户类型解析器（带1小时本地缓存）
         DataStream<StateUpdateResult> updateResultStream = recentStats
-                .map(new PornStateCalculatorV5(new RedisFirstUserTypeResolver()))
+                .map(new PornStateCalculatorV5(new MySQLUserTypeResolver()))
                 .name("calc-porn-state-v5");
 
         DataStream<Tuple2<String, byte[]>> kvStream = updateResultStream
