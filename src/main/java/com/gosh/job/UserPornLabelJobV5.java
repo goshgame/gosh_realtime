@@ -1,16 +1,18 @@
 package com.gosh.job;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gosh.config.RedisConfig;
 import com.gosh.config.RedisConnectionManager;
 import com.gosh.job.UserFeatureCommon.PostViewEvent;
 import com.gosh.job.UserFeatureCommon.PostViewInfo;
-import com.gosh.job.UserFeatureCommon.ViewEventParser;
 import com.gosh.util.EventFilterUtil;
 import com.gosh.util.FlinkEnvUtil;
 import com.gosh.util.KafkaEnvUtil;
 import com.gosh.util.MySQLUtil;
 import com.gosh.util.RedisUtil;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.functions.RichMapFunction;
 import org.apache.flink.api.common.state.ListState;
 import org.apache.flink.api.common.state.ListStateDescriptor;
@@ -37,7 +39,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -61,6 +62,23 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class UserPornLabelJobV5 {
     private static final Logger LOG = LoggerFactory.getLogger(UserPornLabelJobV5.class);
+
+    // 监控白名单用户（只对这些 uid 打详细日志）
+    private static final Set<Long> MONITORED_UIDS = new HashSet<>(Arrays.asList(
+            110191L, 10000086L, 10000214L, 10000970L, 10001052L, 10001063L,
+            10284668L, 10287287L, 10287385L, 10321482L, 10323172L, 10327349L,
+            10385628L, 10509837L, 10585140L, 10636698L, 10638032L, 10771311L,
+            11043734L, 11075974L, 11487816L, 11638815L, 11675486L, 11748695L,
+            11768495L, 11933458L, 12103877L, 12214871L, 12217124L, 12255049L,
+            12576879L, 12710246L, 12887277L, 13120233L, 13131686L, 13149764L,
+            13180151L, 13242700L, 13337443L, 13372756L, 13374748L, 13659161L,
+            13661418L, 13674458L, 13747623L, 13772042L, 13772354L, 13777984L,
+            13794682L, 14550456L, 14601257L
+    ));
+
+    private static boolean isMonitored(long uid) {
+        return MONITORED_UIDS.contains(uid);
+    }
 
     // =========================
     // 1) V5 Redis Keys（拆分存储，便于线上按 key 做分发）
@@ -135,6 +153,452 @@ public class UserPornLabelJobV5 {
     }
 
     // =========================
+    // 4) 埋点事件定义（本作业内独立实现，不再依赖其他 Job）
+    // =========================
+
+    // 事件类型常量（与 RecUserPostFeatureLatestJob 保持一致）
+    private static final String EVENT_POST_EXPOSURE = "postExposure";
+    private static final String EVENT_VIDEO_PLAY_DURATION = "videoPlayDuration";
+    private static final String EVENT_IMAGE_PLAY = "imagePlay";
+    private static final String EVENT_VIDEO_PLAY_COMPLETE = "videoPlayComplete";
+    private static final String EVENT_POST_LIKE = "postLikeButtonClicked";
+    private static final String EVENT_POST_COMMENT = "postCommentSucceed";
+    private static final String EVENT_POST_SHARE = "postShare";
+    private static final String EVENT_POST_FOLLOW = "postFollow";
+    private static final String EVENT_COLLECT = "collect_page_click";
+    private static final String EVENT_POST_CLICK_NICKNAME = "postClickNickname";
+    private static final String EVENT_POST_SWIPE_RIGHT = "postSwipeRight";
+    private static final String EVENT_POST_CLICK_AVATAR = "postClickAvatar";
+    private static final String EVENT_POST_REPORT = "postReportClick";
+    private static final String EVENT_POST_UNINTERESTED = "postUninterestedClick";
+    private static final String EVENT_POST_PAID = "post_paid_unlock_entry_show";
+    private static final String EVENT_PROMPT_NO = "prompt_recommendation_click_no";
+
+    /**
+     * Post 埋点事件基础类（与 RecUserPostFeatureLatestJob.PostEvent 对齐）
+     */
+    public static class PostEvent {
+        public String eventType;
+        public long uid;
+        public long postId;
+        public long authorId;
+        public String recToken;
+        public int exposedPos;
+        public long eventTime;
+
+        // 视频/图片相关字段
+        public double postLength;
+        public double standingTime;
+        public double progressTime;
+        public double playbackTime;
+
+        // 行为标志
+        public boolean isLike;
+        public boolean isComment;
+        public boolean isShare;
+        public boolean isFollow;
+        public boolean isProfile;
+        public boolean isPay;
+        public boolean isFavor;
+        public boolean isReport;
+        public boolean isNotInterest;
+        public boolean isCompletePlay;
+    }
+
+    /**
+     * 事件解析器：从 event_post Kafka 日志解析出所有 Post 相关事件
+     */
+    public static class PostEventParser implements FlatMapFunction<String, PostEvent> {
+        private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
+        @Override
+        public void flatMap(String value, Collector<PostEvent> out) throws Exception {
+            if (value == null || value.isEmpty()) {
+                return;
+            }
+            try {
+                JsonNode root = OBJECT_MAPPER.readTree(value);
+
+                // 获取 user_event_log 对象
+                JsonNode userEventLog = root.path("user_event_log");
+                if (userEventLog.isMissingNode()) {
+                    return;
+                }
+
+                // 获取事件类型
+                JsonNode eventNode = userEventLog.path("event");
+                if (eventNode.isMissingNode() || !eventNode.isTextual()) {
+                    return;
+                }
+                String event = eventNode.asText();
+
+                // 只处理 post 相关事件
+                if (!isPostEvent(event)) {
+                    return;
+                }
+
+                // 获取 event_data 字段
+                JsonNode eventDataNode = userEventLog.path("event_data");
+                if (eventDataNode.isMissingNode() || !eventDataNode.isTextual()) {
+                    return;
+                }
+
+                String eventData = eventDataNode.asText();
+                if (eventData == null || eventData.isEmpty() || "null".equalsIgnoreCase(eventData)) {
+                    return;
+                }
+
+                // 解析 event_data 的 JSON 内容
+                JsonNode data = OBJECT_MAPPER.readTree(eventData);
+
+                // 提取时间戳
+                long eventTimeMillis = System.currentTimeMillis();
+                if (userEventLog.has("timestamp")) {
+                    eventTimeMillis = userEventLog.get("timestamp").asLong(eventTimeMillis);
+                }
+
+                // 根据不同事件类型解析（PostEventParser 内部仍按 data.userId 取 userId）
+                parseEvent(event, data, eventTimeMillis, out);
+
+            } catch (Exception e) {
+                // 静默处理异常，避免影响主流程
+            }
+        }
+
+        private boolean isPostEvent(String event) {
+            return EVENT_POST_EXPOSURE.equals(event) ||
+                    EVENT_VIDEO_PLAY_DURATION.equals(event) ||
+                    EVENT_IMAGE_PLAY.equals(event) ||
+                    EVENT_VIDEO_PLAY_COMPLETE.equals(event) ||
+                    EVENT_POST_LIKE.equals(event) ||
+                    EVENT_POST_COMMENT.equals(event) ||
+                    EVENT_POST_SHARE.equals(event) ||
+                    EVENT_POST_FOLLOW.equals(event) ||
+                    EVENT_COLLECT.equals(event) ||
+                    EVENT_POST_CLICK_NICKNAME.equals(event) ||
+                    EVENT_POST_SWIPE_RIGHT.equals(event) ||
+                    EVENT_POST_CLICK_AVATAR.equals(event) ||
+                    EVENT_POST_REPORT.equals(event) ||
+                    EVENT_POST_UNINTERESTED.equals(event) ||
+                    EVENT_POST_PAID.equals(event);
+        }
+
+        private void parseEvent(String eventType, JsonNode data, long eventTime, Collector<PostEvent> out) {
+            if (EVENT_POST_EXPOSURE.equals(eventType)) {
+                parsePostExposure(data, eventTime, out);
+            } else if (EVENT_VIDEO_PLAY_DURATION.equals(eventType)) {
+                parseVideoPlayDuration(data, eventTime, out);
+            } else if (EVENT_IMAGE_PLAY.equals(eventType)) {
+                parseImagePlay(data, eventTime, out);
+            } else if (EVENT_VIDEO_PLAY_COMPLETE.equals(eventType)) {
+                parseVideoPlayComplete(data, eventTime, out);
+            } else if (EVENT_POST_LIKE.equals(eventType)) {
+                parsePostLike(data, eventTime, out);
+            } else if (EVENT_POST_COMMENT.equals(eventType)) {
+                parsePostComment(data, eventTime, out);
+            } else if (EVENT_POST_SHARE.equals(eventType)) {
+                parsePostShare(data, eventTime, out);
+            } else if (EVENT_POST_FOLLOW.equals(eventType)) {
+                parsePostFollow(data, eventTime, out);
+            } else if (EVENT_COLLECT.equals(eventType)) {
+                parseCollect(data, eventTime, out);
+            } else if (EVENT_POST_CLICK_NICKNAME.equals(eventType) ||
+                    EVENT_POST_SWIPE_RIGHT.equals(eventType) ||
+                    EVENT_POST_CLICK_AVATAR.equals(eventType)) {
+                parsePostProfile(data, eventTime, out);
+            } else if (EVENT_POST_REPORT.equals(eventType)) {
+                parsePostReport(data, eventTime, out);
+            } else if (EVENT_POST_UNINTERESTED.equals(eventType)) {
+                parsePostUninterested(data, eventTime, out);
+            } else if (EVENT_POST_PAID.equals(eventType)) {
+                parsePostPaid(data, eventTime, out);
+            }
+        }
+
+        private void parsePostExposure(JsonNode data, long eventTime, Collector<PostEvent> out) {
+            JsonNode posts = data.path("posts");
+            if (!posts.isArray()) {
+                return;
+            }
+
+            long userId = data.path("userId").asLong(0);
+            if (userId <= 0) {
+                return;
+            }
+
+            for (JsonNode post : posts) {
+                long postId = parsePostId(post.path("post_id").asText(""));
+                int itemType = post.path("item_type").asInt(0);
+                int postType = post.path("post_type").asInt(0);
+                int exposedPos = post.path("exposed_pos").asInt(0);
+
+                // 过滤条件：item_type=1 and post_type in(1,2) and exposed_pos=2
+                if (itemType != 1 || (postType != 1 && postType != 2) || exposedPos != 2) {
+                    continue;
+                }
+
+                String recToken = post.path("rec_token").asText("");
+                if (recToken == null || recToken.isEmpty()) {
+                    continue;
+                }
+
+                PostEvent evt = new PostEvent();
+                evt.eventType = EVENT_POST_EXPOSURE;
+                evt.uid = userId;
+                evt.postId = postId;
+                evt.authorId = 0; // 曝光事件没有 author_id
+                evt.recToken = recToken;
+                evt.exposedPos = exposedPos;
+                evt.eventTime = eventTime;
+                evt.postLength = post.path("length").asDouble(0);
+
+                out.collect(evt);
+            }
+        }
+
+        private void parseVideoPlayDuration(JsonNode data, long eventTime, Collector<PostEvent> out) {
+            JsonNode list = data.path("list");
+            if (!list.isArray()) {
+                return;
+            }
+
+            long userId = data.path("userId").asLong(0);
+            if (userId <= 0) {
+                return;
+            }
+
+            for (JsonNode item : list) {
+                long postId = parsePostId(item.path("post_id").asText(""));
+                int itemType = item.path("item_type").asInt(0);
+                int postType = item.path("post_type").asInt(0);
+                int exposedPos = item.path("exposed_pos").asInt(0);
+
+                if (itemType != 1 || (postType != 1 && postType != 2) || exposedPos != 2) {
+                    continue;
+                }
+
+                String recToken = item.path("rec_token").asText("");
+                if (recToken == null || recToken.isEmpty()) {
+                    continue;
+                }
+
+                PostEvent evt = new PostEvent();
+                evt.eventType = EVENT_VIDEO_PLAY_DURATION;
+                evt.uid = userId;
+                evt.postId = postId;
+                evt.authorId = item.path("author").asLong(0);
+                evt.recToken = recToken;
+                evt.exposedPos = exposedPos;
+                evt.eventTime = eventTime;
+                evt.postLength = item.path("length").asDouble(0);
+                evt.standingTime = item.path("standing_time").asDouble(0);
+                evt.progressTime = item.path("progress_time").asDouble(0);
+                evt.playbackTime = item.path("playback_time").asDouble(0);
+
+                out.collect(evt);
+            }
+        }
+
+        private void parseImagePlay(JsonNode data, long eventTime, Collector<PostEvent> out) {
+            JsonNode list = data.path("list");
+            if (!list.isArray()) {
+                return;
+            }
+
+            long userId = data.path("userId").asLong(0);
+            if (userId <= 0) {
+                return;
+            }
+
+            for (JsonNode item : list) {
+                long postId = parsePostId(item.path("post_id").asText(""));
+                int itemType = item.path("item_type").asInt(0);
+                int postType = item.path("post_type").asInt(0);
+                int exposedPos = item.path("exposed_pos").asInt(0);
+
+                if (itemType != 1 || (postType != 1 && postType != 2) || exposedPos != 2) {
+                    continue;
+                }
+
+                String recToken = item.path("rec_token").asText("");
+                if (recToken == null || recToken.isEmpty()) {
+                    continue;
+                }
+
+                PostEvent evt = new PostEvent();
+                evt.eventType = EVENT_IMAGE_PLAY;
+                evt.uid = userId;
+                evt.postId = postId;
+                evt.authorId = item.path("author").asLong(0);
+                evt.recToken = recToken;
+                evt.exposedPos = exposedPos;
+                evt.eventTime = eventTime;
+                evt.postLength = item.path("length").asDouble(0);
+                evt.standingTime = item.path("standing_time").asDouble(0);
+                evt.progressTime = item.path("progress_time").asDouble(0);
+
+                out.collect(evt);
+            }
+        }
+
+        private void parseVideoPlayComplete(JsonNode data, long eventTime, Collector<PostEvent> out) {
+            long postId = parsePostId(data.path("post_id").asText(""));
+            long userId = data.path("userId").asLong(0);
+            int itemType = data.path("item_type").asInt(0);
+            int postType = data.path("post_type").asInt(0);
+            int exposedPos = data.path("exposed_pos").asInt(0);
+
+            if (postId <= 0 || userId <= 0 || itemType != 1 || (postType != 1 && postType != 2) || exposedPos != 2) {
+                return;
+            }
+
+            String recToken = data.path("rec_token").asText("");
+            if (recToken == null || recToken.isEmpty()) {
+                return;
+            }
+
+            PostEvent evt = new PostEvent();
+            evt.eventType = EVENT_VIDEO_PLAY_COMPLETE;
+            evt.uid = userId;
+            evt.postId = postId;
+            evt.authorId = data.path("author_id").asLong(0);
+            evt.recToken = recToken;
+            evt.exposedPos = exposedPos;
+            evt.eventTime = eventTime;
+            evt.isCompletePlay = true;
+
+            out.collect(evt);
+        }
+
+        private void parsePostLike(JsonNode data, long eventTime, Collector<PostEvent> out) {
+            parseSimpleAction(data, eventTime, EVENT_POST_LIKE, out, (evt) -> {
+                String action = data.path("action").asText("");
+                evt.isLike = !"unlike".equals(action);
+            });
+        }
+
+        private void parsePostComment(JsonNode data, long eventTime, Collector<PostEvent> out) {
+            parseSimpleAction(data, eventTime, EVENT_POST_COMMENT, out, (evt) -> evt.isComment = true);
+        }
+
+        private void parsePostShare(JsonNode data, long eventTime, Collector<PostEvent> out) {
+            parseSimpleAction(data, eventTime, EVENT_POST_SHARE, out, (evt) -> evt.isShare = true);
+        }
+
+        private void parsePostFollow(JsonNode data, long eventTime, Collector<PostEvent> out) {
+            parseSimpleAction(data, eventTime, EVENT_POST_FOLLOW, out, (evt) -> evt.isFollow = true);
+        }
+
+        private void parseCollect(JsonNode data, long eventTime, Collector<PostEvent> out) {
+            long source = data.path("source").asLong(0);
+            long userId = data.path("userId").asLong(0);
+            int actionType = data.path("action_type").asInt(0);
+
+            if (source <= 0 || userId <= 0 || actionType != 1) { // 只要收藏的
+                return;
+            }
+
+            PostEvent evt = new PostEvent();
+            evt.eventType = EVENT_COLLECT;
+            evt.uid = userId;
+            evt.postId = source;
+            evt.authorId = 0;
+            evt.recToken = "";
+            evt.exposedPos = 0;
+            evt.eventTime = eventTime;
+            evt.isFavor = true;
+
+            out.collect(evt);
+        }
+
+        private void parsePostProfile(JsonNode data, long eventTime, Collector<PostEvent> out) {
+            parseSimpleAction(data, eventTime, EVENT_POST_CLICK_NICKNAME, out, (evt) -> evt.isProfile = true);
+        }
+
+        private void parsePostReport(JsonNode data, long eventTime, Collector<PostEvent> out) {
+            parseSimpleAction(data, eventTime, EVENT_POST_REPORT, out, (evt) -> evt.isReport = true);
+        }
+
+        private void parsePostUninterested(JsonNode data, long eventTime, Collector<PostEvent> out) {
+            parseSimpleAction(data, eventTime, EVENT_POST_UNINTERESTED, out, (evt) -> evt.isNotInterest = true);
+        }
+
+        private void parsePostPaid(JsonNode data, long eventTime, Collector<PostEvent> out) {
+            parseSimpleAction(data, eventTime, EVENT_POST_PAID, out, (evt) -> evt.isPay = true);
+        }
+
+        private void parseSimpleAction(JsonNode data, long eventTime, String eventType,
+                                       Collector<PostEvent> out, java.util.function.Consumer<PostEvent> setter) {
+            long postId = parsePostId(data.path("post_id").asText(""));
+            long userId = data.path("userId").asLong(0);
+            int itemType = data.path("item_type").asInt(0);
+            int postType = data.path("post_type").asInt(0);
+            int exposedPos = data.path("exposed_pos").asInt(0);
+
+            if (postId <= 0 || userId <= 0 || itemType != 1 || (postType != 1 && postType != 2) || exposedPos != 2) {
+                return;
+            }
+
+            String recToken = data.path("rec_token").asText("");
+            if (recToken == null || recToken.isEmpty()) {
+                return;
+            }
+
+            PostEvent evt = new PostEvent();
+            evt.eventType = eventType;
+            evt.uid = userId;
+            evt.postId = postId;
+            evt.authorId = data.path("author_id").asLong(0);
+            evt.recToken = recToken;
+            evt.exposedPos = exposedPos;
+            evt.eventTime = eventTime;
+            setter.accept(evt);
+
+            out.collect(evt);
+        }
+
+        private long parsePostId(String postIdStr) {
+            try {
+                return Long.parseLong(postIdStr);
+            } catch (NumberFormatException e) {
+                return 0;
+            }
+        }
+    }
+
+    /**
+     * 从埋点 JSON 中抽取用户 ID 的辅助方法：
+     * 1. 优先从 user_event_log.uid 获取（与你提供的示例结构保持一致）
+     * 2. 兜底从 event_data.userId 获取（兼容其他埋点格式，支持字符串或数值）
+     */
+    private static long extractUserId(JsonNode userEventLog, JsonNode data) {
+        if (userEventLog != null && !userEventLog.isMissingNode()) {
+            JsonNode uidNode = userEventLog.path("uid");
+            if (!uidNode.isMissingNode()) {
+                long uidVal = uidNode.asLong(0);
+                if (uidVal > 0) {
+                    return uidVal;
+                }
+            }
+        }
+        if (data == null || data.isMissingNode()) {
+            return 0;
+        }
+        JsonNode userIdNode = data.path("userId");
+        if (userIdNode.isMissingNode()) {
+            return 0;
+        }
+        if (userIdNode.isTextual()) {
+            try {
+                return Long.parseLong(userIdNode.asText("0"));
+            } catch (NumberFormatException e) {
+                return 0;
+            }
+        }
+        return userIdNode.asLong(0);
+    }
+
+    // =========================
     // 4) 可插拔用户类型判定接口（留给你接线上 Redis/MySQL）
     // =========================
     public interface UserTypeResolver extends Serializable {
@@ -199,6 +663,9 @@ public class UserPornLabelJobV5 {
             // 1. 先查缓存
             CacheEntry cached = cache.get(uid);
             if (cached != null && cached.expireTime > now) {
+                if (isMonitored(uid)) {
+                    LOG.info("[PornStateV5][MySQLUserType] cache hit: uid={}, userType={}", uid, cached.userType);
+                }
                 // 缓存命中，定期清理过期缓存（避免频繁清理）
                 if (now - lastCleanupTime > CLEANUP_INTERVAL_MS) {
                     cleanupExpiredCache(now);
@@ -209,6 +676,9 @@ public class UserPornLabelJobV5 {
 
             // 2. 缓存未命中或过期，查询 MySQL
             UserTypeV5 userType = queryFromMySQL(uid);
+            if (isMonitored(uid)) {
+                LOG.info("[PornStateV5][MySQLUserType] mysql query: uid={}, userType={}", uid, userType);
+            }
 
             // 3. 更新缓存（如果缓存未满或已过期可替换）
             if (cache.size() < MAX_CACHE_SIZE || cached != null) {
@@ -241,6 +711,9 @@ public class UserPornLabelJobV5 {
                 try (ResultSet rs = stmt.executeQuery()) {
                     if (rs.next()) {
                         int zoneModeType = rs.getInt("zone_mode_type");
+                        if (isMonitored(uid)) {
+                            LOG.info("[PornStateV5][MySQLUserType] mysql row: uid={}, zone_mode_type={}", uid, zoneModeType);
+                        }
                         // zone_mode_type=1 → ZONE_USER（有专区）
                         if (zoneModeType == 1) {
                             return UserTypeV5.ZONE_USER;
@@ -292,21 +765,38 @@ public class UserPornLabelJobV5 {
 
         Properties kafkaProperties = KafkaEnvUtil.loadProperties();
         kafkaProperties.setProperty("group.id", KAFKA_GROUP_ID);
-        KafkaSource<String> kafkaSource = KafkaEnvUtil.createKafkaSource(kafkaProperties, "post");
+        // 使用与 RecUserPostFeatureLatestJob 相同的埋点 topic：event_post
+        KafkaSource<String> kafkaSource = KafkaEnvUtil.createKafkaSource(kafkaProperties, "event_post");
 
         DataStreamSource<String> kafkaStream = env.fromSource(
                 kafkaSource,
-                WatermarkStrategy.forBoundedOutOfOrderness(Duration.ofSeconds(5)),
+                WatermarkStrategy.noWatermarks(),
                 "Kafka Source"
         );
 
+        // 只保留 event_type = 1 的埋点事件
         DataStream<String> filteredStream = kafkaStream
-                .filter(EventFilterUtil.createFastEventTypeFilter(8))
-                .name("Pre-filter View Events");
+                .filter(EventFilterUtil.createFastEventTypeFilter(1))
+                .name("Pre-filter Post Events (event_type=1)");
 
-        SingleOutputStreamOperator<PostViewEvent> viewStream = filteredStream
-                .flatMap(new ViewEventParser())
-                .name("Parse View Events");
+        // 解析事件埋点为 PostEvent（本文件内定义）
+        SingleOutputStreamOperator<PostEvent> basePostEventStream = filteredStream
+                .flatMap(new PostEventParser())
+                .name("Parse Post Events (base)");
+
+        // 额外解析 prompt_recommendation_click_no 试探弹窗否定事件，补充为负反馈
+        SingleOutputStreamOperator<PostEvent> promptNoStream = filteredStream
+                .flatMap(new PromptNoEventParser())
+                .name("Parse Prompt Recommendation No Events");
+
+        // 合并两路 PostEvent 流
+        DataStream<PostEvent> postEventStream = basePostEventStream
+                .union(promptNoStream);
+
+        // 将 PostEvent 映射为 V5 内部使用的 PostViewEvent/PostViewInfo，便于复用 V3 的聚合与判定逻辑
+        SingleOutputStreamOperator<PostViewEvent> viewStream = postEventStream
+                .flatMap(new PostEventToViewEventMapper())
+                .name("PostEvent -> PostViewEvent Mapper");
 
         SingleOutputStreamOperator<UserNExposures> recentStats = viewStream
                 .keyBy(event -> event.uid)
@@ -391,6 +881,7 @@ public class UserPornLabelJobV5 {
         @Override
         public StateUpdateResult map(UserNExposures event) {
             long uid = event.viewer;
+            boolean monitored = isMonitored(uid);
 
             Map<String, TagStatistics> statsMap = aggregateStats(event);
             Tuple3<String, Long, TagStatistics> pos = pickHighestPositive(statsMap);
@@ -402,6 +893,9 @@ public class UserPornLabelJobV5 {
             FeedbackV5 feedback = decideFeedback(posTag, negTag);
             if (feedback == FeedbackV5.NONE) {
                 // 没有明确反馈信号，不刷 Redis，避免写放大
+                if (monitored) {
+                    LOG.info("[PornStateV5][Feedback] uid={} no feedback (NONE), posTag={}, negTag={}", uid, posTag, negTag);
+                }
                 return emptyResult(uid);
             }
 
@@ -419,16 +913,29 @@ public class UserPornLabelJobV5 {
             long cooldownEndTs = readLong(uid, REDIS_KEY_COOLDOWN_END_TS_V5, 0L);
             int cooldownStage = readInt(uid, REDIS_KEY_COOLDOWN_STAGE_V5, 0);
 
+            if (monitored) {
+                LOG.info("[PornStateV5][BeforeTransition] uid={}, feedback={}, posTag={}, negTag={}, userType={}, stage={}, probeCount={}, cooldownStage={}, cooldownEndTs={}",
+                        uid, feedback, posTag, negTag, userType, stage, probeCount, cooldownStage, cooldownEndTs);
+            }
+
             // 3) 冷却是否到期（注意“印度20:00后可重新试探”已被对齐到 cooldownEndTs）
             boolean coolingExpired = (cooldownEndTs > 0 && nowMs >= cooldownEndTs);
             if (stage == StageV5.COOLING && coolingExpired) {
                 stage = StageV5.PROBING_MID;
                 cooldownEndTs = 0L;
                 cooldownStage = 0;
+                if (monitored) {
+                    LOG.info("[PornStateV5][CoolingExpired] uid={} cooling expired, reset to PROBING_MID", uid);
+                }
             }
 
             // 4) 状态转移（只维护状态，不做分发）
             TransitionResult tr = transition(userType, stage, probeCount, cooldownStage, cooldownEndTs, feedback, nowMs);
+
+            if (monitored) {
+                LOG.info("[PornStateV5][AfterTransition] uid={}, newUserType={}, newStage={}, newProbeCount={}, newCooldownStage={}, newCooldownEndTs={}",
+                        uid, tr.userType, tr.stage, tr.probeCount, tr.cooldownStage, tr.cooldownEndTs);
+            }
 
             // 5) 生成写入
             StateUpdateResult out = new StateUpdateResult();
@@ -471,6 +978,11 @@ public class UserPornLabelJobV5 {
                     nowMs
             );
             out.kvPairs.add(kv(String.format(REDIS_KEY_FLOW_V5, uid), flowValue));
+
+            if (monitored) {
+                LOG.info("[PornStateV5][RedisWrite] uid={}, keys_written=[user_type_v5, stage_v5, dist_v5, probe_count_v5, cooldown_stage_v5, cooldown_end_ts_v5, last_feedback_v5, last_feedback_ts_v5, last_pos_tag_v5, last_neg_tag_v5, last_update_ts_v5, flow_v5], flow={}",
+                        uid, flowValue);
+            }
 
             return out;
         }
@@ -1032,6 +1544,187 @@ public class UserPornLabelJobV5 {
                 }
             }
             return UNK;
+        }
+    }
+
+    /**
+     * 将埋点体系的 PostEvent（来自 RecUserPostFeatureLatestJob）转换为 V3/V5 复用的 PostViewEvent/PostViewInfo：
+     * - 观看时长相关字段参考 EVENT_VIDEO_PLAY_DURATION 的 standing_time / progress_time / playback_time
+     * - 其余正反馈事件来自点赞/评论/分享/关注/点作者主页/付费等事件
+     * - 负反馈来自举报/不喜欢，以及 prompt_recommendation_click_no 试探弹窗否定事件
+     *
+     * 判定正负反馈的底层逻辑仍依赖 V5 里 aggregateStats 中的：
+     * - standingTime & progressTime
+     * - interaction 列表（正向 action code / dislike action code）
+     */
+    public static class PostEventToViewEventMapper implements FlatMapFunction<PostEvent, PostViewEvent> {
+        @Override
+        public void flatMap(PostEvent event, Collector<PostViewEvent> out) {
+            if (event == null || event.uid <= 0 || event.postId <= 0) {
+                return;
+            }
+
+            PostViewEvent viewEvent = new PostViewEvent();
+            viewEvent.uid = event.uid;
+            // V3 中 createdAt 语义为秒，这里从毫秒时间戳转换为秒，保持量级一致
+            viewEvent.createdAt = event.eventTime > 0 ? event.eventTime / 1000L : System.currentTimeMillis() / 1000L;
+
+            PostViewInfo info = new PostViewInfo();
+            info.postId = event.postId;
+            info.standingTime = (float) event.standingTime;
+            info.progressTime = (float) event.progressTime;
+            info.viewer = event.uid;
+            info.recToken = event.recToken;
+
+            // 根据事件上的布尔标志，构造 interaction 列表
+            List<Integer> interactions = new ArrayList<>();
+            if (event.isLike) {
+                interactions.add(1);  // 点赞
+            }
+            if (event.isComment) {
+                interactions.add(3);  // 评论
+            }
+            if (event.isShare) {
+                interactions.add(5);  // 分享
+            }
+            if (event.isFavor) {
+                interactions.add(6);  // 收藏
+            }
+            if (event.isPay) {
+                interactions.add(10); // 购买/付费
+            }
+            if (event.isFollow) {
+                interactions.add(13); // 关注
+            }
+            if (event.isProfile) {
+                interactions.add(15); // 查看主页/作者资料
+            }
+
+            // 负反馈：举报 / 不喜欢 / 试探弹窗否定
+            if (event.isReport) {
+                interactions.add(11); // 举报
+            }
+            if (event.isNotInterest) {
+                // 通用“不喜欢/不感兴趣”信号
+                interactions.add(7);  // 不感兴趣
+            }
+            // 对于来自 prompt_recommendation_click_no 的事件，会在 PromptNoEventParser 中将 isNotInterest 置为 true，
+            // 这里统一走 isNotInterest 的分支并额外打一个 18 作为区分
+            if (event.isNotInterest && "prompt_recommendation_click_no".equals(event.eventType)) {
+                interactions.add(18); // 试探弹窗否定
+            }
+
+            info.interaction = interactions;
+
+            viewEvent.infoList = new ArrayList<>();
+            viewEvent.infoList.add(info);
+
+            if (isMonitored(event.uid)) {
+                LOG.info("[PornStateV5][Event] uid={}, postId={}, eventType={}, standingTime={}, progressTime={}, playbackTime={}, isLike={}, isComment={}, isShare={}, isFollow={}, isFavor={}, isProfile={}, isPay={}, isReport={}, isNotInterest={}, isCompletePlay={}, interactions={}",
+                        event.uid, event.postId, event.eventType,
+                        event.standingTime, event.progressTime, event.playbackTime,
+                        event.isLike, event.isComment, event.isShare, event.isFollow,
+                        event.isFavor, event.isProfile, event.isPay,
+                        event.isReport, event.isNotInterest, event.isCompletePlay,
+                        interactions);
+            }
+
+            out.collect(viewEvent);
+        }
+    }
+
+    /**
+     * 专门解析 prompt_recommendation_click_no 试探弹窗否定事件：
+     * - 从 event_post 埋点中抽取 userId/postId
+     * - 标记 isNotInterest=true，用于负反馈判定
+     *
+     * 其余字段按需填充：standingTime/progressTime 默认为 0，由 aggregateStats 统一处理。
+     */
+    public static class PromptNoEventParser implements FlatMapFunction<String, PostEvent> {
+        private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
+        @Override
+        public void flatMap(String value, Collector<PostEvent> out) throws Exception {
+            if (value == null || value.isEmpty()) {
+                return;
+            }
+            try {
+                JsonNode root = OBJECT_MAPPER.readTree(value);
+                JsonNode userEventLog = root.path("user_event_log");
+                if (userEventLog.isMissingNode()) {
+                    return;
+                }
+
+                JsonNode eventNode = userEventLog.path("event");
+                if (eventNode.isMissingNode() || !eventNode.isTextual()) {
+                    return;
+                }
+                String event = eventNode.asText();
+                if (!EVENT_PROMPT_NO.equals(event)) {
+                    return;
+                }
+
+                JsonNode eventDataNode = userEventLog.path("event_data");
+                if (eventDataNode.isMissingNode() || !eventDataNode.isTextual()) {
+                    return;
+                }
+                String eventData = eventDataNode.asText();
+                if (eventData == null || eventData.isEmpty() || "null".equalsIgnoreCase(eventData)) {
+                    return;
+                }
+
+                JsonNode data = OBJECT_MAPPER.readTree(eventData);
+
+                // 优先从 user_event_log.uid 获取用户ID（与你提供的示例结构保持一致）
+                long userId = userEventLog.path("uid").asLong(0);
+                if (userId <= 0) {
+                    // 兜底：再尝试从 event_data.userId 中解析（兼容其他埋点格式）
+                    JsonNode userIdNode = data.path("userId");
+                    if (userIdNode.isTextual()) {
+                        try {
+                            userId = Long.parseLong(userIdNode.asText("0"));
+                        } catch (NumberFormatException ignore) {
+                            userId = 0;
+                        }
+                    } else {
+                        userId = userIdNode.asLong(0);
+                    }
+                }
+                long postId = 0;
+                if (data.has("post_id")) {
+                    String postIdStr = data.path("post_id").asText("");
+                    try {
+                        postId = Long.parseLong(postIdStr);
+                    } catch (NumberFormatException ignore) {
+                        postId = 0;
+                    }
+                }
+                if (userId <= 0 || postId <= 0) {
+                    return;
+                }
+
+                long eventTimeMillis = System.currentTimeMillis();
+                if (userEventLog.has("timestamp")) {
+                    eventTimeMillis = userEventLog.get("timestamp").asLong(eventTimeMillis);
+                }
+
+                PostEvent evt = new PostEvent();
+                evt.eventType = EVENT_PROMPT_NO;
+                evt.uid = userId;
+                evt.postId = postId;
+                evt.authorId = 0;
+                // 优先从 event_data.rec_token 获取 rec_token，若不存在则置空
+                String recToken = data.path("rec_token").asText("");
+                evt.recToken = recToken == null ? "" : recToken;
+                evt.exposedPos = 0;
+                evt.eventTime = eventTimeMillis;
+                // 视为一次负反馈信号
+                evt.isNotInterest = true;
+
+                out.collect(evt);
+            } catch (Exception e) {
+                // 静默处理，避免解析异常影响主流程
+            }
         }
     }
 }
