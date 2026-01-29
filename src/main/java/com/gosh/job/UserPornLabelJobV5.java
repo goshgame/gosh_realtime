@@ -1428,13 +1428,37 @@ public class UserPornLabelJobV5 {
                     .setTtlTimeCharacteristic(StateTtlConfig.TtlTimeCharacteristic.ProcessingTime)
                     .setUpdateType(StateTtlConfig.UpdateType.OnCreateAndWrite)
                     .build();
-            ListStateDescriptor<Tuple4<List<PostViewInfo>, Long, Long, String>> descriptor =
-                    new ListStateDescriptor<>(
-                            "recentViewEvent_v5",
-                            TypeInformation.of(new TypeHint<Tuple4<List<PostViewInfo>, Long, Long, String>>() {})
-                    );
-            descriptor.enableTimeToLive(ttlConfig);
-            recentViewEventState = getRuntimeContext().getListState(descriptor);
+            
+            // 修复：确保在创建类型信息时使用正确的 ClassLoader，避免 Kryo 序列化器初始化时 classLoader 为 null
+            // 这个问题通常发生在状态恢复时，TTL 过滤器尝试反序列化状态数据
+            // 解决方案：在创建类型信息之前，确保当前线程的 ClassLoader 是正确的
+            ClassLoader originalClassLoader = Thread.currentThread().getContextClassLoader();
+            ClassLoader classLoader = originalClassLoader;
+            if (classLoader == null) {
+                classLoader = this.getClass().getClassLoader();
+                if (classLoader != null) {
+                    Thread.currentThread().setContextClassLoader(classLoader);
+                }
+            }
+            
+            try {
+                // 使用 TypeHint 创建类型信息（这种方式在 Flink 中是最标准的）
+                TypeInformation<Tuple4<List<PostViewInfo>, Long, Long, String>> typeInfo = 
+                        TypeInformation.of(new TypeHint<Tuple4<List<PostViewInfo>, Long, Long, String>>() {});
+                
+                ListStateDescriptor<Tuple4<List<PostViewInfo>, Long, Long, String>> descriptor =
+                        new ListStateDescriptor<>(
+                                "recentViewEvent_v5",
+                                typeInfo
+                        );
+                descriptor.enableTimeToLive(ttlConfig);
+                recentViewEventState = getRuntimeContext().getListState(descriptor);
+            } finally {
+                // 恢复原始 ClassLoader
+                if (originalClassLoader != null) {
+                    Thread.currentThread().setContextClassLoader(originalClassLoader);
+                }
+            }
         }
 
         @Override
