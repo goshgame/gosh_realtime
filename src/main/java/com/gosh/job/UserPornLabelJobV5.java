@@ -1427,19 +1427,26 @@ public class UserPornLabelJobV5 {
             StateTtlConfig ttlConfig = StateTtlConfig.newBuilder(Time.hours(1))
                     .setTtlTimeCharacteristic(StateTtlConfig.TtlTimeCharacteristic.ProcessingTime)
                     .setUpdateType(StateTtlConfig.UpdateType.OnCreateAndWrite)
+                    .cleanupFullSnapshot() // 清理策略：全量快照时清理（适用RocksDB和文件系统后端）
+                    .disableCleanupInBackground() // 可选：禁用后台清理（某些场景需要）
                     .build();
             
             // 修复：确保在创建类型信息时使用正确的 ClassLoader，避免 Kryo 序列化器初始化时 classLoader 为 null
             // 这个问题通常发生在状态恢复时，TTL 过滤器尝试反序列化状态数据
-            // 解决方案：在创建类型信息之前，确保当前线程的 ClassLoader 是正确的
+            // 解决方案：
+            // 1. 确保当前线程的 ClassLoader 是正确的
+            // 2. 确保 ExecutionConfig 的 ClassLoader 也是正确的
             ClassLoader originalClassLoader = Thread.currentThread().getContextClassLoader();
             ClassLoader classLoader = originalClassLoader;
             if (classLoader == null) {
                 classLoader = this.getClass().getClassLoader();
-                if (classLoader != null) {
-                    Thread.currentThread().setContextClassLoader(classLoader);
+                if (classLoader == null) {
+                    classLoader = ClassLoader.getSystemClassLoader();
                 }
             }
+            
+            // 设置当前线程的 ClassLoader（这很重要，因为状态序列化器会使用它）
+            Thread.currentThread().setContextClassLoader(classLoader);
             
             try {
                 // 使用 TypeHint 创建类型信息（这种方式在 Flink 中是最标准的）
@@ -1453,8 +1460,11 @@ public class UserPornLabelJobV5 {
                         );
                 descriptor.enableTimeToLive(ttlConfig);
                 recentViewEventState = getRuntimeContext().getListState(descriptor);
+            } catch (Exception e) {
+                LOG.error("Failed to create state descriptor: {}", e.getMessage(), e);
+                throw new RuntimeException("Failed to initialize state", e);
             } finally {
-                // 恢复原始 ClassLoader
+                // 恢复原始 ClassLoader（如果存在）
                 if (originalClassLoader != null) {
                     Thread.currentThread().setContextClassLoader(originalClassLoader);
                 }
