@@ -414,13 +414,13 @@ public class MySQLFlinkUtil {
                         LOG.error("轮询MySQL查询失败", e);
                         // 短暂等待后重试
                         if (isRunning) {
-                            Thread.sleep(5000);
+                            Thread.sleep(pollingIntervalMs);
                         }
                     } catch (ClassNotFoundException e) {
                         LOG.error("加载MySQL驱动失败", e);
                         // 短暂等待后重试
                         if (isRunning) {
-                            Thread.sleep(5000);
+                            Thread.sleep(pollingIntervalMs);
                         }
                     }
                     

@@ -201,7 +201,7 @@ public class RedisClusterConnectionManager implements RedisConnectionManager, Se
                     LOG.error("Unsupported operation: " + e.getMessage() + ", returning null to prevent application crash");
                     return null;
                 }
-                LOG.error("Async Redis cluster operation failed: {}", e.getMessage(), e);
+                LOG.error("Async Redis cluster operation failed on nodes {}: {}", config.getClusterNodes(), e.getMessage(), e);
                 throw new CompletionException(e);
             }
         }, threadPool);
@@ -226,7 +226,7 @@ public class RedisClusterConnectionManager implements RedisConnectionManager, Se
                     LOG.error("Unsupported operation: " + e.getMessage() + ", returning null to prevent application crash");
                     return null;
                 }
-                LOG.error("Async Redis list operation failed: {}", e.getMessage(), e);
+                LOG.error("Async Redis list operation failed on nodes {}: {}", config.getClusterNodes(), e.getMessage(), e);
                 throw new CompletionException(e);
             }
         }, threadPool);
@@ -251,7 +251,7 @@ public class RedisClusterConnectionManager implements RedisConnectionManager, Se
                     LOG.error("Unsupported operation: " + e.getMessage() + ", returning null to prevent application crash");
                     return null;
                 }
-                LOG.error("Async Redis string operation failed: {}", e.getMessage(), e);
+                LOG.error("Async Redis string operation failed on nodes {}: {}", config.getClusterNodes(), e.getMessage(), e);
                 throw new CompletionException(e);
             }
         }, threadPool);
@@ -276,7 +276,7 @@ public class RedisClusterConnectionManager implements RedisConnectionManager, Se
                     LOG.error("Unsupported operation: " + e.getMessage() + ", returning null to prevent application crash");
                     return null;
                 }
-                LOG.error("Async Redis set operation failed: {}", e.getMessage(), e);
+                LOG.error("Async Redis set operation failed on nodes {}: {}", config.getClusterNodes(), e.getMessage(), e);
                 throw new CompletionException(e);
             }
         }, threadPool);
@@ -301,7 +301,7 @@ public class RedisClusterConnectionManager implements RedisConnectionManager, Se
                     LOG.error("Unsupported operation: " + e.getMessage() + ", returning null to prevent application crash");
                     return null;
                 }
-                LOG.error("Async Redis hash operation failed: {}", e.getMessage(), e);
+                LOG.error("Async Redis hash operation failed on nodes {}: {}", config.getClusterNodes(), e.getMessage(), e);
                 throw new CompletionException(e);
             }
         }, threadPool);
@@ -478,6 +478,14 @@ public class RedisClusterConnectionManager implements RedisConnectionManager, Se
             connectionRetryCount++;
             // 当重试次数超过限制时才抛出异常，否则允许继续重试
             checkRetryLimitAndThrowIfNeeded(e);
+            // 连接失败时，延迟5秒后再重试
+            try {
+                LOG.info("Sleeping for 5 seconds before retry...");
+                Thread.sleep(5000);
+            } catch (InterruptedException ie) {
+                Thread.currentThread().interrupt();
+                LOG.warn("Sleep interrupted", ie);
+            }
         }
     }
 }
