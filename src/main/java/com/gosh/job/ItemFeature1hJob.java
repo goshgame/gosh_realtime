@@ -186,14 +186,14 @@ public class ItemFeature1hJob {
                 })
                 .name("Aggregation to Protobuf Bytes");
 
-        // 第五步：转换为FeastRequest并写入Feast
+        // 第六步：转换为FeastRequest并写入Feast
         SingleOutputStreamOperator<FeastRequest> feastRequestStream = aggregatedStream
                 .map(new MapFunction<ItemFeature1hAggregation, FeastRequest>() {
                     @Override
                     public FeastRequest map(ItemFeature1hAggregation agg) throws Exception {
                         FeastRequest feastRequest = new FeastRequest();
-                        feastRequest.setProject("gosh_feature_store"); // 可配置
-                        feastRequest.setFeatureViewName("item_features_1h"); // 特定于此作业
+                        feastRequest.setProject("gosh_realtime_feature_store"); // 可配置
+                        feastRequest.setFeatureViewName("item_feature_post_1h"); // 特定于此作业
 
                         FeastRequest.FeastData feastData = new FeastRequest.FeastData();
                         FeastRequest.EntityKey entityKey = new FeastRequest.EntityKey();
@@ -237,11 +237,11 @@ public class ItemFeature1hJob {
                 })
                 .name("Aggregation to FeastRequest");
 
-        // 第六步：创建Feast Sink
+        // 第七步：创建Feast Sink
         feastRequestStream.addSink(new FeastSinkFunction("Item Feature 1h Job"))
                 .name("Feast Online Store Sink");
 
-        // 第六步：创建sink，Redis环境
+        // 第八步：创建sink，Redis环境
         RedisConfig redisConfig = RedisConfig.fromProperties(RedisUtil.loadProperties());
         redisConfig.setTtl(600);
         RedisUtil.addKvRocksSink(
