@@ -8,6 +8,7 @@ import org.apache.flink.streaming.api.functions.sink.RichSinkFunction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
@@ -98,7 +99,7 @@ public class FeastSinkFunction extends RichSinkFunction<FeastRequest> {
         checkAsyncError();
 
         if (value == null) {
-            LOG.warn("FeastRequest is null, skipping write to online store.");
+            LOG.error("FeastRequest is null, skipping write to online store.");
             return;
         }
 
@@ -129,7 +130,7 @@ public class FeastSinkFunction extends RichSinkFunction<FeastRequest> {
         if (executorService != null) {
             executorService.shutdown();
             if (!executorService.awaitTermination(30, TimeUnit.SECONDS)) {
-                LOG.warn("Executor service did not shut down gracefully within 30 seconds.");
+                LOG.error("Executor service did not shut down gracefully within 30 seconds.");
                 executorService.shutdownNow();
             }
         }
@@ -154,9 +155,30 @@ public class FeastSinkFunction extends RichSinkFunction<FeastRequest> {
 
     private void asyncWrite(List<FeastRequest> batch) {
         executorService.submit(() -> {
+            // 1. 按照 featureViewName 分类
+            Map<String, List<FeastRequest>> groupedRequests = new HashMap<>();
             for (FeastRequest request : batch) {
-                writeWithRetry(request);
+                groupedRequests.computeIfAbsent(request.getFeatureViewName(), k -> new ArrayList<>()).add(request);
             }
+
+            // 2. 合并每一类 featureViewName 的请求
+            groupedRequests.forEach((featureViewName, requests) -> {
+                if (!requests.isEmpty()) {
+                    FeastRequest firstReq = requests.get(0);
+                    FeastRequest mergedRequest = new FeastRequest();
+                    mergedRequest.setProject(firstReq.getProject());
+                    mergedRequest.setFeatureViewName(featureViewName);
+                    mergedRequest.setTtl(firstReq.getTtl());
+
+                    List<FeastRequest.FeastData> mergedData = new ArrayList<>();
+                    for (FeastRequest req : requests) {
+                        if (req.getData() != null)
+                            mergedData.addAll(req.getData());
+                    }
+                    mergedRequest.setData(mergedData);
+                    writeWithRetry(mergedRequest);
+                }
+            });
         });
     }
 
@@ -170,11 +192,11 @@ public class FeastSinkFunction extends RichSinkFunction<FeastRequest> {
                     LOG.debug("Successfully wrote to Feast for project: {}", request.getProject());
                     success = true;
                 } else {
-                    LOG.warn("Attempt {}/{} failed to write to Feast. Response: {}",
+                    LOG.error("Attempt {}/{} failed to write to Feast. Response: {}",
                             attempt + 1, maxRetries, response != null ? response.toString() : "null");
                 }
             } catch (Exception e) {
-                LOG.warn("Attempt {}/{} failed with exception while writing to Feast.",
+                LOG.error("Attempt {}/{} failed with exception while writing to Feast.",
                         attempt + 1, maxRetries, e);
             }
 
