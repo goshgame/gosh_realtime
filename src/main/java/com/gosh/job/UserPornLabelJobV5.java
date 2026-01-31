@@ -930,6 +930,9 @@ public class UserPornLabelJobV5 {
             }
 
             // 4) 状态转移（只维护状态，不做分发）
+            // 注意：transition 函数已实现严格的状态升级顺序，不允许跳跃：
+            // - PROBING_MID -> PROBING_HIGH -> STABLE
+            // - 即使对 high 内容有正反馈，也必须按顺序升级，不能直接从 PROBING_MID 跳到 STABLE
             TransitionResult tr = transition(userType, stage, probeCount, cooldownStage, cooldownEndTs, feedback, nowMs);
 
             if (monitored) {
@@ -1117,9 +1120,17 @@ public class UserPornLabelJobV5 {
                 return r;
             }
 
-            // ===== 试探/稳定阶段的转移 =====
+            // ===== 关键修复：防止状态跳跃升级 =====
+            // 如果当前状态为空或未知，强制初始化为 PROBING_MID（从最低级开始）
+            if (stage == null) {
+                stage = StageV5.PROBING_MID;
+                r.stage = StageV5.PROBING_MID;
+            }
+
+            // ===== 试探/稳定阶段的转移（严格按顺序升级，不允许跳跃） =====
             switch (stage) {
                 case PROBING_MID:
+                    // PROBING_MID 阶段：正反馈只能升级到 PROBING_HIGH，不能直接跳到 STABLE
                     if (feedback == FeedbackV5.POSITIVE) {
                         r.stage = StageV5.PROBING_HIGH;
                         return r;
@@ -1130,6 +1141,7 @@ public class UserPornLabelJobV5 {
                     }
                     return r;
                 case PROBING_HIGH:
+                    // PROBING_HIGH 阶段：正反馈才能升级到 STABLE
                     if (feedback == FeedbackV5.POSITIVE) {
                         r.stage = StageV5.STABLE;
                         r.probeCount = 0;
@@ -1143,13 +1155,23 @@ public class UserPornLabelJobV5 {
                     }
                     return r;
                 case STABLE:
+                    // STABLE 阶段：正反馈保持在 STABLE，负反馈进入冷却
                     if (feedback == FeedbackV5.NEGATIVE) {
                         // 稳定期的负反馈：直接进入更长冷却（档位=3 -> 14d）
                         // 选择 B：stable 不是“试探阶段”，不递增 probe_count，只更新冷却信息
                         return enterCooling(userType, Math.max(probeCount, 2), nowMs, 3, false);
                     }
+                    // 正反馈或无反馈：保持在 STABLE
                     return r;
                 default:
+                    // 未知状态：强制初始化为 PROBING_MID，防止状态跳跃
+                    r.stage = StageV5.PROBING_MID;
+                    // 如果有正反馈，也只能升级到 PROBING_HIGH（不能直接跳到 STABLE）
+                    if (feedback == FeedbackV5.POSITIVE) {
+                        r.stage = StageV5.PROBING_HIGH;
+                    } else if (feedback == FeedbackV5.NEGATIVE) {
+                        return enterCooling(userType, probeCount, nowMs, 1, true);
+                    }
                     return r;
             }
         }
