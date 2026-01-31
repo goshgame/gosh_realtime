@@ -1104,13 +1104,14 @@ public class UserPornLabelJobV5 {
             r.cooldownStage = cooldownStage;
             r.cooldownEndTs = cooldownEndTs;
 
-            // 有专区用户：状态机只维护为 stable（不在这里做“内容分发”，线上可依据 user_type）
+            // 有专区用户：根据流程图，应该始终保持在 PROBING_MID 阶段（mid2_high0：不出现 High/Porn，最多 2 个 Mid）
+            // 分发规则由线上系统根据 user_type 来决定，本作业只维护状态机
             if (userType == UserTypeV5.ZONE_USER) {
-                r.stage = StageV5.STABLE;
+                // 强制保持在 PROBING_MID 阶段，不允许升级到 PROBING_HIGH 或 STABLE
+                r.stage = StageV5.PROBING_MID;
                 r.cooldownEndTs = 0L;
                 r.cooldownStage = 0;
-                // probeCount 不强行清零（保留历史），但也可以清零；这里选择清零，避免冷却历史误导线上
-                r.probeCount = 0;
+                r.probeCount = 0; // 有专区用户不需要试探计数
                 return r;
             }
 
